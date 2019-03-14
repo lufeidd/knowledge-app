@@ -9,7 +9,7 @@
 # 项目运行
 
 ``` bash
-https://github.com/nancyzeng/knowledge-app
+git clone https://github.com/nancyzeng/knowledge-app
 
 cd knowledge-app
 
