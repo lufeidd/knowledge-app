@@ -97,6 +97,18 @@ export default {
       } else {
         this.submitData.disabled = true;
       }
+    },    
+    getData () {
+    // axios
+    	const axios = require('axios')
+    	const data = api.test
+    	axios.get(data).then(response => {
+    		this.msg = response.data.bpi
+    		this.$refs.loadmore.onTopLoaded()
+    	}).catch(error => {
+    		console.log(error)
+    		this.error = true
+    	}).finally(() => this.loadding = false)
     },
     gotoPage() {},
     getTip() {
