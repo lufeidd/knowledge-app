@@ -5,7 +5,10 @@ import App from './App'
 import router from './router/index'
 
 // 自定义插件
-import plugin from './plugin/index'
+import _plugin from './plugin/index'
+
+// api
+import _api from './api/index'
 
 // vant
 // import 'vant/lib/index.css'
@@ -19,7 +22,10 @@ Vue.use(CheckboxGroup)
 Vue.use(Row)
 Vue.use(Col)
 
-Vue.use(plugin)
+Vue.use(_plugin)
+// Vue.use(api)
+// 挂载，调用全局变量
+Vue.prototype.api = _api
 
 Vue.config.productionTip = false
 

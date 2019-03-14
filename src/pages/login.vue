@@ -59,6 +59,8 @@
           <span class="iconfont icon-qq-block"></span>
         </van-col>
       </van-row>
+
+      {{ axiosMsg }}
     </div>
   </div>
 </template>
@@ -66,6 +68,11 @@
 <style src="@/style/scss/pages/login.scss" lang="scss"></style>
 
 <script>
+
+// import Vue from 'vue';
+// import api from './../api/index.js';
+// Vue.use(api);
+
 export default {
   data() {
     return {
@@ -76,10 +83,12 @@ export default {
       },
       isRow: true,
       isLoginType: true,
-      isPassword: false
+      isPassword: false,
+      axiosMsg: ''
     };
   },
   created() {
+    this.getData();
     let queryData = this.$route.query;
     this.phone = queryData.phone;
     this.password = "";
@@ -97,22 +106,26 @@ export default {
       } else {
         this.submitData.disabled = true;
       }
-    },    
-    getData () {
-    // axios
-    	const axios = require('axios')
-    	const data = api.test
-    	axios.get(data).then(response => {
-    		this.msg = response.data.bpi
-    		this.$refs.loadmore.onTopLoaded()
-    	}).catch(error => {
-    		console.log(error)
-    		this.error = true
-    	}).finally(() => this.loadding = false)
+    },
+    getData() {
+      // axios
+      const axios = this.api.axios;
+      const data = this.api.loginApi;
+      axios
+        .get(data)
+        .then(response => {
+          this.axiosMsg = response.data.bpi;
+          this.$refs.loadmore.onTopLoaded();
+        })
+        .catch(error => {
+          console.log(error);
+          this.error = true;
+        })
+        .finally(() => (this.loadding = false));
     },
     gotoPage() {},
     getTip() {
-      this.$router.push('/password')
+      this.$router.push("/password");
     }
   }
 };

@@ -17,5 +17,5 @@ cnpm install
 
 cnpm run dev
 
-cnpm run build
+cnpm run build（本地代码run build请先修改path再将dist文件夹放到服务器查看效果）
 ```
