@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+.van-checkbox__icon--checked .van-icon {
+	border-color: #f05654;
+	background-color: #fff;
+	color: #f05654;
+}
+
+.van-checkbox__icon {
+	height: 16px;
+}
+
+.van-checkbox__icon .van-icon {
+	width: 16px;
+	height: 16px;
+	font-size: 12px;
+}
+
+.van-checkbox__icon, .van-checkbox__label {
+	line-height: 16px;
+}
+
+.van-checkbox__label {
+	margin-left: 5px;
+}

@@ -1,0 +1,47 @@
+/*
+ * author: nancyzeng
+ * date:2019/3/11
+ */
+
+@charset "UTF-8";
+
+// 组件
+@import url("./../components/navBar.scss");
+@import url("./../components/field.scss");
+@import url("./../components/button.scss");
+@import url("./../components/checkbox.scss");
+
+#registerPage {
+
+	.van-cell {
+		border-bottom: 1px #d6d6d6 solid;
+		font-size: 15px;
+		color: #000;
+		padding: 10px 0;
+		margin-bottom: 10px;
+		align-items: center;
+	}
+
+	.fieldBox {
+		padding: 20px;
+		margin-top: 50px;
+	}
+
+	.phone .van-field__label {
+		border-right: 1px #d6d6d6 solid;
+	}
+
+	.van-field__label {
+		max-width: 50px;
+		margin-right: 10px;
+	}
+
+	.van-checkbox__label {
+		font-size: $fontSize - 1;
+		color: #999;
+	}
+
+	.submitBox {
+		margin: 50px 30px;
+	}
+}

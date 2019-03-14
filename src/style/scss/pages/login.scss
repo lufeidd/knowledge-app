@@ -1,0 +1,66 @@
+/*
+ * author: nancyzeng
+ * date:2019/3/11
+ */
+
+@charset "UTF-8";
+
+// 组件
+@import url("./../components/navBar.scss");
+@import url("./../components/field.scss");
+@import url("./../components/button.scss");
+@import url("./../components/checkbox.scss");
+
+#loginPage {
+
+  .van-cell {
+    border-bottom: 1px #d6d6d6 solid;
+    font-size: 15px;
+    color: #000;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+
+  .fieldBox {
+    padding: 50px;
+    margin-top: 50px;
+  }
+
+  .van-field__label {
+    max-width: 50px;
+    margin-right: 10px;
+  }
+
+  & .phone .van-field__label {
+	// @include clearfix;
+	// font-size: double($fontSize);
+    border-right: 1px #d6d6d6 solid;
+  }
+
+  .submitBox {
+    margin: 50px 0;
+  }
+
+  .row {
+    font-size: $fontSize - 2;
+  }
+
+  .row .van-col:nth-child(2) {
+    text-align: right;
+  }
+
+  .loginType {
+    text-align: center;
+    font-size: 38px;
+    padding-top: 80px;
+  }
+
+  .loginType .van-col:nth-child(1) span {
+    color: #3ca938;
+  }
+
+  .loginType .van-col:nth-child(2) span {
+    color: #12b7f5;
+  }
+}

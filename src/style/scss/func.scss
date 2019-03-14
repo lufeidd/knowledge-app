@@ -1,0 +1,11 @@
+/*
+ * author: nancyzeng
+ * date:2019/3/14
+ */
+
+ @charset "UTF-8";
+
+// 两倍
+@function double($n) {
+    @return 2 * $n;
+}
