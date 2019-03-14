@@ -6,6 +6,10 @@
 
 > vue + vant + vue-router + webpack + ES6/7 + sass + gulp
 
+# 项目模块
+
+> 1、登录/注册
+
 # 项目运行
 
 ``` bash
