@@ -1,42 +1,21 @@
 # About knowledge-app
 
-> 关于 knowledge-app
+> 博库-知识内容服务平台-移动端，此项目是 vue + vant 构建的移动端项目，解释权归博库网络传媒集团所有。sass, gulp
 
-# 项目名称
+# 技术栈
 
-> 知识内容服务平台-移动端
+> vue + vant + vue-router + webpack + ES6/7 + sass + gulp
 
-# 开发工具
-
-> vue + vant
-
-# 技术支持
-
-> sass, gulp
-
-# Build Setup
+# 项目运行
 
 ``` bash
-# install dependencies
+https://github.com/nancyzeng/knowledge-app
+
+cd knowledge-app
+
 cnpm install
 
-# serve with hot reload at localhost:8080
 cnpm run dev
 
-# build for production with minification
 cnpm run build
-
-# build for production and view the bundle analyzer report
-cnpm run build --report
-
-# run unit tests
-cnpm run unit
-
-# run e2e tests
-cnpm run e2e
-
-# run all tests
-cnpm test
 ```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
