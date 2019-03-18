@@ -16,15 +16,17 @@
         />
       </div>
 
-      <van-field
-        v-model="password"
-        type="password"
-        clearable
-        label="密码"
-        maxlength="20"
-        placeholder="6-20位数字、字母或符号，至少两种"
-        @input="checkSubmit"
-      />
+      <div class="password">
+        <van-field
+          v-model="password"
+          type="password"
+          clearable
+          label="密码"
+          maxlength="20"
+          placeholder="6-20位数字、字母或符号，至少两种"
+          @input="checkSubmit"
+        />
+      </div>
 
       <van-row v-bind:class="{ row: isRow }">
         <van-col span="12">
@@ -59,21 +61,24 @@
           <span class="iconfont icon-qq-block"></span>
         </van-col>
       </van-row>
-
-      {{ axiosMsg }}
+      <!-- {{ axiosData }} -->
     </div>
+    <music
+      :musicData="musicData"
+      @sliderChange="sliderChange"
+    ></music>
   </div>
 </template>
 
 <style src="@/style/scss/pages/login.scss" lang="scss"></style>
 
 <script>
-
-// import Vue from 'vue';
-// import api from './../api/index.js';
-// Vue.use(api);
-
+import music from "./../components/music";
+import { clearInterval } from 'timers';
 export default {
+  components: {
+    music
+  },
   data() {
     return {
       phone: "",
@@ -84,7 +89,18 @@ export default {
       isRow: true,
       isLoginType: true,
       isPassword: false,
-      axiosMsg: ''
+      axiosData: "",
+      musicData: {
+        type: 'play',
+        id: "myAudio",
+        src: "",
+        // 秒数格式
+        totalSecond: 0,
+        currentSecond: 0,
+        // 分：秒格式
+        duration: "00:00",
+        currentTime: "00:00"
+      }
     };
   },
   created() {
@@ -93,7 +109,17 @@ export default {
     this.phone = queryData.phone;
     this.password = "";
   },
+  mounted() {
+    this.musicData.src = require("./../assets/music.mp3");
+    setTimeout(() => {
+      var id = this.musicData.id;
+      var audio = document.getElementById(id);
+      this.musicData.totalSecond = audio.duration;
+      this.musicData.currentSecond = audio.currentTime;
+    }, 600);
+  },
   methods: {
+    sliderChange() {},
     onClickLeft() {
       this.$router.go(-1);
     },
@@ -114,8 +140,8 @@ export default {
       axios
         .get(data)
         .then(response => {
-          this.axiosMsg = response.data.bpi;
-          this.$refs.loadmore.onTopLoaded();
+          this.axiosData = response.data.bpi;
+          // this.$refs.loadmore.onTopLoaded();
         })
         .catch(error => {
           console.log(error);

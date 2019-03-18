@@ -13,35 +13,53 @@
 
 #registerPage {
 
-	.van-cell {
-		border-bottom: 1px #d6d6d6 solid;
-		font-size: 15px;
-		color: #000;
-		padding: 10px 0;
-		margin-bottom: 10px;
-		align-items: center;
-	}
+  .password {
 
-	.fieldBox {
-		padding: 20px;
-		margin-top: 50px;
-	}
+    /*设置input placeholder颜色*/
+    ::-webkit-input-placeholder,
+    ::-webkit-textarea-placeholder {
+      font-size: 13px;
+    }
 
-	.phone .van-field__label {
-		border-right: 1px #d6d6d6 solid;
-	}
+    :-moz-placeholder {
+      font-size: 13px;
+    }
 
-	.van-field__label {
-		max-width: 50px;
-		margin-right: 10px;
-	}
+    :-ms-input-placeholder,
+    :-ms-textarea-placeholder {
+      font-size: 13px;
+    }
+  }
 
-	.van-checkbox__label {
-		font-size: $fontSize - 1;
-		color: #999;
-	}
+  .van-cell {
+    border-bottom: 1px #d6d6d6 solid;
+    font-size: 15px;
+    color: #000;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    align-items: center;
+  }
 
-	.submitBox {
-		margin: 50px 30px;
-	}
+  .fieldBox {
+    padding: 20px;
+    margin-top: 50px;
+  }
+
+  .phone .van-field__label {
+    border-right: 1px #d6d6d6 solid;
+  }
+
+  .van-field__label {
+    max-width: 50px;
+    margin-right: 10px;
+  }
+
+  .van-checkbox__label {
+    font-size: $fontSize - 1;
+    color: #999;
+  }
+
+  .submitBox {
+    margin: 50px 30px;
+  }
 }

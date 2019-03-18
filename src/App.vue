@@ -32,7 +32,7 @@ a {
 :-ms-input-placeholder,
 :-ms-textarea-placeholder {
   font-size: 15px;
-  color: #ccc;
+  color: #999;
 }
 </style>
 

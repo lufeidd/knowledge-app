@@ -36,15 +36,17 @@
           >{{ codeData.timeMsg }}</van-button>
         </template>
       </van-field>
-      <van-field
-        v-model="password"
-        type="password"
-        clearable
-        label="密码"
-        maxlength="20"
-        placeholder="6-20位数字、字母或符号，至少两种"
-        @input="checkSubmit ('submit')"
-      />
+      <div class="password">
+        <van-field
+          v-model="password"
+          type="password"
+          clearable
+          label="密码"
+          maxlength="20"
+          placeholder="6-20位数字、字母或符号，至少两种"
+          @input="checkSubmit ('submit')"
+        />
+      </div>
 
       <van-checkbox v-model="checked">阅读并同意《火把服务用户协议》</van-checkbox>
 

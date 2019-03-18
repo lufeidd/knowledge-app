@@ -1,6 +1,8 @@
 export default {
   install: function (Vue, options) {
     // 全局变量
+    // 倒计时
+    Vue.prototype.clock = null
 
     // 验证码倒计时
     Vue.prototype.$countDown = function (options) {
@@ -8,9 +10,9 @@ export default {
       let time = options.time
 
       if (typeof time === 'number') {
-        let clock = window.setInterval(() => {
+        this.clock = window.setInterval(() => {
           if (time === 0) {
-            clearInterval(clock)
+            clearInterval(this.clock)
             options.disabled = false
             options.timeMsg = '获取验证码'
             return false

@@ -13,6 +13,24 @@
 
 #loginPage {
 
+  .password {
+
+    /*设置input placeholder颜色*/
+    ::-webkit-input-placeholder,
+    ::-webkit-textarea-placeholder {
+      font-size: 13px;
+    }
+
+    :-moz-placeholder {
+      font-size: 13px;
+    }
+
+    :-ms-input-placeholder,
+    :-ms-textarea-placeholder {
+      font-size: 13px;
+    }
+  }
+
   .van-cell {
     border-bottom: 1px #d6d6d6 solid;
     font-size: 15px;
@@ -33,8 +51,8 @@
   }
 
   & .phone .van-field__label {
-	// @include clearfix;
-	// font-size: double($fontSize);
+    // @include clearfix;
+    // font-size: double($fontSize);
     border-right: 1px #d6d6d6 solid;
   }
 
