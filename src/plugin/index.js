@@ -3,6 +3,7 @@ export default {
     // 全局变量
     // 倒计时
     Vue.prototype.clock = null
+    Vue.prototype.duration = null
 
     // 验证码倒计时
     Vue.prototype.$countDown = function (options) {

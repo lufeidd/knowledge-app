@@ -63,21 +63,20 @@
       </van-row>
       <!-- {{ axiosData }} -->
     </div>
-    <movie :movieData="movieData" @sliderChange="sliderChange"></movie>
-    <music :musicData="musicData" @sliderChange="sliderChange"></music>
+    <movie :movieData="movieData"></movie>
+    <music :musicData="musicData"></music>
   </div>
 </template>
 
 <style src="@/style/scss/pages/login.scss" lang="scss"></style>
 
 <script>
-import music from "./../components/music";
 import movie from "./../components/movie";
-import { clearInterval } from "timers";
+import music from "./../components/music";
 export default {
   components: {
+    movie,
     music,
-    movie
   },
   data() {
     return {
@@ -94,8 +93,6 @@ export default {
         type: "play",
         id: "myAudio",
         src: "",
-        // 当前秒数格式
-        currentSecond: 0,
         // 分：秒格式
         duration: "00:00",
         currentTime: "00:00"
@@ -104,8 +101,6 @@ export default {
         type: "play",
         id: "myVideo",
         src: "",
-        // 当前秒数格式
-        currentSecond: 0,
         // 分：秒格式
         duration: "00:00",
         currentTime: "00:00"
@@ -123,16 +118,6 @@ export default {
     this.musicData.src = require("./../assets/music.mp3");
     // 视频
     this.movieData.src = require("./../assets/movie.mp4");
-    setTimeout(() => {
-      // 音频
-      var id = this.musicData.id;
-      var audio = document.getElementById(id);
-      this.musicData.currentSecond = audio.currentTime;
-      // 视频
-      var id = this.movieData.id;
-      var video = document.getElementById(id);
-      this.movieData.currentSecond = video.currentTime;
-    }, 600);
   },
   methods: {
     onClickLeft() {
@@ -167,8 +152,7 @@ export default {
     gotoPage() {},
     getTip() {
       this.$router.push("/password");
-    },
-    sliderChange() {}
+    }
   }
 };
 </script>

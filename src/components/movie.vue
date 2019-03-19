@@ -2,13 +2,13 @@
   <div class="movie">
     <p>currentTime:{{ movieData.currentTime }}</p>
     <p>duration:{{ movieData.duration }}</p>
-    <video :id="movieData.id" :src="movieData.src" @ended="ended"></video>
+    <video :id="movieData.id" :src="movieData.src" preload="auto" @ended="ended"></video>
     <div @click="playVideo" v-if="movieData.type === 'play'">播放</div>
     <div @click="pauseVideo" v-else>暂停</div>
     <div style="padding:40px 0;">
       <van-slider
         v-model="movieData.sliderValue"
-        @change="sliderChange"
+        @change="movieSliderChange"
         :min="0"
         :max="100"
         bar-height="4px"
@@ -18,12 +18,12 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .movie {
   padding: 50px;
 }
 video {
-    width: 100%;
+  width: 100%;
 }
 </style>
 
@@ -36,27 +36,29 @@ export default {
       var id = this.movieData.id;
       var video = document.getElementById(id);
       this.movieData.duration = this.todate(video.duration);
-      this.movieData.currentTime = this.todate(this.movieData.currentSecond);
-    }, 601);
+      this.movieData.currentTime = this.todate(0);
+      // 全局变量存放时间
+      this.videoDuration = parseInt(video.duration);
+    }, 600);
   },
   methods: {
-    // 倒计时
-    timeCountDown(second, type) {
-      if (type === "reset") {
+    // 播放时间戳
+    videoTimeChange(second, type) {
+      if (type === "play") {
         clearInterval(this.clock);
         return false;
       }
       this.clock = window.setInterval(() => {
-        if (second == 0) {
+        if (second >= this.videoDuration) {
           clearInterval(this.clock);
           return false;
         } else {
-          second--;
+          second++;
           console.log(second);
           // 日期格式转换
-          this.movieData.duration = this.todate(second);
+          this.movieData.currentTime = this.todate(second);
           // 绑定slider
-          this.bindtoslider(second);
+          this.videobindtoslider(second);
         }
       }, 1000);
     },
@@ -64,64 +66,44 @@ export default {
     playVideo() {
       var id = this.movieData.id;
       var video = document.getElementById(id);
-        var totalSecond = video.duration;
-        var currentSecond = video.currentTime;
-        var second = parseInt(totalSecond - currentSecond);
+      // 播放
+      video.play();
       // 切换播放状态
       this.movieData.type = "pause";
-        var type = "start";
-      video.play();
-        this.timeCountDown(second, type);
+      var second = parseInt(video.currentTime);
+      this.videoTimeChange(second, this.movieData.type);
     },
     // 点击暂停
     pauseVideo() {
       var id = this.movieData.id;
       var video = document.getElementById(id);
-        var second = parseInt(video.duration - video.currentTime);
+      // 暂停
+      video.pause();
       // 切换播放状态
       this.movieData.type = "play";
-        var type = "reset";
-      video.pause();
-        this.timeCountDown(second, type);
-    },
-    // 播放结束
-    ended() {
-      var id = this.movieData.id;
-      var video = document.getElementById(id);
-      this.movieData.type = "play";
-      video.currentTime = 0;
-        var time = parseInt(video.duration);
-        this.movieData.duration = this.todate(time);
-        // 绑定slider
-        this.bindtoslider(video.duration);
+      var second = parseInt(video.currentTime);
+      this.videoTimeChange(second, this.movieData.type);
     },
     // 绑定slider
-    bindtoslider(second) {
+    videobindtoslider(second) {
       var id = this.movieData.id;
       var video = document.getElementById(id);
-      var totalSecond = parseInt(video.duration);
-      var currentSecond = totalSecond - second;
-      var percent = (currentSecond / totalSecond) * 100;
+      var percent = (second / video.duration) * 100;
+      // 设置slider进度
       this.movieData.sliderValue = percent;
     },
     // 拖动滑块
-    sliderChange() {
+    movieSliderChange() {
       var id = this.movieData.id;
       var video = document.getElementById(id);
-      var percent = 100 - this.movieData.sliderValue;
-      var totalSecond = (video.duration * percent) / 100;
-      // 设置剩余时间
-      this.movieData.duration = this.todate(totalSecond);
       // 设置当前时间
       video.currentTime = (this.movieData.sliderValue / 100) * video.duration;
-      // 当正在播放时，先暂停再播放
-      if (this.movieData.type === "pause") {
-        this.pauseVideo();
-      }
+      this.movieData.currentTime = this.todate(video.currentTime);
+      // 先暂停再播放
+      this.pauseVideo();
       setTimeout(() => {
         this.playVideo();
       }, 300);
-      console.log(video.currentTime);
     },
     // 日期格式转换
     todate(second) {
@@ -136,6 +118,18 @@ export default {
       // var date = h + ":" + m + ":" + s;
       var date = m + ":" + s;
       return date;
+    },
+    // 播放结束
+    ended() {
+      var id = this.movieData.id;
+      var video = document.getElementById(id);
+      this.movieData.type = "play";
+      video.currentTime = 0;
+      // 重置
+      setTimeout(() => {
+        this.movieData.currentTime = this.todate(0);
+        this.videobindtoslider(0);
+      }, 1000);
     }
   }
 };
