@@ -63,10 +63,8 @@
       </van-row>
       <!-- {{ axiosData }} -->
     </div>
-    <music
-      :musicData="musicData"
-      @sliderChange="sliderChange"
-    ></music>
+    <movie :movieData="movieData" @sliderChange="sliderChange"></movie>
+    <music :musicData="musicData" @sliderChange="sliderChange"></music>
   </div>
 </template>
 
@@ -74,10 +72,12 @@
 
 <script>
 import music from "./../components/music";
-import { clearInterval } from 'timers';
+import movie from "./../components/movie";
+import { clearInterval } from "timers";
 export default {
   components: {
-    music
+    music,
+    movie
   },
   data() {
     return {
@@ -91,11 +91,20 @@ export default {
       isPassword: false,
       axiosData: "",
       musicData: {
-        type: 'play',
+        type: "play",
         id: "myAudio",
         src: "",
-        // 秒数格式
-        totalSecond: 0,
+        // 当前秒数格式
+        currentSecond: 0,
+        // 分：秒格式
+        duration: "00:00",
+        currentTime: "00:00"
+      },
+      movieData: {
+        type: "play",
+        id: "myVideo",
+        src: "",
+        // 当前秒数格式
         currentSecond: 0,
         // 分：秒格式
         duration: "00:00",
@@ -110,16 +119,22 @@ export default {
     this.password = "";
   },
   mounted() {
+    // 音频
     this.musicData.src = require("./../assets/music.mp3");
+    // 视频
+    this.movieData.src = require("./../assets/movie.mp4");
     setTimeout(() => {
+      // 音频
       var id = this.musicData.id;
       var audio = document.getElementById(id);
-      this.musicData.totalSecond = audio.duration;
       this.musicData.currentSecond = audio.currentTime;
+      // 视频
+      var id = this.movieData.id;
+      var video = document.getElementById(id);
+      this.movieData.currentSecond = video.currentTime;
     }, 600);
   },
   methods: {
-    sliderChange() {},
     onClickLeft() {
       this.$router.go(-1);
     },
@@ -152,7 +167,8 @@ export default {
     gotoPage() {},
     getTip() {
       this.$router.push("/password");
-    }
+    },
+    sliderChange() {}
   }
 };
 </script>

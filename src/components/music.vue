@@ -2,15 +2,7 @@
   <div class="music">
     <p>currentTime:{{ musicData.currentTime }}</p>
     <p>duration:{{ musicData.duration }}</p>
-    <audio
-      :id="musicData.id"
-      :src="musicData.src"
-      controls="controls"
-      preload="auto"
-      @play="play"
-      @ended="ended"
-      @pause="pause"
-    ></audio>
+    <audio :id="musicData.id" :src="musicData.src" preload="auto" @ended="ended"></audio>
     <div @click="playAudio" v-if="musicData.type === 'play'">播放</div>
     <div @click="pauseAudio" v-else>暂停</div>
     <div style="padding:40px 0;">
@@ -30,9 +22,6 @@
 .music {
   padding: 50px;
 }
-audio {
-  display: none;
-}
 </style>
 
 <script>
@@ -41,7 +30,9 @@ export default {
   props: ["musicData"],
   mounted() {
     setTimeout(() => {
-      this.musicData.duration = this.todate(this.musicData.totalSecond);
+      var id = this.musicData.id;
+      var audio = document.getElementById(id);
+      this.musicData.duration = this.todate(audio.duration);
       this.musicData.currentTime = this.todate(this.musicData.currentSecond);
     }, 601);
   },
@@ -92,7 +83,9 @@ export default {
     },
     // 绑定slider
     bindtoslider(second) {
-      var totalSecond = parseInt(this.musicData.totalSecond);
+      var id = this.musicData.id;
+      var audio = document.getElementById(id);
+      var totalSecond = parseInt(audio.duration);
       var currentSecond = totalSecond - second;
       var percent = (currentSecond / totalSecond) * 100;
       this.musicData.sliderValue = percent;
@@ -116,7 +109,7 @@ export default {
       var id = this.musicData.id;
       var audio = document.getElementById(id);
       var percent = 100 - this.musicData.sliderValue;
-      var totalSecond = (this.musicData.totalSecond * percent) / 100;
+      var totalSecond = (audio.duration * percent) / 100;
       // 设置剩余时间
       this.musicData.duration = this.todate(totalSecond);
       // 设置当前时间
@@ -130,23 +123,16 @@ export default {
       }, 300);
       console.log(audio.currentTime);
     },
-    play() {
-      var status = "play";
-      // this.bindtoslider(status);
-    },
+    // 播放结束
     ended() {
       var id = this.musicData.id;
       var audio = document.getElementById(id);
       this.musicData.type = "play";
       audio.currentTime = 0;
-      var time = parseInt(this.musicData.totalSecond);
+      var time = parseInt(audio.duration);
       this.musicData.duration = this.todate(time);
       // 绑定slider
-      this.bindtoslider(this.musicData.totalSecond);
-    },
-    pause() {
-      var status = "pause";
-      // this.bindtoslider(status);
+      this.bindtoslider(audio.duration);
     }
   }
 };
