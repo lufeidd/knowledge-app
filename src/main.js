@@ -12,7 +12,7 @@ import _api from './api/index'
 
 // vant
 // import 'vant/lib/index.css'
-import { Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider } from 'vant'
+import { Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader } from 'vant'
 Vue.use(Field)
 Vue.use(NavBar)
 Vue.use(Toast)
@@ -22,6 +22,7 @@ Vue.use(CheckboxGroup)
 Vue.use(Row)
 Vue.use(Col)
 Vue.use(Slider)
+Vue.use(Uploader)
 
 Vue.use(_plugin)
 // Vue.use(api)

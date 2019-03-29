@@ -61,10 +61,15 @@
           <span class="iconfont icon-qq-block"></span>
         </van-col>
       </van-row>
-      <!-- {{ axiosData }} -->
     </div>
-    <movie :movieData="movieData"></movie>
-    <music :musicData="musicData"></music>
+    <!-- axios -->
+    <!-- <p>{{ axiosData }}</p> -->
+    <!-- 视频 -->
+    <!-- <movie :movieData="movieData"></movie> -->
+    <!-- 音频 -->
+    <!-- <music :musicData="musicData"></music> -->
+    <!-- 上传图片 -->
+    <upload :uploadData="uploadData"></upload>
   </div>
 </template>
 
@@ -73,10 +78,12 @@
 <script>
 import movie from "./../components/movie";
 import music from "./../components/music";
+import upload from "./../components/upload";
 export default {
   components: {
     movie,
     music,
+    upload
   },
   data() {
     return {
@@ -104,6 +111,9 @@ export default {
         // 分：秒格式
         duration: "00:00",
         currentTime: "00:00"
+      },
+      uploadData: {
+        maxlength: 3
       }
     };
   },
