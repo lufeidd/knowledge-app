@@ -18,11 +18,16 @@
   & {
     display: flex;
     flex-wrap: wrap;
+    padding: 5px;
+    
     .flex-box {
-      flex-basis: calc(25% - 10px);
-      margin: 10px 0 0 10px;
+      flex-basis: 25%;
+      flex-shrink: 0;
+
       & .box {
         position: relative;
+        padding: 5px;
+
         & .content {
           @include ratioBox(100%, 100%, contain);
           border: 1px #eee solid;
