@@ -1,7 +1,7 @@
 <template>
   <div id="upload">
     <div class="flex-box" id="button">
-      <div class="box">
+      <div class="box" id="van">
         <div class="content">
           <van-uploader :after-read="onRead">
             <span>上传图片</span>
@@ -19,7 +19,7 @@
     display: flex;
     flex-wrap: wrap;
     padding: 5px;
-    
+
     .flex-box {
       flex-basis: 25%;
       flex-shrink: 0;
@@ -67,6 +67,7 @@ export default {
       var content = document.createElement("div");
       //   del
       var del = document.createElement("div");
+
       del.classList.add("del");
       content.appendChild(del);
       content.classList.add("content");
@@ -85,7 +86,16 @@ export default {
         p.parentNode.removeChild(p);
       });
 
-      console.log(flexbox.length);
+      // 提示最多上传图片张数
+      var tmp = document.querySelectorAll("#upload .flex-box .box");
+      var count = tmp.length;
+      if (count >= maxlength + 1) {
+        var msg = "最多上传" + maxlength + "张图片！";
+        this.$toast(msg);
+        // van
+        var van = document.getElementById("van");
+        van.parentNode.removeChild(van);
+      }
     }
   }
 };
