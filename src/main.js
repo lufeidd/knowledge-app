@@ -10,6 +10,10 @@ import _plugin from './plugin/index'
 // api
 import _api from './api/index'
 
+// swiper
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
+
 // vant
 // import 'vant/lib/index.css'
 import { Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader } from 'vant'
@@ -28,6 +32,9 @@ Vue.use(_plugin)
 // Vue.use(api)
 // 挂载，调用全局变量
 Vue.prototype.api = _api
+
+// swiper
+Vue.use(VueAwesomeSwiper)
 
 Vue.config.productionTip = false
 
