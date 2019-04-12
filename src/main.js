@@ -14,6 +14,9 @@ import _api from './api/index'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 
+// cropper
+import VueCropper from 'vue-cropper'
+
 // vant
 // import 'vant/lib/index.css'
 import { Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader } from 'vant'
@@ -35,6 +38,9 @@ Vue.prototype.api = _api
 
 // swiper
 Vue.use(VueAwesomeSwiper)
+
+// cropper
+Vue.use(VueCropper)
 
 Vue.config.productionTip = false
 

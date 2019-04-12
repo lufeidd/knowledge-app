@@ -8,19 +8,31 @@
 
 # 功能组件
 
-> 音频
-> 视频
-> 上传图片
+``` bash
+音频
+
+视频
+
+上传图片
+```
 
 # 功能插件
 
-> countDown
-> swiper    // https://github.com/surmon-china/vue-awesome-swiper
-> cropper   // https://github.com/xyxiao001/vue-cropper
+``` bash
+countDown
+
+swiper
+https://github.com/surmon-china/vue-awesome-swiper
+
+cropper
+https://github.com/xyxiao001/vue-cropper
+```
 
 # 项目模块
 
-> 1、登录/注册
+``` bash
+1、登录/注册
+```
 
 # 项目运行
 
@@ -30,10 +42,13 @@ git clone https://github.com/nancyzeng/knowledge-app
 cd knowledge-app
 
 // vant
-cnpm i vant -S  // https://youzan.github.io/vant/#/zh-CN/quickstart
+cnpm i vant -S
 
 // swiper
 cnpm install vue-awesome-swiper --save
+
+// cropper
+cnpm install vue-cropper --save-dev
 
 cnpm install
 
