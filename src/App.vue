@@ -6,7 +6,7 @@
 
 <style>
 @import url("./style/font/PingFangBold.css");
-@import url("./style/iconfont/iconfont.css");
+/* @import url("./style/iconfont/iconfont.css"); */
 html {
   font-family: "PingFangBold";
   max-width: 750px;
@@ -34,13 +34,22 @@ a {
   font-size: 15px;
   color: #999;
 }
+
+/* 字体图标 */
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
 </style>
 
 <script>
 export default {
   name: "App",
   mounted() {
-    this.$router.push("/login");
+    this.$router.push("/personal");
   }
 };
 </script>

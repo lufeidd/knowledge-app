@@ -23,6 +23,9 @@ import JsEncrypt from 'jsencrypt'
 // jquery
 import $ from 'jquery'
 
+// 字体图标
+import './style/iconfont/iconfont'
+
 // vant
 // import 'vant/lib/index.css'
 import { Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader } from 'vant'
