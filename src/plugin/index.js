@@ -1,5 +1,6 @@
 export default {
   install: function (Vue, options) {
+    
     // 全局变量
     // 倒计时
     Vue.prototype.clock = null

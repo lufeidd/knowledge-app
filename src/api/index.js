@@ -8,5 +8,13 @@ const _loginApi = 'https://api.coindesk.com/v1/bpi/currentprice.json'
 
 export default {
   loginApi: _loginApi,
-  axios: _axios
+  axios: _axios,
+  encrypt(key, data) {
+    let publicKey = key;
+    let encryptor = new JSEncrypt();
+    encryptor.setPublicKey(publicKey);
+    let rsaPassWord = encryptor.encrypt(data);
+    console.log('encrypt:', data);
+    return data;
+  }
 }

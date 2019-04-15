@@ -54,9 +54,15 @@ cnpm install vue-awesome-swiper --save
 // cropper
 cnpm install vue-cropper --save-dev
 
+// jquery
+cnpm install jquery --save, 配置webpack.base.conf.js
+
+// js encrypt加密
+cnpm i jsencrypt -s
+
 cnpm install
 
 cnpm run dev
 
-cnpm run build（本地代码run build请先修改path再将dist文件夹放到服务器查看效果）
+cnpm run build（本地代码run build请先修改path再将dist文件夹放到服务器查看效果,配置webpack.prod.conf.js - util.js - config/index.js）
 ```

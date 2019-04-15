@@ -92,7 +92,9 @@ export default {
     this.password = "";
   },
   computed: {},
-  mounted() {},
+  mounted() {
+    // $('#loginPage').css('color', 'green');
+  },
   methods: {
     onClickLeft() {
       this.$router.go(-1);
@@ -111,6 +113,9 @@ export default {
       // axios
       const axios = this.api.axios;
       const data = this.api.loginApi;
+      // 加密
+      this.api.encrypt("1234567890", this.password);
+
       axios
         .get(data)
         .then(response => {
@@ -118,7 +123,7 @@ export default {
           // this.$refs.loadmore.onTopLoaded();
         })
         .catch(error => {
-          console.log(error);
+          // console.log(error);
           this.error = true;
         })
         .finally(() => (this.loadding = false));

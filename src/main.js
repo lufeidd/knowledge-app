@@ -17,6 +17,12 @@ import 'swiper/dist/css/swiper.css'
 // cropper
 import VueCropper from 'vue-cropper'
 
+// 加密方式
+import JsEncrypt from 'jsencrypt'
+
+// jquery
+import $ from 'jquery'
+
 // vant
 // import 'vant/lib/index.css'
 import { Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader } from 'vant'
@@ -41,6 +47,9 @@ Vue.use(VueAwesomeSwiper)
 
 // cropper
 Vue.use(VueCropper)
+
+// JSEncrypt
+Vue.prototype.$jsEncrypt = JsEncrypt
 
 Vue.config.productionTip = false
 
