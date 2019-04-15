@@ -34,6 +34,8 @@ https://github.com/xyxiao001/vue-cropper
 1、登录/注册
 
 2、个人中心
+    a、首页
+    b、我的余额
 ```
 
 # 项目运行
