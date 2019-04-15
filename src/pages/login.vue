@@ -64,7 +64,6 @@
     </div>
     <!-- axios -->
     <!-- <p>{{ axiosData }}</p> -->
-
   </div>
 </template>
 
@@ -72,8 +71,7 @@
 
 <script>
 export default {
-  components: {
-  },
+  components: {},
   data() {
     return {
       phone: "",
@@ -93,10 +91,8 @@ export default {
     this.phone = queryData.phone;
     this.password = "";
   },
-  computed: {
-  },
-  mounted() {
-  },
+  computed: {},
+  mounted() {},
   methods: {
     onClickLeft() {
       this.$router.go(-1);

@@ -1,8 +1,7 @@
 <template>
-    <div id="remainPage">
-        
-    </div>
+    <div id="accountPage"></div>
 </template>
+
 <script>
 export default {
     
