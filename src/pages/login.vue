@@ -53,12 +53,16 @@
 
       <van-row v-bind:class="{ loginType: isLoginType }">
         <van-col span="12">
-          <router-link to="/phone">
-            <span class="iconfont icon-weixin-block"></span>
-          </router-link>
+          <!-- <router-link to="/phone"> -->
+          <svg class="icon myIconStyle" aria-hidden="true">
+            <use xlink:href="#icon-weixin-block"></use>
+          </svg>
+          <!-- </router-link> -->
         </van-col>
         <van-col span="12">
-          <span class="iconfont icon-qq-block"></span>
+          <svg class="icon myIconStyle" aria-hidden="true">
+            <use xlink:href="#icon-qq-block"></use>
+          </svg>
         </van-col>
       </van-row>
     </div>

@@ -4,14 +4,14 @@
   </div>
 </template>
 
-<style>
+<style lang="scss">
 @import url("./style/font/PingFangBold.css");
-/* @import url("./style/iconfont/iconfont.css"); */
+@import url("./style/font/PingFangMedium.css");
+
 html {
-  font-family: "PingFangBold";
   max-width: 750px;
   margin: 0 auto;
-  font-size: 14px;
+  @include font("PingFangMedium", $fontSize, #333);
 }
 a {
   color: #000;

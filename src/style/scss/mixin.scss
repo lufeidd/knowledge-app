@@ -7,69 +7,111 @@
 
 // 清除浮动
 @mixin clearfix {
-    position: relative;
+  position: relative;
 
-    &::after {
-        content: '';
-        height: 0;
-        clear: both;
-    }
+  &::after {
+    content: '';
+    height: 0;
+    clear: both;
+  }
 }
 
 // 比例盒子
-@mixin ratioBox ($width, $paddingBottom, $size) {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: $width;
-    height: 0;
-    position: relative;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: $size;
-    padding-bottom: $paddingBottom;
+@mixin ratioBox ($width, $paddingBottom, $size, $color, $url) {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: $width;
+  height: 0;
+  position: relative;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: $size;
+  padding-bottom: $paddingBottom;
+  background-color: $color;
+
+  @if $url {
+    background-image: url($url);
+  }
 }
 
-// 块垂直居中
-@mixin verticalMiddle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+// 布局
+@mixin displayFlex ($display, $content, $items) {
+  display: $display;
+  justify-content: $content;
+  align-items: $items;
+}
+
+@mixin floatBlock ($float, $width, $align) {
+  float: $float;
+  width: $width;
+  text-align: $align;
+}
+
+@mixin flexBasis ($width) {
+  flex-basis: $width;
+  flex-shrink: 0;
+}
+
+@mixin blockMiddle($top, $left) {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: $left;
+  margin-top: $top;
 }
 
 // 完全填充盒子
 @mixin fullBox {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
 }
 
 // 定位
 @mixin position ($position, $type, $arg1, $arg2, $width, $height, $borderRadius) {
-    position: $position;
-    width: $width;
-    height: $height;
-    border-radius: $borderRadius;
+  position: $position;
+  width: $width;
+  height: $height;
+  border-radius: $borderRadius;
 
-    @if $type=='tr' {
-        top: $arg1;
-        right: $arg2;
-    }
+  @if $type=='tr' {
+    top: $arg1;
+    right: $arg2;
+  }
 
-    @if $type=='tl' {
-        top: $arg1;
-        left: $arg2;
-    }
+  @if $type=='tl' {
+    top: $arg1;
+    left: $arg2;
+  }
 
-    @if $type=='br' {
-        bottom: $arg1;
-        right: $arg2;
-    }
+  @if $type=='br' {
+    bottom: $arg1;
+    right: $arg2;
+  }
 
-    @if $type=='bl' {
-        bottom: $arg1;
-        left: $arg2;
-    }
+  @if $type=='bl' {
+    bottom: $arg1;
+    left: $arg2;
+  }
+}
+
+
+// 字体
+@mixin font($family, $size, $color) {
+  font-family: $family;
+  font-size: $size;
+
+  @if $color {
+    color: $color;
+  }
+}
+
+// 字体溢出隐藏
+@mixin textOverflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

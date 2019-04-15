@@ -3,4 +3,105 @@
  * date:2019/4/15
  */
 
- @charset "UTF-8";
+@charset "UTF-8";
+
+html {
+    background-color: #f5f5f5;
+}
+
+#personalPage {
+
+  & .infoBox {
+    background-color: $redLight;
+    color: $white;
+    padding: 12px 22px;
+    @include displayFlex (flex, center, center);
+
+    & .left {
+      @include flexBasis(60px);
+
+      & .ratioBox {
+        @include ratioBox (100%, 100%, contain, #fffdfd, 'https://wdimg3.bookuu.com/goods/06/26/42/2018102330285485-76655.jpg@!w210');
+        border-radius: 60px;
+        overflow: hidden;
+        color: #fed2d2;
+
+        & .icon {
+          width: 40px;
+          height: 40px;
+          @include blockMiddle(-20px, -20px);
+        }
+      }
+    }
+
+    & .right {
+      margin-left: 10px;
+      line-height: 2;
+      flex-grow: 1;
+      @include clearfix;
+      @include textOverflow;
+
+      & .title {
+        @include font('PingFangBold', $fontSize + 2, $white);
+        @include textOverflow;
+
+        & .desc {
+          @include floatBlock (left, 60%, left);
+          @include textOverflow;
+        }
+
+        & .action {
+          @include floatBlock (left, 40%, right);
+
+          & a {
+            position: relative;
+
+            & .icon {
+              width: 20px;
+              height: 20px;
+              color: $white;
+              padding: 0 10px;
+              position: relative;
+            }
+
+          }
+
+          & a:before {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 6px;
+            background-color: $white;
+            right: 0;
+            top: 0;
+          }
+        }
+      }
+
+      & .subTitle {
+        @include font('PingFangMedium', $fontSize - 1, $white);
+        @include textOverflow;
+      }
+    }
+
+  }
+
+  & .entryBox {
+      background-color: $white;
+      text-align: center;
+      padding: 5px 0;
+      line-height: 1.5;
+      @include textOverflow;
+
+      & .count {
+        @include font('PingFangBold', $fontSize, #333);
+        @include textOverflow;
+      }
+
+      & .desc {
+        @include font('PingFangMedium', $fontSize - 1, #999);
+        @include textOverflow;
+      }
+  }
+}

@@ -70,15 +70,18 @@
 
   .loginType {
     text-align: center;
-    font-size: 38px;
     padding-top: 80px;
   }
 
-  .loginType .van-col:nth-child(1) span {
+  .loginType .van-col:nth-child(1) .myIconStyle {
+    width: 38px;
+    height: 38px;
     color: #3ca938;
   }
 
-  .loginType .van-col:nth-child(2) span {
+  .loginType .van-col:nth-child(2) .myIconStyle {
+    width: 38px;
+    height: 38px;
     color: #12b7f5;
   }
   

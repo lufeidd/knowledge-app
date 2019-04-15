@@ -87,34 +87,31 @@
       <div class="swiper-scrollbar" slot="scrollbar"></div>
     </swiper>
 
-
-<div style="width:100%;height:1000px;">
-    <vueCropper
-      ref="cropper"
-      :img="option.img"
-      :outputSize="option.size"
-      :outputType="option.outputType"
-      :info="true"
-      :full="option.full"
-      :canMove="option.canMove"
-      :canMoveBox="option.canMoveBox"
-      :fixedBox="option.fixedBox"
-      :original="option.original"
-      :autoCrop="option.autoCrop"
-      :autoCropWidth="option.autoCropWidth"
-      :autoCropHeight="option.autoCropHeight"
-      :centerBox="option.centerBox"
-      :high="option.high"
-      :infoTrue="option.infoTrue"
-      :maxImgSize="option.maxImageSize"
-      @realTime="realTime"
-      @imgLoad="imgLoad"
-      :enlarge="option.enlarge"
-      :mode="option.mode"
-    ></vueCropper>
-
-</div>
-
+    <div style="width:100%;height:1000px;">
+      <vueCropper
+        ref="cropper"
+        :img="option.img"
+        :outputSize="option.size"
+        :outputType="option.outputType"
+        :info="true"
+        :full="option.full"
+        :canMove="option.canMove"
+        :canMoveBox="option.canMoveBox"
+        :fixedBox="option.fixedBox"
+        :original="option.original"
+        :autoCrop="option.autoCrop"
+        :autoCropWidth="option.autoCropWidth"
+        :autoCropHeight="option.autoCropHeight"
+        :centerBox="option.centerBox"
+        :high="option.high"
+        :infoTrue="option.infoTrue"
+        :maxImgSize="option.maxImageSize"
+        @realTime="realTime"
+        @imgLoad="imgLoad"
+        :enlarge="option.enlarge"
+        :mode="option.mode"
+      ></vueCropper>
+    </div>
   </div>
 </template>
 
