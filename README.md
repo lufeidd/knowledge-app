@@ -32,6 +32,8 @@ https://github.com/xyxiao001/vue-cropper
 
 ``` bash
 1、登录/注册
+
+2、个人中心
 ```
 
 # 项目运行
