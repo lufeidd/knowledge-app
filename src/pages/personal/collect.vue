@@ -37,7 +37,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/collect.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/collect.scss" lang="scss"></style>
 
 <script>
 export default {

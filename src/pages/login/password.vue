@@ -1,6 +1,6 @@
 <template>
-  <div id="registerPage">
-    <van-nav-bar title="注册" left-text right-text left-arrow @click-left="onClickLeft"/>
+  <div id="passwordPage">
+    <van-nav-bar title="找回密码" left-text right-text left-arrow @click-left="onClickLeft"/>
 
     <div class="fieldBox">
       <van-field
@@ -36,19 +36,16 @@
           >{{ codeData.timeMsg }}</van-button>
         </template>
       </van-field>
-      <div class="password">
-        <van-field
-          v-model="password"
-          type="password"
-          clearable
-          label="密码"
-          maxlength="20"
-          placeholder="6-20位数字、字母或符号，至少两种"
-          @input="checkSubmit ('submit')"
-        />
-      </div>
-
-      <van-checkbox v-model="checked">阅读并同意《火把服务用户协议》</van-checkbox>
+      <van-field
+        v-model="password"
+        type="password"
+        clearable
+        label="新密码"
+        maxlength="20"
+        placeholder="新密码"
+        @input="checkSubmit ('submit')"
+      />
+      <p class="tip">需由6-20位数字、字母或符号组成，至少两种</p>
 
       <div class="submitBox">
         <template v-if="submitData.disabled">
@@ -62,7 +59,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/register.scss" lang="scss"></style>
+<style src="@/style/scss/pages/login/password.scss" lang="scss"></style>
 
 <script>
 export default {
@@ -79,8 +76,7 @@ export default {
       },
       submitData: {
         disabled: true
-      },
-      checked: true
+      }
     };
   },
   mounted() {},
@@ -95,6 +91,8 @@ export default {
       var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
       var regPassword = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
       if (type === "phone") {
+        var value = this.phone;
+
         if (regPhone.test(this.phone)) {
           this.codeData.disabled = false;
         } else {

@@ -35,7 +35,10 @@ https://github.com/xyxiao001/vue-cropper
 
 2、个人中心
     a、首页
-    b、我的余额
+    b、关注
+    c、收藏
+    d、历史
+    e、我的余额
 ```
 
 # 项目运行

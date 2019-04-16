@@ -17,7 +17,7 @@
     </div>
 </template>
 
-<style src="@/style/scss/pages/remain.scss" lang="scss"></style>
+<style src="@/style/scss/pages/remain/index.scss" lang="scss"></style>
 
 <script>
 export default {

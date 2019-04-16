@@ -57,7 +57,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/history.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/history.scss" lang="scss"></style>
 
 <script>
 export default {
