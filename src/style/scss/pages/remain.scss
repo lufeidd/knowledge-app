@@ -1,0 +1,246 @@
+/*
+  author: lufeidd
+  date: 2019/4/15
+*/
+@charset "UTF-8";
+
+// 组件
+@import url("./../components/navBar.scss");
+@import url("./../components/button.scss");
+@import url("./../components/dateTimePicker.scss");
+
+#remainPage{
+
+  .content{
+    padding: 50px;
+    color: #333333;
+    text-align: center;
+    font-size: $fontSize + 6;
+
+    .money{
+      font-size: $fontSize + 26;
+    }
+
+    .currentRemain{
+      font-size: $fontSize - 2;
+      margin-top: 0px;
+    }
+
+    .detail{
+      margin-top: 85px;
+      font-size: $fontSize + 2;
+    }
+  }
+  .recharge{
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+#accountPage{
+  .content{
+    padding: 45px 0 35px 0;
+    color: #333333;
+    text-align: center;
+    font-size: $fontSize + 6;
+
+    .money{
+      font-size: $fontSize + 26;
+    }
+
+    .currentRemain{
+      font-size: $fontSize - 2;
+      margin-top: 0px;
+    }
+  }
+  .account{
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: $fontSize + 1;
+    .choose{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: -25px;
+      li{
+        box-sizing: border-box;
+        float: left;
+        font-size: $fontSize ;
+        color: #f05654;
+        line-height: 40px;
+        border: 1px solid #cecece;
+        border-radius: 6px;
+        width: 22%;
+        text-align: center;
+        margin-top: 25px;
+      }
+      .active{
+        background-color: #ffeded;
+        border: 1px solid #f05654;
+      }
+    }
+    .explain{
+      font-size: $fontSize - 2;
+    }
+  }
+  .recharge{
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+#recordPage{
+  height: 100vh;
+  background-color: #f5f5f5;
+  font-size: $fontSize - 2;
+  color: #000000;
+  .head{
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 15px;
+    padding-right: 15px;
+    align-items: center;
+    height: 50px;
+    .income{
+      background-color: #f5f5f5;
+      height: 25px;
+      line-height: 25px;
+      padding: 2px 8px 2px 16px;
+      .arrow{
+        color: #999999;
+      }
+    }
+    .num{
+      font-size: $fontSize - 2;
+      color: #333333;
+    }
+  }
+  .content{
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: #ffffff;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f5f5f5;
+    .chong{
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      background-color: #ccc;
+      text-align: center;
+      border-radius: 40px;
+      color: #ffffff;
+      font-size: $fontSize + 8;
+    }
+    .detail{
+      margin-left: 5px;
+      flex-grow: 1;
+      .top{
+        display: flex;
+        justify-content: space-between;
+        .into{
+          font-size: $fontSize + 1;
+          color: #333;
+        }
+        .money{
+          font-size: $fontSize + 6;
+          color: #333;
+        }
+      }
+      .bottom{
+        display: flex;
+        justify-content: space-between;
+        .date{
+          font-size: $fontSize - 2;
+          color: #999999;
+        }
+        .order{
+          font-size: $fontSize - 2;
+          color: #f05654;
+        }
+      }
+    }
+  }
+}
+
+#detailPage{
+  height: 100vh;
+  background-color: #f5f5f5;
+  font-size: $fontSize - 2;
+  color: #000000;
+  .head{
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 15px;
+    padding-right: 15px;
+    align-items: center;
+    height: 50px;
+    .income{
+      background-color: #f5f5f5;
+      height: 25px;
+      line-height: 25px;
+      padding: 2px 8px 2px 16px;
+      .arrow{
+        color: #999999;
+      }
+    }
+    .num{
+      font-size: $fontSize - 2;
+      color: #333333;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .content{
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: #ffffff;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f5f5f5;
+    .chong{
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      background-color: #ccc;
+      text-align: center;
+      border-radius: 40px;
+      color: #ffffff;
+      font-size: $fontSize + 8;
+    }
+    .detail{
+      margin-left: 5px;
+      flex-grow: 1;
+      .top{
+        display: flex;
+        justify-content: space-between;
+        .into{
+          font-size: $fontSize + 1;
+          color: #333;
+        }
+        .money{
+          font-size: $fontSize + 6;
+          color: #333;
+        }
+      }
+      .bottom{
+        display: flex;
+        justify-content: space-between;
+        .date{
+          font-size: $fontSize - 2;
+          color: #999999;
+        }
+        .order{
+          font-size: $fontSize - 2;
+          color: #f05654;
+        }
+      }
+    }
+  }
+}

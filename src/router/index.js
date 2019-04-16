@@ -10,6 +10,11 @@ import personal from '@/pages/personal'
 import collect from '@/pages/collect'
 import focus from '@/pages/focus'
 import history from '@/pages/history'
+//我的余额
+import remain from '@/pages/remain'
+import record from '@/pages/record'
+import account from '@/pages/account'
+import detail from '@/pages/detail'
 
 Vue.use(Router)
 
@@ -55,5 +60,25 @@ export default new Router({
       name: 'focus',
       component: focus
     },
+    {
+      path: '/remain',
+      name: 'remain',
+      component: remain
+    },
+    {
+      path: '/record',
+      name: 'record',
+      component: record
+    },
+    {
+      path: '/account',
+      name: 'account',
+      component: account
+    },
+    {
+      path: '/detail',
+      name: 'detail',
+      component: detail
+    }
   ]
 })

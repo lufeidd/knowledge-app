@@ -1,0 +1,24 @@
+@charset "UTF-8";
+
+.van-picker__cancel{
+  font-size: $fontSize + 1;
+  color: #999999;
+}
+.van-picker__confirm{
+  font-size: $fontSize + 1;
+  color: #f05654;
+}
+.van-picker__title{
+  color: #333;
+  font-size: $fontSize +1;
+}
+.van-picker__columns{
+
+}
+.van-picker-column{
+
+}
+.van-picker-column__item{
+  font-size: $fontSize - 1;
+  color: #666666;
+}
