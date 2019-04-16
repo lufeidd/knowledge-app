@@ -1,6 +1,6 @@
 <template>
-  <div id="phonePage">
-    <van-nav-bar title="绑定手机号" left-text right-text left-arrow @click-left="onClickLeft"/>
+  <div id="registerPage">
+    <van-nav-bar title="注册" left-text right-text left-arrow @click-left="onClickLeft"/>
 
     <div class="fieldBox">
       <van-field
@@ -36,10 +36,19 @@
           >{{ codeData.timeMsg }}</van-button>
         </template>
       </van-field>
+      <div class="password">
+        <van-field
+          v-model="password"
+          type="password"
+          clearable
+          label="密码"
+          maxlength="20"
+          placeholder="6-20位数字、字母或符号，至少两种"
+          @input="checkSubmit ('submit')"
+        />
+      </div>
 
-      <p
-        class="tip"
-      >根据《中华人民共和国网络安全法》要求，使用信息发布、即时通讯等互联网服务进行身份信息验证。为保障您的使用体验，建议您尽快完成手机号绑定验证，感谢您的支持和理解。</p>
+      <van-checkbox v-model="checked">阅读并同意《火把服务用户协议》</van-checkbox>
 
       <div class="submitBox">
         <template v-if="submitData.disabled">
@@ -53,7 +62,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/phone.scss" lang="scss"></style>
+<style src="@/style/scss/pages/login/register.scss" lang="scss"></style>
 
 <script>
 export default {
@@ -62,6 +71,7 @@ export default {
       phone: "",
       isPhone: true,
       code: "",
+      password: "",
       codeData: {
         disabled: true,
         timeMsg: "获取验证码",
@@ -69,7 +79,8 @@ export default {
       },
       submitData: {
         disabled: true
-      }
+      },
+      checked: true
     };
   },
   mounted() {},
@@ -82,6 +93,7 @@ export default {
     },
     checkSubmit(type) {
       var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
+      var regPassword = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
       if (type === "phone") {
         if (regPhone.test(this.phone)) {
           this.codeData.disabled = false;
@@ -89,7 +101,11 @@ export default {
           this.codeData.disabled = true;
         }
       }
-      if (!this.codeData.disabled && this.code.length === 4) {
+      if (
+        regPassword.test(this.password) &&
+        !this.codeData.disabled &&
+        this.code.length === 4
+      ) {
         this.submitData.disabled = false;
       } else {
         this.submitData.disabled = true;

@@ -1,0 +1,111 @@
+/*
+ * author: nancyzeng
+ * date:2019/4/16
+ */
+
+@charset "UTF-8";
+
+html {
+  background-color: $greyLight;
+}
+
+#historyPage {
+
+  .van-swipe-cell__left,
+  .van-swipe-cell__right {
+    background-color: $redDark;
+    width: 65px;
+    @include font(null, $fontSize - 2, $white);
+    @include displayFlex (flex, center, center);
+  }
+
+  & .listBox {
+    padding: 10px 15px;
+    background-color: $white;
+    border-bottom: 1px $greyLight solid;
+    @include displayFlex (flex, center, center);
+
+    & .left {
+      @include flexBasis(65px);
+
+      & .ratioBox {
+        @include ratioBox (100%, 100%, null, contain, $greyLight, null);
+        border-radius: 2px;
+        overflow: hidden;
+        color: #fed2d2;
+        position: relative;
+
+        & .box {
+          @include position (absolute, 'tl', 0, 0, 100%, 100%, null);
+          @include displayFlex (flex, center, center);
+
+          & img {
+            max-width: 100%;
+            max-height: 100%;
+          }
+
+          & .tip {
+            @include position (absolute, 'bl', 0, 0, 100%, 15px, 0);
+            @include font(null, $fontSize - 2, $white);
+            @include textOverflow;
+            background-color: rgba($color: #000000, $alpha: 0.3);
+            text-align: center;
+          }
+        }
+      }
+    }
+
+    & .center {
+      margin-left: 10px;
+      line-height: 1.8;
+      flex-grow: 1;
+      @include textOverflow;
+
+      & .title {
+        @include font("PingFangBold", $fontSize + 2, #333);
+        @include textOverflow;
+      }
+
+      & .subTitle {
+        @include font(null, $fontSize, #666);
+        @include textOverflow;
+      }
+
+      & .info {
+        @include textOverflow;
+        @include font(null, $fontSize - 1, #999);
+
+        & .type {
+          @include bgDecorate($greyDark, null, 2px, 0 4px, null);
+          @include font(null, $fontSize - 2, $white);
+          margin-right: 15px;
+        }
+
+        & .count {
+          margin-right: 15px;
+        }
+
+        & .time {
+          margin-right: 15px;
+        }
+
+        & .icon {
+          width: 14px;
+          height: 14px;
+          margin-right: 2px;
+        }
+      }
+    }
+
+    & .right {
+      flex-shrink: 0;
+
+      & .icon {
+        width: 14px;
+        height: 14px;
+        color: #ccc;
+      }
+    }
+
+  }
+}

@@ -11,6 +11,7 @@
 html {
   max-width: 750px;
   margin: 0 auto;
+  line-height: 1.5;
   @include font("PingFangMedium", $fontSize, #333);
 }
 a {
@@ -49,7 +50,7 @@ a {
 export default {
   name: "App",
   mounted() {
-    this.$router.push("/remain");
+    this.$router.push("/personal/index");
   }
 };
 </script>
