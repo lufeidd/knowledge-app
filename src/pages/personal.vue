@@ -2,29 +2,29 @@
   <div id="personalPage">
     <div class="infoBox">
       <div class="left">
-        <div class="ratioBox">
-          <svg class="icon" aria-hidden="true">
+        <div class="ratioBox" :class="{ active: infoData.bgImg }">
+          <svg class="icon" aria-hidden="true" v-if="!infoData.bgImg">
             <use xlink:href="#icon-personal-block"></use>
           </svg>
         </div>
       </div>
       <div class="right">
         <div class="title">
-          <div class="desc">{{ info.title }}</div>
+          <div class="desc">{{ infoData.title }}</div>
           <div class="action">
-            <router-link to="/news">
+            <a class="tip" href="/news">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-personalNews"></use>
               </svg>
-            </router-link>
-            <router-link to="/set">
+            </a>
+            <a href="/set">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-personalSet"></use>
               </svg>
-            </router-link>
+            </a>
           </div>
         </div>
-        <div class="subTitle">{{ info.subTitle }}</div>
+        <div class="subTitle">{{ infoData.subTitle }}</div>
       </div>
     </div>
 
@@ -50,6 +50,28 @@
         </van-col>
       </van-row>
     </div>
+
+    <div class="cellBox">
+      <template v-for="item in cellData">
+        <a :href="item.href" class="cell">
+          <div class="svg">
+            <svg class="icon" aria-hidden="true">
+              <use :xlink:href="item.svg"></use>
+            </svg>
+          </div>
+          <div class="desc">
+            <span class="text">{{ item.text }}</span>
+            <span class="tip" v-if="item.tip">{{ item.tip }}</span>
+          </div>
+          <div class="action">
+            <svg class="icon" aria-hidden="true" v-if="item.icon">
+              <use :xlink:href="item.icon"></use>
+            </svg>
+            <a class="text" :href="item.link" v-if="item.action">{{ item.action }}</a>
+          </div>
+        </a>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -60,14 +82,70 @@ export default {
   components: {},
   data() {
     return {
-      info: {
+      infoData: {
         title:
           "Sa快乐  Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐",
-        subTitle: "登录后同步您的收藏"
-      }
+        subTitle: "登录后同步您的收藏",
+        bgImg: true,
+        imgSrc:
+          "https://wdimg3.bookuu.com/goods/06/26/42/2018102330285485-76655.jpg@!w210"
+      },
+      cellData: [
+        {
+          svg: "#icon-personalBuy",
+          text: "我的余额",
+          tip: "106点",
+          link: "/",
+          action: "充值"
+        },
+        {
+          href: "/",
+          svg: "#icon-personalAccount",
+          text: "我的购买",
+          icon: "#icon-next-line"
+        },
+        {
+          href: "/",
+          svg: "#icon-personalCart",
+          text: "我的购物车",
+          icon: "#icon-next-line"
+        },
+        {
+          href: "/",
+          svg: "#icon-personalCoupon",
+          text: "我的优惠券",
+          icon: "#icon-next-line"
+        },
+        {
+          href: "/",
+          svg: "#icon-personalComment",
+          text: "我的评论",
+          icon: "#icon-next-line"
+        },
+        {
+          href: "/",
+          svg: "#icon-personalInvite",
+          text: "邀请好友",
+          icon: "#icon-next-line"
+        },
+        {
+          href: "/",
+          svg: "#icon-personalHelp",
+          text: "帮助与反馈",
+          icon: "#icon-next-line"
+        }
+      ]
     };
   },
   created() {},
+  mounted() {
+    if (this.infoData.bgImg) {
+      $(".ratioBox.active").css(
+        "background-image",
+        "url(" + this.infoData.imgSrc + ")"
+      );
+    }
+  },
   methods: {}
 };
 </script>

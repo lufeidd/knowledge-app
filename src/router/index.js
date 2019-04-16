@@ -7,6 +7,9 @@ import phone from '@/pages/phone'
 import register from '@/pages/register'
 // 个人中心
 import personal from '@/pages/personal'
+import collect from '@/pages/collect'
+import focus from '@/pages/focus'
+import history from '@/pages/history'
 
 Vue.use(Router)
 
@@ -36,6 +39,21 @@ export default new Router({
       path: '/personal',
       name: 'personal',
       component: personal
+    },
+    {
+      path: '/collect',
+      name: 'collect',
+      component: collect
+    },
+    {
+      path: '/history',
+      name: 'history',
+      component: history
+    },
+    {
+      path: '/focus',
+      name: 'focus',
+      component: focus
     },
   ]
 })

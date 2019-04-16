@@ -6,7 +6,7 @@
 @charset "UTF-8";
 
 html {
-    background-color: #f5f5f5;
+  background-color: #f5f5f5;
 }
 
 #personalPage {
@@ -21,7 +21,7 @@ html {
       @include flexBasis(60px);
 
       & .ratioBox {
-        @include ratioBox (100%, 100%, contain, #fffdfd, 'https://wdimg3.bookuu.com/goods/06/26/42/2018102330285485-76655.jpg@!w210');
+        @include ratioBox (100%, 100%, contain, #fffdfd, null);
         border-radius: 60px;
         overflow: hidden;
         color: #fed2d2;
@@ -66,7 +66,7 @@ html {
 
           }
 
-          & a:before {
+          & a.tip:before {
             content: '';
             position: absolute;
             width: 6px;
@@ -88,20 +88,70 @@ html {
   }
 
   & .entryBox {
-      background-color: $white;
-      text-align: center;
-      padding: 5px 0;
-      line-height: 1.5;
-      @include textOverflow;
+    background-color: $white;
+    text-align: center;
+    padding: 8px 0;
+    line-height: 1.8;
+    @include textOverflow;
 
-      & .count {
-        @include font('PingFangBold', $fontSize, #333);
-        @include textOverflow;
+    & .count {
+      @include font('PingFangBold', $fontSize, #333);
+      @include textOverflow;
+    }
+
+    & .desc {
+      @include font('PingFangMedium', $fontSize - 1, #999);
+      @include textOverflow;
+    }
+  }
+
+  & .cellBox {
+    margin-top: 5px;
+
+    & .cell {
+      height: 47px;
+      border-bottom: 1px #f5f5f5 solid;
+      background-color: $white;
+      font-size: $fontSize + 1;
+      padding: 0 14px 0 24px;
+      position: relative;
+      @include displayFlex (flex, flex-start, center);
+
+      & .svg {
+        & .icon {
+          width: 22px;
+          height: 22px;
+        }
       }
 
       & .desc {
-        @include font('PingFangMedium', $fontSize - 1, #999);
+        margin-left: 10px;
+        flex-grow: 1;
         @include textOverflow;
+
+        & .tip {
+          margin-left: 10px;
+          @include font("PingFangBold", $fontSize - 1, $redDark);
+        }
       }
+
+      & .action {
+        flex-shrink: 0;
+
+        & .text {
+          @include font("PingFangMedium", $fontSize / 2, $white);
+          background-color: $redDark;
+          padding: 5px 13px;
+          border-radius: 27px;
+        }
+
+        & .icon {
+          width: 14px;
+          height: 14px;
+          color: #ccc;
+        }
+      }
+    }
+
   }
 }
