@@ -17,7 +17,7 @@
 }
 
 // 比例盒子
-@mixin ratioBox ($width, $paddingBottom, $size, $color, $url) {
+@mixin ratioBox ($width, $paddingBottom, $border, $size, $color, $url) {
   position: absolute;
   left: 0;
   top: 0;
@@ -29,6 +29,7 @@
   background-size: $size;
   padding-bottom: $paddingBottom;
   background-color: $color;
+  border: $border;
 
   @if $url {
     background-image: url($url);
@@ -75,7 +76,10 @@
   position: $position;
   width: $width;
   height: $height;
-  border-radius: $borderRadius;
+
+  @if $borderRadius {
+    border-radius: $borderRadius;
+  }
 
   @if $type=='tr' {
     top: $arg1;
@@ -101,11 +105,35 @@
 
 // 字体
 @mixin font($family, $size, $color) {
-  font-family: $family;
-  font-size: $size;
+  @if $family {
+    font-family: $family;
+  }
+
+  @if $size {
+    font-size: $size;
+  }
 
   @if $color {
     color: $color;
+  }
+}
+
+// 背景
+@mixin bgDecorate($bgcolor, $color, $radius, $padding, $border) {
+  @if $bgcolor {
+    background-color: $bgcolor;
+  }
+  @if $color {
+    color: $color;
+  }
+  @if $radius {
+    border-radius: $radius;
+  }
+  @if $padding {
+    padding: $padding;
+  }
+  @if $border {
+    border: $border;
   }
 }
 

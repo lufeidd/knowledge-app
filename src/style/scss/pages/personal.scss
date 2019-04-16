@@ -6,22 +6,20 @@
 @charset "UTF-8";
 
 html {
-  background-color: #f5f5f5;
+  background-color: $greyLight;
 }
 
 #personalPage {
 
   & .infoBox {
-    background-color: $redLight;
-    color: $white;
-    padding: 12px 22px;
+    @include bgDecorate($redLight, $white, null, 12px 22px, null);
     @include displayFlex (flex, center, center);
 
     & .left {
       @include flexBasis(60px);
 
       & .ratioBox {
-        @include ratioBox (100%, 100%, contain, #fffdfd, null);
+        @include ratioBox (100%, 100%, null, contain, #fffdfd, null);
         border-radius: 60px;
         overflow: hidden;
         color: #fed2d2;
@@ -80,7 +78,7 @@ html {
       }
 
       & .subTitle {
-        @include font('PingFangMedium', $fontSize - 1, $white);
+        @include font(null, $fontSize - 1, $white);
         @include textOverflow;
       }
     }
@@ -100,7 +98,7 @@ html {
     }
 
     & .desc {
-      @include font('PingFangMedium', $fontSize - 1, #999);
+      @include font(null, $fontSize - 1, #999);
       @include textOverflow;
     }
   }
@@ -110,7 +108,7 @@ html {
 
     & .cell {
       height: 47px;
-      border-bottom: 1px #f5f5f5 solid;
+      border-bottom: 1px $greyLight solid;
       background-color: $white;
       font-size: $fontSize + 1;
       padding: 0 14px 0 24px;
@@ -139,10 +137,8 @@ html {
         flex-shrink: 0;
 
         & .text {
-          @include font("PingFangMedium", $fontSize / 2, $white);
-          background-color: $redDark;
-          padding: 5px 13px;
-          border-radius: 27px;
+          @include font(null, $fontSize / 2, $white);
+          @include bgDecorate($redDark, null, 27px, 5px 13px, null);
         }
 
         & .icon {

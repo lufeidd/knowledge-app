@@ -14,13 +14,20 @@
   color: #333;
   font-size: $fontSize +1;
 }
+.van-overlay{
+  background-color: rgba(0,0,0,.4);
+}
 .van-picker__columns{
 
 }
 .van-picker-column{
-
+  box-flex: 0.1;
+  flex: 0.25 0.1 ;
 }
 .van-picker-column__item{
   font-size: $fontSize - 1;
   color: #666666;
+}
+.van-picker__frame{
+  display:none;
 }
