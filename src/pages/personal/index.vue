@@ -12,12 +12,12 @@
         <div class="title">
           <div class="desc">{{ infoData.title }}</div>
           <div class="action">
-            <a class="tip" href="/news">
+            <a class="tip" href="/personal/news">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-personalNews"></use>
               </svg>
             </a>
-            <a href="/set">
+            <a href="/personal/set">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-personalSet"></use>
               </svg>
@@ -31,19 +31,19 @@
     <div class="entryBox">
       <van-row type="flex" justify="space-around">
         <van-col span="6">
-          <router-link to="/focus">
+          <router-link to="/personal/focus">
             <div class="count">119</div>
             <div class="desc">关注</div>
           </router-link>
         </van-col>
         <van-col span="6">
-          <router-link to="/collect">
+          <router-link to="/personal/collect">
             <div class="count">2365</div>
             <div class="desc">收藏</div>
           </router-link>
         </van-col>
         <van-col span="6">
-          <router-link to="/history">
+          <router-link to="/personal/history">
             <div class="count">123</div>
             <div class="desc">历史</div>
           </router-link>
@@ -75,7 +75,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/index.scss" lang="scss"></style>
 
 <script>
 export default {

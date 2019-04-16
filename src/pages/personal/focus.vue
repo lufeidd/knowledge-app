@@ -31,7 +31,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/focus.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/focus.scss" lang="scss"></style>
 
 <script>
 export default {

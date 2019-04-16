@@ -1,57 +1,57 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 // 登录/注册
-import login from '@/pages/login'
-import password from '@/pages/password'
-import phone from '@/pages/phone'
-import register from '@/pages/register'
+import login from '@/pages/login/index'
+import password from '@/pages/login/password'
+import phone from '@/pages/login/phone'
+import register from '@/pages/login/register'
 // 个人中心
-import personal from '@/pages/personal'
-import collect from '@/pages/collect'
-import focus from '@/pages/focus'
-import history from '@/pages/history'
+import personal from '@/pages/personal/index'
+import collect from '@/pages/personal/collect'
+import focus from '@/pages/personal/focus'
+import history from '@/pages/personal/history'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/login',
+      path: '/login/index',
       name: 'login',
       component: login
     },
     {
-      path: '/password',
+      path: '/login/password',
       name: 'password',
       component: password
     },
     {
-      path: '/phone',
+      path: '/login/phone',
       name: 'phone',
       component: phone
     },
     {
-      path: '/register',
+      path: '/login/register',
       name: 'register',
       component: register
     },
     {
-      path: '/personal',
-      name: 'personal',
+      path: '/personal/index',
+      name: 'personal/index',
       component: personal
     },
     {
-      path: '/collect',
+      path: '/personal/collect',
       name: 'collect',
       component: collect
     },
     {
-      path: '/history',
+      path: '/personal/history',
       name: 'history',
       component: history
     },
     {
-      path: '/focus',
+      path: '/personal/focus',
       name: 'focus',
       component: focus
     },

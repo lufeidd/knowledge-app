@@ -1,6 +1,6 @@
 <template>
-  <div id="passwordPage">
-    <van-nav-bar title="找回密码" left-text right-text left-arrow @click-left="onClickLeft"/>
+  <div id="phonePage">
+    <van-nav-bar title="绑定手机号" left-text right-text left-arrow @click-left="onClickLeft"/>
 
     <div class="fieldBox">
       <van-field
@@ -36,16 +36,10 @@
           >{{ codeData.timeMsg }}</van-button>
         </template>
       </van-field>
-      <van-field
-        v-model="password"
-        type="password"
-        clearable
-        label="新密码"
-        maxlength="20"
-        placeholder="新密码"
-        @input="checkSubmit ('submit')"
-      />
-      <p class="tip">需由6-20位数字、字母或符号组成，至少两种</p>
+
+      <p
+        class="tip"
+      >根据《中华人民共和国网络安全法》要求，使用信息发布、即时通讯等互联网服务进行身份信息验证。为保障您的使用体验，建议您尽快完成手机号绑定验证，感谢您的支持和理解。</p>
 
       <div class="submitBox">
         <template v-if="submitData.disabled">
@@ -59,7 +53,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/password.scss" lang="scss"></style>
+<style src="@/style/scss/pages/login/phone.scss" lang="scss"></style>
 
 <script>
 export default {
@@ -68,7 +62,6 @@ export default {
       phone: "",
       isPhone: true,
       code: "",
-      password: "",
       codeData: {
         disabled: true,
         timeMsg: "获取验证码",
@@ -89,21 +82,14 @@ export default {
     },
     checkSubmit(type) {
       var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
-      var regPassword = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
       if (type === "phone") {
-        var value = this.phone;
-
         if (regPhone.test(this.phone)) {
           this.codeData.disabled = false;
         } else {
           this.codeData.disabled = true;
         }
       }
-      if (
-        regPassword.test(this.password) &&
-        !this.codeData.disabled &&
-        this.code.length === 4
-      ) {
+      if (!this.codeData.disabled && this.code.length === 4) {
         this.submitData.disabled = false;
       } else {
         this.submitData.disabled = true;
