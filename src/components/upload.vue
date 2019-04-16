@@ -29,7 +29,7 @@
         padding: 5px;
 
         & .content {
-          @include ratioBox(100%, 100%, contain);
+          @include ratioBox(100%, 100%, null, contain, null, null);
           border: 1px #eee solid;
           & .del {
             border: 1px #000 solid;
@@ -37,7 +37,7 @@
           }
           & .van-uploader {
             @include fullBox;
-            @include verticalMiddle;
+            @include  displayFlex (flex, center, center);
           }
         }
       }

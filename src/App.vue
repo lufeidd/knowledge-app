@@ -50,7 +50,7 @@ a {
 export default {
   name: "App",
   mounted() {
-    this.$router.push("/personal/index");
+    this.$router.push("/login/register");
   }
 };
 </script>
