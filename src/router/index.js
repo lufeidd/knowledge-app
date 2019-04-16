@@ -5,12 +5,14 @@ import login from '@/pages/login/index'
 import password from '@/pages/login/password'
 import phone from '@/pages/login/phone'
 import register from '@/pages/login/register'
+
 // 个人中心
+
 //我的余额
-import remain from '@/pages/remain'
-import record from '@/pages/record'
-import account from '@/pages/account'
-import detail from '@/pages/detail'
+import remain from '@/pages/remain/index'
+import record from '@/pages/remain/record'
+import account from '@/pages/remain/account'
+import detail from '@/pages/remain/detail'
 
 import personal from '@/pages/personal/index'
 import collect from '@/pages/personal/collect'
@@ -62,22 +64,22 @@ export default new Router({
       component: focus
     },
     {
-      path: '/remain',
+      path: '/remain/index',
       name: 'remain',
       component: remain
     },
     {
-      path: '/record',
+      path: '/remain/record',
       name: 'record',
       component: record
     },
     {
-      path: '/account',
+      path: '/remain/account',
       name: 'account',
       component: account
     },
     {
-      path: '/detail',
+      path: '/remain/detail',
       name: 'detail',
       component: detail
     }
