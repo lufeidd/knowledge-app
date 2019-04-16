@@ -28,7 +28,7 @@ import './style/iconfont/iconfont'
 
 // vant
 // import 'vant/lib/index.css'
-import { Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader, Cell, CellGroup, SwipeCell, Dialog } from 'vant'
+import { Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader, Cell, CellGroup, SwipeCell, Dialog, Icon, Popup, DatetimePicker } from 'vant'
 Vue.use(Field)
 Vue.use(NavBar)
 Vue.use(Toast)
@@ -41,6 +41,9 @@ Vue.use(Slider)
 Vue.use(Uploader)
 Vue.use(Cell)
 Vue.use(CellGroup)
+Vue.use(Icon)
+Vue.use(Popup)
+Vue.use(DatetimePicker)
 Vue.use(SwipeCell)
 Vue.use(Dialog)
 
