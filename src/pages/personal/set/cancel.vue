@@ -15,7 +15,7 @@
       </template>
     </ul>
     <div class="bottomBox" :class="{ iphx: this.isIphx }">
-      <van-button size="large">大号按钮</van-button>
+      <van-button size="large" type="danger">确定注销账号</van-button>
     </div>
   </div>
 </template>

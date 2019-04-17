@@ -50,9 +50,9 @@ a {
 export default {
   name: "App",
   mounted() {
-    this.$router.push("/personal/set/cancel");
+    // this.$router.push("/personal/set/cancel");
     // this.$router.push("/personal/remain/record");
-    // this.$router.push("/loginBF");
+    this.$router.push("/loginBF");
     // this.$router.push("/login/register");
     // this.$router.push("/personal/index");
   }
