@@ -8,7 +8,7 @@ import register from '@/pages/login/register'
 
 // 个人中心
 
-//我的余额
+// 我的余额
 import remain from '@/pages/personal/remain/index'
 import record from '@/pages/personal/remain/record'
 import account from '@/pages/personal/remain/account'
@@ -19,6 +19,11 @@ import personal from '@/pages/personal/index'
 import collect from '@/pages/personal/collect'
 import focus from '@/pages/personal/focus'
 import history from '@/pages/personal/history'
+
+// 我的购买
+import orderlist from '@/pages/personal/order/list'
+import orderdetail from '@/pages/personal/order/detail'
+import orderinvoice from '@/pages/personal/order/invoice'
 
 import loginbf from '@/pages/loginBF'
 
@@ -85,6 +90,21 @@ export default new Router({
       path: '/personal/remain/detail',
       name: 'detail',
       component: detail
+    },
+    {
+      path: '/personal/order/detail',
+      name: 'orderdetail',
+      component: orderdetail
+    },
+    {
+      path: '/personal/order/list',
+      name: 'orderlist',
+      component: orderlist
+    },
+    {
+      path: '/personal/order/invoice',
+      name: 'orderinvoice',
+      component: orderinvoice
     },
     {
       path: '/loginBF',
