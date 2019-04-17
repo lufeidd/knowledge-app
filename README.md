@@ -62,6 +62,9 @@ cnpm install vue-cropper --save-dev
 // jquery
 cnpm install jquery --save, 配置webpack.base.conf.js
 
+// qs
+cnpm install --save axios vue-axios qs 
+
 // js encrypt加密
 cnpm i jsencrypt -s
 

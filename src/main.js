@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router/index'
+import qs from 'Qs'
 
 // 自定义插件
 import _plugin from './plugin/index'

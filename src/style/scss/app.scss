@@ -11,3 +11,10 @@
 .van-overlay {
   background-color: rgba($color: #000000, $alpha: 0.4);
 }
+
+.bottomBox {
+  @include position (fixed, 'bl', 0, 0, 100%, 49px, 0);
+}
+.bottomBox.iphx {
+  @include position (fixed, 'bl', 34px, 0, 100%, 49px, 0);
+}

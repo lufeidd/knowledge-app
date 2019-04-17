@@ -33,6 +33,8 @@ import safe from '@/pages/personal/set/safe'
 import send from '@/pages/personal/set/send'
 import about from '@/pages/personal/set/about'
 import cropper from '@/pages/personal/set/cropper'
+import bind from '@/pages/personal/set/bind'
+import cancel from '@/pages/personal/set/cancel'
 
 // 备份
 import loginbf from '@/pages/loginBF'
@@ -160,6 +162,16 @@ export default new Router({
       path: '/personal/set/cropper',
       name: 'cropper',
       component: cropper
+    },
+    {
+      path: '/personal/set/bind',
+      name: 'bind',
+      component: bind
+    },
+    {
+      path: '/personal/set/cancel',
+      name: 'cancel',
+      component: cancel
     },
     // 备份
     {

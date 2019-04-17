@@ -36,7 +36,7 @@
       :actions="actions"
       cancel-text="取消"
       @select="onSelect"
-      @cancel="onCancel"
+      @cancel="sexModel=false"
     />
     <!-- 生日 -->
     <van-popup v-model="birthdayModel" position="bottom">
@@ -45,8 +45,10 @@
         type="date"
         :max-date="maxDate"
         :formatter="formatter"
+        @confirm="birthdayConfirm"
+        @change="getValues()"
         confirm-button-text="完成"
-        @cancel="show=false"
+        @cancel="birthdayModel=false"
         title="请选择时间"
       />
     </van-popup>
@@ -118,6 +120,15 @@ export default {
   },
   mounted() {},
   methods: {
+    // 生日
+    birthdayConfirm() {
+      this.listData[3].text = 1;
+      this.birthdayModel = false;
+    },
+    getValues() {
+      console.log(999);
+      // this.getValues();
+    },
     // 性别
     onSelect(item) {
       // 点击选项时默认不会关闭菜单，可以手动关闭
@@ -125,7 +136,6 @@ export default {
       this.listData[4].text = item.name;
       //   this.$toast(item.name);
     },
-    onCancel() {},
     // 头像
     showAction(type) {
       if (type) {
@@ -168,7 +178,6 @@ export default {
       };
 
       //   this.$router.push("/personal/set/cropper");
-      this.iframeState = true;
     }
   }
 };
