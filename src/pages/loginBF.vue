@@ -127,7 +127,8 @@ export default {
   components: {
     movie,
     music,
-    upload
+    upload,
+    VueCropper
   },
   data() {
     return {

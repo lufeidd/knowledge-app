@@ -26,8 +26,7 @@
         </span>
       </van-swipe-cell>
     </template>
-  </div>
-</template>
+    
   </div>
 </template>
 

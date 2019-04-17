@@ -1,0 +1,79 @@
+/*
+ * author: nancyzeng
+ * date:2019/4/17
+ */
+
+@charset "UTF-8";
+
+@import url("./../../../components/dateTimePicker.scss");
+
+html {
+  background-color: $greyLight;
+}
+
+#infoPage {
+    
+  & .listBox {
+    padding: 10px 15px;
+    background-color: $white;
+    border-bottom: 1px $greyLight solid;
+    position: relative;
+    @include displayFlex (flex, flex-start, center);
+
+    & input[type=file] {
+        @include fullBox;
+    }
+
+    & .left {
+      @include textOverflow;
+      @include clearfix;
+      @include font(null, $fontSize - 1, #999);
+      flex-grow: 1;
+      text-align: right;
+
+      & .ratioBox {
+        @include ratioBox (28px, 28px, 1px #e7e7e7 solid, contain, null, null);
+        float: right;
+        border-radius: 28px;
+        overflow: hidden;
+        position: relative;
+
+        & .box {
+          @include position (absolute, 'tl', 0, 0, 100%, 100%, null);
+          @include displayFlex (flex, center, center);
+
+          & img {
+            max-width: 100%;
+            max-height: 100%;
+          }
+        }
+      }
+    }
+
+    & .center {
+      line-height: 1.8;
+      flex-shrink: 0;
+
+      & .title {
+        @include font(null, $fontSize + 1, #333);
+        @include textOverflow;
+      }
+    }
+
+    & .right {
+      @include flexBasis (15px);
+      flex-shrink: 0;
+      text-align: right;
+
+      & .icon {
+        width: 14px;
+        height: 14px;
+        color: #ccc;
+      }
+    }
+  }
+
+  & .listBox.active {
+    margin-top: 5px;
+  }
+}
