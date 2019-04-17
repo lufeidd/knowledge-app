@@ -12,11 +12,11 @@
         <div class="title">
           <div class="desc">{{ infoData.title }}</div>
           <div class="action">
-            <a class="tip" href="/personal/news">
+            <!-- <a class="tip" href="/personal/news">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-personalNews"></use>
               </svg>
-            </a>
+            </a> -->
             <a href="/personal/set">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-personalSet"></use>
@@ -110,12 +110,12 @@ export default {
           text: "我的购物车",
           icon: "#icon-next-line"
         },
-        {
-          href: "/",
-          svg: "#icon-personalCoupon",
-          text: "我的优惠券",
-          icon: "#icon-next-line"
-        },
+        // {
+        //   href: "/",
+        //   svg: "#icon-personalCoupon",
+        //   text: "我的优惠券",
+        //   icon: "#icon-next-line"
+        // },
         {
           href: "/",
           svg: "#icon-personalComment",

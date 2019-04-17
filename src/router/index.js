@@ -9,15 +9,18 @@ import register from '@/pages/login/register'
 // 个人中心
 
 //我的余额
-import remain from '@/pages/remain/index'
-import record from '@/pages/remain/record'
-import account from '@/pages/remain/account'
-import detail from '@/pages/remain/detail'
+import remain from '@/pages/personal/remain/index'
+import record from '@/pages/personal/remain/record'
+import account from '@/pages/personal/remain/account'
+import detail from '@/pages/personal/remain/detail'
 
+// 首页
 import personal from '@/pages/personal/index'
 import collect from '@/pages/personal/collect'
 import focus from '@/pages/personal/focus'
 import history from '@/pages/personal/history'
+
+import loginbf from '@/pages/loginBF'
 
 Vue.use(Router)
 
@@ -64,24 +67,29 @@ export default new Router({
       component: focus
     },
     {
-      path: '/remain/index',
+      path: '/personal/remain/index',
       name: 'remain',
       component: remain
     },
     {
-      path: '/remain/record',
+      path: '/personal/remain/record',
       name: 'record',
       component: record
     },
     {
-      path: '/remain/account',
+      path: '/personal/remain/account',
       name: 'account',
       component: account
     },
     {
-      path: '/remain/detail',
+      path: '/personal/remain/detail',
       name: 'detail',
       component: detail
+    },
+    {
+      path: '/loginBF',
+      name: 'loginbf',
+      component: loginbf
     }
   ]
 })

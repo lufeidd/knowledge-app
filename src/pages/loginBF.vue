@@ -115,8 +115,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/login.scss" lang="scss"></style>
-
+<style src="@/style/scss/pages/login/index.scss" lang="scss"></style>
 
 
 <script>
