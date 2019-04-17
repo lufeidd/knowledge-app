@@ -11,8 +11,17 @@
 html {
   max-width: 750px;
   margin: 0 auto;
+  height: 100%;
   line-height: 1.5;
   @include font("PingFangMedium", $fontSize, #333);
+}
+body{
+  width: 100%;
+  height: 100%;
+}
+#app{
+    width: 100%;
+  height: 100%;
 }
 a {
   color: #000;
@@ -50,7 +59,7 @@ a {
 export default {
   name: "App",
   mounted() {
-    this.$router.push("/personal/remain/record");
+    this.$router.push("/personal/order/detail");
   }
 };
 </script>

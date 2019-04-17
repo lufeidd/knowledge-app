@@ -1,0 +1,153 @@
+/*
+ * author: lufei
+ * date:2019/4/17
+ */
+
+#detailPage{
+  background-color: $greyLight;
+  .van-cell{
+    font-size: $fontSize - 1;
+    color: $cl9;
+     &:not(:last-child)::after{
+      border: 0;
+    }
+    .van-cell__value{
+      font-size: $fontSize - 1;
+      color: $cl3;
+    }
+  }
+  height: 100%;
+  .state{
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 60px;
+    line-height: 60px;
+    @include font(null, $fontSize + 4, null);
+    @include bgDecorate($redDark, $white, null, null, null);
+  }
+  .info{
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: $white;
+    .head{
+      line-height: 40px;
+      border-bottom: 1px solid $greyLight;
+      @include displayFlex(flex,space-between,center);
+      .titleFrom{
+       @include displayFlex(flex,flex-start,center);
+        .icon{
+         width: 21px;
+         height: 21px;
+         border: 1px solid $clC;
+         border-radius: 21px;
+         align-items: center;
+       }
+       .publish{
+         font-size: $fontSize;
+         color: $cl3;
+         margin-left: 5px;
+       }
+      }
+    }
+    .section{
+      padding-top: 13px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid $greyLight;
+       .bookDetail{
+         @include displayFlex(flex,flex-start,flex-start);
+         .ratiobox{
+           width: 70px;
+          .bookImg{
+            display: block;
+           @include ratioBox ( 70px, 100%, null,contain, $white, null);
+          }
+         }
+         .title{
+           margin-left: 10px;
+           font-size: $fontSize + 2;
+           color: $cl3;
+         }
+       }
+     }
+  }
+  .priceInfo{
+    background-color: $white;
+    margin-top: 10px;
+    padding-bottom: 5px;
+    .first{
+      .van-cell{
+        border-bottom: 1px solid $greyLight;
+        font-size: $fontSize - 1;
+        color: $cl3;
+      }
+    }
+
+    .acturalPay{
+      text-align: right;
+      padding-right: 15px;
+      margin: 0;
+      span{
+        color: $redDark;
+      }
+    }
+  }
+  .fictitious{
+    margin-top: 5px;
+    margin-bottom: 50px;
+    .van-cell{
+      padding:5px 15px;
+    }
+    .text{
+      .van-cell__title{
+        color: $cl3;
+      }
+    }
+    .orderNumber{
+      @include displayFlex(flex,space-between,center);
+      padding:5px 15px;
+      background-color: $white;
+      font-size: $fontSize - 1;
+      .order{
+        color: $cl9;
+      }
+      .copybox{
+        flex-grow: 1;
+        @include displayFlex(flex,flex-end,center);
+        .copy{
+          margin-right: 20px;
+          font-size: $fontSize - 2;
+          color: $cl3;
+          display: inline-block;
+          width:40px;
+          height: 18px;
+          border: 1px solid $cl9;
+          border-radius: 9px;
+          text-align: center;
+        }
+      }
+    }
+    .orderInfo{
+      .van-cell{
+        border-bottom: 1px solid $greyLight;
+      }
+    }
+  }
+  .foot{
+    @include displayFlex(flex,flex-end,center);
+    background-color: $white;
+    width: 100%;
+    @include position (fixed, br, 0, null, null, 50px, null);
+    .evaluate{
+      margin-right: 15px;
+      display: inline-block;
+      width: 60px;
+      height: 24px;
+      line-height: 24px;
+      border-radius: 12px;
+      border: 1px solid $redDark;
+      font-size: $fontSize - 2;
+      color: $redDark;
+      text-align: center;
+    }
+  }
+}
