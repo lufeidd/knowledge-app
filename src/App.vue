@@ -64,14 +64,10 @@ a {
 export default {
   name: "App",
   mounted() {
-<<<<<<< HEAD
-    this.$router.push("/personal/set/cancel");
-=======
     // this.$router.push("/personal/set/cancel");
-    this.$router.push("/personal/comment/index");
->>>>>>> refs/remotes/origin/master
+    // this.$router.push("/personal/comment/index");
     // this.$router.push("/personal/remain/record");
-    // this.$router.push("/loginBF");
+    this.$router.push("/loginBF");
     // this.$router.push("/login/register");
     // this.$router.push("/personal/index");
   }

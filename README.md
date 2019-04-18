@@ -42,6 +42,7 @@ https://github.com/xyxiao001/vue-cropper
     f、收藏           - zzy
     g、关注           - zzy
     h、帮助与反馈      - zw
+    i、我的评论        - zw
 ```
 
 # 项目运行
@@ -68,6 +69,9 @@ cnpm install --save axios vue-axios qs
 
 // js encrypt加密
 cnpm i jsencrypt -s
+
+// clipboard
+cnpm install clipboard --save
 
 cnpm install
 
