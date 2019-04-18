@@ -13,7 +13,7 @@
 
   .content{
     padding: 50px;
-    color: #333333;
+    color: $cl3;
     text-align: center;
     font-size: $fontSize + 6;
 
@@ -40,7 +40,7 @@
 #accountPage{
   .content{
     padding: 45px 0 35px 0;
-    color: #333333;
+    color: $cl3;
     text-align: center;
     font-size: $fontSize + 6;
 
@@ -66,7 +66,7 @@
         box-sizing: border-box;
         float: left;
         font-size: $fontSize ;
-        color: #f05654;
+        color: $redDark;
         line-height: 40px;
         border: 1px solid #cecece;
         border-radius: 6px;
@@ -76,7 +76,7 @@
       }
       .active{
         background-color: #ffeded;
-        border: 1px solid #f05654;
+        border: 1px solid $redDark;
       }
     }
     .explain{
@@ -90,13 +90,13 @@
 }
 
 #recordPage{
-  height: 100vh;
-  background-color: #f5f5f5;
+  height: 100%;
+  background-color: $greyLight;
   font-size: $fontSize - 2;
-  color: #000000;
+  color: $cl0;
   .head{
     margin-bottom: 10px;
-    background-color: #ffffff;
+    background-color: $white;
     display: flex;
     justify-content: space-between;
     padding-left: 15px;
@@ -104,35 +104,35 @@
     align-items: center;
     height: 50px;
     .income{
-      background-color: #f5f5f5;
+      background-color: $greyLight;
       height: 25px;
       line-height: 25px;
       padding: 2px 8px 2px 16px;
       .arrow{
-        color: #999999;
+        color: $cl9;
       }
     }
     .num{
       font-size: $fontSize - 2;
-      color: #333333;
+      color: $cl3;
     }
   }
   .content{
     padding-left: 15px;
     padding-right: 15px;
-    background-color: #ffffff;
+    background-color: $white;
     height: 72px;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #f5f5f5;
+    border-bottom: 1px solid $greyLight;
     .chong{
       width: 40px;
       height: 40px;
       line-height: 40px;
-      background-color: #ccc;
+      background-color: $clC;
       text-align: center;
       border-radius: 40px;
-      color: #ffffff;
+      color: $white;
       font-size: $fontSize + 8;
     }
     .detail{
@@ -143,11 +143,11 @@
         justify-content: space-between;
         .into{
           font-size: $fontSize + 1;
-          color: #333;
+          color: $cl3;
         }
         .money{
           font-size: $fontSize + 6;
-          color: #333;
+          color: $cl3;
         }
       }
       .bottom{
@@ -155,11 +155,11 @@
         justify-content: space-between;
         .date{
           font-size: $fontSize - 2;
-          color: #999999;
+          color: $cl9;
         }
         .order{
           font-size: $fontSize - 2;
-          color: #f05654;
+          color: $redDark;
         }
       }
     }
@@ -167,13 +167,13 @@
 }
 
 #detailPage{
-  height: 100vh;
-  background-color: #f5f5f5;
+  height: 100%;
+  background-color: $greyLight;
   font-size: $fontSize - 2;
-  color: #000000;
+  color: $cl0;
   .head{
     margin-bottom: 10px;
-    background-color: #ffffff;
+    background-color: $white;
     display: flex;
     justify-content: space-between;
     padding-left: 15px;
@@ -181,17 +181,17 @@
     align-items: center;
     height: 50px;
     .income{
-      background-color: #f5f5f5;
+      background-color: $greyLight;
       height: 25px;
       line-height: 25px;
       padding: 2px 8px 2px 16px;
       .arrow{
-        color: #999999;
+        color: $cl9;
       }
     }
     .num{
       font-size: $fontSize - 2;
-      color: #333333;
+      color: $cl3;
       display: flex;
       flex-direction: column;
     }
@@ -199,19 +199,19 @@
   .content{
     padding-left: 15px;
     padding-right: 15px;
-    background-color: #ffffff;
+    background-color: $white;
     height: 72px;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #f5f5f5;
+    border-bottom: 1px solid $greyLight;
     .chong{
       width: 40px;
       height: 40px;
       line-height: 40px;
-      background-color: #ccc;
+      background-color: $clC;
       text-align: center;
       border-radius: 40px;
-      color: #ffffff;
+      color: $white;
       font-size: $fontSize + 8;
     }
     .detail{
@@ -222,11 +222,11 @@
         justify-content: space-between;
         .into{
           font-size: $fontSize + 1;
-          color: #333;
+          color: $cl3;
         }
         .money{
           font-size: $fontSize + 6;
-          color: #333;
+          color: $cl3;
         }
       }
       .bottom{
@@ -234,11 +234,11 @@
         justify-content: space-between;
         .date{
           font-size: $fontSize - 2;
-          color: #999999;
+          color: $cl9;
         }
         .order{
           font-size: $fontSize - 2;
-          color: #f05654;
+          color: $redDark;
         }
       }
     }
