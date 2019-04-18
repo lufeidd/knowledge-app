@@ -63,7 +63,7 @@
       </van-row>
     </div>
     <!-- axios -->
-    <!-- <p>{{ axiosData }}</p> -->
+    <p>{{ axiosData }}</p>
     <!-- 视频 -->
     <!-- <movie :movieData="movieData"></movie> -->
     <!-- 音频 -->
@@ -123,11 +123,14 @@ import movie from "./../components/movie";
 import music from "./../components/music";
 import upload from "./../components/upload";
 import VueCropper from "./../plugin/vue-cropper/vue-cropper";
+import { error } from "util";
+import qs from "Qs";
 export default {
   components: {
     movie,
     music,
-    upload
+    upload,
+    VueCropper
   },
   data() {
     return {
@@ -198,7 +201,8 @@ export default {
     };
   },
   created() {
-    this.getData();
+    // this.getData();
+    this.postData();
     let queryData = this.$route.query;
     this.phone = queryData.phone;
     this.password = "";
@@ -355,11 +359,11 @@ export default {
     getData() {
       // axios
       const axios = this.api.axios;
-      const data = this.api.loginApi;
+      const url = this.api.loginApi;
       axios
-        .get(data)
+        .get(url)
         .then(response => {
-          this.axiosData = response.data.bpi;
+          this.axiosData = response.data;
           // this.$refs.loadmore.onTopLoaded();
         })
         .catch(error => {
@@ -367,6 +371,38 @@ export default {
           this.error = true;
         })
         .finally(() => (this.loadding = false));
+    },
+    postData() {
+      // axios
+      const axios = this.api.axios;
+      // const url = this.api.loginApi;
+
+      // axios({
+      //   headers: {
+      //     "Content-type": "application/x-www-form-urlencoded"
+      //   },
+      //   method: "post",
+      //   url: "http://198.210.100.118:8002/sendsms",
+      //   data: {
+      //     mobile: '182000000'
+      //   },
+      //   transformRequest: [function(data) {
+      //     // this.axiosData = data;
+      //     console.log(data)
+      //   }]
+      // });
+
+      let data = {
+        mobile: this.phone
+      };
+      console.log('data:', data)
+
+      axios
+        .post("http://198.210.100.118:8002/sendsms", qs.stringify(data))
+        .then(res => {
+          this.axiosData = res;
+          console.log("res=>", res);
+        });
     },
     gotoPage() {},
     getTip() {

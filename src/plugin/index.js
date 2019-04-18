@@ -1,5 +1,11 @@
 export default {
   install: function (Vue, options) {
+
+    // 判断是否是iphonex
+    Vue.prototype.winWidth = $(window).width();
+    Vue.prototype.winHeight = $(window).height();
+    const ua = window.navigator.userAgent.toLowerCase();
+    Vue.prototype.isIphx = ua.match(/mobile/) && $(window).width() == 375 && $(window).height() == 812;
     
     // 全局变量
     // 倒计时

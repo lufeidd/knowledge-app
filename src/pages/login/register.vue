@@ -59,15 +59,18 @@
         </template>
       </div>
     </div>
+    {{ axiosData }}
   </div>
 </template>
 
 <style src="@/style/scss/pages/login/register.scss" lang="scss"></style>
 
 <script>
+import qs from "Qs";
 export default {
   data() {
     return {
+      axiosData: "",
       phone: "",
       isPhone: true,
       code: "",
@@ -89,7 +92,24 @@ export default {
       this.$router.go(-1);
     },
     getCode() {
+      let method = "/sendsms";
+      let phone = this.phone;
+      let data = {
+        mobile: phone
+      };
       this.$countDown(this.codeData);
+      this.postData(method, data, false);
+    },
+    postData(method, data, hasCallback) {
+      // axios
+      const url = this.api.loginApi + method;
+      const axios = this.api.axios;
+
+      axios.post(url, qs.stringify(data)).then(res => {
+        this.axiosData = res;
+        console.log("res=>", res);
+      });
+      if (hasCallback) return this.callback();
     },
     checkSubmit(type) {
       var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
@@ -112,11 +132,18 @@ export default {
       }
     },
     gotoPage() {
-      let queryData = {
-        phone: this.phone,
-        password: this.password
+      let method = "/register";
+      let data = {
+        mobile: this.phone,
+        auth_code: this.code,
+        pwd: this.password
       };
-      this.$router.push({ path: "login", query: queryData });
+      console.log("提交：", data);
+      this.postData(method, data, true);
+      // this.$router.push({ path: "login", query: queryData });
+    },
+    callback() {
+      alert(999);
     }
   }
 };

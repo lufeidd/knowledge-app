@@ -17,7 +17,7 @@
                 <use xlink:href="#icon-personalNews"></use>
               </svg>
             </a> -->
-            <a href="/personal/set">
+            <a href="#/personal/set/index">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-personalSet"></use>
               </svg>
@@ -95,11 +95,11 @@ export default {
           svg: "#icon-personalBuy",
           text: "我的余额",
           tip: "106点",
-          link: "/",
+          link: "#/personal/remain/account",
           action: "充值"
         },
         {
-          href: "/",
+          href: "#/personal/order/list",
           svg: "#icon-personalAccount",
           text: "我的购买",
           icon: "#icon-next-line"
