@@ -1,0 +1,56 @@
+/*
+ * author: nancyzeng
+ * date:2019/4/17
+ */
+
+@charset "UTF-8";
+
+html {
+  background-color: #f5f5f5;
+}
+
+#listPage {
+
+  & .addressBox {
+    margin-top: 5px;
+
+    & li {
+        background-color: $white;
+
+        & .info {
+            @include bgDecorate(null, null, 0, 0 15px, null);
+    
+            margin-bottom: 5px;
+    
+            & .name {
+                @include font("PingFangBold", $fontSize + 2, #333);
+                margin-right: 10px;
+            }
+    
+            & .phone {
+                @include font(null, $fontSize, #666);
+            }
+    
+            & .address {
+                @include font(null, $fontSize + 1, #666);
+            }
+
+        }
+
+        & .action {
+            @include font(null, $fontSize - 2, #666);
+            @include displayFlex (flex, flex-start, center);
+        }
+
+      //    & .icon {
+      //        width: 18px;
+      //        height: 18px;
+      //        margin-right: 5px;
+      //    }
+    }
+
+    //    & li.active {
+    //      @include font(null, $fontSize + 2, #666);
+    //    }
+  }
+}

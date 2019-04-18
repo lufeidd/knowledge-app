@@ -41,6 +41,9 @@ import help from '@/pages/personal/help/index'
 import helpdetail from '@/pages/personal/help/detail'
 import feedback from '@/pages/personal/help/feedback'
 
+// 个人中心 - 我的评论
+import comment from '@/pages/personal/comment/index'
+
 // 备份
 import loginbf from '@/pages/loginBF'
 
@@ -193,6 +196,12 @@ export default new Router({
       path: '/personal/help/feedback',
       name: 'feedback',
       component: feedback
+    },
+    // 个人中心 - 我的评论
+    {
+      path: '/personal/comment/index',
+      name: 'comment',
+      component: comment
     },
     // 备份
     {

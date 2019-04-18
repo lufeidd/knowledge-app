@@ -53,7 +53,7 @@ export default {
           title: "推送设置"
         },
         {
-          link: "",
+          link: "/personal/set/cancel",
           title: "注销账号"
         },
         {

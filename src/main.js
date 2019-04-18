@@ -29,7 +29,7 @@ import './style/iconfont/iconfont'
 
 // vant
 // import 'vant/lib/index.css'
-import { Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader, Cell, CellGroup, SwipeCell, Dialog, Icon, Popup, DatetimePicker, Actionsheet  } from 'vant'
+import { Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader, Cell, CellGroup, SwipeCell, Dialog, Icon, Popup, DatetimePicker, Actionsheet } from 'vant'
 Vue.use(Field)
 Vue.use(NavBar)
 Vue.use(Toast)
