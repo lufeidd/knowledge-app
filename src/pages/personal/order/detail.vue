@@ -37,7 +37,7 @@
       <div class="orderNumber">
         <span class="order">订单编号</span>
         <div class="copybox">
-          <span class="copy" @click="copy()">复制</span>
+          <span class="copy" @click="copy" data-clipboard-target=".number">复制</span>
         </div>
         <span class="number">{{fictitious.orderNumber}}</span>
       </div>
@@ -69,9 +69,20 @@ export default {
     }
   },
   methods:{
-    copy(){
+    copy() {
+          const clipboard = new Clipboard(".copy");
+          clipboard.on('success', e => {
+            // this.$message({ type: 'success', message: '复制成功' });
 
-    }
+            clipboard.destroy();
+          })
+          clipboard.on('error', e => {
+
+            // this.$message({ type: 'waning', message: '该浏览器不支持自动复制' });
+
+            clipboard.destroy();
+          })
+        }
   }
 }
 </script>
