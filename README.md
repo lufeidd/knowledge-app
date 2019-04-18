@@ -34,13 +34,14 @@ https://github.com/xyxiao001/vue-cropper
 1、登录/注册
 
 2、个人中心
-    a、首页
-    b、我的余额
-    c、我的购买
-    d、设置
-    e、历史
-    f、收藏
-    g、关注
+    a、首页           - zzy
+    b、我的余额       - zw
+    c、我的购买       - zw
+    d、设置           - zzy
+    e、历史           - zzy
+    f、收藏           - zzy
+    g、关注           - zzy
+    h、帮助与反馈      - zw
 ```
 
 # 项目运行
