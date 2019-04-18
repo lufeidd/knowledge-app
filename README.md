@@ -35,10 +35,12 @@ https://github.com/xyxiao001/vue-cropper
 
 2、个人中心
     a、首页
-    b、关注
-    c、收藏
-    d、历史
-    e、我的余额
+    b、我的余额
+    c、我的购买
+    d、设置
+    e、历史
+    f、收藏
+    g、关注
 ```
 
 # 项目运行
@@ -59,6 +61,9 @@ cnpm install vue-cropper --save-dev
 
 // jquery
 cnpm install jquery --save, 配置webpack.base.conf.js
+
+// qs
+cnpm install --save axios vue-axios qs 
 
 // js encrypt加密
 cnpm i jsencrypt -s
