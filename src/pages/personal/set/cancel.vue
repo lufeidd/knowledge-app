@@ -1,12 +1,14 @@
 <template>
-  <div id="cancelPage">
+  <div id="cancelPage" :class="{ page: this.isIphx }">
     <div class="tilte">请选择注销原因:</div>
     <ul class="reasonBox">
-      <template v-for="item in reasonData">
-        <li :class="{ active: item.isActive }" @click="choose()">
-          <svg class="icon" aria-hidden="true" v-if="item.isActive">
+      <template v-for="(item, key) in reasonData">
+        <li @click="choose(key)" :class="{ active: activeIndex == key }">
+
+          <svg class="icon" aria-hidden="true" v-if="activeIndex == key">
             <use xlink:href="#icon-checked-circle"></use>
           </svg>
+
           <svg class="icon" aria-hidden="true" v-else>
             <use xlink:href="#icon-uncheck-line"></use>
           </svg>
@@ -26,9 +28,9 @@
 export default {
   data() {
     return {
+      activeIndex: 0,
       reasonData: [
         {
-          isActive: true,
           text: "需要解绑手机"
         },
         {
@@ -44,8 +46,9 @@ export default {
     };
   },
   methods: {
-    choose() {
-      console.log();
+    choose(key) {
+      console.log(key);
+      this.activeIndex = key;
     }
   }
 };

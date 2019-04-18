@@ -8,14 +8,14 @@
     <div class="info">
       <div class="head">
         <div class="titleFrom">
-          <img :src="publishData.icon" alt="" class="icon">
+          <img v-lazy="publishData.icon" alt="" class="icon">
           <span class="publish">{{publishData.from}}</span>
         </div>
       </div>
       <div class="section">
         <div class="bookDetail">
           <div class="ratiobox">
-            <a class="bookImg" :style="{'background-image':'url('+publishData.imgUrl+')'}"></a>
+            <a class="bookImg" v-lazy:background-image="publishData.imgUrl"></a>
           </div>
           <span class="title">{{publishData.title}}</span>
         </div>
@@ -37,7 +37,7 @@
       <div class="orderNumber">
         <span class="order">订单编号</span>
         <div class="copybox">
-          <span class="copy" @click="copy" data-clipboard-target=".number">复制</span>
+          <span class="copy" @click="copy" :data-clipboard-text="fictitious.orderNumber">复制</span>
         </div>
         <span class="number">{{fictitious.orderNumber}}</span>
       </div>
@@ -56,6 +56,9 @@
 <style src="@/style/scss/pages/personal/order/detail.scss" lang="scss"></style>
 
 <script>
+//调用cilpboard
+import Clipboard from 'clipboard';
+
 export default {
   data () {
     return {

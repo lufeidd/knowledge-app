@@ -27,12 +27,11 @@ import $ from 'jquery'
 // 字体图标
 import './style/iconfont/iconfont'
 
-//clipboard
-import Clipboard from 'clipboard'
+
 
 // vant
 // import 'vant/lib/index.css'
-import { Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader, Cell, CellGroup, SwipeCell, Dialog, Icon, Popup, DatetimePicker, Actionsheet  } from 'vant'
+import { Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader, Cell, CellGroup, SwipeCell, Dialog, Icon, Popup, DatetimePicker, Actionsheet, Lazyload} from 'vant'
 Vue.use(Field)
 Vue.use(NavBar)
 Vue.use(Toast)
@@ -51,6 +50,7 @@ Vue.use(DatetimePicker)
 Vue.use(SwipeCell)
 Vue.use(Dialog)
 Vue.use(Actionsheet)
+Vue.use(Lazyload)
 
 Vue.use(_plugin)
 // Vue.use(api)

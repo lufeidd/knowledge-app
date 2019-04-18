@@ -3,7 +3,7 @@
     <div class="content" v-for="item in publishData">
       <div class="head">
         <div class="titleFrom">
-          <img :src="item.icon" alt="" class="icon">
+          <img v-lazy="item.icon" alt="" class="icon">
           <span class="publish">{{item.from}}</span>
         </div>
         <span :class="item.orderClass">{{item.order}}</span>
@@ -11,7 +11,7 @@
       <div class="section">
         <div class="bookDetail">
           <div class="ratiobox">
-            <a class="bookImg" :style="{'background-image':'url('+item.imgUrl+')'}"></a>
+            <a class="bookImg" v-lazy:background-image="item.imgUrl"></a>
           </div>
           <span class="title">{{item.title}}</span>
         </div>
