@@ -1,8 +1,8 @@
 <template>
-  <div id="listPage" :class="{ page: this.isIphx }">
+  <div id="listPage" class="page" :class="{ active: this.isIphx }">
     <ul class="addressBox">
       <template v-for="(item, key) in addressData">
-        <li @click="choose(key)" :class="{ active: activeIndex == key }">
+        <li>
           <div class="info">
             <div>
               <span class="name">{{ item.name }}</span>
@@ -11,24 +11,24 @@
             <div class="address">{{ item.address }}</div>
           </div>
           <div class="action">
-            <div class="default">
+            <div class="default" @click="choose(key)" :class="{ active: activeIndex == key }">
               <svg class="icon" aria-hidden="true" v-if="activeIndex == key">
-                <use xlink:href="#icon-checked-circle"></use>
+                <use xlink:href="#icon-checked-block"></use>
               </svg>
               <svg class="icon" aria-hidden="true" v-else>
                 <use xlink:href="#icon-uncheck-line"></use>
               </svg>
               <span>默认地址</span>
             </div>
-            <div class="edit">
+            <router-link to="/personal/set/address" class="edit">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-checked-circle"></use>
+                <use xlink:href="#icon-edit-line"></use>
               </svg>
               <span>编辑</span>
-            </div>
-            <div class="delete">
+            </router-link>
+            <div class="delete" @click="deleteAction(key)">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-checked-circle"></use>
+                <use xlink:href="#icon-delete-line"></use>
               </svg>
               <span>删除</span>
             </div>
@@ -38,6 +38,7 @@
     </ul>
     <div class="bottomBox" :class="{ iphx: this.isIphx }">
       <van-button size="large" type="danger">+新增收货地址</van-button>
+      <div class="count">{{ count }}/50</div>
     </div>
   </div>
 </template>
@@ -48,12 +49,20 @@
 export default {
   data() {
     return {
+        count: 5,
       activeIndex: 0,
       addressData: [
         {
           name: "李瑞",
           phone: "15088658807",
-          address: "浙江省杭州市西湖区西湖边东区23树6洞3楼23树6 洞3楼 "
+          address:
+            "浙江省杭州市西湖区西湖边东区23树6洞3楼23树6 浙江省杭州市西湖区西湖边东区23树6洞3楼23树6 洞3楼 "
+        },
+        {
+          name: "李瑞",
+          phone: "15088658807",
+          address:
+            "浙江省杭州市西湖区西湖边东区23树6洞3楼23树6 浙江省杭州市西湖区西湖边东区23树6洞3楼23树6 洞3楼 "
         }
       ]
     };
@@ -62,6 +71,22 @@ export default {
     choose(key) {
       console.log(key);
       this.activeIndex = key;
+    },
+    deleteAction(key) {
+      console.log(key);
+      this.$dialog
+        .confirm({
+          title: "标题",
+          message: "弹窗内容"
+        })
+        .then(() => {
+          // on confirm
+          this.$toast('999');
+        })
+        .catch(() => {
+          // on cancel
+        });
+      //   this.activeIndex = key;
     }
   }
 };
