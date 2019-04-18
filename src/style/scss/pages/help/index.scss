@@ -1,0 +1,64 @@
+/*
+ * author: lufei
+ * date:2019/4/18
+ */
+
+#helpPage{
+  background-color: $greyLight;
+  height: 100%;
+  .van-icon-arrow-down:before{
+    content: "\F00A"
+  }
+  .van-cell__title{
+    font-size: $fontSize + 1;
+    color: $cl3;
+  }
+}
+
+#detailPage{
+  padding-left: 15px;
+  padding-right: 15px;
+  .delet{
+    font-size: $fontSize + 2;
+  }
+  .content{
+    color: $cl9;
+  }
+}
+
+#feedbackPage{
+  padding-left: 15px;
+  padding-right: 15px;
+  textarea{
+    width: 100%;
+    height: 110px;
+    background-color: $greyLight;
+    padding: 0;
+    margin-top: 15px;
+    border: none;
+    resize: none;
+    &::placeholder{
+      color: $cl9;
+      font-size: $fontSize - 1;
+      padding-left: 5px;
+      padding-top: 5px;
+    }
+  }
+  input{
+    width: 100%;
+    height: 44px;
+    border: none;
+    background-color: $greyLight;
+    margin-top: 10px;
+    &::placeholder{
+      color: $cl9;
+      font-size: $fontSize - 1;
+      padding-left: 5px;
+      padding-top: 5px;
+    }
+  }
+  .van-button--disabled{
+    background-color:#999;
+    border-color:#999;
+  }
+}
