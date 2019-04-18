@@ -36,6 +36,11 @@ import cropper from '@/pages/personal/set/cropper'
 import bind from '@/pages/personal/set/bind'
 import cancel from '@/pages/personal/set/cancel'
 
+// 个人中心 - 帮助与反馈
+import help from '@/pages/personal/help/index'
+import helpdetail from '@/pages/personal/help/detail'
+import feedback from '@/pages/personal/help/feedback'
+
 // 备份
 import loginbf from '@/pages/loginBF'
 
@@ -172,6 +177,22 @@ export default new Router({
       path: '/personal/set/cancel',
       name: 'cancel',
       component: cancel
+    },
+    // 个人中心 - 帮助与反馈
+    {
+      path: '/personal/help/index',
+      name: 'help',
+      component: help
+    },
+    {
+      path: '/personal/help/detail',
+      name: 'helpdetail',
+      component: helpdetail
+    },
+    {
+      path: '/personal/help/feedback',
+      name: 'feedback',
+      component: feedback
     },
     // 备份
     {
