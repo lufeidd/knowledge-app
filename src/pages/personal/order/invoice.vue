@@ -51,7 +51,9 @@
       clear
     />
 </van-cell-group>
-    <van-button type="danger" size="large">提交</van-button>
+    <div class="bottomBox" :class="{iphx:this.iphx}">
+      <van-button type="danger" size="large">提交</van-button>
+    </div>
   </div>
 </template>
 

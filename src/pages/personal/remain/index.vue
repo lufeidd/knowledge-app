@@ -31,7 +31,7 @@ export default {
         this.$router.go(-1);
       },
       recharge(){
-        this.$router.go('/personal/remain/account');
+        this.$router.push('/personal/remain/account');
       }
     }
 }

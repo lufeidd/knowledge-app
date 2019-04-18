@@ -6,7 +6,6 @@ export default {
     Vue.prototype.winHeight = $(window).height();
     const ua = window.navigator.userAgent.toLowerCase();
     Vue.prototype.isIphx = ua.match(/mobile/) && $(window).width() == 375 && $(window).height() == 812;
-    
     // 全局变量
     // 倒计时
     Vue.prototype.clock = null

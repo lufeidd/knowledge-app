@@ -1,0 +1,85 @@
+/*
+ * author: lufei
+ * date:2019/4/18
+ */
+
+ #commentPage{
+   background-color: $greyLight;
+   height: 100%;
+    .content{
+      background-color: $white;
+      margin-bottom: 5px;
+      .info{
+        padding-left: 15px;
+        padding-right: 15px;
+        background-color: $white;
+        .head{
+          line-height: 40px;
+          @include displayFlex(flex,space-between,center);
+          .titleFrom{
+            width: 100%;
+           @include displayFlex(flex,flex-start,center);
+           .box{
+            @include displayFlex(flex,flex-start,center);
+            .icon{
+              width: 21px;
+              height: 21px;
+              border: 1px solid $clC;
+              border-radius: 21px;
+              align-items: center;
+            }
+            .publish{
+              font-size: $fontSize - 1;
+              color: $cl6;
+              margin-left: 5px;
+            }
+           }
+           .date{
+             flex-grow: 1;
+             text-align: right;
+             font-size: $fontSize - 1;
+             color: $cl9;
+           }
+          }
+        }
+        .comment{
+          margin: 5px 0;
+          font-size: $fontSize + 1;
+        }
+        .section{
+          padding-top: 5px;
+          padding-bottom: 15px;
+           .bookDetail{
+             background-color: $greyLight;
+             @include displayFlex(flex,flex-start,center);
+             .ratiobox{
+               background-color: $greyLight;
+               border: 1px solid $greyLight;
+               width: 70px;
+              .bookImg{
+                display: block;
+               @include ratioBox ( 70px, 100%, null,contain, $white, null);
+              }
+             }
+             .detailContent{
+              display: flex;
+              flex-direction: column;
+              align-content: stretch;
+              flex-grow: 1;
+              p{
+                margin: 5px 0;
+              }
+             }
+             .title{
+               margin-left: 10px;
+               font-size: $fontSize + 1;
+               color: $cl3;
+             }
+             .title.red{
+               color: $redDark;
+             }
+           }
+         }
+      }
+    }
+ }
