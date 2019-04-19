@@ -1,21 +1,11 @@
 <template>
   <div id="bindPage">
-    <div v-for="item in listData">
-      <div class="listBox" :class="{ active: item.isActive }" @click="showAction(item.type)">
-        <div class="center">
-          <div class="title">{{ item.title }}</div>
-        </div>
-        <div class="left">
-          <template v-if="item.text">{{ item.text }}</template>
-        </div>
-        <div class="right">
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-next-line"></use>
-          </svg>
-        </div>
-        
-      </div>
-    </div>
+
+
+    <van-cell title="手机绑定" is-link value="13200025452" style="margin-top:5px;"/>
+    <van-cell title="用户名" is-link value="微信绑定"/>
+    <van-cell title="qq绑定" is-link value="qq绑定" @click="showAction('bind')"/>
+
     <!-- 头像裁切，异步组件 -->
     <!-- 性别 -->
     <van-actionsheet
@@ -28,7 +18,12 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/set/bind.scss" lang="scss"></style>
+<style lang="sass">
+ html {
+   background-color: $greyLight;
+ }
+</style>
+
 
 <script>
 export default {
@@ -41,26 +36,6 @@ export default {
           name: "解绑"
         },
       ],
-      listData: [
-        {
-            isActive: true,
-          text: "134****3931",
-          title: "头手机绑定像"
-        },
-        {
-          text: "微信绑定",
-          title: "路人甲"
-        },
-        {
-          text: "去绑定",
-          title: "QQ绑定"
-        },
-        {
-          type: "bind",
-          text: "QQ绑定",
-          title: "新浪文博绑定"
-        }
-      ]
     };
   },
   mounted() {},

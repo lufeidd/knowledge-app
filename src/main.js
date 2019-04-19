@@ -6,7 +6,7 @@ import router from './router/index'
 import qs from 'Qs'
 
 // 自定义插件
-import _plugin from './plugin/index'
+import plugin from './plugin/index'
 
 // api
 import _api from './api/index'
@@ -31,7 +31,7 @@ import './style/iconfont/iconfont'
 
 // vant
 // import 'vant/lib/index.css'
-import { Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader, Cell, CellGroup, SwipeCell, Dialog, Icon, Popup, DatetimePicker, Actionsheet, Lazyload} from 'vant'
+import { Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader, Cell, CellGroup, SwipeCell, Dialog, Icon, Popup, DatetimePicker, Actionsheet, AddressEdit, Lazyload, SwitchCell,Search,Tag } from 'vant'
 Vue.use(Field)
 Vue.use(NavBar)
 Vue.use(Toast)
@@ -50,9 +50,13 @@ Vue.use(DatetimePicker)
 Vue.use(SwipeCell)
 Vue.use(Dialog)
 Vue.use(Actionsheet)
+Vue.use(AddressEdit)
 Vue.use(Lazyload)
+Vue.use(SwitchCell)
+Vue.use(Search)
+Vue.use(Tag)
 
-Vue.use(_plugin)
+Vue.use(plugin)
 // Vue.use(api)
 // 挂载，调用全局变量
 Vue.prototype.api = _api

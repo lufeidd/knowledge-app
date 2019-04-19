@@ -16,6 +16,13 @@
   }
 }
 
+// 字体溢出隐藏
+@mixin textOverflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 // 比例盒子
 @mixin ratioBox ($width, $paddingBottom, $border, $size, $color, $url) {
   position: absolute;
@@ -135,11 +142,4 @@
   @if $border {
     border: $border;
   }
-}
-
-// 字体溢出隐藏
-@mixin textOverflow {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }

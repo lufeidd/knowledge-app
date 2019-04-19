@@ -8,7 +8,7 @@
     <div class="info">
       <div class="head">
         <div class="titleFrom">
-          <img v-lazy="publishData.icon" alt="" class="icon">
+          <img v-lazy="publishData.icon" alt class="icon">
           <span class="publish">{{publishData.from}}</span>
         </div>
       </div>
@@ -23,16 +23,19 @@
     </div>
     <div class="priceInfo">
       <div class="first">
-        <van-cell title="商品总额" v-model="'-¥'+priceInfo.totalPrice.toFixed(2)" />
+        <van-cell title="商品总额" v-model="'-¥'+priceInfo.totalPrice.toFixed(2)"/>
       </div>
-      <van-cell title="运费" v-model="'¥'+priceInfo.freight.toFixed(2)" />
-      <van-cell title="商品优惠" v-model="'¥'+priceInfo.discount.toFixed(2)" />
-      <van-cell title="余额" v-model="'-¥'+priceInfo.remain.toFixed(2)" />
-      <p class="acturalPay">实付款 <span>¥{{priceInfo.acturalPay}}</span></p>
+      <van-cell title="运费" v-model="'¥'+priceInfo.freight.toFixed(2)"/>
+      <van-cell title="商品优惠" v-model="'¥'+priceInfo.discount.toFixed(2)"/>
+      <van-cell title="余额" v-model="'-¥'+priceInfo.remain.toFixed(2)"/>
+      <p class="acturalPay">
+        实付款
+        <span>¥{{priceInfo.acturalPay}}</span>
+      </p>
     </div>
     <div class="fictitious">
       <div class="text">
-        <van-cell title="虚拟物品"  />
+        <van-cell title="虚拟物品"/>
       </div>
       <div class="orderNumber">
         <span class="order">订单编号</span>
@@ -42,9 +45,9 @@
         <span class="number">{{fictitious.orderNumber}}</span>
       </div>
       <div class="orderInfo">
-        <van-cell title="下单时间" v-model="fictitious.orderTime" />
-        <van-cell title="支付方式" v-model="fictitious.payWay" />
-        <van-cell title="支付时间" v-model="fictitious.payTime" />
+        <van-cell title="下单时间" v-model="fictitious.orderTime"/>
+        <van-cell title="支付方式" v-model="fictitious.payWay"/>
+        <van-cell title="支付时间" v-model="fictitious.payTime"/>
       </div>
     </div>
     <div class="foot">
@@ -57,35 +60,47 @@
 
 <script>
 //调用cilpboard
-import Clipboard from 'clipboard';
+import Clipboard from "clipboard";
 
 export default {
-  data () {
+  data() {
     return {
-      publishData:
-        {icon:'https://bnmpstyle.bookuu.com/wap/images/default_shop.png',
-        from:'浙江出版集团',
-        imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
-        title:'宝宝巴士在线讲故事',},
-      priceInfo:{totalPrice:95.00,freight:22.30,discount:5.00,remain:22.30,acturalPay:22.30},
-      fictitious:{orderNumber:1955655265521222,orderTime:'2019.4.17 19:15:22',payWay:'支付宝支付',payTime:'2019.4.17 19:16:02'}
-    }
+      publishData: {
+        icon: "https://bnmpstyle.bookuu.com/wap/images/default_shop.png",
+        from: "浙江出版集团",
+        imgUrl:
+          "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
+        title: "宝宝巴士在线讲故事"
+      },
+      priceInfo: {
+        totalPrice: 95.0,
+        freight: 22.3,
+        discount: 5.0,
+        remain: 22.3,
+        acturalPay: 22.3
+      },
+      fictitious: {
+        orderNumber: 1955655265521222,
+        orderTime: "2019.4.17 19:15:22",
+        payWay: "支付宝支付",
+        payTime: "2019.4.17 19:16:02"
+      }
+    };
   },
-  methods:{
+  methods: {
     copy() {
-          const clipboard = new Clipboard(".copy");
-          clipboard.on('success', e => {
-            // this.$message({ type: 'success', message: '复制成功' });
+      const clipboard = new Clipboard(".copy");
+      clipboard.on("success", e => {
+        // this.$message({ type: 'success', message: '复制成功' });
 
-            clipboard.destroy();
-          })
-          clipboard.on('error', e => {
+        clipboard.destroy();
+      });
+      clipboard.on("error", e => {
+        // this.$message({ type: 'waning', message: '该浏览器不支持自动复制' });
 
-            // this.$message({ type: 'waning', message: '该浏览器不支持自动复制' });
-
-            clipboard.destroy();
-          })
-        }
+        clipboard.destroy();
+      });
+    }
   }
-}
+};
 </script>

@@ -12,45 +12,65 @@ html {
 #listPage {
 
   & .addressBox {
-    margin-top: 5px;
+    padding-top: 10px;
 
     & li {
-        background-color: $white;
+      background-color: $white;
+      margin-bottom: 5px;
 
-        & .info {
-            @include bgDecorate(null, null, 0, 0 15px, null);
-    
-            margin-bottom: 5px;
-    
-            & .name {
-                @include font("PingFangBold", $fontSize + 2, #333);
-                margin-right: 10px;
-            }
-    
-            & .phone {
-                @include font(null, $fontSize, #666);
-            }
-    
-            & .address {
-                @include font(null, $fontSize + 1, #666);
-            }
+      & .info {
+        @include bgDecorate(null, null, 0, 8px 0, null);
+        margin: 0 15px;
+        border-bottom: 1px #eee solid;
 
+        & .name {
+          @include font("PingFangBold", $fontSize + 2, #333);
+          margin-right: 10px;
         }
 
-        & .action {
-            @include font(null, $fontSize - 2, #666);
-            @include displayFlex (flex, flex-start, center);
+        & .phone {
+          @include font(null, $fontSize, #666);
         }
 
-      //    & .icon {
-      //        width: 18px;
-      //        height: 18px;
-      //        margin-right: 5px;
-      //    }
+        & .address {
+          margin-top: 5px;
+          @include font(null, $fontSize + 1, #666);
+        }
+
+      }
+
+      & .action {
+        @include font(null, $fontSize - 1, #666);
+        @include displayFlex (flex, flex-start, center);
+        padding: 10px 15px;
+
+        & a {
+          @include font(null, $fontSize - 1, #666);
+        }
+
+        & .default {
+          flex-grow: 1;
+        }
+
+        & .icon {
+          width: 14px;
+          height: 14px;
+        }
+
+        & .edit {
+          margin-right: 30px;
+        }
+      }
     }
 
-    //    & li.active {
-    //      @include font(null, $fontSize + 2, #666);
-    //    }
+    & .default.active .icon {
+      color: $redDark;
+    }
+  }
+
+  & .bottomBox .count {
+      @include font(null, $fontSize + 2, $white);
+      @include position (absolute, 'br', 0, 15px, null, 50px, 0);
+      line-height: 50px;
   }
 }

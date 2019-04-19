@@ -44,6 +44,9 @@ import feedback from '@/pages/personal/help/feedback'
 // 个人中心 - 我的评论
 import comment from '@/pages/personal/comment/index'
 
+// 搜索
+import search from '@/pages/search'
+
 // 备份
 import loginbf from '@/pages/loginBF'
 
@@ -202,6 +205,12 @@ export default new Router({
       path: '/personal/comment/index',
       name: 'comment',
       component: comment
+    },
+    // 搜索
+    {
+      path: '/search',
+      name: 'search',
+      component: search
     },
     // 备份
     {

@@ -1,34 +1,30 @@
 <template>
   <div id="infoPage">
-    <div v-for="item in listData">
-      <div class="listBox" :class="{ active: item.isActive }" @click="showAction(item.type)">
-        <div class="center">
-          <div class="title">{{ item.title }}</div>
-        </div>
-        <div class="left">
-          <div class="ratioBox" v-if="item.imgSrc">
-            <div class="box">
-              <img :src="item.imgSrc">
-            </div>
-          </div>
-
-          <template v-if="item.text">{{ item.text }}</template>
-        </div>
-        <div class="right">
-          <svg class="icon" aria-hidden="true" v-if="item.arrow">
-            <use xlink:href="#icon-next-line"></use>
-          </svg>
-        </div>
-
-        <input
-          id="files"
-          type="file"
-          accept="image/*"
-          v-if="item.type === 'picture'"
-          @change="input"
-        >
+    <div class="listBox" @click="showAction('pictrue')" style="margin-top: 5px;">
+      <div class="center">
+        <div class="title">头像</div>
       </div>
+      <div class="left">
+        <div class="ratioBox">
+          <div class="box">
+            <img src="https://bnmppic.bookuu.com/topic/20161108/1478612622195756.jpg">
+          </div>
+        </div>
+      </div>
+      <div class="right">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-next-line"></use>
+        </svg>
+      </div>
+
+      <input id="files" type="file" accept="image/*" @change="input">
     </div>
+
+    <van-cell title="账号" value="13200025452"/>
+    <van-cell title="昵称" value="是否"/>
+    <van-cell title="生日" is-link value="还是空的，快去写吧~" @click="showAction('birthday')"/>
+    <van-cell title="性别" is-link value="男" @click="showAction('sex')"/>
+
     <!-- 头像裁切，异步组件 -->
     <!-- 性别 -->
     <van-actionsheet
@@ -56,7 +52,75 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/set/info.scss" lang="scss"></style>
+<style lang="sass">
+html {
+  background-color: $greyLight;
+}
+
+#infoPage {
+    
+  & .listBox {
+    padding: 10px 15px;
+    background-color: $white;
+    border-bottom: 1px $greyLight solid;
+    position: relative;
+    @include displayFlex (flex, flex-start, center);
+
+    & input[type=file] {
+        @include fullBox;
+    }
+
+    & .left {
+      @include textOverflow;
+      @include clearfix;
+      @include font(null, $fontSize - 1, #999);
+      flex-grow: 1;
+      text-align: right;
+
+      & .ratioBox {
+        @include ratioBox (28px, 28px, 1px #e7e7e7 solid, contain, null, null);
+        float: right;
+        border-radius: 28px;
+        overflow: hidden;
+        position: relative;
+
+        & .box {
+          @include position (absolute, 'tl', 0, 0, 100%, 100%, null);
+          @include displayFlex (flex, center, center);
+
+          & img {
+            max-width: 100%;
+            max-height: 100%;
+          }
+        }
+      }
+    }
+
+    & .center {
+      line-height: 1.8;
+      flex-shrink: 0;
+
+      & .title {
+        @include font(null, $fontSize + 1, #333);
+        @include textOverflow;
+      }
+    }
+
+    & .right {
+      @include flexBasis (15px);
+      flex-shrink: 0;
+      text-align: right;
+
+      & .icon {
+        width: 14px;
+        height: 14px;
+        color: #ccc;
+      }
+    }
+  }
+}
+</style>
+
 
 <script>
 export default {
@@ -84,36 +148,6 @@ export default {
         },
         {
           name: "男"
-        }
-      ],
-      listData: [
-        {
-          type: "picture",
-          isActive: true,
-          title: "头像",
-          imgSrc:
-            "https://bnmppic.bookuu.com/topic/20161108/1478612622195756.jpg",
-          arrow: true
-        },
-        {
-          text: "134****3931",
-          title: "账号"
-        },
-        {
-          text: "小姐姐二号",
-          title: "昵称"
-        },
-        {
-          type: "birthday",
-          text: "还是空的，快去写吧",
-          title: "生日",
-          arrow: true
-        },
-        {
-          type: "sex",
-          text: "男",
-          title: "性别",
-          arrow: true
         }
       ]
     };
