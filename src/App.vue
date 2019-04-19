@@ -64,10 +64,10 @@ a {
 export default {
   name: "App",
   mounted() {
-    // this.$router.push("/personal/help/feedback");
-    // this.$router.push("/personal/comment/index");
-    // this.$router.push("/personal/remain/record");
-    this.$router.push("/loginBF");
+    this.$router.push("/album/index");
+    // this.$router.push("/personal/focus");
+    // this.$router.push("/personal/order/list");
+    // this.$router.push("/loginBF");
     // this.$router.push("/login/register");
     // this.$router.push("/personal/index");
   }

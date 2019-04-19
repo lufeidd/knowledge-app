@@ -1,0 +1,87 @@
+/*
+ * author: nancyzeng
+ * date:2019/4/19
+ */
+
+@charset "UTF-8";
+
+html {
+  background-color: $greyLight;
+}
+
+#albumPage {
+  & .listBox {
+    @include displayFlex (flex, flex-start, flex-start);
+    background-color: $orangeLight;
+    padding: 15px;
+
+    & .left {
+      margin-right: 10px;
+
+      & .ratioBox {
+        border-radius: 2px;
+
+        & .box {}
+      }
+    }
+
+    & .center {
+      @include twoLines;
+
+      & .title {
+        @include font("PingFangBold", $fontSize + 2, $white);
+        @include twoLines;
+      }
+
+      & .subTitle {
+        @include twoLines;
+        @include font(null, $fontSize - 1, $white);
+        margin-top: 20px;
+      }
+
+      & .info {
+        margin-top: 10px;
+        @include textOverflow;
+        @include clearfix;
+
+        & div {
+          line-height: 20px;
+          margin-right: 5px;
+          @include textOverflow;
+          @include floatBlock (left, null, left);
+          @include font(null, $fontSize - 2, $white);
+        }
+
+        & .name {
+          max-width: 100px;
+          @include bgDecorate(rgba(0, 0, 0, .12), $white, 20px, 0 10px 0 1px, null);
+
+          & img {
+              width: 15px;
+              height: 15px;
+              border-radius: 15px;
+              margin-right: 4px;
+              display: inline;
+              position: relative;
+              top: 2px;
+          }
+        }
+
+        & .count {
+            @include bgDecorate(rgba(0, 0, 0, .12), $white, 20px, 0 6px, null);
+          max-width: 100px;
+        }
+      }
+    }
+
+    & .right {
+
+      & .icon {
+        width: 14px;
+        height: 14px;
+        color: #ccc;
+      }
+    }
+
+  }
+}
