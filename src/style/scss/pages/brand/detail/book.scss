@@ -1,0 +1,244 @@
+/*
+ * author: lufei
+ * date:2019/4/19
+ */
+
+#bookPage{
+  background-color: $greyLight;
+  height: 100%;
+  .verticleLine{
+    display: inline-block;
+    width: 3px;
+    height: 11px;
+    border-radius: 1.5px;
+    background-color: $redDark;
+    margin-right: 4px;
+  }
+  .lh{
+    line-height: 1;
+    font-size: $fontSize + 2;
+    color: $cl3;
+  }
+  .all{
+    font-size: $fontSize - 2;
+    color: $cl9;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    border-top: 1px solid $greyLight;
+  }
+  .text{
+    padding: 0 15px;
+    @include displayFlex(flex,flex-start,flex-end);
+  }
+  .van-tag--large{
+    font-size: $fontSize - 2;
+  }
+  .bookInfo{
+    background-color: $white;
+    padding: 15px 0  15px 15px;
+    .info{
+      @include displayFlex(flex,flex-start,null);
+      .ratiobox{
+        max-width: 75px;
+       .bookImg{
+         display: block;
+        @include ratioBox ( 75px, 136.6%, null,contain, $white, null);
+       }
+      }
+      .bookContent{
+        height: 100%;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-content: space-between;
+        justify-content: space-between;
+        margin-left: 5px;
+        p{
+          line-height: 1.7;
+        }
+        .author{
+          font-size: $fontSize - 2;
+          color: $cl9;
+        }
+        .message{
+          font-size: $fontSize - 2;
+          color: $cl9;
+          .title{
+            font-size: $fontSize + 2;
+            color: $cl3;
+          }
+          .collect{
+            color: $redDark;
+          }
+          .xinxi{
+            margin-left: 30px;
+            display: inline-block;
+          }
+        }
+      }
+    }
+    .swiperTags{
+      margin-top: 10px;
+      .swiper-slide{
+        width:auto;
+      }
+    }
+  }
+  .publish{
+    background-color: $white;
+    padding: 15px;
+    margin-top: 5px;
+    @include displayFlex(flex,space-between,center);
+    .from{
+      @include displayFlex(flex,flex-start,center);
+      .icon{
+        width: 35px;
+        height: 35px;
+        border: 1px solid $clC;
+        border-radius: 35px;
+        align-items: center;
+      }
+      .publishInfo{
+        margin-left: 7px;
+        .publishName{
+          color: $cl6;
+        }
+        .foucsNumber{
+          font-size: $fontSize - 2;
+          color: $cl9;
+        }
+      }
+    }
+    .foucs{
+      font-size: $fontSize - 2;
+      color: $redDark;
+      display: inline-block;
+      line-height: 20px;
+      border-radius: 10px;
+      padding: 0 10px;
+      border: 1px solid $redDark;
+    }
+  }
+  .introduction{
+    background-color: $white;
+    padding-top: 15px;
+    margin-top: 5px;
+    .detail{
+      font-size: $fontSize - 1;
+      padding: 10px 15px;
+    }
+  }
+  .list{
+    background-color: $white;
+    margin-top: 5px;
+    padding-top: 15px;
+    .listNumber{
+      font-size: $fontSize - 2;
+      color: $cl9;
+      margin-left: 5px;
+    }
+    ul{
+      padding: 10px 15px;
+      li{
+        font-size: $fontSize - 1;
+        color: $cl6;
+        .name{
+          margin-left: 15px;
+        }
+      }
+    }
+  }
+  .bookAuthor{
+    background-color: $white;
+    margin-top: 5px;
+    padding-top: 15px;
+    .authorInfo{
+      padding: 10px 15px 35px 15px;
+      @include displayFlex(flex,flex-start,null);
+      .ratiobox{
+        max-width: 65px;
+       .bookImg{
+         display: block;
+        @include ratioBox ( 65px, 130.8%, null,contain, $white, null);
+       }
+      }
+      .content{
+        margin-left: 5px;
+        .authorName{
+          font-size: $fontSize + 1;
+          color: $cl6;
+        }
+        .works{
+          font-size: $fontSize - 2;
+          color: $cl9;
+          margin-top: 10px;
+        }
+      }
+    }
+    .swiper-pagination-bullet-active{
+      background-color: $redDark;
+    }
+    .swiper-pagination-bullet{
+      width: 20px;
+      height: 3px;
+      border-radius: 1.5px;
+    }
+  }
+  .recommend{
+    background-color: $white;
+    margin-top: 5px;
+    padding-top: 15px;
+    .recommendInfo{
+      padding: 15px 0 15px 15px;
+      .ratiobox{
+        max-width: 90px;
+       .bookImg{
+         display: block;
+        @include ratioBox ( 90px, 133.3%, null,contain, $white, null);
+       }
+      }
+      .recommendName{
+        font-size: $fontSize - 1;
+        color: $cl6;
+        margin-top: 5px;
+        @include textOverflow;
+      }
+      .nickname{
+        font-size: $fontSize - 2;
+        color: $cl9;
+        @include textOverflow;
+      }
+    }
+  }
+  .showContent{
+    background-color: $white;
+    margin-top: 5px;
+    padding: 15px 0 15px 15px;
+    .foot{
+      @include displayFlex(flex,flex-start,null);
+      .ratiobox{
+        max-width: 124px;
+       .bookImg{
+         display: block;
+        @include ratioBox ( 124px, 58.87%, null,contain, $white, null);
+       }
+      }
+      .content{
+        display: flex;
+        flex-direction: column;
+        align-content: space-between;
+        justify-content: space-between;
+        padding: 10px ;
+        .title{
+          line-height: 1.2;
+          @include textOverflow;
+        }
+        .name{
+          font-size: $fontSize - 2;
+          color: $cl6;
+        }
+      }
+    }
+  }
+}
