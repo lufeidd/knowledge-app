@@ -1,0 +1,57 @@
+/*
+ * author: lufei
+ * date:2019/4/18
+ */
+
+#searchPage{
+  padding-left: 15px;
+  padding-right: 15px;
+  .van-row{
+    flex-wrap: wrap;
+  }
+  .van-search{
+    padding: 8px 0;
+    input::placeholder{
+      font-size: $fontSize - 1;
+      color: $cl9;
+    }
+    .van-search__action{
+      font-size: $fontSize + 2;
+      color: $cl6;
+    }
+  }
+  .searchRecommend{
+    .recommend{
+      font-size: $fontSize + 1;
+      color: $cl0;
+      margin: 15px 0;
+    }
+    .van-tag{
+      padding: 0.2em 1.0em;
+    }
+  }
+  .searchHistory{
+    margin-top: 50px;
+    .title{
+      @include displayFlex(flex,space-between,center);
+      .history{
+        font-size: $fontSize + 1;
+        color: $cl0;
+      }
+      .clear{
+        color: $cl6;
+      }
+    }
+    .van-tag{
+      @include textOverflow;
+      width: 60px;
+      text-align: center;
+    }
+    .van-row{
+      margin-top: 15px;
+      .van-col{
+        padding-bottom: 15px;
+      }
+    }
+  }
+}

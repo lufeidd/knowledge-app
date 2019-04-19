@@ -65,11 +65,7 @@ export default {
   name: "App",
   mounted() {
     this.$router.push("/album/index");
-    // this.$router.push("/personal/focus");
-    // this.$router.push("/personal/order/list");
     // this.$router.push("/loginBF");
-    // this.$router.push("/login/register");
-    // this.$router.push("/personal/index");
   }
 };
 </script>

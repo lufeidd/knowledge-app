@@ -18,18 +18,15 @@
 .van-overlay {
   background-color: rgba(0, 0, 0, .4);
 }
+.van-picker__columns{
+  &:not(:first-child){
+    flex:none;
+  }
+  &:not(:last-child){
 
-.van-picker__columns {
-  .van-picker-column {
-    flex: 0.25 0.1;
-
-    &:nth-child(1) {
-      flex: 0.25 0.1;
-    }
-
-    &::nth-child(2) {
-      flex: 0.25 0.1;
-    }
+  }
+  .van-picker-column{
+    flex:none;
   }
 }
 
