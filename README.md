@@ -31,7 +31,7 @@ https://github.com/xyxiao001/vue-cropper
 # 项目模块
 
 ``` bash
-1、登录/注册
+1、登录/注册            - zzy
 
 2、个人中心
     a、首页           - zzy
@@ -43,6 +43,10 @@ https://github.com/xyxiao001/vue-cropper
     g、关注           - zzy
     h、帮助与反馈      - zw
     i、我的评论        - zw
+
+3、专辑                 - zzy
+
+4、品牌商城             - zw
 ```
 
 # 项目运行

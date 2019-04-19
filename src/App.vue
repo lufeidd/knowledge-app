@@ -64,7 +64,7 @@ a {
 export default {
   name: "App",
   mounted() {
-    // this.$router.push("/personal/set/cancel");
+    this.$router.push("/personal/help/feedback");
     // this.$router.push("/personal/comment/index");
     // this.$router.push("/personal/remain/record");
     // this.$router.push("/loginBF");

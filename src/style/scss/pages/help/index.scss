@@ -57,6 +57,16 @@
       padding-top: 5px;
     }
   }
+  #upload{
+    padding: 0;
+    margin-top: 25px;
+    .box{
+      padding: 0;
+    }
+    .flex-box{
+      margin-right: 15px;
+    }
+  }
   .van-button--disabled{
     background-color:#999;
     border-color:#999;

@@ -47,6 +47,17 @@ import comment from '@/pages/personal/comment/index'
 // 搜索
 import search from '@/pages/search'
 
+// 专辑
+import album from '@/pages/album/index'
+import albumdetail from '@/pages/album/detail'
+import player from '@/pages/album/player'
+
+// 品牌
+import brand from '@/pages/brand/index'
+import mall from '@/pages/brand/mall'
+import article from '@/pages/brand/detail/article'
+import book from '@/pages/brand/detail/book'
+
 // 备份
 import loginbf from '@/pages/loginBF'
 
@@ -211,6 +222,43 @@ export default new Router({
       path: '/search',
       name: 'search',
       component: search
+    },
+    // 专辑
+    {
+      path: '/album/index',
+      name: 'album',
+      component: album
+    },
+    {
+      path: '/album/detail',
+      name: 'albumdetail',
+      component: albumdetail
+    },
+    {
+      path: '/album/player',
+      name: 'player',
+      component: player
+    },
+    // 品牌
+    {
+      path: '/brand/index',
+      name: 'brand',
+      component: brand
+    },
+    {
+      path: '/brand/mall',
+      name: 'mall',
+      component: mall
+    },
+    {
+      path: '/brand/detail/article',
+      name: 'article',
+      component: article
+    },
+    {
+      path: '/brand/detail/book',
+      name: 'book',
+      component: book
     },
     // 备份
     {
