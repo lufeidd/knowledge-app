@@ -4,7 +4,10 @@
       <div class="box" id="van">
         <div class="content">
           <van-uploader :after-read="onRead">
-            <span>上传图片</span>
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-photo-line"></use>
+            </svg>
+            <div>最多三张图</div>
           </van-uploader>
         </div>
       </div>
@@ -21,8 +24,7 @@
     padding: 5px;
 
     .flex-box {
-      flex-basis: 25%;
-      flex-shrink: 0;
+      @include flexBasis(80px);
 
       & .box {
         position: relative;
@@ -30,14 +32,38 @@
 
         & .content {
           @include ratioBox(100%, 100%, null, contain, null, null);
-          border: 1px #eee solid;
+          @include font(null, $fontSize - 2, #999);
+          border: 1px #ccc dashed;
+          border-radius: 2px;
           & .del {
-            border: 1px #000 solid;
-            @include position(absolute, "tr", 0, 0, 20px, 20px, 20px);
+            background-color: rgba($color: #000000, $alpha: 0.5);
+            color: $white;
+            text-align: center;
+            @include position(absolute, "tr", 3px, 3px, 15px, 15px, 2px);
+
+            & .icon {
+              width: 13px;
+              height: 13px;
+            }
           }
           & .van-uploader {
             @include fullBox;
-            @include  displayFlex (flex, center, center);
+            @include displayFlex(flex, center, center);
+            flex-wrap: wrap;
+            text-align: center;
+
+            & .icon {
+              width: 20px;
+              height: 20px;
+              position: relative;
+              top: 5px;
+            }
+            & div {
+              @include flexBasis(100%);
+              font-size: 12px;
+              position: relative;
+              top: -5px;
+            }
           }
         }
       }
@@ -52,52 +78,94 @@ export default {
   props: ["uploadData"],
   methods: {
     // 头像上传
+    // onRead(file) {
+    //   var src = file.content;
+    //   var maxlength = this.uploadData.maxlength;
+    //   //   upload
+    //   var upload = document.getElementById("upload");
+    //   //   button
+    //   var button = document.getElementById("button");
+    //   //   flexbox
+    //   var flexbox = document.createElement("div");
+    //   //   box
+    //   var box = document.createElement("div");
+    //   //   content
+    //   var content = document.createElement("div");
+    //   //   del
+    //   var del = document.createElement("div");
+
+    //   del.classList.add("del");
+    //   content.appendChild(del);
+    //   content.classList.add("content");
+    //   content.style.backgroundImage = "url(" + src + ")";
+
+    //   box.appendChild(content);
+    //   box.classList.add("box");
+
+    //   flexbox.appendChild(box);
+    //   flexbox.classList.add("flex-box");
+
+    //   upload.insertBefore(flexbox, button);
+
+    //   del.addEventListener("click", () => {
+    //     var p = del.parentNode.parentNode.parentNode;
+    //     p.parentNode.removeChild(p);
+    //   });
+
+    //   // 提示最多上传图片张数
+    //   var tmp = document.querySelectorAll("#upload .flex-box .box");
+    //   var count = tmp.length;
+    //   if (count >= maxlength + 1) {
+    //     var msg = "最多上传" + maxlength + "张图片！";
+    //     this.$toast(msg);
+    //     // van
+    //     var van = document.getElementById("van");
+    //     van.parentNode.removeChild(van);
+    //   }
+    // },
+    // 头像上传
     onRead(file) {
       var src = file.content;
       var maxlength = this.uploadData.maxlength;
-      //   upload
-      var upload = document.getElementById("upload");
-      //   button
-      var button = document.getElementById("button");
-      //   flexbox
-      var flexbox = document.createElement("div");
-      //   box
-      var box = document.createElement("div");
-      //   content
-      var content = document.createElement("div");
-      //   del
-      var del = document.createElement("div");
+      var box = $("#upload .flex-box .box");
+      var length = box.length;
+      var van = $("#van");
 
-      del.classList.add("del");
-      content.appendChild(del);
-      content.classList.add("content");
-      content.style.backgroundImage = "url(" + src + ")";
+      $("#upload").prepend(
+        '<div class="flex-box">' +
+          '<div class="box">' +
+          '<div class="content" style="background-image: url(' +
+          src +
+          ');">' +
+          '<div class="del">' +
+          '<svg class="icon" aria-hidden="true">' +
+          '<use xlink:href="#icon-close-line"></use>' +
+          "</svg>" +
+          "</div>" +
+          "</div>" +
+          "</div>" +
+          "</div>"
+      );
 
-      box.appendChild(content);
-      box.classList.add("box");
+      $("#upload .del").on("click", function() {
+        length = box.length;
+        $(this)
+          .parents(".flex-box")
+          .remove();
 
-      flexbox.appendChild(box);
-      flexbox.classList.add("flex-box");
-
-      upload.insertBefore(flexbox, button);
-
-      del.addEventListener("click", () => {
-        var p = del.parentNode.parentNode.parentNode;
-        p.parentNode.removeChild(p);
+        van.css("display", "block");
       });
 
       // 提示最多上传图片张数
-      var tmp = document.querySelectorAll("#upload .flex-box .box");
-      var count = tmp.length;
-      if (count >= maxlength + 1) {
+      if (length >= maxlength) {
         var msg = "最多上传" + maxlength + "张图片！";
         this.$toast(msg);
-        // van
-        var van = document.getElementById("van");
-        van.parentNode.removeChild(van);
+        van.css("display", "none");
       }
     }
   }
 };
 </script>
+
+
 
