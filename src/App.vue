@@ -9,7 +9,6 @@
 @import url("./style/font/PingFangMedium.css");
 
 html {
-  max-width: 750px;
   margin: 0 auto;
   height: 100%;
   line-height: 1.5;
@@ -27,7 +26,8 @@ a {
   color: #000;
 }
 
-* {
+*,
+img {
   padding: 0;
   margin: 0;
 }

@@ -1,39 +1,203 @@
 <template>
-  <div class="music">
-    <p>currentTime:{{ audioData.currentTime }}</p>
-    <p>duration:{{ audioData.duration }}</p>
-    <audio :id="audioData.id" :src="audioData.src" preload="auto" @ended="ended"></audio>
-    <div @click="playAudio" v-if="audioData.type === 'play'">播放</div>
-    <div @click="pauseAudio" v-else>暂停</div>
-    <!-- <div style="padding:40px 0;">
-      <van-slider
-        v-model="audioData.sliderValue"
-        @change="audioSliderChange"
-        :min="0"
-        :max="100"
-        bar-height="4px"
-        active-color="#f44"
-      />
-    </div> -->
+  <div id="miniAudio">
+    <!-- 播放器缩略 -->
+    <van-row class="miniAudio" :class="{ iphx: this.isIphx }">
+      <van-col span="16">
+        <div class="ratioBox">
+          <div class="box">
+            <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+          </div>
+        </div>
 
-    <van-circle
-      v-model="audioData.sliderValue"
-      color="#07c160"
-      fill="#fff"
-      size="50px"
-      layer-color="#ebedf0"
-      @text="text"
-      :rate="0"
-      :speed="600"
-      :clockwise="false"
-      :stroke-width="60"
-    />
+        <div class="info">
+          <div class="album">{{ audioData.album }}</div>
+          <div class="program">
+            <span class="duration">{{ audioData.duration }}</span>
+            {{ audioData.program }}
+          </div>
+        </div>
+      </van-col>
+      <van-col span="8" class="action">
+        <svg class="icon category" aria-hidden="true" @click="showPopup">
+          <use xlink:href="#icon-category-line"></use>
+        </svg>
+
+        <div class="play" @click="playAudio" v-if="audioData.type === 'play'">
+          <van-icon name="play"/>
+        </div>
+        <div class="play" @click="pauseAudio" v-else>
+          <van-icon name="pause"/>
+        </div>
+        <div class="circle">
+          <van-circle
+            v-model="audioData.sliderValue"
+            color="#f05654"
+            fill="transparent"
+            size="30px"
+            layer-color="#e6e6e6"
+            @text="text"
+            :rate="0"
+            :speed="600"
+            :clockwise="false"
+            :stroke-width="60"
+          />
+        </div>
+      </van-col>
+    </van-row>
+
+    <audio :id="audioData.id" :src="audioData.src" preload="auto" @ended="ended"></audio>
+
+    <van-popup v-model="audioData.popupModel" position="bottom" @open="onOpen">
+      <div class="audioList">
+        <!-- <div class="ratioBox">
+          <div class="box">
+            <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+          </div>
+        </div>-->
+        <div>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-videoPause-line"></use>
+          </svg>
+        </div>
+
+        <div class="info">
+          <div class="album">试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对</div>
+          <div class="program">
+            <span class="duration">时长16：00</span>
+            <span>已播1%</span>
+          </div>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
 <style lang="scss">
-.music {
-  padding: 50px;
+#miniAudio {
+  & .audioList {
+    @include textOverflow;
+    @include displayFlex(flex, flex-start, center);
+    padding: 10px;
+    border-bottom: 1px #eee solid;
+
+    & .ratioBox {
+      width: 40px;
+      padding-bottom: 40px;
+      border-radius: 40px;
+      margin-left: 4px;
+      margin-top: 5px;
+      position: absolute;
+    }
+
+    & .info {
+      @include textOverflow;
+      width: 100%;
+      padding-left: 50px;
+      box-sizing: border-box;
+
+      & .album {
+        @include textOverflow;
+        @include font(null, $fontSize + 1, #666);
+      }
+
+      & .program {
+        @include textOverflow;
+        font-size: $fontSize - 1;
+        color: #999;
+
+        & .duration {
+          margin-right: 10px;
+        }
+      }
+
+      & .list {
+        @include textOverflow;
+      }
+    }
+  }
+
+  & .miniAudio {
+    @include bgDecorate(rgba(0, 0, 0, 0.6), $white, 50px, 0, none);
+    @include position(fixed, "bl", 60px, 6%, 88%, 50px, 50px);
+    @include textOverflow;
+    @include displayFlex(flex, flex-start, center);
+
+    & .ratioBox {
+      width: 40px;
+      padding-bottom: 40px;
+      border-radius: 40px;
+      margin-left: 4px;
+      margin-top: 5px;
+      position: absolute;
+    }
+
+    & .info {
+      @include textOverflow;
+      width: 100%;
+      padding-left: 50px;
+      box-sizing: border-box;
+
+      & .album {
+        @include textOverflow;
+      }
+
+      & .program {
+        @include textOverflow;
+        font-size: $fontSize - 2;
+        color: #e6e6e6;
+
+        & .duration {
+          margin-right: 10px;
+        }
+      }
+
+      & .list {
+        @include textOverflow;
+      }
+    }
+
+    & .action {
+      @include displayFlex(flex, flex-end, center);
+      position: relative;
+      color: #e6e6e6;
+
+      & .category {
+        width: 20px;
+        height: 20px;
+        margin-right: 15px;
+      }
+
+      & .play {
+        font-size: 15px;
+        width: 30px;
+        height: 30px;
+        margin-right: 12px;
+        margin-left: 10px;
+        text-align: center;
+        line-height: 34px;
+        z-index: 1;
+      }
+
+      & .circle {
+        @include position(absolute, "br", 0, 12px, 30px, 30px, 0);
+        z-index: 0;
+      }
+    }
+
+    & .action::before {
+      content: "";
+      position: absolute;
+      width: 1px;
+      height: 30px;
+      top: 0;
+      right: 55px;
+      background-color: #e6e6e6;
+    }
+  }
+
+  .miniAudio.iphx {
+    bottom: 90px;
+  }
 }
 </style>
 
@@ -52,6 +216,12 @@ export default {
     }, 600);
   },
   methods: {
+    onOpen() {
+      // alert(999);
+    },
+    showPopup() {
+      this.audioData.popupModel = true;
+    },
     text() {
       return this.audioData.sliderValue.toFixed(0) + "%";
     },

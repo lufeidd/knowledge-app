@@ -118,7 +118,6 @@
 
 <style src="@/style/scss/pages/login/index.scss" lang="scss"></style>
 
-
 <script>
 import movie from "./../components/movie";
 import music from "./../components/music";

@@ -9,6 +9,14 @@ html {
   background-color: $greyLight;
 }
 
+.page {
+  padding-bottom: 60px;
+}
+
+.page.active {
+  padding-bottom: 60px;
+}
+
 #albumPage {
   & .listBox {
     @include displayFlex (flex, flex-start, flex-start);
@@ -17,11 +25,10 @@ html {
 
     & .left {
       margin-right: 10px;
+      margin-top: 5px;
 
       & .ratioBox {
         border-radius: 2px;
-
-        & .box {}
       }
     }
 
@@ -31,6 +38,20 @@ html {
       & .title {
         @include font("PingFangBold", $fontSize + 2, $white);
         @include twoLines;
+
+        & .text {
+          @include twoLines;
+          padding-right: 80px;
+        }
+
+        & .action {
+          @include position (absolute, 'tr', 15px, 15px, null, 20px, 20px);
+
+          & .icon {
+            width: 12px;
+            height: 12px;
+          }
+        }
       }
 
       & .subTitle {
@@ -53,35 +74,124 @@ html {
         }
 
         & .name {
-          max-width: 100px;
-          @include bgDecorate(rgba(0, 0, 0, .12), $white, 20px, 0 10px 0 1px, null);
+          max-width: 130px;
+          position: relative;
+          box-sizing: border-box;
+          @include bgDecorate(transparent, $white, 20px, 0, null);
+
 
           & img {
-              width: 15px;
-              height: 15px;
-              border-radius: 15px;
-              margin-right: 4px;
-              display: inline;
-              position: relative;
-              top: 2px;
+            position: absolute;
+            left: 1px;
+            top: 3px;
+            border-radius: 15px;
+
+          }
+
+          & .van-tag {
+            padding-left: 21px;
           }
         }
 
         & .count {
-            @include bgDecorate(rgba(0, 0, 0, .12), $white, 20px, 0 6px, null);
-          max-width: 100px;
+          @include bgDecorate(transparent, $white, 20px, 0, null);
         }
       }
     }
 
-    & .right {
+  }
+
+  & .tabContent {
+    padding: 0 15px;
+
+    & .title {
+      margin-top: 15px;
+      font-size: $fontSize - 1;
+
+      & .play {
+
+        margin-right: 12px;
+
+        & .van-icon {
+          width: 13px;
+          height: 13px;
+          margin-right: 2px;
+          position: relative;
+          top: 2px;
+        }
+
+      }
+
+      & .total {
+        font-size: $fontSize - 1;
+        color: #999;
+      }
 
       & .icon {
-        width: 14px;
-        height: 14px;
-        color: #ccc;
+        width: 20px;
+        height: 20px;
+        color: #999;
       }
     }
 
+    & .content {
+      margin-top: 15px;
+
+      // 节目
+      & .list {
+        @include displayFlex (flex, center, center);
+        padding: 8px 0;
+        border-bottom: 1px $greyLight solid;
+        position: relative;
+
+        & .rank {
+          font-size: $fontSize + 1;
+          color: #666;
+        }
+
+        & .desc {
+          @include twoLines;
+          @include font(null, $fontSize + 1, #000);
+
+          & .tag {
+            color: $redDark;
+            margin-right: 10px;
+            font-size: $fontSize - 2;
+          }
+        }
+
+        & .info {
+          margin-top: 8px;
+
+          & .van-tag {
+            padding: 0 4px;
+            margin-right: 10px;
+          }
+
+          & .count,
+          & .time {
+            font-size: $fontSize - 1;
+            color: #999;
+            margin-right: 10px;
+          }
+        }
+
+        & .date {
+          color: #999;
+          font-size: $fontSize - 1;
+        }
+
+        & .status {
+            @include position (absolute, 'br', 5px, 0, null, null, null);
+          & .icon {
+            width: 25px;
+            height: 25px;
+            color: $redDark;
+            margin-top: 10px;
+          }
+        }
+      }
+    }
   }
+
 }
