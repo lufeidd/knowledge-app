@@ -5,17 +5,17 @@
       <van-col span="16">
         <div class="ratioBox">
           <div class="box">
-            <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+            <router-link to="./../album/player"><img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75"></router-link>
           </div>
         </div>
 
-        <div class="info">
+        <router-link to="./../album/player" class="info">
           <div class="album">{{ audioData.album }}</div>
           <div class="program">
             <span class="duration">{{ audioData.duration }}</span>
             {{ audioData.program }}
           </div>
-        </div>
+        </router-link>
       </van-col>
       <van-col span="8" class="action">
         <svg class="icon category" aria-hidden="true" @click="showPopup">
@@ -106,11 +106,13 @@
 
     & .info {
       @include textOverflow;
+      display: block;
       width: 100%;
       padding-left: 50px;
       box-sizing: border-box;
 
       & .album {
+        color: $white;
         @include textOverflow;
       }
 
