@@ -42,15 +42,21 @@
         color: $cl6;
       }
     }
-    .van-tag{
-      @include textOverflow;
-      width: 60px;
-      text-align: center;
-    }
-    .van-row{
+    ul{
       margin-top: 15px;
-      .van-col{
-        padding-bottom: 15px;
+      li{
+        @include textOverflow;
+        display: inline-block;
+        width: 22%;
+        border-radius: 12px;
+        line-height: 24px;
+        background-color: $greyLight;
+        color: $cl6;
+        margin: 0 0 15px 10px;
+        text-align: center;
+        &:nth-child(4n+1){
+          margin-left: 0px;
+        }
       }
     }
   }

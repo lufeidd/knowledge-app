@@ -21,11 +21,9 @@
         <span class="history">搜索历史</span>
         <span class="clear" @click="clear">清除</span>
       </p>
-      <van-row type="flex" >
-        <van-col span="6" v-for="item,index in searchHistory">
-          <van-tag round text-color="#666" size="large" color="#f5f5f5">{{item}}</van-tag>
-        </van-col>
-      </van-row>
+      <ul>
+        <li v-for="item,index in searchHistory" :key="index">{{item}}</li>
+      </ul>
     </div>
   </div>
 </template>
