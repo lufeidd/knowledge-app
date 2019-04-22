@@ -253,7 +253,6 @@
     height: 80%;
   }
   .van-popup{
-    // position: relative;
     overflow: hidden;
     .headTitle{
       position: relative;
@@ -280,7 +279,10 @@
       color: $cl6;
       position: absolute;
       top: 43px;
-      overflow: auto;
+      bottom: 0;
+      overflow-y: auto;
+      width: 92%;
+
       .press{
         color: $cl3;
       }
