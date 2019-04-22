@@ -49,24 +49,16 @@
 
     <van-popup v-model="audioData.popupModel" position="bottom" @open="onOpen">
       <div class="audioList">
-        <!-- <div class="ratioBox">
-          <div class="box">
-            <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+        <div class="title">
+          <div class="action" @click="onClose">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-fold-line"></use>
+            </svg>
           </div>
-        </div>-->
-        <div>
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-videoPause-line"></use>
-          </svg>
+          <div>播放列表</div>
         </div>
-
-        <div class="info">
-          <div class="album">试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对</div>
-          <div class="program">
-            <span class="duration">时长16：00</span>
-            <span>已播1%</span>
-          </div>
-        </div>
+        <!-- 音频列表 -->
+        <audioList :audioListData="audioListData"></audioList>
       </div>
     </van-popup>
   </div>
@@ -75,43 +67,24 @@
 <style lang="scss">
 #miniAudio {
   & .audioList {
-    @include textOverflow;
-    @include displayFlex(flex, flex-start, center);
-    padding: 10px;
-    border-bottom: 1px #eee solid;
+    position: relative;
+    height: 94vh;
+    overflow: hidden;
+    & .title {
+      height: 44px;
+      line-height: 44px;
+      border-bottom: 1px #eee solid;
+      text-align: center;
+      position: relative;
+      @include displayFlex(flex, center, center);
+      @include font(null, $fontSize + 2, #999);
 
-    & .ratioBox {
-      width: 40px;
-      padding-bottom: 40px;
-      border-radius: 40px;
-      margin-left: 4px;
-      margin-top: 5px;
-      position: absolute;
-    }
-
-    & .info {
-      @include textOverflow;
-      width: 100%;
-      padding-left: 50px;
-      box-sizing: border-box;
-
-      & .album {
-        @include textOverflow;
-        @include font(null, $fontSize + 1, #666);
-      }
-
-      & .program {
-        @include textOverflow;
-        font-size: $fontSize - 1;
-        color: #999;
-
-        & .duration {
-          margin-right: 10px;
+      & .action {
+        @include position(absolute, "tl", 0, 0, 44px, 44px, null);
+        & .icon {
+          width: 20px;
+          height: 20px;
         }
-      }
-
-      & .list {
-        @include textOverflow;
       }
     }
   }
@@ -202,9 +175,46 @@
 </style>
 
 <script>
+import audioList from "./../pages/album/list";
 export default {
   name: "music",
   props: ["audioData"],
+  components: {
+    audioList
+  },
+  data() {
+    return {
+      audioListData: 
+        {
+          issue: {
+            pic:
+              "https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75",
+            text:
+              "宝宝巴士在线讲故事 宝宝巴士在线讲故事宝宝巴士在线讲故事宝宝巴士在线讲故事宝宝巴士在线讲故事"
+          },
+          albums: [
+            {
+              album:
+                "试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对",
+              duration: "16：00",
+              percent: "1%"
+            },
+            {
+              album:
+                "试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对",
+              duration: "16：00",
+              percent: "1%"
+            },
+            {
+              album:
+                "试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对",
+              duration: "16：00",
+              percent: "1%"
+            },
+          ]
+        }
+    };
+  },
   mounted() {
     setTimeout(() => {
       var id = this.audioData.id;
@@ -216,6 +226,13 @@ export default {
     }, 600);
   },
   methods: {
+    onClose() {
+      this.audioData.popupModel = false;
+    },
+    onPlay(key) {
+      console.log(key);
+      this.activeIndex = key;
+    },
     onOpen() {
       // alert(999);
     },

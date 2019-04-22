@@ -65,9 +65,9 @@
     <!-- axios -->
     <p>{{ axiosData }}</p>
     <!-- 视频 -->
-    <!-- <movie :movieData="movieData"></movie> -->
+    <movie :movieData="movieData"></movie>
     <!-- 音频 -->
-    <!-- <music :musicData="musicData"></music> -->
+    <music :musicData="musicData"></music>
     <!-- <miniAudio :audioData="audioData"></miniAudio> -->
     <!-- 上传图片 -->
     <upload :uploadData="uploadData"></upload>
@@ -229,10 +229,10 @@ export default {
     // console.log("this is current swiper instance object", this.swiper);
     // this.swiper.slideTo(3, 1000, false);
     // 音频
-    // this.musicData.src = require("./../assets/music.mp3");
+    this.musicData.src = require("./../assets/music.mp3");
     this.audioData.src = require("./../assets/music.mp3");
     // 视频
-    // this.movieData.src = require("./../assets/movie.mp4");
+    this.movieData.src = require("./../assets/movie.mp4");
   },
   methods: {
     changeImg() {

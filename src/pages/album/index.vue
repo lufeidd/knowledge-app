@@ -66,7 +66,7 @@
                 </svg>
               </van-col>
             </van-row>
-            <div class="content" >
+            <div class="content">
               <van-row class="list" v-for="(listItem, key) in item.list" :key="key">
                 <van-col span="2" class="rank">{{ key }}</van-col>
                 <van-col span="16">
@@ -161,7 +161,7 @@ import miniAudio from "./../../components/miniAudio";
 
 export default {
   components: {
-    miniAudio
+    miniAudio,
   },
   data() {
     return {
@@ -176,7 +176,7 @@ export default {
         album: "宝宝在线讲好听的故事 宝宝在线讲好听的故事",
         duration: "03:45",
         program: "1.哄睡觉方法 上了飞机率领的反垄断设计费",
-        popupModel: false
+        popupModel: false,
       },
       tabModel: 1,
       money: 5,
