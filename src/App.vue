@@ -71,7 +71,7 @@ export default {
     // this.$router.push("/search");
     // this.$router.push("/login/register");
     // this.$router.push("/personal/index");
-    this.$router.push("/brand/detail/article");
+    this.$router.push("/brand/mall");
   }
 };
 </script>

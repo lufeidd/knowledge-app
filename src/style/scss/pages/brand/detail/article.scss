@@ -9,7 +9,7 @@
     background-color: $white;
     padding: 15px;
     .title{
-      font-size: $fontSize + 1;
+      @include font("PingFangBlod", $fontSize + 1, null);
     }
     .from{
       @include displayFlex(flex,space-between,flex-start);
@@ -41,8 +41,7 @@
         font-size: $fontSize - 2;
       }
       .cancel{
-        background-color: $greyLight;
-        // color: $greyLight;
+        background-color: $greyDark;
       }
     }
     .content{
@@ -77,6 +76,7 @@
         padding: 10px ;
         .title{
           line-height: 1.2;
+          @include font("PingFangBlod", $fontSize, null);
         }
         .name{
           font-size: $fontSize - 2;
