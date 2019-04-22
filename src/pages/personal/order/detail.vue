@@ -8,7 +8,7 @@
     <div class="info">
       <div class="head">
         <div class="titleFrom">
-          <img v-lazy="publishData.icon" alt class="icon">
+          <img v-lazy="publishData.icon" class="icon">
           <span class="publish">{{publishData.from}}</span>
         </div>
       </div>
