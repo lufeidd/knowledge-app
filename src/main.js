@@ -31,7 +31,11 @@ import './style/iconfont/iconfont'
 
 // vant
 // import 'vant/lib/index.css'
-import { Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader, Cell, CellGroup, SwipeCell, Dialog, Icon, Popup, DatetimePicker, Actionsheet, AddressEdit, Lazyload, SwitchCell,Search,Tag,Circle } from 'vant'
+import {
+  Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader, Cell, CellGroup, SwipeCell, Dialog, Icon, Popup, DatetimePicker, Actionsheet, AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle, Tab, Tabs, GoodsAction,
+  GoodsActionBigBtn,
+  GoodsActionMiniBtn
+} from 'vant'
 Vue.use(Field)
 Vue.use(NavBar)
 Vue.use(Toast)
@@ -56,6 +60,11 @@ Vue.use(SwitchCell)
 Vue.use(Search)
 Vue.use(Tag)
 Vue.use(Circle)
+Vue.use(Tab)
+Vue.use(Tabs)
+Vue.use(GoodsAction)
+Vue.use(GoodsActionBigBtn)
+Vue.use(GoodsActionMiniBtn)
 
 Vue.use(plugin)
 // Vue.use(api)

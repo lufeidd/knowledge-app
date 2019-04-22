@@ -9,7 +9,6 @@
 @import url("./style/font/PingFangMedium.css");
 
 html {
-  max-width: 750px;
   margin: 0 auto;
   height: 100%;
   line-height: 1.5;
@@ -27,7 +26,8 @@ a {
   color: #000;
 }
 
-* {
+*,
+img {
   padding: 0;
   margin: 0;
 }
@@ -64,14 +64,10 @@ a {
 export default {
   name: "App",
   mounted() {
-    // this.$router.push("/personal/help/feedback");
-    // this.$router.push("/personal/comment/index");
-    // this.$router.push("/personal/remain/record");
+
+    this.$router.push("/album/player");
+    // this.$router.push("/album/index");
     // this.$router.push("/loginBF");
-    // this.$router.push("/search");
-    // this.$router.push("/login/register");
-    // this.$router.push("/personal/index");
-    this.$router.push("/brand/detail/article");
   }
 };
 </script>

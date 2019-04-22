@@ -21,9 +21,11 @@
         <span class="history">搜索历史</span>
         <span class="clear" @click="clear">清除</span>
       </p>
+      
       <ul>
         <li v-for="item,index in searchHistory" :key="index">{{item}}</li>
       </ul>
+
     </div>
   </div>
 </template>
