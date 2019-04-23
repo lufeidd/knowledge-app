@@ -1,0 +1,175 @@
+/*
+ * author: nancyzeng
+ * date:2019/4/22
+ */
+
+@charset "UTF-8";
+
+html {
+  background-color: $greyLight;
+}
+
+.page {
+  padding-bottom: 60px;
+}
+
+.page.active {
+  padding-bottom: 60px;
+}
+
+#detailPage {
+
+  & .ratioBox.banner {
+    padding-bottom: 50%;
+
+    & .box.layer {
+      background-color: rgba($color: #000000, $alpha: 0.4);
+      color: $white;
+      z-index: 1;
+      & .icon {
+          width: 45px;
+          height: 45px;
+      }
+    }
+  }
+
+  & .booklist {
+      background-color: $white;
+      padding: 0 20px 20px 20px;
+      & .title {
+          @include twoLines;
+          @include font("PingFangBold", $fontSize - 1, '#666');
+          margin-top: 8px;
+      }
+      & .ratioBox {
+          margin-top: 20px;
+      }
+  }
+
+  & .van-cell {
+      margin-top: 10px;
+  }
+
+  & .van-tabs--line {
+      margin-top: 10px;
+  }
+
+  // 详情
+  & .publish {
+    background-color: $white;
+    padding: 15px;
+    margin-top: 10px;
+    @include displayFlex(flex, space-between, center);
+
+    .from {
+      @include displayFlex(flex, flex-start, center);
+
+      .icon {
+        width: 35px;
+        height: 35px;
+        border: 1px solid $clC;
+        border-radius: 35px;
+        align-items: center;
+      }
+
+      .publishInfo {
+        margin-left: 7px;
+
+        .publishName {
+          @include font("PingFangBold", $fontSize, $cl6);
+        }
+
+        .focusNumber {
+          font-size: $fontSize - 2;
+          color: $cl9;
+        }
+      }
+    }
+
+    .focus {
+      font-size: $fontSize - 2;
+      color: #cbcbcb;
+      display: inline-block;
+      line-height: 20px;
+      border-radius: 10px;
+      padding: 0 10px;
+      border: 1px solid #cbcbcb;
+    }
+
+    .add {
+      color: $redDark;
+      border: 1px solid $redDark;
+    }
+  }
+
+  // 节目
+  & .listContent {
+    background-color: $white;
+    padding: 0 15px;
+
+    & .content {
+
+      // 节目
+      & .list {
+        @include displayFlex (flex, center, center);
+        padding: 8px 0;
+        border-bottom: 1px $greyLight solid;
+        position: relative;
+
+        & .rank {
+          font-size: $fontSize + 1;
+          color: #666;
+        }
+
+        & .desc {
+          @include twoLines;
+          @include font(null, $fontSize + 1, #000);
+
+          & .tag {
+            color: $redDark;
+            margin-right: 10px;
+            font-size: $fontSize - 2;
+          }
+        }
+
+        & .info {
+          margin-top: 8px;
+
+          & .van-tag {
+            padding: 0 4px;
+            margin-right: 10px;
+          }
+
+          & .count,
+          & .time {
+            font-size: $fontSize - 1;
+            color: #999;
+            margin-right: 10px;
+          }
+
+          & .history {
+            color: $redDark;
+            font-size: $fontSize - 2;
+          }
+        }
+
+        & .date {
+          color: #999;
+          font-size: $fontSize - 1;
+        }
+
+        & .status {
+          @include position (absolute, 'br', 5px, 0, null, null, null);
+
+          & .icon {
+            width: 25px;
+            height: 25px;
+            color: $redDark;
+            margin-top: 10px;
+          }
+        }
+      }
+    }
+  }
+
+}

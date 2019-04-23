@@ -19,15 +19,15 @@
 }
 
 // 单元格
-.van-cell {
-  font-size: $fontSize + 1;
-  color: #333;
-}
 
 .van-cell:not(:last-child)::after {
   left: 0;
 }
 
+.van-cell__title {
+  font-size: $fontSize + 1;
+  color: #333;
+}
 .van-cell__value {
   font-size: $fontSize - 1;
   color: #999;
@@ -74,7 +74,7 @@
 
 // tab标签页
 .van-tabs--line {
-  padding-top: 50px;
+  padding-top: 44px;
 }
 
 .van-tabs--line .van-tabs__wrap {
@@ -118,7 +118,7 @@
 }
 
 .van-tabs .van-tab__pane {
-  background-color: $white;
+  // background-color: $white;
 }
 
 
@@ -132,7 +132,6 @@
 .van-tag {
   font-size: $fontSize - 2;
 }
-
 // 比例图片
 .ratioBox {
   position: relative;

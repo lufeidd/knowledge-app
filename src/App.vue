@@ -67,6 +67,8 @@ export default {
 
     // this.$router.push("/album/player");
     // this.$router.push("/album/index");
+    // this.$router.push("/album/detail");
+    // this.$router.push("/brand/detail/book");
     // this.$router.push("/loginBF");
     // this.$router.push("/search");
     // this.$router.push("/login/register");
