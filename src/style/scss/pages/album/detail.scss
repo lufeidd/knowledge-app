@@ -68,6 +68,7 @@ html {
       @include displayFlex (flex, center, flex-start);
       padding: 15px;
       background-color: $white;
+      border-bottom: 1px $greyLight solid;
 
       & .left {
         @include flexBasis (35px);

@@ -471,6 +471,9 @@ export default {
     this.audioData.src = require("./../../assets/music.mp3");
   },
   methods: {
+    tabChange(){
+
+    },
     onPunish() {
       if (this.contentLength > this.contentTotal) {
         this.$toast("你发布的字数超出，请修改后再发布!");

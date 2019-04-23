@@ -6,7 +6,7 @@
 @charset "UTF-8";
 
 // 组件
-@import url("./../../components/navBar.scss");
+// @import url("./../../components/navBar.scss");
 @import url("./../../components/field.scss");
 @import url("./../../components/button.scss");
 @import url("./../../components/checkbox.scss");
@@ -18,22 +18,22 @@
     /*设置input placeholder颜色*/
     ::-webkit-input-placeholder,
     ::-webkit-textarea-placeholder {
-      font-size: 13px;
+      font-size: $fontSize - 1;
     }
 
     :-moz-placeholder {
-      font-size: 13px;
+      font-size: $fontSize - 1;
     }
 
     :-ms-input-placeholder,
     :-ms-textarea-placeholder {
-      font-size: 13px;
+      font-size: $fontSize - 1;
     }
   }
 
   .van-cell {
     border-bottom: 1px #d6d6d6 solid;
-    font-size: 15px;
+    font-size: $fontSize + 1;
     color: #000;
     padding: 10px 0;
     margin-bottom: 10px;
@@ -42,7 +42,7 @@
 
   .fieldBox {
     padding: 20px;
-    margin-top: 50px;
+    // margin-top: 50px;
   }
 
   .phone .van-field__label {
