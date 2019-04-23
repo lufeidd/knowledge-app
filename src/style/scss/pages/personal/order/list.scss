@@ -49,16 +49,15 @@
        .bookDetail{
          @include displayFlex(flex,flex-start,flex-start);
          .ratiobox{
-           width: 70px;
+           min-width: 60px;
           .bookImg{
             display: block;
-           @include ratioBox ( 70px, 100%, 1px solid $greyLight,contain, $white, null);
+           @include ratioBox ( null, 100%, 1px solid $greyLight,contain, $white, null);
           }
          }
          .title{
            margin-left: 10px;
-           font-size: $fontSize + 2;
-           color: $cl3;
+           @include font("PingFangBlod", $fontSize + 2, $cl3);
          }
        }
        .tip{
@@ -71,6 +70,9 @@
         .actulPay{
           font-size: $fontSize;
           color: $cl0;
+          .money{
+            @include font("PingFangBlod", $fontSize, $cl0);
+          }
         }
        }
      }

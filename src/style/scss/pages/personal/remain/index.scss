@@ -18,7 +18,7 @@
     font-size: $fontSize + 6;
 
     .money{
-      font-size: $fontSize + 26;
+      @include font("PingFangBlod", $fontSize + 26, null);
     }
 
     .currentRemain{
@@ -45,7 +45,7 @@
     font-size: $fontSize + 6;
 
     .money{
-      font-size: $fontSize + 26;
+      @include font("PingFangBlod", $fontSize + 26, null);
     }
 
     .currentRemain{

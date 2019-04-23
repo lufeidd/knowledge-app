@@ -20,6 +20,7 @@
   padding-right: 15px;
   .delet{
     font-size: $fontSize + 2;
+    @include font("PingFangBlod", $fontSize + 2, null);
   }
   .content{
     color: $cl9;

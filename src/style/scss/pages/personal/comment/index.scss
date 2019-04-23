@@ -54,10 +54,10 @@
              .ratiobox{
                background-color: $greyLight;
                border: 1px solid $greyLight;
-               width: 70px;
+               min-width: 60px;
               .bookImg{
                 display: block;
-               @include ratioBox ( 70px, 100%, null,contain, $white, null);
+               @include ratioBox ( null, 100%, null,contain, $white, null);
               }
              }
              .detailContent{
@@ -75,7 +75,7 @@
                color: $cl3;
              }
              .title.red{
-               color: $redDark;
+               @include font("PingFangBlod", $fontSize + 1,  $redDark);
              }
            }
          }
