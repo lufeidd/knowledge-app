@@ -16,8 +16,7 @@
   }
   .lh{
     line-height: 1;
-    font-size: $fontSize + 2;
-    color: $cl3;
+    @include font("PingFangBlod", $fontSize + 2, $cl3);
   }
   .all{
     font-size: $fontSize - 2;
@@ -41,10 +40,10 @@
       @include displayFlex(flex,flex-start,null);
       position: relative;
       .ratiobox{
-        max-width: 75px;
+        min-width: 64px;
        .bookImg{
          display: block;
-        @include ratioBox ( 75px, 136.6%, null,contain, $white, null);
+        @include ratioBox ( null, 136.6%, null,contain, $white, null);
        }
       }
       .bookContent{
@@ -65,8 +64,7 @@
           font-size: $fontSize - 2;
           color: $cl9;
           .title{
-            font-size: $fontSize + 2;
-            color: $cl3;
+            @include font("PingFangBlod", $fontSize + 2, $cl3);
           }
           .collect{
             color: $redDark;
@@ -103,7 +101,7 @@
       .publishInfo{
         margin-left: 7px;
         .publishName{
-          color: $cl6;
+          @include font("PingFangBlod",null, $cl6);
         }
         .foucsNumber{
           font-size: $fontSize - 2;
@@ -112,17 +110,15 @@
       }
     }
     .foucs{
-      font-size: $fontSize - 2;
-      color: $greyLight;
+      @include font("PingFangBlod", $fontSize - 2, $white);
+      background-color: $greyDark;
       display: inline-block;
       line-height: 20px;
       border-radius: 10px;
       padding: 0 10px;
-      border: 1px solid $greyLight;
     }
     .add{
-      color: $redDark;
-      border: 1px solid $redDark;
+      background-color: $redDark;
     }
   }
   .introduction{
@@ -162,10 +158,10 @@
       padding: 10px 15px 35px 15px;
       @include displayFlex(flex,flex-start,null);
       .ratiobox{
-        max-width: 65px;
+        min-width: 56px;
        .bookImg{
          display: block;
-        @include ratioBox ( 65px, 130.8%, null,contain, $white, null);
+        @include ratioBox ( null, 130.8%, null,contain, $white, null);
        }
       }
       .content{
@@ -197,15 +193,14 @@
     .recommendInfo{
       padding: 15px 0 15px 15px;
       .ratiobox{
-        max-width: 90px;
+        min-width: 77px;
        .bookImg{
          display: block;
-        @include ratioBox ( 90px, 133.3%, null,contain, $white, null);
+        @include ratioBox ( null, 133.3%, null,contain, $white, null);
        }
       }
       .recommendName{
-        font-size: $fontSize - 1;
-        color: $cl6;
+        @include font("PingFangBlod", $fontSize - 1, $cl6);
         margin-top: 5px;
         @include textOverflow;
       }
@@ -224,10 +219,10 @@
     .foot{
       @include displayFlex(flex,flex-start,null);
       .ratiobox{
-        max-width: 124px;
+        min-width: 106px;
        .bookImg{
          display: block;
-        @include ratioBox ( 124px, 58.87%, null,contain, $white, null);
+        @include ratioBox ( null, 58.87%, null,contain, $white, null);
        }
       }
       .content{
@@ -238,6 +233,7 @@
         padding: 10px ;
         .title{
           line-height: 1.2;
+          @include font("PingFangBlod", $fontSize, $cl3);
         }
         .name{
           font-size: $fontSize - 2;

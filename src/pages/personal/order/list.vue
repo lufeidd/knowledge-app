@@ -17,7 +17,7 @@
         </div>
         <div class="tip">
           <span class="noChange">虚拟内容不退不换</span>
-          <span class="actulPay">实付款：￥{{item.price.toFixed(2)}}</span>
+          <span class="actulPay">实付款：<span class="money">￥{{item.price.toFixed(2)}}</span></span>
         </div>
       </div>
       <div class="foot">

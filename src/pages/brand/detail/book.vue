@@ -171,6 +171,7 @@
         </swiper-slide>
       </swiper>
     </div>
+    <!-- 弹层部分 -->
     <van-popup v-model="introduct" position="bottom">
       <div class="headTitle">
         出版信息
