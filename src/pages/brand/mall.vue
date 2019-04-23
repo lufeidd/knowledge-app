@@ -22,11 +22,11 @@
         </swiper>
       </div>
     </div>
-    <div class="materialObject">
+    <div class="materialObject" v-for="item,index in goodsInfo">
       <div class="materialTitle">
         <div class="text">
           <span class="verticleLine"></span>
-          <span class="lh">实物商品</span>
+          <span class="lh">{{item.title}}</span>
         </div>
         <span class="all">
           全部 <svg class="icon" aria-hidden="true">
@@ -35,36 +35,13 @@
         </span>
       </div>
       <div class="goods">
-            <div class="goodsInfo" v-for="item,index in goodsInfo" :key="index">
+            <div class="goodsInfo" v-for="value,index in item.info">
               <div class="ratiobox">
-                <div class="bookImg" v-lazy:background-image="item.imgUrl"></div>
+                <div class="bookImg" v-lazy:background-image="value.imgUrl"></div>
               </div>
-              <p class="name">{{item.name}}</p>
-              <p class="message">{{item.message}}</p>
-              <p class="money">¥ {{item.money.toFixed(2)}}</p>
-            </div>
-      </div>
-    </div>
-    <div class="materialObject">
-      <div class="materialTitle">
-        <div class="text">
-          <span class="verticleLine"></span>
-          <span class="lh">专辑</span>
-        </div>
-        <span class="all">
-          全部 <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-next-line"></use>
-                </svg>
-        </span>
-      </div>
-      <div class="goods">
-            <div class="goodsInfo" v-for="item,index in goodsInfo" :key="index">
-              <div class="ratiobox">
-                <div class="bookImg" v-lazy:background-image="item.imgUrl"></div>
-              </div>
-              <p class="name">{{item.name}}</p>
-              <p class="message">{{item.message}}</p>
-              <p class="money">¥ {{item.money.toFixed(2)}}</p>
+              <p class="name">{{value.name}}</p>
+              <p class="message">{{value.message}}</p>
+              <p class="money">¥ {{value.money.toFixed(2)}}</p>
             </div>
       </div>
     </div>
@@ -96,10 +73,16 @@ export default {
       title:'这里是内容的标题，可能会很长有两行文字',
       message:'我是一条次要信息',
       money:23.00},],
-      goodsInfo:[{imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},
+      goodsInfo:[{title:'实物商品',
+      info:[{imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},
       {imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},
       {imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},
-      {imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},]
+      {imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},],},
+      {title:'专辑',
+      info:[{imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},
+      {imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},
+      {imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},
+      {imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},],},]
     }
   }
 }

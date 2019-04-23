@@ -6,15 +6,16 @@
  #listPage{
    background-color: $greyLight;
    width: 100%;
-   &:nth-last-child(){
-    margin-bottom: 25px;
-  }
+   padding-top: 5px;
+   padding-bottom: 20px;
    .content{
-
      background-color: $white;
      padding-left: 15px;
      padding-right: 15px;
      margin-top: 10px;
+     &:nth-child(1){
+       margin-top: 0;
+     }
      .head{
        line-height: 40px;
        border-bottom: 1px solid $greyLight;

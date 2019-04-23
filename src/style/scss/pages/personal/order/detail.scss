@@ -57,14 +57,29 @@
        .bookDetail{
          @include displayFlex(flex,flex-start,flex-start);
          .ratiobox{
-           min-width: 60px;
-          .bookImg{
-            display: block;
-           @include ratioBox ( null, 100%, null,contain, $white, null);
+          border-radius: 2px;
+          overflow: hidden;
+          position: relative;
+          .box{
+            .bookImg{
+              display: block;
+              width: 65px;
+              height: 65px;
+            }
+            & .tip {
+              @include position (absolute, 'bl', 0, 0, 100%, 15px, 0);
+              @include font(null, $fontSize - 2, $white);
+              @include textOverflow;
+              background-color: rgba($color: #000000, $alpha: 0.3);
+              text-align: center;
+            }
           }
          }
          .title{
+           display: inline-block;
+           max-width: 220px;
            margin-left: 10px;
+           @include textOverflow;
            @include font("PingFangBlod", $fontSize + 2, $cl3);
          }
        }

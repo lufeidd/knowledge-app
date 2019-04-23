@@ -15,7 +15,16 @@
       <div class="section">
         <div class="bookDetail">
           <div class="ratiobox">
-            <a class="bookImg" v-lazy:background-image="publishData.imgUrl"></a>
+            <div class="box">
+              <!-- <a class="bookImg" v-lazy:background-image="publishData.imgUrl"></a> -->
+              <img v-lazy="publishData.imgUrl" class="bookImg">
+              <div class="tip">
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-sound-line"></use>
+                </svg>
+                {{ publishData.watch }}
+              </div>
+            </div>
           </div>
           <span class="title">{{publishData.title}}</span>
         </div>
@@ -70,7 +79,8 @@ export default {
         from: "浙江出版集团",
         imgUrl:
           "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
-        title: "宝宝巴士在线讲故事"
+        title: "宝宝巴士在线讲故事",
+        watch:'32.7w',
       },
       priceInfo: {
         totalPrice: 95.0,
