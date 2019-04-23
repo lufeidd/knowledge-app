@@ -10,7 +10,7 @@
           <swiper-slide v-for="item,index in footInfo" :key="index">
             <div class="slide">
               <div class="ratiobox">
-                <a class="bookImg" v-lazy:background-image="item.imgUrl"></a>
+                <div class="bookImg" v-lazy:background-image="item.imgUrl"></div>
               </div>
               <div class="content">
                 <p class="title">{{item.title}}</p>
@@ -37,7 +37,7 @@
       <div class="goods">
             <div class="goodsInfo" v-for="item,index in goodsInfo" :key="index">
               <div class="ratiobox">
-                <a class="bookImg" v-lazy:background-image="item.imgUrl"></a>
+                <div class="bookImg" v-lazy:background-image="item.imgUrl"></div>
               </div>
               <p class="name">{{item.name}}</p>
               <p class="message">{{item.message}}</p>
@@ -60,9 +60,9 @@
       <div class="goods">
             <div class="goodsInfo" v-for="item,index in goodsInfo" :key="index">
               <div class="ratiobox">
-                <a class="bookImg" v-lazy:background-image="item.imgUrl"></a>
+                <div class="bookImg" v-lazy:background-image="item.imgUrl"></div>
               </div>
-              <p>{{item.name}}</p>
+              <p class="name">{{item.name}}</p>
               <p class="message">{{item.message}}</p>
               <p class="money">¥ {{item.money.toFixed(2)}}</p>
             </div>

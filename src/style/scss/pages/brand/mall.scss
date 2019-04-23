@@ -35,10 +35,9 @@
       .slide{
         @include displayFlex(flex,flex-start,null);
         .ratiobox{
-          min-width: 68px;
+          min-width: 80px;
          .bookImg{
-           display: block;
-          @include ratioBox ( null, 100%, null,contain, $white, null);
+          @include ratioBox ( 100%, 100%, null,contain, $white, null);
          }
         }
         .content{
@@ -76,14 +75,14 @@
         width: 46%;
         margin-bottom: 5px;
         .ratiobox{
-          min-width: 120px;
+          min-width: 136px;
          .bookImg{
-           display: block;
-          @include ratioBox ( null, 74%, null,contain, $white, null);
+          @include ratioBox ( 100%, 74%, null,contain, $white, null);
          }
         }
         .name{
           @include font("PingFangBlod", $fontSize, $cl3);
+          height: 42px;
         }
         .message{
           @include font("PingFangMedium", $fontSize - 2, $cl6);
