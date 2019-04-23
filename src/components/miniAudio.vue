@@ -5,7 +5,9 @@
       <van-col span="16">
         <div class="ratioBox">
           <div class="box">
-            <router-link to="./../album/player"><img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75"></router-link>
+            <router-link to="./../album/player">
+              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+            </router-link>
           </div>
         </div>
 
@@ -61,6 +63,8 @@
         <audioList :audioListData="audioListData"></audioList>
       </div>
     </van-popup>
+
+
   </div>
 </template>
 
@@ -186,35 +190,34 @@ export default {
   },
   data() {
     return {
-      audioListData: 
-        {
-          issue: {
-            pic:
-              "https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75",
-            text:
-              "宝宝巴士在线讲故事 宝宝巴士在线讲故事宝宝巴士在线讲故事宝宝巴士在线讲故事宝宝巴士在线讲故事"
+      audioListData: {
+        issue: {
+          pic:
+            "https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75",
+          text:
+            "宝宝巴士在线讲故事 宝宝巴士在线讲故事宝宝巴士在线讲故事宝宝巴士在线讲故事宝宝巴士在线讲故事"
+        },
+        albums: [
+          {
+            album:
+              "试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对",
+            duration: "16：00",
+            percent: "1%"
           },
-          albums: [
-            {
-              album:
-                "试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对",
-              duration: "16：00",
-              percent: "1%"
-            },
-            {
-              album:
-                "试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对",
-              duration: "16：00",
-              percent: "1%"
-            },
-            {
-              album:
-                "试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对",
-              duration: "16：00",
-              percent: "1%"
-            },
-          ]
-        }
+          {
+            album:
+              "试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对",
+            duration: "16：00",
+            percent: "1%"
+          },
+          {
+            album:
+              "试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对",
+            duration: "16：00",
+            percent: "1%"
+          }
+        ]
+      }
     };
   },
   mounted() {

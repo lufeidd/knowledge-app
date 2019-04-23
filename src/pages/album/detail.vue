@@ -39,8 +39,8 @@
     </div>
 
     <!-- 介绍 - 评论 -->
-    <van-tabs v-model="tabModel" animated swipeable sticky>
-      <van-tab v-for="(item, key) in tabData" :title="item.title" :key="key">
+    <van-tabs v-model="tabModel" sticky>
+      <van-tab @click="onClick" v-for="(item, key) in tabData" :title="item.title" :key="key">
         <template v-if="item.type == 'info'">
           <van-cell title="听了本节目的也在听" value/>
           <van-row gutter="20" class="booklist">
@@ -95,56 +95,7 @@
           </van-row>
           <van-cell title="评论 25" is-link value="我要评论"/>
         </template>
-        <template v-if="item.type == 'list'">
-          <div class="listContent">
-            <div class="content">
-              <van-row class="list" v-for="(listItem, key) in item.list" :key="key">
-                <van-col span="2" class="rank">{{ key }}</van-col>
-                <van-col span="16">
-                  <router-link to="./detail" class="desc">
-                    <span class="tag" v-if="listItem.free">免费</span>
-                    {{ listItem.desc }}
-                  </router-link>
-                  <div class="info">
-                    <template v-if="listItem.type == 'audio'">
-                      <van-tag color="#c8c8c8" text-color="#fff">音频</van-tag>
-                      <span class="count">
-                        <svg class="icon" aria-hidden="true">
-                          <use xlink:href="#icon-audio-line"></use>
-                        </svg>
-                        {{ listItem.count }}
-                      </span>
-                    </template>
-                    <template v-if="listItem.type == 'video'">
-                      <van-tag color="#c8c8c8" text-color="#fff">视频</van-tag>
-                      <span class="count">
-                        <svg class="icon" aria-hidden="true">
-                          <use xlink:href="#icon-video-line"></use>
-                        </svg>
-                        {{ listItem.count }}
-                      </span>
-                    </template>
-                    <span class="time">
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-time-line"></use>
-                      </svg>
-                      {{ listItem.time }}
-                    </span>
-                    <span class="history" v-if="listItem.history">{{ listItem.history }}</span>
-                  </div>
-                </van-col>
-                <van-col span="6" style="text-align:right;align-self:flex-start;">
-                  <div class="date">{{ listItem.date }}</div>
-                  <div class="status">
-                    <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-play-line"></use>
-                    </svg>
-                  </div>
-                </van-col>
-              </van-row>
-            </div>
-          </div>
-        </template>
+        <template v-if="item.type == 'list'"></template>
       </van-tab>
     </van-tabs>
 
@@ -201,18 +152,7 @@ export default {
         },
         {
           type: "list",
-          title: "评论",
-          list: [
-            {
-              free: true,
-              desc: "宝宝睡前故事19",
-              type: "audio",
-              count: 123,
-              time: "03:07",
-              date: "2019.04.19",
-              history: "已播6%"
-            }
-          ]
+          title: "评论"
         }
       ]
     };
@@ -221,14 +161,16 @@ export default {
     this.audioData.src = require("./../../assets/music.mp3");
   },
   methods: {
+    onClick(index, title) {
+      this.$toast(title);
+      console.log(title);
+      alert(888);
+    },
     addFocus() {
       this.focus = false;
     },
     cancelFocus() {
       this.focus = true;
-    },
-    onClose() {
-      this.showTag = false;
     },
     collectAction() {
       this.collect = !this.collect;
@@ -248,16 +190,12 @@ export default {
         this.$toast("取消收藏~");
       }
     },
-    onClick(index, title) {
-      this.$toast(title);
-    },
     onClickMiniBtn() {
       this.$toast("点击图标");
     },
     onClickBigBtn() {
       this.$toast("点击按钮");
-    },
-    onRank() {}
+    }
   }
 };
 </script>

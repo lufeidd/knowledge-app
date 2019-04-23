@@ -36,6 +36,7 @@ html {
   & .booklist {
       background-color: $white;
       padding: 0 20px 20px 20px;
+      box-sizing: border-box;
       & .title {
           @include twoLines;
           @include font("PingFangBold", $fontSize - 1, '#666');

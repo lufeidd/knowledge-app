@@ -64,9 +64,11 @@ img {
 export default {
   name: "App",
   mounted() {
+    
+    this.$router.push("/album/index");
 
     // this.$router.push("/album/player");
-    this.$router.push("/album/detail");
+    // this.$router.push("/album/detail");
     // this.$router.push("/brand/detail/book");
     // this.$router.push("/loginBF");
   }
