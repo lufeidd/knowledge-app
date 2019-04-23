@@ -18,11 +18,12 @@ html {
 }
 
 #albumPage {
-  
+
   & .audioList {
     position: relative;
     height: 94vh;
     overflow: hidden;
+
     & .title {
       height: 44px;
       line-height: 44px;
@@ -34,11 +35,42 @@ html {
 
       & .action {
         @include position(absolute, "tl", 0, 0, 44px, 44px, null);
+
         & .icon {
           width: 20px;
           height: 20px;
         }
       }
+
+      & .punish {
+        @include position(absolute, "tr", 0, 0, 60px, 44px, null);
+        color: $redDark;
+      }
+    }
+
+    & .content {
+      padding: 10px;
+
+      & textarea {
+        width: 100%;
+        border: 1px #ccc solid;
+        border-radius: 5px;
+        padding: 5px;
+        box-sizing: border-box;
+        min-height: 100px;
+      }
+
+      & .count {
+        font-size: $fontSize - 2;
+        color: #999;
+        text-align: right;
+
+        & .active {
+          color: $redDark;
+        }
+      }
+
+      
     }
   }
 

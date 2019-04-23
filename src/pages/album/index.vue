@@ -46,7 +46,7 @@
     </div>
 
     <!-- 介绍 - 节目 - 相似 -->
-    <van-tabs v-model="tabModel" animated swipeable>
+    <van-tabs v-model="tabModel" animated swipeable @click="tabChange">
       <van-tab v-for="(item, key) in tabData" :title="item.title" :key="key">
         <template v-if="item.type == 'info'">
           <div class="publish">
@@ -63,7 +63,7 @@
 
           <!-- 评论 -->
           <div class="commentBox">
-            <van-cell title="评论 25" is-link value="我要评论"/>
+            <van-cell title="评论 25" is-link value="我要评论" @click="openAnswer"/>
 
             <div class="listBox">
               <div class="left">
@@ -105,7 +105,7 @@
                 <!-- 回复 -->
                 <div class="answerBox">
                   <span class="date">2019.05.12 09:23</span>
-                  <span class="action" @click="answerAction">回复</span>
+                  <span class="action" @click="openAnswer">回复</span>
                 </div>
               </div>
             </div>
@@ -257,18 +257,24 @@
     <van-popup v-model="commentModel" position="bottom">
       <div class="audioList">
         <div class="title">
-          <div class="action" @click="onClose">
+          <div class="action" @click="commentClose">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-fold-line"></use>
             </svg>
           </div>
           <div>发表评论</div>
+          <div class="punish" @click="onPunish">发布</div>
         </div>
         <!-- 音频列表 -->
-        <textarea></textarea>
+        <div class="content">
+          <textarea v-model="contentModel" placeholder="快来写评论吧!" @input="inputChange"></textarea>
+          <div class="count">
+            <span :class="{ active: contentLength > contentTotal }">{{ contentLength }}</span>
+            /{{ contentTotal }}
+          </div>
+        </div>
       </div>
     </van-popup>
-
   </div>
 </template>
 
@@ -283,6 +289,9 @@ export default {
   },
   data() {
     return {
+      contentTotal: 30,
+      contentModel: "",
+      contentLength: 0,
       commentModel: false,
       commentData: [
         {
@@ -340,7 +349,7 @@ export default {
           ],
           messageLength: 4,
           isUnfold: false
-        }
+        },
       ],
       showTag: true,
       audioData: {
@@ -462,15 +471,23 @@ export default {
     this.audioData.src = require("./../../assets/music.mp3");
   },
   methods: {
-    answerAction() {
-      this.commentModel = true;
-    },
-    onClose() {
+    onPunish() {
+      if (this.contentLength > this.contentTotal) {
+        this.$toast("你发布的字数超出，请修改后再发布!");
+        return;
+      }
       this.commentModel = false;
     },
-    foldAction(){
-
+    inputChange(self) {
+      this.contentLength = this.contentModel.length;
     },
+    openAnswer() {
+      this.commentModel = true;
+    },
+    commentClose() {
+      this.commentModel = false;
+    },
+    foldAction() {},
     addFocus() {
       this.focus = false;
     },

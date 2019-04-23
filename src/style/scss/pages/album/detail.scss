@@ -19,6 +19,187 @@ html {
 
 #detailPage {
 
+  & .albumBox {
+    @include textOverflow;
+      @include displayFlex(flex, flex-start, center);
+      margin-top: 5px;
+      background-color: $white;
+      padding: 10px;
+      border-bottom: 1px #eee solid;
+
+      & .ratioBox {
+        width: 65px;
+        padding-bottom: 65px;
+        border-radius: 4px;
+        flex-shrink: 0;
+      }
+
+      & .issue {
+        margin-left: 10px;
+        @include textOverflow;
+
+        & .title {
+          @include font("PingFangBold", $fontSize + 2, #333);
+          @include textOverflow;
+        }
+
+        & .info {
+          margin-top: 20px;
+          @include textOverflow;
+          @include font(null, $fontSize - 1, #666);
+        }
+
+      & .img {
+        & .icon {
+          width: 22px;
+          height: 22px;
+          color: #e3e3e3;
+        }
+      }
+    }
+  }
+
+  // 评论
+  & .commentBox {
+    background-color: $white;
+    margin-top: 5px;
+
+    & .listBox {
+      @include displayFlex (flex, center, flex-start);
+      padding: 15px;
+      background-color: $white;
+
+      & .left {
+        @include flexBasis (35px);
+        margin-right: 10px;
+        margin-top: 5px;
+
+        & .ratioBox {
+          border-radius: 35px;
+        }
+      }
+
+      & .center {
+        display: block;
+
+        & .title {
+          @include font("PingFangBold", $fontSize - 1, #666);
+          @include textOverflow;
+          display: block;
+
+          & .text {
+            @include textOverflow;
+            display: block;
+            padding-right: 0;
+          }
+        }
+
+        & .subTitle {
+          @include font("PingFangBold", $fontSize, #333);
+          margin-top: 5px;
+          white-space: pre-wrap;
+          overflow: visible;
+          -webkit-line-clamp: 1000;
+        }
+
+        & .messageBox {
+          background-color: #f7f7f7;
+          padding: 5px;
+          margin-top: 5px;
+          font-size: $fontSize - 1;
+
+          & .message {
+            display: none;
+            margin-top: 2px;
+
+            & .name {
+              color: $orangeLight;
+            }
+
+            & .dialog {
+              color: #666;
+            }
+          }
+
+          & .message.active {
+            display: block;
+          }
+        }
+
+        // 回复
+        & .answerBox {
+          margin-top: 15px;
+
+          & .date {
+            @include font(null, $fontSize - 1, #999);
+            margin-right: 15px;
+          }
+
+          & .action {
+            @include font(null, $fontSize - 1, #333);
+            margin-right: 15px;
+          }
+        }
+      }
+    }
+
+  }
+
+  & .audioList {
+    position: relative;
+    height: 94vh;
+    overflow: hidden;
+
+    & .title {
+      height: 44px;
+      line-height: 44px;
+      border-bottom: 1px #eee solid;
+      text-align: center;
+      position: relative;
+      @include displayFlex(flex, center, center);
+      @include font(null, $fontSize + 2, #999);
+
+      & .action {
+        @include position(absolute, "tl", 0, 0, 44px, 44px, null);
+
+        & .icon {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      & .punish {
+        @include position(absolute, "tr", 0, 0, 60px, 44px, null);
+        color: $redDark;
+      }
+    }
+
+    & .content {
+      padding: 10px;
+
+      & textarea {
+        width: 100%;
+        border: 1px #ccc solid;
+        border-radius: 5px;
+        padding: 5px;
+        box-sizing: border-box;
+        min-height: 100px;
+      }
+
+      & .count {
+        font-size: $fontSize - 2;
+        color: #999;
+        text-align: right;
+
+        & .active {
+          color: $redDark;
+        }
+      }
+
+
+    }
+  }
+
   & .ratioBox.banner {
     padding-bottom: 50%;
 
@@ -26,40 +207,44 @@ html {
       background-color: rgba($color: #000000, $alpha: 0.4);
       color: $white;
       z-index: 1;
+
       & .icon {
-          width: 45px;
-          height: 45px;
+        width: 45px;
+        height: 45px;
       }
     }
   }
 
   & .booklist {
-      background-color: $white;
-      padding: 0 20px 20px 20px;
-      box-sizing: border-box;
-      & .title {
-          @include twoLines;
-          @include font("PingFangBold", $fontSize - 1, '#666');
-          margin-top: 8px;
-      }
-      & .ratioBox {
-          margin-top: 20px;
-      }
+    width: calc(100% + 10px);
+    background-color: $white;
+    padding: 0 10px 20px 20px;
+    box-sizing: border-box;
+
+    & .title {
+      @include twoLines;
+      @include font("PingFangBold", $fontSize - 1, '#666');
+      margin-top: 8px;
+    }
+
+    & .ratioBox {
+      margin-top: 20px;
+    }
   }
 
   & .van-cell {
-      margin-top: 10px;
+    margin-top: 5px;
   }
 
   & .van-tabs--line {
-      margin-top: 10px;
+    margin-top: 5px;
   }
 
   // 详情
   & .publish {
     background-color: $white;
     padding: 15px;
-    margin-top: 10px;
+    margin-top: 5px;
     @include displayFlex(flex, space-between, center);
 
     .from {
