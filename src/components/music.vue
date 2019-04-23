@@ -1,26 +1,149 @@
 <template>
-  <div class="music">
-    <p>currentTime:{{ musicData.currentTime }}</p>
-    <p>duration:{{ musicData.duration }}</p>
+  <div id="musicPage">
+    <div class="ratioBox">
+      <div class="box bg">
+        <img src="https://media2.v.bookuu.com/activity/10/00/20190422100004136.png">
+      </div>
+      <div class="box pic">
+        <img src="https://media2.v.bookuu.com/activity/10/00/20190422100004136.png">
+      </div>
+    </div>
+
+    <div class="descBox">
+      <div class="title">1.智能AI的发展前景值得关注 智能AI的发展前景值得关注智能AI的发展前景值得关注智能AI的发展前景值得关注</div>
+      <div class="subTitle">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-list-line"></use>
+        </svg>
+        <span>文稿</span>
+      </div>
+    </div>
+
     <audio :id="musicData.id" :src="musicData.src" preload="auto" @ended="ended"></audio>
-    <div @click="playAudio" v-if="musicData.type === 'play'">播放</div>
-    <div @click="pauseAudio" v-else>暂停</div>
-    <div style="padding:40px 0;">
+
+    <div class="sliderBox">
       <van-slider
         v-model="musicData.sliderValue"
         @change="audioSliderChange"
         :min="0"
         :max="100"
-        bar-height="4px"
-        active-color="#f44"
-      />
+        bar-height="2px"
+        active-color="#f05654"
+        inactive-color="#eee"
+      ></van-slider>
+      <div class="currentTime">{{ musicData.currentTime }}</div>
+      <div class="duration">{{ musicData.duration }}</div>
+    </div>
+
+    <div class="controlBox">
+
+      <div>
+        
+        <svg class="icon" aria-hidden="true" @click="showPopup">
+          <use xlink:href="#icon-category-line"></use>
+        </svg>
+      </div>
+
+      <div class="prev">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-prev-block"></use>
+        </svg>
+      </div>
+
+      <div class="play" @click="playAudio" v-if="musicData.type === 'play'">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-play-block"></use>
+        </svg>
+      </div>
+      <div class="pause" @click="pauseAudio" v-else>
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-pause-block"></use>
+        </svg>
+      </div>
+      <div class="next">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-next-block"></use>
+        </svg>
+      </div>
     </div>
   </div>
 </template>
 
 <style lang="scss">
-.music {
-  padding: 50px;
+#musicPage {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  & .ratioBox {
+    box-shadow: none;
+    & .box.bg {
+      -webkit-filter: blur(9px);
+      filter: blur(9px);
+      overflow: hidden;
+    }
+    & .box.pic {
+      width: 50%;
+      height: 50%;
+      left: 25%;
+      top: 25%;
+      border-radius: 100%;
+      background-color: $greyLight;
+      box-shadow: 4px 13px 32px rgba(0, 0, 0, 0.43);
+      overflow: hidden;
+    }
+  }
+
+  & .descBox {
+    @include textOverflow;
+    text-align: center;
+    padding: 10px 20px;
+    background-color: $white;
+    position: relative;
+    z-index: 1;
+    padding-top: 3vh;
+    & .title {
+      @include textOverflow;
+      @include font("PingFangBold", $fontSize + 2, #333);
+    }
+
+    & .subTitle {
+      @include textOverflow;
+      @include font(null, $fontSize + 1, #999);
+      padding: 10px;
+      & .icon {
+        margin-right: 4px;
+      }
+    }
+  }
+
+  & .sliderBox {
+    position: relative;
+    margin: 3vh 20px;
+    @include font(null, $fontSize, #999);
+    & .currentTime {
+      @include position(absolute, "bl", -30px, 0, null, null, null);
+    }
+    & .duration {
+      @include position(absolute, "br", -30px, 0, null, null, null);
+    }
+  }
+
+  & .controlBox {
+    @include displayFlex(flex, center, center);
+    margin-top: 10vh;
+    color: $redDark;
+    & .play .icon,
+    & .pause .icon {
+      width: 50px;
+      height: 50px;
+      padding: 0 35px;
+    }
+    & .prev .icon,
+    & .next .icon {
+      width: 28px;
+      height: 28px;
+    }
+  }
 }
 </style>
 

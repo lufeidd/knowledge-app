@@ -11,50 +11,19 @@ html {
 
 #focusPage {
 
-  .van-swipe-cell__left,
-  .van-swipe-cell__right {
-    background-color: $redDark;
-    width: 65px;
-    @include font(null, $fontSize - 2, $white);
-    @include displayFlex (flex, center, center);
-  }
-
-  & .msgBox {
-    text-align: center;
-    background-color: $white;
-    line-height: 1.5;
-    padding: 10px 0;
-    border-bottom: 1px $greyLight solid;
-    margin-top: 5px;
-    @include font("PingFangMedium", $fontSize - 2, #999);
-    @include textOverflow;
-  }
-
   & .listBox {
     padding: 10px 0;
     background-color: $white;
     border-bottom: 1px $greyLight solid;
-    @include displayFlex (flex, center, center);
 
     & .left {
-      @include flexBasis(70px);
       margin-left: 20px;
 
       & .ratioBox {
-        @include ratioBox (100%, 100%, null, contain, $greyLight, null);
         border-radius: 70px;
         overflow: hidden;
         color: #fed2d2;
         position: relative;
-
-        & .box {
-            @include position (absolute, 'tl', 0, 0, 100%, 100%, null);
-            @include displayFlex (flex, center, center);
-            & img{
-                max-width: 100%;
-                max-height: 100%;
-            }
-        }
       }
     }
 
@@ -88,5 +57,16 @@ html {
       }
     }
 
+  }
+
+  & .msgBox {
+    text-align: center;
+    background-color: $white;
+    line-height: 1.5;
+    padding: 10px 0;
+    border-bottom: 1px $greyLight solid;
+    margin-top: 5px;
+    @include font("PingFangMedium", $fontSize - 2, #999);
+    @include textOverflow;
   }
 }
