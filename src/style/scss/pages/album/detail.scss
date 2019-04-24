@@ -1,0 +1,361 @@
+/*
+ * author: nancyzeng
+ * date:2019/4/22
+ */
+
+@charset "UTF-8";
+
+html {
+  background-color: $greyLight;
+}
+
+.page {
+  padding-bottom: 60px;
+}
+
+.page.active {
+  padding-bottom: 60px;
+}
+
+#detailPage {
+
+  & .albumBox {
+    @include textOverflow;
+      @include displayFlex(flex, flex-start, center);
+      margin-top: 5px;
+      background-color: $white;
+      padding: 10px;
+      border-bottom: 1px #eee solid;
+
+      & .ratioBox {
+        width: 65px;
+        padding-bottom: 65px;
+        border-radius: 4px;
+        flex-shrink: 0;
+      }
+
+      & .issue {
+        margin-left: 10px;
+        @include textOverflow;
+
+        & .title {
+          @include font("PingFangBold", $fontSize + 2, #333);
+          @include textOverflow;
+        }
+
+        & .info {
+          margin-top: 20px;
+          @include textOverflow;
+          @include font(null, $fontSize - 1, #666);
+        }
+
+      & .img {
+        & .icon {
+          width: 22px;
+          height: 22px;
+          color: #e3e3e3;
+        }
+      }
+    }
+  }
+
+  // 评论
+  & .commentBox {
+    background-color: $white;
+    margin-top: 5px;
+
+    & .listBox {
+      @include displayFlex (flex, center, flex-start);
+      padding: 15px;
+      background-color: $white;
+
+      & .left {
+        @include flexBasis (35px);
+        margin-right: 10px;
+        margin-top: 5px;
+
+        & .ratioBox {
+          border-radius: 35px;
+        }
+      }
+
+      & .center {
+        display: block;
+
+        & .title {
+          @include font("PingFangBold", $fontSize - 1, #666);
+          @include textOverflow;
+          display: block;
+
+          & .text {
+            @include textOverflow;
+            display: block;
+            padding-right: 0;
+          }
+        }
+
+        & .subTitle {
+          @include font("PingFangBold", $fontSize, #333);
+          margin-top: 5px;
+          white-space: pre-wrap;
+          overflow: visible;
+          -webkit-line-clamp: 1000;
+        }
+
+        & .messageBox {
+          background-color: #f7f7f7;
+          padding: 5px;
+          margin-top: 5px;
+          font-size: $fontSize - 1;
+
+          & .message {
+            display: none;
+            margin-top: 2px;
+
+            & .name {
+              color: $orangeLight;
+            }
+
+            & .dialog {
+              color: #666;
+            }
+          }
+
+          & .message.active {
+            display: block;
+          }
+        }
+
+        // 回复
+        & .answerBox {
+          margin-top: 15px;
+
+          & .date {
+            @include font(null, $fontSize - 1, #999);
+            margin-right: 15px;
+          }
+
+          & .action {
+            @include font(null, $fontSize - 1, #333);
+            margin-right: 15px;
+          }
+        }
+      }
+    }
+
+  }
+
+  & .audioList {
+    position: relative;
+    height: 94vh;
+    overflow: hidden;
+
+    & .title {
+      height: 44px;
+      line-height: 44px;
+      border-bottom: 1px #eee solid;
+      text-align: center;
+      position: relative;
+      @include displayFlex(flex, center, center);
+      @include font(null, $fontSize + 2, #999);
+
+      & .action {
+        @include position(absolute, "tl", 0, 0, 44px, 44px, null);
+
+        & .icon {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      & .punish {
+        @include position(absolute, "tr", 0, 0, 60px, 44px, null);
+        color: $redDark;
+      }
+    }
+
+    & .content {
+      padding: 10px;
+
+      & textarea {
+        width: 100%;
+        border: 1px #ccc solid;
+        border-radius: 5px;
+        padding: 5px;
+        box-sizing: border-box;
+        min-height: 100px;
+      }
+
+      & .count {
+        font-size: $fontSize - 2;
+        color: #999;
+        text-align: right;
+
+        & .active {
+          color: $redDark;
+        }
+      }
+
+
+    }
+  }
+
+  & .ratioBox.banner {
+    padding-bottom: 50%;
+
+    & .box.layer {
+      background-color: rgba($color: #000000, $alpha: 0.4);
+      color: $white;
+      z-index: 1;
+
+      & .icon {
+        width: 45px;
+        height: 45px;
+      }
+    }
+  }
+
+  & .booklist {
+    width: calc(100% + 10px);
+    background-color: $white;
+    padding: 0 10px 20px 20px;
+    box-sizing: border-box;
+
+    & .title {
+      @include twoLines;
+      @include font("PingFangBold", $fontSize - 1, '#666');
+      margin-top: 8px;
+    }
+
+    & .ratioBox {
+      margin-top: 20px;
+    }
+  }
+
+  & .van-cell {
+    margin-top: 5px;
+  }
+
+  & .van-tabs--line {
+    margin-top: 5px;
+  }
+
+  // 详情
+  & .publish {
+    background-color: $white;
+    padding: 15px;
+    margin-top: 5px;
+    @include displayFlex(flex, space-between, center);
+
+    .from {
+      @include displayFlex(flex, flex-start, center);
+
+      .icon {
+        width: 35px;
+        height: 35px;
+        border: 1px solid $clC;
+        border-radius: 35px;
+        align-items: center;
+      }
+
+      .publishInfo {
+        margin-left: 7px;
+
+        .publishName {
+          @include font("PingFangBold", $fontSize, $cl6);
+        }
+
+        .focusNumber {
+          font-size: $fontSize - 2;
+          color: $cl9;
+        }
+      }
+    }
+
+    .focus {
+      font-size: $fontSize - 2;
+      color: #cbcbcb;
+      display: inline-block;
+      line-height: 20px;
+      border-radius: 10px;
+      padding: 0 10px;
+      border: 1px solid #cbcbcb;
+    }
+
+    .add {
+      color: $redDark;
+      border: 1px solid $redDark;
+    }
+  }
+
+  // 节目
+  & .listContent {
+    background-color: $white;
+    padding: 0 15px;
+
+    & .content {
+
+      // 节目
+      & .list {
+        @include displayFlex (flex, center, center);
+        padding: 8px 0;
+        border-bottom: 1px $greyLight solid;
+        position: relative;
+
+        & .rank {
+          font-size: $fontSize + 1;
+          color: #666;
+        }
+
+        & .desc {
+          @include twoLines;
+          @include font(null, $fontSize + 1, #000);
+
+          & .tag {
+            color: $redDark;
+            margin-right: 10px;
+            font-size: $fontSize - 2;
+          }
+        }
+
+        & .info {
+          margin-top: 8px;
+
+          & .van-tag {
+            padding: 0 4px;
+            margin-right: 10px;
+          }
+
+          & .count,
+          & .time {
+            font-size: $fontSize - 1;
+            color: #999;
+            margin-right: 10px;
+          }
+
+          & .history {
+            color: $redDark;
+            font-size: $fontSize - 2;
+          }
+        }
+
+        & .date {
+          color: #999;
+          font-size: $fontSize - 1;
+        }
+
+        & .status {
+          @include position (absolute, 'br', 5px, 0, null, null, null);
+
+          & .icon {
+            width: 25px;
+            height: 25px;
+            color: $redDark;
+            margin-top: 10px;
+          }
+        }
+      }
+    }
+  }
+
+}

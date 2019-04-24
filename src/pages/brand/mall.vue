@@ -6,7 +6,7 @@
         <span class="lh">热门推荐</span>
       </div>
       <div class="showContent">
-        <swiper class='swiperTags' :options="swiperOption" ref="mySwiper">
+        <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
           <swiper-slide v-for="item,index in footInfo" :key="index">
             <div class="slide">
               <div class="ratiobox">
@@ -29,9 +29,10 @@
           <span class="lh">{{item.title}}</span>
         </div>
         <span class="all">
-          全部 <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-next-line"></use>
-                </svg>
+          全部
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-next-line"></use>
+          </svg>
         </span>
       </div>
       <div class="goods">
@@ -52,10 +53,10 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       swiperOption: {
-        slidesPerView: 1.2,
+        slidesPerView: 1.2
       },
       footInfo:[{imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
       title:'这里是内容的标题，可能会很长有两行文字',
@@ -85,5 +86,5 @@ export default {
       {imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},],},]
     }
   }
-}
+};
 </script>
