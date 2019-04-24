@@ -198,7 +198,7 @@
       <div class="content">
         <ul>
           <li v-for="item in chapterList">
-            <span>{{item.number}}</span>&nbsp&nbsp
+            <span>{{item.number}}</span>&nbsp;&nbsp;
             <span>{{item.name}}</span>
           </li>
         </ul>

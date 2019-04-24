@@ -11,7 +11,7 @@ import register from '@/pages/login/register'
 import remain from '@/pages/personal/remain/index'
 import record from '@/pages/personal/remain/record'
 import account from '@/pages/personal/remain/account'
-import detail from '@/pages/personal/remain/detail'
+import remaindetail from '@/pages/personal/remain/detail'
 
 // 个人中心 - 首页
 import personal from '@/pages/personal/index'
@@ -24,6 +24,7 @@ import history from '@/pages/personal/history'
 import orderlist from '@/pages/personal/order/list'
 import orderdetail from '@/pages/personal/order/detail'
 import orderinvoice from '@/pages/personal/order/invoice'
+import ordercomment from '@/pages/personal/order/comment'
 // 退款
 import refundedit from '@/pages/personal/order/edit'
 import logistics from '@/pages/personal/order/logistics'
@@ -66,6 +67,12 @@ import brand from '@/pages/brand/index'
 import mall from '@/pages/brand/mall'
 import article from '@/pages/brand/detail/article'
 import book from '@/pages/brand/detail/book'
+
+// 购物车
+import cart from '@/pages/cart'
+
+// 商品详情
+import detail from '@/pages/detail'
 
 
 // 备份
@@ -135,8 +142,8 @@ export default new Router({
     },
     {
       path: '/personal/remain/detail',
-      name: 'detail',
-      component: detail
+      name: 'remaindetail',
+      component: remaindetail
     },
     // 个人中心 - 我的购买 - 下单
     {
@@ -148,6 +155,11 @@ export default new Router({
       path: '/personal/order/list',
       name: 'orderlist',
       component: orderlist
+    },
+    {
+      path: '/personal/order/comment',
+      name: 'ordercomment',
+      component: ordercomment
     },
     {
       path: '/personal/order/invoice',
@@ -305,6 +317,18 @@ export default new Router({
       path: '/brand/detail/book',
       name: 'book',
       component: book
+    },
+    // 购物车
+    {
+      path: '/cart',
+      name: 'cart',
+      component: cart
+    },
+    // 商品详情
+    {
+      path: '/detail',
+      name: 'detail',
+      component: detail
     },
     // 备份
     {

@@ -109,9 +109,14 @@
                 </div>
               </div>
             </div>
+            
           </div>
         </template>
         <template v-if="item.type == 'list'">
+          <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+            <van-cell v-for="item in list" :key="item" :title="item"/>
+          </van-list>
+
           <div class="listContent">
             <van-row class="title">
               <van-col span="12">
@@ -289,6 +294,10 @@ export default {
   },
   data() {
     return {
+      list: [],
+      loading: false,
+      finished: false,
+
       contentTotal: 30,
       contentModel: "",
       contentLength: 0,
@@ -349,7 +358,7 @@ export default {
           ],
           messageLength: 4,
           isUnfold: false
-        },
+        }
       ],
       showTag: true,
       audioData: {
@@ -471,9 +480,22 @@ export default {
     this.audioData.src = require("./../../assets/music.mp3");
   },
   methods: {
-    tabChange(){
+    onLoad() {
+      // 异步更新数据
+      setTimeout(() => {
+        for (let i = 0; i < 10; i++) {
+          this.list.push(this.list.length + 1);
+        }
+        // 加载状态结束
+        this.loading = false;
 
+        // 数据全部加载完成
+        if (this.list.length >= 40) {
+          this.finished = true;
+        }
+      }, 500);
     },
+    tabChange() {},
     onPunish() {
       if (this.contentLength > this.contentTotal) {
         this.$toast("你发布的字数超出，请修改后再发布!");

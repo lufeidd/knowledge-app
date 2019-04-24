@@ -28,6 +28,11 @@ a {
 
 *,
 img {
+	-webkit-tap-highlight-color: transparent;
+	-ms-tap-highlight-color: transparent;
+	-moz-tap-highlight-color: transparent;
+	-o-tap-highlight-color: transparent;
+	-webkit-touch-callout: none;
   padding: 0;
   margin: 0;
 }
@@ -64,10 +69,14 @@ img {
 export default {
   name: "App",
   mounted() {
+// 
+    this.$router.push("/detail");
 
-    // this.$router.push("/album/index");
+    // this.$router.push("/cart");
 
-    this.$router.push("/login/register");
+    // this.$router.push("/album/player");
+
+    // this.$router.push("/login/register");
     
     // this.$router.push("/search");
 
@@ -75,7 +84,10 @@ export default {
 
     // this.$router.push("/personal/index");
 
+    // this.$router.push("/personal/set/address");
     // this.$router.push("/brand/mall");
+
+    // this.$router.push("/brand/detail/book");
   }
 };
 </script>

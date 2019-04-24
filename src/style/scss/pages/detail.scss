@@ -1,0 +1,177 @@
+/*
+ * author: nancyzeng
+ * date:2019/4/24
+ */
+
+@charset "utf-8";
+
+
+@import url("./../components/dateTimePicker.scss");
+
+html {
+  background-color: $greyLight;
+}
+
+#detailPage {
+    padding-bottom: 60px;
+  & .introduction {
+    background-color: $white;
+    padding: 10px 15px 0 15px;
+    margin-top: 5px;
+
+    & .lh {
+      line-height: 1;
+      @include font("PingFangBlod", $fontSize + 1, $cl3);
+    }
+
+    & .verticleLine {
+      display: inline-block;
+      width: 3px;
+      height: 11px;
+      border-radius: 1.5px;
+      background-color: $redDark;
+    }
+
+    & .detail {
+      margin-top: 5px;
+      font-size: $fontSize - 1;
+      line-height: 30px;
+      color: #666;
+    }
+
+    & .action {
+        border-top: 1px $greyLight solid;
+        text-align: center;
+        line-height: 35px;
+        @include font(null, $fontSize - 2, #999);
+    }
+  }
+
+  & .audioListBox {
+    @include position(absolute, "tl", 44px, 0, 100%, null, null);
+    bottom: 50px;
+    overflow-y: scroll;
+    padding: 10px 0;
+
+    & li {
+      @include displayFlex(flex, flex-start, center);
+      @include font(null, $fontSize + 1, #999);
+      padding: 10px;
+      position: relative;
+
+      & .img {
+        & .icon {
+          width: 17px;
+          height: 17px;
+        }
+      }
+
+      & .info {
+        width: 100%;
+        padding-left: 8px;
+        box-sizing: border-box;
+
+        & .album {
+          @include twoLines;
+        }
+
+      }
+    }
+
+    & li.active {
+      @include font(null, $fontSize + 1, $redDark);
+    }
+  }
+
+  & .button {
+    @include position(absolute, "bl", 0, 0, 100%, 50px, null);
+  }
+
+  & .audioList {
+    position: relative;
+    height: 94vh;
+    overflow: hidden;
+
+    & .title {
+      height: 44px;
+      line-height: 44px;
+      border-bottom: 1px #eee solid;
+      text-align: center;
+      position: relative;
+      @include displayFlex(flex, center, center);
+      @include font(null, $fontSize + 2, #999);
+
+      & .action {
+        @include position(absolute, "tl", 0, 0, 44px, 44px, null);
+
+        & .icon {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+
+  & .infoBox {
+    padding: 0 15px;
+    background-color: $white;
+    margin-top: 5px;
+
+    & .info {
+      @include font(null, $fontSize - 1, #999);
+      line-height: 45px;
+
+      & .price {
+        @include font("PingFangBold", 20px, $redDark);
+        margin-right: 15px;
+      }
+
+      & del {
+        @include font(null, $fontSize + 1, #999);
+      }
+    }
+
+    & .title {
+      @include font("PingFangBold", 17px, #333);
+      @include twoLines;
+    }
+  }
+
+  & .ratioBox {
+    background-color: $white;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  & .van-swipe {
+    cursor: pointer;
+
+    &-item {
+      color: $white;
+      font-size: 20px;
+      text-align: center;
+      line-height: 150px;
+
+    }
+
+  }
+
+  & .custom-indicator {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    padding: 2px 5px;
+    font-size: 12px;
+    color: $white;
+    background: rgba(0, 0, 0, .5);
+  }
+
+  & .van-swipe__indicator {
+    width: 8px;
+    height: 8px;
+    opacity: 1;
+    background-color: rgba($color: #000000, $alpha: 0.5);
+
+  }
+
+}
