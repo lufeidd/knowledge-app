@@ -20,9 +20,18 @@ import focus from '@/pages/personal/focus'
 import history from '@/pages/personal/history'
 
 // 个人中心 - 我的购买
+// 下单
 import orderlist from '@/pages/personal/order/list'
 import orderdetail from '@/pages/personal/order/detail'
 import orderinvoice from '@/pages/personal/order/invoice'
+// 退款
+import refundedit from '@/pages/personal/order/edit'
+import logistics from '@/pages/personal/order/logistics'
+import ongoing from '@/pages/personal/order/ongoing'
+import refundtype from '@/pages/personal/order/type'
+import refundone from '@/pages/personal/order/refund/one'
+import refundtwo from '@/pages/personal/order/refund/two'
+import refundthree from '@/pages/personal/order/refund/three'
 
 // 个人中心 - 设置
 import set from '@/pages/personal/set/index'
@@ -57,6 +66,7 @@ import brand from '@/pages/brand/index'
 import mall from '@/pages/brand/mall'
 import article from '@/pages/brand/detail/article'
 import book from '@/pages/brand/detail/book'
+
 
 // 备份
 import loginbf from '@/pages/loginBF'
@@ -128,7 +138,7 @@ export default new Router({
       name: 'detail',
       component: detail
     },
-    // 个人中心 - 我的购买
+    // 个人中心 - 我的购买 - 下单
     {
       path: '/personal/order/detail',
       name: 'orderdetail',
@@ -143,6 +153,42 @@ export default new Router({
       path: '/personal/order/invoice',
       name: 'orderinvoice',
       component: orderinvoice
+    },
+    // 个人中心 - 我的购买 - 退款
+    {
+      path: '/personal/order/edit',
+      name: 'refundedit',
+      component: refundedit
+    },
+    {
+      path: '/personal/order/logistics',
+      name: 'logistics',
+      component: logistics
+    },
+    {
+      path: '/personal/order/ongoing',
+      name: 'ongoing',
+      component: ongoing
+    },
+    {
+      path: '/personal/order/type',
+      name: 'refundtype',
+      component: refundtype
+    },
+    {
+      path: '/personal/order/refund/one',
+      name: 'refundone',
+      component: refundone
+    },
+    {
+      path: '/personal/order/refund/two',
+      name: 'refundtwo',
+      component: refundtwo
+    },
+    {
+      path: '/personal/order/refund/three',
+      name: 'refundthree',
+      component: refundthree
     },
     // 个人中心 - 设置
     {
