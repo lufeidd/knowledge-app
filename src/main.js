@@ -30,8 +30,15 @@ import regeneratorRuntime from './regenerator-runtime/runtime';
 // vant
 // import 'vant/lib/index.css'
 import {
-  Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader, Cell, CellGroup, SwipeCell, Dialog, Icon, Popup, DatetimePicker, Actionsheet, AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle, Tab, Tabs, GoodsAction,
-  GoodsActionBigBtn, GoodsActionMiniBtn, List, Stepper, SubmitBar, Swipe, SwipeItem, Area
+  Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
+  Cell, CellGroup,
+  Icon, Popup, DatetimePicker, SwipeCell, Dialog, Actionsheet, AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle,
+  Tab, Tabs,
+  GoodsAction, GoodsActionBigBtn, GoodsActionMiniBtn,
+  Step, Steps,
+  List, Stepper, SubmitBar,
+  Swipe, SwipeItem,
+  Area
 } from 'vant'
 Vue.use(Field)
 Vue.use(Toast)
@@ -54,9 +61,9 @@ Vue.use(SwitchCell)
 Vue.use(Search)
 Vue.use(Tag)
 Vue.use(Circle)
-Vue.use(Tab)
-Vue.use(Tabs)
+Vue.use(Tab).use(Tabs)
 Vue.use(GoodsAction).use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
+Vue.use(Step).use(Steps)
 Vue.use(List)
 Vue.use(Stepper)
 Vue.use(SubmitBar)
