@@ -75,14 +75,6 @@
       <div class="action">展开全部</div>
     </div>
 
-    <!-- <van-address-edit
-      show-set-default
-      :address-info="addressInfo"
-      :area-list="areaList"
-      @save="onSave"
-      @delete="onDelete"
-    /> -->
-
     <van-goods-action>
       <van-goods-action-mini-btn icon="cart-o" text="购物车" @click="onClickMiniBtn"/>
       <van-goods-action-big-btn text="加入购物车" @click="onClickBigBtn"/>
@@ -92,12 +84,12 @@
     <van-popup v-model="popupModel" position="bottom" @open="onOpen">
       <div class="audioList">
         <div class="title">
-          <div class="action" @click="onClose">
+          <div class="action" @click="hidePopup">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-fold-line"></use>
             </svg>
           </div>
-          <div>配送至:</div>
+          <div>配送至</div>
         </div>
 
         <ul class="audioListBox">
@@ -119,7 +111,9 @@
           </li>
         </ul>
 
-        <van-button size="large" class="button">选择其他地区</van-button>
+        <van-area class="areaBox" :area-list="areaList" :columns-num="3" title="配送至" @cancel="hidePopup"/>
+
+        <van-button size="large" class="button" @click="showArea">选择其他地区</van-button>
       </div>
     </van-popup>
   </div>
@@ -135,30 +129,31 @@ export default {
         name: "曾",
         tel: "15266666666"
       },
-    //   areaList: {
-    //     province_list: {
-    //       110000: "北京市",
-    //       120000: "天津市"
-    //     },
-    //     city_list: {
-    //       110100: "北京市",
-    //       110200: "县",
-    //       120100: "天津市",
-    //       120200: "县"
-    //     },
-    //     county_list: {
-    //       110101: "东城区",
-    //       110102: "西城区",
-    //       110105: "朝阳区",
-    //       110106: "丰台区",
-    //       120101: "和平区",
-    //       120102: "河东区",
-    //       120103: "河西区",
-    //       120104: "南开区",
-    //       120105: "河北区"
-    //       // ....
-    //     }
-    //   },
+      areaList: {
+        province_list: {
+          110000: "北京市",
+          120000: "天津市"
+        },
+        city_list: {
+          110100: "北京市",
+          110200: "县",
+          120100: "天津市",
+          120200: "县"
+        },
+        county_list: {
+          110101: "东城区",
+          110102: "西城区",
+          110105: "朝阳区",
+          110106: "丰台区",
+          120101: "和平区",
+          120102: "河东区",
+          120103: "河西区",
+          120104: "南开区",
+          120105: "河北区"
+          // ....
+        }
+      },
+
       activeIndex: 1,
       audioListData: {
         albums: [
@@ -187,11 +182,15 @@ export default {
     };
   },
   methods: {
+    showArea() {
+      $(".areaBox").css("display", "block");
+      $(".audioListBox, .audioList .button, .audioList .title").css("display", "none");
+    },
     onPlay(key) {
       console.log(key);
       this.activeIndex = key;
     },
-    onClose() {
+    hidePopup() {
       this.popupModel = false;
     },
     onOpen() {

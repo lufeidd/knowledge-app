@@ -47,6 +47,10 @@ html {
     }
   }
 
+  & .areaBox {
+    display: none;
+  }
+
   & .audioListBox {
     @include position(absolute, "tl", 44px, 0, 100%, null, null);
     bottom: 50px;
