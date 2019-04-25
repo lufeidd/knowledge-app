@@ -69,9 +69,18 @@ img {
 export default {
   name: "App",
   mounted() {
-// 
-    this.$router.push("/detail");
 
+    // this.$router.push("/detail");
+
+    // this.$router.push("/album/index");
+    
+    // this.$router.push("/album/detail");
+
+    // this.$router.push("/album/player");
+    
+    // this.$router.push("/brand/detail/article");
+    // this.$router.push("/loginBF");
+    
     // this.$router.push("/cart");
 
     // this.$router.push("/album/player");
@@ -82,7 +91,7 @@ export default {
 
     // this.$router.push("/login/register");
 
-    // this.$router.push("/personal/index");
+    this.$router.push("/personal/order/refund/one");
 
     // this.$router.push("/personal/set/address");
     // this.$router.push("/brand/mall");

@@ -5,10 +5,11 @@
 
 #detailPage{
   background-color: $greyLight;
-  height: 100%;
+  padding-bottom: 30px;
   .van-cell{
     font-size: $fontSize - 1;
     color: $cl9;
+    padding: 5px 15px;
      &:not(:last-child)::after{
       border: 0;
     }
@@ -17,7 +18,6 @@
       color: $cl3;
     }
   }
-  height: 100%;
   .state{
     padding-left: 15px;
     padding-right: 15px;
@@ -26,10 +26,50 @@
     @include font(null, $fontSize + 4, null);
     @include bgDecorate($redDark, $white, null, null, null);
   }
+  .signfor{
+    padding: 10px 15px;
+    position: relative;
+    background-color: $white;
+    border-bottom: 1px solid $greyLight;
+    @include displayFlex(flex,null,null);
+    .signforFrom{
+      margin-left: 5px;
+      display: flex;
+      flex-direction: column;
+      align-content: space-between;
+      @include textOverflow;
+      .signDate{
+        font-size: $fontSize - 1;
+        color: $cl9;
+        margin-top: 5px;
+      }
+      .signforPeople{
+        @include textOverflow;
+      }
+      .address{
+        white-space: pre-wrap;
+        margin-top: 5px;
+        font-size: $fontSize - 1;
+        color: $cl6;
+      }
+    }
+    .car{
+      margin-top: 3px;
+      color: $cl6;
+    }
+    .arrow{
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      margin-top: -7px;
+      color: $cl9;
+    }
+  }
   .info{
     padding-left: 15px;
     padding-right: 15px;
     background-color: $white;
+    margin-top: 10px;
     .head{
       line-height: 40px;
       border-bottom: 1px solid $greyLight;
@@ -57,14 +97,29 @@
        .bookDetail{
          @include displayFlex(flex,flex-start,flex-start);
          .ratiobox{
-           min-width: 60px;
-          .bookImg{
-            display: block;
-           @include ratioBox ( null, 100%, null,contain, $white, null);
+          border-radius: 2px;
+          overflow: hidden;
+          position: relative;
+          .box{
+            .bookImg{
+              display: block;
+              width: 65px;
+              height: 65px;
+            }
+            & .tip {
+              @include position (absolute, 'bl', 0, 0, 100%, 15px, 0);
+              @include font(null, $fontSize - 2, $white);
+              @include textOverflow;
+              background-color: rgba($color: #000000, $alpha: 0.3);
+              text-align: center;
+            }
           }
          }
          .title{
+           display: inline-block;
+           max-width: 220px;
            margin-left: 10px;
+           @include textOverflow;
            @include font("PingFangBlod", $fontSize + 2, $cl3);
          }
        }
@@ -94,9 +149,6 @@
   .fictitious{
     margin-top: 5px;
     margin-bottom: 50px;
-    .van-cell{
-      padding:5px 15px;
-    }
     .text{
       .van-cell__title{
         color: $cl3;
@@ -137,17 +189,30 @@
     background-color: $white;
     width: 100%;
     @include position (fixed, br, 0, null, null, 50px, null);
-    .evaluate{
-      margin-right: 15px;
+    .button1{
       display: inline-block;
       width: 60px;
       height: 24px;
-      line-height: 24px;
+      border: 1px solid $greyDark;
       border-radius: 12px;
+      text-align: center;
+      line-height: 24px;
+      font-size: $fontSize - 2;
+      color: $cl3;
+      margin-left: 15px;
+      margin-right: 15px;
+     }
+     .button2{
+      display: inline-block;
+      width: 60px;
+      height: 24px;
       border: 1px solid $redDark;
+      border-radius: 12px;
+      text-align: center;
+      line-height: 24px;
       font-size: $fontSize - 2;
       color: $redDark;
-      text-align: center;
-    }
+      margin-left: 15px;
+     }
   }
 }

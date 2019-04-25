@@ -9,7 +9,7 @@
     <van-cell title="设置"  value="" is-link arrow-direction="down" />
     <van-cell title="如何绑定手机号"  value="" is-link arrow-direction="down" />
     <van-cell title="如何解绑"  value="" is-link arrow-direction="down" />
-    <div class="bottomBox" :class="{iphx:this.iphx}">
+    <div class="bottomBox" :class="{iphx:this.isIphx}">
       <van-button type="danger" size="large" replace to="/personal/help/feedback">我要反馈</van-button>
     </div>
   </div>

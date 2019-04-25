@@ -61,10 +61,10 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-      margin-top: -25px;
+      margin-top: -10px;
+      margin-bottom: 15px;
       li{
         box-sizing: border-box;
-        float: left;
         font-size: $fontSize ;
         color: $redDark;
         line-height: 40px;
@@ -86,6 +86,7 @@
   .recharge{
     padding-left: 50px;
     padding-right: 50px;
+    margin-top: 45px;
   }
 }
 
