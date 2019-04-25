@@ -24,7 +24,6 @@ import history from '@/pages/personal/history'
 import orderlist from '@/pages/personal/order/list'
 import orderdetail from '@/pages/personal/order/detail'
 import orderinvoice from '@/pages/personal/order/invoice'
-import ordercomment from '@/pages/personal/order/comment'
 // 退款
 import refundedit from '@/pages/personal/order/edit'
 import logistics from '@/pages/personal/order/logistics'
@@ -33,6 +32,10 @@ import refundtype from '@/pages/personal/order/type'
 import refundone from '@/pages/personal/order/refund/one'
 import refundtwo from '@/pages/personal/order/refund/two'
 import refundthree from '@/pages/personal/order/refund/three'
+// 评价
+import ordercomment from '@/pages/personal/order/comment/index'
+import commentpunish from '@/pages/personal/order/comment/punish'
+import commentsuccess from '@/pages/personal/order/comment/success'
 
 // 个人中心 - 设置
 import set from '@/pages/personal/set/index'
@@ -157,14 +160,25 @@ export default new Router({
       component: orderlist
     },
     {
-      path: '/personal/order/comment',
+      path: '/personal/order/invoice',
+      name: 'orderinvoice',
+      component: orderinvoice
+    },
+    // 个人中心 - 我的购买 - 评价
+    {
+      path: '/personal/order/comment/index',
       name: 'ordercomment',
       component: ordercomment
     },
     {
-      path: '/personal/order/invoice',
-      name: 'orderinvoice',
-      component: orderinvoice
+      path: '/personal/order/comment/punish',
+      name: 'commentpunish',
+      component: commentpunish
+    },
+    {
+      path: '/personal/order/comment/success',
+      name: 'commentsuccess',
+      component: commentsuccess
     },
     // 个人中心 - 我的购买 - 退款
     {
