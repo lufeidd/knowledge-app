@@ -38,7 +38,8 @@ import {
   Step, Steps,
   List, Stepper, SubmitBar,
   Swipe, SwipeItem,
-  Area
+  Area,
+  PasswordInput, NumberKeyboard
 } from 'vant'
 Vue.use(Field)
 Vue.use(Toast)
@@ -69,6 +70,7 @@ Vue.use(Stepper)
 Vue.use(SubmitBar)
 Vue.use(Swipe).use(SwipeItem)
 Vue.use(Area)
+Vue.use(PasswordInput).use(NumberKeyboard)
 
 Vue.use(plugin)
 
