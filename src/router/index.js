@@ -77,6 +77,15 @@ import cart from '@/pages/cart'
 // 商品详情
 import detail from '@/pages/detail'
 
+// 我的订单
+import orderconfirm from '@/pages/order/confirm'
+import orderconfirmdetail from '@/pages/order/detail'
+
+// 支付
+import pay from '@/pages/pay/index'
+import payaccount from '@/pages/pay/account'
+import paysuccess from '@/pages/pay/success'
+
 
 // 备份
 import loginbf from '@/pages/loginBF'
@@ -344,6 +353,36 @@ export default new Router({
       name: 'detail',
       component: detail
     },
+
+    // 我的订单
+    {
+      path: '/order/confirm',
+      name: 'orderconfirm',
+      component: orderconfirm
+    },
+    {
+      path: '/order/detail',
+      name: 'orderconfirmdetail',
+      component: orderconfirmdetail
+    },
+
+    // 支付
+    {
+      path: '/pay/index',
+      name: 'pay',
+      component: pay
+    },
+    {
+      path: '/pay/account',
+      name: 'payaccount',
+      component: payaccount
+    },
+    {
+      path: '/pay/success',
+      name: 'paysuccess',
+      component: paysuccess
+    },
+
     // 备份
     {
       path: '/loginBF',
