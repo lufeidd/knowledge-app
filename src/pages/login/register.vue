@@ -66,8 +66,8 @@
 <style src="@/style/scss/pages/login/register.scss" lang="scss"></style>
 
 <script>
-import qs from "Qs";
-import regeneratorRuntime from './../../regenerator-runtime/runtime.js';
+// import qs from "Qs";
+// import regeneratorRuntime from './../../regenerator-runtime/runtime.js';
 
 // 1. 引入登录的接口定义
 import { LOGIN } from "../../apis/member.js";
@@ -107,14 +107,14 @@ export default {
       // userInfo = {code:200, msg: 'success', data: {token:'xxxxx'}}
       // 然后根据返回的数据做相应的处理，比如储存token
 
-      let phone = '15268789899';
+      let phone = "15268789899";
       // let phone = this.phone;
       let data = {
         mobile: phone
       };
       // let test = await LOGIN(data);
-      let test = await TEST('');
-      console.log('test:', test);
+      let test = await TEST("");
+      console.log("test:", test);
     },
     onClickLeft() {
       this.$router.go(-1);

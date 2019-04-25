@@ -69,8 +69,8 @@ img {
 export default {
   name: "App",
   mounted() {
-// 
-    this.$router.push("/detail");
+
+    // this.$router.push("/order/confirm");
 
     // this.$router.push("/cart");
 
@@ -84,7 +84,10 @@ export default {
 
     // this.$router.push("/personal/index");
 
-    // this.$router.push("/personal/set/address");
+    // this.$router.push("/personal/set/list");
+
+    this.$router.push("/personal/remain/index");
+    
     // this.$router.push("/brand/mall");
 
     // this.$router.push("/brand/detail/book");

@@ -1,0 +1,89 @@
+/*
+ * author: nancyzeng
+ * date:2019/4/25
+ */
+
+ @charset "utf-8";
+
+ #orderdetailPage {
+     
+  & .editBox {
+    @include displayFlex (flex, center, center);
+    @include font(null, $fontSize, #666);
+    height: 45px;
+    background-color: $white;
+    border-bottom: 1px $greyLight solid;
+    padding: 0 15px;
+    margin-top: 5px;
+
+    & .icon {
+      width: 18px;
+      height: 18px;
+      position: relative;
+      top: 2px;
+    }
+
+    & .title {
+        @include font(null, $fontSize + 1, #333);
+        margin-right: 10px;
+    }
+
+    & .postage {
+        @include font(null, $fontSize - 2, #999);
+    }
+  }
+
+  
+  & .listBox {
+    @include displayFlex (flex, center, center);
+    border-bottom: 1px $greyLight solid;
+    background-color: $white;
+    padding: 15px;
+
+    & .left {
+      @include flexBasis(80px);
+    }
+
+    & .center {
+      margin-left: 10px;
+
+      & .title {
+        @include twoLines;
+        @include font("PingFangBold", $fontSize, #333);
+        position: relative;
+        top: -5px;
+
+        & .text {
+          @include twoLines;
+        }
+      }
+
+      & .subTitle {
+        @include font(null, $fontSize - 1, #999);
+        line-height: 17px;
+        height: 17px;
+        ;
+      }
+
+      & .info {
+        position: relative;
+
+        & .history {
+          @include font("PingFangBold", $fontSize + 1, $redDark);
+          margin-right: 8px;
+        }
+
+        & .count {
+            @include font(null, $fontSize, #999);
+        }
+      }
+
+    }
+
+  }
+
+ }
+
+ #orderconfirmPage {
+     
+ }

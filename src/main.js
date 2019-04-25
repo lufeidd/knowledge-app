@@ -24,6 +24,9 @@ import $ from 'jquery'
 // 字体图标
 import './style/iconfont/iconfont'
 
+// 支持await async
+import regeneratorRuntime from './regenerator-runtime/runtime';
+
 // vant
 // import 'vant/lib/index.css'
 import {
