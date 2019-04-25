@@ -69,11 +69,14 @@ export default {
     // this.$router.push("/album/detail");
 
     // this.$router.push("/album/player");
-    this.$router.push("/brand/detail/article");
+    // this.$router.push("/brand/detail/article");
     // this.$router.push("/loginBF");
     // this.$router.push("/search");
+
     // this.$router.push("/login/register");
-    // this.$router.push("/personal/index");
+
+    this.$router.push("/personal/order/refund/one");
+
     // this.$router.push("/brand/mall");
   }
 };

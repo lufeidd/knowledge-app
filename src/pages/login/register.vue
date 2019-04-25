@@ -1,10 +1,10 @@
 <template>
   <div id="registerPage">
-    <van-nav-bar title="注册" left-text right-text left-arrow @click-left="onClickLeft"/>
+    <!-- <van-nav-bar title="注册" left-text right-text left-arrow @click-left="onClickLeft"/> -->
 
     <div class="fieldBox">
       <van-field
-        v-bind:class="{ phone: isPhone }"
+        :class="{ phone: isPhone }"
         v-model="phone"
         clearable
         label="+86"
@@ -67,6 +67,12 @@
 
 <script>
 import qs from "Qs";
+import regeneratorRuntime from './../../regenerator-runtime/runtime.js';
+
+// 1. 引入登录的接口定义
+import { LOGIN } from "../../apis/member.js";
+import { TEST } from "../../apis/member.js";
+
 export default {
   data() {
     return {
@@ -86,8 +92,30 @@ export default {
       checked: true
     };
   },
-  mounted() {},
+  mounted() {
+    //3. 执行登录
+    this.login();
+  },
   methods: {
+    // 2. 定义登录的逻辑
+    async login() {
+      // 2.1 awiat LOGIN(this.user)
+      // 等待LOGIN(this.user)执行完,
+      // 把返回值给userInfo
+      // let userInfo = await LOGIN(this.user);
+      // 2.2假设登录成功,返回的数据应该是
+      // userInfo = {code:200, msg: 'success', data: {token:'xxxxx'}}
+      // 然后根据返回的数据做相应的处理，比如储存token
+
+      let phone = '15268789899';
+      // let phone = this.phone;
+      let data = {
+        mobile: phone
+      };
+      // let test = await LOGIN(data);
+      let test = await TEST('');
+      console.log('test:', test);
+    },
     onClickLeft() {
       this.$router.go(-1);
     },
@@ -98,18 +126,6 @@ export default {
         mobile: phone
       };
       this.$countDown(this.codeData);
-      this.postData(method, data, false);
-    },
-    postData(method, data, hasCallback) {
-      // axios
-      const url = this.api.loginApi + method;
-      const axios = this.api.axios;
-
-      axios.post(url, qs.stringify(data)).then(res => {
-        this.axiosData = res;
-        console.log("res=>", res);
-      });
-      if (hasCallback) return this.callback();
     },
     checkSubmit(type) {
       var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
@@ -139,11 +155,7 @@ export default {
         pwd: this.password
       };
       console.log("提交：", data);
-      this.postData(method, data, true);
       // this.$router.push({ path: "login", query: queryData });
-    },
-    callback() {
-      alert(999);
     }
   }
 };

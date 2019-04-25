@@ -8,9 +8,6 @@ import qs from 'Qs'
 // 自定义插件
 import plugin from './plugin/index'
 
-// api
-import _api from './api/index'
-
 // swiper
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
@@ -27,17 +24,14 @@ import $ from 'jquery'
 // 字体图标
 import './style/iconfont/iconfont'
 
-
-
 // vant
 // import 'vant/lib/index.css'
 import {
-  Field, NavBar, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader, Cell, CellGroup, SwipeCell, Dialog, Icon, Popup, DatetimePicker, Actionsheet, AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle, Tab, Tabs, GoodsAction,
+  Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader, Cell, CellGroup, SwipeCell, Dialog, Icon, Popup, DatetimePicker, Actionsheet, AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle, Tab, Tabs, GoodsAction,
   GoodsActionBigBtn,
-  GoodsActionMiniBtn
+  GoodsActionMiniBtn,Step, Steps,
 } from 'vant'
 Vue.use(Field)
-Vue.use(NavBar)
 Vue.use(Toast)
 Vue.use(Button)
 Vue.use(Checkbox)
@@ -65,11 +59,10 @@ Vue.use(Tabs)
 Vue.use(GoodsAction)
 Vue.use(GoodsActionBigBtn)
 Vue.use(GoodsActionMiniBtn)
+Vue.use(Step).use(Steps)
+
 
 Vue.use(plugin)
-// Vue.use(api)
-// 挂载，调用全局变量
-Vue.prototype.api = _api
 
 // swiper
 Vue.use(VueAwesomeSwiper)

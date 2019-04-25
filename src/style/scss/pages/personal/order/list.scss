@@ -47,63 +47,79 @@
       padding-top: 13px;
       padding-bottom: 13px;
       border-bottom: 1px solid $greyLight;
+      .swiper-slide{
+        margin-right: 10px;
+        box-sizing: border-box;
+      }
+      .ratiobox{
+        min-width: 60px;
+       .bookImg{
+         display: block;
+        @include ratioBox ( null, 100%, 1px solid $greyLight,contain, $white, null);
+       }
+      }
        .bookDetail{
          @include displayFlex(flex,flex-start,flex-start);
-         .ratiobox{
-           min-width: 60px;
-          .bookImg{
-            display: block;
-           @include ratioBox ( null, 100%, 1px solid $greyLight,contain, $white, null);
-          }
-         }
+
          .title{
            margin-left: 10px;
            @include font("PingFangBlod", $fontSize + 2, $cl3);
          }
        }
-       .tip{
+       .tip1{
+         text-align: right;
+         margin-top: 25px;
+       }
+       .tip2{
          margin-top: 25px;
         @include displayFlex(flex,space-between,center);
         .noChange{
           font-size: $fontSize - 2;
           color: $cl9;
         }
-        .actulPay{
-          font-size: $fontSize;
-          color: $cl0;
-          .money{
-            @include font("PingFangBlod", $fontSize, $cl0);
-          }
-        }
        }
+       .actulPay{
+        font-size: $fontSize;
+        color: $cl0;
+        .money{
+          @include font("PingFangBlod", $fontSize, $cl0);
+        }
+      }
+     }
+     .button1{
+      display: inline-block;
+      width: 60px;
+      height: 24px;
+      border: 1px solid $greyDark;
+      border-radius: 12px;
+      text-align: center;
+      line-height: 24px;
+      font-size: $fontSize - 2;
+      color: $cl3;
+      margin-left: 15px;
+     }
+     .button2{
+      display: inline-block;
+      width: 60px;
+      height: 24px;
+      border: 1px solid $redDark;
+      border-radius: 12px;
+      text-align: center;
+      line-height: 24px;
+      font-size: $fontSize - 2;
+      color: $redDark;
+      margin-left: 15px;
+     }
+     .footFinish{
+      height: 44px;
+      @include displayFlex(flex,space-between,center);
+      .more{
+        font-size: $fontSize - 2;
+      }
      }
      .foot{
        height: 44px;
       @include displayFlex(flex,flex-end,center);
-       .button1{
-        display: inline-block;
-        width: 60px;
-        height: 24px;
-        border: 1px solid $greyDark;
-        border-radius: 12px;
-        text-align: center;
-        line-height: 24px;
-        font-size: $fontSize - 2;
-        color: $cl3;
-        margin-left: 15px;
-       }
-       .button2{
-        display: inline-block;
-        width: 60px;
-        height: 24px;
-        border: 1px solid $redDark;
-        border-radius: 12px;
-        text-align: center;
-        line-height: 24px;
-        font-size: $fontSize - 2;
-        color: $redDark;
-        margin-left: 15px;
-       }
      }
    }
  }
