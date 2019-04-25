@@ -234,12 +234,12 @@ export default {
     onClose() {
       this.audioData.popupModel = false;
     },
+    onOpen() {
+      // alert(999);
+    },
     onPlay(key) {
       console.log(key);
       this.activeIndex = key;
-    },
-    onOpen() {
-      // alert(999);
     },
     showPopup() {
       this.audioData.popupModel = true;

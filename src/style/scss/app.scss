@@ -28,6 +28,7 @@
   font-size: $fontSize + 1;
   color: #333;
 }
+
 .van-cell__value {
   font-size: $fontSize - 1;
   color: #999;
@@ -132,6 +133,7 @@
 .van-tag {
   font-size: $fontSize - 2;
 }
+
 // 比例图片
 .ratioBox {
   position: relative;
@@ -149,9 +151,72 @@
   }
 }
 
+// 步进器
+.van-stepper {
+  border: 1px #b6b6b6 solid;
+}
 
+.van-stepper__minus,
+.van-stepper__plus,
+.van-stepper__input {
+  background-color: $white;
+  margin: 0;
+}
+
+.van-stepper__input {
+  border: 1px #b6b6b6 solid;
+  border-width: 0 1px;
+  color: #999;
+}
+
+.van-stepper__minus::after,
+.van-stepper__minus::before,
+.van-stepper__plus::after,
+.van-stepper__plus::before {
+  background-color: #666;
+}
+
+.van-stepper__minus--disabled::after,
+.van-stepper__minus--disabled::before,
+.van-stepper__plus--disabled::after,
+.van-stepper__plus--disabled::before {
+  background-color: #ccc;
+}
+
+// 提交订单栏
+.van-submit-bar__text {
+  @include font("PingFangBold", $fontSize, #333);
+}
+
+.van-submit-bar__price {
+  color: $redDark;
+}
+
+.van-button--danger {
+  border-color: $redDark;
+  background-color: $redDark;
+}
+
+.deleteBox {
+  & .van-button--large {
+    height: 35px;
+    line-height: 35px;
+    color: $redDark;
+    margin-right: 15px;
+    border: none;
+    border: 1px $redDark solid;
+    border-radius: 35px;
+    width: 90px;
+  }
+}
+
+.van-button--warning {
+  border-color: $orangeDark;
+  background-color: $orangeDark;
+}
 
 // iphonex
+
 .page {
   margin-bottom: 55px;
   box-sizing: border-box;
