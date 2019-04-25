@@ -29,7 +29,7 @@ import './style/iconfont/iconfont'
 import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader, Cell, CellGroup, SwipeCell, Dialog, Icon, Popup, DatetimePicker, Actionsheet, AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle, Tab, Tabs, GoodsAction,
   GoodsActionBigBtn,
-  GoodsActionMiniBtn,Step, Steps,
+  GoodsActionMiniBtn,Step, Steps, RadioGroup, Radio
 } from 'vant'
 Vue.use(Field)
 Vue.use(Toast)
@@ -60,7 +60,8 @@ Vue.use(GoodsAction)
 Vue.use(GoodsActionBigBtn)
 Vue.use(GoodsActionMiniBtn)
 Vue.use(Step).use(Steps)
-
+Vue.use(RadioGroup);
+Vue.use(Radio);
 
 Vue.use(plugin)
 

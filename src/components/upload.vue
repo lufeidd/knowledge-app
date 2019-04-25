@@ -7,7 +7,7 @@
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-photo-line"></use>
             </svg>
-            <div>最多三张图</div>
+            <div class="text">最多三张图</div>
           </van-uploader>
         </div>
       </div>
@@ -21,14 +21,14 @@
   & {
     display: flex;
     flex-wrap: wrap;
-    padding: 5px;
+    // padding: 5px;
 
     .flex-box {
       @include flexBasis(80px);
 
       & .box {
         position: relative;
-        padding: 5px;
+        // padding: 5px;
 
         & .content {
           @include ratioBox(100%, 100%, null, contain, null, null);
@@ -60,8 +60,10 @@
             }
             & div {
               @include flexBasis(100%);
-              font-size: 12px;
+              font-size: 11px;
               position: relative;
+              color: $cl9;
+              line-height: 1;
               top: -5px;
             }
           }
@@ -76,6 +78,15 @@
 export default {
   name: "upload",
   props: ["uploadData"],
+  mounted(){
+    this.content;
+  },
+  computed:{
+    content(){
+       var text=this.uploadData.text;
+       return $('.text').text(text);
+    }
+  },
   methods: {
     // 头像上传
     // onRead(file) {
@@ -124,13 +135,16 @@ export default {
     //   }
     // },
     // 头像上传
+
     onRead(file) {
       var src = file.content;
       var maxlength = this.uploadData.maxlength;
+      var text=this.uploadData.text;
       var box = $("#upload .flex-box .box");
       var length = box.length;
       var van = $("#van");
 
+      // $('.text').text(text);
       $("#upload").prepend(
         '<div class="flex-box">' +
           '<div class="box">' +

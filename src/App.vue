@@ -75,7 +75,7 @@ export default {
 
     // this.$router.push("/login/register");
 
-    this.$router.push("/personal/order/refund/one");
+    this.$router.push("/personal/order/refund/three");
 
     // this.$router.push("/brand/mall");
   }
