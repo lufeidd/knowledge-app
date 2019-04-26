@@ -70,6 +70,7 @@ import mall from '@/pages/brand/mall'
 import article from '@/pages/brand/detail/article'
 import book from '@/pages/brand/detail/book'
 import brandresult from '@/pages/brand/result'
+import brand from '@/pages/brand/index'
 
 // 购物车
 import cart from '@/pages/cart'
@@ -336,6 +337,11 @@ export default new Router({
       path: '/brand/result',
       name: 'brandresult',
       component: brandresult
+    },
+    {
+      path: '/brand/index',
+      name: 'brand',
+      component: brand
     },
     // 购物车
     {
