@@ -21,7 +21,7 @@
         <span>退款金额:</span>
         <span class="most">最多<span class="money">15.8元</span></span>
       </div>
-      <input type="text" placeholder="请输入退款金额">元
+      <input type="text" placeholder="请输入退款金额,例如5.00">元
     </div>
     <div class="cell explain">
       <span>退款说明:</span>

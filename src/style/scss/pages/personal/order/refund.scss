@@ -69,13 +69,33 @@
  }
 
  #editPage{
-   .van-address-edit{
-    .van-field{
-
+   padding: 20px 15px 0 15px;
+  .company{
+    @include displayFlex(flex,null,center);
+    border-bottom: 1px solid $greyLight;
+    padding-bottom: 15px;
+    .text{
+      font-size: $fontSize + 2;
     }
-   }
-  .van-address-edit__buttons{
-    display: none;
+    #searchHint{
+      flex-grow: 1;
+    }
+  }
+  .freight{
+    display: flex;
+    border-bottom: 1px solid $greyLight;
+    padding: 15px 0;
+    .freightText{
+      font-size: $fontSize + 2;
+    }
+    input{
+      flex-grow: 1;
+      border: none;
+      &::placeholder{
+        color: $cl9;
+        font-size: $fontSize - 1;
+      }
+    }
   }
  }
 
@@ -245,6 +265,7 @@
     input{
       border: none;
       margin-top: 30px;
+      width:95%;
       &::placeholder{
         color: $cl9;
         font-size: $fontSize - 1;

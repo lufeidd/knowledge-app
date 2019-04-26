@@ -11,7 +11,7 @@ import register from '@/pages/login/register'
 import remain from '@/pages/personal/remain/index'
 import record from '@/pages/personal/remain/record'
 import account from '@/pages/personal/remain/account'
-import detail from '@/pages/personal/remain/detail'
+import remaindetail from '@/pages/personal/remain/detail'
 
 // 个人中心 - 首页
 import personal from '@/pages/personal/index'
@@ -32,6 +32,10 @@ import refundtype from '@/pages/personal/order/type'
 import refundone from '@/pages/personal/order/refund/one'
 import refundtwo from '@/pages/personal/order/refund/two'
 import refundthree from '@/pages/personal/order/refund/three'
+// 评价
+import ordercomment from '@/pages/personal/order/comment/index'
+import commentpunish from '@/pages/personal/order/comment/punish'
+import commentsuccess from '@/pages/personal/order/comment/success'
 
 // 个人中心 - 设置
 import set from '@/pages/personal/set/index'
@@ -66,6 +70,21 @@ import brand from '@/pages/brand/index'
 import mall from '@/pages/brand/mall'
 import article from '@/pages/brand/detail/article'
 import book from '@/pages/brand/detail/book'
+
+// 购物车
+import cart from '@/pages/cart'
+
+// 商品详情
+import detail from '@/pages/detail'
+
+// 我的订单
+import orderconfirm from '@/pages/order/confirm'
+import orderconfirmdetail from '@/pages/order/detail'
+
+// 支付
+import pay from '@/pages/pay/index'
+import payaccount from '@/pages/pay/account'
+import paysuccess from '@/pages/pay/success'
 
 
 // 备份
@@ -135,8 +154,8 @@ export default new Router({
     },
     {
       path: '/personal/remain/detail',
-      name: 'detail',
-      component: detail
+      name: 'remaindetail',
+      component: remaindetail
     },
     // 个人中心 - 我的购买 - 下单
     {
@@ -153,6 +172,22 @@ export default new Router({
       path: '/personal/order/invoice',
       name: 'orderinvoice',
       component: orderinvoice
+    },
+    // 个人中心 - 我的购买 - 评价
+    {
+      path: '/personal/order/comment/index',
+      name: 'ordercomment',
+      component: ordercomment
+    },
+    {
+      path: '/personal/order/comment/punish',
+      name: 'commentpunish',
+      component: commentpunish
+    },
+    {
+      path: '/personal/order/comment/success',
+      name: 'commentsuccess',
+      component: commentsuccess
     },
     // 个人中心 - 我的购买 - 退款
     {
@@ -306,6 +341,48 @@ export default new Router({
       name: 'book',
       component: book
     },
+    // 购物车
+    {
+      path: '/cart',
+      name: 'cart',
+      component: cart
+    },
+    // 商品详情
+    {
+      path: '/detail',
+      name: 'detail',
+      component: detail
+    },
+
+    // 我的订单
+    {
+      path: '/order/confirm',
+      name: 'orderconfirm',
+      component: orderconfirm
+    },
+    {
+      path: '/order/detail',
+      name: 'orderconfirmdetail',
+      component: orderconfirmdetail
+    },
+
+    // 支付
+    {
+      path: '/pay/index',
+      name: 'pay',
+      component: pay
+    },
+    {
+      path: '/pay/account',
+      name: 'payaccount',
+      component: payaccount
+    },
+    {
+      path: '/pay/success',
+      name: 'paysuccess',
+      component: paysuccess
+    },
+
     // 备份
     {
       path: '/loginBF',

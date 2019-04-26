@@ -28,20 +28,18 @@ import './style/iconfont/iconfont'
 // import 'vant/lib/index.css'
 import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader, Cell, CellGroup, SwipeCell, Dialog, Icon, Popup, DatetimePicker, Actionsheet, AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle, Tab, Tabs, GoodsAction,
-  GoodsActionBigBtn,
-  GoodsActionMiniBtn,Step, Steps, RadioGroup, Radio
+  GoodsActionBigBtn,Rate ,
+  GoodsActionMiniBtn,Step, Steps, RadioGroup, Radio,List, Stepper, SubmitBar, Swipe, SwipeItem, Area
 } from 'vant'
 Vue.use(Field)
 Vue.use(Toast)
 Vue.use(Button)
-Vue.use(Checkbox)
-Vue.use(CheckboxGroup)
+Vue.use(Checkbox).use(CheckboxGroup)
 Vue.use(Row)
 Vue.use(Col)
 Vue.use(Slider)
 Vue.use(Uploader)
-Vue.use(Cell)
-Vue.use(CellGroup)
+Vue.use(Cell).use(CellGroup)
 Vue.use(Icon)
 Vue.use(Popup)
 Vue.use(DatetimePicker)
@@ -56,12 +54,16 @@ Vue.use(Tag)
 Vue.use(Circle)
 Vue.use(Tab)
 Vue.use(Tabs)
-Vue.use(GoodsAction)
-Vue.use(GoodsActionBigBtn)
-Vue.use(GoodsActionMiniBtn)
 Vue.use(Step).use(Steps)
-Vue.use(RadioGroup);
-Vue.use(Radio);
+Vue.use(RadioGroup)
+Vue.use(Radio)
+Vue.use(GoodsAction).use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
+Vue.use(List)
+Vue.use(Stepper)
+Vue.use(SubmitBar)
+Vue.use(Swipe).use(SwipeItem)
+Vue.use(Area)
+Vue.use(Rate)
 
 Vue.use(plugin)
 
