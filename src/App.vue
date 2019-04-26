@@ -71,13 +71,20 @@ export default {
   mounted() {
 
     // 注册登录
+    this.$router.push("/login/register");
     // this.$router.push("/login/index");
 
     // 个人中心
     // this.$router.push("/personal/index");
 
     // 品牌商城
-    this.$router.push("/brand/mall");
+    // this.$router.push("/brand/mall");
+
+    // 评价
+    // this.$router.push("/personal/order/comment/index");
+
+    // 我的评论
+    // this.$router.push("/personal/comment/index");
 
   }
 };

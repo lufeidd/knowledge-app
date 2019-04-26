@@ -139,6 +139,7 @@ export default {
         this.$toast(reg.error_message);
         return;
       }
+      
       this.$router.push({ path: "index", query: data });
       console.log(reg);
     },

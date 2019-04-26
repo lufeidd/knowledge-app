@@ -12,6 +12,7 @@ import req from './http.js'
 //     return req('post', '/XXX', params)
 // }
 
+
 // 定义注册接口
 export const REG = params => req('post', '/passport/regist', params);
 
@@ -20,3 +21,6 @@ export const SMS = params => req('post', '/common/sendsms', params);
 
 // 定义登录接口
 export const LOG = params => req('post', '/passport/login', params);
+
+
+

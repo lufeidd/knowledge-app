@@ -31,6 +31,10 @@
 <style src="@/style/scss/pages/personal/comment/index.scss" lang="scss"></style>
 
 <script>
+
+//  引入接口
+import { USER_COMMENT } from "../../../apis/user.js";
+
 export default {
   data () {
     return {
@@ -63,6 +67,23 @@ export default {
         imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
         title:'宝宝巴士在线讲故事',
         price:23.00},]
+    }
+  },
+  mounted(){
+    this.getUserComment();
+  },
+  methods: {
+    async getUserComment (){
+      let data = {
+        version: "1.0"
+      }
+      let res = await USER_COMMENT(data);
+      if(res.response_code) {
+
+      }else {
+        this.$toast(res.error_message);
+      }
+      console.log(res);
     }
   }
 }
