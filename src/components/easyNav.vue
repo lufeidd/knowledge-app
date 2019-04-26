@@ -8,7 +8,8 @@
         <use xlink:href="#icon-open-line"></use>
       </svg>
       <div>
-        快速<br>导航
+        快速
+        <br>导航
       </div>
     </div>
     <div class="route" v-if="navData.fold">
@@ -61,17 +62,17 @@
     border-bottom-left-radius: 2px;
     text-align: center;
     background-color: $white;
-      z-index: 1;
-    @include font(null, $fontSize - 2, #333);
+    z-index: 1;
     @include displayFlex(flex, center, center);
 
     & .link {
-        padding: 0 10px;
+      @include font(null, $fontSize - 2, #333);
+      padding: 0 10px;
 
-        & .icon {
-            width: 16px;
-            height: 16px;
-        }
+      & .icon {
+        width: 16px;
+        height: 16px;
+      }
     }
   }
 }
@@ -86,9 +87,9 @@ export default {
     return {};
   },
   methods: {
-      foldAction(){
-          this.navData.fold = !this.navData.fold;
-      }
+    foldAction() {
+      this.navData.fold = !this.navData.fold;
+    }
   }
 };
 </script>

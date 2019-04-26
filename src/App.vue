@@ -70,8 +70,8 @@ export default {
   name: "App",
   mounted() {
 
-    this.$router.push("/personal/order/list");
-    // this.$router.push("/login/register");
+    // this.$router.push("/personal/order/list");
+    this.$router.push("/login/register");
   }
 };
 </script>

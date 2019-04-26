@@ -9,3 +9,6 @@ import req from './http.js'
 
 // 定义注册接口
 export const REG = params => req('post', '/passport/regist', params);
+
+// 定义验证码发送接口
+export const SMS = params => req('post', '/common/sendsms', params);

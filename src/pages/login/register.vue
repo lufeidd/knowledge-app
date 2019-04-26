@@ -71,7 +71,7 @@ import Vue from "vue";
 // import regeneratorRuntime from "./../../regenerator-runtime/runtime.js";
 
 // 1. 引入登录的接口定义
-import { REG } from "../../apis/member.js";
+import { REG } from "../../apis/passport.js";
 
 export default {
   data() {
@@ -94,11 +94,11 @@ export default {
   },
   mounted() {
     //3. 执行登录
-    this.login();
+    
   },
   methods: {
-    // 2. 定义登录的逻辑
-    async login() {
+    // 2. 定义注册的逻辑
+    async regist() {
       // 2.1 awiat LOGIN(this.user)
       // 等待LOGIN(this.user)执行完,
       // 把返回值给userInfo
@@ -108,7 +108,7 @@ export default {
       // 然后根据返回的数据做相应的处理，比如储存token
 
       let data = {
-        version: "1.0"
+        mobile: this.phone
       };
 
       let reg = await REG(data);
@@ -119,12 +119,8 @@ export default {
       this.$router.go(-1);
     },
     getCode() {
-      let method = "/sendsms";
-      let phone = this.phone;
-      let data = {
-        mobile: phone
-      };
       this.$countDown(this.codeData);
+      this.regist();
     },
     checkSubmit(type) {
       var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
