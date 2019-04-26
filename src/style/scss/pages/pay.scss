@@ -1,0 +1,493 @@
+/*
+  author: nancy
+  date: 2019/4/25
+*/
+@charset "UTF-8";
+
+// 组件
+@import url("./../components/button.scss");
+
+html {
+  background-color: $greyLight;
+}
+
+#paysuccessPage {
+
+  & .van-button--plain.van-button--danger {
+    margin-top: 25px;
+  }
+
+  & .content {
+    padding: 50px 50px 100px 50px;
+    text-align: center;
+
+    & .icon {
+      @include font(null, 60px, $redDark);
+    }
+
+    & .msg {
+      @include font("PingFangBlod", $fontSize + 2, #333);
+      margin-top: 5px;
+      line-height: 2;
+    }
+
+    .money {
+      @include font(null, $fontSize - 2, #666);
+
+      & .price {
+        color: $redDark;
+      }
+    }
+  }
+
+  & .recharge {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+#accountPage {
+  .content {
+    padding: 45px 0 35px 0;
+    color: $cl3;
+    text-align: center;
+    font-size: $fontSize + 6;
+
+    .money {
+      @include font("PingFangBlod", $fontSize + 26, null);
+    }
+
+    .currentRemain {
+      font-size: $fontSize - 2;
+      margin-top: 0px;
+    }
+  }
+
+  .account {
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: $fontSize + 1;
+
+    .choose {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: -10px;
+      margin-bottom: 15px;
+
+      li {
+        box-sizing: border-box;
+        font-size: $fontSize;
+        color: $redDark;
+        line-height: 40px;
+        border: 1px solid #cecece;
+        border-radius: 6px;
+        width: 22%;
+        text-align: center;
+        margin-top: 25px;
+      }
+
+      .active {
+        background-color: #ffeded;
+        border: 1px solid $redDark;
+      }
+    }
+
+    .explain {
+      font-size: $fontSize - 2;
+    }
+  }
+
+  .recharge {
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-top: 45px;
+  }
+}
+
+#recordPage {
+  height: 100%;
+  background-color: $greyLight;
+  font-size: $fontSize - 2;
+  color: $cl0;
+
+  .head {
+    margin-bottom: 10px;
+    background-color: $white;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 15px;
+    padding-right: 15px;
+    align-items: center;
+    height: 50px;
+
+    .income {
+      background-color: $greyLight;
+      height: 25px;
+      line-height: 25px;
+      padding: 2px 8px 2px 16px;
+
+      .arrow {
+        color: $cl9;
+      }
+    }
+
+    .num {
+      font-size: $fontSize - 2;
+      color: $cl3;
+    }
+  }
+
+  .content {
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: $white;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $greyLight;
+
+    .chong {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      background-color: $clC;
+      text-align: center;
+      border-radius: 40px;
+      color: $white;
+      font-size: $fontSize + 8;
+    }
+
+    .detail {
+      margin-left: 5px;
+      flex-grow: 1;
+
+      .top {
+        display: flex;
+        justify-content: space-between;
+
+        .into {
+          font-size: $fontSize + 1;
+          color: $cl3;
+        }
+
+        .money {
+          font-size: $fontSize + 6;
+          color: $cl3;
+        }
+      }
+
+      .bottom {
+        display: flex;
+        justify-content: space-between;
+
+        .date {
+          font-size: $fontSize - 2;
+          color: $cl9;
+        }
+
+        .order {
+          font-size: $fontSize - 2;
+          color: $redDark;
+        }
+      }
+    }
+  }
+}
+
+#detailPage {
+  height: 100%;
+  background-color: $greyLight;
+  font-size: $fontSize - 2;
+  color: $cl0;
+
+  .head {
+    margin-bottom: 10px;
+    background-color: $white;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 15px;
+    padding-right: 15px;
+    align-items: center;
+    height: 50px;
+
+    .income {
+      background-color: $greyLight;
+      height: 25px;
+      line-height: 25px;
+      padding: 2px 8px 2px 16px;
+
+      .arrow {
+        color: $cl9;
+      }
+    }
+
+    .num {
+      font-size: $fontSize - 2;
+      color: $cl3;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .content {
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: $white;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $greyLight;
+
+    .chong {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      background-color: $clC;
+      text-align: center;
+      border-radius: 40px;
+      color: $white;
+      font-size: $fontSize + 8;
+    }
+
+    .detail {
+      margin-left: 5px;
+      flex-grow: 1;
+
+      .top {
+        display: flex;
+        justify-content: space-between;
+
+        .into {
+          font-size: $fontSize + 1;
+          color: $cl3;
+        }
+
+        .money {
+          font-size: $fontSize + 6;
+          color: $cl3;
+        }
+      }
+
+      .bottom {
+        display: flex;
+        justify-content: space-between;
+
+        .date {
+          font-size: $fontSize - 2;
+          color: $cl9;
+        }
+
+        .order {
+          font-size: $fontSize - 2;
+          color: $redDark;
+        }
+      }
+    }
+  }
+}
+
+#payIndex {
+  & .bottomBox {
+    & .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: 5px;
+      position: relative;
+      top: 2px;
+    }
+  }
+
+  & .content {
+    padding: 50px 50px 100px 50px;
+    text-align: center;
+
+    & .msg {
+      @include font("PingFangBlod", $fontSize - 1, #333);
+      line-height: 2;
+    }
+
+    .money {
+      @include font(null, 24px, $redDark);
+
+      & .price {
+        font-size: 36px;
+      }
+    }
+  }
+}
+
+#payaccountPage {
+
+    & .van-dialog__confirm, .van-dialog__confirm:active {
+        display: none;
+    }
+
+  & .codeBox {
+
+    text-align: center;
+    padding: 20px;
+
+    & .price {
+      @include font("PingFangBold", $fontSize + 1, $redDark);
+      line-height: 2;
+
+      & .money {
+        font-size: $fontSize + 4;
+      }
+    }
+
+    & .code {
+        @include font(null, $fontSize - 1, #999);
+        padding: 10px 0;
+        line-height: 30px;
+    }
+  }
+
+  & .tip {
+    @include font(null, $fontSize - 2, #999);
+    background-color: $white;
+    padding: 10px 15px;
+  }
+
+  & .editBox {
+    @include displayFlex (flex, center, center);
+    @include font(null, $fontSize, #666);
+    height: 45px;
+    background-color: $white;
+    border-bottom: 1px $greyLight solid;
+    padding: 0 15px;
+    margin-top: 5px;
+
+    & .title {
+      @include font(null, $fontSize + 1, #333);
+      margin-right: 10px;
+    }
+  }
+
+  & .listBox {
+    @include displayFlex (flex, center, center);
+    border-bottom: 1px $greyLight solid;
+    background-color: $white;
+    padding: 15px;
+
+    & .check {
+
+
+      & .icon {
+        color: #999;
+      }
+    }
+
+    & .left {
+      @include flexBasis(80px);
+    }
+
+    & .center {
+      margin-left: 10px;
+
+      & .title {
+        @include twoLines;
+        @include font("PingFangBold", $fontSize, #333);
+        position: relative;
+        top: -5px;
+
+        & .text {
+          @include twoLines;
+        }
+      }
+
+      & .subTitle {
+        @include font(null, $fontSize - 1, #999);
+        line-height: 17px;
+        height: 17px;
+        ;
+      }
+
+      & .info {
+        position: relative;
+
+        & .history {
+          @include font("PingFangBold", $fontSize + 1, $redDark);
+          margin-right: 8px;
+        }
+      }
+
+    }
+
+  }
+
+
+  & .listBox.weixin {
+    & .center {
+      & .title {
+
+        & .text {
+
+          & .icon {
+            color: $greenLight;
+            width: 25px;
+            height: 25px;
+            position: relative;
+            top: 5px;
+          }
+        }
+      }
+
+    }
+  }
+
+  & .listBox.yue.disable {
+    & .check {
+
+      & .icon {
+        color: #ccc;
+      }
+    }
+
+    & .center {
+      opacity: .5;
+    }
+  }
+
+  & .listBox.yue {
+    @include displayFlex (flex, center, center);
+    border-bottom: 1px $greyLight solid;
+    background-color: $white;
+    padding: 0 15px;
+    line-height: 45px;
+
+    & .left.two {
+      text-align: right;
+
+      & .van-button {
+        height: 30px;
+        line-height: 30px;
+      }
+    }
+
+    & .center {
+      @include textOverflow;
+
+      & .title {
+        @include textOverflow;
+        @include font("PingFangBold", $fontSize + 1, #666);
+        top: 0;
+
+        & .text {
+          @include textOverflow;
+          display: block;
+
+          & .icon {
+            color: $redLight;
+            width: 25px;
+            height: 25px;
+            position: relative;
+            top: 5px;
+          }
+        }
+      }
+
+    }
+  }
+}

@@ -46,15 +46,30 @@
             </div>
       </div>
     </div>
+
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
 <style src="@/style/scss/pages/brand/mall.scss" lang="scss"></style>
 
 <script>
+import easyNav from "../../components/easyNav";
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/",
+        search: true,
+        searchLink: '/search',
+        personal: true,
+        personalLink: '/personal/index',
+      },
       swiperOption: {
         slidesPerView: 1.2
       },

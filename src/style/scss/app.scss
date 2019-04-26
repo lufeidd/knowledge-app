@@ -71,6 +71,10 @@
     }
   }
 
+  & .center {
+    flex-grow: 1;
+  }
+
 }
 
 // tab标签页
@@ -214,6 +218,31 @@
   border-color: $orangeDark;
   background-color: $orangeDark;
 }
+
+// confirm
+.van-dialog__header {
+  padding: 10px 0;
+  border-bottom: 1px #eee solid;
+  @include font(null, $fontSize + 1, #333);
+}
+
+[class*=van-hairline]::after {
+  border-color: #999;
+}
+
+.van-hairline--top::after {
+  border-width: 0;
+}
+
+.van-hairline--left::after {
+  border-width: 0;
+}
+
+// 密码输入框
+.van-password-input {
+  margin: 0;
+}
+
 
 // iphonex
 

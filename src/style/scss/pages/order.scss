@@ -1,0 +1,208 @@
+/*
+ * author: nancyzeng
+ * date:2019/4/25
+ */
+
+@charset "utf-8";
+
+html {
+  background-color: $greyLight;
+}
+
+#orderdetailPage {
+
+  & .editBox {
+    @include displayFlex (flex, center, center);
+    @include font(null, $fontSize, #666);
+    height: 45px;
+    background-color: $white;
+    border-bottom: 1px $greyLight solid;
+    padding: 0 15px;
+    margin-top: 5px;
+
+    & .icon {
+      width: 18px;
+      height: 18px;
+      position: relative;
+      top: 2px;
+    }
+
+    & .title {
+      @include font(null, $fontSize + 1, #333);
+      margin-right: 10px;
+    }
+
+    & .postage {
+      @include font(null, $fontSize - 2, #999);
+    }
+  }
+
+  & .listBox {
+    @include displayFlex (flex, center, center);
+    border-bottom: 1px $greyLight solid;
+    background-color: $white;
+    padding: 15px;
+
+    & .left {
+      @include flexBasis(80px);
+    }
+
+    & .center {
+      margin-left: 10px;
+
+      & .title {
+        @include twoLines;
+        @include font("PingFangBold", $fontSize, #333);
+        position: relative;
+        top: -5px;
+
+        & .text {
+          @include twoLines;
+        }
+      }
+
+      & .subTitle {
+        @include font(null, $fontSize - 1, #999);
+        line-height: 17px;
+        height: 17px;
+        ;
+      }
+
+      & .info {
+        position: relative;
+
+        & .history {
+          @include font("PingFangBold", $fontSize + 1, $redDark);
+          margin-right: 8px;
+        }
+
+        & .count {
+          @include font(null, $fontSize, #999);
+        }
+      }
+
+    }
+
+  }
+
+}
+
+#orderconfirmPage {
+
+  & .listBox {
+    background-color: $white;
+    margin-bottom: 5px;
+    padding: 10px 15px;
+
+    & .right {
+        @include font(null, $fontSize - 1, #999);
+        flex-shrink: 0;
+
+      & .icon {
+        color: #666;
+      }
+    }
+
+    & .right.one {
+      align-self: flex-start;
+
+      & .icon {
+        width: 18px;
+        height: 18px;
+        margin-top: 4px;
+      }
+    }
+  }
+
+  & .addressBox.img {
+    @include clearfix;
+    & li {
+        width: 45px;
+        float: left;
+        margin-right: 15px;
+    }
+  }
+  & .addressBox {
+
+    & li {
+
+      & .info {
+        @include bgDecorate(null, null, 0, 0 0, null);
+        margin: 0 5px;
+
+        & .name {
+          @include font("PingFangBold", $fontSize + 2, #333);
+          margin-right: 10px;
+        }
+
+        & .phone {
+          @include font(null, $fontSize, #666);
+        }
+
+        & .address {
+          margin-top: 5px;
+          @include font(null, $fontSize + 1, #666);
+        }
+
+      }
+    }
+
+  }
+
+  & .van-cell {
+    padding: 0 15px;
+
+    &:not(:last-child)::after {
+      border: 0;
+    }
+
+    & .van-cell__value {
+      @include font(null, $fontSize - 1, #333);
+    }
+
+    & .van-cell__title {
+      @include font(null, $fontSize - 1, #999);
+    }
+  }
+
+  & .priceInfo.beizhu {
+    & .first {
+      & .van-cell {
+        border-bottom: none;
+      }
+    }
+
+    & textarea {
+        margin: 0 15px 0 15px;
+        background-color: #f3f3f3;
+        border: none;
+        width: calc(100% - 30px);
+        line-height: 30px;
+        box-sizing: border-box;
+        padding: 0 10px;
+    }
+
+  }
+
+  & .priceInfo {
+    background-color: $white;
+    padding: 5px 0;
+    margin-top: 5px;
+
+    & .first {
+        margin-bottom: 5px;
+      & .van-cell {
+        line-height: 30px;
+        border-bottom: 1px solid $greyLight;
+
+        & .van-cell__title {
+          @include font(null, $fontSize + 1, #333);
+        }
+
+        & .van-cell__value {
+          @include font("PingFangBold", $fontSize - 1, #333);
+        }
+      }
+    }
+  }
+}

@@ -1,8 +1,8 @@
 import axios from 'axios'
+import qs from "Qs";
 // 创建axios的一个实例 
 var instance = axios.create({
-    baseURL: 'https://api.coindesk.com/v1/bpi/currentprice.json',
-    // baseURL: 'http://198.210.100.118:8002',
+    baseURL: 'http://frontapi.huoba.dev.zzy',
     timeout: 6000
 })
 // 一、请求拦截器 忽略
@@ -30,7 +30,7 @@ instance.interceptors.response.use(function (response) {
 export default function (method, url, data = null) {
     method = method.toLowerCase();
     if (method === 'post') {
-        return instance.post(url, data);
+        return instance.post(url, qs.stringify(data));
     } else if (method === 'get') {
         return instance.get(url, { params: data });
     } else if (method === 'delete') {
