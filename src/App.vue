@@ -91,7 +91,7 @@ export default {
 
     // this.$router.push("/login/register");
 
-    this.$router.push("/personal/order/edit");
+    this.$router.push("/personal/comment/index");
 
     // this.$router.push("/personal/set/address");
     // this.$router.push("/brand/mall");

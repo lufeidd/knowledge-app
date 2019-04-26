@@ -64,6 +64,12 @@ export default {
         title:'宝宝巴士在线讲故事',
         price:23.00},]
     }
+  },
+  created(){
+
+  },
+  methods:{
+
   }
 }
 </script>
