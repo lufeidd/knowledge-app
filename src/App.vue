@@ -70,7 +70,7 @@ export default {
   name: "App",
   mounted() {
 
-    this.$router.push("/pay/account");
+    this.$router.push("/personal/order/list");
     // this.$router.push("/login/register");
   }
 };

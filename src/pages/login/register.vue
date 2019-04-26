@@ -63,15 +63,15 @@
   </div>
 </template>
 
+
 <style src="@/style/scss/pages/login/register.scss" lang="scss"></style>
 
 <script>
-// import qs from "Qs";
-// import regeneratorRuntime from './../../regenerator-runtime/runtime.js';
+import Vue from "vue";
+// import regeneratorRuntime from "./../../regenerator-runtime/runtime.js";
 
 // 1. 引入登录的接口定义
-import { LOGIN } from "../../apis/member.js";
-import { TEST } from "../../apis/member.js";
+import { REG } from "../../apis/member.js";
 
 export default {
   data() {
@@ -107,14 +107,13 @@ export default {
       // userInfo = {code:200, msg: 'success', data: {token:'xxxxx'}}
       // 然后根据返回的数据做相应的处理，比如储存token
 
-      let phone = "15268789899";
-      // let phone = this.phone;
       let data = {
-        mobile: phone
+        version: "1.0"
       };
-      // let test = await LOGIN(data);
-      let test = await TEST("");
-      console.log("test:", test);
+
+      let reg = await REG(data);
+
+      console.log("reg:", reg);
     },
     onClickLeft() {
       this.$router.go(-1);
