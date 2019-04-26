@@ -1,7 +1,10 @@
 <template>
   <div id="detailPage">
     <div class="head">
-      <div class="income" @click="showPopup()">本月 <van-icon class="arrow" name="arrow-down" /></div>
+      <div class="income" @click="showPopup()">
+        本月
+        <van-icon class="arrow" name="arrow-down"/>
+      </div>
       <div class="num">
         <span>支出：￥{{totalOutput}}</span>
         <span>收入：￥{{totalIncome}}</span>
@@ -20,12 +23,15 @@
         </div>
       </div>
     </div>
-    <van-popup v-model="show" position="bottom" >
+    <van-popup v-model="show" position="bottom">
       <van-datetime-picker
         v-model="currentDate"
         type="year-month"
         :max-date="maxDate"
-        :formatter="formatter" confirm-button-text="完成" @cancel="show=false" title="请选择时间"
+        :formatter="formatter"
+        confirm-button-text="完成"
+        @cancel="show=false"
+        title="请选择时间"
       />
     </van-popup>
   </div>
@@ -35,33 +41,34 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      totalIncome:1230.34,
-      totalOutput:1230.34,
-      incomeData:[{text:'支',date:'2019-03-07',money:1.533,order:0},
-      {text:'充',date:'2019-03-07',money:1.533,order:1},
-      {text:'退',date:'2019-03-07',money:1.533,order:1},
-      {text:'赔',date:'2019-03-07',money:1.533,order:0}],
+      totalIncome: 1230.34,
+      totalOutput: 1230.34,
+      incomeData: [
+        { text: "支", date: "2019-03-07", money: 1.533, order: 0 },
+        { text: "充", date: "2019-03-07", money: 1.533, order: 1 },
+        { text: "退", date: "2019-03-07", money: 1.533, order: 1 },
+        { text: "赔", date: "2019-03-07", money: 1.533, order: 0 }
+      ],
       show: false,
-      maxDate:new Date(),
-      currentDate:new Date(),
-
-    }
+      maxDate: new Date(),
+      currentDate: new Date()
+    };
   },
   methods: {
-    showPopup(){
-      this.show=true;
+    showPopup() {
+      this.show = true;
     },
     formatter(type, value) {
-      if (type === 'year') {
+      if (type === "year") {
         return `${value}年`;
-      } else if (type === 'month') {
-        return `${value}月`
+      } else if (type === "month") {
+        return `${value}月`;
       }
       return value;
     }
   }
-}
+};
 </script>
 

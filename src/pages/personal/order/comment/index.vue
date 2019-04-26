@@ -2,30 +2,34 @@
   <div id="indexPage" class="comment">
     <div class="list">
       <div class="bookDetail">
-          <div class="ratiobox">
-            <a class="bookImg" v-lazy:background-image="imgUrl"></a>
+        <div class="ratiobox">
+          <a class="bookImg" v-lazy:background-image="imgUrl"></a>
+        </div>
+        <div class="info">
+          <span class="title">宝宝巴士在线讲故事在线讲故事在线讲故事</span>
+          <div class="commentLine">
+            <span class="number">
+              <span class="money">¥ 23.00</span> x1
+            </span>
+            <!-- <span class="button">评价</span> -->
           </div>
-          <div class="info">
-            <span class="title">宝宝巴士在线讲故事在线讲故事在线讲故事</span>
-            <div class="commentLine">
-              <span class="number"><span class="money">¥ 23.00</span> x1</span>
-              <!-- <span class="button">评价</span> -->
-            </div>
-          </div>
+        </div>
       </div>
     </div>
     <div class="list">
       <div class="bookDetail">
-          <div class="ratiobox">
-            <a class="bookImg" v-lazy:background-image="imgUrl"></a>
+        <div class="ratiobox">
+          <a class="bookImg" v-lazy:background-image="imgUrl"></a>
+        </div>
+        <div class="info">
+          <span class="title">宝宝巴士在线讲故事在线讲故事在线讲故事</span>
+          <div class="commentLine">
+            <span class="number">
+              <span class="money">¥ 23.00</span> x1
+            </span>
+            <span class="button">评价</span>
           </div>
-          <div class="info">
-            <span class="title">宝宝巴士在线讲故事在线讲故事在线讲故事</span>
-            <div class="commentLine">
-              <span class="number"><span class="money">¥ 23.00</span> x1</span>
-              <span class="button">评价</span>
-            </div>
-          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -35,10 +39,10 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
-    }
+      imgUrl: "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85"
+    };
   }
-}
+};
 </script>

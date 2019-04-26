@@ -3,10 +3,11 @@
  * date:2019/4/22
  */
 
- #mallPage{
+#mallPage {
   background-color: $greyLight;
   padding-top: 5px;
-  .verticleLine{
+
+  .verticleLine {
     display: inline-block;
     width: 3px;
     height: 11px;
@@ -14,83 +15,104 @@
     background-color: $redDark;
     margin-right: 4px;
   }
-  .lh{
+
+  .lh {
     line-height: 1;
     @include font("PingFangBlod", $fontSize+2, $cl3);
   }
-  .text{
-    @include displayFlex(flex,flex-start,flex-end);
+
+  .text {
+    @include displayFlex(flex, flex-start, flex-end);
   }
-  .all{
+
+  .all {
     @include font("PingFangMedium", $fontSize - 1, $cl9);
   }
-  .popular{
+
+  .popular {
     background-color: $white;
     padding: 15px 0 15px 15px;
-    .showContent{
+
+    .showContent {
       background-color: $white;
       margin-top: 5px;
       padding: 15px 0 0px 0px;
       margin-bottom: 5px;
-      .slide{
-        @include displayFlex(flex,flex-start,null);
-        .ratiobox{
+
+      .slide {
+        @include displayFlex(flex, flex-start, null);
+
+        .ratiobox {
           min-width: 80px;
-         .bookImg{
-          @include ratioBox ( 100%, 100%, null,contain, $white, null);
-         }
+
+          .bookImg {
+            @include ratioBox (100%, 100%, null, contain, $white, null);
+          }
         }
-        .content{
+
+        .content {
           display: flex;
           flex-direction: column;
           align-content: space-between;
           justify-content: space-between;
+
           // padding: 10px ;
-          .title{
+          .title {
             line-height: 1.2;
             @include font("PingFangBlod", $fontSize + 1, null);
           }
-          .message{
+
+          .message {
             @include font("PingFangMedium", $fontSize - 2, $cl6);
           }
-          .money{
+
+          .money {
             @include font("PingFangBlod", $fontSize, $redDark);
           }
         }
       }
     }
   }
-  .materialObject{
+
+  .materialObject {
     background-color: $white;
     margin-top: 5px;
     padding: 15px;
-    .materialTitle{
-      @include displayFlex(flex,space-between,null);
+
+    .materialTitle {
+      @include displayFlex(flex, space-between, null);
     }
-    .goods{
-      @include displayFlex(flex,space-between,null);
+
+    .goods {
+      @include displayFlex(flex, space-between, null);
       margin-top: 5px;
       flex-wrap: wrap;
-      .goodsInfo{
+
+      .goodsInfo {
         width: 46%;
         margin-bottom: 5px;
-        .ratiobox{
+
+        .ratiobox {
           min-width: 136px;
-         .bookImg{
-          @include ratioBox ( 100%, 74%, null,contain, $white, null);
-         }
+
+          .bookImg {
+            @include ratioBox (100%, 74%, null, contain, $white, null);
+          }
         }
-        .name{
+
+        .name {
           @include font("PingFangBlod", $fontSize, $cl3);
           height: 42px;
         }
-        .message{
+
+        .message {
           @include font("PingFangMedium", $fontSize - 2, $cl6);
         }
-        .money{
+
+        .money {
           @include font("PingFangBlod", null, $redDark);
         }
       }
     }
   }
- }
+}

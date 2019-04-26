@@ -3,7 +3,6 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router/index'
-import qs from 'Qs'
 
 // 自定义插件
 import plugin from './plugin/index'
@@ -19,7 +18,7 @@ import VueCropper from 'vue-cropper'
 import JsEncrypt from 'jsencrypt'
 
 // jquery
-import $ from 'jquery'
+// import $ from 'jquery'
 
 // 字体图标
 import './style/iconfont/iconfont'
@@ -29,6 +28,7 @@ import regeneratorRuntime from './regenerator-runtime/runtime';
 
 // vant
 // import 'vant/lib/index.css'
+
 import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
   Cell, CellGroup,

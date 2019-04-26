@@ -1,7 +1,5 @@
 <template>
   <div id="loginPage">
-    <van-nav-bar title="登录" left-text right-text left-arrow @click-left="onClickLeft"/>
-
     <div class="fieldBox">
       <div class="phone">
         <van-field
@@ -30,15 +28,10 @@
 
       <van-row v-bind:class="{ row: isRow }">
         <van-col span="12">
-          <router-link to="/register">注册</router-link>
+          <router-link to="/login/register">注册</router-link>
         </van-col>
         <van-col span="12">
-          <template v-if="isPassword">
-            <router-link to="/password">找回密码</router-link>
-          </template>
-          <template v-else>
-            <span @click="getTip">找回密码</span>
-          </template>
+          <span @click="findPassword">找回密码</span>
         </van-col>
       </van-row>
 
@@ -47,17 +40,15 @@
           <van-button slot="button" size="large" disabled round type="danger">登录</van-button>
         </template>
         <template v-else>
-          <van-button slot="button" size="large" round type="danger" @click="gotoPage">登录</van-button>
+          <van-button slot="button" size="large" round type="danger" @click="loginAction">登录</van-button>
         </template>
       </div>
 
       <van-row v-bind:class="{ loginType: isLoginType }">
         <van-col span="12">
-          <!-- <router-link to="/phone"> -->
           <svg class="icon myIconStyle" aria-hidden="true">
             <use xlink:href="#icon-weixin-block"></use>
           </svg>
-          <!-- </router-link> -->
         </van-col>
         <van-col span="12">
           <svg class="icon myIconStyle" aria-hidden="true">
@@ -66,16 +57,16 @@
         </van-col>
       </van-row>
     </div>
-    <!-- axios -->
-    <!-- <p>{{ axiosData }}</p> -->
   </div>
 </template>
 
 <style src="@/style/scss/pages/login/index.scss" lang="scss"></style>
 
 <script>
+//  引入接口
+import { LOG } from "../../apis/passport.js";
+
 export default {
-  components: {},
   data() {
     return {
       phone: "",
@@ -84,25 +75,16 @@ export default {
         disabled: true
       },
       isRow: true,
-      isLoginType: true,
-      isPassword: false,
-      axiosData: ""
+      isLoginType: true
     };
   },
-  created() {
-    this.getData();
+  mounted() {
     let queryData = this.$route.query;
     this.phone = queryData.phone;
     this.password = "";
   },
-  computed: {},
-  mounted() {
-    // $('#loginPage').css('color', 'green');
-  },
   methods: {
-    onClickLeft() {
-      this.$router.go(-1);
-    },
+    // 校验格式
     checkSubmit() {
       var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
       var regPassword = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
@@ -113,28 +95,25 @@ export default {
         this.submitData.disabled = true;
       }
     },
-    getData() {
-      // axios
-      const axios = this.api.axios;
-      const data = this.api.loginApi;
-      // 加密
-      this.api.encrypt("1234567890", this.password);
-
-      axios
-        .get(data)
-        .then(response => {
-          this.axiosData = response.data.bpi;
-          // this.$refs.loadmore.onTopLoaded();
-        })
-        .catch(error => {
-          // console.log(error);
-          this.error = true;
-        })
-        .finally(() => (this.loadding = false));
+    // 登录
+    async login() {
+      let data = {
+        mobile: this.phone,
+        pwd: this.password,
+        version: "1.0"
+      };
+      let log = await LOG(data);
+      // 出错提示
+      if (log.error_code == 1) {
+        this.$toast(log.error_message);
+      }
+      console.log(log);
     },
-    gotoPage() {},
-    getTip() {
-      this.$router.push("/password");
+    loginAction() {
+      this.login();
+    },
+    findPassword() {
+      this.$router.push("/login/password");
     }
   }
 };

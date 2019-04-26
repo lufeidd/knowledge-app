@@ -1,22 +1,22 @@
 @charset "UTF-8";
 
 .van-nav-bar {
-	position: fixed;
-	width: 100%;
-	box-sizing: border-box;
-	top: 0;
-	max-width: 750px;
+  position: fixed;
+  width: 100%;
+  box-sizing: border-box;
+  top: 0;
+  max-width: 750px;
 }
 
 [class*=van-hairline]::after {
-	border-bottom-color: #e0e0e0; 
+  border-bottom-color: #e0e0e0;
 }
 
 .van-nav-bar .van-icon {
-	color: #000;
-	font-size: 20px;
+  color: #000;
+  font-size: 20px;
 }
 
 .van-nav-bar__title {
-	color: #000;
+  color: #000;
 }

@@ -155,9 +155,9 @@ export default {
         home: true,
         homeLink: "/",
         search: true,
-        searchLink: '/search',
+        searchLink: "/search",
         personal: true,
-        personalLink: '/personal/index',
+        personalLink: "/personal/index"
       },
       publishData: [
         {

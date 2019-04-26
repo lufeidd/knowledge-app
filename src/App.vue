@@ -70,8 +70,15 @@ export default {
   name: "App",
   mounted() {
 
-    // this.$router.push("/personal/order/list");
-    this.$router.push("/login/register");
+    // 注册登录
+    // this.$router.push("/login/index");
+
+    // 个人中心
+    // this.$router.push("/personal/index");
+
+    // 品牌商城
+    this.$router.push("/brand/mall");
+
   }
 };
 </script>

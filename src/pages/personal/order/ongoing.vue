@@ -1,7 +1,7 @@
 <template>
   <div id="ongoingPage">
     <div class="content">
-      <div class="date">2019.02.11  12:00</div>
+      <div class="date">2019.02.11 12:00</div>
       <div class="buyer">
         <div class="message">
           <div class="title">买家发起了申请</div>
@@ -12,12 +12,12 @@
           </div>
         </div>
         <div class="wd">
-         <img v-lazy="iconUrl" class="icon">
+          <img v-lazy="iconUrl" class="icon">
         </div>
       </div>
       <div class="seller">
         <div class="wd">
-         <img v-lazy="iconUrl" class="icon">
+          <img v-lazy="iconUrl" class="icon">
         </div>
         <div class="message">
           <div class="title">待卖家处理</div>
@@ -28,16 +28,16 @@
           </div>
         </div>
       </div>
-      <div class="date">2019.02.11  12:00</div>
+      <div class="date">2019.02.11 12:00</div>
       <div class="seller">
         <div class="wd">
-         <img v-lazy="iconUrl" class="icon">
+          <img v-lazy="iconUrl" class="icon">
         </div>
         <div class="message">
           <div class="title">卖家已同意，请尽快填写退货物流信息</div>
           <div class="stateMessage bb">
             <p>收件人：沈好看</p>
-            <p>收件地址：浙江省杭州市余杭区金家读南路101 </p>
+            <p>收件地址：浙江省杭州市余杭区金家读南路101</p>
             <p>联系电话：45612345685</p>
           </div>
           <p class="careful">请在五个工作日内填写退货物流信息，过期申请讲关闭。</p>
@@ -45,13 +45,11 @@
       </div>
       <div class="seller">
         <div class="wd">
-         <img v-lazy="iconUrl" class="icon">
+          <img v-lazy="iconUrl" class="icon">
         </div>
         <div class="message">
           <div class="title">退款失败</div>
-          <div class="stateMessage mb">
-            失败原因：订单已发出，需要退货后申请
-          </div>
+          <div class="stateMessage mb">失败原因：订单已发出，需要退货后申请</div>
         </div>
       </div>
     </div>
@@ -68,10 +66,10 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      iconUrl:'https://bnmpstyle.bookuu.com/wap/images/default_shop.png',
-    }
+      iconUrl: "https://bnmpstyle.bookuu.com/wap/images/default_shop.png"
+    };
   }
-}
+};
 </script>

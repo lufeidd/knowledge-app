@@ -19,7 +19,10 @@
     <div class="cell">
       <div>
         <span>退款金额:</span>
-        <span class="most">最多<span class="money">15.8元</span></span>
+        <span class="most">
+          最多
+          <span class="money">15.8元</span>
+        </span>
       </div>
       <input type="text" placeholder="请输入退款金额,例如5.00">元
     </div>
@@ -41,7 +44,13 @@
       </div>
       <van-radio-group v-model="radio">
         <van-cell-group>
-          <van-cell :title="item.title" clickable @click="radio = '1'" v-for="item in reasonList" :key="radio">
+          <van-cell
+            :title="item.title"
+            clickable
+            @click="radio = '1'"
+            v-for="item in reasonList"
+            :key="radio"
+          >
             <van-radio :name="item.number" checked-color="#ff504e"/>
           </van-cell>
         </van-cell-group>
@@ -56,29 +65,31 @@
 import upload from "../../../../components/upload";
 export default {
   components: {
-    upload,
+    upload
   },
-  data () {
+  data() {
     return {
       uploadData: {
         maxlength: 6,
-        text:'上传凭证(最多六张)',
+        text: "上传凭证(最多六张)"
       },
       // contentTotal: 30,
       contentModel: "",
       contentLength: 0,
-      show:false,
-      radio:'0',
-      reasonList:[{title:'七天无理由退货',number:1},
-      {title:'大小/尺寸不符合要求',number:2},
-      {title:'颜色/图案/款式不符合要求',number:3},
-      {title:'质量问题',number:4},
-      {title:'不喜欢',number:5},
-      {title:'漏件/破损',number:6},
-      {title:'其他',number:7}]
-    }
+      show: false,
+      radio: "0",
+      reasonList: [
+        { title: "七天无理由退货", number: 1 },
+        { title: "大小/尺寸不符合要求", number: 2 },
+        { title: "颜色/图案/款式不符合要求", number: 3 },
+        { title: "质量问题", number: 4 },
+        { title: "不喜欢", number: 5 },
+        { title: "漏件/破损", number: 6 },
+        { title: "其他", number: 7 }
+      ]
+    };
   },
-  methods:{
+  methods: {
     uploadImg(e, num) {
       //上传图片
       // this.option.img
@@ -107,16 +118,16 @@ export default {
       // 转化为blob
       reader.readAsArrayBuffer(file);
     },
-    choose(){
-      this.show=true;
+    choose() {
+      this.show = true;
     },
-    inputChange(){
+    inputChange() {
       this.contentLength = this.contentModel.length;
-      if(this.contentLength>500){
+      if (this.contentLength > 500) {
         this.$toast("退款说明字数已超出，请修改!");
         return;
       }
     }
   }
-}
+};
 </script>

@@ -1,32 +1,33 @@
 @charset "UTF-8";
 
 .van-button {
-	border-radius: 50px;
+  border-radius: 50px;
 }
+
 .van-button--plain.van-button--danger {
-	background-color: #fff;
+  background-color: #fff;
 }
 
 .van-button--danger {
-	background-color: #f05654;
-	border-color: #f05654;
+  background-color: #f05654;
+  border-color: #f05654;
 }
 
 .van-button--danger.van-button--disabled {
-	background-color: #d6d6d6;
-	border-color: #d6d6d6;
-	opacity: 1;
+  background-color: #d6d6d6;
+  border-color: #d6d6d6;
+  opacity: 1;
 }
 
 .van-button--small {
-	min-width: 80px;
+  min-width: 80px;
 }
 
 .van-button--large {
-	height: 50px;
-	line-height: 50px;
+  height: 50px;
+  line-height: 50px;
 }
 
 .van-button--default {
-	color: #333;
+  color: #333;
 }

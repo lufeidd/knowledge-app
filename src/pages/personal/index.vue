@@ -16,7 +16,7 @@
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-personalNews"></use>
               </svg>
-            </a> -->
+            </a>-->
             <a href="#/personal/set/index">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-personalSet"></use>
@@ -105,7 +105,7 @@ export default {
           icon: "#icon-next-line"
         },
         {
-          href: "/",
+          href: "#/cart",
           svg: "#icon-personalCart",
           text: "我的购物车",
           icon: "#icon-next-line"
@@ -129,7 +129,7 @@ export default {
           icon: "#icon-next-line"
         },
         {
-          href: "/",
+          href: "#/personal/help/index",
           svg: "#icon-personalHelp",
           text: "帮助与反馈",
           icon: "#icon-next-line"
