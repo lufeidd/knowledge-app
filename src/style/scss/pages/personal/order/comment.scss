@@ -1,0 +1,159 @@
+/*
+ * author: lufei
+ * date:2019/4/25
+ */
+
+.comment{
+  background-color: $greyLight;
+  height: 100%;
+  .list{
+    padding: 15px 15px 28px 15px;
+    background-color: $white;
+    border-bottom: 1px solid $greyLight;
+    .bookDetail{
+      @include displayFlex(flex,flex-start,flex-start);
+      position: relative;
+      .ratiobox{
+        min-width: 80px;
+        border-radius: 3px;
+       .bookImg{
+         display: block;
+         border-radius: 3px;
+        @include ratioBox ( 100%, 85%, null,contain, $white, null);
+       }
+      }
+      .info{
+        position: absolute;
+        left: 80px;
+        height: 100%;
+        display: flex;
+        flex-grow: 1;
+        flex-direction: column;
+        align-content: space-between;
+        justify-content: space-between;
+        .title{
+          @include font("PingFangBlod", $fontSize + 2, $cl3);
+          line-height: 1.2;
+        }
+        .commentLine{
+          @include displayFlex(flex,space-between,null);
+          .button{
+            display: inline-block;
+            line-height: 24px;
+            border-radius: 12px;
+            padding-left: 18px;
+            padding-right: 18px;
+            color: $redDark;
+            border: 1px solid $redDark;
+          }
+          .number{
+            color: $cl9;
+            .money{
+              @include font("PingFangBlod", $fontSize, $redDark);
+            }
+          }
+        }
+      }
+    }
+  }
+  .thanks{
+    height: 120px;
+    background-color: $redDark;
+    font-size: $fontSize + 4;
+    color: $white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .order{
+      font-size: $fontSize + 11;
+      margin-bottom: 5px;
+    }
+  }
+  .continue{
+    height: 38px;
+    line-height: 38px;
+    text-align: center;
+    border-bottom: 1px solid $greyLight;
+    font-size: $fontSize - 2;
+    color: $cl9;
+  }
+}
+#successPage{
+    background-color: $white;
+}
+
+#punishPage{
+  .van-rate__item{
+    margin-right: 15px;
+  }
+  .commodity{
+    padding: 15px;
+    .ratiobox{
+      width: 57px;
+      border-radius: 3px;
+     .bookImg{
+       display: block;
+       border-radius: 3px;
+      @include ratioBox ( null, 85%, null,contain, $white, null);
+     }
+    }
+    .line{
+      @include displayFlex(flex,null,null);
+      position: relative;
+      .stars{
+        position: absolute;
+        left: 62px;
+        height: 100%;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-content: space-between;
+        justify-content: space-between;
+        .text{
+          font-size: $fontSize + 2;
+        }
+      }
+    }
+    textarea{
+      width: 100%;
+      border-color: $greyLight;
+      resize: none;
+      height: 90px;
+      margin-top: 30px;
+      &::placeholder{
+        color: $cl9;
+        font-size: $fontSize;
+        padding-left: 5px;
+        padding-top: 5px;
+      }
+    }
+    #upload{
+      margin-top: 25px;
+      .flex-box{
+        margin-right: 20px;
+      }
+    }
+  }
+  .service{
+    border-top: 5px solid $greyLight;
+    .serviceLine{
+      padding: 15px;
+      border-bottom: 1px solid $greyLight;
+      font-size: $fontSize + 1;
+      color: $cl3;
+    }
+    .serviceStars{
+      padding: 20px 15px 0 15px;
+      .descrip{
+        @include displayFlex(flex,null,center);
+        margin-bottom: 30px;
+        .serviceText{
+          font-size: $fontSize + 1;
+          color: $cl9;
+          margin-right: 18px;
+        }
+      }
+    }
+  }
+}

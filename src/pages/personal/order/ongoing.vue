@@ -55,7 +55,7 @@
         </div>
       </div>
     </div>
-    <div class="foot">
+    <div class="foot bottomBox" :class="{iphx:this.isIphx}">
       <span class="button">修改申请</span>
       <span class="button">重新申请</span>
       <span class="button">填写物流信息</span>

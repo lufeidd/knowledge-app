@@ -69,13 +69,33 @@
  }
 
  #editPage{
-   .van-address-edit{
-    .van-field{
-
+   padding: 20px 15px 0 15px;
+  .company{
+    @include displayFlex(flex,null,center);
+    border-bottom: 1px solid $greyLight;
+    padding-bottom: 15px;
+    .text{
+      font-size: $fontSize + 2;
     }
-   }
-  .van-address-edit__buttons{
-    display: none;
+    #searchHint{
+      flex-grow: 1;
+    }
+  }
+  .freight{
+    display: flex;
+    border-bottom: 1px solid $greyLight;
+    padding: 15px 0;
+    .freightText{
+      font-size: $fontSize + 2;
+    }
+    input{
+      flex-grow: 1;
+      border: none;
+      &::placeholder{
+        color: $cl9;
+        font-size: $fontSize - 1;
+      }
+    }
   }
  }
 
@@ -218,12 +238,101 @@
   }
 }
 
-#onePage{
+.refund{
+  padding: 0 15px;
   .cell{
-    padding: 18px 15px;
+    padding: 18px 0;
     border-bottom: 1px solid $greyLight;
     .typeRefund{
       font-size: $fontSize - 1;
     }
+    .onlyRefund{
+      color: $cl9;
+      font-size: $fontSize - 1;
+    }
+    .choose{
+      font-size: $fontSize - 1;
+      color: $cl9;
+    }
+    .most{
+      font-size: $fontSize - 1;
+      color: $cl9;
+    }
+    .money{
+      font-size: $fontSize - 1;
+      color: $redDark;
+    }
+    input{
+      border: none;
+      margin-top: 30px;
+      width:95%;
+      &::placeholder{
+        color: $cl9;
+        font-size: $fontSize - 1;
+      }
+    }
+    textarea{
+      font-size: $fontSize - 1;
+      flex-grow: 1;
+      height: 110px;
+      border: none;
+      resize: none;
+      &::placeholder{
+        color: $cl9;
+        font-size: $fontSize - 1;
+      }
+    }
   }
+  .reason{
+    @include displayFlex(flex,space-between,center);
+  }
+  .explain{
+    @include displayFlex(flex,null,flex-start);
+  }
+  .upload{
+    margin-top: 25px;
+    #upload{
+      // margin-top: 14px;
+      .flex-box{
+        margin-right: 15px;
+        margin-top: 14px;
+      }
+    }
+  }
+  .van-popup{
+    overflow: hidden;
+    height: 40%;
+    .title{
+      text-align: center;
+      height: 35px;
+      line-height: 35px;
+      font-size: $fontSize + 1;
+      color: $cl9;
+      position: relative;
+      .complete{
+        display: inline-block;
+        line-height: 35px;
+        position: absolute;
+        right:15px;
+        color: $redDark;
+      }
+    }
+    .van-radio-group{
+      position: absolute;
+      top: 35px;
+      bottom: 0;
+      overflow-y: auto;
+      width: 100%;
+      .van-cell__title{
+        span{
+          white-space: nowrap;
+          font-size: $fontSize;
+        }
+      }
+    }
+  }
+}
+
+#twoPage{
+
 }
