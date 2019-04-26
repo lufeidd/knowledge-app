@@ -3,10 +3,19 @@
 .van-button {
 	border-radius: 50px;
 }
+.van-button--plain.van-button--danger {
+	background-color: #fff;
+}
 
 .van-button--danger {
 	background-color: #f05654;
 	border-color: #f05654;
+}
+
+.van-button--danger.van-button--disabled {
+	background-color: #d6d6d6;
+	border-color: #d6d6d6;
+	opacity: 1;
 }
 
 .van-button--small {
@@ -14,14 +23,8 @@
 }
 
 .van-button--large {
-	height: 45px;
-	line-height: 45px;
-}
-
-.van-button--disabled {
-	background-color: #d6d6d6;
-	border-color: #d6d6d6;
-	opacity: 1;
+	height: 50px;
+	line-height: 50px;
 }
 
 .van-button--default {

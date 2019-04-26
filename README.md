@@ -31,22 +31,15 @@ https://github.com/xyxiao001/vue-cropper
 # 项目模块
 
 ``` bash
-1、登录/注册            - zzy
+1、登录/注册
 
 2、个人中心
-    a、首页           - zzy
-    b、我的余额       - zw
-    c、我的购买       - zw
-    d、设置           - zzy
-    e、历史           - zzy
-    f、收藏           - zzy
-    g、关注           - zzy
-    h、帮助与反馈      - zw
-    i、我的评论        - zw
 
-3、专辑                 - zzy
+3、专辑
 
-4、品牌商城             - zw
+4、品牌商城
+
+5、下单
 ```
 
 # 项目运行
@@ -70,6 +63,9 @@ cnpm install jquery --save, 配置webpack.base.conf.js
 
 // qs
 cnpm install --save axios vue-axios qs 
+
+// 支持async/await
+cnpm install -g regenerator
 
 // js encrypt加密
 cnpm i jsencrypt -s

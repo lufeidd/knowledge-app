@@ -10,8 +10,8 @@
         <use xlink:href="#icon-interflow-line"></use>
       </svg>
       <div class="signforFrom">
-        <span class="signforPeople">浙江省杭州市西湖中公司 已签收   签收人：西湖</span>
-        <span class="signDate">2017.04.21  14:00:22</span>
+        <span class="signforPeople">浙江省杭州市西湖中公司 已签收 签收人：西湖</span>
+        <span class="signDate">2017.04.21 14:00:22</span>
       </div>
       <svg class="icon arrow" aria-hidden="true">
         <use xlink:href="#icon-next-line"></use>
@@ -22,11 +22,11 @@
         <use xlink:href="#icon-location-line"></use>
       </svg>
       <div class="signforFrom">
-       <div class="personalInfo">
-         <span>王老板</span>
-         <span>15000007777</span>
-       </div>
-       <p class="address">收货地址：浙江省 杭州市 西湖区 西湖边东区23树6洞 3-3楼 </p>
+        <div class="personalInfo">
+          <span>王老板</span>
+          <span>15000007777</span>
+        </div>
+        <p class="address">收货地址：浙江省 杭州市 西湖区 西湖边东区23树6洞 3-3楼</p>
       </div>
     </div>
     <div class="info">
@@ -105,7 +105,7 @@ export default {
         imgUrl:
           "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
         title: "宝宝巴士在线讲故事",
-        watch:'32.7w',
+        watch: "32.7w"
       },
       priceInfo: {
         totalPrice: 95.0,
@@ -126,7 +126,7 @@ export default {
     copy() {
       const clipboard = new Clipboard(".copy");
       clipboard.on("success", e => {
-        this.$toast('复制成功');
+        this.$toast("复制成功");
         // this.$message({ type: 'success', message: '复制成功' });
 
         clipboard.destroy();

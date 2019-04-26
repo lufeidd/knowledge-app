@@ -63,8 +63,6 @@
         <audioList :audioListData="audioListData"></audioList>
       </div>
     </van-popup>
-
-
   </div>
 </template>
 
