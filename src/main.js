@@ -26,6 +26,9 @@ import './style/iconfont/iconfont'
 // 支持await async
 import regeneratorRuntime from './regenerator-runtime/runtime';
 
+// md5加密
+import md5 from 'js-md5';
+
 // vant
 // import 'vant/lib/index.css'
 
@@ -62,6 +65,7 @@ Vue.use(Lazyload)
 Vue.use(SwitchCell)
 Vue.use(Search)
 Vue.use(Tag)
+Vue.use(Tab).use(Tabs)
 Vue.use(Circle)
 Vue.use(GoodsAction).use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
 Vue.use(Step).use(Steps)
@@ -83,6 +87,9 @@ Vue.use(VueCropper)
 
 // JSEncrypt
 Vue.prototype.$jsEncrypt = JsEncrypt
+
+// md5加密
+Vue.prototype.$md5 = md5;
 
 Vue.config.productionTip = false
 

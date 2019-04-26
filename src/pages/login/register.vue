@@ -118,8 +118,8 @@ export default {
         mobile: this.phone,
         version: "1.0"
       };
-      let sms = await SMS(data);
-      console.log(sms);
+      let res = await SMS(data);
+      console.log(res);
     },
     getCode() {
       this.$countDown(this.codeData);
@@ -139,9 +139,12 @@ export default {
         this.$toast(reg.error_message);
         return;
       }
-      
-      this.$router.push({ path: "index", query: data });
-      console.log(reg);
+      if (res.response_code) {
+        this.$router.push({ path: "index", query: data });
+        console.log(reg);
+      } else {
+        this.$toast(res.error_message);
+      }
     },
     submitAction() {
       this.regist();

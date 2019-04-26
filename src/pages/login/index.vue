@@ -26,7 +26,7 @@
         />
       </div>
 
-      <van-row v-bind:class="{ row: isRow }">
+      <van-row class="row">
         <van-col span="12">
           <router-link to="/login/register">注册</router-link>
         </van-col>
@@ -44,7 +44,7 @@
         </template>
       </div>
 
-      <van-row v-bind:class="{ loginType: isLoginType }">
+      <van-row class="loginType">
         <van-col span="12">
           <svg class="icon myIconStyle" aria-hidden="true">
             <use xlink:href="#icon-weixin-block"></use>
@@ -73,15 +73,13 @@ export default {
       password: "",
       submitData: {
         disabled: true
-      },
-      isRow: true,
-      isLoginType: true
+      }
     };
   },
   mounted() {
-    let queryData = this.$route.query;
-    this.phone = queryData.phone;
-    this.password = "";
+    this.phone = this.$route.query.mobile;
+    this.password = this.$route.query.pwd;
+    this.checkSubmit();
   },
   methods: {
     // 校验格式
@@ -102,18 +100,22 @@ export default {
         pwd: this.password,
         version: "1.0"
       };
-      let log = await LOG(data);
+      let res = await LOG(data);
       // 出错提示
-      if (log.error_code == 1) {
-        this.$toast(log.error_message);
+      if (res.response_code) {
+        console.log(res);
+      } else {
+        this.$toast(res.error_message);
       }
-      console.log(log);
     },
     loginAction() {
       this.login();
     },
     findPassword() {
-      this.$router.push("/login/password");
+      let data = {
+        mobile: this.phone
+      };
+      this.$router.push({ path: "/login/password", query: data });
     }
   }
 };

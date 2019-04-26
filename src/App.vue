@@ -71,8 +71,9 @@ export default {
   mounted() {
 
     // 注册登录
-    this.$router.push("/login/register");
+    // this.$router.push("/login/register");
     // this.$router.push("/login/index");
+    this.$router.push("/login/password");
 
     // 个人中心
     // this.$router.push("/personal/index");
@@ -85,6 +86,13 @@ export default {
 
     // 我的评论
     // this.$router.push("/personal/comment/index");
+
+    // 我的购买
+    // this.$router.push("/personal/order/list");
+
+    // 专辑
+    // this.$router.push("/album/index");
+
 
   }
 };
