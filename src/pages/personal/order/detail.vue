@@ -83,7 +83,7 @@
         <van-cell title="支付时间" v-model="fictitious.payTime"/>
       </div>
     </div>
-    <div class="foot">
+    <div class="foot bottomBox" :class="{iphx:this.isIphx}">
       <span class="button2">评价</span>
       <span class="button1">再次购买</span>
     </div>

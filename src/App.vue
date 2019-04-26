@@ -72,6 +72,7 @@ export default {
 
     this.$router.push("/personal/order/list");
     // this.$router.push("/login/register");
+    
   }
 };
 </script>

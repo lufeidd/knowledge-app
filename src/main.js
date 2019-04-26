@@ -39,6 +39,7 @@ import {
   List, Stepper, SubmitBar,
   Swipe, SwipeItem,
   Area,
+  Rate,
   PasswordInput, NumberKeyboard
 } from 'vant'
 Vue.use(Field)
@@ -62,7 +63,6 @@ Vue.use(SwitchCell)
 Vue.use(Search)
 Vue.use(Tag)
 Vue.use(Circle)
-Vue.use(Tab).use(Tabs)
 Vue.use(GoodsAction).use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
 Vue.use(Step).use(Steps)
 Vue.use(List)
@@ -70,6 +70,7 @@ Vue.use(Stepper)
 Vue.use(SubmitBar)
 Vue.use(Swipe).use(SwipeItem)
 Vue.use(Area)
+Vue.use(Rate)
 Vue.use(PasswordInput).use(NumberKeyboard)
 
 Vue.use(plugin)
