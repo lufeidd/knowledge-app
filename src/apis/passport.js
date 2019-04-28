@@ -12,9 +12,6 @@ import req from './http.js'
 //     return req('post', '/XXX', params)
 // }
 
-// 时间戳
-export const SERVER_TIME = params => req('post', '/timestamp', params);
-
 // 定义注册接口
 export const REG = params => req('post', '/passport/regist', params);
 

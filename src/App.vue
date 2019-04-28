@@ -73,7 +73,7 @@ export default {
     // 注册登录
     // this.$router.push("/login/register");
     // this.$router.push("/login/index");
-    this.$router.push("/login/password");
+    // this.$router.push("/login/password");
 
     // 个人中心
     // this.$router.push("/personal/index");
@@ -91,7 +91,7 @@ export default {
     // this.$router.push("/personal/order/list");
 
     // 专辑
-    // this.$router.push("/album/index");
+    this.$router.push("/album/index");
 
 
   }

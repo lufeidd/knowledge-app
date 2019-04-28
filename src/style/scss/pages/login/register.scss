@@ -12,6 +12,10 @@
 
 #registerPage {
 
+  & .prototype {
+    @include displayFlex (flex, flex-start, center);
+  }
+
   & .password {
 
     /*设置input placeholder颜色*/
@@ -69,6 +73,13 @@
   & .van-checkbox__label {
     font-size: $fontSize - 1;
     color: #999;
+  }
+
+  & .prototype {
+    a {
+      font-size: $fontSize - 1;
+      color: #999;
+    }
   }
 
   & .submitBox {

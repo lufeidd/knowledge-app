@@ -6,6 +6,7 @@ import login from '@/pages/login/index'
 import password from '@/pages/login/password'
 import phone from '@/pages/login/phone'
 import register from '@/pages/login/register'
+import prototype from '@/pages/login/prototype'
 
 // 个人中心 - 我的余额
 import remain from '@/pages/personal/remain/index'
@@ -111,6 +112,11 @@ export default new Router({
       path: '/login/register',
       name: 'register',
       component: register
+    },
+    {
+      path: '/login/prototype',
+      name: 'prototype',
+      component: prototype
     },
     // 个人中心 - 首页
     {

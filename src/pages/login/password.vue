@@ -61,9 +61,7 @@
 
 <script>
 //  引入接口
-import { SMS, FIND, SERVER_TIME } from "../../apis/passport.js";
-import crypto from "crypto";
-import ksort from "../../apis/ksort.js";
+import { SMS, FIND } from "../../apis/passport.js";
 
 export default {
   data() {
@@ -75,7 +73,7 @@ export default {
       codeData: {
         disabled: true,
         timeMsg: "获取验证码",
-        time: 120
+        time: 60
       },
       submitData: {
         disabled: true
@@ -85,37 +83,14 @@ export default {
   mounted() {
     this.phone = this.$route.query.mobile;
     this.checkSubmit("phone");
-    this.getServerTime();
+    // 获取并储存服务器和本地时间差
+    this.$getServerTime();
   },
   methods: {
-    // 获取服务器时间
-    getServerTime(){
-      this.serverTime();
-    },
-    async serverTime() {
-      let lT = new Date().getTime();
-      let data = {
-        version: "1.0"
-      }
-      let res = await SERVER_TIME(data);
-      let sT = res.response_data.timestamp * 1000;
-      this.diffTime = sT - lT;
-      console.log(this.diffTime);
-    },
-    getmd5(str) {
-      var res;
-      var md5 = crypto.createHash("md5");
-      //update("中文", "utf8")
-      md5.update(str);
-      var res = md5.digest("hex");
-      console.log(res);
-      //47bce5c74f589f4867dbd57e9ca9f808
-      return res;
-    },
     // 校验格式
     checkSubmit(type) {
       var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
-      var regPassword = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
+      var regPassword = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,20}$/;
       if (type === "phone") {
         var value = this.phone;
 
@@ -150,45 +125,29 @@ export default {
     },
     // 确认并提交
     async findPwd() {
-      var lT = new Date().getTime();
-      var ts = parseInt((lT + this.diffTime) / 1000);
+      var tStamp = this.$getTimeStamp();
       var data = {
         mobile: this.phone,
         auth_code: this.code,
         pwd: this.password,
-        timestamp: ts,
-        version: "1.0",
-        ma: "123"
+        timestamp: tStamp,
+        version: "1.0"
       };
-      data.sign = this.getSign(data);
+      data.sign = this.$getSign(data);
 
       let res = await FIND(data);
-      if (res.response_code) {
-        console.log(res);
+      if (res.hasOwnProperty("response_code")) {
       } else {
         this.$toast(res.error_message);
       }
     },
-    getSign(data) {
-      let str = "";
-      data = this.$ksort(data);
-
-      Object.keys(data).forEach(function(key) {
-        str += key + data[key];
-        console.log(key, data[key]);
-      });
-
-      return this.getmd5(str).toUpperCase();
-    },
-
     submitAction() {
       let data = {
         mobile: this.phone,
-        auth_code: this.code,
         pwd: this.password
       };
       this.findPwd();
-      // this.$router.push({ path: "login", query: queryData });
+      this.$router.push({ path: "/index", query: data });
     }
   }
 };

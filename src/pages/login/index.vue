@@ -43,7 +43,7 @@
           <van-button slot="button" size="large" round type="danger" @click="loginAction">登录</van-button>
         </template>
       </div>
-
+<!-- 
       <van-row class="loginType">
         <van-col span="12">
           <svg class="icon myIconStyle" aria-hidden="true">
@@ -56,6 +56,7 @@
           </svg>
         </van-col>
       </van-row>
+       -->
     </div>
   </div>
 </template>
@@ -85,7 +86,7 @@ export default {
     // 校验格式
     checkSubmit() {
       var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
-      var regPassword = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
+      var regPassword = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,20}$/;
       if (regPassword.test(this.password)) this.isPassword = true;
       if (regPassword.test(this.password) && regPhone.test(this.phone)) {
         this.submitData.disabled = false;
@@ -102,7 +103,7 @@ export default {
       };
       let res = await LOG(data);
       // 出错提示
-      if (res.response_code) {
+      if (res.hasOwnProperty("response_code")) {
         console.log(res);
       } else {
         this.$toast(res.error_message);
