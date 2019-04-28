@@ -26,7 +26,7 @@
         />
       </div>
 
-      <van-row v-bind:class="{ row: isRow }">
+      <van-row class="row">
         <van-col span="12">
           <router-link to="/login/register">注册</router-link>
         </van-col>
@@ -43,8 +43,8 @@
           <van-button slot="button" size="large" round type="danger" @click="loginAction">登录</van-button>
         </template>
       </div>
-
-      <van-row v-bind:class="{ loginType: isLoginType }">
+<!-- 
+      <van-row class="loginType">
         <van-col span="12">
           <svg class="icon myIconStyle" aria-hidden="true">
             <use xlink:href="#icon-weixin-block"></use>
@@ -56,6 +56,7 @@
           </svg>
         </van-col>
       </van-row>
+       -->
     </div>
   </div>
 </template>
@@ -73,21 +74,19 @@ export default {
       password: "",
       submitData: {
         disabled: true
-      },
-      isRow: true,
-      isLoginType: true
+      }
     };
   },
   mounted() {
-    let queryData = this.$route.query;
-    this.phone = queryData.phone;
-    this.password = "";
+    this.phone = this.$route.query.mobile;
+    this.password = this.$route.query.pwd;
+    this.checkSubmit();
   },
   methods: {
     // 校验格式
     checkSubmit() {
       var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
-      var regPassword = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
+      var regPassword = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,20}$/;
       if (regPassword.test(this.password)) this.isPassword = true;
       if (regPassword.test(this.password) && regPhone.test(this.phone)) {
         this.submitData.disabled = false;
@@ -102,18 +101,22 @@ export default {
         pwd: this.password,
         version: "1.0"
       };
-      let log = await LOG(data);
+      let res = await LOG(data);
       // 出错提示
-      if (log.error_code == 1) {
-        this.$toast(log.error_message);
+      if (res.hasOwnProperty("response_code")) {
+        console.log(res);
+      } else {
+        this.$toast(res.error_message);
       }
-      console.log(log);
     },
     loginAction() {
       this.login();
     },
     findPassword() {
-      this.$router.push("/login/password");
+      let data = {
+        mobile: this.phone
+      };
+      this.$router.push({ path: "/login/password", query: data });
     }
   }
 };

@@ -46,7 +46,10 @@
         />
       </div>
 
-      <van-checkbox v-model="checked">阅读并同意《火把服务用户协议》</van-checkbox>
+      <div class="prototype">
+        <van-checkbox v-model="checked">阅读并同意</van-checkbox>
+        <router-link to="/login/prototype">《火把服务用户协议》</router-link>
+      </div>
 
       <div class="submitBox">
         <template v-if="submitData.disabled">
@@ -79,12 +82,12 @@ export default {
       codeData: {
         disabled: true,
         timeMsg: "获取验证码",
-        time: 120
+        time: 60
       },
       submitData: {
         disabled: true
       },
-      checked: true
+      checked: false
     };
   },
   mounted() {
@@ -94,7 +97,7 @@ export default {
     // 格式校验
     checkSubmit(type) {
       var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
-      var regPassword = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
+      var regPassword = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,20}$/;
       if (type === "phone") {
         if (regPhone.test(this.phone)) {
           this.codeData.disabled = false;
@@ -118,8 +121,8 @@ export default {
         mobile: this.phone,
         version: "1.0"
       };
-      let sms = await SMS(data);
-      console.log(sms);
+      let res = await SMS(data);
+      console.log(res);
     },
     getCode() {
       this.$countDown(this.codeData);
@@ -135,13 +138,13 @@ export default {
       };
 
       let reg = await REG(data);
-      if (reg.error_code) {
-        this.$toast(reg.error_message);
-        return;
+
+      if (res.hasOwnProperty("response_code")) {
+        this.$router.push({ path: "index", query: data });
+        console.log(reg);
+      } else {
+        this.$toast(res.error_message);
       }
-      
-      this.$router.push({ path: "index", query: data });
-      console.log(reg);
     },
     submitAction() {
       this.regist();

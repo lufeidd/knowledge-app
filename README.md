@@ -79,6 +79,9 @@ cnpm i jsencrypt -s
 // clipboard
 cnpm install clipboard --save
 
+// md5加密
+cnpm install --save js-md5
+
 cnpm install
 
 cnpm run dev

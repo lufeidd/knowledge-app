@@ -1,7 +1,5 @@
 <template>
   <div id="passwordPage">
-    <van-nav-bar title="找回密码" left-text right-text left-arrow @click-left="onClickLeft"/>
-
     <div class="fieldBox">
       <van-field
         v-bind:class="{ phone: isPhone }"
@@ -52,7 +50,7 @@
           <van-button slot="button" size="large" disabled round type="danger">确认并提交</van-button>
         </template>
         <template v-else>
-          <van-button slot="button" size="large" round type="danger" @click="gotoPage">确认并提交</van-button>
+          <van-button slot="button" size="large" round type="danger" @click="submitAction">确认并提交</van-button>
         </template>
       </div>
     </div>
@@ -62,6 +60,9 @@
 <style src="@/style/scss/pages/login/password.scss" lang="scss"></style>
 
 <script>
+//  引入接口
+import { SMS, FIND } from "../../apis/passport.js";
+
 export default {
   data() {
     return {
@@ -72,24 +73,24 @@ export default {
       codeData: {
         disabled: true,
         timeMsg: "获取验证码",
-        time: 3
+        time: 60
       },
       submitData: {
         disabled: true
       }
     };
   },
-  mounted() {},
+  mounted() {
+    this.phone = this.$route.query.mobile;
+    this.checkSubmit("phone");
+    // 获取并储存服务器和本地时间差
+    this.$getServerTime();
+  },
   methods: {
-    onClickLeft() {
-      this.$router.go(-1);
-    },
-    getCode() {
-      this.$countDown(this.codeData);
-    },
+    // 校验格式
     checkSubmit(type) {
       var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
-      var regPassword = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
+      var regPassword = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,20}$/;
       if (type === "phone") {
         var value = this.phone;
 
@@ -101,7 +102,7 @@ export default {
       }
       if (
         regPassword.test(this.password) &&
-        !this.codeData.disabled &&
+        regPhone.test(this.phone) &&
         this.code.length === 4
       ) {
         this.submitData.disabled = false;
@@ -109,12 +110,44 @@ export default {
         this.submitData.disabled = true;
       }
     },
-    gotoPage() {
-      let queryData = {
-        phone: this.phone,
-        password: this.password
+    // 获取验证码
+    async sms() {
+      let data = {
+        mobile: this.phone,
+        version: "1.0"
       };
-      this.$router.push({ path: "login", query: queryData });
+      let res = await SMS(data);
+      console.log(res);
+    },
+    getCode() {
+      this.$countDown(this.codeData);
+      this.sms();
+    },
+    // 确认并提交
+    async findPwd() {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        mobile: this.phone,
+        auth_code: this.code,
+        pwd: this.password,
+        timestamp: tStamp,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+
+      let res = await FIND(data);
+      if (res.hasOwnProperty("response_code")) {
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    submitAction() {
+      let data = {
+        mobile: this.phone,
+        pwd: this.password
+      };
+      this.findPwd();
+      this.$router.push({ path: "/index", query: data });
     }
   }
 };

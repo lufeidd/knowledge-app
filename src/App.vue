@@ -69,34 +69,28 @@ img {
 export default {
   name: "App",
   mounted() {
-
-    // this.$router.push("/detail");
-
-    // this.$router.push("/album/index");
-
-    // this.$router.push("/album/detail");
-
-    // this.$router.push("/album/player");
-
-    // this.$router.push("/brand/detail/article");
-    // this.$router.push("/loginBF");
-
-    // this.$router.push("/cart");
-
-    // this.$router.push("/album/player");
-
+    // 注册登录
     // this.$router.push("/login/register");
+    // this.$router.push("/login/index");
+    // this.$router.push("/login/password");
 
-    // this.$router.push("/search");
+    // 个人中心
+    // this.$router.push("/personal/index");
 
-    // this.$router.push("/login/register");
+    // 品牌商城
+    // this.$router.push("/brand/mall");
 
+    // 评价
+    // this.$router.push("/personal/order/comment/index");
+
+    // 我的评论
     // this.$router.push("/personal/comment/index");
 
-    // this.$router.push("/personal/set/address");
-    this.$router.push("/brand/result");
+    // 我的购买
+    // this.$router.push("/personal/order/list");
 
-    // this.$router.push("/brand/detail/book");
+    // 专辑
+    this.$router.push("/album/index");
   }
 };
 </script>
