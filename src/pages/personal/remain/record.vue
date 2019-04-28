@@ -12,10 +12,10 @@
       <div class="detail">
         <div class="top">
           <span class="into">充值-转入余额</span>
-          <span class="money">{{item.money}}</span>
+          <span class="money">{{item.amount}}</span>
         </div>
         <div class="bottom">
-          <span class="date">{{item.date}}</span>
+          <span class="date">{{item.create_time}}</span>
           <span class="order">{{item.order==0 ? '待发货':''}}</span>
         </div>
       </div>
@@ -38,20 +38,24 @@
 <style src="@/style/scss/pages/personal/remain/index.scss" lang="scss"></style>
 
 <script>
+import { USER_REMAIN_DETAILS } from "../../../apis/user.js";
 export default {
   data() {
     return {
       totalIncome: 1230.34,
       incomeData: [
-        { date: "2019-03-07", money: 1.533, order: 0 },
-        { date: "2019-03-07", money: 1.533, order: 1 },
-        { date: "2019-03-07", money: 1.533, order: 1 },
-        { date: "2019-03-07", money: 1.533, order: 0 }
+        // { date: "2019-03-07", money: 1.533, order: 0 },
+        // { date: "2019-03-07", money: 1.533, order: 1 },
+        // { date: "2019-03-07", money: 1.533, order: 1 },
+        // { date: "2019-03-07", money: 1.533, order: 0 }
       ],
       show: false,
       maxDate: new Date(),
       currentDate: new Date()
     };
+  },
+  mounted(){
+    this.getData();
   },
   methods: {
     showPopup() {
@@ -64,7 +68,21 @@ export default {
         return `${value}月`;
       }
       return value;
-    }
+    },
+    async getData(){
+      var data={
+        version:"1.0",
+      };
+      let res = await USER_REMAIN_DETAILS(data);
+
+      if(res.hasOwnProperty("response_code")){
+        this.totalIncome = res.response_data.total_money_in;
+        this.incomeData = res.response_data.result;
+        // console.log(res.response_data.total_money_in);
+      }else{
+        this.$toast(res.error_message);
+      }
+    },
   }
 };
 </script>
