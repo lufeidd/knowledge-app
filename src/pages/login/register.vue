@@ -1,7 +1,5 @@
 <template>
   <div id="registerPage">
-    <!-- <van-nav-bar title="注册" left-text right-text left-arrow @click-left="onClickLeft"/> -->
-
     <div class="fieldBox">
       <van-field
         :class="{ phone: isPhone }"
@@ -55,14 +53,12 @@
           <van-button slot="button" size="large" disabled round type="danger">确认并提交</van-button>
         </template>
         <template v-else>
-          <van-button slot="button" size="large" round type="danger" @click="gotoPage">确认并提交</van-button>
+          <van-button slot="button" size="large" round type="danger" @click="submitAction">确认并提交</van-button>
         </template>
       </div>
     </div>
-    {{ axiosData }}
   </div>
 </template>
-
 
 <style src="@/style/scss/pages/login/register.scss" lang="scss"></style>
 
@@ -70,13 +66,12 @@
 import Vue from "vue";
 // import regeneratorRuntime from "./../../regenerator-runtime/runtime.js";
 
-// 1. 引入登录的接口定义
-import { REG } from "../../apis/passport.js";
+//  引入接口
+import { REG, SMS } from "../../apis/passport.js";
 
 export default {
   data() {
     return {
-      axiosData: "",
       phone: "",
       isPhone: true,
       code: "",
@@ -84,7 +79,7 @@ export default {
       codeData: {
         disabled: true,
         timeMsg: "获取验证码",
-        time: 3
+        time: 120
       },
       submitData: {
         disabled: true
@@ -93,35 +88,10 @@ export default {
     };
   },
   mounted() {
-    //3. 执行登录
-    
+    console.log(this.$route.query);
   },
   methods: {
-    // 2. 定义注册的逻辑
-    async regist() {
-      // 2.1 awiat LOGIN(this.user)
-      // 等待LOGIN(this.user)执行完,
-      // 把返回值给userInfo
-      // let userInfo = await LOGIN(this.user);
-      // 2.2假设登录成功,返回的数据应该是
-      // userInfo = {code:200, msg: 'success', data: {token:'xxxxx'}}
-      // 然后根据返回的数据做相应的处理，比如储存token
-
-      let data = {
-        mobile: this.phone
-      };
-
-      let reg = await REG(data);
-
-      console.log("reg:", reg);
-    },
-    onClickLeft() {
-      this.$router.go(-1);
-    },
-    getCode() {
-      this.$countDown(this.codeData);
-      this.regist();
-    },
+    // 格式校验
     checkSubmit(type) {
       var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
       var regPassword = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
@@ -134,7 +104,7 @@ export default {
       }
       if (
         regPassword.test(this.password) &&
-        !this.codeData.disabled &&
+        regPhone.test(this.phone) &&
         this.code.length === 4
       ) {
         this.submitData.disabled = false;
@@ -142,15 +112,39 @@ export default {
         this.submitData.disabled = true;
       }
     },
-    gotoPage() {
-      let method = "/register";
+    // 获取验证码
+    async sms() {
+      let data = {
+        mobile: this.phone,
+        version: "1.0"
+      };
+      let sms = await SMS(data);
+      console.log(sms);
+    },
+    getCode() {
+      this.$countDown(this.codeData);
+      this.sms();
+    },
+    // 确认并注册
+    async regist() {
       let data = {
         mobile: this.phone,
         auth_code: this.code,
-        pwd: this.password
+        pwd: this.password,
+        version: "1.0"
       };
-      console.log("提交：", data);
-      // this.$router.push({ path: "login", query: queryData });
+
+      let reg = await REG(data);
+      if (reg.error_code) {
+        this.$toast(reg.error_message);
+        return;
+      }
+      
+      this.$router.push({ path: "index", query: data });
+      console.log(reg);
+    },
+    submitAction() {
+      this.regist();
     }
   }
 };

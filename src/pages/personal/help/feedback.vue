@@ -18,32 +18,32 @@
 import upload from "../../../components/upload";
 export default {
   components: {
-    upload,
+    upload
   },
-  data () {
+  data() {
     return {
-      submit:true,
+      submit: true,
       uploadData: {
         maxlength: 3
       }
-    }
+    };
   },
-  mounted(){
-    var input=$('input').val();
-    console.log(input.length)
+  mounted() {
+    var input = $("input").val();
+    console.log(input.length);
   },
-  methods:{
-    change(){
-      var input=$('input').val().length;
-      var textarea=$('textarea').val().length;
-      if( input>0 && textarea>0){
+  methods: {
+    change() {
+      var input = $("input").val().length;
+      var textarea = $("textarea").val().length;
+      if (input > 0 && textarea > 0) {
         this.submit = false;
-        console.log(this.submit)
-      }else{
+        console.log(this.submit);
+      } else {
         this.submit = true;
       }
     },
-    question(){
+    question() {
       this.change();
     },
     uploadImg(e, num) {
@@ -73,7 +73,7 @@ export default {
       // reader.readAsDataURL(file)
       // 转化为blob
       reader.readAsArrayBuffer(file);
-    },
+    }
   }
-}
+};
 </script>

@@ -36,14 +36,14 @@
         </span>
       </div>
       <div class="goods">
-            <div class="goodsInfo" v-for="value,index in item.info">
-              <div class="ratiobox">
-                <div class="bookImg" v-lazy:background-image="value.imgUrl"></div>
-              </div>
-              <p class="name">{{value.name}}</p>
-              <p class="message">{{value.message}}</p>
-              <p class="money">¥ {{value.money.toFixed(2)}}</p>
-            </div>
+        <div class="goodsInfo" v-for="value,index in item.info">
+          <div class="ratiobox">
+            <div class="bookImg" v-lazy:background-image="value.imgUrl"></div>
+          </div>
+          <p class="name">{{value.name}}</p>
+          <p class="message">{{value.message}}</p>
+          <p class="money">¥ {{value.money.toFixed(2)}}</p>
+        </div>
       </div>
     </div>
 
@@ -73,33 +73,105 @@ export default {
       swiperOption: {
         slidesPerView: 1.2
       },
-      footInfo:[{imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
-      title:'这里是内容的标题，可能会很长有两行文字',
-      message:'我是一条次要信息',
-      money:23.00},
-      {imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
-      title:'这里是内容的标题，可能会很长有两行文字',
-      message:'我是一条次要信息',
-      money:23.00},
-      {imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
-      title:'这里是内容的标题，可能会很长有两行文字',
-      message:'我是一条次要信息',
-      money:23.00},
-      {imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
-      title:'这里是内容的标题，可能会很长有两行文字',
-      message:'我是一条次要信息',
-      money:23.00},],
-      goodsInfo:[{title:'实物商品',
-      info:[{imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},
-      {imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},
-      {imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},
-      {imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},],},
-      {title:'专辑',
-      info:[{imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},
-      {imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},
-      {imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},
-      {imgUrl:'https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75',name:'我是一条商品名称，或许有两行',message:'我是一条次要信息',money:23.00},],},]
-    }
+      footInfo: [
+        {
+          imgUrl:
+            "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
+          title: "这里是内容的标题，可能会很长有两行文字",
+          message: "我是一条次要信息",
+          money: 23.0
+        },
+        {
+          imgUrl:
+            "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
+          title: "这里是内容的标题，可能会很长有两行文字",
+          message: "我是一条次要信息",
+          money: 23.0
+        },
+        {
+          imgUrl:
+            "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
+          title: "这里是内容的标题，可能会很长有两行文字",
+          message: "我是一条次要信息",
+          money: 23.0
+        },
+        {
+          imgUrl:
+            "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
+          title: "这里是内容的标题，可能会很长有两行文字",
+          message: "我是一条次要信息",
+          money: 23.0
+        }
+      ],
+      goodsInfo: [
+        {
+          title: "实物商品",
+          info: [
+            {
+              imgUrl:
+                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
+              name: "我是一条商品名称，或许有两行",
+              message: "我是一条次要信息",
+              money: 23.0
+            },
+            {
+              imgUrl:
+                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
+              name: "我是一条商品名称，或许有两行",
+              message: "我是一条次要信息",
+              money: 23.0
+            },
+            {
+              imgUrl:
+                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
+              name: "我是一条商品名称，或许有两行",
+              message: "我是一条次要信息",
+              money: 23.0
+            },
+            {
+              imgUrl:
+                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
+              name: "我是一条商品名称，或许有两行",
+              message: "我是一条次要信息",
+              money: 23.0
+            }
+          ]
+        },
+        {
+          title: "专辑",
+          info: [
+            {
+              imgUrl:
+                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
+              name: "我是一条商品名称，或许有两行",
+              message: "我是一条次要信息",
+              money: 23.0
+            },
+            {
+              imgUrl:
+                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
+              name: "我是一条商品名称，或许有两行",
+              message: "我是一条次要信息",
+              money: 23.0
+            },
+            {
+              imgUrl:
+                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
+              name: "我是一条商品名称，或许有两行",
+              message: "我是一条次要信息",
+              money: 23.0
+            },
+            {
+              imgUrl:
+                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
+              name: "我是一条商品名称，或许有两行",
+              message: "我是一条次要信息",
+              money: 23.0
+            }
+          ]
+        }
+      ]
+    };
   }
 };
 </script>

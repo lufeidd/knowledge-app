@@ -25,10 +25,10 @@
         v-model="currentDate"
         type="year-month"
         :max-date="maxDate"
-        :formatter="formatter" 
-        confirm-button-text="完成" 
-        @cancel="show=false" 
-        title="请选择时间" 
+        :formatter="formatter"
+        confirm-button-text="完成"
+        @cancel="show=false"
+        title="请选择时间"
         show-toolbar
       />
     </van-popup>

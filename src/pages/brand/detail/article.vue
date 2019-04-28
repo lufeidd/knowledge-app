@@ -4,7 +4,7 @@
       <div class="title">{{title}}</div>
       <div class="from">
         <div class="articleInfo">
-          <img v-lazy="articleInfo.icon"  class="icon">
+          <img v-lazy="articleInfo.icon" class="icon">
           <div class="detail">
             <p>{{articleInfo.name}}</p>
             <p class="number">{{articleInfo.foucs}}人关注</p>
@@ -18,30 +18,32 @@
         <span>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-eye-line"></use>
-          </svg>{{message.watch}}
+          </svg>
+          {{message.watch}}
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-good-line"></use>
-          </svg>{{message.foucs}}
+          </svg>
+          {{message.foucs}}
         </span>
         <span>{{message.time}}</span>
       </div>
     </div>
-     <div class="showContent">
-        <swiper class='swiperTags' :options="swiperOption" ref="mySwiper">
-          <swiper-slide v-for="item,index in footInfo" :key="index">
-            <div class="foot">
-              <div class="ratiobox">
-                <a class="bookImg" v-lazy:background-image="item.imgUrl"></a>
-              </div>
-              <div class="content">
-                <p class="title">{{item.title}}</p>
-                <p class="name">{{item.name}}</p>
-              </div>
+    <div class="showContent">
+      <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
+        <swiper-slide v-for="item,index in footInfo" :key="index">
+          <div class="foot">
+            <div class="ratiobox">
+              <a class="bookImg" v-lazy:background-image="item.imgUrl"></a>
             </div>
-          </swiper-slide>
-        </swiper>
-      </div>
-          <!-- 评论 -->
+            <div class="content">
+              <p class="title">{{item.title}}</p>
+              <p class="name">{{item.name}}</p>
+            </div>
+          </div>
+        </swiper-slide>
+      </swiper>
+    </div>
+    <!-- 评论 -->
     <div id="comment" class="commentBox">
       <van-cell title="评论 25" is-link value="我要评论" @click="openAnswer"/>
 
@@ -113,20 +115,21 @@
     <div class="pinglun">
       <div class="write" @click="openAnswer">快来写评论吧!</div>
       <div class="nice">
-          <svg class="icon" aria-hidden="true" v-if="collect" @click="iconCollect">
-            <use xlink:href="#icon-collect-line"></use>
-          </svg>
-          <svg class="icon add" aria-hidden="true" v-else @click="iconCollect">
-            <use xlink:href="#icon-collect-block"></use>
-          </svg> &nbsp|&nbsp
-          <svg class="icon" aria-hidden="true" v-if="nice" @click="iconGood">
-            <use xlink:href="#icon-good-line"></use>
-          </svg>
-          <svg class="icon add" aria-hidden="true" v-else @click="iconGood">
-            <use xlink:href="#icon-good-block"></use>
-          </svg>
+        <svg class="icon" aria-hidden="true" v-if="collect" @click="iconCollect">
+          <use xlink:href="#icon-collect-line"></use>
+        </svg>
+        <svg class="icon add" aria-hidden="true" v-else @click="iconCollect">
+          <use xlink:href="#icon-collect-block"></use>
+        </svg> &nbsp|&nbsp
+        <svg class="icon" aria-hidden="true" v-if="nice" @click="iconGood">
+          <use xlink:href="#icon-good-line"></use>
+        </svg>
+        <svg class="icon add" aria-hidden="true" v-else @click="iconGood">
+          <use xlink:href="#icon-good-block"></use>
+        </svg>
       </div>
     </div>
+    
   </div>
 </template>
 
@@ -134,44 +137,75 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      title:'这里是内容的标题，可能会很长有两行文字这里是内容的标题，可能会很长有两行文字',
-      foucs:true,
-      articleInfo:{name:'磨铁教育',foucs:23456,icon:'https://bnmpstyle.bookuu.com/wap/images/default_shop.png'},
-      message:{watch:25641,foucs:25641,time:'01.29 15:51'},
-      swiperOption: {
-        slidesPerView: 1.1,
+      title:
+        "这里是内容的标题，可能会很长有两行文字这里是内容的标题，可能会很长有两行文字",
+      foucs: true,
+      articleInfo: {
+        name: "磨铁教育",
+        foucs: 23456,
+        icon: "https://bnmpstyle.bookuu.com/wap/images/default_shop.png"
       },
-      footInfo:[{imgUrl:'https://media2.v.bookuu.com/activity/09/31/20190325093115149.jpg@!q75',
-      title:'这里是内容的标题，可能会很长有两行文字',
-      name:'品牌名称'},
-      {imgUrl:'https://media2.v.bookuu.com/activity/09/31/20190325093115149.jpg@!q75',
-      title:'这里是内容的标题，可能会很长有两行文字',
-      name:'品牌名称'}],
+      message: { watch: 25641, foucs: 25641, time: "01.29 15:51" },
+      swiperOption: {
+        slidesPerView: 1.1
+      },
+      footInfo: [
+        {
+          imgUrl:
+            "https://media2.v.bookuu.com/activity/09/31/20190325093115149.jpg@!q75",
+          title: "这里是内容的标题，可能会很长有两行文字",
+          name: "品牌名称"
+        },
+        {
+          imgUrl:
+            "https://media2.v.bookuu.com/activity/09/31/20190325093115149.jpg@!q75",
+          title: "这里是内容的标题，可能会很长有两行文字",
+          name: "品牌名称"
+        }
+      ],
       contentTotal: 30,
       contentModel: "",
       contentLength: 0,
       commentModel: false,
-      commentMessage:[
-        {name:'路人甲',content:'宝宝的巴士睡前故事，非常的好听值得购买',date:'2019.05.12   09:23',state:false},
-        {name:'路人甲',content:'宝宝的巴士睡前故事，非常的好听值得购买',date:'2019.05.12   09:23',state:true,
-        comment:[
-          {commentName:'萌萌龙',commentText:'其实是我的想法哈哈哈'},
-          {commentName:'我是一个粉刷匠呀',commentText:'你这个也太搞笑了吧，沙雕指 数没人可比呀。'},
-          ]},
-       {name:'路人甲',content:'宝宝的巴士睡前故事，非常的好听值得购买',date:'2019.05.12   09:23',state:false,}
-       ],
-       collect:true,
-       nice:true,
-    }
+      commentMessage: [
+        {
+          name: "路人甲",
+          content: "宝宝的巴士睡前故事，非常的好听值得购买",
+          date: "2019.05.12   09:23",
+          state: false
+        },
+        {
+          name: "路人甲",
+          content: "宝宝的巴士睡前故事，非常的好听值得购买",
+          date: "2019.05.12   09:23",
+          state: true,
+          comment: [
+            { commentName: "萌萌龙", commentText: "其实是我的想法哈哈哈" },
+            {
+              commentName: "我是一个粉刷匠呀",
+              commentText: "你这个也太搞笑了吧，沙雕指 数没人可比呀。"
+            }
+          ]
+        },
+        {
+          name: "路人甲",
+          content: "宝宝的巴士睡前故事，非常的好听值得购买",
+          date: "2019.05.12   09:23",
+          state: false
+        }
+      ],
+      collect: true,
+      nice: true
+    };
   },
-  methods:{
-    addfoucs(){
-      this.foucs=false;
+  methods: {
+    addfoucs() {
+      this.foucs = false;
     },
-    cancelfoucs(){
-      this.foucs=true;
+    cancelfoucs() {
+      this.foucs = true;
     },
     foldAction() {},
     onPunish() {
@@ -190,16 +224,16 @@ export default {
     commentClose() {
       this.commentModel = false;
     },
-    iconCollect(){
-      if(this.collect){
-        this.collect=false;
-      }else this.collect=true;
+    iconCollect() {
+      if (this.collect) {
+        this.collect = false;
+      } else this.collect = true;
     },
-    iconGood(){
-      if(this.nice){
-        this.nice=false;
-      }else this.nice=true;
-    },
+    iconGood() {
+      if (this.nice) {
+        this.nice = false;
+      } else this.nice = true;
+    }
   }
-}
+};
 </script>

@@ -6,14 +6,13 @@
 @charset "UTF-8";
 
 // 组件
-// @import url("./../../components/navBar.scss");
 @import url("./../../components/field.scss");
 @import url("./../../components/button.scss");
 @import url("./../../components/checkbox.scss");
 
 #registerPage {
 
-  .password {
+  & .password {
 
     /*设置input placeholder颜色*/
     ::-webkit-input-placeholder,
@@ -31,8 +30,7 @@
     }
   }
 
-  .van-cell {
-    border-bottom: 1px #d6d6d6 solid;
+  & .van-cell {
     font-size: $fontSize + 1;
     color: #000;
     padding: 10px 0;
@@ -40,26 +38,40 @@
     align-items: center;
   }
 
-  .fieldBox {
+  & .van-cell:not(:last-child)::after,
+  & .van-cell::after {
+    content: ' ';
+    position: absolute;
+    pointer-events: none;
+    box-sizing: border-box;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transform: scaleY(.5);
+    transform: scaleY(.5);
+    border-bottom: 1px solid #d6d6d6;
+  }
+
+  & .fieldBox {
     padding: 20px;
     // margin-top: 50px;
   }
 
-  .phone .van-field__label {
+  & .phone .van-field__label {
     border-right: 1px #d6d6d6 solid;
   }
 
-  .van-field__label {
+  & .van-field__label {
     max-width: 50px;
     margin-right: 10px;
   }
 
-  .van-checkbox__label {
+  & .van-checkbox__label {
     font-size: $fontSize - 1;
     color: #999;
   }
 
-  .submitBox {
+  & .submitBox {
     margin: 50px 30px;
   }
 }

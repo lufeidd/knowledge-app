@@ -66,10 +66,11 @@ import albumdetail from '@/pages/album/detail'
 import player from '@/pages/album/player'
 
 // 品牌
-import brand from '@/pages/brand/index'
 import mall from '@/pages/brand/mall'
 import article from '@/pages/brand/detail/article'
 import book from '@/pages/brand/detail/book'
+import brandresult from '@/pages/brand/result'
+import brand from '@/pages/brand/index'
 
 // 购物车
 import cart from '@/pages/cart'
@@ -85,10 +86,6 @@ import orderconfirmdetail from '@/pages/order/detail'
 import pay from '@/pages/pay/index'
 import payaccount from '@/pages/pay/account'
 import paysuccess from '@/pages/pay/success'
-
-
-// 备份
-import loginbf from '@/pages/loginBF'
 
 Vue.use(Router)
 
@@ -322,11 +319,6 @@ export default new Router({
     },
     // 品牌
     {
-      path: '/brand/index',
-      name: 'brand',
-      component: brand
-    },
-    {
       path: '/brand/mall',
       name: 'mall',
       component: mall
@@ -340,6 +332,16 @@ export default new Router({
       path: '/brand/detail/book',
       name: 'book',
       component: book
+    },
+    {
+      path: '/brand/result',
+      name: 'brandresult',
+      component: brandresult
+    },
+    {
+      path: '/brand/index',
+      name: 'brand',
+      component: brand
     },
     // 购物车
     {
@@ -381,13 +383,6 @@ export default new Router({
       path: '/pay/success',
       name: 'paysuccess',
       component: paysuccess
-    },
-
-    // 备份
-    {
-      path: '/loginBF',
-      name: 'loginbf',
-      component: loginbf
     }
   ]
 })

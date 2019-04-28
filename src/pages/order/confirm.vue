@@ -39,13 +39,13 @@
         </ul>
       </div>
       <div class="right">
-          <span>共5件</span>
+        <span>共5件</span>
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-next-line"></use>
         </svg>
       </div>
     </div>
-    
+
     <div class="priceInfo beizhu">
       <div class="first">
         <van-cell title="备注"/>
@@ -61,7 +61,6 @@
       <van-cell title="商品优惠" v-model="'¥'+priceInfo.discount.toFixed(2)"/>
       <van-cell title="余额" v-model="'-¥'+priceInfo.remain.toFixed(2)"/>
     </div>
-
   </div>
 </template>
 
@@ -71,7 +70,12 @@
 export default {
   data() {
     return {
-      imageList: ["https://img.yzcdn.cn/2.jpg", "https://img.yzcdn.cn/2.jpg", "https://img.yzcdn.cn/2.jpg", "https://img.yzcdn.cn/2.jpg"],
+      imageList: [
+        "https://img.yzcdn.cn/2.jpg",
+        "https://img.yzcdn.cn/2.jpg",
+        "https://img.yzcdn.cn/2.jpg",
+        "https://img.yzcdn.cn/2.jpg"
+      ],
       priceInfo: {
         totalPrice: 95.0,
         freight: 22.3,

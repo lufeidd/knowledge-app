@@ -58,21 +58,22 @@
 import upload from "../../../../components/upload";
 export default {
   components: {
-    upload,
+    upload
   },
-  data () {
+  data() {
     return {
-      imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
-      value1:0,
-      value2:0,
-      value2:0,
+      imgUrl:
+        "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
+      value1: 0,
+      value2: 0,
+      value2: 0,
       uploadData: {
-        maxlength:3,
-        text:'上传图片(最多三张)',
-      },
-    }
+        maxlength: 3,
+        text: "上传图片(最多三张)"
+      }
+    };
   },
-  methods:{
+  methods: {
     uploadImg(e, num) {
       //上传图片
       // this.option.img
@@ -100,7 +101,7 @@ export default {
       // reader.readAsDataURL(file)
       // 转化为blob
       reader.readAsArrayBuffer(file);
-    },
+    }
   }
-}
+};
 </script>

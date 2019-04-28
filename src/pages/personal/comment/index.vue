@@ -5,21 +5,21 @@
       <div class="head">
         <div class="titleFrom">
           <div class="box">
-            <img v-lazy="item.icon" class="icon">
-            <span class="publish">{{item.from}}</span>
+            <img v-lazy="item.user_headpic" class="icon">
+            <span class="publish">{{item.username}}</span>
           </div>
-          <span class="date">{{item.date}}</span>
+          <span class="date">{{item.create_time}}</span>
         </div>
       </div>
-      <p class="comment">买的虽然有点波折，还好商家好好处理了，商品不错，下次还来他家买</p>
+      <p class="comment">{{item.content}}</p>
       <div class="section">
         <div class="bookDetail">
           <div class="ratiobox">
-            <div class="bookImg" v-lazy:background-image="item.imgUrl"></div>
+            <div class="bookImg" v-lazy:background-image="item.goods_pic"></div>
           </div>
           <div class="detailContent">
-            <p class="title">{{item.title}}</p>
-            <p class="title red">¥ {{item.price.toFixed(2)}}</p>
+            <p class="title">{{item.goods_name}}</p>
+            <!-- <p class="title red">¥ {{item.price.toFixed(2)}}</p> -->
           </div>
         </div>
       </div>
@@ -31,45 +31,61 @@
 <style src="@/style/scss/pages/personal/comment/index.scss" lang="scss"></style>
 
 <script>
+
+//  引入接口
+import { USER_COMMENT } from "../../../apis/user.js";
+
 export default {
   data () {
     return {
-      commentData:[
-        {icon:'https://bnmpstyle.bookuu.com/wap/images/default_shop.png',
-        from:'路人甲',
-        date:'2019-4-18',
-        comment:'非常不错',
-        imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
-        title:'商品销售大全',
-        price:23.00},
-        {icon:'https://bnmpstyle.bookuu.com/wap/images/default_shop.png',
-        from:'路人乙',
-        date:'2019-4-18',
-        comment:'买的虽然有点波折，还好商家好好处理了，商品不错，下次还来他家买',
-        imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
-        title:'宝宝巴士在线讲故事',
-        price:23.00},
-        {icon:'https://bnmpstyle.bookuu.com/wap/images/default_shop.png',
-        from:'路人甲',
-        date:'2019-4-18',
-        comment:'这个东西整的很难用啊，商家你能不能好啊后写个使用说明书啊，我快要疯了呀。',
-        imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
-        title:'金鹰考恢复很快',
-        price:23.00},
-        {icon:'https://bnmpstyle.bookuu.com/wap/images/default_shop.png',
-        from:'路人甲',
-        date:'2019-4-18',
-        comment:'非常不错',
-        imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
-        title:'宝宝巴士在线讲故事',
-        price:23.00},]
+      commentData:[ ],
+        // {icon:'https://bnmpstyle.bookuu.com/wap/images/default_shop.png',
+        // from:'路人甲',
+        // date:'2019-4-18',
+        // comment:'非常不错',
+        // imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
+        // title:'商品销售大全',
+        // price:23.00},
+        // {icon:'https://bnmpstyle.bookuu.com/wap/images/default_shop.png',
+        // from:'路人乙',
+        // date:'2019-4-18',
+        // comment:'买的虽然有点波折，还好商家好好处理了，商品不错，下次还来他家买',
+        // imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
+        // title:'宝宝巴士在线讲故事',
+        // price:23.00},
+        // {icon:'https://bnmpstyle.bookuu.com/wap/images/default_shop.png',
+        // from:'路人甲',
+        // date:'2019-4-18',
+        // comment:'这个东西整的很难用啊，商家你能不能好啊后写个使用说明书啊，我快要疯了呀。',
+        // imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
+        // title:'金鹰考恢复很快',
+        // price:23.00},
+        // {icon:'https://bnmpstyle.bookuu.com/wap/images/default_shop.png',
+        // from:'路人甲',
+        // date:'2019-4-18',
+        // comment:'非常不错',
+        // imgUrl:'https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85',
+        // title:'宝宝巴士在线讲故事',
+        // price:23.00},
     }
   },
-  created(){
-
+  mounted(){
+    this.getUserComment();
   },
-  methods:{
-
+  methods: {
+    async getUserComment (){
+      let data = {
+        version: "1.0"
+      }
+      let res = await USER_COMMENT(data);
+      if(res.response_code) {
+        this.commentData=res.response_data.result
+      }else {
+        this.$toast(res.error_message);
+      }
+      console.log(res.response_data.result);
+      console.log(this.commentData);
+    }
   }
 }
 </script>

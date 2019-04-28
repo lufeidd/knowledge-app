@@ -91,10 +91,10 @@ export default {
 
     // this.$router.push("/login/register");
 
-    this.$router.push("/personal/comment/index");
+    // this.$router.push("/personal/comment/index");
 
     // this.$router.push("/personal/set/address");
-    // this.$router.push("/brand/mall");
+    this.$router.push("/brand/result");
 
     // this.$router.push("/brand/detail/book");
   }
