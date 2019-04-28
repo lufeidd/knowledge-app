@@ -28,13 +28,43 @@ a {
 
 *,
 img {
-	-webkit-tap-highlight-color: transparent;
-	-ms-tap-highlight-color: transparent;
-	-moz-tap-highlight-color: transparent;
-	-o-tap-highlight-color: transparent;
-	-webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  -ms-tap-highlight-color: transparent;
+  -moz-tap-highlight-color: transparent;
+  -o-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
   padding: 0;
   margin: 0;
+}
+
+/* 隐藏滚动条 */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+::-ms-scrollbar {
+  width: 0;
+  height: 0;
+}
+::scrollbar[orient="vertical"] {
+  min-width: 0 !important;
+}
+/* 滚动条的滑轨背景颜色 */
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+/* 滑块颜色 */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+/* 滑轨两头的监听按钮颜色 */
+::-webkit-scrollbar-button {
+  height: 0;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+/* 横向滚动条和纵向滚动条相交处尖角的颜色 */
+::-webkit-scrollbar-corner {
+  background-color: black;
 }
 
 /*设置input placeholder颜色*/
@@ -76,6 +106,9 @@ export default {
 
     // 个人中心
     // this.$router.push("/personal/index");
+
+    // 我的购买
+    // this.$router.push("/personal/remain/index");
 
     // 品牌商城
     // this.$router.push("/brand/mall");

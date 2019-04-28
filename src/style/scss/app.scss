@@ -86,12 +86,20 @@
   border-bottom: 1px #eee solid;
 }
 
+.van-hairline--top-bottom::after {
+  border-width: 0;
+}
+
 .van-tab {
   @include font(null, $fontSize + 1, #666);
 }
 
 .van-tab--active {
-  @include font("PingFangBold", $fontSize + 1, #333666);
+  @include font("PingFangBold", $fontSize + 1, #333);
+}
+
+.van-tabs__track {
+  height: auto;
 }
 
 .van-tabs__line {
