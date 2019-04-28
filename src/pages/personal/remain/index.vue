@@ -2,7 +2,7 @@
   <div id="remainPage">
     <div class="content">
       <span>¥</span>
-      <span class="money">{{money.toFixed(2)}}</span>
+      <span class="money">{{money}}</span>
       <p class="currentRemain">当前余额</p>
       <van-row type="flex" justify="center" class="detail">
         <van-col span="7">
@@ -24,19 +24,44 @@
 <style src="@/style/scss/pages/personal/remain/index.scss" lang="scss"></style>
 
 <script>
+import { USER_REMAIN_INFO } from "../../../apis/user.js";
+
 export default {
   data() {
     return {
-      money: 12.5
+      money:'',
     };
   },
+  mounted () {
+      this.getRemainData();
+  },
   methods: {
-    onClickLeft() {
-      this.$router.go(-1);
-    },
     recharge() {
-      this.$router.push("/personal/remain/account");
-    }
+      // this.$router.push({
+      //   name:"/personal/remain/account",
+      //   params:{
+      //     money:this.money,
+      //     },
+      //   });
+      this.$router.push("/personal/remain/account")
+    },
+    //获取页面数据
+    // res.hasOwnProperty("response_code")
+    async getRemainData(){
+      var data={
+        version:"1.0",
+      };
+
+      // data.sign = this.$getSign(data);
+
+      let res = await USER_REMAIN_INFO(data);
+      if(res.hasOwnProperty("response_code")){
+        this.money = res.response_data.balance;
+        console.log(res.response_data.balance);
+      }else{
+        this.$toast(res.error_message);
+      }
+    },
   }
 };
 </script>

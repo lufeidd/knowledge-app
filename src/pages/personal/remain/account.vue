@@ -2,7 +2,7 @@
   <div id="accountPage">
     <div class="content">
       <span>¥</span>
-      <span class="money">{{money.toFixed(2)}}</span>
+      <span class="money">{{money}}</span>
       <p class="currentRemain">当前余额</p>
     </div>
     <div class="account">
@@ -28,16 +28,22 @@
 export default {
   data() {
     return {
-      money: 12.5,
+      money: '',
       rechargeAmount: [5, 20, 50, 100, 150, 200, 280, 320],
       activeClass: -1
     };
+  },
+  mounted(){
+    this.getData();
   },
   methods: {
     getActive(index) {
       this.activeClass = index;
     },
-    account() {}
+    account() {},
+    getData(){
+      this.money=this.$route.params.money;
+    }
   }
 };
 </script>
