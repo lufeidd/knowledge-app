@@ -117,13 +117,13 @@ export default {
     // this.$router.push("/personal/order/comment/index");
 
 
-    this.$router.push("/personal/help/index");
+    // this.$router.push("/personal/help/index");
 
     // 我的购买
-    // this.$router.push("/personal/order/list");
+    // this.$router.push("/personal/remain/index");
 
     // 专辑
-    // this.$router.push("/album/index");
+    this.$router.push("/album/index");
   }
 };
 </script>

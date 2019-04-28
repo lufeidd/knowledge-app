@@ -43,7 +43,11 @@ export default {
       //     money:this.money,
       //     },
       //   });
-      this.$router.push("/personal/remain/account")
+      
+      let data = {
+
+      };
+      this.$router.push({path: "/personal/remain/account", query: data});
     },
     //获取页面数据
     // res.hasOwnProperty("response_code")

@@ -42,7 +42,7 @@ export default {
     },
     account() {},
     getData(){
-      this.money=this.$route.params.money;
+      this.money = this.$route.params.money;
     }
   }
 };
