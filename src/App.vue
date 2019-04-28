@@ -69,7 +69,6 @@ img {
 export default {
   name: "App",
   mounted() {
-
     // 注册登录
     // this.$router.push("/login/register");
     // this.$router.push("/login/index");
@@ -92,8 +91,6 @@ export default {
 
     // 专辑
     this.$router.push("/album/index");
-
-
   }
 };
 </script>
