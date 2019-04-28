@@ -116,14 +116,14 @@ export default {
     // 评价
     // this.$router.push("/personal/order/comment/index");
 
-    // 我的评论
-    // this.$router.push("/personal/comment/index");
+
+    this.$router.push("/personal/help/index");
 
     // 我的购买
     // this.$router.push("/personal/order/list");
 
     // 专辑
-    this.$router.push("/album/index");
+    // this.$router.push("/album/index");
   }
 };
 </script>
