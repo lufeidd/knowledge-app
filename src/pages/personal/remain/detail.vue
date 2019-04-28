@@ -60,6 +60,7 @@ export default {
       maxDate: new Date(),
       currentDate: new Date(),
     };
+    
   },
   mounted(){
     this.getData();
