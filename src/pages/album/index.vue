@@ -62,104 +62,93 @@
             <div class="commentBox">
               <van-cell title="评论 25" is-link value="我要评论" @click="openAnswer"/>
 
-              <div class="listBox" >
-                <div class="left">
-                  <div class="ratioBox">
-                    <div class="box">
-                      <img
-                        src=""
-                      >
+              <van-list
+                v-model="commentLoading"
+                :finished="commentFinished"
+                finished-text="没有更多了"
+                @load="commentLoad"
+              >
+                <div class="listBox" v-for="(item, key) in discussData" :key="key">
+                  <div class="left">
+                    <div class="ratioBox">
+                      <div class="box">
+                        <img :src="item.user_header">
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="center">
-                  <div class="title">
-                    <div class="text">十点零分奖励积分善良的飞机螺丝钉解放了解对方的</div>
-                  </div>
-                  <div class="subTitle">dfsdfsf郭德纲士大夫沙发上的</div>
+                  <div class="center">
+                    <div class="title">
+                      <div class="text">{{ item.nick_name }}</div>
+                    </div>
+                    <div class="subTitle">{{ item.content }}</div>
 
-                  <div class="messageBox">
-                    <div>
-                      <div class="message active">
-                        <span class="name">受到了放进塑料袋就发了多少</span>
-                        <span class="dialog">士大夫士大夫罗斯福大家都是</span>
+                    <div class="messageBox" v-if="answerData[key].length > 0">
+                      <!-- 回复 -->
+
+                      <!-- <div
+                        class="message active"
+                        v-for="(replyItem, key) in item.reply_list"
+                        :key="key"
+                      >
+                        <span class="name">{{ replyItem.nick_name }}</span>
+                        <span class="dialog">{{ replyItem.content }}</span>
+                      </div> -->
+                      
+                      <div
+                        class="message active"
+                        v-for="(replyItem, key) in answerData[key]"
+                        :key="key"
+                      >
+                        <span class="name">{{ replyItem.nick_name }}</span>
+                        <span class="dialog">{{ replyItem.content }}</span>
                       </div>
 
-                      <div class="message active">
-                        <span class="name" @click="foldAction">
-                          共4条回复
-                          <svg class="icon" aria-hidden="true">
+
+
+
+
+                      <div class="message active" v-if="item.reply_num > 2">
+                      
+
+                        <!-- <van-pagination v-model="item.reply_current_page" :page-count="item.reply_total_page" mode="simple" @change="pageChange(item.comment_id, key)" /> -->
+                        
+                        <span class="name" @click="pageChange(item.comment_id, key)">
+                          共{{ item.reply_num }}条回复
+
+                          {{ item.comment_id }} - {{ key }}
+                          <svg
+                            class="icon"
+                            aria-hidden="true"
+                          >
                             <use xlink:href="#icon-fold-line"></use>
                           </svg>
-                          <svg class="icon" aria-hidden="true">
+                          <!-- <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-unfold-line"></use>
-                          </svg>
+                          </svg> -->
                         </span>
-                      </div>
                     </div>
-                  </div>
-
-                  <!-- 回复 -->
-                  <div class="answerBox">
-                    <span class="date">20190708 10:10</span>
-                    <span class="action" @click="openAnswer">回复</span>
-                  </div>
-                </div>
-              </div>
 
 
-              <div class="listBox" v-for="(item, key) in discussData" :key="key">
-                <div class="left">
-                  <div class="ratioBox">
-                    <div class="box">
-                      <img
-                        :src="item.header_pic"
-                      >
+
+                    </div>
+
+
+
+
+                    
+
+                    <!-- 回复 -->
+                    <div class="answerBox">
+                      <span class="date">{{ item.create_time }}</span>
+                      <span class="action" @click="openAnswer">回复</span>
                     </div>
                   </div>
                 </div>
-                <div class="center">
-                  <div class="title">
-                    <div class="text">十点零分奖励积分善良的飞机螺丝钉解放了解对方的</div>
-                  </div>
-                  <div class="subTitle">{{ item.content }}</div>
-
-                  <div class="messageBox">
-                    <div>
-                      <div class="message active">
-                        <span class="name">受到了放进塑料袋就发了多少</span>
-                        <span class="dialog">士大夫士大夫罗斯福大家都是</span>
-                      </div>
-
-                      <div class="message active">
-                        <span class="name" @click="foldAction">
-                          共4条回复
-                          <svg class="icon" aria-hidden="true">
-                            <use xlink:href="#icon-fold-line"></use>
-                          </svg>
-                          <svg class="icon" aria-hidden="true">
-                            <use xlink:href="#icon-unfold-line"></use>
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- 回复 -->
-                  <div class="answerBox">
-                    <span class="date">{{ item.create_time }}</span>
-                    <span class="action" @click="openAnswer">回复</span>
-                  </div>
-                </div>
-              </div>
+              </van-list>
             </div>
           </div>
         </template>
         <template v-if="key == 1">
-          <!-- <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-            <van-cell v-for="item in list" :key="item" :title="item"/>
-          </van-list>-->
-
           <div class="listContent">
             <van-row class="title">
               <van-col span="12">
@@ -236,7 +225,7 @@
               <div class="left">
                 <div class="ratioBox">
                   <div class="box">
-                    <img src="">
+                    <img src>
                   </div>
                 </div>
               </div>
@@ -295,7 +284,7 @@
     <!-- 试听 - 购买 -->
     <van-goods-action :class="{ iphx: this.isIphx }">
       <van-goods-action-mini-btn icon="play-circle-o" text="试听" @click="onClickMiniBtn"/>
-      <van-goods-action-big-btn primary :text="'¥ '+money + ' 购买'" @click="onClickBigBtn"/>
+      <van-goods-action-big-btn primary :text="'¥ '+baseData.price + ' 购买'" @click="onClickBigBtn"/>
     </van-goods-action>
 
     <!-- 音频缩略 -->
@@ -339,7 +328,7 @@ import {
   FOCUS_CANCEL,
   COMMENT,
   COMMENT_ADD,
-  ALBUM_DETAIL,
+  ALBUM_DETAIL
 } from "../../apis/public.js";
 
 export default {
@@ -367,29 +356,33 @@ export default {
       // 选项卡
       tabData: [
         {
-          title: "介绍",
+          title: "介绍"
         },
         {
-          title: "节目",
+          title: "节目"
         },
         {
-          title: "相似",
+          title: "相似"
         }
       ],
+      tabModel: 0,
       // 评论
       discussData: [],
+      commentPage: 1,
       // 发布评论
       commentModel: false,
       contentModel: "",
       contentTotal: 30,
       contentLength: 0,
       // 节目列表
+      commentLoading: false,
+      commentFinished: false,
+      // 回复
+      replyPage: [],
+      answerData: [],
 
-      ////////////////////////////////////////////
-      list: [],
+      ////////////////////////////////////////////////////////////////////////////
 
-      loading: false,
-      finished: false,
 
       showTag: true,
       audioData: {
@@ -405,9 +398,6 @@ export default {
         program: "1.哄睡觉方法 上了飞机率领的反垄断设计费",
         popupModel: false
       },
-      tabModel: 0,
-      money: 5,
-      collect: false,
     };
   },
   mounted() {
@@ -415,27 +405,28 @@ export default {
     this.baseData.goods_id = 16;
     // 当前页接口信息
     this.albumData();
-    this.commentData();
+    // this.commentData();
 
-//////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
 
     this.audioData.src = require("./../../assets/music.mp3");
   },
   methods: {
     // 获取专辑接口信息
     async albumData() {
+      // var tStamp = this.$getTimeStamp();
       let data = {
+        // timeStamp: tStamp,
         goods_id: this.baseData.goods_id,
         version: "1.0"
       };
       let res = await ALBUM(data);
       if (res.hasOwnProperty("response_code")) {
         //专辑基础信息
-        // this.$set(this.baseData, 'title', res.response_data.base.title);
         this.baseData = res.response_data.base;
         // 所属媒体信息
         this.brandInfoData = res.response_data.brand_info;
-        // console.log(res.response_data);
+        // console.log(this.baseData);
       } else {
         this.$toast(res.error_message);
       }
@@ -539,23 +530,70 @@ export default {
         .css("height", __height);
     },
     // 评论
-    async commentData () {
+    async commentData() {
+      
       let data = {
+        page: this.commentPage,
+        page_size: 4,
         version: "1.0"
       };
       let res = await COMMENT(data);
+      
       if (res.hasOwnProperty("response_code")) {
-        // this.discussData = res;
-        for (let i = 0; i < res.response_data.result.length; i++ ) {
-          var result = res.response_data.result;
-          this.discussData.push(result[i]);
-        }
-        console.log("评论：", res.response_data.result);
+        // 异步更新数据
+        var result = res.response_data.result;
+        setTimeout(() => {
+          for (let i = 0; i < res.response_data.result.length; i++) {
+            this.discussData.push(result[i]);
+            this.answerData.push(result[i].reply_list);
+            this.replyPage.push(1);
+            
+          }
+          // 加载状态结束
+          this.commentLoading = false;
+          this.commentPage++;
+
+          // 数据全部加载完成
+          if (this.discussData.length >= res.response_data.total_count) {
+            this.commentFinished = true;
+          }
+        }, 500);
+
+        console.log("res：", res);
+        // console.log("replyPage：", this.replyPage);
       } else {
         this.$toast(res.error_message);
       }
     },
-    async addComment () {
+    // 回复
+    async replyData(comment_id, key) {
+      let data = {
+        comment_pid: comment_id,
+        page: this.replyPage[key],
+        version: "1.0"
+      };
+      let res = await COMMENT(data);
+
+      if (res.hasOwnProperty("response_code")) {
+
+        // 异步更新数据
+        var result = res.response_data.result;
+        // this.answerData.push(result);
+        for(let i = 0; i < result.length; i++) {
+
+          this.answerData[key].push(result[i]);
+        }
+        this.replyPage[key]++;
+
+        // console.log("answerData:", this.answerData[key]);
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    pageChange(comment_id, key){
+      this.replyData(comment_id, key);
+    },
+    async addComment() {
       let data = {
         goods_id: this.baseData.goods_id,
         content: this.contentModel,
@@ -563,7 +601,7 @@ export default {
       };
       let res = await COMMENT_ADD(data);
       if (res.hasOwnProperty("response_code")) {
-        console.log("新增评论：", res);
+        // console.log("新增评论：", res);
       } else {
         this.$toast(res.error_message);
       }
@@ -575,43 +613,34 @@ export default {
       }
       this.commentModel = false;
       this.addComment();
+      this.commentData();
     },
-    // 节目列表
-    async listData () {
 
+////////////////////////////////////
+
+    // 节目列表
+    async listData() {
       let data = {
         version: "1.0"
       };
       let res = await COMMENT(data);
       if (res.hasOwnProperty("response_code")) {
         // this.discussData = res;
-        for (let i = 0; i < res.response_data.result.length; i++ ) {
+        for (let i = 0; i < res.response_data.result.length; i++) {
           var result = res.response_data.result;
           this.discussData.push(result[i]);
         }
-        console.log("评论：", res.response_data.result);
+        // console.log("评论：", res.response_data.result);
       } else {
         this.$toast(res.error_message);
       }
     },
+    commentLoad() {
+      this.commentData();
+    },
 
     /////////////////////////////////////////////////////////////////
 
-    onLoad() {
-      // 异步更新数据
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1);
-        }
-        // 加载状态结束
-        this.loading = false;
-
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true;
-        }
-      }, 500);
-    },
     inputChange(self) {
       this.contentLength = this.contentModel.length;
     },
@@ -621,7 +650,6 @@ export default {
     commentClose() {
       this.commentModel = false;
     },
-    foldAction() {},
     onClose() {
       this.showTag = false;
     },

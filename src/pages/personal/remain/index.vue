@@ -29,11 +29,11 @@ import { USER_REMAIN_INFO } from "../../../apis/user.js";
 export default {
   data() {
     return {
-      money:'',
+      money: ""
     };
   },
-  mounted () {
-      this.getRemainData();
+  mounted() {
+    this.getRemainData();
   },
   methods: {
     recharge() {
@@ -43,29 +43,27 @@ export default {
       //     money:this.money,
       //     },
       //   });
-      
-      let data = {
 
-      };
-      this.$router.push({path: "/personal/remain/account", query: data});
+      let data = {};
+      this.$router.push({ path: "/personal/remain/account", query: data });
     },
     //获取页面数据
     // res.hasOwnProperty("response_code")
-    async getRemainData(){
-      var data={
-        version:"1.0",
+    async getRemainData() {
+      var data = {
+        version: "1.0"
       };
 
       // data.sign = this.$getSign(data);
 
       let res = await USER_REMAIN_INFO(data);
-      if(res.hasOwnProperty("response_code")){
+      if (res.hasOwnProperty("response_code")) {
         this.money = res.response_data.balance;
         console.log(res.response_data.balance);
-      }else{
+      } else {
         this.$toast(res.error_message);
       }
-    },
+    }
   }
 };
 </script>

@@ -28,12 +28,12 @@
 export default {
   data() {
     return {
-      money: '',
+      money: "",
       rechargeAmount: [5, 20, 50, 100, 150, 200, 280, 320],
       activeClass: -1
     };
   },
-  mounted(){
+  mounted() {
     this.getData();
   },
   methods: {
@@ -41,7 +41,7 @@ export default {
       this.activeClass = index;
     },
     account() {},
-    getData(){
+    getData() {
       this.money = this.$route.params.money;
     }
   }

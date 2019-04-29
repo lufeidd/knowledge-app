@@ -131,7 +131,7 @@ export default {
         auth_code: this.code,
         pwd: this.password,
         timestamp: tStamp,
-        version: "1.0",
+        version: "1.0"
       };
 
       data.sign = this.$getSign(data);
@@ -139,7 +139,6 @@ export default {
       let res = await FIND(data);
 
       if (res.hasOwnProperty("response_code")) {
-
       } else {
         this.$toast(res.error_message);
       }
