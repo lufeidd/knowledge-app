@@ -28,12 +28,12 @@
 export default {
   data() {
     return {
-      money: '',
+      money: "",
       rechargeAmount: [5, 20, 50, 100, 150, 200, 280, 320],
       activeClass: 0,
     };
   },
-  mounted(){
+  mounted() {
     this.getData();
   },
   methods: {

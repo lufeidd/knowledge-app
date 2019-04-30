@@ -61,6 +61,7 @@ export default {
       currentDate: new Date(),
       page:1,
     };
+    
   },
   mounted(){
     this.getData();

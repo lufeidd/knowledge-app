@@ -43,7 +43,7 @@
           <van-button slot="button" size="large" round type="danger" @click="loginAction">登录</van-button>
         </template>
       </div>
-<!-- 
+      <!-- 
       <van-row class="loginType">
         <van-col span="12">
           <svg class="icon myIconStyle" aria-hidden="true">
@@ -56,7 +56,7 @@
           </svg>
         </van-col>
       </van-row>
-       -->
+      -->
     </div>
   </div>
 </template>
@@ -105,6 +105,7 @@ export default {
       // 出错提示
       if (res.hasOwnProperty("response_code")) {
         console.log(res);
+        this.$router.push({ path: "/album/index", query: '' });
       } else {
         this.$toast(res.error_message);
       }

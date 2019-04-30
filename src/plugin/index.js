@@ -1,12 +1,14 @@
 import crypto from "crypto";
 
-//  引入接口
-import req from "./../apis/http.js";
+//  引入时间戳接口
+// import req from "./../apis/http.js";
+import { SERVER_TIME } from "./../apis/public.js";
+
 // 支持await async
 import regeneratorRuntime from './../regenerator-runtime/runtime.js';
 
 // 时间戳
-export const SERVER_TIME = params => req('post', '/timestamp', params);
+// export const SERVER_TIME = params => req('post', '/timestamp', params);
 
 export default {
   install: function (Vue, options) {

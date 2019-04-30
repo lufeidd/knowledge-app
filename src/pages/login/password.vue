@@ -133,9 +133,11 @@ export default {
         timestamp: tStamp,
         version: "1.0"
       };
+
       data.sign = this.$getSign(data);
 
       let res = await FIND(data);
+
       if (res.hasOwnProperty("response_code")) {
       } else {
         this.$toast(res.error_message);
@@ -147,7 +149,7 @@ export default {
         pwd: this.password
       };
       this.findPwd();
-      this.$router.push({ path: "/index", query: data });
+      this.$router.push({ path: "/login/index", query: data });
     }
   }
 };
