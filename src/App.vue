@@ -111,10 +111,13 @@ export default {
     // this.$router.push("/personal/remain/index");
 
     // 品牌商城
-    // this.$router.push("/brand/mall");
+    this.$router.push("/brand/index");
 
     // 评价
     // this.$router.push("/personal/order/comment/index");
+
+    // 我的评论
+    // this.$router.push("/personal/help/feedback");
 
 
     // this.$router.push("/personal/help/index");

@@ -138,6 +138,7 @@ export default {
 
     onRead(file) {
       var src = file.content;
+
       var maxlength = this.uploadData.maxlength;
       var text=this.uploadData.text;
       var box = $("#upload .flex-box .box");
@@ -148,7 +149,7 @@ export default {
       $("#upload").prepend(
         '<div class="flex-box">' +
           '<div class="box">' +
-          '<div class="content" style="background-image: url(' +
+          '<div class="content set" data-src="'+src+'" style="background-image: url(' +
           src +
           ');">' +
           '<div class="del">' +
