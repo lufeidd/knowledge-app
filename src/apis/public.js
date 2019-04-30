@@ -11,11 +11,13 @@ import req from './http.js'
 export const SERVER_TIME = params => req('post', '/timestamp', params);
 
 // 收藏
-export const COLLECT = params => req('post', '/user/collect/add', params);
+export const COLLECT = params => req('post', '/user/collect/gets', params);
+export const COLLECT_ADD = params => req('post', '/user/collect/add', params);
 export const COLLECT_CANCEL = params => req('post', '/user/collect/cancel', params);
 
 // 关注公众号
-export const FOCUS = params => req('post', '/user/attention/add', params);
+export const FOCUS = params => req('post', '/user/attention/gets', params);
+export const FOCUS_ADD = params => req('post', '/user/attention/add', params);
 export const FOCUS_CANCEL = params => req('post', '/user/attention/cancel', params);
 
 // 评论

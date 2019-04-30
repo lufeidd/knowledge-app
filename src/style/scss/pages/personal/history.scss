@@ -26,13 +26,13 @@ html {
 
         & .box {
 
-          & .tip {
-            @include position (absolute, 'bl', 0, 0, 100%, 15px, 0);
-            @include font(null, $fontSize - 2, $white);
-            @include textOverflow;
-            background-color: rgba($color: #000000, $alpha: 0.3);
-            text-align: center;
-          }
+          // & .tip {
+          //   @include position (absolute, 'bl', 0, 0, 100%, 15px, 0);
+          //   @include font(null, $fontSize - 2, $white);
+          //   @include textOverflow;
+          //   background-color: rgba($color: #000000, $alpha: 0.3);
+          //   text-align: center;
+          // }
         }
       }
     }

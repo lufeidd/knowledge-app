@@ -1,80 +1,122 @@
 <template>
   <div id="focusPage">
-    <div class="msgBox">已有23家自媒体更新了内容</div>
+    <!-- <div class="msgBox">已有23家自媒体更新了内容</div> -->
 
-    <template v-for="item in listData">
-      <van-swipe-cell :right-width="65" :left-width="0" :on-close="onClose">
+    <div class="nullBox" v-if="focusList.length == 0">
+      <img src="./../../assets/null/list.png" width="100%">
+      <div>还没有关注的内容，快去看看吧~</div>
+    </div>
+
+    <van-list
+      v-else
+      v-model="focusLoading"
+      :finished="focusFinished"
+      finished-text="没有更多了"
+      @load="focusLoad"
+    >
+      <van-swipe-cell
+        :right-width="65"
+        :left-width="0"
+        :on-close="focusClose"
+        v-for="(item, key) in focusList"
+        :key="key"
+      >
         <div class="listBox">
           <div class="left">
             <div class="ratioBox">
               <div class="box">
-                <img :src="item.imgSrc">
+                <img :src="item.header_pic">
               </div>
             </div>
           </div>
           <div class="right">
-            <div class="title">{{ item.title }}</div>
-            <div class="subTitle">已被{{ item.subTitle }}人关注</div>
+            <div class="title">{{ item.brand_name }}</div>
+            <div class="subTitle">已被{{ item.fans_num }}人关注</div>
             <div class="new">
               <span class="text">更新</span>
-              <span class="count">{{ item.count }}</span>
+              <span class="count">+{{ item.update_num }}</span>
             </div>
           </div>
         </div>
-        <span slot="right">
+        <span slot="right" @click="focusCancel(item.brand_id)">
           <div>取消关注</div>
         </span>
       </van-swipe-cell>
-    </template>
-    
+    </van-list>
   </div>
 </template>
 
 <style src="@/style/scss/pages/personal/focus.scss" lang="scss"></style>
 
 <script>
+//  引入接口
+import { FOCUS, FOCUS_CANCEL } from "../../apis/public.js";
+
 export default {
   data() {
     return {
-      listData: [
-        {
-          title: "浙江出版传媒",
-          subTitle: "15万",
-          count: "+34",
-          imgSrc:
-            "https://media2.v.bookuu.com/activity/10/14/20190415101409783.gif"
-        },
-        {
-          title: "浙江出版传媒",
-          subTitle: "15万",
-          count: "+34",
-          imgSrc:
-            "https://bnmppic.bookuu.com/topic/20161108/1478612622195756.jpg"
-        }
-      ]
+      focusList: [],
+      focusLoading: false,
+      focusFinished: false,
+      focusPage: 1
     };
   },
-  mounted() {},
+  mounted() {
+    this.focusData("focus", null);
+  },
   methods: {
-    onClose(clickPosition, instance) {
-      switch (clickPosition) {
-        case "left":
-        case "cell":
-        case "outside":
-          instance.close();
+    focusLoad() {
+      this.focusData("focus", null);
+    },
+    // 获取关注接口信息
+    async focusData(__type, brandId) {
+      var data = {};
+      var res;
+      switch (__type) {
+        case "focus":
+          data = {
+            page: this.focusPage,
+            page_size: 4,
+            version: "1.0"
+          };
+          res = await FOCUS(data);
+          setTimeout(() => {
+            var result = res.response_data.result;
+            for (let i = 0; i < result.length; i++) {
+              this.focusList.push(result[i]);
+            }
+            // 加载状态结束
+            this.focusLoading = false;
+            this.focusPage++;
+            // 数据全部加载完成
+            if (this.focusList.length >= res.response_data.total_count) {
+              this.focusFinished = true;
+            }
+            console.log("关注列表：", result);
+          }, 500);
           break;
-        case "right":
-        //   this.$dialog
-        //     .confirm({
-        //       message: "确定删除吗？"
-        //     })
-        //     .then(() => {
-        //       instance.close();
-        //     });
-
-        this.$toast('取消关注成功');
-        instance.close();
+        case "cancel":
+          data = {
+            brand_id: brandId,
+            version: "1.0"
+          };
+          res = await FOCUS_CANCEL(data);
+          this.$toast("已取消关注~");
+          break;
       }
+
+      // 出错提示
+      if (res.hasOwnProperty("response_code")) {
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 取消关注
+    focusCancel(brandId) {
+      this.focusData("cancel", brandId);
+    },
+    focusClose(clickPosition, instance) {
+      instance.close();
     }
   }
 };

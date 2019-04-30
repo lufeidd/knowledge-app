@@ -60,7 +60,7 @@
             </div>
             <!-- 评论 -->
             <div class="commentBox">
-              <van-cell title="评论 25" is-link value="我要评论" @click="openAnswer"/>
+              <van-cell :title="totalCount" is-link value="我要评论" @click="openAnswer('comment', null)"/>
 
               <van-list
                 v-model="commentLoading"
@@ -92,8 +92,8 @@
                       >
                         <span class="name">{{ replyItem.nick_name }}</span>
                         <span class="dialog">{{ replyItem.content }}</span>
-                      </div> -->
-                      
+                      </div>-->
+
                       <div
                         class="message active"
                         v-for="(replyItem, key) in answerData[key]"
@@ -103,19 +103,11 @@
                         <span class="dialog">{{ replyItem.content }}</span>
                       </div>
 
-
-
-
-
-                      <div class="message active" v-if="item.reply_num > 2">
-                      
-
+                      <div class="message active" v-if="item.reply_num > 2 && replyPage[key] - 1 < item.reply_total_page">
                         <!-- <van-pagination v-model="item.reply_current_page" :page-count="item.reply_total_page" mode="simple" @change="pageChange(item.comment_id, key)" /> -->
-                        
+
                         <span class="name" @click="pageChange(item.comment_id, key)">
                           共{{ item.reply_num }}条回复
-
-                          {{ item.comment_id }} - {{ key }}
                           <svg
                             class="icon"
                             aria-hidden="true"
@@ -124,23 +116,15 @@
                           </svg>
                           <!-- <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-unfold-line"></use>
-                          </svg> -->
+                          </svg>-->
                         </span>
+                      </div>
                     </div>
-
-
-
-                    </div>
-
-
-
-
-                    
 
                     <!-- 回复 -->
                     <div class="answerBox">
                       <span class="date">{{ item.create_time }}</span>
-                      <span class="action" @click="openAnswer">回复</span>
+                      <span class="action" @click="openAnswer('reply', item.comment_id)">回复</span>
                     </div>
                   </div>
                 </div>
@@ -149,75 +133,82 @@
           </div>
         </template>
         <template v-if="key == 1">
-          <div class="listContent">
-            <van-row class="title">
-              <van-col span="12">
-                <span class="play">
-                  <van-tag color="#f5f5f5" text-color="#666">
-                    <van-icon name="play"/>全部播放
-                  </van-tag>
-                  <span class="tag" v-if="showTag">
-                    <span class="text">宝宝睡前故事18 宝宝睡前故事18宝宝睡前故事18宝宝睡前故事18宝宝睡前故事18宝宝睡前故事18宝宝睡前故事18</span>
-                    <svg class="icon" aria-hidden="true" @click="onClose">
-                      <use xlink:href="#icon-close-line"></use>
-                    </svg>
-                  </span>
-                </span>
-                <span class="total">共20集</span>
-              </van-col>
-              <van-col span="12" style="text-align:right;" @click="onRank">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-reverse-line"></use>
-                </svg>
-              </van-col>
-            </van-row>
-            <div class="content">
-              <van-row class="list">
-                <van-col span="2" class="rank">1</van-col>
-                <van-col span="16">
-                  <router-link to="./detail" class="desc">
-                    <span class="tag">免费</span>
-                    lsjfdjf
-                  </router-link>
-                  <div class="info">
-                    <template>
-                      <van-tag color="#c8c8c8" text-color="#fff">音频</van-tag>
-                      <span class="count">
-                        <svg class="icon" aria-hidden="true">
-                          <use xlink:href="#icon-audio-line"></use>
-                        </svg>
-                        111
-                      </span>
-                    </template>
-                    <template>
-                      <van-tag color="#c8c8c8" text-color="#fff">视频</van-tag>
-                      <span class="count">
-                        <svg class="icon" aria-hidden="true">
-                          <use xlink:href="#icon-video-line"></use>
-                        </svg>
-                        222
-                      </span>
-                    </template>
-                    <span class="time">
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-time-line"></use>
+           <van-list
+                v-model="programLoading"
+                :finished="programFinished"
+                finished-text="没有更多了"
+                @load="programLoad"
+              >
+            <div class="listContent" v-for="(item, key) in programList" :key="key">
+              <van-row class="title">
+                <van-col span="12">
+                  <span class="play">
+                    <van-tag color="#f5f5f5" text-color="#666">
+                      <van-icon name="play"/>全部播放
+                    </van-tag>
+                    <span class="tag" v-if="showHistory">
+                      <span class="text">宝宝睡前故事18 宝宝睡前故事18宝宝睡前故事18宝宝睡前故事18宝宝睡前故事18宝宝睡前故事18宝宝睡前故事18</span>
+                      <svg class="icon" aria-hidden="true" @click="historyAction">
+                        <use xlink:href="#icon-close-line"></use>
                       </svg>
-                      333
                     </span>
-                    <span class="history">打发士大夫</span>
-                  </div>
+                  </span>
+                  <span class="total">共20集</span>
                 </van-col>
-                <van-col span="6" style="text-align:right;align-self:flex-start;">
-                  <div class="date">似懂非懂</div>
-                  <div class="status">
-                    <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-play-line"></use>
-                    </svg>
-                  </div>
+                <van-col span="12" style="text-align:right;" @click="onRank">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-reverse-line"></use>
+                  </svg>
                 </van-col>
               </van-row>
+              <div class="content">
+                <van-row class="list">
+                  <van-col span="2" class="rank">1</van-col>
+                  <van-col span="16">
+                    <router-link to="./detail" class="desc">
+                      <span class="tag">免费</span>
+                      lsjfdjf
+                    </router-link>
+                    <div class="info">
+                      <template>
+                        <van-tag color="#c8c8c8" text-color="#fff">音频</van-tag>
+                        <span class="count">
+                          <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-audio-line"></use>
+                          </svg>
+                          111
+                        </span>
+                      </template>
+                      <template>
+                        <van-tag color="#c8c8c8" text-color="#fff">视频</van-tag>
+                        <span class="count">
+                          <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-video-line"></use>
+                          </svg>
+                          222
+                        </span>
+                      </template>
+                      <span class="time">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-time-line"></use>
+                        </svg>
+                        333
+                      </span>
+                      <span class="history">打发士大夫</span>
+                    </div>
+                  </van-col>
+                  <van-col span="6" style="text-align:right;align-self:flex-start;">
+                    <div class="date">似懂非懂</div>
+                    <div class="status">
+                      <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-play-line"></use>
+                      </svg>
+                    </div>
+                  </van-col>
+                </van-row>
+              </div>
             </div>
-          </div>
+           </van-list>
         </template>
         <template v-if="key == 2">
           <div class="simularContent">
@@ -320,15 +311,14 @@
 <script>
 import miniAudio from "./../../components/miniAudio";
 //  引入接口
-import { ALBUM } from "../../apis/album.js";
+import { ALBUM, ALBUM_LIST } from "../../apis/album.js";
 import {
-  COLLECT,
+  COLLECT_ADD,
   COLLECT_CANCEL,
-  FOCUS,
+  FOCUS_ADD,
   FOCUS_CANCEL,
   COMMENT,
-  COMMENT_ADD,
-  ALBUM_DETAIL
+  COMMENT_ADD
 } from "../../apis/public.js";
 
 export default {
@@ -337,6 +327,9 @@ export default {
   },
   data() {
     return {
+      /*
+       * ----------------------------------介绍----------------------------------
+       */
       // 基础信息
       baseData: {
         title: "",
@@ -365,26 +358,38 @@ export default {
           title: "相似"
         }
       ],
-      tabModel: 0,
+      tabModel: 1,
       // 评论
       discussData: [],
       commentPage: 1,
+      totalCount: 0,
       // 发布评论
       commentModel: false,
       contentModel: "",
       contentTotal: 30,
       contentLength: 0,
-      // 节目列表
+      // 分页
       commentLoading: false,
       commentFinished: false,
       // 回复
       replyPage: [],
       answerData: [],
+      // 存放回复评论comment_id
+      commentId: null,
+      // 存放发布按钮类型，comment为发布评论，reply为发布回复
+      punishType: 'comment',
+      /*
+       * ----------------------------------节目----------------------------------
+       */
+      showHistory: true,
+      programList: [],
+      programPage: 1,
+      // 分页
+      programLoading: false,
+      programFinished: false,
 
       ////////////////////////////////////////////////////////////////////////////
 
-
-      showTag: true,
       audioData: {
         type: "play",
         id: "myMiniAudio",
@@ -397,7 +402,7 @@ export default {
         duration: "03:45",
         program: "1.哄睡觉方法 上了飞机率领的反垄断设计费",
         popupModel: false
-      },
+      }
     };
   },
   mounted() {
@@ -405,7 +410,6 @@ export default {
     this.baseData.goods_id = 16;
     // 当前页接口信息
     this.albumData();
-    // this.commentData();
 
     //////////////////////////////////////////////////////////////////////////////
 
@@ -426,7 +430,6 @@ export default {
         this.baseData = res.response_data.base;
         // 所属媒体信息
         this.brandInfoData = res.response_data.brand_info;
-        // console.log(this.baseData);
       } else {
         this.$toast(res.error_message);
       }
@@ -442,7 +445,7 @@ export default {
             target: this.baseData.goods_id,
             version: "1.0"
           };
-          res = await COLLECT(data);
+          res = await COLLECT_ADD(data);
           this.baseData.collect_id = 1;
           // this.$toast("已收藏~");
           break;
@@ -458,7 +461,6 @@ export default {
       }
       // 出错提示
       if (res.hasOwnProperty("response_code")) {
-        // console.log(res);
       } else {
         this.$toast(res.error_message);
       }
@@ -475,12 +477,12 @@ export default {
       var data = {};
       var res;
       switch (__type) {
-        case "collect":
+        case "focus":
           data = {
             brand_id: this.baseData.brand_id,
             version: "1.0"
           };
-          res = await FOCUS(data);
+          res = await FOCUS_ADD(data);
           this.brandInfoData.is_followed = 1;
           // this.$toast('已关注~');
           break;
@@ -496,7 +498,6 @@ export default {
       }
       // 出错提示
       if (res.hasOwnProperty("response_code")) {
-        // console.log(res);
       } else {
         this.$toast(res.error_message);
       }
@@ -505,7 +506,7 @@ export default {
       if (this.brandInfoData.is_followed > 0) {
         this.focusData("cancel");
       } else {
-        this.focusData("collect");
+        this.focusData("focus");
       }
     },
     // tab切换
@@ -529,16 +530,18 @@ export default {
         .eq(index)
         .css("height", __height);
     },
-    // 评论
+    // ------------------------------------评论--------------------------------------
+    commentLoad() {
+      this.commentData();
+    },
     async commentData() {
-      
       let data = {
         page: this.commentPage,
         page_size: 4,
         version: "1.0"
       };
       let res = await COMMENT(data);
-      
+
       if (res.hasOwnProperty("response_code")) {
         // 异步更新数据
         var result = res.response_data.result;
@@ -547,7 +550,6 @@ export default {
             this.discussData.push(result[i]);
             this.answerData.push(result[i].reply_list);
             this.replyPage.push(1);
-            
           }
           // 加载状态结束
           this.commentLoading = false;
@@ -559,8 +561,9 @@ export default {
           }
         }, 500);
 
-        console.log("res：", res);
-        // console.log("replyPage：", this.replyPage);
+        // 设置总评论数
+        this.totalCount = "评论 " + res.response_data.total_count;
+        console.log('当前页数组：', this.replyPage);
       } else {
         this.$toast(res.error_message);
       }
@@ -575,33 +578,48 @@ export default {
       let res = await COMMENT(data);
 
       if (res.hasOwnProperty("response_code")) {
-
         // 异步更新数据
         var result = res.response_data.result;
-        // this.answerData.push(result);
-        for(let i = 0; i < result.length; i++) {
-
+        for (let i = 0; i < result.length; i++) {
           this.answerData[key].push(result[i]);
         }
         this.replyPage[key]++;
-
-        // console.log("answerData:", this.answerData[key]);
       } else {
         this.$toast(res.error_message);
       }
     },
-    pageChange(comment_id, key){
+    // 回复展开更多
+    pageChange(comment_id, key) {
       this.replyData(comment_id, key);
+      console.log('当前页数组：', this.replyPage);
     },
-    async addComment() {
-      let data = {
-        goods_id: this.baseData.goods_id,
-        content: this.contentModel,
-        version: "1.0"
-      };
+    /*
+     * __type = 'comment'; 新增评论
+     * __type = 'reply';   新增回复
+     */
+    async addComment(__type) {
+      var data = {};
+      switch (__type) {
+        case "comment":
+          data = {
+            goods_id: this.baseData.goods_id,
+            content: this.contentModel,
+            version: "1.0"
+          };
+          break;
+        case "reply":
+          data = {
+            goods_id: this.baseData.goods_id,
+            comment_pid: this.commentId,
+            content: this.contentModel,
+            version: "1.0"
+          };
+          break;
+        default:
+          break;
+      }
       let res = await COMMENT_ADD(data);
       if (res.hasOwnProperty("response_code")) {
-        // console.log("新增评论：", res);
       } else {
         this.$toast(res.error_message);
       }
@@ -611,12 +629,70 @@ export default {
         this.$toast("你发布的字数超出，请修改后再发布!");
         return;
       }
+      if (this.contentLength == 0) {
+        this.$toast("请输入你要发布的内容!");
+        return;
+      }
       this.commentModel = false;
-      this.addComment();
-      this.commentData();
+      this.addComment(this.punishType);
+    },
+    /*
+     * __type: 'comment'; 评论，comment_id: null;
+     * __type: 'reply'; 回复评论，comment_id: 必填;
+     */
+    openAnswer(__type, comment_id) {
+        this.punishType = __type
+      if(__type == 'reply') this.commentId = comment_id;
+      this.commentModel = true;
+    },
+    // 编辑评论触发
+    inputChange() {
+      this.contentLength = this.contentModel.length;
+    },
+    // ------------------------------------节目--------------------------------------
+    programLoad() {
+      this.programData();
+    },
+    // 播放记录
+    historyAction() {
+      this.showHistory = false;
+    },
+    async programData () {
+
+      let data = {
+        goods_id: 1,
+        current_page: this.programPage,
+        page_size: 4,
+        version: "1.0"
+      };
+      let res = await ALBUM_LIST(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        // 异步更新数据
+        var result = res.response_data.result;
+        setTimeout(() => {
+          for (let i = 0; i < res.response_data.result.length; i++) {
+            this.programList.push(result[i]);
+          }
+          // 加载状态结束
+          this.programLoading = false;
+          this.programPage++;
+
+          // 数据全部加载完成
+          if (this.programList.length >= res.response_data.total_count) {
+            this.programFinished = true;
+          }
+        }, 500);
+
+        // 设置总评论数
+        console.log('节目列表：', result);
+      } else {
+        this.$toast(res.error_message);
+      }
+
     },
 
-////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
 
     // 节目列表
     async listData() {
@@ -630,28 +706,13 @@ export default {
           var result = res.response_data.result;
           this.discussData.push(result[i]);
         }
-        // console.log("评论：", res.response_data.result);
       } else {
         this.$toast(res.error_message);
       }
     },
-    commentLoad() {
-      this.commentData();
-    },
 
-    /////////////////////////////////////////////////////////////////
-
-    inputChange(self) {
-      this.contentLength = this.contentModel.length;
-    },
-    openAnswer() {
-      this.commentModel = true;
-    },
     commentClose() {
       this.commentModel = false;
-    },
-    onClose() {
-      this.showTag = false;
     },
     scollectAction(key) {
       this.tabData[2].simular[key].collect = !this.tabData[2].simular[key]
@@ -662,9 +723,6 @@ export default {
       } else {
         this.$toast("取消收藏~");
       }
-    },
-    onClick(index, title) {
-      this.$toast(title);
     },
     onClickMiniBtn() {
       this.$toast("点击图标");

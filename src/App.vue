@@ -107,11 +107,17 @@ export default {
     // 个人中心
     // this.$router.push("/personal/index");
 
+    // 我的关注
+    // this.$router.push("/personal/focus");
+    this.$router.push("/personal/collect");
+    // this.$router.push("/personal/history");
+
     // 我的购买
     // this.$router.push("/personal/remain/index");
 
     // 品牌商城
     // this.$router.push("/brand/mall");
+    // this.$router.push("/brand/index");
 
     // 评价
     // this.$router.push("/personal/order/comment/index");
@@ -123,7 +129,7 @@ export default {
     // this.$router.push("/personal/remain/index");
 
     // 专辑
-    this.$router.push("/album/index");
+    // this.$router.push("/album/index");
   }
 };
 </script>
