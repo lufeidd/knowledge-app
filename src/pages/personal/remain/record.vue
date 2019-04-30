@@ -70,15 +70,20 @@ export default {
       return value;
     },
     async getData(){
+      var tStamp = this.$getTimeStamp();
       var data={
         version:"1.0",
+        type : 1,
+        timestamp:tStamp,
       };
+      data.sign = this.$getSign(data);
       let res = await USER_REMAIN_DETAILS(data);
 
       if(res.hasOwnProperty("response_code")){
         this.totalIncome = res.response_data.total_money_in;
         this.incomeData = res.response_data.result;
-        // console.log(res.response_data.total_money_in);
+        // console.log(res.response_data.total_money_in);y
+        
       }else{
         this.$toast(res.error_message);
       }

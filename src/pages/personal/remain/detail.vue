@@ -2,12 +2,12 @@
   <div id="detailPage">
     <div class="head">
       <div class="income" @click="showPopup()">
-        本月
+        {{searchTime.join('')}}
         <van-icon class="arrow" name="arrow-down"/>
       </div>
       <div class="num">
-        <span>支出：￥{{totalOutput}}</span>
-        <span>收入：￥{{totalIncome}}</span>
+        <span>支出：￥{{totalOutput=='' ? 0.00:totalOutput}}</span>
+        <span>收入：￥{{totalIncome=='' ? 0.00:totalOutput}}</span>
       </div>
     </div>
     <div class="content" v-for="item in incomeData">
@@ -55,10 +55,11 @@ export default {
         // { text: "退", date: "2019-03-07", money: 1.533, order: 1 },
         // { text: "赔", date: "2019-03-07", money: 1.533, order: 0 }
       ],
-      searchTime:[],
+      searchTime:['本月'],
       show: false,
       maxDate: new Date(),
       currentDate: new Date(),
+      page:1,
     };
   },
   mounted(){
@@ -90,6 +91,7 @@ export default {
         this.totalIncome = res.response_data.total_money_in;
         this.totalOutput = res.response_data.total_money_out;
         this.incomeData = res.response_data.result;
+
         // console.log(res.response_data.total_money_in);
       }else{
         this.$toast(res.error_message);
@@ -106,12 +108,13 @@ export default {
       begintime=begintime.join('-')+'-01 00:00:00';
        endtime[1]=Number(begintime.split('-')[1])+1;
        endtime=endtime.join('-')+'-01 00:00:00';
-      // console.log(begintime,endtime);
-
+      console.log(begintime,endtime);
+      var tStamp = this.$getTimeStamp();
       var data={
         begin_time:begintime,
         end_time:endtime,
         version:"1.0",
+        timestamp:tStamp,
       };
       data.sign = this.$getSign(data);
       let res = await USER_REMAIN_DETAILS(data);
@@ -119,7 +122,10 @@ export default {
         this.totalIncome = res.response_data.total_money_in;
         this.totalOutput = res.response_data.total_money_out;
         this.incomeData = res.response_data.result;
+
         // console.log(res);
+      }else{
+        this.$toast(res.error_message);
       }
     },
   }

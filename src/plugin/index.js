@@ -20,14 +20,14 @@ export default {
       let res = await SERVER_TIME(data);
       let serverTime = res.response_data.timestamp * 1000;
       this.diffTime = serverTime - localTime;
-      console.log('时间差：', this.diffTime);
+      // console.log('时间差：', this.diffTime);
     }
 
     // 计算时间戳
     Vue.prototype.$getTimeStamp = function () {
       let localTime = new Date().getTime();
       let timeStamp = parseInt((localTime + this.diffTime) / 1000);
-      console.log("时间戳:", timeStamp);
+      // console.log("时间戳:", timeStamp);
       return timeStamp;
     }
 
@@ -58,7 +58,7 @@ export default {
           time--
           options.disabled = true
           options.timeMsg = time + 's'
-          console.log(time)
+          // console.log(time)
         }, 1000)
       } else {
         self.$toast('时间格式不正确')
@@ -86,7 +86,7 @@ export default {
           let res = h + ":" + m + ":" + s
 
           options.date = res;
-          console.log(res)
+          // console.log(res)
         }, 1000)
       } else {
         self.$toast('时间格式不正确')

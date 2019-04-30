@@ -78,16 +78,16 @@ export default {
     // this.$router.push("/personal/index");
 
     // 品牌商城
-    // this.$router.push("/brand/mall");
+    this.$router.push("/brand/index");
 
     // 评价
     // this.$router.push("/personal/order/comment/index");
 
-
-    this.$router.push("/personal/help/index");
+    // 我的评论
+    // this.$router.push("/personal/help/feedback");
 
     // 我的购买
-    // this.$router.push("/personal/order/list");
+    // this.$router.push("/personal/remain/detail");
 
     // 专辑
     // this.$router.push("/album/index");

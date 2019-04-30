@@ -20,12 +20,11 @@
 #detailPage {
   padding-left: 15px;
   padding-right: 15px;
-
+  padding-top: 15px;
   .delet {
     font-size: $fontSize + 2;
     @include font("PingFangBlod", $fontSize + 2, null);
   }
-
   .content {
     color: $cl9;
   }

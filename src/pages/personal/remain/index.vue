@@ -37,16 +37,15 @@ export default {
   },
   methods: {
     recharge() {
-      // this.$router.push({
-      //   name:"/personal/remain/account",
-      //   params:{
-      //     money:this.money,
-      //     },
-      //   });
-      this.$router.push("/personal/remain/account")
+      this.$router.push({
+        name:"account",
+        params:{
+          money:this.money,
+          },
+        });
+      // this.$router.push("/personal/remain/account")
     },
     //获取页面数据
-    // res.hasOwnProperty("response_code")
     async getRemainData(){
       var data={
         version:"1.0",
