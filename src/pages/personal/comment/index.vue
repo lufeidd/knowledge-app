@@ -5,8 +5,8 @@
       <div class="head">
         <div class="titleFrom">
           <div class="box">
-            <img v-lazy="item.user_headpic" class="icon">
-            <span class="publish">{{item.username}}</span>
+            <img v-lazy="item.user_header" class="icon">
+            <span class="publish">{{item.nick_name}}</span>
           </div>
           <span class="date">{{item.create_time}}</span>
         </div>
@@ -19,7 +19,7 @@
           </div>
           <div class="detailContent">
             <p class="title">{{item.goods_name}}</p>
-            <!-- <p class="title red">¥ {{item.price.toFixed(2)}}</p> -->
+            <p class="title red">¥ {{item.goods_price}}</p>
           </div>
         </div>
       </div>
@@ -78,13 +78,13 @@ export default {
         version: "1.0"
       }
       let res = await USER_COMMENT(data);
-      if(res.response_code) {
+      if(res.hasOwnProperty("response_code")) {
         this.commentData=res.response_data.result
       }else {
         this.$toast(res.error_message);
       }
-      console.log(res.response_data.result);
-      console.log(this.commentData);
+      console.log(res);
+      // console.log(this.commentData);
     }
   }
 }

@@ -2,9 +2,11 @@
  * author: lufei
  * date:2019/4/18
  */
-
+html{
+  background-color: $greyLight;
+}
  #commentPage{
-   background-color: $greyLight;
+   
     .content{
       background-color: $white;
       margin-bottom: 5px;
@@ -61,6 +63,7 @@
               }
              }
              .detailContent{
+               padding-left: 10px;
               display: flex;
               flex-direction: column;
               align-content: stretch;
