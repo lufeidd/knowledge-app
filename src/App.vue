@@ -109,7 +109,7 @@ export default {
 
     // 我的关注
     // this.$router.push("/personal/focus");
-    this.$router.push("/personal/collect");
+    // this.$router.push("/personal/collect");
     // this.$router.push("/personal/history");
 
     // 我的购买
@@ -132,7 +132,7 @@ export default {
     // this.$router.push("/personal/remain/index");
 
     // 专辑
-    // this.$router.push("/album/index");
+    this.$router.push("/album/index");
   }
 };
 </script>

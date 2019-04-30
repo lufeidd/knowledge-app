@@ -139,7 +139,8 @@
                 finished-text="没有更多了"
                 @load="programLoad"
               >
-            <div class="listContent" v-for="(item, key) in programList" :key="key">
+            <div class="listContent">
+              
               <van-row class="title">
                 <van-col span="12">
                   <span class="play">
@@ -153,7 +154,7 @@
                       </svg>
                     </span>
                   </span>
-                  <span class="total">共20集</span>
+                  <span class="total">共{{ programTotalCount }}集</span>
                 </van-col>
                 <van-col span="12" style="text-align:right;" @click="onRank">
                   <svg class="icon" aria-hidden="true">
@@ -161,44 +162,55 @@
                   </svg>
                 </van-col>
               </van-row>
-              <div class="content">
+
+              <div class="content" v-for="(item, key) in programList" :key="key">
                 <van-row class="list">
-                  <van-col span="2" class="rank">1</van-col>
+                  <van-col span="2" class="rank">{{ item.goods_no }}</van-col>
                   <van-col span="16">
                     <router-link to="./detail" class="desc">
-                      <span class="tag">免费</span>
-                      lsjfdjf
+                      <span class="tag" v-if="item.is_free == 1">免费</span>
+                      {{ item.title }}
                     </router-link>
                     <div class="info">
-                      <template>
+                      <template v-if="item.goods_type == 1">
                         <van-tag color="#c8c8c8" text-color="#fff">音频</van-tag>
                         <span class="count">
                           <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-audio-line"></use>
                           </svg>
-                          111
+                          {{ item.play_num }}
                         </span>
                       </template>
-                      <template>
+                      <template v-if="item.goods_type == 2">
                         <van-tag color="#c8c8c8" text-color="#fff">视频</van-tag>
                         <span class="count">
                           <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-video-line"></use>
                           </svg>
-                          222
+                          {{ item.play_num }}
                         </span>
                       </template>
-                      <span class="time">
+                      <template v-if="item.goods_type == 6">
+                        <van-tag color="#c8c8c8" text-color="#fff">文章</van-tag>
+                        <span class="count">
+                          <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-list-line"></use>
+                          </svg>
+                          {{ item.play_num }}
+                        </span>
+                      </template>
+                      
+                      <span class="time" v-if="item.goods_type != 6">
                         <svg class="icon" aria-hidden="true">
                           <use xlink:href="#icon-time-line"></use>
                         </svg>
-                        333
+                        {{ item.duration }}
                       </span>
-                      <span class="history">打发士大夫</span>
+                      <span class="history">已播6%</span>
                     </div>
                   </van-col>
                   <van-col span="6" style="text-align:right;align-self:flex-start;">
-                    <div class="date">似懂非懂</div>
+                    <div class="date">{{ item.create_time }}</div>
                     <div class="status">
                       <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-play-line"></use>
@@ -273,8 +285,8 @@
     </van-tabs>
 
     <!-- 试听 - 购买 -->
-    <van-goods-action :class="{ iphx: this.isIphx }">
-      <van-goods-action-mini-btn icon="play-circle-o" text="试听" @click="onClickMiniBtn"/>
+    <van-goods-action :class="{ iphx: this.isIphx }" v-if="baseData.is_free == 0 || baseData.is_payed == 0">
+      <van-goods-action-mini-btn icon="play-circle-o" text="试听" @click="onClickMiniBtn" v-if="baseData.has_free"/>
       <van-goods-action-big-btn primary :text="'¥ '+baseData.price + ' 购买'" @click="onClickBigBtn"/>
     </van-goods-action>
 
@@ -384,9 +396,12 @@ export default {
       showHistory: true,
       programList: [],
       programPage: 1,
+      programGoodsId: 28,
       // 分页
       programLoading: false,
       programFinished: false,
+      // 节目总数
+      programTotalCount: 0,
 
       ////////////////////////////////////////////////////////////////////////////
 
@@ -408,6 +423,7 @@ export default {
   mounted() {
     // 上个页面携带必要信息
     this.baseData.goods_id = 16;
+    this.programGoodsId = 28;
     // 当前页接口信息
     this.albumData();
 
@@ -620,6 +636,7 @@ export default {
       }
       let res = await COMMENT_ADD(data);
       if (res.hasOwnProperty("response_code")) {
+        // 本地存储最新的数据，再push
       } else {
         this.$toast(res.error_message);
       }
@@ -660,8 +677,8 @@ export default {
     async programData () {
 
       let data = {
-        goods_id: 1,
-        current_page: this.programPage,
+        goods_id: this.programGoodsId,
+        page: this.programPage,
         page_size: 4,
         version: "1.0"
       };
@@ -684,8 +701,9 @@ export default {
           }
         }, 500);
 
-        // 设置总评论数
-        console.log('节目列表：', result);
+        // 设置总节目数
+        this.programTotalCount = res.response_data.total_count;
+        console.log('节目列表：', res.response_data.result);
       } else {
         this.$toast(res.error_message);
       }

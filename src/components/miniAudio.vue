@@ -92,6 +92,7 @@
   }
 
   & .miniAudio {
+    z-index: 1;
     @include bgDecorate(rgba(0, 0, 0, 0.6), $white, 50px, 0, none);
     @include position(fixed, "bl", 60px, 6%, 88%, 50px, 50px);
     @include textOverflow;
