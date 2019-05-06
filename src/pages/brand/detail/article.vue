@@ -129,7 +129,7 @@
         </svg>
       </div>
     </div>
-    
+
   </div>
 </template>
 
@@ -233,7 +233,25 @@ export default {
       if (this.nice) {
         this.nice = false;
       } else this.nice = true;
-    }
+    },
+    // async getData(){
+    //   var tStamp = this.$getTimeStamp();
+    //   var data={
+    //     goods_id:18,
+    //     version:"1.0",
+    //     timestamp:tStamp,
+    //   };
+    //   data.sign = this.$getSign(data);
+    //   let res = await BRAND_INFO(data);
+    //   if(res.hasOwnProperty("response_code")){
+    //     this.brandData = res.response_data;
+    //     this.packets_id = res.response_data.column_list[0].packets_id;
+    //     this.columnListData();
+    //     // console.log(this.packets_id);
+    //   }else{
+    //     this.$toast(res.error_message);
+    //   }
+    // },
   }
 };
 </script>

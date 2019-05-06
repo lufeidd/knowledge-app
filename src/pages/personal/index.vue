@@ -2,15 +2,15 @@
   <div id="personalPage">
     <div class="infoBox">
       <div class="left">
-        <div class="ratioBox" :class="{ active: infoData.bgImg }">
-          <svg class="icon" aria-hidden="true" v-if="!infoData.bgImg">
+        <div class="ratioBox" :class="{ active: !infoData.user_header }">
+          <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-personal-block"></use>
           </svg>
         </div>
       </div>
       <div class="right">
         <div class="title">
-          <div class="desc">{{ infoData.title }}</div>
+          <div class="desc">{{ infoData.user_name }}</div>
           <div class="action">
             <!-- <a class="tip" href="/personal/news">
               <svg class="icon" aria-hidden="true">
@@ -24,7 +24,7 @@
             </a>
           </div>
         </div>
-        <div class="subTitle">{{ infoData.subTitle }}</div>
+        <div class="subTitle">登录后同步您的收藏</div>
       </div>
     </div>
 
@@ -32,19 +32,19 @@
       <van-row type="flex" justify="space-around">
         <van-col span="6">
           <router-link to="/personal/focus">
-            <div class="count">119</div>
+            <div class="count">{{ infoData.follow_num }}</div>
             <div class="desc">关注</div>
           </router-link>
         </van-col>
         <van-col span="6">
           <router-link to="/personal/collect">
-            <div class="count">2365</div>
+            <div class="count">{{ infoData.collect_num }}</div>
             <div class="desc">收藏</div>
           </router-link>
         </van-col>
         <van-col span="6">
           <router-link to="/personal/history">
-            <div class="count">123</div>
+            <div class="count">{{ infoData.history_num }}</div>
             <div class="desc">历史</div>
           </router-link>
         </van-col>
@@ -78,18 +78,14 @@
 <style src="@/style/scss/pages/personal/index.scss" lang="scss"></style>
 
 <script>
+//  引入接口
+import { USER_HOMEPAGE } from "../../apis/user.js";
+
 export default {
-  components: {},
   data() {
     return {
-      infoData: {
-        title:
-          "Sa快乐  Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐Sa快乐",
-        subTitle: "登录后同步您的收藏",
-        bgImg: true,
-        imgSrc:
-          "https://wdimg3.bookuu.com/goods/06/26/42/2018102330285485-76655.jpg@!w210"
-      },
+      // 信息
+      infoData: {},
       cellData: [
         {
           svg: "#icon-personalBuy",
@@ -117,17 +113,17 @@ export default {
         //   icon: "#icon-next-line"
         // },
         {
-          href: "/",
+          href: "#/personal/comment/index",
           svg: "#icon-personalComment",
           text: "我的评论",
           icon: "#icon-next-line"
         },
-        {
-          href: "/",
-          svg: "#icon-personalInvite",
-          text: "邀请好友",
-          icon: "#icon-next-line"
-        },
+        // {
+        //   href: "/",
+        //   svg: "#icon-personalInvite",
+        //   text: "邀请好友",
+        //   icon: "#icon-next-line"
+        // },
         {
           href: "#/personal/help/index",
           svg: "#icon-personalHelp",
@@ -137,16 +133,34 @@ export default {
       ]
     };
   },
-  created() {},
   mounted() {
-    if (this.infoData.bgImg) {
-      $(".ratioBox.active").css(
-        "background-image",
-        "url(" + this.infoData.imgSrc + ")"
-      );
-    }
+    this.homeData();
+    console.log(this.infoData.user_header);
   },
-  methods: {}
+  methods: {
+    async homeData () {
+      let data = {
+        version: "1.0"
+      };
+      let res = await USER_HOMEPAGE(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.$set(this.infoData, 'user_header', res.response_data.user_header)
+        this.$set(this.infoData, 'user_name', res.response_data.user_name)
+        this.$set(this.infoData, 'follow_num', res.response_data.follow_num)
+        this.$set(this.infoData, 'collect_num', res.response_data.collect_num)
+        this.$set(this.infoData, 'history_num', res.response_data.history_num)
+        
+        
+        $(".ratioBox").css(
+          "background-image",
+          "url(" + res.response_data.user_header + ")"
+        );
+        console.log("返回数据：", res.response_data);
+      } else {
+        this.$toast(res.error_message);
+      }
+    }
+  }
 };
 </script>
 

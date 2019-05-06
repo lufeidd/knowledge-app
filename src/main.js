@@ -43,7 +43,8 @@ import {
   Swipe, SwipeItem,
   Area,
   Rate,
-  PasswordInput, NumberKeyboard
+  PasswordInput, NumberKeyboard,
+  Pagination
 } from 'vant'
 Vue.use(Field)
 Vue.use(Toast)
@@ -76,6 +77,7 @@ Vue.use(Swipe).use(SwipeItem)
 Vue.use(Area)
 Vue.use(Rate)
 Vue.use(PasswordInput).use(NumberKeyboard)
+Vue.use(Pagination)
 
 Vue.use(plugin)
 

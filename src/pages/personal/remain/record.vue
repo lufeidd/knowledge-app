@@ -2,11 +2,17 @@
   <div id="recordPage">
     <div class="head">
       <div class="income" @click="showPopup()">
-        本月
+        {{clickSearchTime.join('')}}
         <van-icon class="arrow" name="arrow-down"/>
       </div>
-      <div class="num">收入：￥{{totalIncome}}</div>
+      <div class="num">收入：￥{{totalIncome == null ? 0:totalIncome}}</div>
     </div>
+    <van-list
+      v-model="programLoading"
+      :finished="programFinished"
+      finished-text="没有更多了"
+      @load="programLoad"
+    >
     <div class="content" v-for="item in incomeData">
       <div class="chong">充</div>
       <div class="detail">
@@ -20,6 +26,7 @@
         </div>
       </div>
     </div>
+    </van-list>
     <van-popup v-model="show" position="bottom">
       <van-datetime-picker
         v-model="currentDate"
@@ -29,7 +36,8 @@
         confirm-button-text="完成"
         @cancel="show=false"
         title="请选择时间"
-        show-toolbar
+        @change="change"
+        @confirm="clickSearch"
       />
     </van-popup>
   </div>
@@ -42,20 +50,25 @@ import { USER_REMAIN_DETAILS } from "../../../apis/user.js";
 export default {
   data() {
     return {
-      totalIncome: 1230.34,
-      incomeData: [
-        // { date: "2019-03-07", money: 1.533, order: 0 },
-        // { date: "2019-03-07", money: 1.533, order: 1 },
-        // { date: "2019-03-07", money: 1.533, order: 1 },
-        // { date: "2019-03-07", money: 1.533, order: 0 }
-      ],
+      totalIncome: null,
+      incomeData: [],
+      clickSearchTime:['全部'],
+      searchTime:null,
       show: false,
       maxDate: new Date(),
-      currentDate: new Date()
+      currentDate: new Date(),
+      page:1,
+      searchPage:1,
+      programLoading: false,
+      programFinished: false,
+      begintime:null,
+      endtime:null,
+      ning:false,
+      loginState:true,
     };
   },
   mounted(){
-    this.getData();
+    // this.getData();
   },
   methods: {
     showPopup() {
@@ -69,24 +82,110 @@ export default {
       }
       return value;
     },
+    change(e){
+      var val=e.getValues();
+      this.searchTime= val;
+    },
+    programLoad(){
+      if(this.loginState == true){
+        this.getData();
+      }
+      if(this.ning == true){
+        this.search();
+      }
+      // console.log(111,this.searchPage)
+    },
+    clickSearch(){
+      this.incomeData = [];
+      this.totalIncome = null;
+      this.totalOutput = null;
+      this.clickSearchTime = this.searchTime;
+      this.search();
+    },
     async getData(){
       var tStamp = this.$getTimeStamp();
       var data={
         version:"1.0",
-        type : 1,
+        page:this.page,
+        type:1,
         timestamp:tStamp,
       };
       data.sign = this.$getSign(data);
       let res = await USER_REMAIN_DETAILS(data);
 
       if(res.hasOwnProperty("response_code")){
-        this.totalIncome = res.response_data.total_money_in;
-        this.incomeData = res.response_data.result;
-        // console.log(res.response_data.total_money_in);y
-        
-      }else{
-        this.$toast(res.error_message);
+        this.totalIncome += Number(res.response_data.total_money_in);
+          var result = res.response_data.result;
+          setTimeout(() => {
+            for (let i = 0; i < res.response_data.result.length; i++) {
+              this.incomeData.push(result[i]);
+            }
+              // console.log('第一个:',this.incomeData);
+            // 加载状态结束
+            this.programLoading = false;
+            this.page++;
+
+            // 数据全部加载完成
+            if (this.incomeData.length >= res.response_data.total_count) {
+              this.programFinished = true;
+              this.loginState = false;
+              this.page = 1;
+            }
+          }, 500);
+        }else{
+          this.$toast(res.error_message);
+        }
+    },
+    async search(){
+      this.show=false;
+      this.ning = true;
+      var a = [];
+      var b = [];
+      for(let i=0;i<this.searchTime.length;i++){
+        a.push(parseInt(this.searchTime[i]));
+        b.push(parseInt(this.searchTime[i]));
       }
+       this.begintime = a = a.join('-')+'-01 00:00:00';
+       b[1]=Number(a.split('-')[1])+1;
+       this.endtime = b = b.join('-')+'-01 00:00:00';
+      //  this.incomeData = [];
+      var tStamp = this.$getTimeStamp();
+      var data={
+        begin_time:this.begintime,
+        end_time:this.endtime,
+        page:this.searchPage,
+        type:1,
+        version:"1.0",
+        timestamp:tStamp,
+      };
+      data.sign = this.$getSign(data);
+      let res = await USER_REMAIN_DETAILS(data);
+
+      if(res.hasOwnProperty("response_code")){
+        this.totalIncome += Number(res.response_data.total_money_in);
+
+          var result = res.response_data.result;
+          setTimeout(() => {
+            for (let i = 0; i < res.response_data.result.length; i++) {
+              this.incomeData.push(result[i]);
+            }
+            // console.log('第二个:',this.searchData,this.ning)
+            // 加载状态结束
+            this.programLoading = false;
+            this.searchPage++;
+            this.programFinished = false;
+
+
+            // 数据全部加载完成
+            if (this.incomeData.length >= res.response_data.total_count) {
+              this.programFinished = true;
+              this.searchPage = 1;
+              this.ning = false;
+            }
+          }, 500);
+        }else{
+          this.$toast(res.error_message);
+        }
     },
   }
 };

@@ -75,7 +75,7 @@ html{
         min-width: 129px;
         .bookImg {
           display: block;
-          @include ratioBox (100%, 71.3%, null, contain, $clC, null);
+          @include ratioBox (100%, 71.3%, null, contain, $white, null);
           border-radius: 2.5px;
         }
       }
@@ -132,6 +132,7 @@ html{
     }
     .company{
       font-size: $fontSize - 2;
+      margin-top: 5px;
       text-align: center;
       color: $cl6;
       @include textOverflow;

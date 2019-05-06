@@ -86,12 +86,20 @@
   border-bottom: 1px #eee solid;
 }
 
+.van-hairline--top-bottom::after {
+  border-width: 0;
+}
+
 .van-tab {
   @include font(null, $fontSize + 1, #666);
 }
 
 .van-tab--active {
-  @include font("PingFangBold", $fontSize + 1, #333666);
+  @include font("PingFangBold", $fontSize + 1, #333);
+}
+
+.van-tabs__track {
+  height: auto;
 }
 
 .van-tabs__line {
@@ -241,6 +249,18 @@
 // 密码输入框
 .van-password-input {
   margin: 0;
+}
+
+// 空
+.nullBox {
+  & img {
+    width: 100%;
+    margin-top: 100px;
+    margin-bottom: 50px;
+  }
+  text-align: center;
+  font-size: $fontSize + 1;
+  color: #000;
 }
 
 

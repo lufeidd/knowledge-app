@@ -59,14 +59,14 @@ html {
 
   }
 
-  & .msgBox {
-    text-align: center;
-    background-color: $white;
-    line-height: 1.5;
-    padding: 10px 0;
-    border-bottom: 1px $greyLight solid;
-    margin-top: 5px;
-    @include font("PingFangMedium", $fontSize - 2, #999);
-    @include textOverflow;
-  }
+  // & .msgBox {
+  //   text-align: center;
+  //   background-color: $white;
+  //   line-height: 1.5;
+  //   padding: 10px 0;
+  //   border-bottom: 1px $greyLight solid;
+  //   margin-top: 5px;
+  //   @include font("PingFangMedium", $fontSize - 2, #999);
+  //   @include textOverflow;
+  // }
 }

@@ -209,7 +209,7 @@ html {
   & .listBox {
     @include displayFlex (flex, flex-start, flex-start);
     background-color: $orangeLight;
-    padding: 15px;
+    padding: 15px 15px 10px 15px;
     border-bottom: 1px #f5f5f5 solid;
 
     & .left {
