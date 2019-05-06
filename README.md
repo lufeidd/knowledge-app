@@ -82,6 +82,9 @@ cnpm install clipboard --save
 // md5加密
 cnpm install --save js-md5
 
+// Critical dependency: the request of a dependency is an expression
+cnpm i webpack-node-externals
+
 cnpm install
 
 cnpm run dev
