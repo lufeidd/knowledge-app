@@ -276,7 +276,7 @@
 
     <!-- 试听 - 购买 -->
     <van-goods-action :class="{ iphx: this.isIphx }">
-      <van-goods-action-mini-btn icon="play-circle-o" text="试听" @click="onClickMiniBtn"/>
+      <!-- <van-goods-action-mini-btn icon="play-circle-o" text="试听" @click="onClickMiniBtn"/> -->
       <van-goods-action-big-btn primary :text="'¥ '+money + ' 购买专辑'" @click="onClickBigBtn"/>
     </van-goods-action>
 

@@ -5,23 +5,22 @@
       <van-col span="16">
         <div class="ratioBox">
           <div class="box">
-            <router-link to="./../album/player">
+            <span @click="toPlayer">
               <img :src="audioData.pic">
-            </router-link>
+            </span>
           </div>
         </div>
 
-        <router-link to="./../album/player" class="info">
-          <div class="album">{{ audioData.album }} </div>
+        <span class="info" @click="toPlayer">
+          <div class="album">{{ audioData.album }}</div>
           <div class="program">
             <span class="duration">{{ audioData.duration }}</span>
             {{ audioData.program }}
           </div>
-        </router-link>
-
+        </span>
       </van-col>
       <van-col span="8" class="action">
-        <svg class="icon category" aria-hidden="true" @click="showPopup">
+        <svg class="icon category" aria-hidden="true" @click="showList">
           <use xlink:href="#icon-category-line"></use>
         </svg>
 
@@ -51,21 +50,7 @@
 
     <!-- 播放器 -->
     <audio id="myMiniAudio" :src="audioData.src" preload="auto" @ended="ended"></audio>
-
-    <van-popup v-model="popupModel" position="bottom" @open="onOpen">
-      <div class="audioList">
-        <div class="title">
-          <div class="action" @click="onClose">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-fold-line"></use>
-            </svg>
-          </div>
-          <div>播放列表</div>
-        </div>
-        <!-- 音频列表 -->
-        <audioList :audioListData="audioListData"></audioList>
-      </div>
-    </van-popup>
+  
   </div>
 </template>
 
@@ -185,62 +170,37 @@
 </style>
 
 <script>
-import audioList from "./../pages/album/list";
 export default {
   name: "music",
-  props: ["audioData"],
-  components: {
-    audioList
-  },
+  props: ["audioData", "rank"],
   data() {
     return {
-      popupModel: false,
-      audioListData: {
-        issue: {
-          pic:
-            "https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75",
-          text:
-            "宝宝巴士在线讲故事 宝宝巴士在线讲故事宝宝巴士在线讲故事宝宝巴士在线讲故事宝宝巴士在线讲故事"
-        },
-        albums: [
-          {
-            album:
-              "试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对",
-            duration: "16：00",
-            percent: "1%"
-          },
-          {
-            album:
-              "试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对",
-            duration: "16：00",
-            percent: "1%"
-          },
-          {
-            album:
-              "试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对",
-            duration: "16：00",
-            percent: "1%"
-          }
-        ]
-      }
     };
   },
   // 解决子组件数据实时刷新问题
   watch: {
     audioData: {
       handler(newValue, oldValue) {
-        // console.log(newValue.pic)
-        // console.log(newValue.album)
-        // console.log(newValue.duration)
-        // console.log(newValue.program)
-        // console.log(newValue);
+        // console.log(newValue)
       },
       deep: true
-　　},
+    }
+  },
+  beforeDestroy () {
+
+    if(this.progressClock) {
+      window.clearInterval(this.progressClock);
+      this.progressClock = null;
+    }
+    if(this.clock) {
+      window.clearInterval(this.clock);
+      this.clock = null;
+    }
+    // console.log('组件销毁之前销毁定时器');
   },
   mounted() {
     setTimeout(() => {
-      var audio = document.getElementById('myMiniAudio');
+      var audio = document.getElementById("myMiniAudio");
       this.audioData.duration = this.todate(audio.duration);
       this.audioData.currentTime = this.todate(0);
       // 全局变量存放时间
@@ -248,29 +208,18 @@ export default {
     }, 600);
   },
   methods: {
-    onClose() {
-      this.popupModel = false;
-    },
-    onOpen() {
-      // alert(999);
-    },
-    onPlay(key) {
-      // console.log(key);
-      this.activeIndex = key;
-    },
-    showPopup() {
-      this.popupModel = true;
-    },
-    text() {
-      return this.audioData.sliderValue.toFixed(0) + "%";
-    },
     // 播放时间戳
     audioTimeChange(second, type) {
       if (type) {
         clearInterval(this.clock);
+        // 音频暂停停止5s倒计时，同时更新音频播放进度
+        clearInterval(this.progressClock);
+        this.updateProgress();
         return false;
       }
       this.clock = window.setInterval(() => {
+        // 修复倒计时中音频paused状态改变的问题
+        if(document.getElementById('myMiniAudio').paused) document.getElementById('myMiniAudio').play();
         if (second >= this.audioDuration) {
           clearInterval(this.clock);
           return false;
@@ -283,47 +232,80 @@ export default {
           this.audiobindtoslider(second);
         }
       }, 1000);
+      // 音频实时播放进度，每5s更新
+      this.audioProgress();
+    },
+    // 音频实时播放进度，每5s更新
+    audioProgress() {
+      this.progressClock = window.setInterval(() => {
+        // console.log('每5s更新');
+        this.updateProgress();
+      }, 5000);
+    },
+    // 更新音频播放进度
+    updateProgress() {
+      // 音频当前播放时间
+      var __currentTime = document.getElementById("myMiniAudio").currentTime;
+      // 存储到localStorage
+      var info = JSON.parse(localStorage.getItem("miniAudio"));
+      info[1] = this.audioData.type;
+      info[5] = __currentTime;
+      this.$emit("setProgress", info);
+
+      // console.log(
+      //   "miniAudio------localStorage迷你音频信息:",
+      //   info,
+      //   "当前goodsNo:",
+      //   info[0],
+      //   "当前goodsId:",
+      //   info[8],
+      //   "当前currentTime：",
+      //   info[5]
+      // );
+      // console.log('更新音频播放进度');
     },
     // 点击播放
     playAudio() {
-      var audio = document.getElementById('myMiniAudio');
+      var audio = document.getElementById("myMiniAudio");
       // 播放
       audio.play();
       // 切换播放状态
-      this.$emit('setType', false);
+      this.$emit("setType", false);
       var second = parseInt(audio.currentTime);
       this.audioTimeChange(second, false);
-      console.log('播放');
+      console.log("播放");
     },
     // 点击暂停
     pauseAudio() {
-      var audio = document.getElementById('myMiniAudio');
+      var audio = document.getElementById("myMiniAudio");
       // 暂停
       audio.pause();
       // 切换播放状态
-      this.$emit('setType', true);
+      this.$emit("setType", true);
       var second = parseInt(audio.currentTime);
       this.audioTimeChange(second, true);
-      console.log('暂停');
+      console.log("暂停");
     },
     // 绑定slider
     audiobindtoslider(second) {
-      var audio = document.getElementById('myMiniAudio');
+      var audio = document.getElementById("myMiniAudio");
       var percent = (second / audio.duration) * 100;
       // 设置slider进度
       this.audioData.sliderValue = percent;
     },
     // 拖动滑块
     audioSliderChange() {
-      var audio = document.getElementById('myMiniAudio');
+      var audio = document.getElementById("myMiniAudio");
       // 设置当前时间
       audio.currentTime = (this.audioData.sliderValue / 100) * audio.duration;
+      // 绑定slider
+      this.audiobindtoslider(audio.currentTime);
       this.audioData.currentTime = this.todate(audio.currentTime);
       // 先暂停再播放
       this.pauseAudio();
-      setTimeout(() => {
-        this.playAudio();
-      }, 300);
+      // setTimeout(() => {
+      //   this.playAudio();
+      // }, 600);
     },
     // 日期格式转换
     todate(second) {
@@ -341,14 +323,43 @@ export default {
     },
     // 播放结束
     ended() {
-      var audio = document.getElementById('myMiniAudio');
-      this.$emit('setType', 'play');
+      var audio = document.getElementById("myMiniAudio");
+      this.$emit("setType", false);
       audio.currentTime = 0;
-      // 重置
       setTimeout(() => {
-        this.audioData.currentTime = this.todate(0);
         this.audiobindtoslider(0);
-      }, 1000);
+        // 播放结束后销毁倒计时
+        if(this.progressClock) {
+          window.clearInterval(this.progressClock);
+          this.progressClock = null;
+        }
+        if(this.clock) {
+          window.clearInterval(this.clock);
+          this.clock = null;
+        }
+      }, 600);
+      // 存储到localStorage
+      var info = JSON.parse(localStorage.getItem("miniAudio"));
+      info[1] = false;
+      info[5] = 0;
+      localStorage.setItem("miniAudio", JSON.stringify(info));
+      // 调接口，获取所有节目
+      this.$emit('getAllProgram', info);
+      // this.getAllProgramData(info);
+    },
+    text() {
+      return this.audioData.sliderValue.toFixed(0) + "%";
+    },
+    // 打开播放列表
+    showList() {
+      this.$emit("showAudioList", true);
+    },
+    // 链接到音乐播放器
+    toPlayer() {
+      // let queryData = this.audioData;
+      // console.log(queryData);
+      // this.$emit('linkToPlayer',  queryData);
+      this.$emit("linkToPlayer", "");
     }
   }
 };

@@ -133,6 +133,7 @@ export default {
 
     // 专辑
     this.$router.push("/album/index");
+    // this.$router.push("/album/player");
   }
 };
 </script>

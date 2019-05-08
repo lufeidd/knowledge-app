@@ -1,35 +1,69 @@
 <template>
-  <ul class="audioListBox">
-    <li>
-      <div class="ratioBox">
-        <div class="box">
-          <img :src="audioListData.issue.pic">
-        </div>
-      </div>
-      <div class="issue">{{ audioListData.issue.text }}</div>
-    </li>
-    <li
-      v-for="(item, key) in audioListData.albums"
-      :key="key"
-      :class="{ active: activeIndex == key }"
-      @click="onPlay(key)"
-    >
-      <div class="img">
-        <img src="./../../assets/audio.svg" width="22" height="22" alt v-if="activeIndex == key">
-        <svg class="icon" aria-hidden="true" v-else>
-          <use xlink:href="#icon-videoPause-line"></use>
-        </svg>
-      </div>
 
-      <div class="info">
-        <div class="album">{{ item.album }}</div>
-        <div class="program">
-          <span class="duration">时长{{ item.duration }}</span>
-          <span>已播{{ item.percent }}</span>
+
+    <van-popup v-model="popupModel" position="bottom">
+      <div class="audioList">
+        <div class="title">
+          <div class="action" @click="closeAudioList">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-fold-line"></use>
+            </svg>
+          </div>
+          <div>播放列表</div>
         </div>
+
+        <div class="audioListBox">
+          <van-list
+            v-model="programLoading"
+            :finished="programFinished"
+            finished-text="没有更多了"
+            @load="programLoad"
+          >
+            <div class="list">
+              <div class="ratioBox">
+                <div class="box">
+                  <img :src="albumInfo.pic">
+                </div>
+              </div>
+              <div class="issue">{{ albumInfo.title }}</div>
+            </div>
+
+            <div v-for="(item, key) in programList" :key="key">
+              <div
+                v-if="item.goods_type != 6"
+                @click="onPlay(item)"
+                class="list"
+                :class="{ active: goodsNo == item.goods_no && audioStatus }"
+              >
+                <div class="img">
+                  <img
+                    src="./../../assets/audio.svg"
+                    width="22"
+                    height="22"
+                    alt
+                    v-if="goodsNo == item.goods_no && audioStatus"
+                  >
+                  <svg class="icon" aria-hidden="true" v-else>
+                    <use xlink:href="#icon-videoPause-line"></use>
+                  </svg>
+                </div>
+
+                <div class="info">
+                  <div class="album">{{ item.title }}</div>
+                  <div class="program">
+                    <span class="duration">时长{{ item.duration }}</span>
+                    <span>已播{{ (item.progress / item.ori_duration).toFixed(0) }}%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </van-list>
+        </div>
+
+
       </div>
-    </li>
-  </ul>
+    </van-popup>
+
 </template>
 
 <style lang="scss">
@@ -38,7 +72,7 @@
   @include textOverflow;
   bottom: 0;
   overflow-y: scroll;
-  & li {
+  & .list {
     @include textOverflow;
     @include displayFlex(flex, flex-start, center);
     padding: 10px;
@@ -92,7 +126,7 @@
       }
     }
   }
-  & li.active {
+  & .list.active {
     & .info {
       & .album {
         @include font(null, $fontSize + 1, $redDark);
@@ -107,20 +141,71 @@
 </style>
 
 <script>
+//  引入接口
+import { ALBUM_DETAIL } from "../../apis/album.js";
 export default {
   name: "music",
-  props: ["audioListData"],
+  props: ["albumInfo", "goodsNo", "audioStatus", "goodsId"],
   data() {
     return {
-      activeIndex: 1
+      programList: [],
+      programPage: 1,
+      // 分页
+      programLoading: false,
+      programFinished: false,
+      popupModel: false,
     };
   },
-  mounted() {},
   methods: {
-    onPlay(key) {
-      console.log(key);
-      this.activeIndex = key;
-    }
+    // 打开播放列表
+    closeAudioList() {
+      this.popupModel = false;
+    },
+    programLoad() {
+      // console.log('load');
+      this.programData();
+    },
+    // 获取节目列表
+    async programData() {
+      let data = {
+        goods_id: this.goodsId,
+        goods_no: 1,  // 默认倒序
+        page: this.programPage,
+        page_size: 4,
+        version: "1.0"
+      };
+      let res = await ALBUM_DETAIL(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        // 异步更新数据
+        var result = res.response_data.result;
+        setTimeout(() => {
+          for (let i = 0; i < res.response_data.result.length; i++) {
+            this.programList.push(result[i]);
+          }
+          // 加载状态结束
+          this.programLoading = false;
+          this.programPage++;
+
+          // console.log('page：', this.programPage);
+
+          // 数据全部加载完成
+          if (this.programList.length >= res.response_data.total_count) {
+            this.programFinished = true;
+          }
+        }, 600);
+
+        // 设置总节目数
+        this.programTotalCount = res.response_data.total_count;
+        // console.log('节目列表：', result);
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    onPlay(item) {
+      // console.log(item);
+      this.$emit("audioChange", item);
+    },
   }
 };
 </script>
