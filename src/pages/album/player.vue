@@ -186,10 +186,11 @@ export default {
         this.updateProgress();
         return false;
       }
-      // console.log('123', document.getElementById('musicPlayer').paused);
+      // console.log(document.getElementById('musicPlayer').paused);
       this.clock = window.setInterval(() => {
         // 修复倒计时中音频paused状态改变的问题
-        if(document.getElementById('musicPlayer').paused) document.getElementById('musicPlayer').play();
+        if (document.getElementById("musicPlayer").paused)
+          document.getElementById("musicPlayer").play();
         // console.log('456', document.getElementById('musicPlayer').paused);
         if (second >= document.getElementById("musicPlayer").duration) {
           clearInterval(this.clock);
@@ -226,16 +227,46 @@ export default {
       // 关联播放列表当前播放状态
       this.activeGoodNo = info[0];
 
-      console.log(
-        "player------localStorage迷你音频信息:",
-        info,
-        "当前goodsNo:",
-        info[0],
-        "当前goodsId:",
-        info[8],
-        "当前currentTime：",
-        __currentTime
-      );
+      // 存储到localStorage: audioProgress
+      var result = JSON.parse(localStorage.getItem("audioProgress"));
+
+      // 判断当前播放专辑和迷你缩略播放器/音乐播放器的统一性，根据goods_id来存储loacalStorage
+      var goods_id = result[0].goods_id;
+      for (let i = 0; i < result.length; i++) {
+        if (goods_id == info[8]) {
+          // 当记录已经存在则更新
+          var goods_no = result[i].goods_no;
+          if (goods_no == info[0]) {
+            result[i].progress = __currentTime;
+            // console.log('goods_no:', goods_no,  '当记录已经存在则更新');
+          }
+        } else {
+          // 当记录不存在则添加
+          console.log("当记录不存在则添加");
+        }
+      }
+
+      // console.log(
+      //   "player------localStorage迷你音频信息:",
+      //   info,
+      //   "当前goodsNo:",
+      //   info[0],
+      //   "当前goodsId:",
+      //   info[8],
+      //   "当前currentTime：",
+      //   __currentTime
+      // );
+
+      // console.log(
+      //   "player------audioProgress信息:",
+      //   result,
+      //   "当前goodsNo:",
+      //   result[1],
+      //   "当前goodsId:",
+      //   result[0],
+      //   "当前progress：",
+      //   result[2],
+      // );
 
       // console.log('更新音频播放进度');
     },
@@ -262,6 +293,22 @@ export default {
       var second = parseInt(audio.currentTime);
       this.audioTimeChange(second, true);
       console.log("暂停");
+    },
+    // 播放结束
+    onEnded() {
+      this.clearClock();
+      var audio = document.getElementById("musicPlayer");
+      this.audioData.type = false;
+      audio.currentTime = 0;
+
+      // 重置
+      this.currentTime__ = this.todate(0);
+      this.audiobindtoslider(0);
+      // 存储到localStorage
+      var info = JSON.parse(localStorage.getItem("miniAudio"));
+      this.audioTimeChange(0, true);
+      this.audioData.type = true;
+      console.log("当前音频播放结束");
     },
     // 绑定slider
     audiobindtoslider(second) {
@@ -299,23 +346,6 @@ export default {
       var date = m + ":" + s;
       return date;
     },
-    // 播放结束
-    onEnded() {
-      this.clearClock();
-      var audio = document.getElementById("musicPlayer");
-      this.audioData.type = false;
-      audio.currentTime = 0;
-      
-      // 重置
-      this.currentTime__ = this.todate(0);
-      this.audiobindtoslider(0);
-      // 存储到localStorage
-      var info = JSON.parse(localStorage.getItem("miniAudio"));
-      info[1] = false;
-      info[5] = 0;
-      localStorage.setItem("miniAudio", JSON.stringify(info));
-      this.allProgramData(info, "audo");
-    },
     // 打开播放列表
     showList() {
       this.$refs.control.popupModel = true;
@@ -342,7 +372,7 @@ export default {
       setTimeout(() => {
         this.currentTime__ = "00:00";
         // this.pauseAudio();
-        this.playAudio();
+        this.playAudio(0);
       }, 600);
       // console.log(item);
     },
@@ -415,7 +445,7 @@ export default {
           this.pauseAudio();
         }
 
-        // console.log('prev:', prev, 'next:', next, 'count:', count, '123，节目列表总和：', this.allProgramList);
+        // console.log('prev:', prev, 'next:', next, 'count:', count, '节目列表总和：', this.allProgramList);
       } else {
         this.$toast(res.error_message);
       }
@@ -432,12 +462,12 @@ export default {
       localStorage.setItem("miniAudio", JSON.stringify(info));
 
       // 更新播放器当前播放音频
-      this.pauseAudio();
+      // this.pauseAudio();
       setTimeout(() => {
         this.setPlayerAudio(info);
-        this.playAudio();
+        this.playAudio(0);
       }, 600);
-    },
+    }
   }
 };
 </script>

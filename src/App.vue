@@ -132,7 +132,8 @@ export default {
     // this.$router.push("/personal/remain/index");
 
     // 专辑
-    this.$router.push("/album/index");
+    // this.$router.push("/album/index");
+    this.$router.push("/album/detail");
     // this.$router.push("/album/player");
   }
 };

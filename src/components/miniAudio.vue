@@ -3,9 +3,9 @@
     <!-- 播放器缩略 -->
     <van-row class="miniAudio" :class="{ iphx: this.isIphx }">
       <van-col span="16">
-        <div class="ratioBox">
+        <div class="ratioBox" @click="toPlayer">
           <div class="box">
-            <span @click="toPlayer">
+            <span>
               <img :src="audioData.pic">
             </span>
           </div>
@@ -24,7 +24,7 @@
           <use xlink:href="#icon-category-line"></use>
         </svg>
 
-        <div class="play" @click="playAudio" v-if="audioData.type">
+        <div class="play" @click="playAudio(false)" v-if="audioData.type">
           <van-icon name="play"/>
         </div>
         <div class="play" @click="pauseAudio" v-else>
@@ -49,8 +49,7 @@
     </van-row>
 
     <!-- 播放器 -->
-    <audio id="myMiniAudio" :src="audioData.src" preload="auto" @ended="ended"></audio>
-  
+    <audio id="myMiniAudio" :src="audioData.src" preload="auto" @ended="onEnded"></audio>
   </div>
 </template>
 
@@ -174,8 +173,7 @@ export default {
   name: "music",
   props: ["audioData", "rank"],
   data() {
-    return {
-    };
+    return {};
   },
   // 解决子组件数据实时刷新问题
   watch: {
@@ -186,28 +184,35 @@ export default {
       deep: true
     }
   },
-  beforeDestroy () {
-
-    if(this.progressClock) {
-      window.clearInterval(this.progressClock);
-      this.progressClock = null;
-    }
-    if(this.clock) {
-      window.clearInterval(this.clock);
-      this.clock = null;
-    }
-    // console.log('组件销毁之前销毁定时器');
+  beforeDestroy() {
+    // 播放结束后销毁倒计时
+    this.clearClock();
   },
   mounted() {
     setTimeout(() => {
       var audio = document.getElementById("myMiniAudio");
+      if (this.audioData.currentTime) {
+        audio.currentTime = this.audioData.currentTime;
+      }
       this.audioData.duration = this.todate(audio.duration);
-      this.audioData.currentTime = this.todate(0);
+      // this.audioData.currentTime = this.todate(audio.currentTime);
       // 全局变量存放时间
       this.audioDuration = parseInt(audio.duration);
     }, 600);
   },
   methods: {
+    // 清除倒计时
+    clearClock() {
+      // 播放结束后销毁倒计时
+      if (this.progressClock) {
+        window.clearInterval(this.progressClock);
+        this.progressClock = null;
+      }
+      if (this.clock) {
+        window.clearInterval(this.clock);
+        this.clock = null;
+      }
+    },
     // 播放时间戳
     audioTimeChange(second, type) {
       if (type) {
@@ -219,7 +224,8 @@ export default {
       }
       this.clock = window.setInterval(() => {
         // 修复倒计时中音频paused状态改变的问题
-        if(document.getElementById('myMiniAudio').paused) document.getElementById('myMiniAudio').play();
+        if (document.getElementById("myMiniAudio").paused)
+          document.getElementById("myMiniAudio").play();
         if (second >= this.audioDuration) {
           clearInterval(this.clock);
           return false;
@@ -227,7 +233,7 @@ export default {
           second++;
           // console.log(second);
           // 日期格式转换
-          this.audioData.currentTime = this.todate(second);
+          // this.audioData.currentTime = this.todate(second);
           // 绑定slider
           this.audiobindtoslider(second);
         }
@@ -244,13 +250,36 @@ export default {
     },
     // 更新音频播放进度
     updateProgress() {
-      // 音频当前播放时间
+      // 音频当前播放时间localStorage
       var __currentTime = document.getElementById("myMiniAudio").currentTime;
-      // 存储到localStorage
+      // 存储到localStorage: miniAudio
       var info = JSON.parse(localStorage.getItem("miniAudio"));
       info[1] = this.audioData.type;
       info[5] = __currentTime;
-      this.$emit("setProgress", info);
+
+      // 存储到localStorage: audioProgress
+      var result = JSON.parse(localStorage.getItem("audioProgress"));
+
+      // 判断当前播放专辑和迷你缩略播放器/音乐播放器的统一性，根据goods_id来存储loacalStorage
+      var goods_id = result[0].goods_id;
+      for (let i = 0; i < result.length; i++) {
+        if (goods_id == info[8]) {
+          // 当记录已经存在则更新
+          var goods_no = result[i].goods_no;
+          if (goods_no == info[0]) {
+            result[i].progress = __currentTime;
+            // console.log('goods_no:', goods_no,  '当记录已经存在则更新');
+          }
+        } else {
+          // 当记录不存在则添加
+          console.log("当记录不存在则添加");
+        }
+      }
+
+      // 设置迷你音频播放状态
+      this.$emit("setMiniAudio", info);
+      // 设置节目列表播放进度，只设置不显示
+      this.$emit("setProgress", result);
 
       // console.log(
       //   "miniAudio------localStorage迷你音频信息:",
@@ -265,8 +294,13 @@ export default {
       // console.log('更新音频播放进度');
     },
     // 点击播放
-    playAudio() {
+    playAudio(time) {
+      this.clearClock();
       var audio = document.getElementById("myMiniAudio");
+      if (time) {
+        audio.currentTime = time;
+      }
+
       // 播放
       audio.play();
       // 切换播放状态
@@ -277,6 +311,7 @@ export default {
     },
     // 点击暂停
     pauseAudio() {
+      this.clearClock();
       var audio = document.getElementById("myMiniAudio");
       // 暂停
       audio.pause();
@@ -285,6 +320,24 @@ export default {
       var second = parseInt(audio.currentTime);
       this.audioTimeChange(second, true);
       console.log("暂停");
+    },
+    // 播放结束
+    onEnded() {
+      this.clearClock();
+      this.clearClock();
+      var audio = document.getElementById("myMiniAudio");
+      this.$emit("setType", false);
+      audio.currentTime = 0;
+      setTimeout(() => {
+        this.audiobindtoslider(0);
+      }, 600);
+      // miniAudio播放数据存储到localStorage
+      var info = JSON.parse(localStorage.getItem("miniAudio"));
+      this.audioTimeChange(0, true);
+      // 调接口，获取所有节目，判断是否自动播放
+      this.$emit("getAllProgram", info);
+      // this.getAllProgramData(info);
+      console.log("当前音频播放结束");
     },
     // 绑定slider
     audiobindtoslider(second) {
@@ -300,7 +353,7 @@ export default {
       audio.currentTime = (this.audioData.sliderValue / 100) * audio.duration;
       // 绑定slider
       this.audiobindtoslider(audio.currentTime);
-      this.audioData.currentTime = this.todate(audio.currentTime);
+      // this.audioData.currentTime = this.todate(audio.currentTime);
       // 先暂停再播放
       this.pauseAudio();
       // setTimeout(() => {
@@ -321,32 +374,6 @@ export default {
       var date = m + ":" + s;
       return date;
     },
-    // 播放结束
-    ended() {
-      var audio = document.getElementById("myMiniAudio");
-      this.$emit("setType", false);
-      audio.currentTime = 0;
-      setTimeout(() => {
-        this.audiobindtoslider(0);
-        // 播放结束后销毁倒计时
-        if(this.progressClock) {
-          window.clearInterval(this.progressClock);
-          this.progressClock = null;
-        }
-        if(this.clock) {
-          window.clearInterval(this.clock);
-          this.clock = null;
-        }
-      }, 600);
-      // 存储到localStorage
-      var info = JSON.parse(localStorage.getItem("miniAudio"));
-      info[1] = false;
-      info[5] = 0;
-      localStorage.setItem("miniAudio", JSON.stringify(info));
-      // 调接口，获取所有节目
-      this.$emit('getAllProgram', info);
-      // this.getAllProgramData(info);
-    },
     text() {
       return this.audioData.sliderValue.toFixed(0) + "%";
     },
@@ -361,6 +388,7 @@ export default {
       // this.$emit('linkToPlayer',  queryData);
       this.$emit("linkToPlayer", "");
     }
+    // 每5s、点击play、点击pzause、ended更新localStorage中audioProgress数据
   }
 };
 </script>

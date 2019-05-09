@@ -23,3 +23,6 @@ export const FOCUS_CANCEL = params => req('post', '/user/attention/cancel', para
 // 评论
 export const COMMENT = params => req('post', '/goods/comment/gets', params);
 export const COMMENT_ADD = params => req('post', '/goods/comment/add', params);
+
+// 相似
+export const RECOMMEND = params => req('post', '/goods/recommend/gets', params);

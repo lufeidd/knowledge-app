@@ -52,7 +52,13 @@
                   <div class="album">{{ item.title }}</div>
                   <div class="program">
                     <span class="duration">时长{{ item.duration }}</span>
-                    <span>已播{{ (item.progress / item.ori_duration).toFixed(0) }}%</span>
+
+                    <!-- <span>已播{{ (item.progress / item.ori_duration).toFixed(0) }}%</span> -->
+                      <span
+                        class="history"
+                        v-if="progressList[key].progress"
+                      >已播{{ (progressList[key].progress / progressList[key].duration).toFixed(2) }}%</span>
+
                   </div>
                 </div>
               </div>
@@ -154,6 +160,8 @@ export default {
       programLoading: false,
       programFinished: false,
       popupModel: false,
+      // 记录节目播放进度
+      progressList: [],
     };
   },
   methods: {
@@ -183,6 +191,10 @@ export default {
           for (let i = 0; i < res.response_data.result.length; i++) {
             this.programList.push(result[i]);
           }
+
+          // 非文章节目根据good_id创建数组，并存放至localStorage
+          this.progressListData();
+
           // 加载状态结束
           this.programLoading = false;
           this.programPage++;
@@ -201,6 +213,38 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
+    },
+    // localStorage存放节目播放进度
+    progressListData() {
+      var list = this.programList;
+      var result = JSON.parse(localStorage.getItem("audioProgress"));
+      /*
+       * __goodsId专辑id
+       * __goodsNo节目编号
+       * __progress节目当前播放进度
+       * __duration节目时长，单位s
+       */
+      // 比对localStorage中audioProgress数据
+      var arr = [];
+      var goods_id = result[0].goods_id;
+      for (let i = 0; i < list.length; i++) {
+        var obj = {};
+        obj.goods_id = this.goodsId;
+        obj.goods_no = list[i].goods_no;
+        obj.duration = list[i].ori_duration;
+        // 当前专辑和历史记录一致则更新进度
+        if (goods_id == result[0].goods_id) {
+          if (list[i].goods_no == result[i].goods_no)
+            obj.progress = result[i].progress;
+        }
+
+        arr.push(obj);
+      }
+      localStorage.setItem("audioProgress", JSON.stringify(arr));
+      this.progressList = [];
+      this.progressList = result;
+
+      // console.log('audioProgress存放数据:', arr);
     },
     onPlay(item) {
       // console.log(item);

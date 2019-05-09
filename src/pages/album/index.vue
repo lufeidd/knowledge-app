@@ -45,6 +45,7 @@
     <!-- 介绍 - 节目 - 相似 -->
     <van-tabs v-model="tabModel" sticky animated @click="tabChange">
       <van-tab v-for="(item, key) in tabData" :title="item.title" :key="key">
+        <!-- 介绍 -->
         <template v-if="key == 0">
           <div class="infoContent">
             <!-- 关注公众号 -->
@@ -138,6 +139,7 @@
             </div>
           </div>
         </template>
+        <!-- 节目 -->
         <template v-if="key == 1">
           <van-list
             v-model="programLoading"
@@ -175,7 +177,7 @@
                 <van-row class="list">
                   <van-col span="2" class="rank">{{ item.goods_no }}</van-col>
                   <van-col span="16">
-                    <router-link to="./detail" class="desc">
+                    <router-link :to="{ path: '/album/detail', query: { pid: baseData.goods_id, goods_id: item.goods_id}}" class="desc">
                       <template v-if="item.goods_type != 6">
                         <span class="tag" v-if="item.is_free == 1">试听</span>
                         <span class="tag" v-if="item.is_payed == 1">已购</span>
@@ -217,10 +219,14 @@
                         </svg>
                         {{ item.duration }}
                       </span>
-                      <span
+                      <!-- <span
                         class="history"
                         v-if="item.goods_type != 6"
-                      >已播{{ (item.progress / item.ori_duration).toFixed(0) }}%</span>
+                      >已播{{ (item.progress / item.ori_duration).toFixed(0) }}%</span>-->
+                      <span
+                        class="history"
+                        v-if="item.goods_type != 6 && progressList[key].progress"
+                      >已播{{ (progressList[key].progress / progressList[key].duration).toFixed(2) }}%</span>
                     </div>
                   </van-col>
                   <van-col span="6" style="text-align:right;align-self:flex-start;">
@@ -243,64 +249,74 @@
             </div>
           </van-list>
         </template>
+        <!-- 相似 -->
         <template v-if="key == 2">
-          <div class="simularContent">
-            <div class="listBox">
-              <div class="left">
-                <div class="ratioBox">
-                  <div class="box">
-                    <img src>
+           <van-list
+            v-model="recommendLoading"
+            :finished="recommendFinished"
+            finished-text="没有更多了"
+            @load="recommendLoad"
+          >
+            <div class="simularContent">
+              <div class="listBox" v-for="(item, key) in recommendList" :key="key">
+                <div class="left">
+                  <div class="ratioBox">
+                    <div class="box">
+                      <img :src="item.pic">
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="center">
-                <div class="title">
-                  <router-link to="./detail" class="text">lsdjf</router-link>
-                  <div class="action" @click="scollectAction(key)">
-                    <van-tag plain round color="#fff" text-color="#f05654" type="danger">
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-collect-block"></use>
-                      </svg>
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-collect-line"></use>
-                      </svg>
-                      <span>
-                        <template>已</template>收藏
+                <div class="center">
+                  <div class="title">
+                    <!-- goodsType判断是专辑还是节目 -->
+                    <router-link :to="{ path: '/album/detail', query: { pid: baseData.goods_id, goods_id: item.goods_id}}" class="text">{{ item.title }}</router-link>
+
+                    <div class="action" @click="scollectAction(key)">
+                      <van-tag plain round color="#fff" text-color="#f05654" type="danger">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-collect-block"></use>
+                        </svg>
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-collect-line"></use>
+                        </svg>
+                        <span>
+                          <template>已</template>收藏
+                        </span>
+                      </van-tag>
+                    </div>
+                  </div>
+                  <div class="subTitle">fsldf十六点九分零四</div>
+                  <div class="info">
+                    <template>
+                      <van-tag color="#c8c8c8" text-color="#fff">音频</van-tag>
+                      <span class="count">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-audio-line"></use>
+                        </svg>
+                        111
                       </span>
-                    </van-tag>
+                    </template>
+                    <template>
+                      <van-tag color="#c8c8c8" text-color="#fff">视频</van-tag>
+                      <span class="count">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-video-line"></use>
+                        </svg>
+                        222
+                      </span>
+                    </template>
+                    <span class="time">
+                      <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-time-line"></use>
+                      </svg>
+                      2014
+                    </span>
+                    <span class="history">十分士大夫</span>
                   </div>
-                </div>
-                <div class="subTitle">fsldf十六点九分零四</div>
-                <div class="info">
-                  <template>
-                    <van-tag color="#c8c8c8" text-color="#fff">音频</van-tag>
-                    <span class="count">
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-audio-line"></use>
-                      </svg>
-                      111
-                    </span>
-                  </template>
-                  <template>
-                    <van-tag color="#c8c8c8" text-color="#fff">视频</van-tag>
-                    <span class="count">
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-video-line"></use>
-                      </svg>
-                      222
-                    </span>
-                  </template>
-                  <span class="time">
-                    <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-time-line"></use>
-                    </svg>
-                    2014
-                  </span>
-                  <span class="history">十分士大夫</span>
                 </div>
               </div>
             </div>
-          </div>
+           </van-list>
         </template>
       </van-tab>
     </van-tabs>
@@ -318,7 +334,7 @@
         @click="preListenAction"
         v-if="baseData.has_free && preListen"
       />
-      <van-goods-action-big-btn primary :text="'¥ '+baseData.price + ' 购买'" @click="onClickBigBtn"/>
+      <van-goods-action-big-btn primary :text="'¥ '+baseData.price + ' 购买'" @click="buyAction"/>
     </van-goods-action>
 
     <!-- 音频缩略 -->
@@ -328,7 +344,8 @@
       :rank="rankType"
       ref="control"
       @setType="typeAction"
-      @setProgress="miniAudioData"
+      @setMiniAudio="miniAudioData"
+      @setProgress="audioProgressData"
       @showAudioList="audioListShow"
       @linkToPlayer="gotoPlayer"
       @getAllProgram="getAllProgramData"
@@ -382,7 +399,8 @@ import {
   FOCUS_ADD,
   FOCUS_CANCEL,
   COMMENT,
-  COMMENT_ADD
+  COMMENT_ADD,
+  RECOMMEND
 } from "../../apis/public.js";
 
 export default {
@@ -423,7 +441,7 @@ export default {
           title: "相似"
         }
       ],
-      tabModel: 1,
+      tabModel: 2,
       // 评论
       discussData: [],
       commentPage: 1,
@@ -462,6 +480,8 @@ export default {
       audioPlaying: false,
       // 排序
       rankType: 0, // 默认0倒序, 1正序
+      // 记录节目播放进度
+      progressList: [],
       /*
        * --------------------------------播放列表--------------------------------
        */
@@ -473,7 +493,16 @@ export default {
       // 存放所有节目
       allProgramList: [],
       // 判断是否需要自动播放
-      autoPlay: true
+      autoPlay: true,
+      /*
+       * --------------------------------相似--------------------------------
+       */
+      recommendList: [],
+      recommendPage: 1,
+      recommendType: 0,
+      // 分页
+      recommendLoading: false,
+      recommendFinished: false,
     };
   },
   destroyed() {},
@@ -484,24 +513,6 @@ export default {
     this.albumData();
   },
   methods: {
-    ////////////////////////////////////开始/////////////////////////////////////
-
-    scollectAction(key) {
-      this.tabData[2].simular[key].collect = !this.tabData[2].simular[key]
-        .collect;
-
-      if (this.tabData[2].simular[key].collect) {
-        this.$toast("收藏成功~");
-      } else {
-        this.$toast("取消收藏~");
-      }
-    },
-    onClickBigBtn() {
-      this.$toast("点击按钮");
-    },
-
-    //////////////////////////////////结束//////////////////////////////////////
-
     // --------------------------------专辑信息----------------------------------
     // 获取专辑接口信息
     async albumData() {
@@ -751,13 +762,77 @@ export default {
       this.contentLength = this.contentModel.length;
     },
     // ----------------------------------节目------------------------------------
-    // 读取localStorage音频缩略播放器数据
+    // load
+    programLoad() {
+      // console.log("load");
+      this.programData();
+    },
+    // 获取节目列表
+    async programData() {
+      let data = {
+        goods_id: this.baseData.goods_id,
+        goods_no: this.rankType,
+        page: this.programPage,
+        page_size: 4,
+        version: "1.0"
+      };
+      let res = await ALBUM_DETAIL(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        // 异步更新数据
+        var result = res.response_data.result;
+        setTimeout(() => {
+          // 存放非文章节目列表，用于关联播放进度
+          // var list = [];
+          for (let i = 0; i < res.response_data.result.length; i++) {
+            this.programList.push(result[i]);
+            // 存放试听数据,只取第一条
+            if (
+              result[i].is_free &&
+              result[i].goods_type != 6 &&
+              this.preListen.length == 0
+            ) {
+              this.preListen.push(result[i]);
+            }
+            // 将非文章节目取出
+            // if (result[i].goods_type != 6) {
+            //   list.push(result[i]);
+            // }
+          }
+
+          // 非文章节目根据good_id创建数组，并存放至localStorage
+          this.progressListData();
+
+          // 加载状态结束
+          this.programLoading = false;
+          this.programPage++;
+
+          // console.log('page：', this.programPage);
+
+          // 数据全部加载完成
+          if (this.programList.length >= res.response_data.total_count) {
+            this.programFinished = true;
+            this.programPage = 1;
+          }
+        }, 600);
+
+        // 设置总节目数
+        this.programTotalCount = res.response_data.total_count;
+        // 试听列表
+        // console.log('试听列表：', this.preListen)
+
+        // console.log('节目列表：', result);
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 读取localStorage：miniAudio音频缩略播放器数据
     getMiniAudioData() {
       // 设置迷你音频信息
       var info = JSON.parse(localStorage.getItem("miniAudio"));
-      // info = ['', '', true, '', '', 0, '', '', ''];
+      // if (info[0] != "") this.activeGoodNo = info[0];
+      // 将当前音频播放信息存放到localStorage: miniAudio
       this.miniAudioData(info);
-      if (info[0] != "") this.activeGoodNo = info[0];
 
       // 解决子组件数据实时刷新问题
       this.$refs.control.audioData.type = !this.audioPlaying;
@@ -782,162 +857,7 @@ export default {
       //   this.myAudioData.currentTime
       // );
     },
-    programLoad() {
-      // console.log("load");
-      this.programData();
-    },
-    // 播放记录
-    historyAction() {
-      this.showHistory = false;
-    },
-    // 获取节目列表
-    async programData() {
-      let data = {
-        goods_id: this.baseData.goods_id,
-        goods_no: this.rankType,
-        page: this.programPage,
-        page_size: 4,
-        version: "1.0"
-      };
-      let res = await ALBUM_DETAIL(data);
-
-      if (res.hasOwnProperty("response_code")) {
-        // 异步更新数据
-        var result = res.response_data.result;
-        setTimeout(() => {
-          for (let i = 0; i < res.response_data.result.length; i++) {
-            this.programList.push(result[i]);
-            // 存放试听数据,只取一条
-            if (
-              result[i].is_free &&
-              result[i].goods_type != 6 &&
-              this.preListen.length == 0
-            ) {
-              this.preListen.push(result[i]);
-            }
-          }
-          // 加载状态结束
-          this.programLoading = false;
-          this.programPage++;
-
-          // console.log('page：', this.programPage);
-
-          // 数据全部加载完成
-          if (this.programList.length >= res.response_data.total_count) {
-            this.programFinished = true;
-            this.programPage = 1;
-          }
-        }, 600);
-
-        // 设置总节目数
-        this.programTotalCount = res.response_data.total_count;
-        // 试听列表
-        // console.log('试听列表：', this.preListen)
-
-        // console.log('节目列表：', result);
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    // 排序
-    rankAction() {
-      this.rankType = this.rankType == 1 ? 0 : 1;
-      // 实时刷新先置空
-      this.programList = [];
-      // 分页状态重置
-      this.programPage = 1;
-      this.programFinished = false;
-
-      // console.log('排序：', this.rankType);
-    },
-    // 播放/暂停音频
-    audioAction(item) {
-      var goods_no = item.goods_no;
-
-      let __goodsNo = null;
-      let __type = true;
-      let __pic = this.baseData.pic[0];
-      let __src = null;
-      // let __src = require('./../../assets/music.mp3');
-      let __duration = null;
-      let __currentTime = null;
-      let __program = null;
-      let __album = this.baseData.title;
-      let __goodsId = this.baseData.goods_id;
-      // console.log('专辑基本信息：', this.baseData);
-
-      // 存放当前音频信息
-      for (let i = 0; i < this.programList.length; i++) {
-        if (this.programList[i].goods_no == goods_no) {
-          __goodsNo = this.programList[i].goods_no;
-          __src = this.programList[i].file_path;
-          __program = this.programList[i].title;
-          __duration = this.programList[i].duration;
-        }
-      }
-
-      // 判断是否点击当前或者第一次点击
-      if (this.activeGoodNo == goods_no || this.activeGoodNo == null) {
-        this.audioPlaying = !this.audioPlaying;
-      } else {
-        this.audioPlaying = true;
-      }
-
-      // 父页面关联子组件
-      setTimeout(() => {
-        if (this.audioPlaying) {
-          this.$refs.control.pauseAudio();
-          this.$refs.control.playAudio();
-        } else {
-          this.$refs.control.pauseAudio();
-        }
-      }, 600);
-
-      // 管理子组件播放状态
-      this.activeGoodNo = goods_no;
-      __type = !this.audioPlaying;
-
-      var info = [
-        __goodsNo,
-        __type,
-        __pic,
-        __src,
-        __duration,
-        __currentTime,
-        __program,
-        __album,
-        __goodsId
-      ];
-      this.miniAudioData(info);
-
-      // 解决子组件数据实时刷新问题
-      this.$refs.control.audioData.type = __type;
-    },
-    // 点击播放，子组件关联父页面 - 切换miniAudio组件播放状态
-    typeAction(__type) {
-      /*
-       * __type == true; 播放
-       * __type == false; 暂停
-       */
-      // 关联节目列表播放状态
-      this.myAudioData.type = __type;
-      this.audioPlaying = !__type;
-      // console.log('节目列表:',this.programList);
-      /*
-       * __goodsId，当前专辑id
-       * __goodsNo，当前节目编号
-       * __progress，当前播放进度
-       */
-      // var __goodsId = this.baseData.goods_id;
-      // var __goodsNo = this.programList.goods_no;
-      // var __program = 0;
-      // var __arr = new Array(1);
-      // __arr[0] = __goodsId;
-      // __arr[1] = __goodsNo;
-      // __arr[2] = __program;
-      // this.audioProgressData(__arr);
-    },
-    // 将当前音频播放信息存放到localStorage
+    // 将当前音频播放信息存放到localStorage: miniAudio
     miniAudioData(info) {
       /*
        * __goodsNo节目编号
@@ -984,6 +904,7 @@ export default {
       setTimeout(() => {
         this.$refs.control.audioData.pic = __pic;
         this.$refs.control.audioData.src = __src;
+        this.$refs.control.audioData.currentTime = __currentTime;
         this.$refs.control.audioData.duration = __duration;
         this.$refs.control.audioData.program = __program;
         this.$refs.control.audioData.album = __album;
@@ -1000,25 +921,163 @@ export default {
         $("#miniAudio").css("display", "block");
       }
     },
+    // localStorage存放节目播放进度
+    progressListData() {
+      var list = this.programList;
+      var result = JSON.parse(localStorage.getItem("audioProgress"));
+      /*
+       * __goodsId专辑id
+       * __goodsNo节目编号
+       * __progress节目当前播放进度
+       * __duration节目时长，单位s
+       */
+      // 比对localStorage中audioProgress数据
+      var arr = [];
+      var goods_id = result[0].goods_id;
+      for (let i = 0; i < list.length; i++) {
+        var obj = {};
+        obj.goods_id = this.baseData.goods_id;
+        obj.goods_no = list[i].goods_no;
+        obj.duration = list[i].ori_duration;
+        // 当前专辑和历史记录一致则更新进度
+        if (goods_id == result[0].goods_id) {
+          if (list[i].goods_no == result[i].goods_no)
+            obj.progress = result[i].progress;
+        }
+
+        arr.push(obj);
+      }
+      localStorage.setItem("audioProgress", JSON.stringify(arr));
+      this.progressList = [];
+      this.progressList = result;
+
+      // console.log('audioProgress存放数据:', arr);
+    },
+    // 播放记录
+    historyAction() {
+      this.showHistory = false;
+    },
+    // 排序
+    rankAction() {
+      this.rankType = this.rankType == 1 ? 0 : 1;
+      // 实时刷新先置空
+      this.programList = [];
+      // 分页状态重置
+      this.programPage = 1;
+      this.programFinished = false;
+
+      // console.log('排序：', this.rankType);
+    },
+    // 播放/暂停音频
+    audioAction(item) {
+      var goods_no = item.goods_no;
+
+      let __goodsNo = null;
+      let __type = true;
+      let __pic = this.baseData.pic[0];
+      let __src = null;
+      // let __src = require('./../../assets/music.mp3');
+      let __duration = null;
+      // 获取当前节目播放进度
+      let __currentTime = this.getAudioProgress(item);
+      let __program = null;
+      let __album = this.baseData.title;
+      let __goodsId = this.baseData.goods_id;
+      // console.log('专辑基本信息：', this.baseData);
+
+      // 存放当前音频信息
+      for (let i = 0; i < this.programList.length; i++) {
+        if (this.programList[i].goods_no == goods_no) {
+          __goodsNo = this.programList[i].goods_no;
+          __src = this.programList[i].file_path;
+          __program = this.programList[i].title;
+          __duration = this.programList[i].duration;
+        }
+      }
+
+      // 判断是否点击当前或者第一次点击
+      if (this.activeGoodNo == goods_no || this.activeGoodNo == null) {
+        this.audioPlaying = !this.audioPlaying;
+      } else {
+        this.audioPlaying = true;
+      }
+
+      // 父页面关联子组件
+      setTimeout(() => {
+        if (this.audioPlaying) {
+          // this.$refs.control.pauseAudio();
+          this.$refs.control.playAudio(__currentTime);
+        } else {
+          this.$refs.control.pauseAudio();
+        }
+      }, 600);
+
+      // 管理子组件播放状态
+      this.activeGoodNo = goods_no;
+      __type = !this.audioPlaying;
+
+      var info = [
+        __goodsNo,
+        __type,
+        __pic,
+        __src,
+        __duration,
+        __currentTime,
+        __program,
+        __album,
+        __goodsId
+      ];
+      this.miniAudioData(info);
+
+      // 解决子组件数据实时刷新问题
+      this.$refs.control.audioData.type = __type;
+    },
+    // 获取当前节目播放进度
+    getAudioProgress(item) {
+      var goods_no = item.goods_no;
+      var goods_id = this.baseData.goods_id;
+      var result = JSON.parse(localStorage.getItem("audioProgress"));
+      var __currentTime = 0;
+
+      // 遍历localStorage中记录进度的数组，获取当前节目当前进度
+      for (let i = 0; i < result.length; i++) {
+        if (goods_id == result[i].goods_id) {
+          if (goods_no == result[i].goods_no) {
+            // console.log(result[i].progress);
+            __currentTime = result[i].progress;
+          }
+        }
+      }
+      console.log("123:", __currentTime);
+
+      // 如果当前节目有播放记录，跳到当前记录位置继续播放
+      return __currentTime;
+    },
+    // 点击播放，子组件关联父页面 - 切换miniAudio组件播放状态
+    typeAction(__type) {
+      /*
+       * __type == true; 播放
+       * __type == false; 暂停
+       */
+      // 关联节目列表播放状态
+      this.myAudioData.type = __type;
+      this.audioPlaying = !__type;
+      // console.log('节目列表:',this.programList);
+    },
     // 将当前专辑节目列表播放进度信息存放到localStorage
-    audioProgressData(info) {
-      // console.log('arr:', info);
-      return;
-
-      var __goodsNo = info[0];
-      var __album = info[1];
-      var __progress = info[2];
-
-      // 设置音频播放进度信息
-      this.$set(this.progressList, "goodsNo", __goodsNo);
-      this.$set(this.progressList, "album", __album);
-      this.$set(this.progressList, "progress", __progress);
+    audioProgressData(result) {
+      /*
+       * __goodsId专辑id
+       * __goodsNo节目编号
+       * __progress节目当前播放进度
+       * __duration节目时长，单位s
+       */
+      // result = [];
 
       // localStorage存储
-      localStorage.setItem("audioProgress", JSON.stringify(info));
-      info = JSON.parse(localStorage.getItem("audioProgress"));
+      localStorage.setItem("audioProgress", JSON.stringify(result));
 
-      // console.log('存储音频播放进度信息:', info);
+      // console.log('result:', this.progressList);
     },
     // --------------------------------播放列表----------------------------------
     audioListShow(__type) {
@@ -1083,7 +1142,7 @@ export default {
         next = next > count - 1 ? 0 : next;
 
         // 当点击全部播放，从第一条开始播放
-        if(actionType == 'all') next = 0;
+        if (actionType == "all") next = 0;
       } else {
         this.$toast(res.error_message);
       }
@@ -1091,7 +1150,7 @@ export default {
       if (this.autoPlay) {
         // 单一类型，自动播放
         this.updateLocalStorage(this.allProgramList[next]);
-        console.log("123，当前播放的下一项：", this.allProgramList[next]);
+        console.log("当前播放的下一项：", this.allProgramList[next]);
         console.log("单一类型，自动播放");
       } else {
         // 含多种类型，不自动播放
@@ -1114,7 +1173,7 @@ export default {
       this.$refs.control.pauseAudio();
       setTimeout(() => {
         this.miniAudioData(info);
-        this.$refs.control.playAudio();
+        this.$refs.control.playAudio(0);
       }, 600);
     },
     // 全部播放
@@ -1122,7 +1181,59 @@ export default {
       var info = JSON.parse(localStorage.getItem("miniAudio"));
       // 从第一条开始播放，是否自动播放规则同上
       this.allProgramData(info, "all");
-    }
+    },
+    // 购买
+    buyAction() {
+      this.$toast("购买");
+    },
+    // --------------------------------相似----------------------------------
+    scollectAction(key) {
+      this.tabData[2].simular[key].collect = !this.tabData[2].simular[key]
+        .collect;
+
+      if (this.tabData[2].simular[key].collect) {
+        this.$toast("收藏成功~");
+      } else {
+        this.$toast("取消收藏~");
+      }
+    },
+    // load
+    recommendLoad () {
+      this.recommendData();
+    },
+    async recommendData () {
+      let data = {
+        goods_id: this.baseData.goods_id,
+        type: this.recommendType,
+        page: this.recommendPage,
+        page_size: 4,
+        version: "1.0"
+      };
+      let res = await RECOMMEND(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        // 异步更新数据
+        var result = res.response_data;
+        setTimeout(() => {
+          for (let i = 0; i < res.response_data.length; i++) {
+            this.recommendList.push(result[i]);
+          }
+          console.log('123:', res);
+
+          // 加载状态结束
+          this.recommendLoading = false;
+          this.recommendPage++;
+
+          // 数据全部加载完成
+          if (this.recommendList.length >= res.response_data.length) {
+            this.recommendFinished = true;
+            this.recommendPage = 1;
+          }
+        }, 600);
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
   }
 };
 </script>
