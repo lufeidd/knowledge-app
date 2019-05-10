@@ -6,7 +6,11 @@
 import req from './http.js'
 
 // 个人中心首页
-export const USER_HOMEPAGE = params => req('post', '/user/homePage', params);
+export const USER_HOMEPAGE = params => req('post', '/user/homepage', params);
+
+// 获取用户基本信息
+export const USER_INFO = params => req('post', '/user/info/get', params);
+export const USER_INFO_EDIT = params => req('post', '/user/info/edit', params);
 
 // 定义我的评论接口
 export const USER_COMMENT = params => req('post', '/user/comment/gets', params);

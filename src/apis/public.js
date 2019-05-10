@@ -30,3 +30,6 @@ export const COMMON_UPLOAD = params => req('post', '/common/upload', params);
 //商品点赞
 export const GOODS_PRAISE_ADD = params => req('post', '/goods/praise/add', params);
 export const GOODS_PRAISE_DELETE = params => req('post', '/goods/praise/delete', params);
+
+export const RECOMMEND = params => req('post', '/goods/recommend/gets', params);
+

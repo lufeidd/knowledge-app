@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="center">
-        <div class="title">用户名</div>
+        <div class="title">{{ user_name }}</div>
       </div>
       <div class="right">
         <svg class="icon" aria-hidden="true">
@@ -31,7 +31,7 @@
   </div>
 </template>
 
-<style lang="sass">
+<style lang="scss">
 html {
     background-color: $greyLight;
 }
@@ -99,9 +99,12 @@ html {
 export default {
   data() {
     return {
+      user_name: '',
     };
   },
-  mounted() {},
+  mounted() {
+    this.user_name = this.$route.query.user_name;
+  },
   methods: {}
 };
 </script>

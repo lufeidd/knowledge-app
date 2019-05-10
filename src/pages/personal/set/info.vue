@@ -1,5 +1,6 @@
 <template>
   <div id="infoPage">
+    <!-- 头像 -->
     <div class="listBox" @click="showAction('pictrue')" style="margin-top: 5px;">
       <div class="center">
         <div class="title">头像</div>
@@ -7,7 +8,8 @@
       <div class="left">
         <div class="ratioBox">
           <div class="box">
-            <img src="https://bnmppic.bookuu.com/topic/20161108/1478612622195756.jpg">
+            <img :src="pic" v-if="pic">
+            <img :src="infoList.header_pic" v-else>
           </div>
         </div>
       </div>
@@ -17,21 +19,41 @@
         </svg>
       </div>
 
-      <input id="files" type="file" accept="image/*" @change="input">
+      <input id="files" type="file" accept="image/*" @change="picChange">
     </div>
 
-    <van-cell title="账号" value="13200025452"/>
-    <van-cell title="昵称" value="是否"/>
-    <van-cell title="生日" is-link value="还是空的，快去写吧~" @click="showAction('birthday')"/>
-    <van-cell title="性别" is-link value="男" @click="showAction('sex')"/>
+    <van-cell title="账号" :value="infoList.mobile"/>
+    <!-- 昵称 -->
+    <van-row style="background-color: #fff;padding: 10px 15px;border-bottom: 1px solid #f5f5f5;">
+      <van-col span="12">昵称</van-col>
+      <van-col span="12">
+        <input
+          type="text"
+          placeholder="还是空的，快去写吧~"
+          v-model="infoList.nickname"
+          style="text-align: right;font-size: 13px;color: #999;height: 100%;width: 100%;border: none;"
+        >
+      </van-col>
+    </van-row>
+
+    <!-- 生日 -->
+    <van-cell
+      title="生日"
+      is-link
+      :value="infoList.birthday ? infoList.birthday : '还是空的，快去写吧~'"
+      @click="showAction('birthday')"
+    />
+
+    <!-- 性别 -->
+    <van-cell title="性别" is-link :value="infoList.sex == 1 ? '男' : '女'" @click="showAction('sex')"/>
 
     <!-- 头像裁切，异步组件 -->
     <!-- 性别 -->
     <van-actionsheet
       v-model="sexModel"
-      :actions="actions"
+      :actions="sexActions"
       cancel-text="取消"
-      @select="onSelect"
+      @select="sexSelect"
       @cancel="sexModel=false"
     />
     <!-- 生日 -->
@@ -42,32 +64,36 @@
         :max-date="maxDate"
         :formatter="formatter"
         @confirm="birthdayConfirm"
-        @change="getValues()"
-        confirm-button-text="完成"
+        @change="dateChange"
         @cancel="birthdayModel=false"
         title="请选择时间"
+        confirm-button-text="完成"
       />
     </van-popup>
-    <!--  -->
+
+    <div style="margin-top: 5px;">
+      <van-button size="large" @click="save">保存</van-button>
+    </div>
+    
   </div>
 </template>
 
-<style lang="sass">
+<style lang="scss">
 html {
   background-color: $greyLight;
 }
 
 #infoPage {
-    
   & .listBox {
     padding: 10px 15px;
     background-color: $white;
     border-bottom: 1px $greyLight solid;
     position: relative;
-    @include displayFlex (flex, flex-start, center);
+    @include displayFlex(flex, flex-start, center);
 
-    & input[type=file] {
-        @include fullBox;
+    & input[type="file"] {
+      @include fullBox;
+      opacity: 0;
     }
 
     & .left {
@@ -78,15 +104,15 @@ html {
       text-align: right;
 
       & .ratioBox {
-        @include ratioBox (28px, 28px, 1px #e7e7e7 solid, contain, null, null);
+        @include ratioBox(28px, 28px, 1px #e7e7e7 solid, contain, null, null);
         float: right;
         border-radius: 28px;
         overflow: hidden;
         position: relative;
 
         & .box {
-          @include position (absolute, 'tl', 0, 0, 100%, 100%, null);
-          @include displayFlex (flex, center, center);
+          @include position(absolute, "tl", 0, 0, 100%, 100%, null);
+          @include displayFlex(flex, center, center);
 
           & img {
             max-width: 100%;
@@ -107,14 +133,14 @@ html {
     }
 
     & .right {
-      @include flexBasis (15px);
+      @include flexBasis(15px);
       flex-shrink: 0;
       text-align: right;
 
       & .icon {
         width: 14px;
         height: 14px;
-        color: #ccc;
+        color: #999;
       }
     }
   }
@@ -122,13 +148,23 @@ html {
 </style>
 
 <script>
-// import cropper from "./cropper";
+//  引入接口
+import { USER_INFO, USER_INFO_EDIT } from "../../../apis/user.js";
+
 export default {
-  // components: {
-  //   cropper
-  // },
+  
   data() {
     return {
+      // 账户信息
+      infoList: {
+        header_pic: "",
+        mobile: "",
+        nickname: "",
+        birthday: "",
+        sex: 1,
+      },
+      // 裁切后的图片
+      pic: null,
       // 生日
       birthdayModel: false,
       maxDate: new Date(),
@@ -145,34 +181,22 @@ export default {
       },
       // 性别
       sexModel: false,
-      actions: [
+      sexActions: [
+        {
+          name: "男"
+        },
         {
           name: "女"
         },
-        {
-          name: "男"
-        }
       ]
     };
   },
-  mounted() {},
+  mounted() {
+    this.getInfoData();
+    // 裁切后的图片
+    this.pic = this.$route.query.img;
+  },
   methods: {
-    // 生日
-    birthdayConfirm() {
-      this.listData[3].text = 1;
-      this.birthdayModel = false;
-    },
-    getValues() {
-      console.log(999);
-      // this.getValues();
-    },
-    // 性别
-    onSelect(item) {
-      // 点击选项时默认不会关闭菜单，可以手动关闭
-      this.sexModel = false;
-      this.listData[4].text = item.name;
-      //   this.$toast(item.name);
-    },
     // 头像
     showAction(type) {
       if (type) {
@@ -191,7 +215,8 @@ export default {
         }
       }
     },
-    input() {
+    picChange() {
+      var self = this;
       //获取input file的files文件数组;
       //$('#files')获取的是jQuery对象，.get(0)转为原生对象;
       //这边默认只能选一个，但是存放形式仍然是数组，所以取第一个元素使用[0];
@@ -225,11 +250,88 @@ export default {
 
         // $(".cropper-box-canvas img[data-v-ebaf968c]").get(0).src = data;
 
-        console.log(data);
-      };
+        // 图片裁切后加载组件
+        // this.cropperShow = true;
 
-      //   this.$router.push("/personal/set/cropper");
-    }
+        // 跳转到裁切页面
+        self.$router.push({path: "/personal/set/cropper", query: {data: data}});
+        // console.log(data);
+      };
+    },
+    // 获取账号接口信息
+    async getInfoData() {
+      let data = {
+        version: "1.0"
+      };
+      let res = await USER_INFO(data);
+      // console.log("123", res.response_data);
+      if (res.hasOwnProperty("response_code")) {
+        this.$set(this.infoList, "header_pic", res.response_data.header_pic);
+        this.$set(this.infoList, "mobile", res.response_data.mobile);
+        this.$set(this.infoList, "nickname", res.response_data.nickname);
+        this.$set(this.infoList, "birthday", res.response_data.birthday);
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 生日
+    birthdayConfirm(e) {
+      var date =
+        e.getFullYear() +
+        "年" +
+        eval(e.getMonth() + 1) +
+        "月" +
+        e.getDate() +
+        "日";
+
+      this.infoList.birthday = date;
+      this.birthdayModel = false;
+    },
+    dateChange(e) {
+      this.infoList.birthday =
+        e.getValues()[0] + e.getValues()[1] + e.getValues()[2];
+      // console.log(e.getValues());
+    },
+    // 性别
+    sexSelect(item, index) {
+      // 点击选项时默认不会关闭菜单，可以手动关闭
+      this.sexModel = false;
+      this.infoList.sex = index + 1;
+      // console.log(index)
+    },
+    // 保存
+    save () {
+      this.editInfoData();
+    },
+    // 修改账号接口信息
+    async editInfoData() {
+      let data = {
+        nickname: this.infoList.nickname,
+        sex: this.infoList.sex,
+        header_pic: this.infoList.header_pic,
+        birthday: this.infoList.birthday,
+        version: "1.0",
+      };
+      if(!this.infoList.nickname) {
+        this.$toast('请输入昵称~');
+        return;
+      }
+      if(!this.infoList.birthday) {
+        this.$toast('请输入生日~');
+        return;
+      }
+      if(!this.infoList.sex) {
+        this.$toast('请输入性别~');
+        return;
+      }
+      let res = await USER_INFO_EDIT(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.$toast('信息修改成功~');
+      } else {
+        this.$toast(res.error_message);
+      }
+      // console.log('sex:',this.infoList);
+    },
   }
 };
 </script>

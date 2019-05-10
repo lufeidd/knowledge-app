@@ -21,33 +21,33 @@ html {
 
   & .albumBox {
     @include textOverflow;
-      @include displayFlex(flex, flex-start, center);
-      margin-top: 5px;
-      background-color: $white;
-      padding: 10px;
-      border-bottom: 1px #eee solid;
+    @include displayFlex(flex, flex-start, center);
+    margin-top: 5px;
+    background-color: $white;
+    padding: 10px;
+    border-bottom: 1px #eee solid;
 
-      & .ratioBox {
-        width: 65px;
-        padding-bottom: 65px;
-        border-radius: 4px;
-        flex-shrink: 0;
+    & .ratioBox {
+      flex-basis: 65px;
+      padding-bottom: 65px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    & .issue {
+      margin-left: 10px;
+      @include textOverflow;
+
+      & .title {
+        @include font("PingFangBold", $fontSize + 2, #333);
+        @include textOverflow;
       }
 
-      & .issue {
-        margin-left: 10px;
+      & .info {
+        margin-top: 20px;
         @include textOverflow;
-
-        & .title {
-          @include font("PingFangBold", $fontSize + 2, #333);
-          @include textOverflow;
-        }
-
-        & .info {
-          margin-top: 20px;
-          @include textOverflow;
-          @include font(null, $fontSize - 1, #666);
-        }
+        @include font(null, $fontSize - 1, #666);
+      }
 
       & .img {
         & .icon {
@@ -57,12 +57,33 @@ html {
         }
       }
     }
+
+    & .action {
+      flex-basis: 65px;
+      flex-shrink: 0;
+
+      & [class*=van-hairline]::after {
+        border-color: #f05654;
+      }
+
+      & .van-tag::after {
+        border-radius: 25px;
+      }
+    }
   }
 
   // 评论
   & .commentBox {
     background-color: $white;
     margin-top: 5px;
+
+    & #commentTitle {
+      top: 0;
+      width: 100%;
+      z-index: 1;
+      background-color: $white;
+      border-bottom: 1px $greyLight solid;
+    }
 
     & .listBox {
       @include displayFlex (flex, center, flex-start);
@@ -203,6 +224,20 @@ html {
 
   & .ratioBox.banner {
     padding-bottom: 50%;
+
+    & .action {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      right: 20px;
+      z-index: 1;
+      color: $white;
+      @include textOverflow;
+
+      & .title {
+        @include textOverflow;
+      }
+    }
 
     & .box.layer {
       background-color: rgba($color: #000000, $alpha: 0.4);

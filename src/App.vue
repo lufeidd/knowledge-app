@@ -70,18 +70,18 @@ img {
 /*设置input placeholder颜色*/
 ::-webkit-input-placeholder,
 ::-webkit-textarea-placeholder {
-  font-size: 15px;
+  font-size: 13px;
   color: #999;
 }
 
 :-moz-placeholder {
-  font-size: 15px;
+  font-size: 13px;
   color: #999;
 }
 
 :-ms-input-placeholder,
 :-ms-textarea-placeholder {
-  font-size: 15px;
+  font-size: 13px;
   color: #999;
 }
 
@@ -106,6 +106,9 @@ export default {
 
     // 个人中心
     // this.$router.push("/personal/index");
+    // this.$router.push("/personal/set/index");
+    // this.$router.push("/personal/set/info");
+    this.$router.push("/personal/set/bind");
 
     // 品牌商城
     // this.$router.push("/brand/index");
@@ -129,6 +132,7 @@ export default {
 
     // 专辑
     // this.$router.push("/album/index");
+
   }
 };
 </script>
