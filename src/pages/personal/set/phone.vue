@@ -1,13 +1,13 @@
 <template>
-  <div id="phonePage">
-    
-    <div class="fieldBox">
+  <div id="phonePage" style="margin-top: 0;">
+    <div class="fieldBox" style="margin-top: 0;">
+      <p style="padding: 10px 0 30px 0;">更换手机号后，下次可用新手机号登录</p>
       <van-field
         v-bind:class="{ phone: isPhone }"
         v-model="phone"
         clearable
         label="+86"
-        placeholder="手机号码"
+        placeholder="请输入新手机号码"
         error-message
         type="tel"
         maxlength="11"
@@ -36,16 +36,12 @@
         </template>
       </van-field>
 
-      <p
-        class="tip"
-      >根据《中华人民共和国网络安全法》要求，使用信息发布、即时通讯等互联网服务进行身份信息验证。为保障您的使用体验，建议您尽快完成手机号绑定验证，感谢您的支持和理解。</p>
-
-      <div class="submitBox">
+      <div class="submitBox" style="margin-top:50px;">
         <template v-if="submitData.disabled">
-          <van-button slot="button" size="large" disabled round type="danger">确认并提交</van-button>
+          <van-button slot="button" size="large" disabled round type="danger">提交</van-button>
         </template>
         <template v-else>
-          <van-button slot="button" size="large" round type="danger" @click="gotoPage">确认并提交</van-button>
+          <van-button slot="button" size="large" round type="danger" @click="gotoPage">提交</van-button>
         </template>
       </div>
     </div>
@@ -53,6 +49,11 @@
 </template>
 
 <style src="@/style/scss/pages/login/phone.scss" lang="scss"></style>
+<style>
+html {
+    background-color: #fff;
+}
+</style>
 
 <script>
 export default {
@@ -71,7 +72,8 @@ export default {
       }
     };
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
     onClickLeft() {
       this.$router.go(-1);
@@ -95,11 +97,6 @@ export default {
       }
     },
     gotoPage() {
-      let queryData = {
-        phone: this.phone,
-        password: this.password
-      };
-      this.$router.push({ path: "login", query: queryData });
     }
   }
 };

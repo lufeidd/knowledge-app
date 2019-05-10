@@ -49,6 +49,8 @@ import about from '@/pages/personal/set/about'
 import cropper from '@/pages/personal/set/cropper'
 import bind from '@/pages/personal/set/bind'
 import cancel from '@/pages/personal/set/cancel'
+import setpassword from '@/pages/personal/set/password'
+import setphone from '@/pages/personal/set/phone'
 
 // 个人中心 - 帮助与反馈
 import help from '@/pages/personal/help/index'
@@ -278,6 +280,16 @@ export default new Router({
       path: '/personal/set/cancel',
       name: 'cancel',
       component: cancel
+    },
+    {
+      path: '/personal/set/password',
+      name: 'setpassword',
+      component: setpassword
+    },
+    {
+      path: '/personal/set/phone',
+      name: 'setphone',
+      component: setphone
     },
     // 个人中心 - 帮助与反馈
     {

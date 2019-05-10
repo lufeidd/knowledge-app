@@ -33,3 +33,5 @@ export const USER_FEEDBACK_ADD = params => req('post', '/user/feedback/add', par
 //公共
 export const COMMON_UPLOAD = params => req('post', '/common/upload', params);
 
+// 我的收货地址
+export const USER_ADDRESS = params => req('post', '/user/address/gets', params);

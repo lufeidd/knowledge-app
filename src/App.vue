@@ -108,7 +108,8 @@ export default {
     // this.$router.push("/personal/index");
     // this.$router.push("/personal/set/index");
     // this.$router.push("/personal/set/info");
-    this.$router.push("/personal/set/bind");
+    // this.$router.push("/personal/set/bind");
+    this.$router.push("/personal/set/list");
 
     // 我的关注
     // this.$router.push("/personal/focus");
