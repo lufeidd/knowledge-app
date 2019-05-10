@@ -12,6 +12,7 @@
 
     .title {
       @include font("PingFangBlod", $fontSize + 1, null);
+      @include twoColtextOverflow;
     }
 
     .from {
@@ -54,7 +55,7 @@
       }
     }
 
-    .content {
+    .contentData {
       padding-top: 25px;
       padding-bottom: 45px;
     }
@@ -94,6 +95,7 @@
         .title {
           line-height: 1.2;
           @include font("PingFangBlod", $fontSize, null);
+          @include twoColtextOverflow;
         }
 
         .name {
@@ -254,7 +256,7 @@
     font-size: $fontSize + 4;
     @include displayFlex(flex, space-between, null);
     @include position(fixed, "br", 0, null, 100%, null, null);
-
+    z-index: 999;
     .write {
       height: 30px;
       margin-left: 15px;

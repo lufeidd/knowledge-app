@@ -501,7 +501,7 @@
     font-size: $fontSize + 4;
     @include displayFlex(flex, space-between, null);
     @include position(fixed, "br", 0, null, 100%, null, null);
-
+    z-index: 999;
     .write {
       height: 30px;
       margin-left: 15px;

@@ -546,7 +546,7 @@ export default {
           data = {
             type: this.baseData.goods_type,
             target: this.baseData.goods_id,
-            version: "1.0"
+            version: "1.0",
           };
           res = await COLLECT_ADD(data);
           this.baseData.collect_id = 1;

@@ -24,5 +24,12 @@ export const FOCUS_CANCEL = params => req('post', '/user/attention/cancel', para
 export const COMMENT = params => req('post', '/goods/comment/gets', params);
 export const COMMENT_ADD = params => req('post', '/goods/comment/add', params);
 
-// 相似
+//上传图片
+export const COMMON_UPLOAD = params => req('post', '/common/upload', params);
+
+//商品点赞
+export const GOODS_PRAISE_ADD = params => req('post', '/goods/praise/add', params);
+export const GOODS_PRAISE_DELETE = params => req('post', '/goods/praise/delete', params);
+
 export const RECOMMEND = params => req('post', '/goods/recommend/gets', params);
+

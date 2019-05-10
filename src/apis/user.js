@@ -30,8 +30,10 @@ export const USER_HELPER_GETS = params => req('post', '/helper/gets', params);
 export const USER_HELPER_DETAIL = params => req('post', '/helper/detail', params);
 export const USER_FEEDBACK_ADD = params => req('post', '/user/feedback/add', params);
 
-//公共
-export const COMMON_UPLOAD = params => req('post', '/common/upload', params);
+//我的购买--订单
+export const USER_ORDER_INVOICE_ADD = params => req('post', '/shopping/order/invoice/add', params);
+
+
 
 // 我的收货地址
 export const USER_ADDRESS = params => req('post', '/user/address/gets', params);
