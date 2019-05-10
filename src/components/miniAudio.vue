@@ -6,30 +6,32 @@
         <div class="ratioBox">
           <div class="box">
             <router-link to="./../album/player">
-              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+              <img :src="audioData.pic">
             </router-link>
           </div>
         </div>
 
         <router-link to="./../album/player" class="info">
-          <div class="album">{{ audioData.album }}</div>
+          <div class="album">{{ audioData.album }} </div>
           <div class="program">
             <span class="duration">{{ audioData.duration }}</span>
             {{ audioData.program }}
           </div>
         </router-link>
+
       </van-col>
       <van-col span="8" class="action">
         <svg class="icon category" aria-hidden="true" @click="showPopup">
           <use xlink:href="#icon-category-line"></use>
         </svg>
 
-        <div class="play" @click="playAudio" v-if="audioData.type === 'play'">
+        <div class="play" @click="playAudio" v-if="audioData.type">
           <van-icon name="play"/>
         </div>
         <div class="play" @click="pauseAudio" v-else>
           <van-icon name="pause"/>
         </div>
+        <!-- 进度条 -->
         <div class="circle">
           <van-circle
             v-model="audioData.sliderValue"
@@ -47,9 +49,10 @@
       </van-col>
     </van-row>
 
-    <audio :id="audioData.id" :src="audioData.src" preload="auto" @ended="ended"></audio>
+    <!-- 播放器 -->
+    <audio id="myMiniAudio" :src="audioData.src" preload="auto" @ended="ended"></audio>
 
-    <van-popup v-model="audioData.popupModel" position="bottom" @open="onOpen">
+    <van-popup v-model="popupModel" position="bottom" @open="onOpen">
       <div class="audioList">
         <div class="title">
           <div class="action" @click="onClose">
@@ -92,6 +95,8 @@
   }
 
   & .miniAudio {
+    // opacity: 0;
+    z-index: 1;
     @include bgDecorate(rgba(0, 0, 0, 0.6), $white, 50px, 0, none);
     @include position(fixed, "bl", 60px, 6%, 88%, 50px, 50px);
     @include textOverflow;
@@ -103,6 +108,7 @@
       border-radius: 40px;
       margin-left: 4px;
       margin-top: 5px;
+      overflow: hidden;
       position: absolute;
     }
 
@@ -188,6 +194,7 @@ export default {
   },
   data() {
     return {
+      popupModel: false,
       audioListData: {
         issue: {
           pic:
@@ -218,10 +225,22 @@ export default {
       }
     };
   },
+  // 解决子组件数据实时刷新问题
+  watch: {
+    audioData: {
+      handler(newValue, oldValue) {
+        // console.log(newValue.pic)
+        // console.log(newValue.album)
+        // console.log(newValue.duration)
+        // console.log(newValue.program)
+        // console.log(newValue);
+      },
+      deep: true
+　　},
+  },
   mounted() {
     setTimeout(() => {
-      var id = this.audioData.id;
-      var audio = document.getElementById(id);
+      var audio = document.getElementById('myMiniAudio');
       this.audioData.duration = this.todate(audio.duration);
       this.audioData.currentTime = this.todate(0);
       // 全局变量存放时间
@@ -230,24 +249,24 @@ export default {
   },
   methods: {
     onClose() {
-      this.audioData.popupModel = false;
+      this.popupModel = false;
     },
     onOpen() {
       // alert(999);
     },
     onPlay(key) {
-      console.log(key);
+      // console.log(key);
       this.activeIndex = key;
     },
     showPopup() {
-      this.audioData.popupModel = true;
+      this.popupModel = true;
     },
     text() {
       return this.audioData.sliderValue.toFixed(0) + "%";
     },
     // 播放时间戳
     audioTimeChange(second, type) {
-      if (type === "play") {
+      if (type) {
         clearInterval(this.clock);
         return false;
       }
@@ -257,7 +276,7 @@ export default {
           return false;
         } else {
           second++;
-          console.log(second);
+          // console.log(second);
           // 日期格式转换
           this.audioData.currentTime = this.todate(second);
           // 绑定slider
@@ -267,38 +286,36 @@ export default {
     },
     // 点击播放
     playAudio() {
-      var id = this.audioData.id;
-      var audio = document.getElementById(id);
+      var audio = document.getElementById('myMiniAudio');
       // 播放
       audio.play();
       // 切换播放状态
-      this.audioData.type = "pause";
+      this.$emit('setType', false);
       var second = parseInt(audio.currentTime);
-      this.audioTimeChange(second, this.audioData.type);
+      this.audioTimeChange(second, false);
+      console.log('播放');
     },
     // 点击暂停
     pauseAudio() {
-      var id = this.audioData.id;
-      var audio = document.getElementById(id);
+      var audio = document.getElementById('myMiniAudio');
       // 暂停
       audio.pause();
       // 切换播放状态
-      this.audioData.type = "play";
+      this.$emit('setType', true);
       var second = parseInt(audio.currentTime);
-      this.audioTimeChange(second, this.audioData.type);
+      this.audioTimeChange(second, true);
+      console.log('暂停');
     },
     // 绑定slider
     audiobindtoslider(second) {
-      var id = this.audioData.id;
-      var audio = document.getElementById(id);
+      var audio = document.getElementById('myMiniAudio');
       var percent = (second / audio.duration) * 100;
       // 设置slider进度
       this.audioData.sliderValue = percent;
     },
     // 拖动滑块
     audioSliderChange() {
-      var id = this.audioData.id;
-      var audio = document.getElementById(id);
+      var audio = document.getElementById('myMiniAudio');
       // 设置当前时间
       audio.currentTime = (this.audioData.sliderValue / 100) * audio.duration;
       this.audioData.currentTime = this.todate(audio.currentTime);
@@ -324,9 +341,8 @@ export default {
     },
     // 播放结束
     ended() {
-      var id = this.audioData.id;
-      var audio = document.getElementById(id);
-      this.audioData.type = "play";
+      var audio = document.getElementById('myMiniAudio');
+      this.$emit('setType', 'play');
       audio.currentTime = 0;
       // 重置
       setTimeout(() => {

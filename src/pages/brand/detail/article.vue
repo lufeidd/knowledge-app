@@ -1,43 +1,44 @@
 <template>
   <div id="articlePage">
     <div class="article">
-      <div class="title">{{title}}</div>
+      <div class="title">{{baseData.title}}</div>
       <div class="from">
         <div class="articleInfo">
-          <img v-lazy="articleInfo.icon" class="icon">
+          <img v-lazy="articleInfo.header_pic" class="icon">
           <div class="detail">
             <p>{{articleInfo.name}}</p>
-            <p class="number">{{articleInfo.foucs}}人关注</p>
+            <p class="number">{{articleInfo.fans}}人关注</p>
           </div>
         </div>
-        <span class="foucsButton" v-if="foucs" @click="addfoucs">+关注</span>
-        <span class="foucsButton cancel" v-else @click="cancelfoucs">已关注</span>
+        <span class="foucsButton" v-if="articleInfo.is_followed == 0" @click="focusAction">+关注</span>
+        <span class="foucsButton cancel" v-else @click="focusAction">已关注</span>
       </div>
-      <div class="content"></div>
+      <div class="contentData"></div>
       <div class="message">
         <span>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-eye-line"></use>
           </svg>
-          {{message.watch}}
+          {{baseData.play_num}}
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-good-line"></use>
           </svg>
-          {{message.foucs}}
+          {{baseData.praise_num}}
         </span>
-        <span>{{message.time}}</span>
+        <span>{{baseData.create_time}}</span>
       </div>
     </div>
+    <!-- 轮播部分 -->
     <div class="showContent">
       <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
-        <swiper-slide v-for="item,index in footInfo" :key="index">
+        <swiper-slide v-for="item,index in recommendData" :key="index">
           <div class="foot">
             <div class="ratiobox">
-              <a class="bookImg" v-lazy:background-image="item.imgUrl"></a>
+              <a class="bookImg" v-lazy:background-image="item.pic"></a>
             </div>
             <div class="content">
               <p class="title">{{item.title}}</p>
-              <p class="name">{{item.name}}</p>
+              <p class="name">品牌名称</p>
             </div>
           </div>
         </swiper-slide>
@@ -102,7 +103,7 @@
           <div>发表评论</div>
           <div class="punish" @click="onPunish">发布</div>
         </div>
-        <!-- 音频列表 -->
+
         <div class="content">
           <textarea v-model="contentModel" placeholder="快来写评论吧!" @input="inputChange"></textarea>
           <div class="count">
@@ -115,16 +116,16 @@
     <div class="pinglun">
       <div class="write" @click="openAnswer">快来写评论吧!</div>
       <div class="nice">
-        <svg class="icon" aria-hidden="true" v-if="collect" @click="iconCollect">
-          <use xlink:href="#icon-collect-line"></use>
-        </svg>
-        <svg class="icon add" aria-hidden="true" v-else @click="iconCollect">
+        <svg class="icon add" aria-hidden="true" v-if="baseData.collect_id > 0" @click="collectAction">
           <use xlink:href="#icon-collect-block"></use>
+        </svg>
+        <svg class="icon " aria-hidden="true" v-else @click="collectAction">
+          <use xlink:href="#icon-collect-line"></use>
         </svg> &nbsp|&nbsp
-        <svg class="icon" aria-hidden="true" v-if="nice" @click="iconGood">
+        <svg class="icon " aria-hidden="true" v-if="baseData.is_praised == 0" @click="praiseAction">
           <use xlink:href="#icon-good-line"></use>
         </svg>
-        <svg class="icon add" aria-hidden="true" v-else @click="iconGood">
+        <svg class="icon add" aria-hidden="true" v-else @click="praiseAction">
           <use xlink:href="#icon-good-block"></use>
         </svg>
       </div>
@@ -136,18 +137,23 @@
 <style src="@/style/scss/pages/brand/detail/article.scss" lang="scss"></style>
 
 <script>
+import { ALBUM } from "../../../apis/album.js";
+import { GOODS_RECOMMEND_GETS } from "../../../apis/brand.js";
+import {
+  COLLECT_ADD,
+  COLLECT_CANCEL,
+  FOCUS_ADD,
+  FOCUS_CANCEL,
+  COMMENT,
+  COMMENT_ADD,
+  GOODS_PRAISE_ADD,
+  GOODS_PRAISE_DELETE,
+} from "../../../apis/public.js";
 export default {
   data() {
     return {
-      title:
-        "这里是内容的标题，可能会很长有两行文字这里是内容的标题，可能会很长有两行文字",
-      foucs: true,
-      articleInfo: {
-        name: "磨铁教育",
-        foucs: 23456,
-        icon: "https://bnmpstyle.bookuu.com/wap/images/default_shop.png"
-      },
-      message: { watch: 25641, foucs: 25641, time: "01.29 15:51" },
+      baseData:{},
+      articleInfo: {},
       swiperOption: {
         slidesPerView: 1.1
       },
@@ -196,16 +202,50 @@ export default {
           state: false
         }
       ],
-      collect: true,
-      nice: true
-    };
+      recommendData:[],
+    }
+  },
+  mounted(){
+    this.getData();
+    this.getRecommendData();
   },
   methods: {
-    addfoucs() {
-      this.foucs = false;
+    // 获取关注接口信息
+    async focusData(__type) {
+      var data = {};
+      var res;
+      switch (__type) {
+        case "focus":
+          data = {
+            brand_id: this.articleInfo.brand_id,
+            version: "1.0"
+          };
+          res = await FOCUS_ADD(data);
+          this.articleInfo.is_followed = 1;
+          // this.$toast('已关注~');
+          break;
+        case "cancel":
+          data = {
+            brand_id: this.articleInfo.brand_id,
+            version: "1.0"
+          };
+          res = await FOCUS_CANCEL(data);
+          this.articleInfo.is_followed = 0;
+          this.$toast("已取消关注~");
+          break;
+      }
+      // 出错提示
+      if (res.hasOwnProperty("response_code")) {
+      } else {
+        this.$toast(res.error_message);
+      }
     },
-    cancelfoucs() {
-      this.foucs = true;
+    focusAction() {
+      if (this.articleInfo.is_followed > 0) {
+        this.focusData("cancel");
+      } else {
+        this.focusData("focus");
+      }
     },
     foldAction() {},
     onPunish() {
@@ -224,34 +264,119 @@ export default {
     commentClose() {
       this.commentModel = false;
     },
-    iconCollect() {
-      if (this.collect) {
-        this.collect = false;
-      } else this.collect = true;
+    // 获取收藏接口信息
+    async collectData(__type) {
+      var data = {};
+      var res;
+      switch (__type) {
+        case "collect":
+          data = {
+            type: this.baseData.goods_type,
+            target: this.baseData.article_id,
+            version: "1.0",
+          };
+          res = await COLLECT_ADD(data);
+          this.baseData.collect_id = 1;
+          // this.$toast("已收藏~");
+          break;
+        case "cancel":
+          data = {
+            goods_id: this.baseData.article_id,
+            version: "1.0"
+          };
+          res = await COLLECT_CANCEL(data);
+          this.baseData.collect_id = 0;
+          this.$toast("已取消收藏~");
+          break;
+      }
+      // 出错提示
+      if (res.hasOwnProperty("response_code")) {
+      } else {
+        this.$toast(res.error_message);
+      }
     },
-    iconGood() {
-      if (this.nice) {
-        this.nice = false;
-      } else this.nice = true;
+    collectAction() {
+      if (this.baseData.collect_id > 0) {
+        this.collectData("cancel");
+      } else {
+        this.collectData("collect");
+      }
     },
-    // async getData(){
-    //   var tStamp = this.$getTimeStamp();
-    //   var data={
-    //     goods_id:18,
-    //     version:"1.0",
-    //     timestamp:tStamp,
-    //   };
-    //   data.sign = this.$getSign(data);
-    //   let res = await BRAND_INFO(data);
-    //   if(res.hasOwnProperty("response_code")){
-    //     this.brandData = res.response_data;
-    //     this.packets_id = res.response_data.column_list[0].packets_id;
-    //     this.columnListData();
-    //     // console.log(this.packets_id);
-    //   }else{
-    //     this.$toast(res.error_message);
-    //   }
-    // },
+    // 获取点赞接口信息
+    async praiseData(__type) {
+      var data = {};
+      var res;
+      switch (__type) {
+        case "focus":
+          data = {
+            goods_id: this.baseData.article_id,
+            type:this.baseData.goods_type,
+            version: "1.0"
+          };
+          res = await GOODS_PRAISE_ADD(data);
+          this.baseData.is_praised = 1;
+          // this.$toast('已关注~');
+          break;
+        case "cancel":
+          data = {
+            goods_id: this.baseData.article_id,
+            type:this.baseData.goods_type,
+            version: "1.0"
+          };
+          res = await GOODS_PRAISE_DELETE(data);
+          this.baseData.is_praised = 0;
+          this.$toast("已取消点赞~");
+          break;
+      }
+      // 出错提示
+      if (res.hasOwnProperty("response_code")) {
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    praiseAction() {
+      if (this.baseData.is_praised > 0) {
+        this.praiseData("cancel");
+      } else {
+        this.praiseData("focus");
+      }
+    },
+    //获取页面基本信息
+    async getData(){
+      var tStamp = this.$getTimeStamp();
+      var data={
+        goods_id:18,
+        version:"1.0",
+        timestamp:tStamp,
+      };
+      data.sign = this.$getSign(data);
+      let res = await ALBUM(data);
+      if(res.hasOwnProperty("response_code")){
+        this.baseData = res.response_data.base;
+        this.articleInfo = res.response_data.brand_info;
+        $('.contentData').append(this.baseData.desc);
+        // console.log(this.baseData);
+      }else{
+        this.$toast(res.error_message);
+      }
+    },
+    //获取轮播部分信息
+    async getRecommendData(){
+      var tStamp = this.$getTimeStamp();
+      var data={
+        goods_id:18,
+        version:"1.0",
+        timestamp:tStamp,
+      };
+      data.sign = this.$getSign(data);
+      let res = await GOODS_RECOMMEND_GETS(data);
+      if(res.hasOwnProperty("response_code")){
+        this.recommendData = res.response_data;
+        // console.log('recommendData',this.recommendData);
+      }else{
+        this.$toast(res.error_message);
+      }
+    },
   }
 };
 </script>

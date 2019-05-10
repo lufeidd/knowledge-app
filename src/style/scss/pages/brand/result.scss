@@ -109,6 +109,7 @@ html{
     height: 42.56%;
     border-radius: 5px;
     padding: 25px 10px 0 10px;
+    overflow: hidden;
     .close{
       position: absolute;
       top: 10px;
@@ -145,6 +146,12 @@ html{
     }
     .content{
       font-size: $fontSize + 1;
+      position: absolute;
+      top:160px;
+      left: 15px;
+      right: 15px;
+      overflow-y: auto;
+      bottom: 0;
     }
   }
 }

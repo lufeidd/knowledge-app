@@ -18,6 +18,7 @@
 import upload from "../../../components/upload";
 import { USER_FEEDBACK_ADD } from "../../../apis/user.js";
 import { COMMON_UPLOAD } from "../../../apis/public.js";
+import { setTimeout } from 'timers';
 export default {
   components: {
     upload
@@ -54,6 +55,7 @@ export default {
     question() {
       this.change();
     },
+    //获取上传图片路径
     async submitFeedback(){
       this.feedbackImgs = $('.content.set').eq(0).attr('data-src')+'||'+$('.content.set').eq(1).attr('data-src')+'||'+$('.content.set').eq(2).attr('data-src');
       this.feedbackImgs = this.feedbackImgs.split('||').filter(item => item!=="undefined").join('||');
@@ -65,7 +67,8 @@ export default {
         timestamp:tStamp,
         file:this.feedbackImgs,
         opt_type:'feedback',
-        file_type:'base64',
+        file_type:'Base64',
+        source:1,
       }
 
       data.sign = this.$getSign(data);
@@ -73,8 +76,8 @@ export default {
       if(res.hasOwnProperty("response_code")){
         console.log(res);
         var arr=[];
-        for(let i=0;i<res.response_data.url.length;i++){
-          arr.push(res.response_data.url[i]);
+        for(let i=0;i<res.response_data.length;i++){
+          arr.push(res.response_data[i].url);
         }
         this.url = arr.join('|');
         // console.log(this.url)
@@ -95,9 +98,11 @@ export default {
         data.sign = this.$getSign(data);
         let res1 = await USER_FEEDBACK_ADD(data);
           if(res1.hasOwnProperty("response_code")){
-              console.log(res1);
-              this.$toast('提交成功!')
+
+              this.$toast('提交成功!');
+              // setTimeout( location.reload() , 1000);
               location.reload();
+              // this.$router.push('/personal/help/feedback');
         }else{
           this.$toast(res1.error_message);
         }

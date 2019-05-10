@@ -9,7 +9,7 @@
               <div class="name">{{brandData.name}}</div>
               <div class="fans">{{brandData.statistic_list.fans_num}}粉丝</div>
           </div>
-          <div class="focus" v-if="focus == 0" @click="focusAction">+关注</div>
+          <div class="focus" v-if="brandData.attention_state == 0" @click="focusAction">+关注</div>
           <div class="focus add" v-else @click="focusAction">已关注</div>
         </div>
         <router-link to="/brand/mall">
@@ -27,38 +27,48 @@
         </div>
         </router-link>
       </div>
+
       <van-tabs sticky animated swipeable color="#666" title-active-color="#333" @click="tabChange">
-        <van-tab :title="item.name" v-for="item,index in brandData.column_list" :key="index" >
-          <van-list
-            v-model="programLoading"
-            :finished="programFinished"
-            finished-text="没有更多了"
-            @load="programLoad"
-          >
-          <div class="content" v-for="item,index in column_list_data">
-            <div class="ratiobox">
-              <div class="bookImg" v-lazy:background-image="item.goods_pic"></div>
-            </div>
-            <div class="right">
-              <div class="text">{{item.goods_name}}</div>
-              <div class="pinpai">品牌名称</div>
-              <div class="nice">
-                <span>
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-good-line"></use>
-                  </svg> <span>{{item.praise_num}}</span>
-                </span>
-                <span class="comment">
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-comment-line"></use>
-                  </svg> <span>{{item.comment_num}}</span>
-                </span>
+        <van-tab :title="items.name" v-for="items,index in brandData.column_list" :key="index" >
+
+          <template v-if="activekey == index" >
+            <van-list
+              v-model="programLoading"
+              :finished="programFinished"
+              finished-text="没有更多了"
+              @load="programLoad"
+            >
+              <div class="content" v-for="item,index in column_list_data">
+                <div class="ratiobox">
+                  <div class="bookImg" v-lazy:background-image="item.pic"></div>
+                </div>
+                <div class="right">
+                  <div class="text">{{item.goods_name}}</div>
+                  <div class="pinpai">品牌名称</div>
+                  <div class="nice">
+                    <span>
+                      <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-good-line"></use>
+                      </svg> <span>{{item.praise_num}}</span>
+                    </span>
+                    <span class="comment">
+                      <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-comment-line"></use>
+                      </svg> <span>{{item.comment_num}}</span>
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          </van-list>
+            </van-list>
+          </template>
+
+
         </van-tab>
       </van-tabs>
+
+
+
+      <!-- 点击公号头像显示的弹层 -->
       <van-popup v-model="showPopup">
         <svg class="icon close" aria-hidden="true" @click="close">
           <use xlink:href="#icon-close-line"></use>
@@ -75,16 +85,15 @@
         <div class="line"></div>
         <div class="content">{{brandData.summary}}</div>
       </van-popup>
+
     </div>
 </template>
 
 <style src="@/style/scss/pages/brand/result.scss" lang="scss"></style>
 
 <script>
-import { BRAND_INFO } from "../../apis/brand.js";
-import { BRAND_COLUMN_GETS } from "../../apis/brand.js";
-import { FOCUS_ADD } from "../../apis/public.js";
-import { FOCUS_CANCEL } from "../../apis/public.js";
+import { BRAND_INFO,BRAND_COLUMN_GETS } from "../../apis/brand.js";
+import { FOCUS_ADD,FOCUS_CANCEL } from "../../apis/public.js";
 import { setTimeout } from 'timers';
 export default {
     data(){
@@ -99,6 +108,7 @@ export default {
           packets_id:null,
           brand_id:1,
           currentPage:1,
+          activekey: 0,
         }
     },
     mounted(){
@@ -111,10 +121,6 @@ export default {
       close(){
         this.showPopup=false;
       },
-      programLoad(){
-        this.columnListData();
-        console.log('page:',this.currentPage)
-      },
       // 获取关注接口信息
       async focusData(__type) {
         var data = {};
@@ -123,10 +129,10 @@ export default {
           case "focus":
             data = {
               brand_id: this.brand_id,
-              version: "1.0"
+              version: "1.0",
             };
             res = await FOCUS_ADD(data);
-            this.focus = 1;
+            this.brandData.attention_state = 1;
             // this.$toast('已关注~');
             break;
           case "cancel":
@@ -135,7 +141,7 @@ export default {
               version: "1.0"
             };
             res = await FOCUS_CANCEL(data);
-            this.focus = 0;
+            this.brandData.attention_state = 0;
             this.$toast("已取消关注~");
             break;
         }
@@ -146,12 +152,13 @@ export default {
         }
       },
       focusAction() {
-        if (this.focus > 0) {
+        if (this.brandData.attention_state > 0) {
           this.focusData("cancel");
         } else {
           this.focusData("focus");
         }
       },
+      // 获取页面基本信息
       async brandGetData(){
         var tStamp = this.$getTimeStamp();
         var data={
@@ -164,19 +171,27 @@ export default {
         if(res.hasOwnProperty("response_code")){
           this.brandData = res.response_data;
           this.packets_id = res.response_data.column_list[0].packets_id;
-          this.columnListData();
-          // console.log(this.packets_id);
         }else{
           this.$toast(res.error_message);
         }
       },
+      // 列表下拉加载
+      programLoad(){
+
+        console.log('--load：');
+        this.columnListData();
+        console.log('page:',this.currentPage,this.column_list_data);
+      },
+      // 点击tab页切换
       tabChange(index){
+        this.activekey = index;
+        this.column_list_data = [];
+        this.programFinished = false;
+        this.currentPage = 1;
         // console.log(index,this.brandData.column_list[index].packets_id);
         this.packets_id = this.brandData.column_list[index].packets_id;
-        this.programFinished = false;
-        this.column_list_data = [];
-        this.columnListData();
       },
+      // 获取对应tab页下的列表
       async columnListData(){
         var tStamp = this.$getTimeStamp();
         var data={
@@ -190,13 +205,12 @@ export default {
         data.sign = this.$getSign(data);
         let res = await BRAND_COLUMN_GETS(data);
         if(res.hasOwnProperty("response_code")){
-          // this.column_list_data = res.response_data;
-          // console.log(this.packets_id);
           var result = res.response_data.result;
           setTimeout(() => {
-            for (let i = 0; i < res.response_data.result.length; i++) {
+            for (let i = 0; i < result.length; i++) {
               this.column_list_data.push(result[i]);
             }
+            // console.log('column:',this.column_list_data,result)
             // 加载状态结束
             this.programLoading = false;
             this.currentPage++;

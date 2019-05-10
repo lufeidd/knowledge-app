@@ -10,12 +10,12 @@
           <p class="title">{{bookInfo.title}}</p>
           <p class="author">{{bookInfo.author}}</p>
           <p class="message">
-            <span v-if="!collect" @click="collection">
+            <span v-if="collect" @click="iconCollect">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-collect-line"></use>
               </svg> 收藏
             </span>
-            <span class="collect" v-else @click="cacellCollect">
+            <span class="collect" v-else @click="iconCollect">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-collect-block"></use>
               </svg> 收藏

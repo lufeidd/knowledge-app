@@ -30,7 +30,7 @@
           </div>
           <div class="center">
             <div class="title">{{ item.title }}</div>
-            <div class="subTitle">{{ item.subTitle }}</div>
+            <div class="subTitle">{{ item.sub_title }}</div>
             <div class="info">
               <span class="time">{{ item.update_time }}更新</span>
             </div>

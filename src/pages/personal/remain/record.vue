@@ -86,6 +86,7 @@ export default {
       var val=e.getValues();
       this.searchTime= val;
     },
+    // 列表下拉加载
     programLoad(){
       if(this.loginState == true){
         this.getData();
@@ -93,8 +94,8 @@ export default {
       if(this.ning == true){
         this.search();
       }
-      // console.log(111,this.searchPage)
     },
+    // 点击完成时触发
     clickSearch(){
       this.incomeData = [];
       this.totalIncome = null;
@@ -102,6 +103,7 @@ export default {
       this.clickSearchTime = this.searchTime;
       this.search();
     },
+    // 获取页面基本信息
     async getData(){
       var tStamp = this.$getTimeStamp();
       var data={
@@ -136,6 +138,7 @@ export default {
           this.$toast(res.error_message);
         }
     },
+    // 获取时间段的信息
     async search(){
       this.show=false;
       this.ning = true;
