@@ -75,7 +75,7 @@ html{
         min-width: 129px;
         .bookImg {
           display: block;
-          @include ratioBox (100%, 71.3%, null, contain, $clC, null);
+          @include ratioBox (100%, 71.3%, null, contain, $white, null);
           border-radius: 2.5px;
         }
       }
@@ -109,6 +109,7 @@ html{
     height: 42.56%;
     border-radius: 5px;
     padding: 25px 10px 0 10px;
+    overflow: hidden;
     .close{
       position: absolute;
       top: 10px;
@@ -132,6 +133,7 @@ html{
     }
     .company{
       font-size: $fontSize - 2;
+      margin-top: 5px;
       text-align: center;
       color: $cl6;
       @include textOverflow;
@@ -144,6 +146,12 @@ html{
     }
     .content{
       font-size: $fontSize + 1;
+      position: absolute;
+      top:160px;
+      left: 15px;
+      right: 15px;
+      overflow-y: auto;
+      bottom: 0;
     }
   }
 }

@@ -17,7 +17,8 @@
 <script>
 import upload from "../../../components/upload";
 import { USER_FEEDBACK_ADD } from "../../../apis/user.js";
-import { COMMON_UPLOAD } from "../../../apis/user.js";
+import { COMMON_UPLOAD } from "../../../apis/public.js";
+import { setTimeout } from 'timers';
 export default {
   components: {
     upload
@@ -54,10 +55,11 @@ export default {
     question() {
       this.change();
     },
+    //获取上传图片路径
     async submitFeedback(){
-      this.feedbackImgs = $('.content.set').eq(0).attr('data-src')+'|'+$('.content.set').eq(1).attr('data-src')+'|'+$('.content.set').eq(2).attr('data-src');
-      this.feedbackImgs = this.feedbackImgs.split('|').filter(item => item!=="undefined").join('|');
-console.log(this.feedbackImgs)
+      this.feedbackImgs = $('.content.set').eq(0).attr('data-src')+'||'+$('.content.set').eq(1).attr('data-src')+'||'+$('.content.set').eq(2).attr('data-src');
+      this.feedbackImgs = this.feedbackImgs.split('||').filter(item => item!=="undefined").join('||');
+// console.log(this.feedbackImgs)
 
       var tStamp = this.$getTimeStamp();
       var data = {
@@ -65,15 +67,46 @@ console.log(this.feedbackImgs)
         timestamp:tStamp,
         file:this.feedbackImgs,
         opt_type:'feedback',
-        file_type:'base64',
+        file_type:'Base64',
+        source:1,
       }
 
       data.sign = this.$getSign(data);
       let res = await COMMON_UPLOAD(data);
       if(res.hasOwnProperty("response_code")){
         console.log(res);
-        this.url = res.response_data.url;
-        
+        var arr=[];
+        for(let i=0;i<res.response_data.length;i++){
+          arr.push(res.response_data[i].url);
+        }
+        this.url = arr.join('|');
+        // console.log(this.url)
+        //调用反馈接口
+
+        this.content = $('input').val().trim();
+        this.contact = $("textarea").val().trim();
+        // console.log(this.content,this.contact)
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          version:"1.0",
+          timestamp:tStamp,
+          url:this.url,
+          content:this.content,
+          contact:this.contact,
+        }
+
+        data.sign = this.$getSign(data);
+        let res1 = await USER_FEEDBACK_ADD(data);
+          if(res1.hasOwnProperty("response_code")){
+
+              this.$toast('提交成功!');
+              // setTimeout( location.reload() , 1000);
+              location.reload();
+              // this.$router.push('/personal/help/feedback');
+        }else{
+          this.$toast(res1.error_message);
+        }
+
       }else{
         this.$toast(res.error_message);
       }
