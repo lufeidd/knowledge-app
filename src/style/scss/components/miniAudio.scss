@@ -1,0 +1,119 @@
+/*
+ * author: nancyzeng
+ * date:2019/5/10
+ */
+ 
+@charset "UTF-8";
+
+#miniAudio {
+    & .audioList {
+      position: relative;
+      height: 94vh;
+      overflow: hidden;
+      & .title {
+        height: 44px;
+        line-height: 44px;
+        border-bottom: 1px #eee solid;
+        text-align: center;
+        position: relative;
+        @include displayFlex(flex, center, center);
+        @include font(null, $fontSize + 2, #999);
+  
+        & .action {
+          @include position(absolute, "tl", 0, 0, 44px, 44px, null);
+          & .icon {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+    }
+  
+    & .miniAudio {
+      // opacity: 0;
+      z-index: 1;
+      @include bgDecorate(rgba(0, 0, 0, 0.6), $white, 50px, 0, none);
+      @include position(fixed, "bl", 60px, 6%, 88%, 50px, 50px);
+      @include textOverflow;
+      @include displayFlex(flex, flex-start, center);
+  
+      & .ratioBox {
+        width: 40px;
+        padding-bottom: 40px;
+        border-radius: 40px;
+        margin-left: 4px;
+        margin-top: 5px;
+        overflow: hidden;
+        position: absolute;
+      }
+  
+      & .info {
+        @include textOverflow;
+        display: block;
+        width: 100%;
+        padding-left: 50px;
+        box-sizing: border-box;
+  
+        & .album {
+          color: $white;
+          @include textOverflow;
+        }
+  
+        & .program {
+          @include textOverflow;
+          font-size: $fontSize - 2;
+          color: #e6e6e6;
+  
+          & .duration {
+            margin-right: 10px;
+          }
+        }
+  
+        & .list {
+          @include textOverflow;
+        }
+      }
+  
+      & .action {
+        @include displayFlex(flex, flex-end, center);
+        position: relative;
+        color: #e6e6e6;
+  
+        & .category {
+          width: 20px;
+          height: 20px;
+          margin-right: 15px;
+        }
+  
+        & .play {
+          font-size: 15px;
+          width: 30px;
+          height: 30px;
+          margin-right: 12px;
+          margin-left: 10px;
+          text-align: center;
+          line-height: 34px;
+          z-index: 1;
+        }
+  
+        & .circle {
+          @include position(absolute, "br", 0, 12px, 30px, 30px, 0);
+          z-index: 0;
+        }
+      }
+  
+      & .action::before {
+        content: "";
+        position: absolute;
+        width: 1px;
+        height: 30px;
+        top: 0;
+        right: 55px;
+        background-color: #e6e6e6;
+      }
+    }
+  
+    .miniAudio.iphx {
+      bottom: 90px;
+    }
+  }

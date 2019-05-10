@@ -1,75 +1,69 @@
 <template>
-
-
-    <van-popup v-model="popupModel" position="bottom">
-      <div class="audioList">
-        <div class="title">
-          <div class="action" @click="closeAudioList">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-fold-line"></use>
-            </svg>
-          </div>
-          <div>播放列表</div>
+  <van-popup v-model="popupModel" position="bottom">
+    <div class="audioList">
+      <div class="title">
+        <div class="action" @click="closeAudioList">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-fold-line"></use>
+          </svg>
         </div>
-
-        <div class="audioListBox">
-          <van-list
-            v-model="programLoading"
-            :finished="programFinished"
-            finished-text="没有更多了"
-            @load="programLoad"
-          >
-            <div class="list">
-              <div class="ratioBox">
-                <div class="box">
-                  <img :src="albumInfo.pic">
-                </div>
-              </div>
-              <div class="issue">{{ albumInfo.title }}</div>
-            </div>
-
-            <div v-for="(item, key) in programList" :key="key">
-              <div
-                v-if="item.goods_type != 6"
-                @click="onPlay(item)"
-                class="list"
-                :class="{ active: goodsNo == item.goods_no && audioStatus }"
-              >
-                <div class="img">
-                  <img
-                    src="./../../assets/audio.svg"
-                    width="22"
-                    height="22"
-                    alt
-                    v-if="goodsNo == item.goods_no && audioStatus"
-                  >
-                  <svg class="icon" aria-hidden="true" v-else>
-                    <use xlink:href="#icon-videoPause-line"></use>
-                  </svg>
-                </div>
-
-                <div class="info">
-                  <div class="album">{{ item.title }}</div>
-                  <div class="program">
-                    <span class="duration">时长{{ item.duration }}</span>
-
-                    <!-- <span>已播{{ (item.progress / item.ori_duration).toFixed(0) }}%</span> -->
-                      <span
-                        class="history"
-                        v-if="progressList[key].progress"
-                      >已播{{ (progressList[key].progress / progressList[key].duration).toFixed(2) }}%</span>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </van-list>
-        </div>
-
-
+        <div>播放列表</div>
       </div>
-    </van-popup>
 
+      <div class="audioListBox">
+        <van-list
+          v-model="programLoading"
+          :finished="programFinished"
+          finished-text="没有更多了"
+          @load="programLoad"
+        >
+          <div class="list">
+            <div class="ratioBox">
+              <div class="box">
+                <img :src="albumInfo.pic">
+              </div>
+            </div>
+            <div class="issue">{{ albumInfo.title }}</div>
+          </div>
+
+          <div v-for="(item, key) in programList" :key="key">
+            <div
+              v-if="item.goods_type != 6"
+              @click="onPlay(item)"
+              class="list"
+              :class="{ active: goodsNo == item.goods_no && audioStatus }"
+            >
+              <div class="img">
+                <img
+                  src="./../../assets/audio.svg"
+                  width="22"
+                  height="22"
+                  alt
+                  v-if="goodsNo == item.goods_no && audioStatus"
+                >
+                <svg class="icon" aria-hidden="true" v-else>
+                  <use xlink:href="#icon-videoPause-line"></use>
+                </svg>
+              </div>
+
+              <div class="info">
+                <div class="album">{{ item.title }}</div>
+                <div class="program">
+                  <span class="duration">时长{{ item.duration }}</span>
+
+                  <span>已播{{ (item.progress / item.ori_duration).toFixed(0) }}%</span>
+                  <!-- <span
+                    class="history"
+                    v-if="progressList[key].progress"
+                  >已播{{ (progressList[key].progress / progressList[key].duration).toFixed(2) }}%</span> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </van-list>
+      </div>
+    </div>
+  </van-popup>
 </template>
 
 <style lang="scss">
@@ -161,7 +155,7 @@ export default {
       programFinished: false,
       popupModel: false,
       // 记录节目播放进度
-      progressList: [],
+      progressList: []
     };
   },
   methods: {
@@ -177,7 +171,7 @@ export default {
     async programData() {
       let data = {
         goods_id: this.goodsId,
-        goods_no: 1,  // 默认倒序
+        goods_no: 1, // 默认倒序
         page: this.programPage,
         page_size: 4,
         version: "1.0"
@@ -218,6 +212,7 @@ export default {
     progressListData() {
       var list = this.programList;
       var result = JSON.parse(localStorage.getItem("audioProgress"));
+      // return;
       /*
        * __goodsId专辑id
        * __goodsNo节目编号
@@ -226,30 +221,33 @@ export default {
        */
       // 比对localStorage中audioProgress数据
       var arr = [];
-      var goods_id = result[0].goods_id;
-      for (let i = 0; i < list.length; i++) {
-        var obj = {};
-        obj.goods_id = this.goodsId;
-        obj.goods_no = list[i].goods_no;
-        obj.duration = list[i].ori_duration;
-        // 当前专辑和历史记录一致则更新进度
-        if (goods_id == result[0].goods_id) {
-          if (list[i].goods_no == result[i].goods_no)
-            obj.progress = result[i].progress;
-        }
+      if(result.length >= 0) {
+        var goods_id = result[0].goods_id;
+        for (let i = 0; i < result.length; i++) {
+          var obj = {};
+          obj.goods_id = this.goodsId;
+          obj.goods_no = list[i].goods_no;
+          obj.duration = list[i].ori_duration;
+          // 当前专辑和历史记录一致则更新进度
+          if (goods_id == result[0].goods_id) {
+            if (list[i].goods_no == result[i].goods_no)
+              obj.progress = result[i].progress;
+          }
 
-        arr.push(obj);
+          arr.push(obj);
+        }
+        localStorage.setItem("audioProgress", JSON.stringify(arr));
+        this.progressList = [];
+        this.progressList = result;
+
       }
-      localStorage.setItem("audioProgress", JSON.stringify(arr));
-      this.progressList = [];
-      this.progressList = result;
 
       // console.log('audioProgress存放数据:', arr);
     },
     onPlay(item) {
       // console.log(item);
       this.$emit("audioChange", item);
-    },
+    }
   }
 };
 </script>

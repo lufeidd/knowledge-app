@@ -245,7 +245,7 @@
 
     <!-- 播放列表 -->
     <audioList
-      :goodsId="baseData.goods_id"
+      :goodsId="goodsId"
       :albumInfo="baseData"
       :goodsNo="activeGoodNo"
       :audioStatus="audioPlaying"
@@ -324,6 +324,12 @@ export default {
       /*
        * ----------------------------------介绍----------------------------------
        */
+      // 专辑id
+      pid: 35,
+      // 商品id
+      goodsId: 15,
+      // 账号信息，是否登录
+      userInfo: false,
       // 基础信息
       baseData: {
         title: "",
@@ -369,16 +375,6 @@ export default {
       commentId: null,
       // 存放发布按钮类型，comment为发布评论，reply为发布回复
       punishType: "comment",
-      // 专辑id
-      pid: 35,
-      // 商品id
-      goodsId: 15,
-      // 商品信息
-      baseData: [],
-      // 公号信息
-      brandInfoData: [],
-      // 账号信息，是否登录
-      userInfo: false
     };
   },
   mounted() {
@@ -387,7 +383,6 @@ export default {
         $('#commentTitle').css({'position': 'fixed', 'border-bottom-width': '1px'});
       }else {
         $('#commentTitle').css({'position': 'relative', 'border-bottom-width': 0});
-        console.log(999)
       }
     })
     // 获取专辑id以及商品id
@@ -401,7 +396,6 @@ export default {
   },
   methods: {
     // --------------------------------迷你缩略音频----------------------------------
-    
     // 点击播放，子组件关联父页面 - 切换miniAudio组件播放状态
     typeAction(__type) {
       /*
@@ -427,7 +421,7 @@ export default {
       let __currentTime = this.getAudioProgress(item);
       let __program = null;
       let __album = this.baseData.title;
-      let __goodsId = this.baseData.goods_id;
+      let __goodsId = this.goodsId;
       // console.log('专辑基本信息：', this.baseData);
 
       // 存放当前音频信息
@@ -516,7 +510,7 @@ export default {
       localStorage.setItem("miniAudio", JSON.stringify(info));
 
       // 当前专辑与localStorage一致时,关联播放列表当前播放状态
-      if (info[8] == this.baseData.goods_id) this.activeGoodNo = info[0];
+      if (info[8] == this.goodsId) this.activeGoodNo = info[0];
 
       // console.log('存储迷你音频信息:', info);
 
@@ -549,7 +543,6 @@ export default {
        * __progress节目当前播放进度
        * __duration节目时长，单位s
        */
-      // result = [];
 
       // localStorage存储
       localStorage.setItem("audioProgress", JSON.stringify(result));
@@ -569,6 +562,97 @@ export default {
     // 当前节目播放结束，获取当前播放节目的专辑下所有节目（不分页）
     getAllProgramData(info) {
       this.allProgramData(info, "end");
+    },
+    async allProgramData(info, actionType) {
+      let data = {
+        goods_id: info[8],
+        goods_no: this.rankType,
+        page_size: 1000000000000000,
+        version: "1.0"
+      };
+      let res = await ALBUM_DETAIL(data);
+      // 存储当前节目的下一项
+      var next;
+
+      if (res.hasOwnProperty("response_code")) {
+        var type1 = 0;
+        var type2 = 0;
+        var type3 = 0;
+        // 异步更新数据
+        var result = res.response_data.result;
+
+        for (let i = 0; i < res.response_data.result.length; i++) {
+          var type = result[i].goods_type;
+          // console.log('type:', type);
+          if (type == 1) type1 = 1;
+          if (type == 2) type2 = 1;
+          if (type == 6) type3 = 1;
+          // 不包含文章类型
+          if (result[i].goods_type != 6) {
+            this.allProgramList.push(result[i]);
+          }
+          if (result[i].goods_no == info[0]) {
+            next = i + 1;
+          }
+        }
+
+        // 专辑is_payed:0未支付；1已支付，未支付不能自动播放
+        if (eval(type1 + type2 + type3) > 1 || this.baseData.is_payed == 0) {
+          this.autoPlay = false;
+        } else {
+          this.autoPlay = true;
+        }
+
+        var count = this.allProgramList.length;
+        next = next > count - 1 ? 0 : next;
+
+        // 当点击全部播放，从第一条开始播放
+        if (actionType == "all") next = 0;
+      } else {
+        this.$toast(res.error_message);
+      }
+
+      if (this.autoPlay) {
+        // 单一类型，自动播放
+        this.updateLocalStorage(this.allProgramList[next]);
+        console.log("当前播放的下一项：", this.allProgramList[next]);
+        console.log("单一类型，自动播放");
+      } else {
+        // 含多种类型，不自动播放
+        this.$toast("含多种类型或者专辑未支付，不自动播放");
+        this.$refs.control.pauseAudio();
+      }
+    },
+    // 读取localStorage：miniAudio音频缩略播放器数据
+    getMiniAudioData() {
+      // 设置迷你音频信息
+      var info = JSON.parse(localStorage.getItem("miniAudio"));
+      // if (info[0] != "") this.activeGoodNo = info[0];
+      // 将当前音频播放信息存放到localStorage: miniAudio
+      this.miniAudioData(info);
+
+      // 解决子组件数据实时刷新问题
+      this.$refs.control.audioData.type = !this.audioPlaying;
+      // 设置当前播放进度
+      setTimeout(() => {
+        var audio = document.getElementById("myMiniAudio");
+        // currentTime关联slider进度
+        this.$refs.control.audioData.sliderValue =
+          (info[5] / audio.duration) * 100;
+        // 当无播放记录的时候
+        if (info[4] != "") this.$refs.control.audioSliderChange();
+      }, 600);
+
+      // console.log(
+      //   "localStorage迷你音频信息:",
+      //   info,
+      //   "当前goodsNo:",
+      //   this.activeGoodNo,
+      //   "当前goodsId:",
+      //   this.baseData.goods_id,
+      //   "当前currentTime：",
+      //   this.myAudioData.currentTime
+      // );
     },
     // ----------------------------------介绍------------------------------------
     // 获取专辑/商品接口信息
@@ -598,7 +682,7 @@ export default {
       console.log("商品基础信息:", res.response_data.base);
 
       // 读取localStorage音频缩略播放器数据
-      // this.getMiniAudioData();
+      this.getMiniAudioData();
     },
     // 获取收藏接口信息
     async collectData(__type) {
@@ -608,7 +692,7 @@ export default {
         case "collect":
           data = {
             type: this.baseData.goods_type,
-            target: this.baseData.goods_id,
+            target: this.goodsId,
             version: "1.0"
           };
           res = await COLLECT_ADD(data);
@@ -617,7 +701,7 @@ export default {
           break;
         case "cancel":
           data = {
-            goods_id: this.baseData.goods_id,
+            goods_id: this.goodsId,
             version: "1.0"
           };
           res = await COLLECT_CANCEL(data);
@@ -675,7 +759,6 @@ export default {
         this.focusData("focus");
       }
     },
-    
     // ----------------------------------评论------------------------------------
     commentLoad() {
       this.commentData();
@@ -755,14 +838,14 @@ export default {
       switch (__type) {
         case "comment":
           data = {
-            goods_id: this.baseData.goods_id,
+            goods_id: this.goodsId,
             content: this.contentModel,
             version: "1.0"
           };
           break;
         case "reply":
           data = {
-            goods_id: this.baseData.goods_id,
+            goods_id: this.goodsId,
             comment_pid: this.commentId,
             content: this.contentModel,
             version: "1.0"

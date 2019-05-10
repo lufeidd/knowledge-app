@@ -53,120 +53,8 @@
   </div>
 </template>
 
-<style lang="scss">
-#miniAudio {
-  & .audioList {
-    position: relative;
-    height: 94vh;
-    overflow: hidden;
-    & .title {
-      height: 44px;
-      line-height: 44px;
-      border-bottom: 1px #eee solid;
-      text-align: center;
-      position: relative;
-      @include displayFlex(flex, center, center);
-      @include font(null, $fontSize + 2, #999);
 
-      & .action {
-        @include position(absolute, "tl", 0, 0, 44px, 44px, null);
-        & .icon {
-          width: 20px;
-          height: 20px;
-        }
-      }
-    }
-  }
-
-  & .miniAudio {
-    // opacity: 0;
-    z-index: 1;
-    @include bgDecorate(rgba(0, 0, 0, 0.6), $white, 50px, 0, none);
-    @include position(fixed, "bl", 60px, 6%, 88%, 50px, 50px);
-    @include textOverflow;
-    @include displayFlex(flex, flex-start, center);
-
-    & .ratioBox {
-      width: 40px;
-      padding-bottom: 40px;
-      border-radius: 40px;
-      margin-left: 4px;
-      margin-top: 5px;
-      overflow: hidden;
-      position: absolute;
-    }
-
-    & .info {
-      @include textOverflow;
-      display: block;
-      width: 100%;
-      padding-left: 50px;
-      box-sizing: border-box;
-
-      & .album {
-        color: $white;
-        @include textOverflow;
-      }
-
-      & .program {
-        @include textOverflow;
-        font-size: $fontSize - 2;
-        color: #e6e6e6;
-
-        & .duration {
-          margin-right: 10px;
-        }
-      }
-
-      & .list {
-        @include textOverflow;
-      }
-    }
-
-    & .action {
-      @include displayFlex(flex, flex-end, center);
-      position: relative;
-      color: #e6e6e6;
-
-      & .category {
-        width: 20px;
-        height: 20px;
-        margin-right: 15px;
-      }
-
-      & .play {
-        font-size: 15px;
-        width: 30px;
-        height: 30px;
-        margin-right: 12px;
-        margin-left: 10px;
-        text-align: center;
-        line-height: 34px;
-        z-index: 1;
-      }
-
-      & .circle {
-        @include position(absolute, "br", 0, 12px, 30px, 30px, 0);
-        z-index: 0;
-      }
-    }
-
-    & .action::before {
-      content: "";
-      position: absolute;
-      width: 1px;
-      height: 30px;
-      top: 0;
-      right: 55px;
-      background-color: #e6e6e6;
-    }
-  }
-
-  .miniAudio.iphx {
-    bottom: 90px;
-  }
-}
-</style>
+<style src="@/style/scss/components/miniAudio.scss" lang="scss"></style>
 
 <script>
 export default {
@@ -261,25 +149,36 @@ export default {
       var result = JSON.parse(localStorage.getItem("audioProgress"));
 
       // 判断当前播放专辑和迷你缩略播放器/音乐播放器的统一性，根据goods_id来存储loacalStorage
-      var goods_id = result[0].goods_id;
-      for (let i = 0; i < result.length; i++) {
-        if (goods_id == info[8]) {
-          // 当记录已经存在则更新
-          var goods_no = result[i].goods_no;
-          if (goods_no == info[0]) {
-            result[i].progress = __currentTime;
-            // console.log('goods_no:', goods_no,  '当记录已经存在则更新');
+      var isAdd = false;
+
+      if (result.length == 0) {
+        // 新增播放进度记录
+        this.addProgressData(info, __currentTime);
+      } else {
+        var goods_id = result[0].goods_id;
+        for (let i = 0; i < result.length; i++) {
+          if (goods_id == info[8]) {
+            // 当记录已经存在则更新
+            var goods_no = result[i].goods_no;
+            if (goods_no == info[0]) {
+              result[i].progress = __currentTime;
+              isAdd = false;
+              // 设置节目列表播放进度，只设置不显示
+              this.$emit("setProgress", result);
+              // console.log('goods_no:', goods_no,  '当记录已经存在则更新');
+            }
+          } else {
+            isAdd = true;
           }
-        } else {
-          // 当记录不存在则添加
-          console.log("当记录不存在则添加");
         }
+      }
+      if (isAdd) {
+        // 新增播放进度记录
+        this.addProgressData(info, __currentTime);
       }
 
       // 设置迷你音频播放状态
       this.$emit("setMiniAudio", info);
-      // 设置节目列表播放进度，只设置不显示
-      this.$emit("setProgress", result);
 
       // console.log(
       //   "miniAudio------localStorage迷你音频信息:",
@@ -291,7 +190,29 @@ export default {
       //   "当前currentTime：",
       //   info[5]
       // );
-      // console.log('更新音频播放进度');
+      console.log('更新音频播放进度');
+    },
+    // 新增播放进度记录
+    addProgressData (info, __currentTime) {
+      // 当记录不存在则添加
+      /*
+      * __goodsId专辑id
+      * __goodsNo节目编号
+      * __progress节目当前播放进度
+      * __duration节目时长，单位s
+      */
+      var arr = [];
+      var obj = {};
+      obj.goods_id = info[8];
+      obj.goods_no = info[0];
+      obj.progress = info[2];
+      obj.duration = info[4];
+      
+      arr.push(obj);
+      localStorage.setItem("audioProgress", JSON.stringify(arr));
+
+      console.log("当记录不存在则添加", 'goods_id:', info[8], 'goods_no:', info[0], 'progress:', __currentTime, "result:", arr);
+
     },
     // 点击播放
     playAudio(time) {

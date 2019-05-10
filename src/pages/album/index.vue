@@ -219,14 +219,14 @@
                         </svg>
                         {{ item.duration }}
                       </span>
-                      <!-- <span
-                        class="history"
-                        v-if="item.goods_type != 6"
-                      >已播{{ (item.progress / item.ori_duration).toFixed(0) }}%</span>-->
                       <span
                         class="history"
+                        v-if="item.goods_type != 6"
+                      >已播{{ (item.progress / item.ori_duration).toFixed(0) }}%</span>
+                      <!-- <span
+                        class="history"
                         v-if="item.goods_type != 6 && progressList[key].progress"
-                      >已播{{ (progressList[key].progress / progressList[key].duration).toFixed(2) }}%</span>
+                      >已播{{ (progressList[key].progress / progressList[key].duration).toFixed(2) }}%</span> -->
                     </div>
                   </van-col>
                   <van-col span="6" style="text-align:right;align-self:flex-start;">
@@ -441,7 +441,7 @@ export default {
           title: "相似"
         }
       ],
-      tabModel: 2,
+      tabModel: 0,
       // 评论
       discussData: [],
       commentPage: 1,
@@ -781,6 +781,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // 异步更新数据
         var result = res.response_data.result;
+        
         setTimeout(() => {
           // 存放非文章节目列表，用于关联播放进度
           // var list = [];
@@ -799,7 +800,8 @@ export default {
             //   list.push(result[i]);
             // }
           }
-
+          console.log('123:', this.programList)
+          
           // 非文章节目根据good_id创建数组，并存放至localStorage
           this.progressListData();
 
@@ -933,23 +935,26 @@ export default {
        */
       // 比对localStorage中audioProgress数据
       var arr = [];
-      var goods_id = result[0].goods_id;
-      for (let i = 0; i < list.length; i++) {
-        var obj = {};
-        obj.goods_id = this.baseData.goods_id;
-        obj.goods_no = list[i].goods_no;
-        obj.duration = list[i].ori_duration;
-        // 当前专辑和历史记录一致则更新进度
-        if (goods_id == result[0].goods_id) {
-          if (list[i].goods_no == result[i].goods_no)
-            obj.progress = result[i].progress;
-        }
+      if(result.length > 0) {
+        var goods_id = result[0].goods_id;
+        for (let i = 0; i < list.length; i++) {
+          var obj = {};
+          obj.goods_id = this.baseData.goods_id;
+          obj.goods_no = list[i].goods_no;
+          obj.duration = list[i].ori_duration;
+          // 当前专辑和历史记录一致则更新进度
+          if (goods_id == result[0].goods_id) {
+            if (list[i].goods_no == result[i].goods_no)
+              obj.progress = result[i].progress;
+          }
 
-        arr.push(obj);
+          arr.push(obj);
+        }
+        localStorage.setItem("audioProgress", JSON.stringify(arr));
+        this.progressList = [];
+        this.progressList = result;
+
       }
-      localStorage.setItem("audioProgress", JSON.stringify(arr));
-      this.progressList = [];
-      this.progressList = result;
 
       // console.log('audioProgress存放数据:', arr);
     },
@@ -1048,7 +1053,6 @@ export default {
           }
         }
       }
-      console.log("123:", __currentTime);
 
       // 如果当前节目有播放记录，跳到当前记录位置继续播放
       return __currentTime;
@@ -1218,7 +1222,6 @@ export default {
           for (let i = 0; i < res.response_data.length; i++) {
             this.recommendList.push(result[i]);
           }
-          console.log('123:', res);
 
           // 加载状态结束
           this.recommendLoading = false;

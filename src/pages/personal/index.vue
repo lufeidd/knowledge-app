@@ -17,11 +17,11 @@
                 <use xlink:href="#icon-personalNews"></use>
               </svg>
             </a>-->
-            <a href="#/personal/set/index">
+            <router-link :to="{path: '/personal/set/index', query: {user_name: infoData.user_name}}">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-personalSet"></use>
               </svg>
-            </a>
+            </router-link>
           </div>
         </div>
         <div class="subTitle">登录后同步您的收藏</div>
@@ -138,19 +138,19 @@ export default {
     console.log(this.infoData.user_header);
   },
   methods: {
-    async homeData () {
+    async homeData() {
       let data = {
         version: "1.0"
       };
       let res = await USER_HOMEPAGE(data);
+      console.log("123", res);
       if (res.hasOwnProperty("response_code")) {
-        this.$set(this.infoData, 'user_header', res.response_data.user_header)
-        this.$set(this.infoData, 'user_name', res.response_data.user_name)
-        this.$set(this.infoData, 'follow_num', res.response_data.follow_num)
-        this.$set(this.infoData, 'collect_num', res.response_data.collect_num)
-        this.$set(this.infoData, 'history_num', res.response_data.history_num)
-        
-        
+        this.$set(this.infoData, "user_header", res.response_data.user_header);
+        this.$set(this.infoData, "user_name", res.response_data.user_name);
+        this.$set(this.infoData, "follow_num", res.response_data.follow_num);
+        this.$set(this.infoData, "collect_num", res.response_data.collect_num);
+        this.$set(this.infoData, "history_num", res.response_data.history_num);
+
         $(".ratioBox").css(
           "background-image",
           "url(" + res.response_data.user_header + ")"
@@ -159,7 +159,7 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
-    }
+    },
   }
 };
 </script>
