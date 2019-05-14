@@ -5,12 +5,12 @@
       <div class="left">
         <div class="ratioBox">
           <div class="box">
-            <img src="https://bnmppic.bookuu.com/topic/20161108/1478612622195756.jpg">
+            <img :src="infoData.user_header">
           </div>
         </div>
       </div>
       <div class="center">
-        <div class="title">{{ user_name }}</div>
+        <div class="title">{{ infoData.user_name }}</div>
       </div>
       <div class="right">
         <svg class="icon" aria-hidden="true">
@@ -21,12 +21,11 @@
 
     <van-cell title="账号和安全" is-link to="/personal/set/safe"/>
     <van-cell title="我的收货地址" is-link to="/personal/set/list" style="margin-top: 5px;"/>
-    <van-cell title="推送设置" is-link to="/personal/set/send"/>
-    <van-cell title="注销账号" is-link to="/personal/set/cancel"/>
-    <van-cell title="关于" is-link to="/personal/set/about"/>
+    <!-- <van-cell title="推送设置" is-link to="/personal/set/send"/> -->
+    <!-- <van-cell title="关于" is-link to="/personal/set/about"/> -->
 
     <div style="margin-top: 5px;">
-      <van-button size="large">退出登录</van-button>
+      <van-button size="large" @click="logoutAction">退出登录</van-button>
     </div>
   </div>
 </template>
@@ -83,7 +82,7 @@ html {
       & .icon {
         width: 14px;
         height: 14px;
-        color: #ccc;
+        color: #999;
       }
     }
   }
@@ -96,15 +95,61 @@ html {
 </style>
 
 <script>
+//  引入接口
+import { USER_HOMEPAGE } from "../../../apis/user.js";
+import { LOGOUT } from "../../../apis/passport.js";
+
 export default {
   data() {
     return {
-      user_name: '',
+      // 信息
+      infoData: {},
     };
   },
   mounted() {
-    this.user_name = this.$route.query.user_name;
+    this.homeData();
   },
-  methods: {}
+  methods: {
+    async homeData() {
+      let data = {
+        version: "1.0"
+      };
+      let res = await USER_HOMEPAGE(data);
+      console.log("123", res.response_data);
+      if (res.hasOwnProperty("response_code")) {
+        this.$set(this.infoData, "user_header", res.response_data.user_header);
+        this.$set(this.infoData, "user_name", res.response_data.user_name);
+        this.$set(this.infoData, "is_login", res.response_data.is_login);
+        
+        if (this.infoData.is_login == 1) {
+          $(".ratioBox").css(
+            "background-image",
+            "url(" + res.response_data.user_header + ")"
+          );
+        }
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 退出登录
+    logoutAction () {
+      this.logoutData();
+    },
+    async logoutData() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.0",
+      };
+      data.sign = this.$getSign(data);
+      let res = await LOGOUT(data);
+      console.log("123", res.response_data);
+      if (res.hasOwnProperty("response_code")) {
+        this.$router.push('/login/index');
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+  }
 };
 </script>

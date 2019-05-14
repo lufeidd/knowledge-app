@@ -112,8 +112,9 @@
 
                       <div
                         class="message active"
-                        v-if="item.reply_num > 2 && replyPage[key] - 1 < item.reply_total_page"
+                        v-if="item.reply_num > 2 && replyPage[key] <= item.reply_total_page"
                       >
+                      
                         <!-- <van-pagination v-model="item.reply_current_page" :page-count="item.reply_total_page" mode="simple" @change="pageChange(item.comment_id, key)" /> -->
 
                         <span class="name" @click="pageChange(item.comment_id, key)">
@@ -219,14 +220,16 @@
                         </svg>
                         {{ item.duration }}
                       </span>
-                      <span
-                        class="history"
-                        v-if="item.goods_type != 6"
-                      >已播{{ (item.progress / item.ori_duration).toFixed(0) }}%</span>
                       <!-- <span
                         class="history"
+                        v-if="item.goods_type != 6"
+                      >已播{{ (item.progress / item.ori_duration).toFixed(0) }}%</span> -->
+
+                      <span
+                        class="history"
                         v-if="item.goods_type != 6 && progressList[key].progress"
-                      >已播{{ (progressList[key].progress / progressList[key].duration).toFixed(2) }}%</span> -->
+                      >已播{{ (progressList[key].progress / progressList[key].duration).toFixed(2) }}%</span>
+
                     </div>
                   </van-col>
                   <van-col span="6" style="text-align:right;align-self:flex-start;">
@@ -532,7 +535,7 @@ export default {
         this.$toast(res.error_message);
       }
 
-      // console.log('专辑基础信息:', res.response_data.base);
+      console.log('专辑基础信息:', res.response_data.base);
 
       // 读取localStorage音频缩略播放器数据
       this.getMiniAudioData();
@@ -640,7 +643,7 @@ export default {
     async commentData() {
       let data = {
         page: this.commentPage,
-        page_size: 4,
+        page_size: 5,
         version: "1.0"
       };
       let res = await COMMENT(data);
@@ -679,6 +682,7 @@ export default {
       let data = {
         comment_pid: comment_id,
         page: this.replyPage[key],
+        page_size: 5,
         version: "1.0"
       };
       let res = await COMMENT(data);
@@ -689,15 +693,21 @@ export default {
         for (let i = 0; i < result.length; i++) {
           this.answerData[key].push(result[i]);
         }
-        this.replyPage[key]++;
+        if(this.replyPage[key] >= res.response_data.total_page) {
+          this.replyPage[key] = res.response_data.total_page + 1;
+        } else {
+          this.replyPage[key]++;
+        }
+
       } else {
         this.$toast(res.error_message);
       }
     },
     // 回复展开更多
     pageChange(comment_id, key) {
+
       this.replyData(comment_id, key);
-      // console.log("当前页数组：", this.replyPage);
+      // console.log("当前页数组：", this.replyPage, 'key:', key);
     },
     // 关闭评论弹窗
     commentClose() {
@@ -730,7 +740,14 @@ export default {
       }
       let res = await COMMENT_ADD(data);
       if (res.hasOwnProperty("response_code")) {
+
+        this.commentPage = 1;
         // 本地存储最新的数据，展示
+        this.answerData = [];
+        this.discussData = [];
+        this.replyPage = [];
+        this.commentData();
+
       } else {
         this.$toast(res.error_message);
       }
@@ -773,7 +790,7 @@ export default {
         goods_id: this.baseData.goods_id,
         goods_no: this.rankType,
         page: this.programPage,
-        page_size: 4,
+        page_size: 5,
         version: "1.0"
       };
       let res = await ALBUM_DETAIL(data);
@@ -783,8 +800,8 @@ export default {
         var result = res.response_data.result;
         
         setTimeout(() => {
-          // 存放非文章节目列表，用于关联播放进度
-          // var list = [];
+          
+          this.programList = [];
           for (let i = 0; i < res.response_data.result.length; i++) {
             this.programList.push(result[i]);
             // 存放试听数据,只取第一条
@@ -793,23 +810,20 @@ export default {
               result[i].goods_type != 6 &&
               this.preListen.length == 0
             ) {
+              this.preListen = [];
               this.preListen.push(result[i]);
             }
-            // 将非文章节目取出
-            // if (result[i].goods_type != 6) {
-            //   list.push(result[i]);
-            // }
           }
-          console.log('123:', this.programList)
           
-          // 非文章节目根据good_id创建数组，并存放至localStorage
-          this.progressListData();
+          // localStorage:audioProgress存放节目播放进度,根据pid创建数组，并存放至localStorage
+          this.progressListData('load');
+
+          // 设置迷你缩略音频播放信息
+          this.getMiniAudioData();
 
           // 加载状态结束
           this.programLoading = false;
           this.programPage++;
-
-          // console.log('page：', this.programPage);
 
           // 数据全部加载完成
           if (this.programList.length >= res.response_data.total_count) {
@@ -820,10 +834,6 @@ export default {
 
         // 设置总节目数
         this.programTotalCount = res.response_data.total_count;
-        // 试听列表
-        // console.log('试听列表：', this.preListen)
-
-        // console.log('节目列表：', result);
       } else {
         this.$toast(res.error_message);
       }
@@ -832,48 +842,56 @@ export default {
     getMiniAudioData() {
       // 设置迷你音频信息
       var info = JSON.parse(localStorage.getItem("miniAudio"));
-      // if (info[0] != "") this.activeGoodNo = info[0];
-      // 将当前音频播放信息存放到localStorage: miniAudio
-      this.miniAudioData(info);
 
       // 解决子组件数据实时刷新问题
       this.$refs.control.audioData.type = !this.audioPlaying;
-      // 设置当前播放进度
+
+      if(info && info.length != 0) {
+
+        // 当前goods_id与localStorage一致时,关联播放列表当前播放状态
+        for(let i = 0; i < this.programList.length; i++) {
+          var list = this.programList[i];
+          if(list.goods_id == info[8]) {
+            this.activeGoodNo = info[0];
+          }
+        }
+        
+        // 将当前音频播放信息存放到localStorage: miniAudio
+        this.miniAudioData(info);
+      }
+
+      // 设置缩放音频当前播放进度
       setTimeout(() => {
         var audio = document.getElementById("myMiniAudio");
         // currentTime关联slider进度
-        this.$refs.control.audioData.sliderValue =
-          (info[5] / audio.duration) * 100;
-        // 当无播放记录的时候
-        if (info[4] != "") this.$refs.control.audioSliderChange();
+        if(info[5] != "" && info[5] != null) {
+          this.$refs.control.audioData.sliderValue = (info[5] / audio.duration) * 100;
+        }
+        if (info[4] != "" && info[4] != null) {
+          this.$refs.control.audioSliderChange();
+        }
       }, 600);
 
-      // console.log(
-      //   "localStorage迷你音频信息:",
-      //   info,
-      //   "当前goodsNo:",
-      //   this.activeGoodNo,
-      //   "当前goodsId:",
-      //   this.baseData.goods_id,
-      //   "当前currentTime：",
-      //   this.myAudioData.currentTime
-      // );
+      console.log(
+        "localStorage迷你音频信息:", info, "当前goodsNo:", this.activeGoodNo, "当前pid:", this.baseData.goods_id, "当前goodsId:", this.myAudioData.goodsId, "当前currentTime：", this.myAudioData.currentTime
+      );
+
     },
     // 将当前音频播放信息存放到localStorage: miniAudio
     miniAudioData(info) {
       /*
        * __goodsNo节目编号
-       * __type:true,默认暂停
+       * __pid当前节目对应专辑id，单个节目时pid为0
        * __pic专辑封面
        * __src音频地址
        * __duration音频时长，单位s
        * __currentTime音频当前播放位置，单位s
        * __program节目标题
        * __album专辑标题
-       * __goodsId专辑id
+       * __goodsId商品id
        */
       let __goodsNo = info[0];
-      let __type = info[1];
+      let __pid = info[1];
       let __pic = info[2];
       let __src = info[3];
       let __duration = info[4];
@@ -884,7 +902,7 @@ export default {
 
       // 设置音频信息
       this.$set(this.myAudioData, "goodsNo", __goodsNo);
-      this.$set(this.myAudioData, "type", __type);
+      this.$set(this.myAudioData, "pid", __pid);
       this.$set(this.myAudioData, "pic", __pic);
       this.$set(this.myAudioData, "src", __src);
       this.$set(this.myAudioData, "duration", __duration);
@@ -893,14 +911,9 @@ export default {
       this.$set(this.myAudioData, "album", __album);
       this.$set(this.myAudioData, "goodsId", __goodsId);
 
+
       // localStorage存储
-      // info = JSON.parse(localStorage.getItem('miniAudio'));
       localStorage.setItem("miniAudio", JSON.stringify(info));
-
-      // 当前专辑与localStorage一致时,关联播放列表当前播放状态
-      if (info[8] == this.baseData.goods_id) this.activeGoodNo = info[0];
-
-      // console.log('存储迷你音频信息:', info);
 
       // 解决父页面子组件实时刷新问题
       setTimeout(() => {
@@ -910,51 +923,90 @@ export default {
         this.$refs.control.audioData.duration = __duration;
         this.$refs.control.audioData.program = __program;
         this.$refs.control.audioData.album = __album;
-
-        // this.$refs.control.audiobindtoslider(info[5]);
-        // 设置当前播放进度
-        // this.$refs.control.audioData.sliderValue = (info[5] / audio.duration) * 100;
-        // this.$refs.control.audioSliderChange();
       }, 600);
 
-      if (!__src) {
+      if (info[3] == null) {
         $("#miniAudio").css("display", "none");
       } else {
         $("#miniAudio").css("display", "block");
       }
     },
-    // localStorage存放节目播放进度
-    progressListData() {
-      var list = this.programList;
-      var result = JSON.parse(localStorage.getItem("audioProgress"));
+    // localStorage:audioProgress存放节目播放进度
+    progressListData(__type) {
+
       /*
-       * __goodsId专辑id
+       * __goodsId节目id
        * __goodsNo节目编号
        * __progress节目当前播放进度
        * __duration节目时长，单位s
+       * __pid专辑id，单个节目pid默认为0
        */
-      // 比对localStorage中audioProgress数据
-      var arr = [];
-      if(result.length > 0) {
-        var goods_id = result[0].goods_id;
-        for (let i = 0; i < list.length; i++) {
-          var obj = {};
-          obj.goods_id = this.baseData.goods_id;
-          obj.goods_no = list[i].goods_no;
-          obj.duration = list[i].ori_duration;
-          // 当前专辑和历史记录一致则更新进度
-          if (goods_id == result[0].goods_id) {
-            if (list[i].goods_no == result[i].goods_no)
-              obj.progress = result[i].progress;
+
+      var list = this.programList;
+      var result = JSON.parse(localStorage.getItem("audioProgress"));
+
+      // 节目进度
+      this.progressList = [];
+
+      // 页面加载
+      if(__type == 'load') {
+
+        if(result.length > 0) {
+          var goods_id = result[0].goods_id;
+
+          // 遍历节目列表
+          for (let i = 0; i < list.length; i++) {
+            this.progressList.push(list[i]);
+            var goodsId = list[i].goods_id;
+
+            // 遍历localStorage中进度
+            for(let j = 0; j < result.length; j++) {
+              if (goodsId == result[j].goods_id) {
+                // 显示节目进度
+                if(result[j].progress) {
+                  this.progressList[i].progress = result[j].progress;
+                }
+              }
+            }
           }
 
-          arr.push(obj);
         }
-        localStorage.setItem("audioProgress", JSON.stringify(arr));
-        this.progressList = [];
-        this.progressList = result;
 
       }
+
+      // 比对localStorage中audioProgress数据
+      // if(result.length > 0) {
+        // var goods_id = result[0].goods_id;
+
+        // 遍历节目列表
+        // for (let i = 0; i < list.length; i++) {
+          // var obj = {};
+          // obj.goods_id = this.baseData.goods_id;
+          // obj.goods_no = list[i].goods_no;
+          // obj.duration = list[i].ori_duration;
+          // // 当前专辑和历史记录一致则更新进度
+          // if (goods_id == list[0].goods_id) {
+          //   if (list[i].goods_no == result[i].goods_no)
+          //     obj.progress = result[i].progress;
+          // }
+
+          // var goodsId = list[i].goods_id;
+
+          // // 遍历localStorage中进度
+          // for(let j = 0; j < result.length; j++) {
+          //   if (goodsId == result[j].goods_id) {
+          //     // 显示节目进度
+          //   }
+          // }
+
+          // arr.push(obj);
+        // }
+
+        // localStorage.setItem("audioProgress", JSON.stringify(arr));
+        // this.progressList = [];
+        // this.progressList = result;
+
+      // }
 
       // console.log('audioProgress存放数据:', arr);
     },
@@ -970,38 +1022,32 @@ export default {
       // 分页状态重置
       this.programPage = 1;
       this.programFinished = false;
-
-      // console.log('排序：', this.rankType);
     },
-    // 播放/暂停音频
+    // 节目列表播放/暂停音频
     audioAction(item) {
-      var goods_no = item.goods_no;
-
-      let __goodsNo = null;
-      let __type = true;
-      let __pic = this.baseData.pic[0];
-      let __src = null;
-      // let __src = require('./../../assets/music.mp3');
-      let __duration = null;
+      let __goodsNo = item.goods_no;
+      let __pid = this.baseData.goods_id ? this.baseData.goods_id : 0;
+      let __pic = item.pic;
+      let __src = item.file_path;
+      let __duration = item.duration;
       // 获取当前节目播放进度
       let __currentTime = this.getAudioProgress(item);
-      let __program = null;
+      let __program = item.title;
       let __album = this.baseData.title;
-      let __goodsId = this.baseData.goods_id;
-      // console.log('专辑基本信息：', this.baseData);
+      let __goodsId = item.goods_id;
 
       // 存放当前音频信息
-      for (let i = 0; i < this.programList.length; i++) {
-        if (this.programList[i].goods_no == goods_no) {
-          __goodsNo = this.programList[i].goods_no;
-          __src = this.programList[i].file_path;
-          __program = this.programList[i].title;
-          __duration = this.programList[i].duration;
-        }
-      }
+      // for (let i = 0; i < this.programList.length; i++) {
+      //   if (this.programList[i].goods_id == __goodsId) {
+      //     __goodsNo = this.programList[i].goods_no;
+      //     __src = this.programList[i].file_path;
+      //     __program = this.programList[i].title;
+      //     __duration = this.programList[i].duration;
+      //   }
+      // }
 
       // 判断是否点击当前或者第一次点击
-      if (this.activeGoodNo == goods_no || this.activeGoodNo == null) {
+      if (this.activeGoodNo == __goodsNo || this.activeGoodNo == null) {
         this.audioPlaying = !this.audioPlaying;
       } else {
         this.audioPlaying = true;
@@ -1010,7 +1056,6 @@ export default {
       // 父页面关联子组件
       setTimeout(() => {
         if (this.audioPlaying) {
-          // this.$refs.control.pauseAudio();
           this.$refs.control.playAudio(__currentTime);
         } else {
           this.$refs.control.pauseAudio();
@@ -1018,24 +1063,14 @@ export default {
       }, 600);
 
       // 管理子组件播放状态
-      this.activeGoodNo = goods_no;
-      __type = !this.audioPlaying;
+      this.activeGoodNo = __goodsNo;
+      // 解决子组件数据实时刷新问题
+      this.$refs.control.audioData.type = !this.audioPlaying;
 
-      var info = [
-        __goodsNo,
-        __type,
-        __pic,
-        __src,
-        __duration,
-        __currentTime,
-        __program,
-        __album,
-        __goodsId
-      ];
+      // 将当前音频播放信息存放到localStorage: miniAudio
+      var info = [ __goodsNo, __pid, __pic, __src, __duration, __currentTime, __program, __album, __goodsId ];
       this.miniAudioData(info);
 
-      // 解决子组件数据实时刷新问题
-      this.$refs.control.audioData.type = __type;
     },
     // 获取当前节目播放进度
     getAudioProgress(item) {
@@ -1059,6 +1094,7 @@ export default {
     },
     // 点击播放，子组件关联父页面 - 切换miniAudio组件播放状态
     typeAction(__type) {
+      
       /*
        * __type == true; 播放
        * __type == false; 暂停
@@ -1066,7 +1102,7 @@ export default {
       // 关联节目列表播放状态
       this.myAudioData.type = __type;
       this.audioPlaying = !__type;
-      // console.log('节目列表:',this.programList);
+
     },
     // 将当前专辑节目列表播放进度信息存放到localStorage
     audioProgressData(result) {
@@ -1210,7 +1246,7 @@ export default {
         goods_id: this.baseData.goods_id,
         type: this.recommendType,
         page: this.recommendPage,
-        page_size: 4,
+        page_size: 5,
         version: "1.0"
       };
       let res = await RECOMMEND(data);

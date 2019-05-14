@@ -35,7 +35,8 @@
 <style src="@/style/scss/pages/personal/set/cropper.scss" lang="scss"></style>
 
 <script>
-// import VueCropper from "./../../../plugin/vue-cropper/vue-cropper";
+//  引入接口
+import { COMMON_UPLOAD } from "../../../apis/public.js";
 
 export default {
   components: {
@@ -66,10 +67,10 @@ export default {
     };
   },
   mounted () {
-    this.option.img = this.$route.query.data;
+    this.option.img = this.$route.params.data;
     this.cropperShow = true;
 
-    // console.log('data:', this.$route.query.data);
+    // console.log('data:', this.$route.params.data);
   },
   methods: {
     // 头像裁切
@@ -77,7 +78,7 @@ export default {
       this.$router.push("/personal/set/info");
     },
     save() {
-      this.finish("blob");
+      this.finish("");
     },
     finish(type) {
       // 输出
@@ -85,16 +86,31 @@ export default {
         var self = this;
         this.$refs.cropper.getCropBlob(data => {
           var img = window.URL.createObjectURL(data);
-
-          self.$router.push({path: "/personal/set/info", query: {img: img}});
           console.log('img:', img);
         });
       } else {
         this.$refs.cropper.getCropData(data => {
-          console.log('data:', data);
+          this.uploadData(data);
         });
       }
-    }
+    },
+    // 上传图片接口
+    async uploadData (img) {
+      let data = {
+        file: img,
+        opt_type: 'user',
+        file_type: 'Base64',
+        source: 1,
+        version: "1.0"
+      };
+      let res = await COMMON_UPLOAD(data);
+      console.log("123", res.response_data);
+      if (res.hasOwnProperty("response_code")) {
+          this.$router.push({name: 'info', params: {img: res.response_data[0].acc_url}});
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
   }
 };
 </script>

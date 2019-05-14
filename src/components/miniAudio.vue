@@ -23,8 +23,8 @@
         <svg class="icon category" aria-hidden="true" @click="showList">
           <use xlink:href="#icon-category-line"></use>
         </svg>
-
-        <div class="play" @click="playAudio(false)" v-if="audioData.type">
+        
+        <div class="play" @click="playAudio(false)" v-if="audioData.type || playType">
           <van-icon name="play"/>
         </div>
         <div class="play" @click="pauseAudio" v-else>
@@ -61,7 +61,9 @@ export default {
   name: "music",
   props: ["audioData", "rank"],
   data() {
-    return {};
+    return {
+      playType: true,
+    };
   },
   // 解决子组件数据实时刷新问题
   watch: {
@@ -83,9 +85,6 @@ export default {
         audio.currentTime = this.audioData.currentTime;
       }
       this.audioData.duration = this.todate(audio.duration);
-      // this.audioData.currentTime = this.todate(audio.currentTime);
-      // 全局变量存放时间
-      this.audioDuration = parseInt(audio.duration);
     }, 600);
   },
   methods: {
@@ -112,20 +111,19 @@ export default {
       }
       this.clock = window.setInterval(() => {
         // 修复倒计时中音频paused状态改变的问题
-        if (document.getElementById("myMiniAudio").paused)
-          document.getElementById("myMiniAudio").play();
-        if (second >= this.audioDuration) {
+        if (document.getElementById("myMiniAudio").paused) document.getElementById("myMiniAudio").play();
+
+        if (second >= document.getElementById("myMiniAudio").duration) {
           clearInterval(this.clock);
           return false;
         } else {
           second++;
-          // console.log(second);
-          // 日期格式转换
-          // this.audioData.currentTime = this.todate(second);
+          console.log(second);
           // 绑定slider
           this.audiobindtoslider(second);
         }
       }, 1000);
+
       // 音频实时播放进度，每5s更新
       this.audioProgress();
     },
@@ -140,15 +138,15 @@ export default {
     updateProgress() {
       // 音频当前播放时间localStorage
       var __currentTime = document.getElementById("myMiniAudio").currentTime;
+      
       // 存储到localStorage: miniAudio
       var info = JSON.parse(localStorage.getItem("miniAudio"));
-      info[1] = this.audioData.type;
       info[5] = __currentTime;
 
       // 存储到localStorage: audioProgress
       var result = JSON.parse(localStorage.getItem("audioProgress"));
 
-      // 判断当前播放专辑和迷你缩略播放器/音乐播放器的统一性，根据goods_id来存储loacalStorage
+      // 判断当前播放节目和迷你缩略播放器/音乐播放器的统一性，根据goods_id来存储loacalStorage
       var isAdd = false;
 
       if (result.length == 0) {
@@ -226,6 +224,7 @@ export default {
       audio.play();
       // 切换播放状态
       this.$emit("setType", false);
+      this.playType = false;
       var second = parseInt(audio.currentTime);
       this.audioTimeChange(second, false);
       console.log("播放");
@@ -238,6 +237,7 @@ export default {
       audio.pause();
       // 切换播放状态
       this.$emit("setType", true);
+      this.playType = true;
       var second = parseInt(audio.currentTime);
       this.audioTimeChange(second, true);
       console.log("暂停");
@@ -277,9 +277,6 @@ export default {
       // this.audioData.currentTime = this.todate(audio.currentTime);
       // 先暂停再播放
       this.pauseAudio();
-      // setTimeout(() => {
-      //   this.playAudio();
-      // }, 600);
     },
     // 日期格式转换
     todate(second) {

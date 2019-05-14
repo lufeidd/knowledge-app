@@ -35,6 +35,7 @@
 </template>
 
 <style src="@/style/scss/pages/login/password.scss" lang="scss"></style>
+
 <style>
 #passwordPage .van-field__label {
     max-width: 0;
@@ -44,10 +45,9 @@
 }
 </style>
 
-
 <script>
 //  引入接口
-import { SMS, FIND } from "../../../apis/passport.js";
+import { SMS, FIND, EDIT_PASSWORD } from "../../../apis/passport.js";
 
 export default {
   data() {
@@ -56,10 +56,8 @@ export default {
       password2: "",
       submitData: {
         disabled: true
-      }
+      },
     };
-  },
-  mounted() {
   },
   methods: {
     // 校验格式
@@ -68,7 +66,7 @@ export default {
       if (
         regPassword.test(this.password1) &&
         regPassword.test(this.password2) && 
-        this.password1 == this.password2
+        this.password1 != this.password2
       ) {
         this.submitData.disabled = false;
       } else {
@@ -76,7 +74,24 @@ export default {
       }
     },
     submitAction() {
-    }
+      this.editPassword();
+    },
+    // 修改密码接口
+    async editPassword() {
+      let data = {
+        pwd: this.password1,
+        newpwd: this.password2,
+        version: "1.0",
+      };
+      let res = await EDIT_PASSWORD(data);
+      console.log("123", res.response_data);
+      if (res.hasOwnProperty("response_code")) {
+        this.$toast('密码修改成功~');
+        this.$router.push('/login/index');
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
   }
 };
 </script>

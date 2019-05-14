@@ -81,7 +81,7 @@ export default {
     };
   },
   mounted() {
-    this.phone = this.$route.query.mobile;
+    this.phone = this.$route.params.mobile;
     this.checkSubmit("phone");
     // 获取并储存服务器和本地时间差
     this.$getServerTime();
@@ -149,7 +149,7 @@ export default {
         pwd: this.password
       };
       this.findPwd();
-      this.$router.push({ path: "/login/index", query: data });
+      this.$router.push({ name: "login", params: data });
     }
   }
 };

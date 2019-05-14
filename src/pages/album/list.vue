@@ -29,7 +29,7 @@
           <div v-for="(item, key) in programList" :key="key">
             <div
               v-if="item.goods_type != 6"
-              @click="onPlay(item)"
+              @click="chooseAction(item)"
               class="list"
               :class="{ active: goodsNo == item.goods_no && audioStatus }"
             >
@@ -144,7 +144,7 @@
 //  引入接口
 import { ALBUM_DETAIL } from "../../apis/album.js";
 export default {
-  name: "music",
+  name: "list",
   props: ["albumInfo", "goodsNo", "audioStatus", "goodsId"],
   data() {
     return {
@@ -155,8 +155,10 @@ export default {
       programFinished: false,
       popupModel: false,
       // 记录节目播放进度
-      progressList: []
+      progressList: [],
     };
+  },
+  mounted () {
   },
   methods: {
     // 打开播放列表
@@ -170,10 +172,10 @@ export default {
     // 获取节目列表
     async programData() {
       let data = {
+        // 判断是否还有pid
         goods_id: this.goodsId,
-        goods_no: 1, // 默认倒序
         page: this.programPage,
-        page_size: 4,
+        page_size: 5,
         version: "1.0"
       };
       let res = await ALBUM_DETAIL(data);
@@ -193,17 +195,15 @@ export default {
           this.programLoading = false;
           this.programPage++;
 
-          // console.log('page：', this.programPage);
-
           // 数据全部加载完成
           if (this.programList.length >= res.response_data.total_count) {
             this.programFinished = true;
+            this.programPage = 1;
           }
         }, 600);
 
         // 设置总节目数
         this.programTotalCount = res.response_data.total_count;
-        // console.log('节目列表：', result);
       } else {
         this.$toast(res.error_message);
       }
@@ -212,7 +212,7 @@ export default {
     progressListData() {
       var list = this.programList;
       var result = JSON.parse(localStorage.getItem("audioProgress"));
-      // return;
+      
       /*
        * __goodsId专辑id
        * __goodsNo节目编号
@@ -220,6 +220,7 @@ export default {
        * __duration节目时长，单位s
        */
       // 比对localStorage中audioProgress数据
+      return;
       var arr = [];
       if(result.length >= 0) {
         var goods_id = result[0].goods_id;
@@ -244,7 +245,7 @@ export default {
 
       // console.log('audioProgress存放数据:', arr);
     },
-    onPlay(item) {
+    chooseAction(item) {
       // console.log(item);
       this.$emit("audioChange", item);
     }

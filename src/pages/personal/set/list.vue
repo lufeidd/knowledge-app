@@ -1,7 +1,11 @@
 <template>
   <div id="listPage" class="page" :class="{ active: this.isIphx }">
-    <ul class="addressBox">
-     
+    <div class="nullBox" v-if="addressData.length == 0">
+      <img src="./../../../assets/null/address.png" width="100%">
+      <div>暂时没有收货地址,去添加吧~</div>
+    </div>
+
+    <ul v-else class="addressBox">
       <li v-for="(item, key) in addressData" :key="key">
         <div class="info">
           <div>
@@ -11,8 +15,8 @@
           <div class="address">{{ item.address }}</div>
         </div>
         <div class="action">
-          <div class="default" @click="choose(key)" :class="{ active: activeIndex == key }">
-            <svg class="icon" aria-hidden="true" v-if="activeIndex == key">
+          <div class="default" @click="editAction(item.address_id)" :class="{ active: item.is_default == 1 }">
+            <svg class="icon" aria-hidden="true" v-if="item.is_default == 1">
               <use xlink:href="#icon-checked-block"></use>
             </svg>
             <svg class="icon" aria-hidden="true" v-else>
@@ -20,13 +24,17 @@
             </svg>
             <span>默认地址</span>
           </div>
-          <router-link to="/personal/set/address" class="edit">
+          <router-link
+            :to="{ name: 'address', params: {addressId: item.address_id, pageType: 'edit'}}"
+            class="edit"
+          >
+          
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-edit-line"></use>
             </svg>
             <span>编辑</span>
           </router-link>
-          <div class="delete" @click="deleteAction(key)">
+          <div class="delete" @click="deleteAction(item.address_id, key)">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-delete-line"></use>
             </svg>
@@ -34,11 +42,13 @@
           </div>
         </div>
       </li>
-        
     </ul>
+
+    <div style="height: 60px;"></div>
+
     <div class="bottomBox" :class="{ iphx: this.isIphx }">
-      <van-button size="large" type="danger">+新增收货地址</van-button>
-      <div class="count">{{ count }}/50</div>
+      <van-button size="large" type="danger" @click="addAddress">+新增收货地址</van-button>
+      <div class="count">{{ addressData.length }}/50</div>
     </div>
   </div>
 </template>
@@ -47,16 +57,15 @@
 
 <script>
 //  引入接口
-import { USER_ADDRESS } from "../../../apis/user.js";
+import { USER_ADDRESS_LIST, USER_ADDRESS_DEL, USER_ADDRESS_EDIT } from "../../../apis/user.js";
+
 export default {
   data() {
     return {
-        count: 5,
-      activeIndex: 0,
-      addressData: [],
+      addressData: []
     };
   },
-  mounted () {
+  mounted() {
     this.getAddressData();
   },
   methods: {
@@ -65,22 +74,40 @@ export default {
       let data = {
         version: "1.0"
       };
-      let res = await USER_ADDRESS(data);
-      console.log("123", res.response_data);
+      let res = await USER_ADDRESS_LIST(data);
       if (res.hasOwnProperty("response_code")) {
-        for(let i = 0; i < res.response_data.length; i++) {
+        this.addressData = [];
+        for (let i = 0; i < res.response_data.length; i++) {
           this.addressData.push(res.response_data[i]);
         }
       } else {
         this.$toast(res.error_message);
       }
     },
-    choose(key) {
-      console.log(key);
-      this.activeIndex = key;
+    // 修改当前地址
+    async editAddress (addressId, key) {
+      let data = {
+        address_id: addressId,
+        is_default: 1,
+        version: "1.0",
+      };
+      
+      let res = await USER_ADDRESS_EDIT(data);
+      if (res.hasOwnProperty("response_code")) {
+
+        this.getAddressData();
+        console.log("123", res.response_data);
+
+      } else {
+        this.$toast(res.error_message);
+      }
     },
-    deleteAction(key) {
-      console.log(key);
+    editAction(address_id, key) {
+      this.editAddress (address_id, key);
+    },
+    // 删除地址
+    deleteAction(address_id) {
+      // console.log(address_id);
       this.$dialog
         .confirm({
           title: "标题",
@@ -88,12 +115,29 @@ export default {
         })
         .then(() => {
           // on confirm
-          this.$toast('999');
+          this.deleteAddress(address_id);
+          this.getAddressData();
         })
         .catch(() => {
           // on cancel
         });
-      //   this.activeIndex = key;
+    },
+    async deleteAddress(addressId) {
+      let data = {
+        address_id: addressId,
+        version: "1.0"
+      };
+      let res = await USER_ADDRESS_DEL(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.$toast("地址删除成功~");
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 新增收货地址
+    addAddress() {
+      this.$router.push({ name: "address", params: { pageType: "add" } });
     }
   }
 };

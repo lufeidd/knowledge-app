@@ -8,8 +8,7 @@
       <div class="left">
         <div class="ratioBox">
           <div class="box">
-            <img :src="pic" v-if="pic">
-            <img :src="infoList.header_pic" v-else>
+            <img :src="infoList.header_pic">
           </div>
         </div>
       </div>
@@ -61,6 +60,7 @@
       <van-datetime-picker
         v-model="currentDate"
         type="date"
+        :min-date="minDate"
         :max-date="maxDate"
         :formatter="formatter"
         @confirm="birthdayConfirm"
@@ -78,7 +78,7 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 html {
   background-color: $greyLight;
 }
@@ -152,7 +152,6 @@ html {
 import { USER_INFO, USER_INFO_EDIT } from "../../../apis/user.js";
 
 export default {
-  
   data() {
     return {
       // 账户信息
@@ -163,10 +162,9 @@ export default {
         birthday: "",
         sex: 1,
       },
-      // 裁切后的图片
-      pic: null,
       // 生日
       birthdayModel: false,
+      minDate: new Date(1919, 1, 1),
       maxDate: new Date(),
       currentDate: new Date(),
       formatter(type, value) {
@@ -193,8 +191,6 @@ export default {
   },
   mounted() {
     this.getInfoData();
-    // 裁切后的图片
-    this.pic = this.$route.query.img;
   },
   methods: {
     // 头像
@@ -218,7 +214,7 @@ export default {
     picChange() {
       var self = this;
       //获取input file的files文件数组;
-      //$('#files')获取的是jQuery对象，.get(0)转为原生对象;
+      //$('#files')获取的是jquery对象，.get(0)转为原生对象;
       //这边默认只能选一个，但是存放形式仍然是数组，所以取第一个元素使用[0];
       var file = $("#files").get(0).files[0];
       //创建用来读取此文件的对象
@@ -254,7 +250,7 @@ export default {
         // this.cropperShow = true;
 
         // 跳转到裁切页面
-        self.$router.push({path: "/personal/set/cropper", query: {data: data}});
+        self.$router.push({name: "cropper", params: {data: data}});
         // console.log(data);
       };
     },
@@ -264,12 +260,16 @@ export default {
         version: "1.0"
       };
       let res = await USER_INFO(data);
-      // console.log("123", res.response_data);
+      console.log("123", res.response_data);
       if (res.hasOwnProperty("response_code")) {
         this.$set(this.infoList, "header_pic", res.response_data.header_pic);
         this.$set(this.infoList, "mobile", res.response_data.mobile);
         this.$set(this.infoList, "nickname", res.response_data.nickname);
         this.$set(this.infoList, "birthday", res.response_data.birthday);
+        this.$set(this.infoList, "sex", res.response_data.sex);
+        // 裁切后的图片
+        if(this.$route.params.img) this.$set(this.infoList, "header_pic", this.$route.params.img);
+        console.log("123头像图片：", this.infoList.header_pic);
       } else {
         this.$toast(res.error_message);
       }
@@ -330,7 +330,6 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
-      // console.log('sex:',this.infoList);
     },
   }
 };

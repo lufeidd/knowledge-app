@@ -24,4 +24,8 @@ export const LOG = params => req('post', '/passport/login', params);
 // 定义忘记密码接口
 export const FIND = params => req('post', '/passport/findpwd', params);
 
+// 用户登出接口
+export const LOGOUT = params => req('post', '/passport/logout', params);
 
+// 修改密码
+export const EDIT_PASSWORD = params => req('post', '/passport/editpwd', params);
