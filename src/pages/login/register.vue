@@ -137,11 +137,11 @@ export default {
         version: "1.0"
       };
 
-      let reg = await REG(data);
+      let res = await REG(data);
 
       if (res.hasOwnProperty("response_code")) {
         this.$router.push({ name: "personalIndex", params: data });
-        console.log(reg);
+        console.log(res);
       } else {
         this.$toast(res.error_message);
       }

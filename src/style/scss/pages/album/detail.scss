@@ -9,14 +9,6 @@ html {
   background-color: $greyLight;
 }
 
-.page {
-  padding-bottom: 60px;
-}
-
-.page.active {
-  padding-bottom: 60px;
-}
-
 #detailPage {
 
   & .albumBox {
@@ -35,6 +27,7 @@ html {
     }
 
     & .issue {
+      flex-grow: 1;
       margin-left: 10px;
       @include textOverflow;
 

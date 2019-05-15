@@ -203,9 +203,12 @@ export default {
         }
       ],
       recommendData:[],
+      goodsId: null,
     }
   },
   mounted(){
+
+    this.goodsId = this.$route.params.goods_id;
     this.getData();
     this.getRecommendData();
   },
@@ -344,13 +347,17 @@ export default {
     //获取页面基本信息
     async getData(){
       var tStamp = this.$getTimeStamp();
-      var data={
-        goods_id:18,
+      var data = {
+        goods_id: this.goodsId,
         version:"1.0",
         timestamp:tStamp,
       };
       data.sign = this.$getSign(data);
       let res = await ALBUM(data);
+
+
+    console.log(123, this.goodsId, res)
+
       if(res.hasOwnProperty("response_code")){
         this.baseData = res.response_data.base;
         this.articleInfo = res.response_data.brand_info;

@@ -13,7 +13,7 @@
       <div class="center">
         <div class="title">
           <div class="text">{{ baseData.title }}</div>
-          <div class="action" @click="collectAction">
+          <div class="action" @click="collectAction('base', baseData.collect_id, baseData.goods_id)">
             <van-tag round color="#fff" text-color="#f05654">
               <svg class="icon" aria-hidden="true" v-if="baseData.collect_id > 0">
                 <use xlink:href="#icon-collect-block"></use>
@@ -152,9 +152,18 @@
               <van-row class="title">
                 <van-col span="12">
                   <span class="play">
-                    <van-tag color="#f5f5f5" text-color="#666" @click="allAction">
+
+                    <van-tag v-if="allPlayStatus == 'play'" color="#f5f5f5" text-color="#666" @click="allAction">
                       <van-icon name="play"/>全部播放
                     </van-tag>
+                    <van-tag v-if="allPlayStatus == 'pause'" color="#f5f5f5" text-color="#666" @click="allAction">
+                      <van-icon name="pause"/>暂停播放
+                    </van-tag>
+                    <van-tag v-if="allPlayStatus == 'continue'" color="#f5f5f5" text-color="#666" @click="allAction">
+                      <van-icon name="play"/>继续播放
+                    </van-tag>
+                    
+
                     <span class="tag" v-if="showHistory && myAudioData">
                       <span class="text">{{ myAudioData.program }}</span>
                       <svg class="icon" aria-hidden="true" @click="historyAction">
@@ -178,7 +187,7 @@
                 <van-row class="list">
                   <van-col span="2" class="rank">{{ item.goods_no }}</van-col>
                   <van-col span="16">
-                    <router-link :to="{ path: '/album/detail', query: { pid: baseData.goods_id, goods_id: item.goods_id}}" class="desc">
+                    <router-link :to="{ name: 'albumdetail', params: { pid: baseData.goods_id, goods_id: item.goods_id}}" class="desc">
                       <template v-if="item.goods_type != 6">
                         <span class="tag" v-if="item.is_free == 1">试听</span>
                         <span class="tag" v-if="item.is_payed == 1">已购</span>
@@ -220,15 +229,13 @@
                         </svg>
                         {{ item.duration }}
                       </span>
-                      <!-- <span
-                        class="history"
-                        v-if="item.goods_type != 6"
-                      >已播{{ (item.progress / item.ori_duration).toFixed(0) }}%</span> -->
-
-                      <span
-                        class="history"
-                        v-if="item.goods_type != 6 && progressList[key].progress"
-                      >已播{{ (progressList[key].progress / progressList[key].duration).toFixed(2) }}%</span>
+                      
+                      <template v-if="progressList.length > 0">
+                        <span
+                          class="history"
+                          v-if="item.goods_type != 6 && progressList[key].progressHistory"
+                        >已播{{ (progressList[key].progressHistory / progressList[key].ori_duration).toFixed(2) }}%</span>
+                      </template>
 
                     </div>
                   </van-col>
@@ -265,47 +272,50 @@
                 <div class="left">
                   <div class="ratioBox">
                     <div class="box">
-                      <img :src="item.pic">
+                      <img :src="item.main_pic">
                     </div>
                   </div>
                 </div>
                 <div class="center">
                   <div class="title">
                     <!-- goodsType判断是专辑还是节目 -->
-                    <router-link :to="{ path: '/album/detail', query: { pid: baseData.goods_id, goods_id: item.goods_id}}" class="text">{{ item.title }}</router-link>
 
-                    <div class="action" @click="scollectAction(key)">
+                    <router-link v-if="item.goods_type == 6" :to="{ name: 'article', params: { pid: baseData.goods_id, goods_id: item.goods_id}}" class="text">{{ item.title }}</router-link>
+
+                    <router-link v-else :to="{ name: 'albumdetail', params: { pid: baseData.goods_id, goods_id: item.goods_id}}" class="text">{{ item.title }}</router-link>
+
+                    <div class="action" @click="collectAction(key, simularStatus[key].is_collect, item.goods_id)">
                       <van-tag plain round color="#fff" text-color="#f05654" type="danger">
-                        <svg class="icon" aria-hidden="true">
+                        <svg class="icon" aria-hidden="true" v-if="simularStatus[key].is_collect == 1">
                           <use xlink:href="#icon-collect-block"></use>
                         </svg>
-                        <svg class="icon" aria-hidden="true">
+                        <svg class="icon" aria-hidden="true" v-if="simularStatus[key].is_collect == 0">
                           <use xlink:href="#icon-collect-line"></use>
                         </svg>
                         <span>
-                          <template>已</template>收藏
+                          <template v-if="simularStatus[key].is_collect == 1">已</template>收藏
                         </span>
                       </van-tag>
                     </div>
                   </div>
-                  <div class="subTitle">fsldf十六点九分零四</div>
+                  <div class="subTitle">{{ item.sub_title }}</div>
                   <div class="info">
-                    <template>
+                    <template v-if="item.goods_type == 1">
                       <van-tag color="#c8c8c8" text-color="#fff">音频</van-tag>
                       <span class="count">
                         <svg class="icon" aria-hidden="true">
                           <use xlink:href="#icon-audio-line"></use>
                         </svg>
-                        111
+                        {{ item.play_num }}
                       </span>
                     </template>
-                    <template>
+                    <template v-if="item.goods_type == 2">
                       <van-tag color="#c8c8c8" text-color="#fff">视频</van-tag>
                       <span class="count">
                         <svg class="icon" aria-hidden="true">
                           <use xlink:href="#icon-video-line"></use>
                         </svg>
-                        222
+                        {{ item.play_num }}
                       </span>
                     </template>
                     <span class="time">
@@ -405,6 +415,7 @@ import {
   COMMENT_ADD,
   RECOMMEND
 } from "../../apis/public.js";
+import { setTimeout } from 'timers';
 
 export default {
   components: {
@@ -493,19 +504,22 @@ export default {
       preListen: [],
       // 存放全部音频
       allAudioData: [],
-      // 存放所有节目
+      // 存放不包含文章类型全部播放所有节目
       allProgramList: [],
       // 判断是否需要自动播放
       autoPlay: true,
+      // 全部播放状态
+      allPlayStatus: 'play',
       /*
        * --------------------------------相似--------------------------------
        */
       recommendList: [],
       recommendPage: 1,
-      recommendType: 0,
       // 分页
       recommendLoading: false,
       recommendFinished: false,
+      // 存放相似状态
+      simularStatus: [],
     };
   },
   destroyed() {},
@@ -541,41 +555,50 @@ export default {
       this.getMiniAudioData();
     },
     // 获取收藏接口信息
-    async collectData(__type) {
+    async collectData(__type, __status, __goodsId) {
       var data = {};
       var res;
-      switch (__type) {
-        case "collect":
-          data = {
-            type: this.baseData.goods_type,
-            target: this.baseData.goods_id,
-            version: "1.0",
-          };
-          res = await COLLECT_ADD(data);
-          this.baseData.collect_id = 1;
-          // this.$toast("已收藏~");
-          break;
-        case "cancel":
-          data = {
-            goods_id: this.baseData.goods_id,
-            version: "1.0"
-          };
-          res = await COLLECT_CANCEL(data);
-          this.baseData.collect_id = 0;
-          this.$toast("已取消收藏~");
-          break;
-      }
       // 出错提示
       if (res.hasOwnProperty("response_code")) {
+        switch (__status) {
+          case "collect":
+            data = {
+              type: this.baseData.goods_type,
+              target: __goodsId,
+              version: "1.0",
+            };
+            res = await COLLECT_ADD(data);
+            if(__type == 'base') {
+              this.baseData.collect_id = 1;
+            } else {
+              this.simularStatus[__type].is_collect = 1;
+            }
+            // this.$toast("已收藏~");
+            break;
+          case "cancel":
+            data = {
+              goods_id: __goodsId,
+              version: "1.0",
+            };
+            res = await COLLECT_CANCEL(data);
+            if(__type == 'base') {
+              this.baseData.collect_id = 0;
+            } else {
+              this.simularStatus[__type].is_collect = 0;
+            }
+            this.$toast("已取消收藏~");
+            break;
+        }
+        
       } else {
         this.$toast(res.error_message);
       }
     },
-    collectAction() {
-      if (this.baseData.collect_id > 0) {
-        this.collectData("cancel");
+    collectAction(__type, __collectId, __goodsId) {
+      if (__collectId > 0) {
+        this.collectData(__type, "cancel", __goodsId);
       } else {
-        this.collectData("collect");
+        this.collectData(__type, "collect", __goodsId);
       }
     },
     // 获取关注接口信息
@@ -816,7 +839,7 @@ export default {
           }
           
           // localStorage:audioProgress存放节目播放进度,根据pid创建数组，并存放至localStorage
-          this.progressListData('load');
+          this.progressListData();
 
           // 设置迷你缩略音频播放信息
           this.getMiniAudioData();
@@ -932,7 +955,7 @@ export default {
       }
     },
     // localStorage:audioProgress存放节目播放进度
-    progressListData(__type) {
+    progressListData() {
 
       /*
        * __goodsId节目id
@@ -942,73 +965,39 @@ export default {
        * __pid专辑id，单个节目pid默认为0
        */
 
-      var list = this.programList;
       var result = JSON.parse(localStorage.getItem("audioProgress"));
 
-      // 节目进度
+      // 临时存放节目进度
       this.progressList = [];
-
-      // 页面加载
-      if(__type == 'load') {
-
-        if(result.length > 0) {
-          var goods_id = result[0].goods_id;
-
-          // 遍历节目列表
-          for (let i = 0; i < list.length; i++) {
-            this.progressList.push(list[i]);
-            var goodsId = list[i].goods_id;
-
-            // 遍历localStorage中进度
-            for(let j = 0; j < result.length; j++) {
-              if (goodsId == result[j].goods_id) {
-                // 显示节目进度
-                if(result[j].progress) {
-                  this.progressList[i].progress = result[j].progress;
-                }
-              }
+      if(result.length > 0) {
+        for(let i = 0; i < this.programList.length; i++) {
+          this.progressList.push(this.programList[i]);
+          // console.log(this.programList[i])
+          
+          for(let j = 0; j < result.length; j++) {
+            // 当节目播放进度存在localStorage时,显示已播放进度
+            if(result[j].pid == this.baseData.goods_id && result[j].goods_id == this.programList[i].goods_id) {
+              this.$set(this.progressList[i], 'progressHistory', result[j].progress);
             }
           }
-
         }
-
       }
 
-      // 比对localStorage中audioProgress数据
-      // if(result.length > 0) {
-        // var goods_id = result[0].goods_id;
+    },
+    // 将当前专辑节目列表播放进度信息存放到localStorage
+    audioProgressData(result) {
+      /*
+       * __goodsId专辑id
+       * __goodsNo节目编号
+       * __progress节目当前播放进度
+       * __duration节目时长，单位s
+       * __pid专辑id，单个节目pid默认为0
+       */
 
-        // 遍历节目列表
-        // for (let i = 0; i < list.length; i++) {
-          // var obj = {};
-          // obj.goods_id = this.baseData.goods_id;
-          // obj.goods_no = list[i].goods_no;
-          // obj.duration = list[i].ori_duration;
-          // // 当前专辑和历史记录一致则更新进度
-          // if (goods_id == list[0].goods_id) {
-          //   if (list[i].goods_no == result[i].goods_no)
-          //     obj.progress = result[i].progress;
-          // }
+      // localStorage存储
+      localStorage.setItem("audioProgress", JSON.stringify(result));
 
-          // var goodsId = list[i].goods_id;
-
-          // // 遍历localStorage中进度
-          // for(let j = 0; j < result.length; j++) {
-          //   if (goodsId == result[j].goods_id) {
-          //     // 显示节目进度
-          //   }
-          // }
-
-          // arr.push(obj);
-        // }
-
-        // localStorage.setItem("audioProgress", JSON.stringify(arr));
-        // this.progressList = [];
-        // this.progressList = result;
-
-      // }
-
-      // console.log('audioProgress存放数据:', arr);
+      console.log('进度记录:', result);
     },
     // 播放记录
     historyAction() {
@@ -1031,20 +1020,11 @@ export default {
       let __src = item.file_path;
       let __duration = item.duration;
       // 获取当前节目播放进度
+      // ??????????????????????
       let __currentTime = this.getAudioProgress(item);
       let __program = item.title;
       let __album = this.baseData.title;
       let __goodsId = item.goods_id;
-
-      // 存放当前音频信息
-      // for (let i = 0; i < this.programList.length; i++) {
-      //   if (this.programList[i].goods_id == __goodsId) {
-      //     __goodsNo = this.programList[i].goods_no;
-      //     __src = this.programList[i].file_path;
-      //     __program = this.programList[i].title;
-      //     __duration = this.programList[i].duration;
-      //   }
-      // }
 
       // 判断是否点击当前或者第一次点击
       if (this.activeGoodNo == __goodsNo || this.activeGoodNo == null) {
@@ -1052,7 +1032,7 @@ export default {
       } else {
         this.audioPlaying = true;
       }
-
+      
       // 父页面关联子组件
       setTimeout(() => {
         if (this.audioPlaying) {
@@ -1061,6 +1041,8 @@ export default {
           this.$refs.control.pauseAudio();
         }
       }, 600);
+
+      // console.log(__currentTime)
 
       // 管理子组件播放状态
       this.activeGoodNo = __goodsNo;
@@ -1074,18 +1056,17 @@ export default {
     },
     // 获取当前节目播放进度
     getAudioProgress(item) {
+      var pid = this.baseData.goods_id;
       var goods_no = item.goods_no;
-      var goods_id = this.baseData.goods_id;
+      var goods_id = item.goods_id;
       var result = JSON.parse(localStorage.getItem("audioProgress"));
+      // 默认从0播放,如果localStorage有播放进度记录则从记录处播放
       var __currentTime = 0;
 
       // 遍历localStorage中记录进度的数组，获取当前节目当前进度
-      for (let i = 0; i < result.length; i++) {
-        if (goods_id == result[i].goods_id) {
-          if (goods_no == result[i].goods_no) {
-            // console.log(result[i].progress);
-            __currentTime = result[i].progress;
-          }
+      for(let i = 0; i < result.length; i++) {
+        if(goods_id == result[i].goods_id && pid == result[i].pid) {
+          __currentTime = result[i].progress;
         }
       }
 
@@ -1104,21 +1085,6 @@ export default {
       this.audioPlaying = !__type;
 
     },
-    // 将当前专辑节目列表播放进度信息存放到localStorage
-    audioProgressData(result) {
-      /*
-       * __goodsId专辑id
-       * __goodsNo节目编号
-       * __progress节目当前播放进度
-       * __duration节目时长，单位s
-       */
-      // result = [];
-
-      // localStorage存储
-      localStorage.setItem("audioProgress", JSON.stringify(result));
-
-      // console.log('result:', this.progressList);
-    },
     // --------------------------------播放列表----------------------------------
     audioListShow(__type) {
       this.$refs.controlList.popupModel = true;
@@ -1126,13 +1092,11 @@ export default {
       this.$refs.controlList.goodsNo = this.activeGoodNo;
     },
     gotoPlayer(queryData) {
-      // console.log(queryData);
-      // this.$router.push({path: "../album/player", query: queryData});
       this.$router.push("../album/player");
     },
     // 点击试听
     preListenAction() {
-      this.$router.push({ path: "/album/detail", query: this.preListen });
+      this.$router.push({ name: "albumdetail", params: this.preListen });
     },
     // 当前节目播放结束，获取当前播放节目的专辑下所有节目（不分页）
     getAllProgramData(info) {
@@ -1140,14 +1104,16 @@ export default {
     },
     async allProgramData(info, actionType) {
       let data = {
-        goods_id: info[8],
+        goods_id: this.baseData.goods_id,
         goods_no: this.rankType,
         page_size: 1000000000000000,
         version: "1.0"
       };
       let res = await ALBUM_DETAIL(data);
+
       // 存储当前节目的下一项
       var next;
+      this.allProgramList = [];
 
       if (res.hasOwnProperty("response_code")) {
         var type1 = 0;
@@ -1158,7 +1124,6 @@ export default {
 
         for (let i = 0; i < res.response_data.result.length; i++) {
           var type = result[i].goods_type;
-          // console.log('type:', type);
           if (type == 1) type1 = 1;
           if (type == 2) type2 = 1;
           if (type == 6) type3 = 1;
@@ -1186,7 +1151,7 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
-
+      
       if (this.autoPlay) {
         // 单一类型，自动播放
         this.updateLocalStorage(this.allProgramList[next]);
@@ -1206,37 +1171,42 @@ export default {
       info[4] = item.duration;
       info[5] = 0;
       info[6] = item.title;
-      info[8] = 35;
+      info[8] = item.goods_id;
+      this.activeGoodNo = info[0];
       localStorage.setItem("miniAudio", JSON.stringify(info));
 
       // 更新播放器当前播放音频
-      this.$refs.control.pauseAudio();
+      this.miniAudioData(info);
       setTimeout(() => {
-        this.miniAudioData(info);
         this.$refs.control.playAudio(0);
-      }, 600);
+      }, 600)
     },
     // 全部播放
     allAction() {
-      var info = JSON.parse(localStorage.getItem("miniAudio"));
-      // 从第一条开始播放，是否自动播放规则同上
-      this.allProgramData(info, "all");
+      if(this.baseData.is_payed == 0) return;
+      // 全部播放
+      if(this.allPlayStatus == 'play') {
+        this.allPlayStatus = 'pause';
+        var info = JSON.parse(localStorage.getItem("miniAudio"));
+        // 从第一条开始播放，是否自动播放规则同上
+        this.allProgramData(info, "all");
+      } 
+      // 暂停播放
+      else if(this.allPlayStatus == 'pause') {
+        this.allPlayStatus = 'continue';
+        this.$refs.control.pauseAudio();
+      }
+      // 继续播放
+      else {
+        this.allPlayStatus = 'pause';
+        this.$refs.control.playAudio(null);
+      }
     },
     // 购买
     buyAction() {
       this.$toast("购买");
     },
     // --------------------------------相似----------------------------------
-    scollectAction(key) {
-      this.tabData[2].simular[key].collect = !this.tabData[2].simular[key]
-        .collect;
-
-      if (this.tabData[2].simular[key].collect) {
-        this.$toast("收藏成功~");
-      } else {
-        this.$toast("取消收藏~");
-      }
-    },
     // load
     recommendLoad () {
       this.recommendData();
@@ -1244,7 +1214,6 @@ export default {
     async recommendData () {
       let data = {
         goods_id: this.baseData.goods_id,
-        type: this.recommendType,
         page: this.recommendPage,
         page_size: 5,
         version: "1.0"
@@ -1253,10 +1222,13 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         // 异步更新数据
-        var result = res.response_data;
+        var result = res.response_data.result;
+        // console.log(res.response_data);
         setTimeout(() => {
-          for (let i = 0; i < res.response_data.length; i++) {
+          for (let i = 0; i < res.response_data.result.length; i++) {
             this.recommendList.push(result[i]);
+            // 存放相似收藏状态/临时数据
+            this.simularStatus.push(result[i]);
           }
 
           // 加载状态结束
@@ -1264,14 +1236,17 @@ export default {
           this.recommendPage++;
 
           // 数据全部加载完成
-          if (this.recommendList.length >= res.response_data.length) {
+          if (this.recommendList.length >= res.response_data.total_count) {
             this.recommendFinished = true;
             this.recommendPage = 1;
           }
+
+          console.log(this.recommendList.length, res.response_data.total_count)
         }, 600);
       } else {
         this.$toast(res.error_message);
       }
+
     },
   }
 };

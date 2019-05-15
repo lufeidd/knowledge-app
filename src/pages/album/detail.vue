@@ -5,12 +5,12 @@
         <img v-if="baseData.pic" :src="baseData.pic[0]">
       </div>
       <!-- goodsType区分商品类型，音频/视频/节目/文章/图书 -->
-      <router-link to="./player" class="box layer">
+      <router-link :to="{name: 'player', params: {}}" class="box layer" v-if="baseData.goods_type == 1">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-audio-circle"></use>
         </svg>
       </router-link>
-      <div class="box layer">
+      <div class="box layer" v-if="baseData.goods_type == 2">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-videoPause-line"></use>
         </svg>
@@ -19,7 +19,7 @@
       <!-- 不属于专辑的商品显示收藏当前商品 -->
       <van-row class="action" v-if="!pid">
         <van-col class="title" span="18">{{ baseData.title }}</van-col>
-        <van-col span="6" @click="collectAction" style="text-align:right;">
+        <van-col span="6" @click="collectAction(baseData.collect_id, baseData.goods_id)" style="text-align:right;">
           <svg class="icon" aria-hidden="true" v-if="baseData.collect_id > 0">
             <use xlink:href="#icon-collect-block"></use>
           </svg>
@@ -37,16 +37,16 @@
     <div class="albumBox" v-if="pid">
       <div class="ratioBox">
         <div class="box">
-          <img src="https://media2.v.bookuu.com/activity/10/43/20180828104329956.jpg">
+          <img :src="baseData.pic[0]">
         </div>
       </div>
       <div class="issue">
-        <div class="title">dfgfgdf豆腐干风格豆腐干豆腐干</div>
+        <div class="title">{{ baseData.title }}</div>
 
-        <div class="info">已有五万人订阅 slsdlfjslfjslfjlsfj苏联的飞机历史交锋螺丝钉解放了的是</div>
+        <div class="info">{{ baseData.sub_title }}</div>
       </div>
       <div class="action" style="text-align:right;">
-        <van-tag plain type="danger" text-color="#f05654" @click="collectAction">
+        <van-tag plain type="danger" text-color="#f05654" @click="collectAction(baseData.collect_id, baseData.goods_id)">
           <svg class="icon" aria-hidden="true" v-if="baseData.collect_id > 0">
             <use xlink:href="#icon-collect-block"></use>
           </svg>
@@ -83,53 +83,13 @@
     <!-- 推荐 -->
     <van-cell title="听了本节目的也在听" value/>
     <van-row gutter="20" class="booklist">
-      <van-col span="8">
+      <van-col span="8" v-for="(item, key) in recommendList" :key="key">
         <div class="ratioBox">
           <div class="box">
-            <img src="https://media2.v.bookuu.com/activity/10/00/20190422100004136.png">
+            <img :src="item.main_pic">
           </div>
         </div>
-        <div class="title">宝宝巴士睡前故 事合集 事合集事合集 拷贝</div>
-      </van-col>
-      <van-col span="8">
-        <div class="ratioBox">
-          <div class="box">
-            <img src="https://media2.v.bookuu.com/activity/10/00/20190422100004136.png">
-          </div>
-        </div>
-        <div class="title">宝宝巴士睡前故 事合集 事合集事合集 拷贝</div>
-      </van-col>
-      <van-col span="8">
-        <div class="ratioBox">
-          <div class="box">
-            <img src="https://media2.v.bookuu.com/activity/10/00/20190422100004136.png">
-          </div>
-        </div>
-        <div class="title">宝宝巴士睡前故 事合集 事合集事合集 拷贝</div>
-      </van-col>
-      <van-col span="8">
-        <div class="ratioBox">
-          <div class="box">
-            <img src="https://media2.v.bookuu.com/activity/10/00/20190422100004136.png">
-          </div>
-        </div>
-        <div class="title">宝宝巴士睡前故 事合集 事合集事合集 拷贝</div>
-      </van-col>
-      <van-col span="8">
-        <div class="ratioBox">
-          <div class="box">
-            <img src="https://media2.v.bookuu.com/activity/10/00/20190422100004136.png">
-          </div>
-        </div>
-        <div class="title">宝宝巴士睡前故 事合集 事合集事合集 拷贝</div>
-      </van-col>
-      <van-col span="8">
-        <div class="ratioBox">
-          <div class="box">
-            <img src="https://media2.v.bookuu.com/activity/10/00/20190422100004136.png">
-          </div>
-        </div>
-        <div class="title">宝宝巴士睡前故 事合集 事合集事合集 拷贝</div>
+        <div class="title">{{ item.title }}</div>
       </van-col>
     </van-row>
 
@@ -291,6 +251,7 @@ import {
   FOCUS_CANCEL,
   COMMENT,
   COMMENT_ADD,
+  RECOMMEND
 } from "../../apis/public.js";
 
 export default {
@@ -325,9 +286,9 @@ export default {
        * ----------------------------------介绍----------------------------------
        */
       // 专辑id
-      pid: 35,
+      pid: null,
       // 商品id
-      goodsId: 15,
+      goodsId: null,
       // 账号信息，是否登录
       userInfo: false,
       // 基础信息
@@ -375,6 +336,8 @@ export default {
       commentId: null,
       // 存放发布按钮类型，comment为发布评论，reply为发布回复
       punishType: "comment",
+      // 推荐
+      recommendList: [],
     };
   },
   mounted() {
@@ -386,13 +349,14 @@ export default {
       }
     })
     // 获取专辑id以及商品id
-    var queryData = this.$route.query;
-    // this.pid = queryData.pid;
-    // this.goodsId = queryData.goods_id;
+    var queryData = this.$route.params;
+    this.pid = queryData.pid;
+    this.goodsId = queryData.goods_id;
 
+    // 基础信息
     this.albumData();
-    // console.log(queryData)
-    // this.audioData.src = require("./../../assets/music.mp3");
+    // 推荐
+    this.recommendData();
   },
   methods: {
     // --------------------------------迷你缩略音频----------------------------------
@@ -643,16 +607,6 @@ export default {
         if (info[4] != "") this.$refs.control.audioSliderChange();
       }, 600);
 
-      // console.log(
-      //   "localStorage迷你音频信息:",
-      //   info,
-      //   "当前goodsNo:",
-      //   this.activeGoodNo,
-      //   "当前goodsId:",
-      //   this.baseData.goods_id,
-      //   "当前currentTime：",
-      //   this.myAudioData.currentTime
-      // );
     },
     // ----------------------------------介绍------------------------------------
     // 获取专辑/商品接口信息
@@ -685,41 +639,42 @@ export default {
       this.getMiniAudioData();
     },
     // 获取收藏接口信息
-    async collectData(__type) {
+    async collectData(__status, __goodsId) {
       var data = {};
       var res;
-      switch (__type) {
-        case "collect":
-          data = {
-            type: this.baseData.goods_type,
-            target: this.goodsId,
-            version: "1.0"
-          };
-          res = await COLLECT_ADD(data);
-          this.baseData.collect_id = 1;
-          // this.$toast("已收藏~");
-          break;
-        case "cancel":
-          data = {
-            goods_id: this.goodsId,
-            version: "1.0"
-          };
-          res = await COLLECT_CANCEL(data);
-          this.baseData.collect_id = 0;
-          this.$toast("已取消收藏~");
-          break;
-      }
       // 出错提示
       if (res.hasOwnProperty("response_code")) {
+        switch (__status) {
+          case "collect":
+            data = {
+              type: this.baseData.goods_type,
+              target: __goodsId,
+              version: "1.0",
+            };
+            res = await COLLECT_ADD(data);
+            this.baseData.collect_id = 1;
+            // this.$toast("已收藏~");
+            break;
+          case "cancel":
+            data = {
+              goods_id: __goodsId,
+              version: "1.0",
+            };
+            res = await COLLECT_CANCEL(data);
+            this.baseData.collect_id = 0;
+            this.$toast("已取消收藏~");
+            break;
+        }
+        
       } else {
         this.$toast(res.error_message);
       }
     },
-    collectAction() {
-      if (this.baseData.collect_id > 0) {
-        this.collectData("cancel");
+    collectAction(__collectId, __goodsId) {
+      if (__collectId > 0) {
+        this.collectData("cancel", __goodsId);
       } else {
-        this.collectData("collect");
+        this.collectData("collect", __goodsId);
       }
     },
     // 获取关注接口信息
@@ -766,7 +721,7 @@ export default {
     async commentData() {
       let data = {
         page: this.commentPage,
-        page_size: 4,
+        page_size: 5,
         version: "1.0"
       };
       let res = await COMMENT(data);
@@ -805,6 +760,7 @@ export default {
       let data = {
         comment_pid: comment_id,
         page: this.replyPage[key],
+        page_size: 5,
         version: "1.0"
       };
       let res = await COMMENT(data);
@@ -815,15 +771,21 @@ export default {
         for (let i = 0; i < result.length; i++) {
           this.answerData[key].push(result[i]);
         }
-        this.replyPage[key]++;
+        if(this.replyPage[key] >= res.response_data.total_page) {
+          this.replyPage[key] = res.response_data.total_page + 1;
+        } else {
+          this.replyPage[key]++;
+        }
+
       } else {
         this.$toast(res.error_message);
       }
     },
     // 回复展开更多
     pageChange(comment_id, key) {
+
       this.replyData(comment_id, key);
-      // console.log("当前页数组：", this.replyPage);
+      // console.log("当前页数组：", this.replyPage, 'key:', key);
     },
     // 关闭评论弹窗
     commentClose() {
@@ -838,14 +800,14 @@ export default {
       switch (__type) {
         case "comment":
           data = {
-            goods_id: this.goodsId,
+            goods_id: this.baseData.goods_id,
             content: this.contentModel,
             version: "1.0"
           };
           break;
         case "reply":
           data = {
-            goods_id: this.goodsId,
+            goods_id: this.baseData.goods_id,
             comment_pid: this.commentId,
             content: this.contentModel,
             version: "1.0"
@@ -856,7 +818,14 @@ export default {
       }
       let res = await COMMENT_ADD(data);
       if (res.hasOwnProperty("response_code")) {
+
+        this.commentPage = 1;
         // 本地存储最新的数据，展示
+        this.answerData = [];
+        this.discussData = [];
+        this.replyPage = [];
+        this.commentData();
+
       } else {
         this.$toast(res.error_message);
       }
@@ -895,6 +864,31 @@ export default {
     // 购买
     buyAction() {
       this.$toast("购买");
+    },
+    // --------------------------------相似----------------------------------
+    // 推荐
+    async recommendData () {
+      let data = {
+        goods_id: this.goodsId,
+        page: 1,
+        page_size: 6,
+        version: "1.0"
+      };
+      let res = await RECOMMEND(data);
+      console.log(123, res)
+
+      if (res.hasOwnProperty("response_code")) {
+        // 异步更新数据
+        var result = res.response_data.result;
+        
+        for (let i = 0; i < res.response_data.result.length; i++) {
+          this.recommendList.push(result[i]);
+        }
+    
+      } else {
+        this.$toast(res.error_message);
+      }
+
     },
   }
 };

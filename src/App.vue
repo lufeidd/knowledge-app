@@ -101,7 +101,7 @@ export default {
   mounted() {
     // 注册登录
     // this.$router.push("/login/register");
-    // this.$router.push("/login/index");
+    this.$router.push("/login/index");
     // this.$router.push("/login/password");
 
     // 个人中心
@@ -112,6 +112,9 @@ export default {
     // this.$router.push("/personal/set/list");
     // this.$router.push("/personal/set/address");
     // this.$router.push("/personal/set/safe");
+    // this.$router.push("/personal/collect");
+    // this.$router.push("/personal/focus");
+    // this.$router.push("/personal/history");
 
     // 品牌商城
     // this.$router.push("/brand/index");

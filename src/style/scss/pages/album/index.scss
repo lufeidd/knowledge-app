@@ -248,6 +248,7 @@ html {
         @include twoLines;
         @include font(null, $fontSize - 1, $white);
         margin-top: 20px;
+        height: 20px;
       }
 
       & .info {
