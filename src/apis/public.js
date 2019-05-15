@@ -31,8 +31,13 @@ export const COMMON_UPLOAD = params => req('post', '/common/upload', params);
 export const GOODS_PRAISE_ADD = params => req('post', '/goods/praise/add', params);
 export const GOODS_PRAISE_DELETE = params => req('post', '/goods/praise/delete', params);
 
+
+//获取商品热搜
+export const SEARCH_HOTKEY_GETS = params => req('post', '/search/hotkey/gets', params);
+
 // 推荐
 export const RECOMMEND = params => req('post', '/goods/recommend/gets', params);
 
 // 地址
 export const ADDRESS = params => req('post', '/common/area/gets', params);
+

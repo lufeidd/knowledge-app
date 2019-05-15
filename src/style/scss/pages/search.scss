@@ -4,13 +4,11 @@
  */
 
 #searchPage{
-  padding-left: 15px;
-  padding-right: 15px;
   .van-row{
     flex-wrap: wrap;
   }
   .van-search{
-    padding: 8px 0;
+    padding: 8px 15px;
     input::placeholder{
       font-size: $fontSize - 1;
       color: $cl9;
@@ -21,6 +19,8 @@
     }
   }
   .searchRecommend{
+    padding-left: 15px;
+    padding-right: 15px;
     .recommend{
       font-size: $fontSize + 1;
       color: $cl0;
@@ -31,6 +31,8 @@
     }
   }
   .searchHistory{
+    padding-left: 15px;
+    padding-right: 15px;
     margin-top: 50px;
     .title{
       @include displayFlex(flex,space-between,center);

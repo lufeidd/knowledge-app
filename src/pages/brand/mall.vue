@@ -51,7 +51,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/brand/mall.scss" lang="scss"></style>
+<style scoped src="@/style/scss/pages/brand/mall.scss" lang="scss"></style>
 
 <script>
 import easyNav from "../../components/easyNav";
@@ -69,6 +69,7 @@ export default {
         searchLink: '/search',
         personal: true,
         personalLink: '/personal/index',
+        type:'brand',
       },
       swiperOption: {
         slidesPerView: 1.2

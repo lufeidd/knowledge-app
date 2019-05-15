@@ -19,7 +19,7 @@
         </svg>
         <div>首页</div>
       </router-link>
-      <router-link :to="navData.searchLink" class="link" v-if="navData.search">
+      <router-link :to="{path:navData.searchLink,query:{type:navData.type}}" class="link" v-if="navData.search">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-littleSearch-line"></use>
         </svg>

@@ -7,67 +7,9 @@ html{
 }
 #resultPage{
   margin-top: 5px;
-  .head{
-    background-color: $white;
-    .ratiobox {
-      width: 75px;
-      .bookImg {
-        display: block;
-        @include ratioBox (100%, 100%, null, contain, $clC, null);
-        border-radius: 2.5px;
-      }
-    }
-    .brand{
-      padding: 10px 15px;
-      @include displayFlex(flex, null, center);
-      border-bottom: 1px solid $greyLight;
-      position: relative;
-      .right{
-        @include position(absolute, tl, null, 95px, null, 75px, null);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-content: space-between;
-        .name{
-          @include font("PingFangBold", $fontSize + 3, $cl3);
-        }
-        .fans{
-          @include font(null, $fontSize - 1, $cl6);
-        }
-      }
-      .focus{
-        @include position(absolute, tr, 10px, 15px, 50px, 20px, null);
-        line-height: 20px;
-        background-color: $redDark;
-        border-radius: 10px;
-        color: $white;
-        text-align: center;
-        font-size: $fontSize - 2;
-      }
-      .add{
-        background-color: $clC;
-      }
-    }
-    .sell{
-      height: 44px;
-      padding-left: 15px;
-      padding-right: 15px;
-      font-size: $fontSize -1;
-      color: $cl6;
-      @include displayFlex(flex, space-between, center);
-      .link{
-        font-size: $fontSize - 2;
-      }
-    }
-  }
-  .van-tabs{
-    margin-top: 10px;
-    .van-hairline--top-bottom::after{
-      border-width: 0;
-    }
-    .van-tabs__line{
-      background-color: $redDark;
-    }
+  padding-bottom: 50px;
+  .list{
+    background-color: #fff;
     .content{
       @include displayFlex(flex, null, null);
       padding: 15px;
@@ -102,56 +44,6 @@ html{
           }
         }
       }
-    }
-  }
-  .van-popup{
-    width: 74.67%;
-    height: 42.56%;
-    border-radius: 5px;
-    padding: 25px 10px 0 10px;
-    overflow: hidden;
-    .close{
-      position: absolute;
-      top: 10px;
-      right: 12px;
-      font-size: $fontSize - 1;
-      color: $cl9;
-    }
-    .ratiobox {
-      width: 40px;
-      margin: 0 auto;
-      .bookImg {
-        display: block;
-        @include ratioBox (100%, 100%, null, contain, $clC, null);
-        border-radius: 5px;
-      }
-    }
-    .name{
-      text-align: center;
-      font-size: $fontSize + 1;
-      margin-top: 12px;
-    }
-    .company{
-      font-size: $fontSize - 2;
-      margin-top: 5px;
-      text-align: center;
-      color: $cl6;
-      @include textOverflow;
-    }
-    .line{
-      height: 1px;
-      background-color: $clC;
-      margin-top:18px;
-      margin-bottom: 15px;
-    }
-    .content{
-      font-size: $fontSize + 1;
-      position: absolute;
-      top:160px;
-      left: 15px;
-      right: 15px;
-      overflow-y: auto;
-      bottom: 0;
     }
   }
 }
