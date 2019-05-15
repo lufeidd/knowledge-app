@@ -35,6 +35,7 @@
       <van-datetime-picker
         v-model="currentDate"
         type="year-month"
+        :min-date="minDate"
         :max-date="maxDate"
         :formatter="formatter"
         confirm-button-text="完成"
@@ -62,6 +63,7 @@ export default {
       clickSearchTime:['全部'],
       searchTime:null,
       show: false,
+      minDate: new Date(1919,1,1),
       maxDate: new Date(),
       currentDate: new Date(),
       page:1,

@@ -2,10 +2,10 @@
  * author: lufei
  * date:2019/4/17
  */
-
+body{
+  background-color: $greyLight;
+}
  #listPage{
-   background-color: $greyLight;
-   width: 100%;
    padding-top: 5px;
    padding-bottom: 20px;
    .content{
@@ -63,6 +63,7 @@
 
          .title{
            margin-left: 10px;
+           @include twoColtextOverflow;
            @include font("PingFangBlod", $fontSize + 2, $cl3);
          }
        }

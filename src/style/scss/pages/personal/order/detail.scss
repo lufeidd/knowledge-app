@@ -2,10 +2,12 @@
  * author: lufei
  * date:2019/4/17
  */
-
-#detailPage{
+body{
   background-color: $greyLight;
-  padding-bottom: 30px;
+}
+#detailPage{
+
+  // padding-bottom: 30px;
   .van-cell{
     font-size: $fontSize - 1;
     color: $cl9;
@@ -66,13 +68,13 @@
     }
   }
   .info{
-    padding-left: 15px;
-    padding-right: 15px;
     background-color: $white;
     margin-top: 10px;
     .head{
       line-height: 40px;
       border-bottom: 1px solid $greyLight;
+      padding-left: 15px;
+      padding-right: 15px;
       @include displayFlex(flex,space-between,center);
       .titleFrom{
        @include displayFlex(flex,flex-start,center);
@@ -91,8 +93,7 @@
       }
     }
     .section{
-      padding-top: 13px;
-      padding-bottom: 30px;
+      padding: 13px 15px 30px 15px;
       border-bottom: 1px solid $greyLight;
        .bookDetail{
          @include displayFlex(flex,flex-start,flex-start);
@@ -189,6 +190,7 @@
     background-color: $white;
     width: 100%;
     @include position (fixed, br, 0, null, null, 50px, null);
+    border-top: 1px solid #d2d2d2;
     .button1{
       display: inline-block;
       width: 60px;

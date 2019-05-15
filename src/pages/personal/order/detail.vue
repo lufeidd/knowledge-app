@@ -5,7 +5,7 @@
         <use xlink:href="#icon-checked-right"></use>
       </svg> 订单已完成
     </div>
-    <div class="signfor">
+    <!-- <div class="signfor">
       <svg class="icon car" aria-hidden="true">
         <use xlink:href="#icon-interflow-line"></use>
       </svg>
@@ -28,33 +28,33 @@
         </div>
         <p class="address">收货地址：浙江省 杭州市 西湖区 西湖边东区23树6洞 3-3楼</p>
       </div>
-    </div>
+    </div> -->
     <div class="info">
       <div class="head">
         <div class="titleFrom">
-          <img v-lazy="publishData.icon" class="icon">
-          <span class="publish">{{publishData.from}}</span>
+          <img v-lazy="infoData.brand_header_pic" class="icon">
+          <span class="publish">{{infoData.brand_name}}</span>
         </div>
       </div>
-      <div class="section">
+      <div class="section" v-for="item in infoData.order_detail">
         <div class="bookDetail">
           <div class="ratiobox">
             <div class="box">
               <!-- <a class="bookImg" v-lazy:background-image="publishData.imgUrl"></a> -->
-              <img v-lazy="publishData.imgUrl" class="bookImg">
-              <div class="tip">
+              <img v-lazy="item.pic" class="bookImg">
+              <!-- <div class="tip">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-sound-line"></use>
                 </svg>
                 {{ publishData.watch }}
-              </div>
+              </div> -->
             </div>
           </div>
-          <span class="title">{{publishData.title}}</span>
+          <span class="title">{{item.goods_name}}</span>
         </div>
       </div>
     </div>
-    <div class="priceInfo">
+    <!-- <div class="priceInfo">
       <div class="first">
         <van-cell title="商品总额" v-model="'-¥'+priceInfo.totalPrice.toFixed(2)"/>
       </div>
@@ -65,7 +65,7 @@
         实付款
         <span>¥{{priceInfo.acturalPay}}</span>
       </p>
-    </div>
+    </div> -->
     <div class="fictitious">
       <div class="text">
         <van-cell title="虚拟物品"/>
@@ -75,12 +75,12 @@
         <div class="copybox">
           <span class="copy" @click="copy" :data-clipboard-text="fictitious.orderNumber">复制</span>
         </div>
-        <span class="number">{{fictitious.orderNumber}}</span>
+        <span class="number">{{infoData.order_id}}</span>
       </div>
       <div class="orderInfo">
-        <van-cell title="下单时间" v-model="fictitious.orderTime"/>
-        <van-cell title="支付方式" v-model="fictitious.payWay"/>
-        <van-cell title="支付时间" v-model="fictitious.payTime"/>
+        <van-cell title="下单时间" v-model="infoData.order_time"/>
+        <van-cell title="支付方式" v-model="infoData.payWay"/>
+        <van-cell title="支付时间" v-model="infoData.pay_time"/>
       </div>
     </div>
     <div class="foot bottomBox" :class="{iphx:this.isIphx}">
@@ -95,7 +95,7 @@
 <script>
 //调用cilpboard
 import Clipboard from "clipboard";
-
+import{USER_ORDER_DETAIL_GET} from "../../../apis/user.js"
 export default {
   data() {
     return {
@@ -119,8 +119,12 @@ export default {
         orderTime: "2019.4.17 19:15:22",
         payWay: "支付宝支付",
         payTime: "2019.4.17 19:16:02"
-      }
+      },
+      infoData:null,
     };
+  },
+  mounted(){
+    this.getData()
   },
   methods: {
     copy() {
@@ -136,7 +140,25 @@ export default {
 
         clipboard.destroy();
       });
-    }
+    },
+    //获取页面基本信息
+    async getData(){
+      var tStamp = this.$getTimeStamp();
+      var data={
+        order_id:1905062000270095,
+        version:"1.0",
+        timestamp:tStamp,
+      };
+      data.sign = this.$getSign(data);
+      let res = await USER_ORDER_DETAIL_GET(data);
+      if(res.hasOwnProperty("response_code")){
+        this.infoData = res.response_data;
+        // this.articleInfo = res.response_data.brand_info;
+        console.log(res);
+      }else{
+        this.$toast(res.error_message);
+      }
+    },
   }
 };
 </script>

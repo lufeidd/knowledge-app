@@ -1,5 +1,5 @@
 <template>
-    <div id="resultPage">
+    <div id="indexPage">
       <div class="head">
         <div class="brand">
           <div class="ratiobox" @click="show">
@@ -89,7 +89,7 @@
     </div>
 </template>
 
-<style src="@/style/scss/pages/brand/result.scss" lang="scss"></style>
+<style src="@/style/scss/pages/brand/index.scss" lang="scss"></style>
 
 <script>
 import { BRAND_INFO,BRAND_COLUMN_GETS } from "../../apis/brand.js";

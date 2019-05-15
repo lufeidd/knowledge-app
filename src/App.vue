@@ -101,8 +101,12 @@ export default {
   mounted() {
     // 注册登录
     // this.$router.push("/login/register");
+
     this.$router.push("/login/index");
     // this.$router.push("/login/password");
+
+    // this.$router.push("/login/index");
+    // this.$router.push("/search");
 
     // 个人中心
     // this.$router.push("/personal/index");
@@ -120,7 +124,7 @@ export default {
     // this.$router.push("/brand/index");
 
     // 品牌商城
-    // this.$router.push("/brand/mall");
+    this.$router.push("/brand/mall");
     // this.$router.push("/brand/detail/book");
     // this.$router.push("/brand/detail/article");
 
@@ -132,10 +136,20 @@ export default {
     // this.$router.push("/personal/help/index");
 
     // 我的购买
+
+    // this.$router.push("/personal/order/list");
+
     // this.$router.push("/personal/order/invoice");
+
 
     // 专辑
     this.$router.push("/album/index");
+
+    // 下单
+    this.$router.push("/order/confirm");
+    // this.$router.push("/order/detail");
+    // this.$router.push("/pay/index");
+    // this.$router.push("/pay/account");
 
   }
 };

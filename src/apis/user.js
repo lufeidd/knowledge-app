@@ -33,6 +33,10 @@ export const USER_FEEDBACK_ADD = params => req('post', '/user/feedback/add', par
 //我的购买--订单
 export const USER_ORDER_INVOICE_ADD = params => req('post', '/shopping/order/invoice/add', params);
 
+export const USER_ORDER_DETAIL_GET = params => req('post', '/shopping/order/get', params);
+export const USER_ORDER_DETAIL_GETS = params => req('post', '/shopping/order/gets', params);
+
+
 // 获取用户地址列表
 export const USER_ADDRESS_LIST = params => req('post', '/user/address/gets', params);
 export const USER_ADDRESS_ADD = params => req('post', '/user/address/add', params);
@@ -43,3 +47,4 @@ export const USER_ADDRESS = params => req('post', '/user/address/get', params);
 // 手机绑定
 export const USER_PHONE_RESET = params => req('post', '/user/info/mobile/reset', params);
 export const USER_PHONE_RESETSAVE = params => req('post', '/user/info/mobile/resetsave', params);
+
