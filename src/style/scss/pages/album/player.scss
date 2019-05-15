@@ -1,0 +1,207 @@
+/*
+ * author: nancyzeng
+ * date:2019/5/8
+ */
+
+@charset "UTF-8";
+
+html {
+  background-color: $white;
+}
+
+#musicPage {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding-bottom: 50px;
+  background-color: $white;
+
+  & .audioListBox {
+    @include position(absolute, "tl", 44px, 0, 100%, null, null);
+    @include textOverflow;
+    bottom: 0;
+    overflow-y: scroll;
+
+    & .list {
+      @include textOverflow;
+      @include displayFlex(flex, flex-start, center);
+      padding: 10px;
+      border-bottom: 1px #eee solid;
+      position: relative;
+
+      & .ratioBox {
+        width: 65px;
+        padding-bottom: 65px;
+        border-radius: 4px;
+        flex-shrink: 0;
+      }
+
+      & .issue {
+        @include font("PingFangBold", $fontSize + 2, #333);
+        @include textOverflow;
+        margin-left: 10px;
+      }
+
+      & .img {
+        & .icon {
+          width: 22px;
+          height: 22px;
+          color: #e3e3e3;
+        }
+      }
+
+      & .info {
+        @include textOverflow;
+        width: 100%;
+        padding-left: 8px;
+        box-sizing: border-box;
+
+        & .album {
+          @include textOverflow;
+          @include font(null, $fontSize + 1, #666);
+        }
+
+        & .program {
+          @include textOverflow;
+          font-size: $fontSize - 1;
+          color: #999;
+
+          & .duration {
+            margin-right: 10px;
+          }
+        }
+
+        & .list {
+          @include textOverflow;
+        }
+      }
+    }
+
+    & .list.active {
+      & .info {
+        & .album {
+          @include font(null, $fontSize + 1, $redDark);
+        }
+
+        & .program {
+          color: #333;
+        }
+      }
+    }
+  }
+
+  & .audioList {
+    position: relative;
+    height: 94vh;
+    overflow: hidden;
+
+    & .title {
+      height: 44px;
+      line-height: 44px;
+      border-bottom: 1px #eee solid;
+      text-align: center;
+      position: relative;
+      @include displayFlex(flex, center, center);
+      @include font(null, $fontSize + 2, #999);
+
+      & .action {
+        @include position(absolute, "tl", 0, 0, 44px, 44px, null);
+
+        & .icon {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+
+  & .ratioBox {
+    box-shadow: none;
+
+    & .box.bg {
+      -webkit-filter: blur(9px);
+      filter: blur(9px);
+      overflow: hidden;
+    }
+
+    & .box.pic {
+      width: 50%;
+      height: 50%;
+      left: 25%;
+      top: 25%;
+      border-radius: 100%;
+      background-color: $greyLight;
+      box-shadow: 4px 13px 32px rgba(0, 0, 0, 0.43);
+      overflow: hidden;
+    }
+  }
+
+  & .descBox {
+    @include textOverflow;
+    text-align: center;
+    padding: 10px 20px;
+    background-color: $white;
+    position: relative;
+    z-index: 1;
+    padding-top: 3vh;
+
+    & .title {
+      @include textOverflow;
+      @include font("PingFangBold", $fontSize + 2, #333);
+    }
+
+    & .subTitle {
+      @include textOverflow;
+      @include font(null, $fontSize + 1, #999);
+      padding: 10px;
+
+      & .icon {
+        margin-right: 4px;
+      }
+    }
+  }
+
+  & .sliderBox {
+    position: relative;
+    margin: 3vh 20px;
+    @include font(null, $fontSize, #999);
+
+    & .currentTime {
+      @include position(absolute, "bl", -30px, 0, null, null, null);
+    }
+
+    & .duration {
+      @include position(absolute, "br", -30px, 0, null, null, null);
+    }
+  }
+
+  & .controlBox {
+    @include displayFlex(flex, center, center);
+    margin-top: 10vh;
+    color: $redDark;
+
+    & .play .icon,
+    & .pause .icon {
+      width: 50px;
+      height: 50px;
+      margin: 0 35px;
+    }
+
+    & .prev .icon,
+    & .next .icon {
+      width: 28px;
+      height: 28px;
+    }
+
+    & .category {
+      position: absolute;
+      left: 20px;
+
+      & .icon {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}

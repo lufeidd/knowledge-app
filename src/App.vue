@@ -70,18 +70,18 @@ img {
 /*设置input placeholder颜色*/
 ::-webkit-input-placeholder,
 ::-webkit-textarea-placeholder {
-  font-size: 15px;
+  font-size: 13px;
   color: #999;
 }
 
 :-moz-placeholder {
-  font-size: 15px;
+  font-size: 13px;
   color: #999;
 }
 
 :-ms-input-placeholder,
 :-ms-textarea-placeholder {
-  font-size: 15px;
+  font-size: 13px;
   color: #999;
 }
 
@@ -106,22 +106,26 @@ export default {
 
     // 个人中心
     // this.$router.push("/personal/index");
+    // this.$router.push("/personal/set/index");
+    // this.$router.push("/personal/set/info");
+    // this.$router.push("/personal/set/bind");
+    // this.$router.push("/personal/set/list");
+    // this.$router.push("/personal/set/address");
+    // this.$router.push("/personal/set/safe");
 
     // 品牌商城
     // this.$router.push("/brand/index");
 
     // 品牌商城
-    this.$router.push("/brand/mall");
+    // this.$router.push("/brand/mall");
     // this.$router.push("/brand/detail/book");
-    // this.$router.push("/brand/detail/article");
+    this.$router.push("/brand/detail/article");
 
     // 评价
     // this.$router.push("/personal/order/comment/index");
 
     // 我的评论
     // this.$router.push("/personal/help/feedback");
-
-
     // this.$router.push("/personal/help/index");
 
     // 我的购买
@@ -129,6 +133,7 @@ export default {
 
     // 专辑
     // this.$router.push("/album/index");
+
   }
 };
 </script>

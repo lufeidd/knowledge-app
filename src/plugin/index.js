@@ -43,6 +43,8 @@ export default {
     Vue.prototype.clock = null
     Vue.prototype.audioDuration = null
     Vue.prototype.videoDuration = null
+    // 音频实时播放进度
+    Vue.prototype.progressClock = null
 
     // 验证码倒计时
     Vue.prototype.$countDown = function (options) {

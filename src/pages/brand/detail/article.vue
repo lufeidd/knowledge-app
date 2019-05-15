@@ -44,53 +44,84 @@
         </swiper-slide>
       </swiper>
     </div>
-    <!-- 评论 -->
-    <div id="comment" class="commentBox">
-      <van-cell title="评论 25" is-link value="我要评论" @click="openAnswer"/>
+            <!-- 评论 -->
+            <div class="commentBox">
+              <van-cell
+                :title="totalCount"
+                is-link
+                value="我要评论"
+                @click="openAnswer('comment', null)"
+              />
 
-      <div class="listBox" v-for="item in commentMessage">
-        <div class="left">
-          <div class="ratioBox">
-            <div class="box">
-              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+              <van-list
+                v-model="commentLoading"
+                :finished="commentFinished"
+                finished-text="没有更多了"
+                @load="commentLoad"
+              >
+                <div class="listBox" v-for="(item, key) in discussData" :key="key">
+                  <div class="left">
+                    <div class="ratioBox">
+                      <div class="box">
+                        <img :src="item.user_header">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="center">
+                    <div class="title">
+                      <div class="text">{{ item.nick_name }}</div>
+                    </div>
+                    <div class="subTitle">{{ item.content }}</div>
+
+                    <div class="messageBox" v-if="answerData[key].length > 0">
+                      <!-- 回复 -->
+
+                      <!-- <div
+                        class="message active"
+                        v-for="(replyItem, key) in item.reply_list"
+                        :key="key"
+                      >
+                        <span class="name">{{ replyItem.nick_name }}</span>
+                        <span class="dialog">{{ replyItem.content }}</span>
+                      </div>-->
+
+                      <div
+                        class="message active"
+                        v-for="(replyItem, key) in answerData[key]"
+                        :key="key"
+                      >
+                        <span class="name">{{ replyItem.nick_name }}</span>
+                        <span class="dialog">{{ replyItem.content }}</span>
+                      </div>
+
+                      <div
+                        class="message active"
+                        v-if="item.reply_num > 2 && replyPage[key] <= item.reply_total_page"
+                      >
+
+                        <!-- <van-pagination v-model="item.reply_current_page" :page-count="item.reply_total_page" mode="simple" @change="pageChange(item.comment_id, key)" /> -->
+
+                        <span class="name" @click="pageChange(item.comment_id, key)">
+                          共{{ item.reply_num }}条回复
+                          <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-fold-line"></use>
+                          </svg>
+                          <!-- <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-unfold-line"></use>
+                          </svg>-->
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- 回复 -->
+                    <div class="answerBox">
+                      <span class="date">{{ item.create_time }}</span>
+                      <span class="action" @click="openAnswer('reply', item.comment_id)">回复</span>
+                    </div>
+                  </div>
+                </div>
+              </van-list>
             </div>
-          </div>
-        </div>
-        <div class="center">
-          <div class="title">
-            <div class="text">{{item.name}}</div>
-          </div>
-          <div class="subTitle">{{item.content}}</div>
-
-          <div class="messageBox" v-show="item.state">
-            <div>
-              <div class="message active" v-for="value in item.comment">
-                <span class="name">{{value.commentName}}</span>
-                <span class="dialog">{{value.commentText}}</span>
-              </div>
-
-              <div class="message active">
-                <span class="name" @click="foldAction">
-                  共4条回复
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-fold-line"></use>
-                  </svg>
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-unfold-line"></use>
-                  </svg>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 回复 -->
-          <div class="answerBox">
-            <span class="date">2019.05.12 09:23</span>
-            <span class="action" @click="openAnswer">回复</span>
-          </div>
-        </div>
-      </div>
-    </div>
     <!-- 评论 -->
     <van-popup v-model="commentModel" position="bottom">
       <div class="audioList">
@@ -101,9 +132,9 @@
             </svg>
           </div>
           <div>发表评论</div>
-          <div class="punish" @click="onPunish">发布</div>
+          <div class="punish" @click="punishComment">发布</div>
         </div>
-
+        <!-- 音频列表 -->
         <div class="content">
           <textarea v-model="contentModel" placeholder="快来写评论吧!" @input="inputChange"></textarea>
           <div class="count">
@@ -137,8 +168,7 @@
 <style src="@/style/scss/pages/brand/detail/article.scss" lang="scss"></style>
 
 <script>
-import { ALBUM } from "../../../apis/album.js";
-import { GOODS_RECOMMEND_GETS } from "../../../apis/brand.js";
+import { ALBUM,ALBUM_DETAIL } from "../../../apis/album.js";
 import {
   COLLECT_ADD,
   COLLECT_CANCEL,
@@ -148,66 +178,44 @@ import {
   COMMENT_ADD,
   GOODS_PRAISE_ADD,
   GOODS_PRAISE_DELETE,
+  RECOMMEND
 } from "../../../apis/public.js";
 export default {
   data() {
     return {
+      // 评论
+      discussData: [],
+      commentPage: 1,
+      totalCount: 0,
+      // 发布评论
+      commentModel: false,
+      contentModel: "",
+      contentTotal: 30,
+      contentLength: 0,
+      // 分页
+      commentLoading: false,
+      commentFinished: false,
+      // 回复
+      replyPage: [],
+      answerData: [],
+      // 存放回复评论comment_id
+      commentId: null,
+      // 存放发布按钮类型，comment为发布评论，reply为发布回复
+      punishType: "comment",
       baseData:{},
       articleInfo: {},
       swiperOption: {
         slidesPerView: 1.1
       },
-      footInfo: [
-        {
-          imgUrl:
-            "https://media2.v.bookuu.com/activity/09/31/20190325093115149.jpg@!q75",
-          title: "这里是内容的标题，可能会很长有两行文字",
-          name: "品牌名称"
-        },
-        {
-          imgUrl:
-            "https://media2.v.bookuu.com/activity/09/31/20190325093115149.jpg@!q75",
-          title: "这里是内容的标题，可能会很长有两行文字",
-          name: "品牌名称"
-        }
-      ],
-      contentTotal: 30,
-      contentModel: "",
-      contentLength: 0,
-      commentModel: false,
-      commentMessage: [
-        {
-          name: "路人甲",
-          content: "宝宝的巴士睡前故事，非常的好听值得购买",
-          date: "2019.05.12   09:23",
-          state: false
-        },
-        {
-          name: "路人甲",
-          content: "宝宝的巴士睡前故事，非常的好听值得购买",
-          date: "2019.05.12   09:23",
-          state: true,
-          comment: [
-            { commentName: "萌萌龙", commentText: "其实是我的想法哈哈哈" },
-            {
-              commentName: "我是一个粉刷匠呀",
-              commentText: "你这个也太搞笑了吧，沙雕指 数没人可比呀。"
-            }
-          ]
-        },
-        {
-          name: "路人甲",
-          content: "宝宝的巴士睡前故事，非常的好听值得购买",
-          date: "2019.05.12   09:23",
-          state: false
-        }
-      ],
+      footInfo: [],
+      commentMessage: [],
       recommendData:[],
     }
   },
   mounted(){
     this.getData();
     this.getRecommendData();
+    console.log(this.baseData.goods_id)
   },
   methods: {
     // 获取关注接口信息
@@ -247,23 +255,23 @@ export default {
         this.focusData("focus");
       }
     },
-    foldAction() {},
-    onPunish() {
-      if (this.contentLength > this.contentTotal) {
-        this.$toast("你发布的字数超出，请修改后再发布!");
-        return;
-      }
-      this.commentModel = false;
-    },
-    inputChange(self) {
-      this.contentLength = this.contentModel.length;
-    },
-    openAnswer() {
-      this.commentModel = true;
-    },
-    commentClose() {
-      this.commentModel = false;
-    },
+    // foldAction() {},
+    // onPunish() {
+    //   if (this.contentLength > this.contentTotal) {
+    //     this.$toast("你发布的字数超出，请修改后再发布!");
+    //     return;
+    //   }
+    //   this.commentModel = false;
+    // },
+    // inputChange(self) {
+    //   this.contentLength = this.contentModel.length;
+    // },
+    // openAnswer() {
+    //   this.commentModel = true;
+    // },
+    // commentClose() {
+    //   this.commentModel = false;
+    // },
     // 获取收藏接口信息
     async collectData(__type) {
       var data = {};
@@ -369,13 +377,155 @@ export default {
         timestamp:tStamp,
       };
       data.sign = this.$getSign(data);
-      let res = await GOODS_RECOMMEND_GETS(data);
+      let res = await RECOMMEND(data);
       if(res.hasOwnProperty("response_code")){
         this.recommendData = res.response_data;
         // console.log('recommendData',this.recommendData);
       }else{
         this.$toast(res.error_message);
       }
+    },
+    // ----------------------------------评论------------------------------------
+    commentLoad() {
+      this.commentData();
+    },
+    async commentData() {
+      let data = {
+        page: this.commentPage,
+        page_size: 5,
+        version: "1.0"
+      };
+      let res = await COMMENT(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        // 异步更新数据
+        var result = res.response_data.result;
+        setTimeout(() => {
+          for (let i = 0; i < res.response_data.result.length; i++) {
+            this.discussData.push(result[i]);
+            this.answerData.push(result[i].reply_list);
+            this.replyPage.push(1);
+            // console.log('评论：', result[i]);
+          }
+          // 加载状态结束
+          this.commentLoading = false;
+          this.commentPage++;
+
+          // 数据全部加载完成
+          if (this.discussData.length >= res.response_data.total_count) {
+            this.commentFinished = true;
+            this.commentPage = 1;
+          }
+        }, 600);
+
+        // 设置总评论数
+        this.totalCount = "评论 " + res.response_data.total_count;
+        // console.log("当前页数组：", this.replyPage);
+        // console.log("评论列表：", result);
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 回复
+    async replyData(comment_id, key) {
+      let data = {
+        comment_pid: comment_id,
+        page: this.replyPage[key],
+        page_size: 5,
+        version: "1.0"
+      };
+      let res = await COMMENT(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        // 异步更新数据
+        var result = res.response_data.result;
+        for (let i = 0; i < result.length; i++) {
+          this.answerData[key].push(result[i]);
+        }
+        if(this.replyPage[key] >= res.response_data.total_page) {
+          this.replyPage[key] = res.response_data.total_page + 1;
+        } else {
+          this.replyPage[key]++;
+        }
+
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 回复展开更多
+    pageChange(comment_id, key) {
+
+      this.replyData(comment_id, key);
+      // console.log("当前页数组：", this.replyPage, 'key:', key);
+    },
+    // 关闭评论弹窗
+    commentClose() {
+      this.commentModel = false;
+    },
+    /*
+     * __type = 'comment'; 新增评论
+     * __type = 'reply';   新增回复
+     */
+    async addComment(__type) {
+      var data = {};
+      switch (__type) {
+        case "comment":
+          data = {
+            goods_id: this.baseData.goods_id,
+            content: this.contentModel,
+            version: "1.0"
+          };
+          break;
+        case "reply":
+          data = {
+            goods_id: this.baseData.goods_id,
+            comment_pid: this.commentId,
+            content: this.contentModel,
+            version: "1.0"
+          };
+          break;
+        default:
+          break;
+      }
+      let res = await COMMENT_ADD(data);
+      if (res.hasOwnProperty("response_code")) {
+
+        this.commentPage = 1;
+        // 本地存储最新的数据，展示
+        this.answerData = [];
+        this.discussData = [];
+        this.replyPage = [];
+        this.commentData();
+
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    punishComment() {
+      if (this.contentLength > this.contentTotal) {
+        this.$toast("你发布的字数超出，请修改后再发布!");
+        return;
+      }
+      if (this.contentLength == 0) {
+        this.$toast("请输入你要发布的内容!");
+        return;
+      }
+      this.commentModel = false;
+      // this.discussData = [];
+      this.addComment(this.punishType);
+    },
+    /*
+     * __type: 'comment'; 评论，comment_id: null;
+     * __type: 'reply'; 回复评论，comment_id: 必填;
+     */
+    openAnswer(__type, comment_id) {
+      this.punishType = __type;
+      if (__type == "reply") this.commentId = comment_id;
+      this.commentModel = true;
+    },
+    // 编辑评论触发
+    inputChange() {
+      this.contentLength = this.contentModel.length;
     },
   }
 };

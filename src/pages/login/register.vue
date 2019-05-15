@@ -91,7 +91,7 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$route.query);
+    console.log(this.$route.params);
   },
   methods: {
     // 格式校验
@@ -140,7 +140,7 @@ export default {
       let reg = await REG(data);
 
       if (res.hasOwnProperty("response_code")) {
-        this.$router.push({ path: "index", query: data });
+        this.$router.push({ name: "personalIndex", params: data });
         console.log(reg);
       } else {
         this.$toast(res.error_message);
