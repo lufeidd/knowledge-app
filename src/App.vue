@@ -70,18 +70,18 @@ img {
 /*设置input placeholder颜色*/
 ::-webkit-input-placeholder,
 ::-webkit-textarea-placeholder {
-  font-size: 15px;
+  font-size: 13px;
   color: #999;
 }
 
 :-moz-placeholder {
-  font-size: 15px;
+  font-size: 13px;
   color: #999;
 }
 
 :-ms-input-placeholder,
 :-ms-textarea-placeholder {
-  font-size: 15px;
+  font-size: 13px;
   color: #999;
 }
 
@@ -106,6 +106,12 @@ export default {
 
     // 个人中心
     // this.$router.push("/personal/index");
+    // this.$router.push("/personal/set/index");
+    // this.$router.push("/personal/set/info");
+    // this.$router.push("/personal/set/bind");
+    // this.$router.push("/personal/set/list");
+    // this.$router.push("/personal/set/address");
+    // this.$router.push("/personal/set/safe");
 
     // 品牌商城
     // this.$router.push("/brand/index");
@@ -120,15 +126,18 @@ export default {
 
     // 我的评论
     // this.$router.push("/personal/help/feedback");
-
-
     // this.$router.push("/personal/help/index");
 
     // 我的购买
+
     // this.$router.push("/personal/order/list");
 
+    // this.$router.push("/personal/order/invoice");
+
+
     // 专辑
-    // this.$router.push("/album/index");
+    this.$router.push("/album/index");
+
   }
 };
 </script>

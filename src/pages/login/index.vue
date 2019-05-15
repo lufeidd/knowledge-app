@@ -105,7 +105,7 @@ export default {
       // 出错提示
       if (res.hasOwnProperty("response_code")) {
         console.log(res);
-        this.$router.push({ path: "/album/index", query: '' });
+        this.$router.push({ name: "personalIndex", params: '' });
       } else {
         this.$toast(res.error_message);
       }
@@ -117,7 +117,7 @@ export default {
       let data = {
         mobile: this.phone
       };
-      this.$router.push({ path: "/login/password", query: data });
+      this.$router.push({ name: "password", params: data });
     }
   }
 };

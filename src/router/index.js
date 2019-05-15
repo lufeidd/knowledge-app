@@ -4,7 +4,6 @@ import Router from 'vue-router'
 // 登录/注册
 import login from '@/pages/login/index'
 import password from '@/pages/login/password'
-import phone from '@/pages/login/phone'
 import register from '@/pages/login/register'
 import prototype from '@/pages/login/prototype'
 
@@ -45,11 +44,11 @@ import address from '@/pages/personal/set/address'
 import addresslist from '@/pages/personal/set/list'
 import info from '@/pages/personal/set/info'
 import safe from '@/pages/personal/set/safe'
-import send from '@/pages/personal/set/send'
-import about from '@/pages/personal/set/about'
 import cropper from '@/pages/personal/set/cropper'
 import bind from '@/pages/personal/set/bind'
 import cancel from '@/pages/personal/set/cancel'
+import setpassword from '@/pages/personal/set/password'
+import setphone from '@/pages/personal/set/phone'
 
 // 个人中心 - 帮助与反馈
 import help from '@/pages/personal/help/index'
@@ -105,11 +104,6 @@ export default new Router({
       component: password
     },
     {
-      path: '/login/phone',
-      name: 'phone',
-      component: phone
-    },
-    {
       path: '/login/register',
       name: 'register',
       component: register
@@ -122,7 +116,7 @@ export default new Router({
     // 个人中心 - 首页
     {
       path: '/personal/index',
-      name: 'personal/index',
+      name: 'personalIndex',
       component: personal
     },
     {
@@ -261,16 +255,6 @@ export default new Router({
       component: safe
     },
     {
-      path: '/personal/set/send',
-      name: 'send',
-      component: send
-    },
-    {
-      path: '/personal/set/about',
-      name: 'about',
-      component: about
-    },
-    {
       path: '/personal/set/cropper',
       name: 'cropper',
       component: cropper
@@ -284,6 +268,16 @@ export default new Router({
       path: '/personal/set/cancel',
       name: 'cancel',
       component: cancel
+    },
+    {
+      path: '/personal/set/password',
+      name: 'setpassword',
+      component: setpassword
+    },
+    {
+      path: '/personal/set/phone',
+      name: 'setphone',
+      component: setphone
     },
     // 个人中心 - 帮助与反馈
     {
