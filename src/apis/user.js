@@ -28,6 +28,5 @@ export const USER_FEEDBACK_ADD = params => req('post', '/user/feedback/add', par
 
 //我的购买--订单
 export const USER_ORDER_INVOICE_ADD = params => req('post', '/shopping/order/invoice/add', params);
-
-
-
+export const USER_ORDER_DETAIL_GET = params => req('post', '/shopping/order/get', params);
+export const USER_ORDER_DETAIL_GETS = params => req('post', '/shopping/order/gets', params);

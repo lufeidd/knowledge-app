@@ -25,6 +25,7 @@ import history from '@/pages/personal/history'
 import orderlist from '@/pages/personal/order/list'
 import orderdetail from '@/pages/personal/order/detail'
 import orderinvoice from '@/pages/personal/order/invoice'
+import orderresult from '@/pages/personal/order/result'
 // 退款
 import refundedit from '@/pages/personal/order/edit'
 import logistics from '@/pages/personal/order/logistics'
@@ -175,6 +176,11 @@ export default new Router({
       path: '/personal/order/invoice',
       name: 'orderinvoice',
       component: orderinvoice
+    },
+    {
+      path:'/personal/order/result',
+      name:'orderresult',
+      component: orderresult
     },
     // 个人中心 - 我的购买 - 评价
     {

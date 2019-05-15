@@ -30,3 +30,6 @@ export const COMMON_UPLOAD = params => req('post', '/common/upload', params);
 //商品点赞
 export const GOODS_PRAISE_ADD = params => req('post', '/goods/praise/add', params);
 export const GOODS_PRAISE_DELETE = params => req('post', '/goods/praise/delete', params);
+
+//获取商品热搜
+export const SEARCH_HOTKEY_GETS = params => req('post', '/search/hotkey/gets', params);

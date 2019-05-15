@@ -9,3 +9,5 @@ export const BRAND_INFO = params => req('post', '/brand/info', params);
 export const BRAND_COLUMN_GETS = params => req('post', '/brand/column/gets', params);
 //相关推荐
 export const GOODS_RECOMMEND_GETS = params => req('post', '/goods/recommend/gets', params);
+//商品搜索
+export const BRAND_SEARCH_GOODS_GETS = params => req('post', '/search/goods/gets', params);

@@ -218,7 +218,7 @@ export default {
         case "focus":
           data = {
             brand_id: this.articleInfo.brand_id,
-            version: "1.0"
+            version: "1.0",
           };
           res = await FOCUS_ADD(data);
           this.articleInfo.is_followed = 1;
@@ -227,7 +227,7 @@ export default {
         case "cancel":
           data = {
             brand_id: this.articleInfo.brand_id,
-            version: "1.0"
+            version: "1.0",
           };
           res = await FOCUS_CANCEL(data);
           this.articleInfo.is_followed = 0;

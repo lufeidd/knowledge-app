@@ -136,7 +136,6 @@
       </div>
     </div>
     </van-list>
-
     <easyNav :navData="navData"></easyNav>
   </div>
 </template>
@@ -164,7 +163,6 @@ export default {
         type:'order',
       },
       publishData: [],
-      state: { evaluate: true, isPay: true, rePurchase: true, confirm: true },
       swiperOption: {
         slidesPerView: 5.3
       },
@@ -172,10 +170,15 @@ export default {
       programFinished: false,
       page:1,
       page_size:3,
+      type:'order',
+      searchContent:'',
+      state:null,
     };
   },
   mounted(){
     // this.getData();
+    this.searchContent = this.$route.params.searchContent;
+    this.state = this.$route.params.state;
   },
   methods:{
     programLoad(){
@@ -186,7 +189,9 @@ export default {
       var data={
         // order_id:1905062000270095,
         page:this.page,
-        page_size:1,
+        page_size:this.page_size,
+        goods_name:this.searchContent,
+        order_state:this.state,
         version:"1.0",
         timestamp:tStamp,
       };
@@ -209,6 +214,7 @@ export default {
           }, 500);
       }else{
         this.$toast(res.error_message);
+          this.programFinished = true;
       }
     },
   }
