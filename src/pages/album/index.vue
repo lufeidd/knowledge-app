@@ -350,6 +350,8 @@
       <van-goods-action-big-btn primary :text="'¥ '+baseData.price + ' 购买'" @click="buyAction(baseData.goods_id)"/>
     </van-goods-action>
 
+    <router-link :to="{name: '', parmas: {goods_id: 11}}"></router-link>
+
     <!-- 音频缩略 -->
     <miniAudio
       v-if="myAudioData"
@@ -528,11 +530,30 @@ export default {
     this.baseData.goods_id = 35;
     // 当前页接口信息
     this.albumData();
+
+
+
+
+
+    var data = {
+      name: 'book/detail',
+      params: {
+        book_id: 14,
+      }
+    }
+
+    data = this.$translate(data)
+
+    console.log(666, data)
+
+
+
+
+
+
   },
   methods: {
     // --------------------------------专辑信息----------------------------------
-    
-    
     // 获取专辑接口信息
     async albumData() {
       // var tStamp = this.$getTimeStamp();

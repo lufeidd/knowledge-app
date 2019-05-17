@@ -6,6 +6,8 @@
 import axios from 'axios'
 import qs from "Qs";
 
+// console.log(456)
+
 var instance
 
 // 添加读取build之后的代码
@@ -14,8 +16,8 @@ var instance
     
     // 创建axios的一个实例
     instance = axios.create({
-        // baseURL: 'http://198.210.12.253:8080',
-        baseURL: 'http://frontapi.huoba.dev.zxw',
+        baseURL: 'http://wap.huoba.net:8080/apis',
+        //baseURL: 'http://frontapi.huoba.dev.zxw',
         // baseURL: 'http://wap.huoba.net/api',
         // baseURL: result.data.baseUrl,
         timeout: 6000,

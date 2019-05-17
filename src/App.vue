@@ -96,16 +96,14 @@ img {
 </style>
 
 <script>
+import axios from 'axios'
 export default {
   name: "App",
   mounted() {
-
     // 注册登录
     // this.$router.push("/login/register");
-
     this.$router.push("/login/index");
     // this.$router.push("/login/password");
-
     // this.$router.push("/login/index");
     // this.$router.push("/search");
 
@@ -123,8 +121,6 @@ export default {
 
     // 品牌商城
     // this.$router.push("/brand/index");
-
-    // 品牌商城
     // this.$router.push("/brand/mall");
     // this.$router.push("/brand/detail/book");
     // this.$router.push("/brand/detail/article");
@@ -142,7 +138,7 @@ export default {
 
 
     // 专辑
-    this.$router.push("/album/index");
+    // this.$router.push("/album/index");
     // this.$router.push("/album/detail");
 
     // 下单

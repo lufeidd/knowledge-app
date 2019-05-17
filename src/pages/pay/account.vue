@@ -98,11 +98,11 @@
     <van-dialog v-model="showDialog" title="请输入手机验证码" show-cancel-button cancelButtonText="放弃支付">
       <div class="codeBox">
         <div class="price">
-          ¥<span class="money">{{ baseData.price }}</span>
+          ¥<span class="money">{{ pay_money }}</span>
         </div>
         <div class="code">
           <van-row>
-            <van-col span="12" style="text-align:left;">手机号:{{ mobile }}</van-col>
+            <van-col span="12" style="text-align:left;">手机号:{{ pay_mobilephone }}</van-col>
             <van-col span="12" style="text-align: right;">
               <template v-if="codeData.disabled">
                 <van-button size="small" round disabled type="danger">{{ codeData.timeMsg }}</van-button>
@@ -127,6 +127,7 @@
 import { ALBUM } from "../../apis/album.js";
 import { USER_REMAIN_INFO, USER_INFO } from "../../apis/user.js";
 import { SMS } from "../../apis/passport.js";
+import { ORDER_VIRTUAL_ADD } from "../../apis/shopping.js";
 
 export default {
   data() {
@@ -158,6 +159,8 @@ export default {
       showKeyboard: false,
       mobile: '',
       code: '',
+      pay_mobilephone: '',
+      pay_money: '',
     };
   },
   mounted() {
@@ -220,6 +223,7 @@ export default {
       };
       let res = await ALBUM(data);
       if (res.hasOwnProperty("response_code")) {
+        // console.log(res)
         //专辑基础信息
         this.baseData = res.response_data.base;
         // 所属媒体信息
@@ -254,14 +258,15 @@ export default {
     // 支付
     payAction() {
       // 余额支付
-      if(this.activeIndex == 0) {
+      // if(this.activeIndex == 0) {
+        this.addOrderData();
         this.value = '';
         this.showDialog = true;
-      }
+      // }
       // 微信支付
-      if(this.activeIndex == 1) {
-        this.$router.push({name: 'pay', params: {goodsId: this.baseData.goods_id, money: this.baseData.price}});
-      }
+      // if(this.activeIndex == 1) {
+      //   this.$router.push({name: 'pay', params: {goodsId: this.baseData.goods_id, money: this.baseData.price}});
+      // }
     },
     onInput(key) {
       this.value = (this.value + key).slice(0, 6);
@@ -277,7 +282,25 @@ export default {
     },
     onDelete() {
       this.value = this.value.slice(0, this.value.length - 1);
-    }
+    },
+    // 新增虚拟订单
+    async addOrderData () {
+      // var tStamp = this.$getTimeStamp();
+      let data = {
+        // timeStamp: tStamp,
+        goods_id: this.baseData.goods_id,
+        version: "1.0"
+      };
+      let res = await ORDER_VIRTUAL_ADD(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.pay_mobilephone = res.response_data.pay_mobilephone;
+        this.pay_money = res.response_data.pay_money;
+        // console.log(res.response_data)
+      } else {
+        this.$toast(res.error_message);
+      }
+
+    },
   }
 };
 </script>
