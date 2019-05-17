@@ -99,31 +99,14 @@ import{USER_ORDER_DETAIL_GET} from "../../../apis/user.js"
 export default {
   data() {
     return {
-      publishData: {
-        icon: "https://bnmpstyle.bookuu.com/wap/images/default_shop.png",
-        from: "浙江出版集团",
-        imgUrl:
-          "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
-        title: "宝宝巴士在线讲故事",
-        watch: "32.7w"
-      },
-      priceInfo: {
-        totalPrice: 95.0,
-        freight: 22.3,
-        discount: 5.0,
-        remain: 22.3,
-        acturalPay: 22.3
-      },
-      fictitious: {
-        orderNumber: 1955655265521222,
-        orderTime: "2019.4.17 19:15:22",
-        payWay: "支付宝支付",
-        payTime: "2019.4.17 19:16:02"
-      },
+      fictitious: null,
       infoData:null,
+      order_id:'',
     };
   },
   mounted(){
+    this.order_id = this.$route.params.order_id;
+    console.log(this.order_id);
     this.getData()
   },
   methods: {
@@ -145,7 +128,7 @@ export default {
     async getData(){
       var tStamp = this.$getTimeStamp();
       var data={
-        order_id:1905062000270095,
+        order_id:this.order_id,
         version:"1.0",
         timestamp:tStamp,
       };

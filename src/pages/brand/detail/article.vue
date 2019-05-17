@@ -34,11 +34,11 @@
         <swiper-slide v-for="item,index in recommendData" :key="index">
           <div class="foot">
             <div class="ratiobox">
-              <a class="bookImg" v-lazy:background-image="item.pic"></a>
+              <a class="bookImg" v-lazy:background-image="item.main_pic"></a>
             </div>
             <div class="content">
               <p class="title">{{item.title}}</p>
-              <p class="name">品牌名称</p>
+              <p class="name">{{item.brand_name}}</p>
             </div>
           </div>
         </swiper-slide>
@@ -202,20 +202,21 @@ export default {
       commentId: null,
       // 存放发布按钮类型，comment为发布评论，reply为发布回复
       punishType: "comment",
+      //页面基本信息
       baseData:{},
+      // 文章相关信息
       articleInfo: {},
       swiperOption: {
-        slidesPerView: 1.1
+        slidesPerView: 1.2
       },
-      footInfo: [],
-      commentMessage: [],
+      // 推荐列表信息
       recommendData:[],
     }
   },
   mounted(){
     this.getData();
     this.getRecommendData();
-    console.log(this.baseData.goods_id)
+    console.log('ID:',this.baseData.article_id)
   },
   methods: {
     // 获取关注接口信息
@@ -363,7 +364,7 @@ export default {
         this.baseData = res.response_data.base;
         this.articleInfo = res.response_data.brand_info;
         $('.contentData').append(this.baseData.desc);
-        // console.log(this.baseData);
+        console.log(this.baseData);
       }else{
         this.$toast(res.error_message);
       }
@@ -379,7 +380,7 @@ export default {
       data.sign = this.$getSign(data);
       let res = await RECOMMEND(data);
       if(res.hasOwnProperty("response_code")){
-        this.recommendData = res.response_data;
+        this.recommendData = res.response_data.result;
         // console.log('recommendData',this.recommendData);
       }else{
         this.$toast(res.error_message);
@@ -392,6 +393,7 @@ export default {
     async commentData() {
       let data = {
         page: this.commentPage,
+        goods_id:18,
         page_size: 5,
         version: "1.0"
       };
@@ -471,14 +473,14 @@ export default {
       switch (__type) {
         case "comment":
           data = {
-            goods_id: this.baseData.goods_id,
+            goods_id: this.baseData.article_id,
             content: this.contentModel,
             version: "1.0"
           };
           break;
         case "reply":
           data = {
-            goods_id: this.baseData.goods_id,
+            goods_id: this.baseData.article_id,
             comment_pid: this.commentId,
             content: this.contentModel,
             version: "1.0"

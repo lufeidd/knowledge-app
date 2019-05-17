@@ -44,8 +44,11 @@ export default {
     change() {
       var input = $("input").val().trim();
       var textarea = $("textarea").val().trim();
+      var iphone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
+      var qqNumber = /[1-9][0-9]{5,13}/;
+      var email = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/;
       // var uploadFile =$('.contetn.set').length;
-      if (input.length > 0 && textarea.length > 0 ) {
+      if ((iphone.test(input) || qqNumber.test(input) || email.test(input)) && textarea.length > 0 ) {
         this.submit = false;
         // console.log(this.submit);
       } else {
@@ -101,8 +104,8 @@ export default {
 
               this.$toast('提交成功!');
               // setTimeout( location.reload() , 1000);
-              location.reload();
-              // this.$router.push('/personal/help/feedback');
+              // location.reload();
+              this.$router.push('/personal/help/index');
         }else{
           this.$toast(res1.error_message);
         }

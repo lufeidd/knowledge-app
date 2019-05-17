@@ -8,7 +8,7 @@ import qs from "Qs";
 
 // 创建axios的一个实例
 var instance = axios.create({
-    baseURL: 'http://frontapi.huoba.net',
+    baseURL: 'http://frontapi.huoba.dev.zxw',
     timeout: 6000
 })
 
