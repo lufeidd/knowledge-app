@@ -272,7 +272,9 @@ export default {
         version: "1.0"
       };
       let res = await USER_HOMEPAGE(data);
-      console.log("123", res.response_data);
+      
+      console.log("123", res.response_data, this.$cookies.get('token'));
+      
       if (res.hasOwnProperty("response_code")) {
         this.$set(this.infoData, "user_header", res.response_data.user_header);
         this.$set(this.infoData, "user_name", res.response_data.user_name);

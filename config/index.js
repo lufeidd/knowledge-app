@@ -13,7 +13,9 @@ module.exports = {
     proxyTable: {
       '/apis': {
         // 测试环境
-        target: 'http://frontapi.huoba.net', // 接口域名
+        // target: 'http://198.210.12.253:8080', // 接口域名
+        // target: 'http://wap.huoba.net/api', // 接口域名
+        // target: 'http://frontapi.huoba.net', // 接口域名
         changeOrigin: true, //是否跨域
         pathRewrite: {
           '^/apis': '' //需要rewrite重写的,
@@ -61,7 +63,9 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    // run build
+    assetsPublicPath: './',
+    // assetsPublicPath: '/',
 
     /**
      * Source Maps

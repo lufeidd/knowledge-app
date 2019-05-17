@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import axios from 'axios'
 
 //  引入时间戳接口
 // import req from "./../apis/http.js";
@@ -207,6 +208,21 @@ export default {
       console.log("md5:", res);
       return res;
     }
+
+    // getCookie
+    // Vue.prototype.$getCookie = function (c_name) {
+    //   if(document.cookie.length > 0) {
+    //     c_start = document.cookie.indexOf(c_name + "=");
+    //     if (c_start != -1) {
+    //       c_start = c_start + c_name.length + 1;
+    //       c_end = document.cookie.indexOf(";", c_start);
+    //       if (c_end == -1) c_end = document.cookie.length;
+          
+    //       return unescape(document.cookie.substring(c_start, c_end));
+    //     }
+    //   }
+    //   return ""
+    // }
 
   }
 }

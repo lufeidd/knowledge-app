@@ -186,7 +186,7 @@
         @click="preListenAction"
         v-if="baseData.has_free && preListen"
       />
-      <van-goods-action-big-btn primary :text="'¥ '+baseData.price + ' 购买'" @click="buyAction"/>
+      <van-goods-action-big-btn primary :text="'¥ '+baseData.price + ' 购买'" @click="buyAction(goodsId)"/>
     </van-goods-action>
 
     <!-- 音频缩略 -->
@@ -579,8 +579,8 @@ export default {
       if (this.autoPlay) {
         // 单一类型，自动播放
         this.updateLocalStorage(this.allProgramList[next]);
-        console.log("当前播放的下一项：", this.allProgramList[next]);
-        console.log("单一类型，自动播放");
+        // console.log("当前播放的下一项：", this.allProgramList[next]);
+        // console.log("单一类型，自动播放");
       } else {
         // 含多种类型，不自动播放
         this.$toast("含多种类型或者专辑未支付，不自动播放");
@@ -620,6 +620,9 @@ export default {
       };
       let res = await ALBUM(data);
       if (res.hasOwnProperty("response_code")) {
+
+        console.log(res.response_data)
+
         //专辑基础信息
         this.baseData = res.response_data.base;
         // 公号信息
@@ -633,7 +636,7 @@ export default {
         this.$toast(res.error_message);
       }
 
-      console.log("商品基础信息:", res.response_data.base);
+      // console.log("商品基础信息:", res.response_data.base);
 
       // 读取localStorage音频缩略播放器数据
       this.getMiniAudioData();
@@ -862,8 +865,8 @@ export default {
       if (index == 1) $(window).scrollTop($("#comment").offset().top);
     },
     // 购买
-    buyAction() {
-      this.$toast("购买");
+    buyAction(goodsId) {
+      this.$router.push({name: 'payaccount', params: {goods_id: goodsId}});
     },
     // --------------------------------相似----------------------------------
     // 推荐
@@ -875,7 +878,6 @@ export default {
         version: "1.0"
       };
       let res = await RECOMMEND(data);
-      console.log(123, res)
 
       if (res.hasOwnProperty("response_code")) {
         // 异步更新数据

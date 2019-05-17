@@ -347,7 +347,7 @@
         @click="preListenAction"
         v-if="baseData.has_free && preListen"
       />
-      <van-goods-action-big-btn primary :text="'¥ '+baseData.price + ' 购买'" @click="buyAction"/>
+      <van-goods-action-big-btn primary :text="'¥ '+baseData.price + ' 购买'" @click="buyAction(baseData.goods_id)"/>
     </van-goods-action>
 
     <!-- 音频缩略 -->
@@ -455,7 +455,7 @@ export default {
           title: "相似"
         }
       ],
-      tabModel: 0,
+      tabModel: 1,
       // 评论
       discussData: [],
       commentPage: 1,
@@ -531,6 +531,8 @@ export default {
   },
   methods: {
     // --------------------------------专辑信息----------------------------------
+    
+    
     // 获取专辑接口信息
     async albumData() {
       // var tStamp = this.$getTimeStamp();
@@ -540,6 +542,8 @@ export default {
         version: "1.0"
       };
       let res = await ALBUM(data);
+      // console.log(res.response_data, this.$cookies.get('token'), res.headers['Set-Cookie']);
+
       if (res.hasOwnProperty("response_code")) {
         //专辑基础信息
         this.baseData = res.response_data.base;
@@ -549,7 +553,7 @@ export default {
         this.$toast(res.error_message);
       }
 
-      console.log('专辑基础信息:', res.response_data.base);
+      // console.log('专辑基础信息:', res.response_data.base);
 
       // 读取localStorage音频缩略播放器数据
       this.getMiniAudioData();
@@ -895,9 +899,9 @@ export default {
         }
       }, 600);
 
-      console.log(
-        "localStorage迷你音频信息:", info, "当前goodsNo:", this.activeGoodNo, "当前pid:", this.baseData.goods_id, "当前goodsId:", this.myAudioData.goodsId, "当前currentTime：", this.myAudioData.currentTime
-      );
+      // console.log(
+      //   "localStorage迷你音频信息:", info, "当前goodsNo:", this.activeGoodNo, "当前pid:", this.baseData.goods_id, "当前goodsId:", this.myAudioData.goodsId, "当前currentTime：", this.myAudioData.currentTime
+      // );
 
     },
     // 将当前音频播放信息存放到localStorage: miniAudio
@@ -997,7 +1001,7 @@ export default {
       // localStorage存储
       localStorage.setItem("audioProgress", JSON.stringify(result));
 
-      console.log('进度记录:', result);
+      // console.log('进度记录:', result);
     },
     // 播放记录
     historyAction() {
@@ -1096,7 +1100,7 @@ export default {
     },
     // 点击试听
     preListenAction() {
-      this.$router.push({ name: "albumdetail", params: this.preListen });
+      this.$router.push({ name: "albumdetail", params: {pid: this.baseData.goods_id, goods_id: this.preListen[0].goods_id}});
     },
     // 当前节目播放结束，获取当前播放节目的专辑下所有节目（不分页）
     getAllProgramData(info) {
@@ -1155,8 +1159,8 @@ export default {
       if (this.autoPlay) {
         // 单一类型，自动播放
         this.updateLocalStorage(this.allProgramList[next]);
-        console.log("当前播放的下一项：", this.allProgramList[next]);
-        console.log("单一类型，自动播放");
+        // console.log("当前播放的下一项：", this.allProgramList[next]);
+        // console.log("单一类型，自动播放");
       } else {
         // 含多种类型，不自动播放
         this.$toast("含多种类型或者专辑未支付，不自动播放");
@@ -1203,8 +1207,8 @@ export default {
       }
     },
     // 购买
-    buyAction() {
-      this.$toast("购买");
+    buyAction(goodsId) {
+      this.$router.push({name: 'payaccount', params: {goods_id: goodsId}});
     },
     // --------------------------------相似----------------------------------
     // load
@@ -1241,7 +1245,7 @@ export default {
             this.recommendPage = 1;
           }
 
-          console.log(this.recommendList.length, res.response_data.total_count)
+          // console.log(this.recommendList.length, res.response_data.total_count)
         }, 600);
       } else {
         this.$toast(res.error_message);

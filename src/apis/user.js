@@ -24,7 +24,6 @@ export const USER_REMAIN_INFO = params => req('post', '/user/wallet/info', param
 // 我的余额-明细
 export const USER_REMAIN_DETAILS = params => req('post', '/user/wallet/details', params);
 
-
 //帮助与反馈
 export const USER_HELPER_GETS = params => req('post', '/helper/gets', params);
 export const USER_HELPER_DETAIL = params => req('post', '/helper/detail', params);
@@ -35,7 +34,6 @@ export const USER_ORDER_INVOICE_ADD = params => req('post', '/shopping/order/inv
 
 export const USER_ORDER_DETAIL_GET = params => req('post', '/shopping/order/get', params);
 export const USER_ORDER_DETAIL_GETS = params => req('post', '/shopping/order/gets', params);
-
 
 // 获取用户地址列表
 export const USER_ADDRESS_LIST = params => req('post', '/user/address/gets', params);

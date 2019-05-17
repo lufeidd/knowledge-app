@@ -82,8 +82,14 @@ cnpm install clipboard --save
 // md5加密
 cnpm install --save js-md5
 
+// cookies
+cnpm install vue-cookies --save
+
 // Critical dependency: the request of a dependency is an expression
 cnpm i webpack-node-externals
+
+// vue+webpack实现vue打包后生成配置文件用以外部修改公共路径
+cnpm install --save-dev generate-asset-webpack-plugin
 
 cnpm install
 
