@@ -4,7 +4,7 @@
       <div class="box">
         <img v-if="baseData.pic" :src="baseData.pic[0]">
       </div>
-      <!-- goodsType区分商品类型，音频/视频/节目/文章/图书 -->
+      <!-- goodsType区分商品类型，音频1/视频2/专辑9/文章6/图书 -->
       <router-link :to="{name: 'player', params: {}}" class="box layer" v-if="baseData.goods_type == 1">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-audio-circle"></use>
@@ -191,7 +191,7 @@
 
     <!-- 音频缩略 -->
     <miniAudio
-      v-if="myAudioData"
+      :class="{isShow: myAudioData.src}"
       :audioData="myAudioData"
       :rank="rankType"
       ref="control"
@@ -238,7 +238,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/album/detail.scss" lang="scss"></style>
+<style src="@/style/scss/pages/album/detail.scss" scoped lang="scss"></style>
 
 <script>
 import miniAudio from "./../../components/miniAudio";
@@ -614,7 +614,7 @@ export default {
       // var tStamp = this.$getTimeStamp();
       let data = {
         // timeStamp: tStamp,
-        pid: this.pid,
+        pid: this.pid ? this.pid : null,
         goods_id: this.goodsId,
         version: "1.0"
       };

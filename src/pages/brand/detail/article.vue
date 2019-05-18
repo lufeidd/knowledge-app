@@ -121,7 +121,7 @@
         </svg>
         <svg class="icon " aria-hidden="true" v-else @click="collectAction">
           <use xlink:href="#icon-collect-line"></use>
-        </svg> &nbsp|&nbsp
+        </svg> &nbsp;|&nbsp;
         <svg class="icon " aria-hidden="true" v-if="baseData.is_praised == 0" @click="praiseAction">
           <use xlink:href="#icon-good-line"></use>
         </svg>
@@ -134,7 +134,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/brand/detail/article.scss" lang="scss"></style>
+<style src="@/style/scss/pages/brand/detail/article.scss" scoped lang="scss"></style>
 
 <script>
 import { ALBUM } from "../../../apis/album.js";

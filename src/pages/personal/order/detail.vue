@@ -124,6 +124,7 @@ export default {
     };
   },
   mounted(){
+    this.order_id = this.$route.params.order_id;
     this.getData()
   },
   methods: {
@@ -145,7 +146,7 @@ export default {
     async getData(){
       var tStamp = this.$getTimeStamp();
       var data={
-        order_id:1905062000270095,
+        order_id: this.order_id,
         version:"1.0",
         timestamp:tStamp,
       };

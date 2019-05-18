@@ -274,12 +274,17 @@
 }
 
 .page {
-  margin-bottom: 55px;
   box-sizing: border-box;
 }
 
 .page.active {
-  margin-bottom: 90px;
+  margin-bottom: 34px;
+}
+.isShow {
+  opacity: 1;
+}
+#miniAudio {
+  opacity: 0;
 }
 
 .bottomBox {

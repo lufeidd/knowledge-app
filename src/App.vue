@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view/>
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
   </div>
 </template>
 
@@ -102,7 +104,7 @@ export default {
   mounted() {
     // 注册登录
     // this.$router.push("/login/register");
-    this.$router.push("/login/index");
+    // this.$router.push("/login/index");
     // this.$router.push("/login/password");
     // this.$router.push("/login/index");
     // this.$router.push("/search");
