@@ -34,9 +34,10 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/login/password.scss" lang="scss"></style>
+<style src="@/style/scss/pages/login/password.scss" scoped lang="scss"></style>
 
 <style>
+@import url("./../../../style/scss/components/button.scss");
 #passwordPage .van-field__label {
     max-width: 0;
 }

@@ -79,11 +79,12 @@
 </template>
 
 <style lang="scss" scoped>
-html {
-  background-color: $greyLight;
+.van-button {
+  border-radius: 0;
 }
-
 #infoPage {
+  min-height: 100%;
+  background-color: $greyLight;
   & .listBox {
     padding: 10px 15px;
     background-color: $white;

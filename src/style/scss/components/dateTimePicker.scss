@@ -1,18 +1,18 @@
 @charset "UTF-8";
 
 .van-picker__cancel {
-  font-size: $fontSize + 1;
-  color: $cl9;
+  font-size: 14px + 1;
+  color: #999;
 }
 
 .van-picker__confirm {
-  font-size: $fontSize + 1;
-  color: $greyDark;
+  font-size: 14px + 1;
+  color: #f05654;
 }
 
 .van-picker__title {
-  color: $cl3;
-  font-size: $fontSize +1;
+  color: #333;
+  font-size: 14px +1;
 }
 
 .van-overlay {
@@ -32,8 +32,8 @@
 }
 
 .van-picker-column__item {
-  font-size: $fontSize - 1;
-  color: $cl6;
+  font-size: 14px - 1;
+  color: #666;
 }
 
 .van-picker__frame {

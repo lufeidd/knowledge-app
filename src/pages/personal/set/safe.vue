@@ -6,9 +6,10 @@
   </div>
 </template>
 
-<style lang="sass" scoped>
- html {
+<style lang="scss" scoped>
+ #safePage {
    background-color: $greyLight;
+   min-height: 100%;
  }
 </style>
 

@@ -1,6 +1,5 @@
 <template>
   <div id="setindexPage">
-
     <router-link to="/personal/set/info" class="listBox">
       <div class="left">
         <div class="ratioBox">
@@ -31,31 +30,32 @@
 </template>
 
 <style lang="scss" scoped>
-html {
-    background-color: $greyLight;
+.van-button {
+  border-radius: 0;
 }
-
 #setindexPage {
+  background-color: $greyLight;
+  min-height: 100%;
 
   & .listBox {
     padding: 10px 15px;
     background-color: $white;
     border-bottom: 1px $greyLight solid;
-    @include displayFlex (flex, flex-start, center);
+    @include displayFlex(flex, flex-start, center);
 
     & .left {
       margin-right: 10px;
       @include flexBasis(28px);
 
       & .ratioBox {
-        @include ratioBox (100%, 100%, 1px #e7e7e7 solid, contain, null, null);
+        @include ratioBox(100%, 100%, 1px #e7e7e7 solid, contain, null, null);
         border-radius: 28px;
         overflow: hidden;
         position: relative;
 
         & .box {
-          @include position (absolute, 'tl', 0, 0, 100%, 100%, null);
-          @include displayFlex (flex, center, center);
+          @include position(absolute, "tl", 0, 0, 100%, 100%, null);
+          @include displayFlex(flex, center, center);
 
           & img {
             max-width: 100%;
@@ -91,7 +91,6 @@ html {
     margin-top: 5px;
   }
 }
-
 </style>
 
 <script>
@@ -103,7 +102,7 @@ export default {
   data() {
     return {
       // 信息
-      infoData: {},
+      infoData: {}
     };
   },
   mounted() {
@@ -120,7 +119,7 @@ export default {
         this.$set(this.infoData, "user_header", res.response_data.user_header);
         this.$set(this.infoData, "user_name", res.response_data.user_name);
         this.$set(this.infoData, "is_login", res.response_data.is_login);
-        
+
         if (this.infoData.is_login == 1) {
           $(".ratioBox").css(
             "background-image",
@@ -132,24 +131,24 @@ export default {
       }
     },
     // 退出登录
-    logoutAction () {
+    logoutAction() {
       this.logoutData();
     },
     async logoutData() {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
-        version: "1.0",
+        version: "1.0"
       };
       data.sign = this.$getSign(data);
       let res = await LOGOUT(data);
       console.log("123", res.response_data);
       if (res.hasOwnProperty("response_code")) {
-        this.$router.push('/login/index');
+        this.$router.push("/login/index");
       } else {
         this.$toast(res.error_message);
       }
-    },
+    }
   }
 };
 </script>

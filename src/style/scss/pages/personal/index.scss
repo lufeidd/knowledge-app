@@ -5,11 +5,9 @@
 
 @charset "UTF-8";
 
-html {
-  background-color: $greyLight;
-}
-
 #personalPage {
+  min-height: 100%;
+  background-color: $greyLight;
 
   & .infoBox {
     @include bgDecorate($redLight, $white, null, 12px 22px, null);

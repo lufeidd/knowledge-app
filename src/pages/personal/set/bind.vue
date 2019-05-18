@@ -14,8 +14,9 @@
 </template>
 
 <style lang="scss" scoped>
- html {
+ #bindPage {
    background-color: $greyLight;
+   min-height: 100%;
  }
 </style>
 

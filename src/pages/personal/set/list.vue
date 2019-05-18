@@ -53,7 +53,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/set/list.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/set/list.scss" scoped lang="scss"></style>
 
 <script>
 //  引入接口

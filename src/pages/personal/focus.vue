@@ -46,7 +46,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/focus.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/focus.scss" scoped lang="scss"></style>
 
 <script>
 //  引入接口

@@ -98,7 +98,7 @@ img {
 </style>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
   name: "App",
   mounted() {
@@ -108,7 +108,6 @@ export default {
     // this.$router.push("/login/password");
     // this.$router.push("/login/index");
     // this.$router.push("/search");
-
     // 个人中心
     // this.$router.push("/personal/index");
     // this.$router.push("/personal/set/index");
@@ -120,35 +119,27 @@ export default {
     // this.$router.push("/personal/collect");
     // this.$router.push("/personal/focus");
     // this.$router.push("/personal/history");
-
     // 品牌商城
     // this.$router.push("/brand/index");
     // this.$router.push("/brand/mall");
     // this.$router.push("/brand/detail/book");
     // this.$router.push("/brand/detail/article");
-
     // 评价
     // this.$router.push("/personal/order/comment/index");
-
     // 我的评论
     // this.$router.push("/personal/help/feedback");
     // this.$router.push("/personal/help/index");
-
     // 我的购买
     // this.$router.push("/personal/order/list");
     // this.$router.push("/personal/order/invoice");
-
-
     // 专辑
     // this.$router.push("/album/index");
     // this.$router.push("/album/detail");
-
     // 下单
     // this.$router.push("/order/confirm");
     // this.$router.push("/order/detail");
     // this.$router.push("/pay/index");
     // this.$router.push("/pay/account");
-
   }
 };
 </script>
