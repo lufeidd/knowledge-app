@@ -17,7 +17,15 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/pay.scss" lang="scss"></style>
+<style src="@/style/scss/pages/pay.scss" lang="scss" scoped></style>
+
+<style>
+
+  #paysuccessPage .van-button--plain.van-button--danger {
+    margin-top: 25px;
+  }
+</style>
+
 
 <script>
 export default {

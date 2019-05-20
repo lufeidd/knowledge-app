@@ -97,7 +97,7 @@ export default new Router({
     {
       path: '/login/index',
       name: 'login',
-      component: login
+      component: login,
     },
     {
       path: '/login/password',
@@ -233,52 +233,65 @@ export default new Router({
     {
       path: '/personal/set/index',
       name: 'set',
-      component: set
+      component: set,
+      //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
+      beforeEnter: (to, from, next) => {
+        from.path == '/personal/set/info' ? next('/personal/index') : next();
+        from.path == '/personal/set/phone' ? next('/personal/index') : next();
+      },
     },
     {
       path: '/personal/set/address',
       name: 'address',
-      component: address
+      component: address,
+      //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
+      beforeEnter: (to, from, next) => {
+        from.path == '/personal/set/index' ? next('/personal/index') : next();
+      },
     },
     {
       path: '/personal/set/list',
       name: 'addresslist',
-      component: addresslist
+      component: addresslist,
     },
     {
       path: '/personal/set/info',
       name: 'info',
-      component: info
+      component: info,
     },
     {
       path: '/personal/set/safe',
       name: 'safe',
-      component: safe
+      component: safe,
     },
     {
       path: '/personal/set/cropper',
       name: 'cropper',
-      component: cropper
+      component: cropper,
     },
     {
       path: '/personal/set/bind',
       name: 'bind',
-      component: bind
+      component: bind,
     },
     {
       path: '/personal/set/cancel',
       name: 'cancel',
-      component: cancel
+      component: cancel,
     },
     {
       path: '/personal/set/password',
       name: 'setpassword',
-      component: setpassword
+      component: setpassword,
+      //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
+      beforeEnter: (to, from, next) => {
+        from.path == '/login/index' ? next('/login/index') : next();
+      },
     },
     {
       path: '/personal/set/phone',
       name: 'setphone',
-      component: setphone
+      component: setphone,
     },
     // 个人中心 - 帮助与反馈
     {
@@ -312,17 +325,26 @@ export default new Router({
     {
       path: '/album/index',
       name: 'album',
-      component: album
+      component: album,
+      meta: {
+        keepAlive: true,  // false不需要被缓存，true需要缓存
+      }
     },
     {
       path: '/album/detail',
       name: 'albumdetail',
-      component: albumdetail
+      component: albumdetail,
+      meta: {
+        keepAlive: true,  // false不需要被缓存，true需要缓存
+      },
     },
     {
       path: '/album/player',
       name: 'player',
-      component: player
+      component: player,
+      meta: {
+        keepAlive: true,  // false不需要被缓存，true需要缓存
+      },
     },
     {
       path: '/album/list',
@@ -389,7 +411,15 @@ export default new Router({
     {
       path: '/pay/account',
       name: 'payaccount',
-      component: payaccount
+      component: payaccount,
+      meta: {
+        keepAlive: true,  // false不需要被缓存，true需要缓存
+      },
+      //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
+      beforeEnter: (to, from, next) => {
+        from.path == '/pay/success' ? next('/personal/index') : next();
+        from.path == '/personal/index' ? next('/personal/index') : next();
+      },
     },
     {
       path: '/pay/success',

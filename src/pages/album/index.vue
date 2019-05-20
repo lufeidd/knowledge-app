@@ -334,6 +334,7 @@
       </van-tab>
     </van-tabs>
 
+    <div style="height: 60px;"></div>
     <div v-if="myAudioData" style="height: 60px;"></div>
 
     <!-- 试听 - 购买 -->
@@ -399,7 +400,14 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/album/index.scss" scoped lang="scss"></style>
+<style src="@/style/scss/pages/album/index.scss" lang="scss"></style>
+<style scoped>
+
+.van-button {
+  border-radius: 0;
+}
+</style>
+
 
 <script>
 import miniAudio from "./../../components/miniAudio";
@@ -456,7 +464,7 @@ export default {
           title: "相似"
         }
       ],
-      tabModel: 1,
+      tabModel: 0,
       // 评论
       discussData: [],
       commentPage: 1,
@@ -900,9 +908,7 @@ export default {
         }
       }, 600);
 
-      // console.log(
-      //   "localStorage迷你音频信息:", info, "当前goodsNo:", this.activeGoodNo, "当前pid:", this.baseData.goods_id, "当前goodsId:", this.myAudioData.goodsId, "当前currentTime：", this.myAudioData.currentTime
-      // );
+      // console.log("localStorage迷你音频信息:", info, "当前goodsNo:", this.activeGoodNo, "当前pid:", this.baseData.goods_id, "当前goodsId:", this.myAudioData.goodsId, "当前currentTime：", this.myAudioData.currentTime);
 
     },
     // 将当前音频播放信息存放到localStorage: miniAudio
@@ -918,44 +924,47 @@ export default {
        * __album专辑标题
        * __goodsId商品id
        */
-      let __goodsNo = info[0];
-      let __pid = info[1];
-      let __pic = info[2];
-      let __src = info[3];
-      let __duration = info[4];
-      let __currentTime = info[5];
-      let __program = info[6];
-      let __album = info[7];
-      let __goodsId = info[8];
+      if(info != null && info.length > 0) {
+        let __goodsNo = info[0];
+        let __pid = info[1];
+        let __pic = info[2];
+        let __src = info[3];
+        let __duration = info[4];
+        let __currentTime = info[5];
+        let __program = info[6];
+        let __album = info[7];
+        let __goodsId = info[8];
 
-      // 设置音频信息
-      this.$set(this.myAudioData, "goodsNo", __goodsNo);
-      this.$set(this.myAudioData, "pid", __pid);
-      this.$set(this.myAudioData, "pic", __pic);
-      this.$set(this.myAudioData, "src", __src);
-      this.$set(this.myAudioData, "duration", __duration);
-      this.$set(this.myAudioData, "currentTime", __currentTime);
-      this.$set(this.myAudioData, "program", __program);
-      this.$set(this.myAudioData, "album", __album);
-      this.$set(this.myAudioData, "goodsId", __goodsId);
+        // 设置音频信息
+        this.$set(this.myAudioData, "goodsNo", __goodsNo);
+        this.$set(this.myAudioData, "pid", __pid);
+        this.$set(this.myAudioData, "pic", __pic);
+        this.$set(this.myAudioData, "src", __src);
+        this.$set(this.myAudioData, "duration", __duration);
+        this.$set(this.myAudioData, "currentTime", __currentTime);
+        this.$set(this.myAudioData, "program", __program);
+        this.$set(this.myAudioData, "album", __album);
+        this.$set(this.myAudioData, "goodsId", __goodsId);
+        // console.logthis.myAudioData)
 
-      // localStorage存储
-      localStorage.setItem("miniAudio", JSON.stringify(info));
+        // localStorage存储
+        localStorage.setItem("miniAudio", JSON.stringify(info));
 
-      // 解决父页面子组件实时刷新问题
-      setTimeout(() => {
-        this.$refs.control.audioData.pic = __pic;
-        this.$refs.control.audioData.src = __src;
-        this.$refs.control.audioData.currentTime = __currentTime;
-        this.$refs.control.audioData.duration = __duration;
-        this.$refs.control.audioData.program = __program;
-        this.$refs.control.audioData.album = __album;
-      }, 600);
+        // 解决父页面子组件实时刷新问题
+        setTimeout(() => {
+          this.$refs.control.audioData.pic = __pic;
+          this.$refs.control.audioData.src = __src;
+          this.$refs.control.audioData.currentTime = __currentTime;
+          this.$refs.control.audioData.duration = __duration;
+          this.$refs.control.audioData.program = __program;
+          this.$refs.control.audioData.album = __album;
+        }, 600);
 
-      if (info[3] == null) {
-        $("#miniAudio").css("display", "none");
-      } else {
-        $("#miniAudio").css("display", "block");
+        if (info[3] == null) {
+          $("#miniAudio").css("display", "none");
+        } else {
+          $("#miniAudio").css("display", "block");
+        }
       }
     },
     // localStorage:audioProgress存放节目播放进度
@@ -973,19 +982,19 @@ export default {
 
       // 临时存放节目进度
       this.progressList = [];
-      if(result != null && result.length > 0) {
+      
         for(let i = 0; i < this.programList.length; i++) {
           this.progressList.push(this.programList[i]);
           // console.log(this.programList[i])
-
-          for(let j = 0; j < result.length; j++) {
-            // 当节目播放进度存在localStorage时,显示已播放进度
-            if(result[j].pid == this.baseData.goods_id && result[j].goods_id == this.programList[i].goods_id) {
-              this.$set(this.progressList[i], 'progressHistory', result[j].progress);
+          if(result != null && result.length > 0) {
+            for(let j = 0; j < result.length; j++) {
+              // 当节目播放进度存在localStorage时,显示已播放进度
+              if(result[j].pid == this.baseData.goods_id && result[j].goods_id == this.programList[i].goods_id) {
+                this.$set(this.progressList[i], 'progressHistory', result[j].progress);
+              }
             }
           }
         }
-      }
 
     },
     // 将当前专辑节目列表播放进度信息存放到localStorage
@@ -1067,10 +1076,13 @@ export default {
       // 默认从0播放,如果localStorage有播放进度记录则从记录处播放
       var __currentTime = 0;
 
-      // 遍历localStorage中记录进度的数组，获取当前节目当前进度
-      for(let i = 0; i < result.length; i++) {
-        if(goods_id == result[i].goods_id && pid == result[i].pid) {
-          __currentTime = result[i].progress;
+      if(result != null && result.length > 0) {
+
+        // 遍历localStorage中记录进度的数组，获取当前节目当前进度
+        for(let i = 0; i < result.length; i++) {
+          if(goods_id == result[i].goods_id && pid == result[i].pid) {
+            __currentTime = result[i].progress;
+          }
         }
       }
 

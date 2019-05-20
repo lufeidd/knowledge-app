@@ -8,10 +8,6 @@
   background-color: $greyLight;
   min-height: 100%;
 
-  & .van-button--plain.van-button--danger {
-    margin-top: 25px;
-  }
-
   & .icon {
     @include font(null, 60px, $redDark);
   }
@@ -26,7 +22,7 @@
       line-height: 2;
     }
 
-    .money {
+    & .money {
       @include font(null, $fontSize - 2, #666);
 
       & .price {
@@ -286,6 +282,7 @@
 }
 
 #payIndex {
+  
   background-color: $greyLight;
 
   & .bottomBox {
@@ -363,11 +360,43 @@
     }
   }
 
+
+  & .listBox.disable {
+    & .list {
+      opacity: .5;
+    }
+  }
+}
+
+#payaccountPage {
   & .listBox {
     @include displayFlex (flex, flex-start, center);
     border-bottom: 1px $greyLight solid;
     background-color: $white;
     padding: 15px;
+
+    & .title {
+      @include font("PingFangBold", $fontSize, #333);
+      @include twoLines;
+      white-space: pre-wrap;
+      position: relative;
+      height: 40px;
+
+      & .text {
+        @include twoLines;
+        white-space: pre-wrap;
+      }
+    }
+
+    & .info {
+      position: relative;
+      margin-top: 10px;
+
+      & .history {
+        @include font("PingFangBold", $fontSize + 1, $redDark);
+        margin-right: 8px;
+      }
+    }
 
     & .list {
       @include displayFlex (flex, center, center);
@@ -387,40 +416,20 @@
       & .center {
         margin-left: 10px;
 
-        & .title {
-          @include twoLines;
-          @include font("PingFangBold", $fontSize, #333);
-          position: relative;
-          height: 40px;
-
-          & .text {
-            @include twoLines;
-          }
-        }
-
-        & .subTitle {
-          @include font(null, $fontSize - 1, #999);
-          line-height: 17px;
-          height: 17px;
-        }
-
-        & .info {
-          position: relative;
-          margin-top: 10px;
-
-          & .history {
-            @include font("PingFangBold", $fontSize + 1, $redDark);
-            margin-right: 8px;
-          }
-        }
-
       }
     }
 
-  }
+    & .center {
+      @include textOverflow;
 
+      & .title {
+        @include textOverflow;
+        @include font("PingFangBold", $fontSize + 1, #666);
+        top: 0;
+      }
 
-  & .listBox {
+    }
+
     & .weixin {
 
       & .icon {
@@ -431,36 +440,6 @@
       }
     }
 
-    // & .zfb {
-
-    //   & .icon {
-    //     color: $blueDark;
-    //     width: 25px;
-    //     height: 25px;
-    //     position: relative;
-    //   }
-    // }
-  }
-
-  & .listBox.disable {
-    & .check {
-
-      & .icon {
-        color: #ccc;
-      }
-    }
-
-    & .center,
-    & .wallet {
-      opacity: .5;
-    }
-  }
-
-  & .listBox {
-    @include displayFlex (flex, flex-start, center);
-    border-bottom: 1px $greyLight solid;
-    background-color: $white;
-
     & .left.two {
       text-align: right;
 
@@ -470,27 +449,13 @@
       }
     }
 
-    & .wallet .icon {
-      color: $redLight;
-      width: 25px;
-      height: 25px;
-      position: relative;
-    }
-
-    & .center {
-      @include textOverflow;
-
-      & .title {
-        @include textOverflow;
-        @include font("PingFangBold", $fontSize + 1, #666);
-        top: 0;
-
-        & .text {
-          @include textOverflow;
-          display: block;
-        }
+    & .wallet {
+      & .icon {
+        color: $redLight;
+        width: 25px;
+        height: 25px;
+        position: relative;
       }
-
     }
   }
 }

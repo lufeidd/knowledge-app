@@ -125,11 +125,15 @@
 </template>
 
 <style src="@/style/scss/pages/pay.scss" scoped lang="scss"></style>
-<style>
-@import url("./../../style/scss/components/button.scss");
+<style lang="scss">
+
+.van-button {
+  border-radius: 50px;
+}
 
 .van-dialog__confirm,
-.van-dialog__confirm:active {
+.van-dialog__confirm:active,
+.van-button::before {
   display: none;
 }
 </style>
@@ -203,14 +207,17 @@ export default {
         this.descInfo = res.response_data.desc;
         this.user_balance = res.response_data.user_balance;
 
-        console.log(123, res);
+        // console.log(res);
       } else {
         this.$toast(res.error_message);
       }
     },
     // 选择支付方式
     payType(key, item) {
-      if (item.bank_type == 'balance' && this.user_balance < this.goodsInfo.price) {
+      if (
+        item.bank_type == "balance" &&
+        this.user_balance < this.goodsInfo.price
+      ) {
         this.$toast("余额不足以支付~");
         return;
       }
@@ -255,8 +262,8 @@ export default {
         this.codeData.timeMsg = "获取验证码";
       }
       // 微信支付
-      if(this.activeIndex == 1) {
-      //   this.$router.push({name: 'pay', params: {goodsId: this.goodsInfo.goods_id, money: this.goodsInfo.price}});
+      if (this.activeIndex == 1) {
+        //   this.$router.push({name: 'pay', params: {goodsId: this.goodsInfo.goods_id, money: this.goodsInfo.price}});
       }
     },
     onInput(key) {
