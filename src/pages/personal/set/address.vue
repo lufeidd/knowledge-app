@@ -10,8 +10,11 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/set/address.scss" lang="scss"></style>
-
+<style src="@/style/scss/pages/personal/set/address.scss" scoped lang="scss"></style>
+<style>
+@import url("./../../../style/scss/components/dateTimePicker.scss");
+@import url("./../../../style/scss/components/button.scss");
+</style>
 <script>
 //  引入接口
 import { ADDRESS } from "../../../apis/public.js";

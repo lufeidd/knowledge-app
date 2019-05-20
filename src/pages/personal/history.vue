@@ -69,7 +69,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/history.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/history.scss" scoped lang="scss"></style>
 
 <script>
 //  引入接口

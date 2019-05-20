@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/remain/index.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/remain/index.scss" scoped lang="scss"></style>
 
 <script>
 import { USER_REMAIN_INFO } from "../../../apis/user.js";

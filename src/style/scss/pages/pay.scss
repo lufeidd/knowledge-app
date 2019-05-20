@@ -4,14 +4,9 @@
 */
 @charset "UTF-8";
 
-// 组件
-@import url("./../components/button.scss");
-
-html {
-  background-color: $greyLight;
-}
-
 #paysuccessPage {
+  background-color: $greyLight;
+  min-height: 100%;
 
   & .van-button--plain.van-button--danger {
     margin-top: 25px;
@@ -47,6 +42,9 @@ html {
 }
 
 #accountPage {
+  background-color: $greyLight;
+  min-height: 100%;
+
   .content {
     padding: 45px 0 35px 0;
     color: $cl3;
@@ -106,7 +104,7 @@ html {
 }
 
 #recordPage {
-  height: 100%;
+  min-height: 100%;
   background-color: $greyLight;
   font-size: $fontSize - 2;
   color: $cl0;
@@ -196,7 +194,7 @@ html {
 }
 
 #detailPage {
-  height: 100%;
+  min-height: 100%;
   background-color: $greyLight;
   font-size: $fontSize - 2;
   color: $cl0;
@@ -288,6 +286,8 @@ html {
 }
 
 #payIndex {
+  background-color: $greyLight;
+
   & .bottomBox {
     & .icon {
       width: 18px;
@@ -318,9 +318,8 @@ html {
 
 #payaccountPage {
 
-    & .van-dialog__confirm, .van-dialog__confirm:active {
-        display: none;
-    }
+  background-color: $greyLight;
+  min-height: 100%;
 
   & .codeBox {
 
@@ -337,9 +336,9 @@ html {
     }
 
     & .code {
-        @include font(null, $fontSize - 1, #999);
-        padding: 10px 0;
-        line-height: 30px;
+      @include font(null, $fontSize - 1, #999);
+      padding: 10px 0;
+      line-height: 30px;
     }
   }
 
@@ -365,60 +364,64 @@ html {
   }
 
   & .listBox {
-    @include displayFlex (flex, center, center);
+    @include displayFlex (flex, flex-start, center);
     border-bottom: 1px $greyLight solid;
     background-color: $white;
     padding: 15px;
 
-    & .check {
-      margin-right: 10px;
+    & .list {
+      @include displayFlex (flex, center, center);
 
-      & .icon {
-        color: #999;
+      & .check {
+        margin-right: 10px;
+
+        & .icon {
+          color: #999;
+        }
       }
-    }
 
-    & .left {
-      @include flexBasis(80px);
-    }
+      & .left {
+        @include flexBasis(80px);
+      }
 
-    & .center {
-      margin-left: 10px;
+      & .center {
+        margin-left: 10px;
 
-      & .title {
-        @include twoLines;
-        @include font("PingFangBold", $fontSize, #333);
-        position: relative;
-        height: 40px;
-
-        & .text {
+        & .title {
           @include twoLines;
+          @include font("PingFangBold", $fontSize, #333);
+          position: relative;
+          height: 40px;
+
+          & .text {
+            @include twoLines;
+          }
         }
-      }
 
-      & .subTitle {
-        @include font(null, $fontSize - 1, #999);
-        line-height: 17px;
-        height: 17px;
-      }
-
-      & .info {
-        position: relative;
-        margin-top: 10px;
-
-        & .history {
-          @include font("PingFangBold", $fontSize + 1, $redDark);
-          margin-right: 8px;
+        & .subTitle {
+          @include font(null, $fontSize - 1, #999);
+          line-height: 17px;
+          height: 17px;
         }
-      }
 
+        & .info {
+          position: relative;
+          margin-top: 10px;
+
+          & .history {
+            @include font("PingFangBold", $fontSize + 1, $redDark);
+            margin-right: 8px;
+          }
+        }
+
+      }
     }
 
   }
 
 
-  & .listBox.weixin {
-    & .text {
+  & .listBox {
+    & .weixin {
 
       & .icon {
         color: $greenLight;
@@ -427,9 +430,19 @@ html {
         position: relative;
       }
     }
+
+    // & .zfb {
+
+    //   & .icon {
+    //     color: $blueDark;
+    //     width: 25px;
+    //     height: 25px;
+    //     position: relative;
+    //   }
+    // }
   }
 
-  & .listBox.yue.disable {
+  & .listBox.disable {
     & .check {
 
       & .icon {
@@ -443,11 +456,10 @@ html {
     }
   }
 
-  & .listBox.yue {
-    @include displayFlex (flex, center, center);
+  & .listBox {
+    @include displayFlex (flex, flex-start, center);
     border-bottom: 1px $greyLight solid;
     background-color: $white;
-    padding: 0 15px;
 
     & .left.two {
       text-align: right;
