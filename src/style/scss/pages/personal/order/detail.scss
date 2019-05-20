@@ -181,6 +181,10 @@ body{
     }
     .orderInfo{
       .van-cell{
+        .van-cell__title{
+          font-size: $fontSize - 1;
+          color: $cl9;
+        }
         border-bottom: 1px solid $greyLight;
       }
     }

@@ -111,7 +111,7 @@
           <img v-lazy="item.brand_header_pic" alt class="icon">
           <span class="publish">{{item.brand_name}}</span>
         </div>
-        <span :class="item.state ==0? 'order1':'order2'">{{item.state == 0? '待收货':'已完成'}}</span>
+        <span :class="item.state ==0? 'order1':'order2'">{{item.state == 0? '已完成':''}}</span>
       </div>
       <div class="section" v-for="item1 in item.details">
         <div class="bookDetail">
@@ -215,7 +215,7 @@ export default {
     toDetail(item){
       console.log(item)
       this.$router.push({
-          name:'orderlist',
+          name:'orderdetail',
           params:{
             order_id:item.order_id,
           }

@@ -14,7 +14,7 @@
       :key="key"
     >
       <van-swipe-cell :right-width="65" :left-width="0" :on-close="historyClose">
-        <router-link to="/" class="listBox">
+        <router-link v-if="historyStatus[key].id != null" to="/" class="listBox">
           <div class="left">
             <div class="ratioBox">
               <div class="box">
@@ -61,7 +61,7 @@
             </svg>
           </div>
         </router-link>
-        <span slot="right">
+        <span v-if="historyStatus[key].id != null" slot="right" @click="historyCancel(item.target, key)">
           <div>取消历史</div>
         </span>
       </van-swipe-cell>
@@ -79,20 +79,22 @@ export default {
   data() {
     return {
       historyList: [],
+      // 临时存放关注数据
+      historyStatus: [],
       historyLoading: false,
       historyFinished: false,
       historyPage: 1
     };
   },
   mounted() {
-    this.historyData("history", null);
+    this.historyData("history", null, null);
   },
   methods: {
     historyLoad() {
-      this.historyData("history", null);
+      this.historyData("history", null, null);
     },
     // 获取历史接口信息
-    async historyData(__type, brandId) {
+    async historyData(__type, brandId, key) {
       var data = {};
       var res;
       switch (__type) {
@@ -103,20 +105,27 @@ export default {
             version: "1.0"
           };
           res = await USER_HISTORY(data);
-          setTimeout(() => {
-            var result = res.response_data.result;
-            for (let i = 0; i < result.length; i++) {
-              this.historyList.push(result[i]);
-            }
-            // 加载状态结束
-            this.historyLoading = false;
-            this.historyPage++;
-            // 数据全部加载完成
-            if (this.historyList.length >= res.response_data.total_count) {
-              this.historyFinished = true;
-            }
-            console.log("历史列表：", result);
-          }, 500);
+
+          // 出错提示
+          if (res.hasOwnProperty("response_code")) {
+            setTimeout(() => {
+              var result = res.response_data.result;
+              for (let i = 0; i < result.length; i++) {
+                this.historyList.push(result[i]);
+                this.historyStatus.push(result[i]);
+              }
+              // 加载状态结束
+              this.historyLoading = false;
+              this.historyPage++;
+              // 数据全部加载完成
+              if (this.historyList.length >= res.response_data.total_count) {
+                this.historyFinished = true;
+              }
+              console.log("历史列表：", result);
+            }, 500);
+          } else {
+            this.$toast(res.error_message);
+          }
           break;
         case "cancel":
           data = {
@@ -124,19 +133,22 @@ export default {
             version: "1.0"
           };
           res = await USER_HISTORY_CANCEL(data);
-          this.$toast("已取消历史~");
+          
+          if (res.hasOwnProperty("response_code")) {
+            this.historyStatus[key].id = null;
+            if(this.historyStatus.length == 1) {
+              this.historyList = [];
+            }
+            this.$toast("已取消历史~");
+          } else {
+            this.$toast(res.error_message);
+          }
           break;
-      }
-
-      // 出错提示
-      if (res.hasOwnProperty("response_code")) {
-      } else {
-        this.$toast(res.error_message);
       }
     },
     // 取消历史
-    historyCancel(brandId) {
-      this.historyData("cancel", brandId);
+    historyCancel(brandId, key) {
+      this.historyData("cancel", brandId, key);
     },
     historyClose(clickPosition, instance) {
       instance.close();

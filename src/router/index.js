@@ -65,6 +65,7 @@ import search from '@/pages/search'
 import album from '@/pages/album/index'
 import albumdetail from '@/pages/album/detail'
 import player from '@/pages/album/player'
+import albumlist from '@/pages/album/list'
 
 // 品牌
 import mall from '@/pages/brand/mall'
@@ -322,6 +323,11 @@ export default new Router({
       path: '/album/player',
       name: 'player',
       component: player
+    },
+    {
+      path: '/album/list',
+      name: 'albumlist',
+      component: albumlist
     },
     // 品牌
     {

@@ -1,4 +1,6 @@
 import crypto from "crypto";
+import axios from 'axios'
+import qs from "Qs";
 
 //  引入时间戳接口
 // import req from "./../apis/http.js";
@@ -207,6 +209,41 @@ export default {
       console.log("md5:", res);
       return res;
     }
+
+    // 不定外链传参翻译
+    Vue.prototype.$translate = function (data) {
+      var dataTmp = data;
+      var dataRes = {};
+      
+      switch (dataTmp.name) {
+        case 'book/detail':
+          dataRes = {
+            name: 'article',
+            params: {
+              goods_id: dataTmp.params.book_id
+            }
+          }
+          return dataRes;
+
+          break;
+      }
+      return '';
+    }
+
+    // getCookie
+    // Vue.prototype.$getCookie = function (c_name) {
+    //   if(document.cookie.length > 0) {
+    //     c_start = document.cookie.indexOf(c_name + "=");
+    //     if (c_start != -1) {
+    //       c_start = c_start + c_name.length + 1;
+    //       c_end = document.cookie.indexOf(";", c_start);
+    //       if (c_end == -1) c_end = document.cookie.length;
+
+    //       return unescape(document.cookie.substring(c_start, c_end));
+    //     }
+    //   }
+    //   return ""
+    // }
 
   }
 }

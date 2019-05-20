@@ -73,7 +73,7 @@
       <div class="orderNumber">
         <span class="order">订单编号</span>
         <div class="copybox">
-          <span class="copy" @click="copy" :data-clipboard-text="fictitious.orderNumber">复制</span>
+          <span class="copy" @click="copy" :data-clipboard-text="infoData.order_id">复制</span>
         </div>
         <span class="number">{{infoData.order_id}}</span>
       </div>
@@ -99,14 +99,18 @@ import{USER_ORDER_DETAIL_GET} from "../../../apis/user.js"
 export default {
   data() {
     return {
-      fictitious: null,
+      // fictitious: {
+      //   orderNumber: 1955655265521222,
+      //   orderTime: "2019.4.17 19:15:22",
+      //   payWay: "支付宝支付",
+      //   payTime: "2019.4.17 19:16:02"
+      // },
       infoData:null,
       order_id:'',
     };
   },
   mounted(){
     this.order_id = this.$route.params.order_id;
-    console.log(this.order_id);
     this.getData()
   },
   methods: {

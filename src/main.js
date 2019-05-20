@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router/index'
+import axios from 'axios'
 
 // 自定义插件
 import plugin from './plugin/index'
@@ -31,6 +32,9 @@ import md5 from 'js-md5';
 
 // vant
 // import 'vant/lib/index.css'
+
+// cookies
+import VueCookies from 'vue-cookies'
 
 import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
@@ -88,10 +92,16 @@ Vue.use(VueAwesomeSwiper)
 Vue.use(VueCropper)
 
 // JSEncrypt
-Vue.prototype.$jsEncrypt = JsEncrypt
+// Vue.prototype.$jsEncrypt = JsEncrypt
+
+// 让ajax携带cookie
+// axios.defaults.withCredentials = true;
 
 // md5加密
 Vue.prototype.$md5 = md5;
+
+// cookies
+Vue.use(VueCookies)
 
 Vue.config.productionTip = false
 

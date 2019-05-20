@@ -33,7 +33,8 @@
       </p>
 
       <ul>
-        <li  v-for="item,index in hotSearch" :key="index">{{item}}</li>
+        <!-- <li  v-for="item,index in hotSearch" :key="index">{{item}}</li> -->
+        <li>已完成</li>
       </ul>
 
     </div>
@@ -66,6 +67,7 @@ export default {
         search: "",
         placeholderText:'请输入商品名称',
         list: [],
+        type:'',
       },
       type:'',
       hotSearch:null,
@@ -74,6 +76,7 @@ export default {
   },
   mounted(){
     this.type = this.$route.query.type;
+    this.searchHintData.type = this.$route.query.type;
     console.log(this.type);
     this.getHotKey();
   },

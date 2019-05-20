@@ -2,8 +2,7 @@
   <div id="payIndex">
     <div class="content">
       <div class="money">
-        ¥
-        <span class="price">{{money.toFixed(2)}}</span>
+        ¥ <span class="price">{{ money }}</span>
       </div>
       <div class="msg">支付剩余时间 {{ timeData.date }}</div>
     </div>
@@ -21,6 +20,9 @@
 <style src="@/style/scss/pages/pay.scss" lang="scss"></style>
 
 <script>
+//  引入接口
+import { ORDER_VIRTUAL_ADD } from "../../apis/shopping.js";
+
 export default {
   data() {
     return {
@@ -28,12 +30,36 @@ export default {
         time: 100,
         date: '00:00:00'
       },
-      money: 19.77
+      money: null,
+      goodsId: null,
     };
   },
   mounted() {
+    this.goodsId = this.$route.params.goodsId;
+    this.money = this.$route.params.money;
+    // 倒计时
     this.$timeCountDown(this.timeData);
-  }
+    // 新增虚拟订单
+    this.addOrderData();
+  },
+  methods: {
+    // 新增虚拟订单
+    async addOrderData () {
+      // var tStamp = this.$getTimeStamp();
+      let data = {
+        // timeStamp: tStamp,
+        goods_id: this.goodsId,
+        version: "1.0"
+      };
+      let res = await ORDER_VIRTUAL_ADD(data);
+      if (res.hasOwnProperty("response_code")) {
+        console.log(123, res.response_data[0])
+      } else {
+        this.$toast(res.error_message);
+      }
+
+    },
+  },
 };
 </script>
 

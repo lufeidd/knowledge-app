@@ -7,6 +7,7 @@
         v-model="searchHintData.search"
         @input="showList"
         @focus="inputText"
+        data-type="searchHintData.type"
         :placeholder="searchHintData.placeholderText"
       >
       <van-icon name="clear" size="16" color="#ccc" class="clearIcon" @click="clearText"/>
@@ -84,7 +85,8 @@ export default {
       $("#searchHint ul").css({ display: "none" });
     },
     async showList() {
-      if(this.type == 'brand'){
+      console.log(this.searchHintData.type)
+      if(this.searchHintData.type == 'brand'){
         var tStamp = this.$getTimeStamp();
         var data = {
           k:this.searchHintData.search,

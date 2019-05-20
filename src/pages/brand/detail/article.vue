@@ -29,8 +29,8 @@
       </div>
     </div>
     <!-- 轮播部分 -->
-    <div class="showContent">
-      <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
+    <div class="showContent" v-if="recommendState">
+      <!-- <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
         <swiper-slide v-for="item,index in recommendData" :key="index">
           <div class="foot">
             <div class="ratiobox">
@@ -42,86 +42,128 @@
             </div>
           </div>
         </swiper-slide>
-      </swiper>
+      </swiper>-->
+      <van-row gutter="20" class="booklist">
+        <van-col span="8" v-for="item,index in recommendData" :key="index"  >
+          <div class="ratioBox" @click="toDetail(item)">
+            <div class="box">
+              <img :src="item.pic">
+            </div>
+          </div>
+          <div class="title">{{ item.title }}</div>
+        </van-col>
+      </van-row>
+      <!-- <van-row gutter="20" class="booklist">
+        <van-col span="8" >
+          <div class="ratioBox">
+            <div class="box">
+              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+            </div>
+          </div>
+          <div class="title">call me call my name</div>
+        </van-col>
+        <van-col span="8" >
+          <div class="ratioBox">
+            <div class="box">
+              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+            </div>
+          </div>
+          <div class="title">call me call my name</div>
+        </van-col>
+        <van-col span="8" >
+          <div class="ratioBox">
+            <div class="box">
+              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+            </div>
+          </div>
+          <div class="title">call me call my name</div>
+        </van-col>
+        <van-col span="8" >
+          <div class="ratioBox">
+            <div class="box">
+              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+            </div>
+          </div>
+          <div class="title">call me call my name</div>
+        </van-col>
+        <van-col span="8" >
+          <div class="ratioBox">
+            <div class="box">
+              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+            </div>
+          </div>
+          <div class="title">call me call my name</div>
+        </van-col>
+      </van-row> -->
     </div>
-            <!-- 评论 -->
-            <div class="commentBox">
-              <van-cell
-                :title="totalCount"
-                is-link
-                value="我要评论"
-                @click="openAnswer('comment', null)"
-              />
+    <!-- 评论 -->
+    <div class="commentBox">
+      <van-cell :title="totalCount" is-link value="我要评论" @click="openAnswer('comment', null)"/>
 
-              <van-list
-                v-model="commentLoading"
-                :finished="commentFinished"
-                finished-text="没有更多了"
-                @load="commentLoad"
-              >
-                <div class="listBox" v-for="(item, key) in discussData" :key="key">
-                  <div class="left">
-                    <div class="ratioBox">
-                      <div class="box">
-                        <img :src="item.user_header">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="center">
-                    <div class="title">
-                      <div class="text">{{ item.nick_name }}</div>
-                    </div>
-                    <div class="subTitle">{{ item.content }}</div>
+      <van-list
+        v-model="commentLoading"
+        :finished="commentFinished"
+        finished-text="没有更多了"
+        @load="commentLoad"
+      >
+        <div class="listBox" v-for="(item, key) in discussData" :key="key">
+          <div class="left">
+            <div class="ratioBox">
+              <div class="box">
+                <img :src="item.user_header">
+              </div>
+            </div>
+          </div>
+          <div class="center">
+            <div class="title">
+              <div class="text">{{ item.nick_name }}</div>
+            </div>
+            <div class="subTitle">{{ item.content }}</div>
 
-                    <div class="messageBox" v-if="answerData[key].length > 0">
-                      <!-- 回复 -->
+            <div class="messageBox" v-if="answerData[key].length > 0">
+              <!-- 回复 -->
 
-                      <!-- <div
+              <!-- <div
                         class="message active"
                         v-for="(replyItem, key) in item.reply_list"
                         :key="key"
                       >
                         <span class="name">{{ replyItem.nick_name }}</span>
                         <span class="dialog">{{ replyItem.content }}</span>
-                      </div>-->
+              </div>-->
 
-                      <div
-                        class="message active"
-                        v-for="(replyItem, key) in answerData[key]"
-                        :key="key"
-                      >
-                        <span class="name">{{ replyItem.nick_name }}</span>
-                        <span class="dialog">{{ replyItem.content }}</span>
-                      </div>
+              <div class="message active" v-for="(replyItem, key) in answerData[key]" :key="key">
+                <span class="name">{{ replyItem.nick_name }}</span>
+                <span class="dialog">{{ replyItem.content }}</span>
+              </div>
 
-                      <div
-                        class="message active"
-                        v-if="item.reply_num > 2 && replyPage[key] <= item.reply_total_page"
-                      >
+              <div
+                class="message active"
+                v-if="item.reply_num > 2 && replyPage[key] <= item.reply_total_page"
+              >
+                <!-- <van-pagination v-model="item.reply_current_page" :page-count="item.reply_total_page" mode="simple" @change="pageChange(item.comment_id, key)" /> -->
 
-                        <!-- <van-pagination v-model="item.reply_current_page" :page-count="item.reply_total_page" mode="simple" @change="pageChange(item.comment_id, key)" /> -->
-
-                        <span class="name" @click="pageChange(item.comment_id, key)">
-                          共{{ item.reply_num }}条回复
-                          <svg class="icon" aria-hidden="true">
-                            <use xlink:href="#icon-fold-line"></use>
-                          </svg>
-                          <!-- <svg class="icon" aria-hidden="true">
+                <span class="name" @click="pageChange(item.comment_id, key)">
+                  共{{ item.reply_num }}条回复
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-fold-line"></use>
+                  </svg>
+                  <!-- <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-unfold-line"></use>
-                          </svg>-->
-                        </span>
-                      </div>
-                    </div>
-
-                    <!-- 回复 -->
-                    <div class="answerBox">
-                      <span class="date">{{ item.create_time }}</span>
-                      <span class="action" @click="openAnswer('reply', item.comment_id)">回复</span>
-                    </div>
-                  </div>
-                </div>
-              </van-list>
+                  </svg>-->
+                </span>
+              </div>
             </div>
+
+            <!-- 回复 -->
+            <div class="answerBox">
+              <span class="date">{{ item.create_time }}</span>
+              <span class="action" @click="openAnswer('reply', item.comment_id)">回复</span>
+            </div>
+          </div>
+        </div>
+      </van-list>
+    </div>
     <!-- 评论 -->
     <van-popup v-model="commentModel" position="bottom">
       <div class="audioList">
@@ -147,13 +189,23 @@
     <div class="pinglun">
       <div class="write" @click="openAnswer">快来写评论吧!</div>
       <div class="nice">
-        <svg class="icon add" aria-hidden="true" v-if="baseData.collect_id > 0" @click="collectAction">
+        <svg
+          class="icon add"
+          aria-hidden="true"
+          v-if="baseData.collect_id > 0"
+          @click="collectAction"
+        >
           <use xlink:href="#icon-collect-block"></use>
         </svg>
-        <svg class="icon " aria-hidden="true" v-else @click="collectAction">
+        <svg class="icon" aria-hidden="true" v-else @click="collectAction">
           <use xlink:href="#icon-collect-line"></use>
         </svg> &nbsp|&nbsp
-        <svg class="icon " aria-hidden="true" v-if="baseData.is_praised == 0" @click="praiseAction">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          v-if="baseData.is_praised == 0"
+          @click="praiseAction"
+        >
           <use xlink:href="#icon-good-line"></use>
         </svg>
         <svg class="icon add" aria-hidden="true" v-else @click="praiseAction">
@@ -161,14 +213,13 @@
         </svg>
       </div>
     </div>
-
   </div>
 </template>
 
 <style src="@/style/scss/pages/brand/detail/article.scss" lang="scss"></style>
 
 <script>
-import { ALBUM,ALBUM_DETAIL } from "../../../apis/album.js";
+import { ALBUM, ALBUM_DETAIL } from "../../../apis/album.js";
 import {
   COLLECT_ADD,
   COLLECT_CANCEL,
@@ -203,20 +254,23 @@ export default {
       // 存放发布按钮类型，comment为发布评论，reply为发布回复
       punishType: "comment",
       //页面基本信息
-      baseData:{},
+      baseData: {},
       // 文章相关信息
       articleInfo: {},
       swiperOption: {
         slidesPerView: 1.2
       },
       // 推荐列表信息
-      recommendData:[],
-    }
+      recommendData: [],
+      recommendState:false,
+      goodsId: 18,
+    };
   },
-  mounted(){
+  mounted() {
+    this.goodsId = this.$route.params.goods_id;
     this.getData();
     this.getRecommendData();
-    console.log('ID:',this.baseData.article_id)
+    console.log("ID:", this.recommendData);
   },
   methods: {
     // 获取关注接口信息
@@ -227,7 +281,7 @@ export default {
         case "focus":
           data = {
             brand_id: this.articleInfo.brand_id,
-            version: "1.0",
+            version: "1.0"
           };
           res = await FOCUS_ADD(data);
           this.articleInfo.is_followed = 1;
@@ -282,7 +336,7 @@ export default {
           data = {
             type: this.baseData.goods_type,
             target: this.baseData.article_id,
-            version: "1.0",
+            version: "1.0"
           };
           res = await COLLECT_ADD(data);
           this.baseData.collect_id = 1;
@@ -319,7 +373,7 @@ export default {
         case "focus":
           data = {
             goods_id: this.baseData.article_id,
-            type:this.baseData.goods_type,
+            type: this.baseData.goods_type,
             version: "1.0"
           };
           res = await GOODS_PRAISE_ADD(data);
@@ -329,7 +383,7 @@ export default {
         case "cancel":
           data = {
             goods_id: this.baseData.article_id,
-            type:this.baseData.goods_type,
+            type: this.baseData.goods_type,
             version: "1.0"
           };
           res = await GOODS_PRAISE_DELETE(data);
@@ -351,38 +405,50 @@ export default {
       }
     },
     //获取页面基本信息
-    async getData(){
+    async getData() {
       var tStamp = this.$getTimeStamp();
-      var data={
-        goods_id:18,
-        version:"1.0",
-        timestamp:tStamp,
+      var data = {
+        // goods_id: this.goodsId,
+        goods_id: this.goodsId,
+        version: "1.0",
+        timestamp: tStamp
       };
       data.sign = this.$getSign(data);
       let res = await ALBUM(data);
-      if(res.hasOwnProperty("response_code")){
+      if (res.hasOwnProperty("response_code")) {
         this.baseData = res.response_data.base;
         this.articleInfo = res.response_data.brand_info;
-        $('.contentData').append(this.baseData.desc);
-        console.log(this.baseData);
-      }else{
+        $(".contentData").append(this.baseData.desc);
+        if(this.baseData.desc.length<=0){
+          $(".contentData").remove();
+          console.log(this.baseData.desc);
+        }
+
+        // console.log(this.baseData);
+      } else {
         this.$toast(res.error_message);
       }
     },
-    //获取轮播部分信息
-    async getRecommendData(){
+    //获取商品推荐部分信息
+    async getRecommendData() {
       var tStamp = this.$getTimeStamp();
-      var data={
+      var data = {
+        // goods_id: this.goodsId,
         goods_id:18,
-        version:"1.0",
-        timestamp:tStamp,
+        page:1,
+        page_size:6,
+        version: "1.0",
+        timestamp: tStamp,
       };
       data.sign = this.$getSign(data);
       let res = await RECOMMEND(data);
-      if(res.hasOwnProperty("response_code")){
+      if (res.hasOwnProperty("response_code")) {
         this.recommendData = res.response_data.result;
+        if(this.recommendData.length>0){
+          this.recommendState = true;
+        }
         // console.log('recommendData',this.recommendData);
-      }else{
+      } else {
         this.$toast(res.error_message);
       }
     },
@@ -393,7 +459,7 @@ export default {
     async commentData() {
       let data = {
         page: this.commentPage,
-        goods_id:18,
+        goods_id: this.goodsId,
         page_size: 5,
         version: "1.0"
       };
@@ -444,19 +510,17 @@ export default {
         for (let i = 0; i < result.length; i++) {
           this.answerData[key].push(result[i]);
         }
-        if(this.replyPage[key] >= res.response_data.total_page) {
+        if (this.replyPage[key] >= res.response_data.total_page) {
           this.replyPage[key] = res.response_data.total_page + 1;
         } else {
           this.replyPage[key]++;
         }
-
       } else {
         this.$toast(res.error_message);
       }
     },
     // 回复展开更多
     pageChange(comment_id, key) {
-
       this.replyData(comment_id, key);
       // console.log("当前页数组：", this.replyPage, 'key:', key);
     },
@@ -491,14 +555,12 @@ export default {
       }
       let res = await COMMENT_ADD(data);
       if (res.hasOwnProperty("response_code")) {
-
         this.commentPage = 1;
         // 本地存储最新的数据，展示
         this.answerData = [];
         this.discussData = [];
         this.replyPage = [];
         this.commentData();
-
       } else {
         this.$toast(res.error_message);
       }
@@ -528,6 +590,35 @@ export default {
     // 编辑评论触发
     inputChange() {
       this.contentLength = this.contentModel.length;
+    },
+    toDetail(item){
+      if(item.goods_type ==1 || item.goods_type == 2){
+        this.$router.push({
+          name:'albumdetail',
+          params:{
+            goods_id:item.goods_id,
+            pid:null,
+          }
+        })
+      }
+      if(item.goods_type ==6){
+        this.$router.push({
+          name:'article',
+          params:{
+            goods_id:item.goods_id,
+            pid:null,
+          }
+        })
+      }
+      if(item.goods_type ==9){
+        this.$router.push({
+          name:'albumlist',
+          params:{
+            goods_id:item.goods_id,
+            pid:null,
+          }
+        })
+      }
     },
   }
 };

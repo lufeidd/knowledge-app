@@ -13,20 +13,24 @@ module.exports = {
     proxyTable: {
       '/apis': {
         // 测试环境
-        target: 'http://frontapi.huoba.dev.zxw', // 接口域名
+        target: 'http://frontapi.huoba.net',
+        // target: 'http://198.210.12.253:8080', // 接口域名
+        // target: 'http://wap.huoba.net/api', // 接口域名
+        // target: 'http://frontapi.huoba.net', // 接口域名
         changeOrigin: true, //是否跨域
         pathRewrite: {
-          '^/apis': '' //需要rewrite重写的,
+          //'^/apis': '/', //需要rewrite重写的,
+          '^/apis': '/'
         }
       }
     },
 
     // Various Dev Server settings
     // host: 'localhost', // can be overwritten by process.env.HOST
-    host: '198.210.13.108', // can be overwritten by process.env.HOST
-    // host: '198.210.12.253', // can be overwritten by process.env.HOST
+    // host: '198.210.13.108', // can be overwritten by process.env.HOST
+    host: 'wap.huoba.net', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    autoOpenBrowser: false,
+    autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
@@ -61,7 +65,9 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    // run build
+    assetsPublicPath: './',
+    // assetsPublicPath: '/',
 
     /**
      * Source Maps

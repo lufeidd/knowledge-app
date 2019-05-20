@@ -64,6 +64,7 @@
 <style src="@/style/scss/pages/login/index.scss" lang="scss"></style>
 
 <script>
+import axios from 'axios'
 //  引入接口
 import { LOG } from "../../apis/passport.js";
 
@@ -78,6 +79,16 @@ export default {
     };
   },
   mounted() {
+
+
+// 获取动态接口地址
+// axios.get('./../../static/serverConfig.json').then((result) => {
+//   console.log(123, 'baseUrl', result)
+// }).catch((error) => {
+//   console.log(error)
+// })
+
+
     this.phone = this.$route.query.mobile;
     this.password = this.$route.query.pwd;
     this.checkSubmit();

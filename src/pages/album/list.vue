@@ -51,11 +51,13 @@
                 <div class="program">
                   <span class="duration">时长{{ item.duration }}</span>
 
-                  <span>已播{{ (item.progress / item.ori_duration).toFixed(0) }}%</span>
-                  <!-- <span
-                    class="history"
-                    v-if="progressList[key].progress"
-                  >已播{{ (progressList[key].progress / progressList[key].duration).toFixed(2) }}%</span> -->
+                  <template v-if="progressList.length > 0">
+                    <span
+                      class="history"
+                      v-if="item.goods_type != 6 && progressList[key].progressHistory"
+                    >已播{{ (progressList[key].progressHistory / progressList[key].ori_duration).toFixed(2) }}%</span>
+                  </template>
+
                 </div>
               </div>
             </div>
@@ -210,40 +212,32 @@ export default {
     },
     // localStorage存放节目播放进度
     progressListData() {
-      var list = this.programList;
-      var result = JSON.parse(localStorage.getItem("audioProgress"));
       
       /*
-       * __goodsId专辑id
+       * __goodsId节目id
        * __goodsNo节目编号
        * __progress节目当前播放进度
        * __duration节目时长，单位s
+       * __pid专辑id，单个节目pid默认为0
        */
-      // 比对localStorage中audioProgress数据
-      return;
-      var arr = [];
-      if(result.length >= 0) {
-        var goods_id = result[0].goods_id;
-        for (let i = 0; i < result.length; i++) {
-          var obj = {};
-          obj.goods_id = this.goodsId;
-          obj.goods_no = list[i].goods_no;
-          obj.duration = list[i].ori_duration;
-          // 当前专辑和历史记录一致则更新进度
-          if (goods_id == result[0].goods_id) {
-            if (list[i].goods_no == result[i].goods_no)
-              obj.progress = result[i].progress;
+
+      var result = JSON.parse(localStorage.getItem("audioProgress"));
+
+      // 临时存放节目进度
+      this.progressList = [];
+      if(result.length > 0) {
+        for(let i = 0; i < this.programList.length; i++) {
+          this.progressList.push(this.programList[i]);
+          // console.log(this.programList[i])
+          
+          for(let j = 0; j < result.length; j++) {
+            // 当节目播放进度存在localStorage时,显示已播放进度
+            if(result[j].pid == this.goodsId && result[j].goods_id == this.programList[i].goods_id) {
+              this.$set(this.progressList[i], 'progressHistory', result[j].progress);
+            }
           }
-
-          arr.push(obj);
         }
-        localStorage.setItem("audioProgress", JSON.stringify(arr));
-        this.progressList = [];
-        this.progressList = result;
-
       }
-
-      // console.log('audioProgress存放数据:', arr);
     },
     chooseAction(item) {
       // console.log(item);

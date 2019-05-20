@@ -1,6 +1,6 @@
 <template>
   <div id="collectPage">
-    <div class="nullBox" v-if="collectList.length == 0">
+    <div class="nullBox" v-if="collectList.length == 0 || collectStatus.length == 1 && collectStatus[0].id == null">
       <img src="./../../assets/null/list.png" width="100%">
       <div>还没有收藏的内容，快去看看吧~</div>
     </div>
@@ -10,11 +10,15 @@
       :finished="collectFinished"
       finished-text="没有更多了"
       @load="collectLoad"
-      v-for="(item, key) in collectList"
-      :key="key"
     >
-      <van-swipe-cell :right-width="65" :left-width="0" :on-close="collectClose">
-        <router-link to="/" class="listBox">
+      <van-swipe-cell
+        v-for="(item, key) in collectList"
+        :key="key"
+        :right-width="65"
+        :left-width="0"
+        :on-close="collectClose"
+      >
+        <router-link v-if="collectStatus[key].id != null" to="/" class="listBox">
           <div class="left">
             <div class="ratioBox">
               <div class="box">
@@ -41,7 +45,11 @@
             </svg>
           </div>
         </router-link>
-        <span slot="right">
+        <span
+          v-if="collectStatus[key].id != null"
+          slot="right"
+          @click="collectCancel(item.target, key)"
+        >
           <div>取消收藏</div>
         </span>
       </van-swipe-cell>
@@ -53,25 +61,27 @@
 
 <script>
 //  引入接口
-import { COLLECT, COLLECT_ADD } from "../../apis/public.js";
+import { COLLECT, COLLECT_ADD, COLLECT_CANCEL } from "../../apis/public.js";
 export default {
   data() {
     return {
       collectList: [],
+      // 临时存放收藏数据
+      collectStatus: [],
       collectLoading: false,
       collectFinished: false,
       collectPage: 1,
     };
   },
   mounted() {
-    this.collectData("collect", null);
+    this.collectData("collect", null, null);
   },
   methods: {
     collectLoad() {
-      this.collectData("collect", null);
+      this.collectData("collect", null, null);
     },
     // 获取收藏接口信息
-    async collectData(__type, brandId) {
+    async collectData(__type, goodsId, key) {
       var data = {};
       var res;
       switch (__type) {
@@ -82,40 +92,52 @@ export default {
             version: "1.0"
           };
           res = await COLLECT(data);
-          setTimeout(() => {
-            var result = res.response_data.result;
-            for (let i = 0; i < result.length; i++) {
-              this.collectList.push(result[i]);
-            }
-            // 加载状态结束
-            this.collectLoading = false;
-            this.collectPage++;
-            // 数据全部加载完成
-            if (this.collectList.length >= res.response_data.total_count) {
-              this.collectFinished = true;
-            }
-            console.log("收藏列表：", result);
-          }, 500);
+
+          // 出错提示
+          if (res.hasOwnProperty("response_code")) {
+            setTimeout(() => {
+              var result = res.response_data.result;
+              for (let i = 0; i < result.length; i++) {
+                this.collectList.push(result[i]);
+                this.collectStatus.push(result[i]);
+              }
+              // 加载状态结束
+              this.collectLoading = false;
+              this.collectPage++;
+              // 数据全部加载完成
+              if (this.collectList.length >= res.response_data.total_count) {
+                this.collectFinished = true;
+                this.collectPage = 1;
+              }
+              console.log("收藏列表：", result);
+            }, 500);
+          } else {
+            this.$toast(res.error_message);
+          }
           break;
         case "cancel":
           data = {
-            brand_id: brandId,
+            goods_id: goodsId,
             version: "1.0"
           };
           res = await COLLECT_CANCEL(data);
-          this.$toast("已取消收藏~");
-          break;
-      }
 
-      // 出错提示
-      if (res.hasOwnProperty("response_code")) {
-      } else {
-        this.$toast(res.error_message);
+          // 出错提示
+          if (res.hasOwnProperty("response_code")) {
+            this.collectStatus[key].id = null;
+            if(this.collectStatus.length == 1) {
+              this.collectList = [];
+            }
+            this.$toast("已取消收藏~");
+          } else {
+            this.$toast(res.error_message);
+          }
+          break;
       }
     },
     // 取消收藏
-    collectCancel(brandId) {
-      this.collectData("cancel", brandId);
+    collectCancel(goodsId, key) {
+      this.collectData("cancel", goodsId, key);
     },
     collectClose(clickPosition, instance) {
       instance.close();

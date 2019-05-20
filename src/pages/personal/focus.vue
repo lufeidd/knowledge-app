@@ -21,7 +21,7 @@
         v-for="(item, key) in focusList"
         :key="key"
       >
-        <div class="listBox">
+        <div class="listBox" v-if="focusStatus[key].brand_id != null">
           <div class="left">
             <div class="ratioBox">
               <div class="box">
@@ -38,7 +38,7 @@
             </div>
           </div>
         </div>
-        <span slot="right" @click="focusCancel(item.brand_id)">
+        <span v-if="focusStatus[key].brand_id != null" slot="right" @click="focusCancel(item.brand_id, key)">
           <div>取消关注</div>
         </span>
       </van-swipe-cell>
@@ -56,20 +56,22 @@ export default {
   data() {
     return {
       focusList: [],
+      // 临时存放关注数据
+      focusStatus: [],
       focusLoading: false,
       focusFinished: false,
       focusPage: 1
     };
   },
   mounted() {
-    this.focusData("focus", null);
+    this.focusData("focus", null, null);
   },
   methods: {
     focusLoad() {
-      this.focusData("focus", null);
+      this.focusData("focus", null, null);
     },
     // 获取关注接口信息
-    async focusData(__type, brandId) {
+    async focusData(__type, brandId, key) {
       var data = {};
       var res;
       switch (__type) {
@@ -80,40 +82,49 @@ export default {
             version: "1.0"
           };
           res = await FOCUS(data);
-          setTimeout(() => {
-            var result = res.response_data.result;
-            for (let i = 0; i < result.length; i++) {
-              this.focusList.push(result[i]);
-            }
-            // 加载状态结束
-            this.focusLoading = false;
-            this.focusPage++;
-            // 数据全部加载完成
-            if (this.focusList.length >= res.response_data.total_count) {
-              this.focusFinished = true;
-            }
-            console.log("关注列表：", result);
-          }, 500);
+
+          // 出错提示
+          if (res.hasOwnProperty("response_code")) {
+            setTimeout(() => {
+              var result = res.response_data.result;
+              for (let i = 0; i < result.length; i++) {
+                this.focusList.push(result[i]);
+                this.focusStatus.push(result[i]);
+              }
+              // 加载状态结束
+              this.focusLoading = false;
+              this.focusPage++;
+              // 数据全部加载完成
+              if (this.focusList.length >= res.response_data.total_count) {
+                this.focusFinished = true;
+              }
+              console.log("关注列表：", result);
+            }, 500);
+          } else {
+            this.$toast(res.error_message);
+          }
           break;
         case "cancel":
           data = {
             brand_id: brandId,
             version: "1.0"
           };
-          res = await FOCUS_CANCEL(data);
-          this.$toast("已取消关注~");
-          break;
-      }
+          res = await FOCUS_CANCEL(data);// 出错提示
+          if (res.hasOwnProperty("response_code")) {
+            this.focusStatus[key].brand_id = null;
+            if(this.focusStatus.length == 1) {
+              this.focusList = [];
+            }
+            this.$toast("已取消关注~");
+          }else{
 
-      // 出错提示
-      if (res.hasOwnProperty("response_code")) {
-      } else {
-        this.$toast(res.error_message);
+          }
+          break;
       }
     },
     // 取消关注
-    focusCancel(brandId) {
-      this.focusData("cancel", brandId);
+    focusCancel(brandId, key) {
+      this.focusData("cancel", brandId, key);
     },
     focusClose(clickPosition, instance) {
       instance.close();

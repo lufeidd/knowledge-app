@@ -17,13 +17,13 @@ html {
     margin-top: 25px;
   }
 
+  & .icon {
+    @include font(null, 60px, $redDark);
+  }
+
   & .content {
     padding: 50px 50px 100px 50px;
     text-align: center;
-
-    & .icon {
-      @include font(null, 60px, $redDark);
-    }
 
     & .msg {
       @include font("PingFangBlod", $fontSize + 2, #333);
@@ -294,7 +294,6 @@ html {
       height: 18px;
       margin-right: 5px;
       position: relative;
-      top: 2px;
     }
   }
 
@@ -372,7 +371,7 @@ html {
     padding: 15px;
 
     & .check {
-
+      margin-right: 10px;
 
       & .icon {
         color: #999;
@@ -390,7 +389,7 @@ html {
         @include twoLines;
         @include font("PingFangBold", $fontSize, #333);
         position: relative;
-        top: -5px;
+        height: 40px;
 
         & .text {
           @include twoLines;
@@ -401,11 +400,11 @@ html {
         @include font(null, $fontSize - 1, #999);
         line-height: 17px;
         height: 17px;
-        ;
       }
 
       & .info {
         position: relative;
+        margin-top: 10px;
 
         & .history {
           @include font("PingFangBold", $fontSize + 1, $redDark);
@@ -419,21 +418,14 @@ html {
 
 
   & .listBox.weixin {
-    & .center {
-      & .title {
+    & .text {
 
-        & .text {
-
-          & .icon {
-            color: $greenLight;
-            width: 25px;
-            height: 25px;
-            position: relative;
-            top: 5px;
-          }
-        }
+      & .icon {
+        color: $greenLight;
+        width: 25px;
+        height: 25px;
+        position: relative;
       }
-
     }
   }
 
@@ -445,7 +437,8 @@ html {
       }
     }
 
-    & .center {
+    & .center,
+    & .wallet {
       opacity: .5;
     }
   }
@@ -455,7 +448,6 @@ html {
     border-bottom: 1px $greyLight solid;
     background-color: $white;
     padding: 0 15px;
-    line-height: 45px;
 
     & .left.two {
       text-align: right;
@@ -464,6 +456,13 @@ html {
         height: 30px;
         line-height: 30px;
       }
+    }
+
+    & .wallet .icon {
+      color: $redLight;
+      width: 25px;
+      height: 25px;
+      position: relative;
     }
 
     & .center {
@@ -477,14 +476,6 @@ html {
         & .text {
           @include textOverflow;
           display: block;
-
-          & .icon {
-            color: $redLight;
-            width: 25px;
-            height: 25px;
-            position: relative;
-            top: 5px;
-          }
         }
       }
 

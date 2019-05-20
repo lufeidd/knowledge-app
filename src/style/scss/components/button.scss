@@ -4,6 +4,10 @@
   border-radius: 50px;
 }
 
+.van-button::before {
+  display: none;
+}
+
 .van-button--plain.van-button--danger {
   background-color: #fff;
 }
