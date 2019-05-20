@@ -6,14 +6,13 @@
 import axios from 'axios'
 import qs from "Qs";
 
-// console.log(456)
 
 var instance
 
 // 添加读取build之后的代码
 // axios.get('./../../static/serverConfig.json').then((result) => {
 // axios.get('serverConfig.json').then((result)=>{
-    
+
     // 创建axios的一个实例
     instance = axios.create({
         baseURL: 'http://wap.huoba.net:8080/apis',
@@ -32,7 +31,7 @@ var instance
         // 对请求错误做些什么
         return Promise.reject(error);
     });
-    
+
     // 二、响应拦截器 忽略
     instance.interceptors.response.use(function (response) {
         // console.log(response)
@@ -45,8 +44,6 @@ var instance
 // }).catch((error) => {
 //     console.log(error)
 // })
-
-
 
 /**
 * 使用es6的export default导出了一个函数，导出的函数代替axios去帮我们请求数据，

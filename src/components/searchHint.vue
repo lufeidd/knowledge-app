@@ -7,12 +7,13 @@
         v-model="searchHintData.search"
         @input="showList"
         @focus="inputText"
-        @blur="lose"
+        data-type="searchHintData.type"
+        :placeholder="searchHintData.placeholderText"
       >
-      <van-icon name="clear" size="16" color="#ccc" class="clearIcon" @click="clear"/>
+      <van-icon name="clear" size="16" color="#ccc" class="clearIcon" @click="clearText"/>
     </div>
     <ul>
-      <li v-for="(item,index) in items" :key="index" @click="select(item,index)">{{item.msg}}</li>
+      <li v-for="(item,index) in searchHintData.list" :key="index" @click="select(item,index)">{{item}}</li>
     </ul>
   </div>
 </template>
@@ -23,12 +24,14 @@
   .logistics {
     //  padding: 0px 15px;
     position: relative;
+
     .text {
       font-size: $fontSize + 2;
     }
     input {
       border: none;
       padding-left: 5px;
+      width: 90%;
     }
     .clearIcon {
       position: absolute;
@@ -52,52 +55,68 @@
 </style>
 
 <script>
+import {SEARCH_SUGGEST} from "../apis/public"
 export default {
   name: "search-hint",
   props: ["searchHintData"],
   computed: {
     //过滤方法
-    items: function() {
-      var _search = this.searchHintData.search;
-      if (_search) {
-        //不区分大小写处理
-        var reg = new RegExp(_search, "ig");
-        //es6 filter过滤匹配，有则返回当前，无则返回所有
-        return this.searchHintData.list.filter(function(e) {
-          //匹配所有字段
-          return Object.keys(e).some(function(key) {
-            return e[key].match(reg);
-          });
-        });
-      }
-      return this.searchHintData.list;
-      // console.log(this.list)
-    }
+    // items: function() {
+    //   var _search = this.searchHintData.search;
+    //   if (_search) {
+    //     //不区分大小写处理
+    //     var reg = new RegExp(_search, "ig");
+    //     //es6 filter过滤匹配，有则返回当前，无则返回所有
+    //     return this.searchHintData.list.filter(function(e) {
+    //       //匹配所有字段
+    //       return Object.keys(e).some(function(key) {
+    //         return e[key].match(reg);
+    //       });
+    //     });
+    //   }
+    //   return this.searchHintData.list;
+    //   // console.log(this.list)
+    // }
   },
   methods: {
     select(item, index) {
-      this.searchHintData.search = item.msg;
-      $("ul").css({ display: "none" });
+      console.log(item)
+      this.searchHintData.search = item;
+      $("#searchHint ul").css({ display: "none" });
     },
-    showList() {
-      this.searchData();
+    async showList() {
+      console.log(this.searchHintData.type)
+      if(this.searchHintData.type == 'brand'){
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          k:this.searchHintData.search,
+          version: "1.0",
+          timestamp: tStamp
+        };
+        data.sign = this.$getSign(data);
+        let res = await SEARCH_SUGGEST(data);
+        if (res.hasOwnProperty("response_code")) {
+          // console.log(res)
+          this.searchHintData.list = res.response_data;
+          this.searchData();
+        } else {
+          this.$toast(res.error_message);
+        }
+      }
     },
-    clear() {
-      $("input").val("");
+    clearText() {
+      $("#searchHint input").val("");
       this.searchData();
     },
     inputText() {
       this.searchData();
     },
-    lose() {
-      $("ul").css({ display: "none" });
-    },
     searchData() {
-      if ($("input").val().length > 0) {
-        $("ul").css({ display: "block" });
+      if ($("#searchHint input").val().length > 0) {
+        $("#searchHint ul").css({ display: "block" });
         $(".clearIcon").css({ display: "block" });
       } else {
-        $("ul").css({ display: "none" });
+        $("#searchHint ul").css({ display: "none" });
         $(".clearIcon").css({ display: "none" });
       }
     }

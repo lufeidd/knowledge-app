@@ -41,3 +41,5 @@ export const RECOMMEND = params => req('post', '/goods/recommend/gets', params);
 // 地址
 export const ADDRESS = params => req('post', '/common/area/gets', params);
 
+//词条建议
+export const SEARCH_SUGGEST = params => req('post', '/search/goods/suggest', params);

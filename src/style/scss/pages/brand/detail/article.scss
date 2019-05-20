@@ -57,10 +57,12 @@
 
     .contentData {
       padding-top: 25px;
-      padding-bottom: 45px;
+      padding-bottom: 30px;
+      overflow: hidden;
     }
 
     .message {
+      margin-top:15px;
       font-size: $fontSize - 2;
       color: $cl9;
       @include displayFlex(flex, space-between, center);
@@ -70,40 +72,55 @@
   .showContent {
     background-color: $white;
     margin-top: 5px;
-    padding: 15px 0 15px 15px;
     margin-bottom: 5px;
+    & .booklist {
+      width: calc(100% + 10px);
+      background-color: $white;
+      padding: 0 10px 20px 20px;
+      box-sizing: border-box;
 
-    .foot {
-      @include displayFlex(flex, flex-start, null);
-
-      .ratiobox {
-        min-width: 123px;
-
-        .bookImg {
-          display: block;
-          @include ratioBox (100%, 59%, null, contain, $white, null);
-        }
+      & .title {
+        @include twoColtextOverflow;
+        height: 38px;
+        @include font("PingFangBold", $fontSize - 1, '#666');
+        margin-top: 8px;
       }
 
-      .content {
-        display: flex;
-        flex-direction: column;
-        align-content: space-between;
-        justify-content: space-between;
-        padding: 5px;
-
-        .title {
-          line-height: 1.2;
-          @include font("PingFangBlod", $fontSize, null);
-          @include twoColtextOverflow;
-        }
-
-        .name {
-          font-size: $fontSize - 2;
-          color: $cl6;
-        }
+      & .ratioBox {
+        margin-top: 20px;
       }
     }
+    // .foot {
+    //   @include displayFlex(flex, flex-start, null);
+
+    //   .ratiobox {
+    //     min-width: 123px;
+
+    //     .bookImg {
+    //       display: block;
+    //       @include ratioBox (100%, 59%, null, contain, $white, null);
+    //     }
+    //   }
+
+    //   .content {
+    //     display: flex;
+    //     flex-direction: column;
+    //     align-content: space-between;
+    //     justify-content: space-between;
+    //     padding: 5px;
+
+    //     .title {
+    //       line-height: 1.2;
+    //       @include font("PingFangBlod", $fontSize, null);
+    //       @include twoColtextOverflow;
+    //     }
+
+    //     .name {
+    //       font-size: $fontSize - 2;
+    //       color: $cl6;
+    //     }
+    //   }
+    // }
   }
 
   // 评论

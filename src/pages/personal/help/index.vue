@@ -1,14 +1,8 @@
 <template>
   <div id="helpPage">
-    <van-cell :title="item.title" value is-link arrow-direction="down" :key="index" v-for="item,index in listData" @click="todetail(index)"/>
-    <!-- <van-cell title="购买" value is-link arrow-direction="down"/>
-    <van-cell title="退款" value is-link arrow-direction="down"/>
-    <van-cell title="阅读" value is-link arrow-direction="down"/>
-    <van-cell title="优惠券" value is-link arrow-direction="down"/>
-    <van-cell title="试听" value is-link arrow-direction="down"/>
-    <van-cell title="设置" value is-link arrow-direction="down"/>
-    <van-cell title="如何绑定手机号" value is-link arrow-direction="down"/>
-    <van-cell title="如何解绑" value is-link arrow-direction="down"/> -->
+    <div style="margin-bottom:60px;">
+      <van-cell :title="item.title" value is-link arrow-direction="down" :key="index" v-for="item,index in listData" @click="todetail(index)"/>
+    </div>
     <div class="bottomBox" :class="{iphx:this.isIphx}">
       <van-button type="danger" size="large" replace to="/personal/help/feedback">我要反馈</van-button>
     </div>

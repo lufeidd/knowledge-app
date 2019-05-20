@@ -114,7 +114,7 @@
                         class="message active"
                         v-if="item.reply_num > 2 && replyPage[key] <= item.reply_total_page"
                       >
-                      
+
                         <!-- <van-pagination v-model="item.reply_current_page" :page-count="item.reply_total_page" mode="simple" @change="pageChange(item.comment_id, key)" /> -->
 
                         <span class="name" @click="pageChange(item.comment_id, key)">
@@ -162,7 +162,7 @@
                     <van-tag v-if="allPlayStatus == 'continue'" color="#f5f5f5" text-color="#666" @click="allAction">
                       <van-icon name="play"/>继续播放
                     </van-tag>
-                    
+
 
                     <span class="tag" v-if="showHistory && myAudioData.src">
                       <span class="text">{{ myAudioData.program }}</span>
@@ -229,7 +229,7 @@
                         </svg>
                         {{ item.duration }}
                       </span>
-                      
+
                       <template v-if="progressList.length > 0">
                         <span
                           class="history"
@@ -593,7 +593,7 @@ export default {
             this.$toast("已取消收藏~");
             break;
         }
-        
+
       } else {
         this.$toast(res.error_message);
       }
@@ -825,9 +825,9 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // 异步更新数据
         var result = res.response_data.result;
-        
+
         setTimeout(() => {
-          
+
           this.programList = [];
           for (let i = 0; i < res.response_data.result.length; i++) {
             this.programList.push(result[i]);
@@ -841,7 +841,7 @@ export default {
               this.preListen.push(result[i]);
             }
           }
-          
+
           // localStorage:audioProgress存放节目播放进度,根据pid创建数组，并存放至localStorage
           this.progressListData();
 
@@ -882,7 +882,7 @@ export default {
             this.activeGoodNo = info[0];
           }
         }
-        
+
         // 将当前音频播放信息存放到localStorage: miniAudio
         this.miniAudioData(info);
       }
@@ -977,7 +977,7 @@ export default {
         for(let i = 0; i < this.programList.length; i++) {
           this.progressList.push(this.programList[i]);
           // console.log(this.programList[i])
-          
+
           for(let j = 0; j < result.length; j++) {
             // 当节目播放进度存在localStorage时,显示已播放进度
             if(result[j].pid == this.baseData.goods_id && result[j].goods_id == this.programList[i].goods_id) {
@@ -1036,7 +1036,7 @@ export default {
       } else {
         this.audioPlaying = true;
       }
-      
+
       // 父页面关联子组件
       setTimeout(() => {
         if (this.audioPlaying) {
@@ -1079,7 +1079,7 @@ export default {
     },
     // 点击播放，子组件关联父页面 - 切换miniAudio组件播放状态
     typeAction(__type) {
-      
+
       /*
        * __type == true; 播放
        * __type == false; 暂停
@@ -1155,7 +1155,7 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
-      
+
       if (this.autoPlay) {
         // 单一类型，自动播放
         this.updateLocalStorage(this.allProgramList[next]);
@@ -1197,7 +1197,7 @@ export default {
         var info = JSON.parse(localStorage.getItem("miniAudio"));
         // 从第一条开始播放，是否自动播放规则同上
         this.allProgramData(info, "all");
-      } 
+      }
       // 暂停播放
       else if(this.allPlayStatus == 'pause') {
         this.allPlayStatus = 'continue';

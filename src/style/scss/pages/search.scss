@@ -4,6 +4,36 @@
  */
 
 #searchPage{
+  .searchHint{
+    @include displayFlex(flex,null,center);
+    position: relative;
+    margin: 15px;
+    // padding: 5px;
+    border-radius: 50%;
+    .searchIcon{
+      position: absolute;
+      left: 5px;
+      top: 50%;
+      margin-top: -7px;
+      color: #999;
+      z-index: 99;
+    }
+    #searchHint{
+      flex-grow: 1;
+      background-color: #f5f5f5;
+      padding: 5px;
+      border-radius: 17px;
+      margin-right: 5px;
+      input{
+        background-color: #f5f5f5;
+        padding-left: 15px;
+      }
+    }
+    .text{
+      font-size: $fontSize + 2;
+      color: $cl6;
+    }
+  }
   .van-row{
     flex-wrap: wrap;
   }
@@ -49,9 +79,11 @@
       li{
         @include textOverflow;
         display: inline-block;
-        width: 22%;
+        width: 17%;
         border-radius: 12px;
         line-height: 24px;
+        padding-left: 5px;
+        padding-right: 5px;
         background-color: $greyLight;
         color: $cl6;
         margin: 0 0 15px 10px;

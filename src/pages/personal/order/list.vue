@@ -105,13 +105,13 @@
       finished-text="没有更多了"
       @load="programLoad"
     >
-    <div class="content" v-for="item in publishData">
+    <div class="content" v-for="item,index in publishData" @click="toDetail(item)">
       <div class="head">
         <div class="titleFrom">
           <img v-lazy="item.brand_header_pic" alt class="icon">
           <span class="publish">{{item.brand_name}}</span>
         </div>
-        <span :class="item.state ==0? 'order1':'order2'">{{item.state == 0? '待收货':'已完成'}}</span>
+        <span :class="item.state ==0? 'order1':'order2'">{{item.state == 0? '已完成':''}}</span>
       </div>
       <div class="section" v-for="item1 in item.details">
         <div class="bookDetail">
@@ -128,12 +128,12 @@
           </span>
         </div>
       </div>
-      <div class="foot">
+      <!-- <div class="foot">
         <span class="button1">评价</span>
         <span class="button1" v-if="item.state ==1">再次购买</span>
-        <!-- <span class="button2" >去支付</span> -->
+        <span class="button2" >去支付</span>
         <span class="button2" v-if="item.state ==0">确认收货</span>
-      </div>
+      </div> -->
     </div>
     </van-list>
 
@@ -172,6 +172,7 @@ export default {
       programFinished: false,
       page:1,
       page_size:3,
+      order_id:'',
     };
   },
   mounted(){
@@ -211,6 +212,15 @@ export default {
         this.$toast(res.error_message);
       }
     },
+    toDetail(item){
+      console.log(item)
+      this.$router.push({
+          name:'orderdetail',
+          params:{
+            order_id:item.order_id,
+          }
+        })
+    }
   }
 };
 </script>

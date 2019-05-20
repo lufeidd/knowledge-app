@@ -1,11 +1,18 @@
 <template>
   <div id="resultPage">
-    <div class="list">
+
+
+    <div class="nullBox" v-if="brandData.length == 0">
+      <img src="../../assets/null/list.png" width="100%">
+      <div>您搜索的内容为空</div>
+    </div>
       <van-list
+      v-else
         v-model="programLoading"
         :finished="programFinished"
         finished-text="没有更多了"
         @load="programLoad"
+        class="list"
       >
         <div class="content" v-for="item,index in brandData">
           <div class="ratiobox">
@@ -31,7 +38,6 @@
           </div>
         </div>
       </van-list>
-    </div>
     <easyNav :navData="navData"></easyNav>
   </div>
 </template>
@@ -41,6 +47,7 @@
 <script>
 import { BRAND_SEARCH_GOODS_GETS } from "../../apis/brand.js";
 import easyNav from "../../components/easyNav";
+import resultVue from '../personal/order/result.vue';
 export default {
   components: {
     easyNav
@@ -70,8 +77,8 @@ export default {
   },
   mounted() {
     this.searchContent = this.$route.params.searchContent;
-    // this.getGoods();
     console.log(this.searchContent);
+    this.getGoods();
   },
   methods: {
     programLoad(){
@@ -81,15 +88,21 @@ export default {
       var tStamp = this.$getTimeStamp();
       var data = {
         keywords: this.searchContent,
+        // goods_type:9,
         page: this.page,
         page_size: this.page_size,
         version: "1.0",
         timestamp: tStamp
       };
+
       data.sign = this.$getSign(data);
       let res = await BRAND_SEARCH_GOODS_GETS(data);
       if (res.hasOwnProperty("response_code")) {
           var result = res.response_data.result;
+
+          console.log(123, result)
+
+
           setTimeout(() => {
             for (let i = 0; i < result.length; i++) {
               this.brandData.push(result[i]);
@@ -102,12 +115,6 @@ export default {
               this.programFinished = true;
               this.page = 1;
             }
-    //         if(this.brandData.length == 0){
-    //           $('.list').remove();
-    //           $('#resultPage').append(`<div style="text-align:center;background:url(../../assets/null/product.png) no-repeat">
-    //   <p style="font-size:15px;color:#000;">您搜索的内容为空</p>
-    // </div>`)
-    //         }
           }, 500);
       } else {
         this.$toast(res.error_message);

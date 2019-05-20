@@ -37,22 +37,14 @@ export default {
   },
   methods: {
     recharge() {
-      this.$router.push({
-        name:"account",
-        params:{
-          money:this.money,
-          },
-        });
-      // this.$router.push("/personal/remain/account")
+      this.$router.push('/personal/remain/account');
     },
     //获取页面数据
     async getRemainData() {
       var data = {
         version: "1.0"
       };
-
-      // data.sign = this.$getSign(data);
-
+      data.sign = this.$getSign(data);
       let res = await USER_REMAIN_INFO(data);
       if (res.hasOwnProperty("response_code")) {
         this.money = res.response_data.balance;

@@ -1,5 +1,9 @@
 <template>
   <div id="listPage">
+    <div class="nullBox" v-if="publishData.length == 0">
+      <img src="../../../assets/null/list.png" width="100%">
+      <div>您搜索的内容为空</div>
+    </div>
     <!-- <div class="content">
       <div class="head">
         <div class="titleFrom">
@@ -104,6 +108,7 @@
       :finished="programFinished"
       finished-text="没有更多了"
       @load="programLoad"
+      v-else
     >
     <div class="content" v-for="item in publishData">
       <div class="head">
@@ -179,6 +184,7 @@ export default {
     // this.getData();
     this.searchContent = this.$route.params.searchContent;
     this.state = this.$route.params.state;
+    this.getData();
   },
   methods:{
     programLoad(){
@@ -191,7 +197,7 @@ export default {
         page:this.page,
         page_size:this.page_size,
         goods_name:this.searchContent,
-        order_state:this.state,
+        // order_state:this.state,
         version:"1.0",
         timestamp:tStamp,
       };

@@ -113,14 +113,19 @@ export default {
     // this.$router.push("/personal/set/index");
     // this.$router.push("/personal/set/info");
     // this.$router.push("/personal/set/bind");
-    // this.$router.push("/personal/set/list");
+    // this.$router.push("/personal/comment/index");
     // this.$router.push("/personal/set/address");
+
+    // this.$router.push("/personal/remain/index");
+    // this.$router.push("/personal/order/invoice");
+
     // this.$router.push("/personal/set/safe");
     // this.$router.push("/personal/collect");
     // this.$router.push("/personal/focus");
     // this.$router.push("/personal/history");
+    
     // 品牌商城
-    // this.$router.push("/brand/index");
+    // this.$router.push("/brand/result");
     // this.$router.push("/brand/mall");
     // this.$router.push("/brand/detail/book");
     // this.$router.push("/brand/detail/article");
@@ -131,7 +136,10 @@ export default {
     // this.$router.push("/personal/help/index");
     // 我的购买
     // this.$router.push("/personal/order/list");
-    // this.$router.push("/personal/order/invoice");
+
+    // 专辑
+    // this.$router.push("/album/index");
+
     // 专辑
     // this.$router.push("/album/index");
     // this.$router.push("/album/detail");
@@ -140,6 +148,7 @@ export default {
     // this.$router.push("/order/detail");
     // this.$router.push("/pay/index");
     // this.$router.push("/pay/account");
+
   }
 };
 </script>

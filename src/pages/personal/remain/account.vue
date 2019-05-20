@@ -2,7 +2,7 @@
   <div id="accountPage">
     <div class="content">
       <span>¥</span>
-      <span class="money">{{money=='' ? money:0}}</span>
+      <span class="money">{{money==false ? money:0}}</span>
       <p class="currentRemain">当前余额</p>
     </div>
     <div class="account">
@@ -25,16 +25,17 @@
 <style src="@/style/scss/pages/personal/remain/index.scss" scoped lang="scss"></style>
 
 <script>
+import { USER_REMAIN_INFO } from "../../../apis/user.js";
 export default {
   data() {
     return {
-      money: "",
+      money: null,
       rechargeAmount: [5, 20, 50, 100, 150, 200, 280, 320],
       activeClass: 0,
     };
   },
   mounted() {
-    this.getData();
+    this.getRemainData();
   },
   methods: {
     getActive(index) {
@@ -45,8 +46,19 @@ export default {
         console.log(this.activeClass);
       }
     },
-    getData(){
-      this.money=this.$route.params.money;
+    //获取页面数据
+    async getRemainData() {
+      var data = {
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await USER_REMAIN_INFO(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.money = res.response_data.balance;
+        console.log(res.response_data.balance);
+      } else {
+        this.$toast(res.error_message);
+      }
     }
   }
 };

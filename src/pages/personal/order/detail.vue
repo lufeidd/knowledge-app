@@ -73,7 +73,7 @@
       <div class="orderNumber">
         <span class="order">订单编号</span>
         <div class="copybox">
-          <span class="copy" @click="copy" :data-clipboard-text="fictitious.orderNumber">复制</span>
+          <span class="copy" @click="copy" :data-clipboard-text="infoData.order_id">复制</span>
         </div>
         <span class="number">{{infoData.order_id}}</span>
       </div>
@@ -99,28 +99,14 @@ import{USER_ORDER_DETAIL_GET} from "../../../apis/user.js"
 export default {
   data() {
     return {
-      publishData: {
-        icon: "https://bnmpstyle.bookuu.com/wap/images/default_shop.png",
-        from: "浙江出版集团",
-        imgUrl:
-          "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
-        title: "宝宝巴士在线讲故事",
-        watch: "32.7w"
-      },
-      priceInfo: {
-        totalPrice: 95.0,
-        freight: 22.3,
-        discount: 5.0,
-        remain: 22.3,
-        acturalPay: 22.3
-      },
-      fictitious: {
-        orderNumber: 1955655265521222,
-        orderTime: "2019.4.17 19:15:22",
-        payWay: "支付宝支付",
-        payTime: "2019.4.17 19:16:02"
-      },
+      // fictitious: {
+      //   orderNumber: 1955655265521222,
+      //   orderTime: "2019.4.17 19:15:22",
+      //   payWay: "支付宝支付",
+      //   payTime: "2019.4.17 19:16:02"
+      // },
       infoData:null,
+      order_id:'',
     };
   },
   mounted(){
