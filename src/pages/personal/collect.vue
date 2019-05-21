@@ -122,17 +122,32 @@
         </span>
       </van-swipe-cell>
     </van-list>
+    <!-- 快速导航 -->
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
 <style src="@/style/scss/pages/personal/collect.scss" scoped lang="scss"></style>
 
 <script>
+import easyNav from "./../../components/easyNav";
 //  引入接口
 import { COLLECT, COLLECT_ADD, COLLECT_CANCEL } from "../../apis/public.js";
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
+      // 快速导航
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        personal: true,
+        personalLink: '/personal/index',
+      },
       collectList: [],
       // 临时存放收藏数据
       collectStatus: [],

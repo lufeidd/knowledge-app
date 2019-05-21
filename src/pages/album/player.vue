@@ -134,6 +134,8 @@ export default {
     this.clearClock();
   },
   mounted() {
+    // 播放结束后销毁倒计时
+    // this.clearClock();
     this.audioData.type = true;
     // 设置音频播放状态
     this.setPlayerAudio();

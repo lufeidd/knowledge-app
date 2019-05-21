@@ -64,7 +64,7 @@ export default {
       navData: {
         fold: false,
         home: true,
-        homeLink: "/",
+        homeLink: "/brand/indx",
         search: true,
         searchLink: '/search',
         personal: true,

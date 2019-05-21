@@ -104,7 +104,7 @@ export default {
         this.provinceId = res.response_data[0].province_id;
         this.cityId = res.response_data[0].city_id;
         this.countyId = res.response_data[0].county_id;
-        console.log(res.response_data[0]);
+        // console.log(res, res.response_data[0]);
       } else {
         this.$toast(res.error_message);
       }
@@ -123,9 +123,11 @@ export default {
       };
 
       let res = await USER_ADDRESS_ADD(data);
+
       if (res.hasOwnProperty("response_code")) {
         this.$toast("地址保存成功~");
-        this.$router.push({ name: "set" });
+        // this.$router.push({ name: "set" });
+        this.$router.push({ name: "addresslist" });
       } else {
         this.$toast(res.error_message);
       }
@@ -145,9 +147,13 @@ export default {
       };
 
       let res = await USER_ADDRESS_EDIT(data);
+
+      console.log(456, this.cityId, this.countyId);
+
       if (res.hasOwnProperty("response_code")) {
         this.$toast("地址修改成功~");
-        this.$router.push({ name: "set" });
+        // this.$router.push({ name: "set" });
+        this.$router.push({ name: "addresslist" });
       } else {
         this.$toast(res.error_message);
       }
@@ -264,14 +270,15 @@ export default {
     },
     // 切换
     changeAction(values) {
-      // console.log(values)
       var province = values[0].code;
       var city = values[1].code;
       var county = values[2].code;
       // 存储省市区id
       this.provinceId = province.substring(0, 2);
-      this.cityId = city.substring(2, 4);
-      this.countyId = county.substring(4, 6);
+      this.cityId = city.substring(0, 4);
+      this.countyId = county.substring(0, 6);
+      // console.log(values, this.provinceId, this.cityId, this.countyId);
+      
     }
   }
 };

@@ -52,7 +52,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/search.scss" lang="scss"></style>
+<style src="@/style/scss/pages/search.scss"  lang="scss"></style>
 
 <script>
 import{SEARCH_HOTKEY_GETS} from "../apis/public.js"
@@ -77,8 +77,12 @@ export default {
   mounted(){
     this.type = this.$route.query.type;
     this.searchHintData.type = this.$route.query.type;
-    console.log(this.type);
+    // console.log(this.type);
     this.getHotKey();
+    
+    // console.log(123, history.length);
+    // let len = history.length;
+    // history.go(-(len-1));
   },
   methods:{
     clear(){

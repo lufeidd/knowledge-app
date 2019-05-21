@@ -32,10 +32,10 @@
           <div class="right">
             <div class="title">{{ item.brand_name }}</div>
             <div class="subTitle">已被{{ item.fans_num }}人关注</div>
-            <div class="new">
+            <!-- <div class="new">
               <span class="text">更新</span>
               <span class="count">+{{ item.update_num }}</span>
-            </div>
+            </div> -->
           </div>
         </div>
         <span v-if="focusStatus[key].brand_id != null" slot="right" @click="focusCancel(item.brand_id, key)">
@@ -43,18 +43,35 @@
         </span>
       </van-swipe-cell>
     </van-list>
+    
+    <!-- 快速导航 -->
+    <easyNav :navData="navData"></easyNav>
+    
   </div>
 </template>
 
 <style src="@/style/scss/pages/personal/focus.scss" scoped lang="scss"></style>
 
 <script>
+import easyNav from "./../../components/easyNav";
 //  引入接口
 import { FOCUS, FOCUS_CANCEL } from "../../apis/public.js";
 
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
+      // 快速导航
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        personal: true,
+        personalLink: '/personal/index',
+      },
       focusList: [],
       // 临时存放关注数据
       focusStatus: [],

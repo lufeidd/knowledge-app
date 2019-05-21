@@ -322,9 +322,11 @@
                       <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-time-line"></use>
                       </svg>
-                      2014
+                      <!-- {{ item.create_time }} -->
+                      <!-- {{ item.goods_type }} -->
+                      {{ item.item_count }}
                     </span>
-                    <span class="history">十分士大夫</span>
+                    <!-- <span class="history"></span> -->
                   </div>
                 </div>
               </div>
@@ -408,7 +410,6 @@
 }
 </style>
 
-
 <script>
 import miniAudio from "./../../components/miniAudio";
 import audioList from "./../../pages/album/list";
@@ -464,7 +465,7 @@ export default {
           title: "相似"
         }
       ],
-      tabModel: 0,
+      tabModel: 1,
       // 评论
       discussData: [],
       commentPage: 1,
@@ -533,9 +534,17 @@ export default {
   },
   destroyed() {},
   mounted() {
-    // console.log(this.$route.params.goods_id)
+    
+    // 刷新/回退存储goods_id
+    if(this.$route.params.goods_id) {
+      localStorage.setItem('globalPid', this.$route.params.goods_id);
+    } else {
+      localStorage.setItem('globalPid', parseInt(localStorage.getItem('globalPid')));
+    }
+
     // 上个页面携带必要信息
-    this.baseData.goods_id = this.$route.params.goods_id;
+    // 如果是回退进来取local storage数据
+    this.baseData.goods_id = parseInt(localStorage.getItem('globalPid'));
     // 当前页接口信息
     this.albumData();
   },
@@ -571,39 +580,42 @@ export default {
       var data = {};
       var res;
       // 出错提示
-      if (res.hasOwnProperty("response_code")) {
-        switch (__status) {
-          case "collect":
-            data = {
-              type: this.baseData.goods_type,
-              target: __goodsId,
-              version: "1.0",
-            };
-            res = await COLLECT_ADD(data);
+      switch (__status) {
+        case "collect":
+          data = {
+            type: this.baseData.goods_type,
+            target: __goodsId,
+            version: "1.0",
+          };
+          res = await COLLECT_ADD(data);
+          if (res.hasOwnProperty("response_code")) {
             if(__type == 'base') {
               this.baseData.collect_id = 1;
             } else {
               this.simularStatus[__type].is_collect = 1;
             }
-            // this.$toast("已收藏~");
-            break;
-          case "cancel":
-            data = {
-              goods_id: __goodsId,
-              version: "1.0",
-            };
-            res = await COLLECT_CANCEL(data);
+          } else {
+            this.$toast(res.error_message);
+          }
+          // this.$toast("已收藏~");
+          break;
+        case "cancel":
+          data = {
+            goods_id: __goodsId,
+            version: "1.0",
+          };
+          res = await COLLECT_CANCEL(data);
+          if (res.hasOwnProperty("response_code")) {
             if(__type == 'base') {
               this.baseData.collect_id = 0;
             } else {
               this.simularStatus[__type].is_collect = 0;
             }
             this.$toast("已取消收藏~");
-            break;
-        }
-
-      } else {
-        this.$toast(res.error_message);
+          } else {
+            this.$toast(res.error_message);
+          }
+          break;
       }
     },
     collectAction(__type, __collectId, __goodsId) {

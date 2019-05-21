@@ -80,6 +80,8 @@ export default {
     this.clearClock();
   },
   mounted() {
+    // 播放结束后销毁倒计时
+    // this.clearClock();
     setTimeout(() => {
       var audio = document.getElementById("myMiniAudio");
       if (this.audioData.currentTime) {

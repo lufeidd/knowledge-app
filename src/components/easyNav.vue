@@ -78,13 +78,14 @@
 }
 </style>
 
-
 <script>
 export default {
   name: "easyNav",
   props: ["navData"],
   data() {
     return {};
+  },
+  mounted () {
   },
   methods: {
     foldAction() {

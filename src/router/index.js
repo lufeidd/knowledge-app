@@ -92,7 +92,15 @@ import paysuccess from '@/pages/pay/success'
 Vue.use(Router)
 
 export default new Router({
+  // mode: 'history',  //把Router的mode修改为history模式,VueRouter默认的模式为HASH模式
+  mode: 'hash',  //把Router的mode修改为history模式,VueRouter默认的模式为HASH模式
+  // linkActiveClass: 'active',
   routes: [
+    // 根目录
+    {
+      path: '/',
+      redirect: '/login/index',
+    },
     // 登录/注册
     {
       path: '/login/index',
@@ -118,7 +126,7 @@ export default new Router({
     {
       path: '/personal/index',
       name: 'personalIndex',
-      component: personal
+      component: personal,
     },
     {
       path: '/personal/collect',
@@ -175,7 +183,7 @@ export default new Router({
     {
       path:'/personal/order/result',
       name:'orderresult',
-      component: orderresult
+      component: orderresult,
     },
     // 个人中心 - 我的购买 - 评价
     {
@@ -319,7 +327,7 @@ export default new Router({
     {
       path: '/search',
       name: 'search',
-      component: search
+      component: search,
     },
     // 专辑
     {
@@ -327,7 +335,7 @@ export default new Router({
       name: 'album',
       component: album,
       meta: {
-        keepAlive: true,  // false不需要被缓存，true需要缓存
+        keepAlive: false,  // false不需要被缓存，true需要缓存
       }
     },
     {
@@ -335,7 +343,7 @@ export default new Router({
       name: 'albumdetail',
       component: albumdetail,
       meta: {
-        keepAlive: true,  // false不需要被缓存，true需要缓存
+        keepAlive: false,  // false不需要被缓存，true需要缓存
       },
     },
     {
@@ -343,7 +351,7 @@ export default new Router({
       name: 'player',
       component: player,
       meta: {
-        keepAlive: true,  // false不需要被缓存，true需要缓存
+        keepAlive: false,  // false不需要被缓存，true需要缓存
       },
     },
     {
@@ -360,7 +368,10 @@ export default new Router({
     {
       path: '/brand/detail/article',
       name: 'article',
-      component: article
+      component: article,
+      meta: {
+        keepAlive: true,  // false不需要被缓存，true需要缓存
+      },
     },
     {
       path: '/brand/detail/book',

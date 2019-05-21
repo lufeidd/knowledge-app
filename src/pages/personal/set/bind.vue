@@ -1,7 +1,7 @@
 <template>
   <div id="bindPage">
     <van-cell title="手机绑定" is-link :value="mobile" :to="{name: 'setphone', params: {phone: mobile, pageType: 'old'}}" style="margin-top:5px;"/>
-    <van-cell title="微信绑定" is-link value="" @click="showAction('bind')"/>
+    <!-- <van-cell title="微信绑定" is-link value="" @click="showAction('bind')"/> -->
 
     <van-actionsheet
       v-model="bindModel"

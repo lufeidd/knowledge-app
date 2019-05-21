@@ -26,6 +26,8 @@
     <div style="margin-top: 5px;">
       <van-button size="large" @click="logoutAction">退出登录</van-button>
     </div>
+    <!-- 快速导航 -->
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
@@ -94,13 +96,26 @@
 </style>
 
 <script>
+import easyNav from "./../../../components/easyNav";
 //  引入接口
 import { USER_HOMEPAGE } from "../../../apis/user.js";
 import { LOGOUT } from "../../../apis/passport.js";
 
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
+      // 快速导航
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        personal: true,
+        personalLink: '/personal/index',
+      },
       // 信息
       infoData: {}
     };

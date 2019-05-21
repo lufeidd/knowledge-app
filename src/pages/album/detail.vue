@@ -86,7 +86,7 @@
       <van-col span="8" v-for="(item, key) in recommendList" :key="key">
         <div class="ratioBox">
           <div class="box">
-            <img :src="item.main_pic">
+            <img :src="item.pic[0]">
           </div>
         </div>
         <div class="title">{{ item.title }}</div>
@@ -239,7 +239,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/album/detail.scss" scoped lang="scss"></style>
+<style src="@/style/scss/pages/album/detail.scss" lang="scss"></style>
 <style scoped>
 
 .van-button {
@@ -350,7 +350,22 @@ export default {
       recommendList: [],
     };
   },
+  beforeDestroy(){
+    $(window).off('scroll');
+  },
+  //离开当前页面
+  beforeRouteLeave(to, from, next) {
+    console.log(to, from, from.params.pid);
+    if(to.name == 'album') {
+      // to.params.goods_id = from.params.pid;
+      // this.goodsId = from.params.pid;
+      localStorage.setItem('globalPid', this.$route.params.pid ? this.$route.params.pid: parseInt(localStorage.getItem('globalPid')));
+      // console.log(123, this.goodsId)
+    }
+    next();
+  },
   mounted() {
+
     $(window).on('scroll', function(){
       if($(window).scrollTop() >= $('#comment').offset().top) {
         $('#commentTitle').css({'position': 'fixed', 'border-bottom-width': '1px'});
@@ -358,10 +373,22 @@ export default {
         $('#commentTitle').css({'position': 'relative', 'border-bottom-width': 0});
       }
     })
+
+    // 刷新/回退存储goods_id
+    if(this.$route.params.goods_id) {
+      localStorage.setItem('globalGoodsId', this.$route.params.goods_id);
+    } else {
+      localStorage.setItem('globalGoodsId', parseInt(localStorage.getItem('globalGoodsId')));
+    }
+    if(this.$route.params.pid) {
+      localStorage.setItem('globalPid', this.$route.params.pid);
+    } else {
+      localStorage.setItem('globalPid', parseInt(localStorage.getItem('globalPid')));
+    }
+
     // 获取专辑id以及商品id
-    var queryData = this.$route.params;
-    this.pid = queryData.pid;
-    this.goodsId = queryData.goods_id;
+    this.pid = parseInt(localStorage.getItem('globalPid'));
+    this.goodsId = parseInt(localStorage.getItem('globalGoodsId'));
 
     // 基础信息
     this.albumData();
@@ -547,7 +574,33 @@ export default {
     gotoPlayer(__type) {
       if(__type == 'external') {
         // console.log(this.baseData)
-        this.audioAction(this.baseData);
+        // this.audioAction(this.baseData);
+
+        var info = JSON.parse(localStorage.getItem('miniAudio'));
+
+        if(info != null && info.length > 0) {
+          info[0]
+        }
+
+        // 更新迷你缩放音频播放信息
+        // let __goodsNo = info[0];
+        // let __type = info[1];
+        // let __pic = info[2];
+        // let __src = info[3];
+        // let __duration = info[4];
+        // let __currentTime = info[5];
+        // let __program = info[6];
+        // let __album = info[7];
+        // let __goodsId = info[8];
+
+        // localStorage存储
+        localStorage.setItem("miniAudio", JSON.stringify(info));
+
+
+console.log(123)
+
+
+
       }
       // 外链至音乐播放器，设置info
       this.$router.push({name: "player", params: {}});

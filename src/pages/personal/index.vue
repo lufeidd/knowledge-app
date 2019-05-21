@@ -97,12 +97,12 @@
       <template>
         <!-- 我的余额 -->
         <div class="cell">
-          <div class="svg">
+          <div class="svg" @click="gotoRemain">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-personalBuy"></use>
             </svg>
           </div>
-          <div class="desc">
+          <div class="desc" @click="gotoRemain">
             <span class="text">我的余额</span>
             <span class="tip">{{ infoData.balance }}</span>
           </div>
@@ -145,7 +145,7 @@
         </router-link>
 
         <!-- 我的购物车 -->
-        <router-link v-if="infoData.is_login" to="/cart" class="cell">
+        <!-- <router-link v-if="infoData.is_login" to="/cart" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-personalCart"></use>
@@ -174,7 +174,7 @@
               <use xlink:href="#icon-next-line"></use>
             </svg>
           </div>
-        </router-link>
+        </router-link> -->
 
         <!-- 我的评论 -->
         <router-link v-if="infoData.is_login" to="/personal/comment/index" class="cell">
@@ -241,18 +241,35 @@
         </router-link>
       </template>
     </div>
+
+    <!-- 快速导航 -->
+    <easyNav :navData="navData"></easyNav>
+
+
   </div>
 </template>
 
 <style src="@/style/scss/pages/personal/index.scss" scoped lang="scss"></style>
 
 <script>
+import easyNav from "./../../components/easyNav";
 //  引入接口
 import { USER_HOMEPAGE } from "../../apis/user.js";
 
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
+      // 快速导航
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        personal: false,
+      },
       // 信息
       infoData: {}
     };
@@ -261,6 +278,9 @@ export default {
     this.homeData();
   },
   methods: {
+    gotoRemain () {
+      this.$router.push({name: 'remain'});
+    },
     async homeData() {
       let data = {
         version: "1.0"

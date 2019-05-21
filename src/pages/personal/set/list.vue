@@ -12,7 +12,7 @@
             <span class="name">{{ item.consignee }}</span>
             <span class="phone">{{ item.mobile }}</span>
           </div>
-          <div class="address">{{ item.address }}</div>
+          <div class="address">{{ item.province }}{{ item.city }}{{ item.county }}{{ item.address }}</div>
         </div>
         <div class="action">
           <div class="default" @click="editAction(item.address_id)" :class="{ active: item.is_default == 1 }">
@@ -83,6 +83,7 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
+        console.log(123, res);
     },
     // 修改当前地址
     async editAddress (addressId, key) {
@@ -96,7 +97,6 @@ export default {
       if (res.hasOwnProperty("response_code")) {
 
         this.getAddressData();
-        console.log("123", res.response_data);
 
       } else {
         this.$toast(res.error_message);
