@@ -355,12 +355,12 @@ export default {
   },
   //离开当前页面
   beforeRouteLeave(to, from, next) {
-    console.log(to, from, from.params.pid);
+    // console.log(to, from, from.params.pid);
     if(to.name == 'album') {
       // to.params.goods_id = from.params.pid;
       // this.goodsId = from.params.pid;
       localStorage.setItem('globalPid', this.$route.params.pid ? this.$route.params.pid: parseInt(localStorage.getItem('globalPid')));
-      // console.log(123, this.goodsId)
+      // console.log(this.goodsId)
     }
     next();
   },
@@ -374,11 +374,16 @@ export default {
       }
     })
 
-    // 刷新/回退存储goods_id
+    // 刷新/回退存储goods_id,pid,goods_no
     if(this.$route.params.goods_id) {
       localStorage.setItem('globalGoodsId', this.$route.params.goods_id);
     } else {
       localStorage.setItem('globalGoodsId', parseInt(localStorage.getItem('globalGoodsId')));
+    }
+    if(this.$route.params.goods_id) {
+      localStorage.setItem('globalGoodsNo', this.$route.params.goods_no);
+    } else {
+      localStorage.setItem('globalGoodsNo', parseInt(localStorage.getItem('globalGoodsNo')));
     }
     if(this.$route.params.pid) {
       localStorage.setItem('globalPid', this.$route.params.pid);
@@ -389,11 +394,14 @@ export default {
     // 获取专辑id以及商品id
     this.pid = parseInt(localStorage.getItem('globalPid'));
     this.goodsId = parseInt(localStorage.getItem('globalGoodsId'));
+    this.activeGoodNo = parseInt(localStorage.getItem('globalGoodsNo'));
 
     // 基础信息
     this.albumData();
     // 推荐
     this.recommendData();
+
+    // console.log(this.activeGoodNo);
   },
   methods: {
     // --------------------------------迷你缩略音频----------------------------------
@@ -424,7 +432,6 @@ export default {
       let __program = this.baseData.title;
       let __album = this.albumInfo.title;
       let __goodsId = this.goodsId;
-      // console.log('专辑基本信息：', this.baseData);
 
       // 存放当前音频信息
       for (let i = 0; i < this.programList.length; i++) {
@@ -579,27 +586,20 @@ export default {
         var info = JSON.parse(localStorage.getItem('miniAudio'));
 
         if(info != null && info.length > 0) {
-          info[0]
+          // 更新迷你缩放音频播放信息
+          info[0] = parseInt(localStorage.getItem('globalGoodsNo'));
+          info[1] = parseInt(localStorage.getItem('globalPid'));
+          info[2] = this.baseData.pic[0];
+          info[3] = this.baseData.file_path;
+          info[4] = this.baseData.duration;
+          info[5] = 0;
+          info[6] = this.baseData.title;
+          info[7] = this.albumInfo.title;
+          info[8] = parseInt(localStorage.getItem('globalGoodsId'));
         }
-
-        // 更新迷你缩放音频播放信息
-        // let __goodsNo = info[0];
-        // let __type = info[1];
-        // let __pic = info[2];
-        // let __src = info[3];
-        // let __duration = info[4];
-        // let __currentTime = info[5];
-        // let __program = info[6];
-        // let __album = info[7];
-        // let __goodsId = info[8];
 
         // localStorage存储
         localStorage.setItem("miniAudio", JSON.stringify(info));
-
-
-console.log(123)
-
-
 
       }
       // 外链至音乐播放器，设置info

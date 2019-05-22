@@ -187,7 +187,7 @@
                 <van-row class="list">
                   <van-col span="2" class="rank">{{ item.goods_no }}</van-col>
                   <van-col span="16">
-                    <router-link :to="{ name: 'albumdetail', params: { pid: baseData.goods_id, goods_id: item.goods_id}}" class="desc">
+                    <router-link :to="{ name: 'albumdetail', params: { pid: baseData.goods_id, goods_id: item.goods_id, goods_no: item.goods_no}}" class="desc">
                       <template v-if="item.goods_type != 6">
                         <span class="tag" v-if="item.is_free == 1">试听</span>
                         <span class="tag" v-if="item.is_payed == 1">已购</span>
@@ -282,7 +282,7 @@
 
                     <router-link v-if="item.goods_type == 6" :to="{ name: 'article', params: { pid: baseData.goods_id, goods_id: item.goods_id}}" class="text">{{ item.title }}</router-link>
 
-                    <router-link v-else :to="{ name: 'albumdetail', params: { pid: baseData.goods_id, goods_id: item.goods_id}}" class="text">{{ item.title }}</router-link>
+                    <router-link v-else :to="{ name: 'albumdetail', params: { pid: baseData.goods_id, goods_id: item.goods_id, goods_no: item.goods_no}}" class="text">{{ item.title }}</router-link>
 
                     <div class="action" @click="collectAction(key, simularStatus[key].is_collect, item.goods_id)">
                       <van-tag plain round color="#fff" text-color="#f05654" type="danger">
@@ -1124,7 +1124,7 @@ export default {
     },
     // 点击试听
     preListenAction() {
-      this.$router.push({ name: "albumdetail", params: {pid: this.baseData.goods_id, goods_id: this.preListen[0].goods_id}});
+      this.$router.push({ name: "albumdetail", params: {pid: this.baseData.goods_id, goods_id: this.preListen[0].goods_id, goods_no: this.preListen[0].goods_no}});
     },
     // 当前节目播放结束，获取当前播放节目的专辑下所有节目（不分页）
     getAllProgramData(info) {
