@@ -7,7 +7,7 @@
           </div>
           <div class="right">
               <div class="name">{{brandData.name}}</div>
-              <div class="fans">{{brandData.statistic_list.fans_num}}粉丝</div>
+              <div class="fans" v-if="brandData.statistic_list">{{brandData.statistic_list.fans_num}}粉丝</div>
           </div>
           <div class="focus" v-if="brandData.attention_state == 0" @click="focusAction">+关注</div>
           <div class="focus add" v-else @click="focusAction">已关注</div>
@@ -38,7 +38,7 @@
               finished-text="没有更多了"
               @load="programLoad"
             >
-              <div class="content" v-for="item,index in column_list_data">
+              <div class="content" v-for="item,index in column_list_data" @click="linktoDetail(item)">
                 <div class="ratiobox">
                   <div class="bookImg" v-lazy:background-image="item.pic"></div>
                 </div>
@@ -223,6 +223,36 @@ export default {
           }, 500);
         }else{
           this.$toast(res.error_message);
+        }
+      },
+      linktoDetail(item){
+        // console.log(item);
+        if(item.goods_type ==1 || item.goods_type == 2){
+          this.$router.push({
+            name:'albumdetail',
+            params:{
+              goods_id:item.goods_id,
+              pid:null,
+            }
+          })
+        }
+        if(item.goods_type ==6){
+          this.$router.push({
+            name:'article',
+            params:{
+              goods_id:item.goods_id,
+              pid:null,
+            }
+          })
+        }
+        if(item.goods_type ==9){
+          this.$router.push({
+            name:'albumlist',
+            params:{
+              goods_id:item.goods_id,
+              pid:null,
+            }
+          })
         }
       },
     }

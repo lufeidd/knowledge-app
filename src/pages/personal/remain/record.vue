@@ -2,7 +2,7 @@
   <div id="recordPage">
     <div class="head">
       <div class="income" @click="showPopup()">
-        {{clickSearchTime.join('')}}
+        {{timging}}
         <van-icon class="arrow" name="arrow-down"/>
       </div>
       <div class="num">收入：￥{{totalIncome == null ? 0:totalIncome}}</div>
@@ -53,7 +53,8 @@ export default {
     return {
       totalIncome: null,
       incomeData: [],
-      clickSearchTime:['全部'],
+      clickSearchTime:null,
+      timging:'本月',
       searchTime:null,
       show: false,
       minDate: new Date(1919,1,1),
@@ -99,11 +100,17 @@ export default {
     },
     // 点击完成时触发
     clickSearch(){
-      this.incomeData = [];
-      this.totalIncome = null;
-      this.totalOutput = null;
-      this.clickSearchTime = this.searchTime;
-      this.search();
+      if(this.searchTime){
+        this.incomeData = [];
+        this.totalIncome = null;
+        this.totalOutput = null;
+        this.clickSearchTime = this.searchTime;
+        this.timging = this.searchTime.join('');
+        this.search();
+      }else{
+        this.$toast('请选择时间段！')
+        this.show = false;
+      }
     },
     // 获取页面基本信息
     async getData(){

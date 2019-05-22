@@ -114,13 +114,13 @@ export default {
     // this.$router.push("/personal/set/bind");
     // this.$router.push("/personal/comment/index");
     // this.$router.push("/personal/set/address");
-    this.$router.push("/personal/remain/index");
+    // this.$router.push("/personal/remain/account");
 
     // 品牌商城
     // this.$router.push("/brand/result");
 
     // 品牌商城
-    // this.$router.push("/brand/mall");
+    // this.$router.push("/brand/index");
     // this.$router.push("/brand/detail/book");
     // this.$router.push("/brand/detail/article");
 
@@ -128,11 +128,11 @@ export default {
     // this.$router.push("/personal/order/comment/index");
 
     // 我的评论
-    // this.$router.push("/personal/help/feedback");
+    // this.$router.push("/personal/help/index");
     // this.$router.push("/personal/help/index");
 
     // 我的购买
-    // this.$router.push("/personal/order/list");
+    this.$router.push("/personal/order/list");
 
     // 专辑
     // this.$router.push("/album/index");
