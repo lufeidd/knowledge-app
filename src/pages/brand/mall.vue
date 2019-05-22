@@ -55,6 +55,7 @@
 
 <script>
 import easyNav from "../../components/easyNav";
+import {BRAND_PAGE_MALL_INDEX} from "../../apis/brand";
 export default {
   components: {
     easyNav
@@ -173,6 +174,26 @@ export default {
         }
       ]
     };
-  }
+  },
+  mounted(){
+    this.getData();
+  },
+  methods:{
+    async getData(){
+      var tStamp = this.$getTimeStamp();
+      var data={
+        brand_id:1,
+        version:"1.0",
+        timestamp:tStamp,
+      };
+      data.sign = this.$getSign(data);
+      let res = await BRAND_PAGE_MALL_INDEX(data);
+      if(res.hasOwnProperty("response_code")){
+        console.log(res)
+      }else{
+        this.$toast(res.error_message);
+      }
+    }
+  },
 };
 </script>

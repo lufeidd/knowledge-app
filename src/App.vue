@@ -120,7 +120,7 @@ export default {
     // this.$router.push("/brand/result");
 
     // 品牌商城
-    // this.$router.push("/brand/index");
+    this.$router.push("/brand/mall");
     // this.$router.push("/brand/detail/book");
     // this.$router.push("/brand/detail/article");
 
@@ -132,7 +132,7 @@ export default {
     // this.$router.push("/personal/help/index");
 
     // 我的购买
-    this.$router.push("/personal/order/list");
+    // this.$router.push("/personal/order/list");
 
     // 专辑
     // this.$router.push("/album/index");
