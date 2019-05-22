@@ -141,8 +141,7 @@
   </div>
 </template>
 
-
-<style  src="@/style/scss/pages/personal/order/list.scss" lang="scss"></style>
+<style scoped src="@/style/scss/pages/personal/order/list.scss" lang="scss"></style>
 
 <script>
 import easyNav from "./../../../components/easyNav";

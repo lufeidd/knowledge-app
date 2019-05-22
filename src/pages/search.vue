@@ -63,7 +63,8 @@
   </div>
 </template>
 
-<style scoped  src="@/style/scss/pages/search.scss"  lang="scss"></style>
+<style  src="@/style/scss/pages/search.scss"  lang="scss"></style>
+
 
 
 
