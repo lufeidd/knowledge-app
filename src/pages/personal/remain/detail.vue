@@ -2,7 +2,7 @@
   <div id="detailPage">
     <div class="head">
       <div class="income" @click="showPopup()">
-        {{clickSearchTime.join('')}}
+        {{timging}}
         <van-icon class="arrow" name="arrow-down"/>
       </div>
       <div class="num">
@@ -60,7 +60,8 @@ export default {
       totalIncome: null,
       totalOutput: null,
       incomeData: [],
-      clickSearchTime:['全部'],
+      clickSearchTime:null,
+      timging:'本月',
       searchTime:null,
       show: false,
       minDate: new Date(1919,1,1),
@@ -95,23 +96,31 @@ export default {
     change(e){
       var val=e.getValues();
       this.searchTime= val;
+
     },
     // 列表下拉加载
     programLoad(){
       if(this.loginState == true){
         this.getData();
       }
-      if(this.ning == true){
+      if(this.ning == true ){
         this.search();
       }
     },
     // 点击完成后触发
     clickSearch(){
-      this.incomeData = [];
-      this.totalIncome = null;
-      this.totalOutput = null;
-      this.clickSearchTime = this.searchTime;
-      this.search();
+      if(this.searchTime){
+        this.incomeData = [];
+        this.totalIncome = null;
+        this.totalOutput = null;
+        this.clickSearchTime = this.searchTime;
+        this.timging = this.searchTime.join('');
+        // console.log(this.searchTime)
+          this.search();
+      }else{
+        this.$toast('请选择时间段！')
+        this.show = false;
+      }
     },
     // 获取页面基本信息
     async getData(){
@@ -162,6 +171,7 @@ export default {
        b[1]=Number(a.split('-')[1])+1;
        this.endtime = b = b.join('-')+'-01 00:00:00';
       //  this.incomeData = [];
+
       var tStamp = this.$getTimeStamp();
       var data={
         begin_time:this.begintime,

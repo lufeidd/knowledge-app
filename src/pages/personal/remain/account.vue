@@ -3,6 +3,7 @@
     <div class="content">
       <span>¥</span>
       <span class="money">{{money ? money : 0}}</span>
+
       <p class="currentRemain">当前余额</p>
     </div>
     <div class="account">

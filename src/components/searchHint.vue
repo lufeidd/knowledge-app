@@ -86,7 +86,7 @@ export default {
     },
     async showList() {
       console.log(this.searchHintData.type)
-      if(this.searchHintData.type == 'brand'){
+      // if(this.searchHintData.type == 'brand'){
         var tStamp = this.$getTimeStamp();
         var data = {
           k:this.searchHintData.search,
@@ -102,7 +102,7 @@ export default {
         } else {
           this.$toast(res.error_message);
         }
-      }
+      // }
     },
     clearText() {
       $("#searchHint input").val("");

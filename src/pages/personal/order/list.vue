@@ -111,7 +111,7 @@
           <img v-lazy="item.brand_header_pic" alt class="icon">
           <span class="publish">{{item.brand_name}}</span>
         </div>
-        <span :class="item.state ==0? 'order1':'order2'">{{item.state == 0? '已完成':''}}</span>
+        <span :class="item.state ==0? 'order1':'order2'">{{item.state_desc}}</span>
       </div>
       <div class="section" v-for="item1 in item.details">
         <div class="bookDetail">
@@ -140,7 +140,6 @@
     <easyNav :navData="navData"></easyNav>
   </div>
 </template>
-
 
 <style scoped src="@/style/scss/pages/personal/order/list.scss" lang="scss"></style>
 
@@ -171,7 +170,7 @@ export default {
       programLoading: false,
       programFinished: false,
       page:1,
-      page_size:3,
+      page_size:5,
       order_id:'',
     };
   },
@@ -187,7 +186,7 @@ export default {
       var data={
         // order_id:1905062000270095,
         page:this.page,
-        page_size:1,
+        page_size:this.page_size,
         version:"1.0",
         timestamp:tStamp,
       };

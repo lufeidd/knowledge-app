@@ -26,7 +26,7 @@
         <van-col span="6"><van-tag round text-color="#666" size="large" color="#f5f5f5">已完成</van-tag></van-col>
       </van-row>
     </div> -->
-    <div class="searchHistory">
+    <div class="searchHistory" v-if="type == 'order'">
       <p class="title">
         <span class="history">搜索推荐</span>
         <!-- <span class="clear" @click="clear">清除</span> -->
@@ -34,7 +34,7 @@
 
       <ul>
         <!-- <li  v-for="item,index in hotSearch" :key="index">{{item}}</li> -->
-        <li>已完成</li>
+        <li v-for="item,index in state" @click="toResult(item)">{{item.order_desc}}</li>
       </ul>
 
     </div>
@@ -49,10 +49,21 @@
       </ul>
 
     </div>
+    <div class="searchHistory">
+      <p class="title">
+        <span class="history">搜索历史</span>
+        <span class="clear" @click="clear">清除</span>
+      </p>
+
+      <ul>
+        <li  v-for="item,index in list" :key="index">{{item.content}}</li>
+      </ul>
+
+    </div>
   </div>
 </template>
 
-<style src="@/style/scss/pages/search.scss"  lang="scss"></style>
+<style  src="@/style/scss/pages/search.scss"  lang="scss"></style>
 
 <script>
 import{SEARCH_HOTKEY_GETS} from "../apis/public.js"
@@ -64,19 +75,26 @@ export default {
   data () {
     return {
       searchHintData: {
-        search: "",
+        search: null,
         placeholderText:'请输入商品名称',
         list: [],
         type:'',
       },
       type:'',
       hotSearch:null,
-      state:0,
+      state:[
+        {order_state:0,order_desc:'待付款'},
+        {order_state:1,order_desc:'代发货'},
+        {order_state:2,order_desc:'已发货'},
+        {order_state:4,order_desc:'已完成'},
+      ],
+      list:[],
     }
   },
   mounted(){
     this.type = this.$route.query.type;
     this.searchHintData.type = this.$route.query.type;
+
     // console.log(this.type);
     this.getHotKey();
     
@@ -97,9 +115,10 @@ export default {
           params:{
             type:'order',
             searchContent:this.searchHintData.search,
-            state:this.state,
+            // state:this.state,
           }
         })
+        this.saveItem();
         break;
         case "brand" :
         this.$router.push({
@@ -109,6 +128,7 @@ export default {
             searchContent:this.searchHintData.search,
           }
         })
+        this.saveItem();
         break;
       }
     },
@@ -129,10 +149,38 @@ export default {
       let res = await SEARCH_HOTKEY_GETS(data);
       if(res.hasOwnProperty("response_code")){
         this.hotSearch = res.response_data;
-        console.log(res);
+        // console.log(res);
       }else{
         this.$toast(res.error_message);
       }
+    },
+    //将搜索内容存储到本地
+    saveItem(){
+      var content = {content:this.searchHintData.search};
+      var list = JSON.parse(localStorage.getItem("cmts") || '[]');
+      if(list.length>10){
+        list = list.slice(0,9);
+      }
+      list.unshift(content);
+      localStorage.setItem('cmts',JSON.stringify(list));
+      this.content = '';
+      this.$emit('func');
+    },
+    //读取本地历史记录
+    getItem(){
+        var list = JSON.parse(localStorage.getItem("cmts") || '[]');
+        this.list = list ;
+    },
+    toResult(item){
+      console.log(item)
+        this.$router.push({
+          name:'orderresult',
+          params:{
+            type:'order',
+            searchContent:this.searchHintData.search,
+            state:this.state.order_state,
+          }
+        })
     }
   }
 }

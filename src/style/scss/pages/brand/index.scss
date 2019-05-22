@@ -68,6 +68,9 @@
     .van-tabs__line{
       background-color: $redDark;
     }
+    .van-list{
+      background-color: #fff;
+    }
     .content{
       @include displayFlex(flex, null, null);
       padding: 15px;
@@ -147,11 +150,11 @@
     .content{
       font-size: $fontSize + 1;
       position: absolute;
-      top:160px;
+      top:155px;
       left: 15px;
       right: 15px;
       overflow-y: auto;
-      bottom: 0;
+      bottom: 15px;
     }
   }
 }

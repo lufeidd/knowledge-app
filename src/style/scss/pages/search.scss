@@ -7,14 +7,15 @@
   .searchHint{
     @include displayFlex(flex,null,center);
     position: relative;
-    margin: 15px;
+    margin: 0 15px 15px 15px;
+    padding-top: 15px;
     // padding: 5px;
     border-radius: 50%;
     .searchIcon{
       position: absolute;
       left: 5px;
       top: 50%;
-      margin-top: -7px;
+      // margin-top: -7px;
       color: #999;
       z-index: 99;
     }
