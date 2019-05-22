@@ -11,9 +11,10 @@
         </svg>
       </div>
       <div class="box layer" v-if="baseData.goods_type == 2">
-        <svg class="icon" aria-hidden="true">
+      <video :src="baseData.file_path" controls width="100%" height="100%"></video>
+        <!-- <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-videoPause-line"></use>
-        </svg>
+        </svg> -->
       </div>
 
       <!-- 不属于专辑的商品显示收藏当前商品 -->
@@ -715,8 +716,6 @@ export default {
       data.sign = this.$getSign(data);
       let res = await ALBUM(data);
       if (res.hasOwnProperty("response_code")) {
-
-        // console.log(res.response_data)
 
         //专辑基础信息
         this.albumInfo = res.response_data.album_info;
