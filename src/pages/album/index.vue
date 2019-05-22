@@ -552,12 +552,13 @@ export default {
     // --------------------------------专辑信息----------------------------------
     // 获取专辑接口信息
     async albumData() {
-      // var tStamp = this.$getTimeStamp();
+      var tStamp = this.$getTimeStamp();
       let data = {
-        // timeStamp: tStamp,
+        timeStamp: tStamp,
         goods_id: this.baseData.goods_id,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await ALBUM(data);
       // console.log(res.response_data, this.$cookies.get('token'), res.headers['Set-Cookie']);
 
@@ -577,16 +578,19 @@ export default {
     },
     // 获取收藏接口信息
     async collectData(__type, __status, __goodsId) {
+      var tStamp = this.$getTimeStamp();
       var data = {};
       var res;
       // 出错提示
       switch (__status) {
         case "collect":
           data = {
+            timestamp: tStamp,
             type: this.baseData.goods_type,
             target: __goodsId,
             version: "1.0",
           };
+          data.sign = this.$getSign(data);
           res = await COLLECT_ADD(data);
           if (res.hasOwnProperty("response_code")) {
             if(__type == 'base') {
@@ -601,9 +605,11 @@ export default {
           break;
         case "cancel":
           data = {
+            timestamp: tStamp,
             goods_id: __goodsId,
             version: "1.0",
           };
+          data.sign = this.$getSign(data);
           res = await COLLECT_CANCEL(data);
           if (res.hasOwnProperty("response_code")) {
             if(__type == 'base') {
@@ -627,23 +633,28 @@ export default {
     },
     // 获取关注接口信息
     async focusData(__type) {
+      var tStamp = this.$getTimeStamp();
       var data = {};
       var res;
       switch (__type) {
         case "focus":
           data = {
+            timestamp: tStamp,
             brand_id: this.baseData.brand_id,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await FOCUS_ADD(data);
           this.brandInfoData.is_followed = 1;
           // this.$toast('已关注~');
           break;
         case "cancel":
           data = {
+            timestamp: tStamp,
             brand_id: this.baseData.brand_id,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await FOCUS_CANCEL(data);
           this.brandInfoData.is_followed = 0;
           this.$toast("已取消关注~");
@@ -688,11 +699,14 @@ export default {
       this.commentData();
     },
     async commentData() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         page: this.commentPage,
         page_size: 5,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await COMMENT(data);
 
       if (res.hasOwnProperty("response_code")) {
@@ -726,12 +740,15 @@ export default {
     },
     // 回复
     async replyData(comment_id, key) {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         comment_pid: comment_id,
         page: this.replyPage[key],
         page_size: 5,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await COMMENT(data);
 
       if (res.hasOwnProperty("response_code")) {
@@ -765,10 +782,12 @@ export default {
      * __type = 'reply';   新增回复
      */
     async addComment(__type) {
+      var tStamp = this.$getTimeStamp();
       var data = {};
       switch (__type) {
         case "comment":
           data = {
+            timestamp: tStamp,
             goods_id: this.baseData.goods_id,
             content: this.contentModel,
             version: "1.0"
@@ -776,6 +795,7 @@ export default {
           break;
         case "reply":
           data = {
+            timestamp: tStamp,
             goods_id: this.baseData.goods_id,
             comment_pid: this.commentId,
             content: this.contentModel,
@@ -785,6 +805,7 @@ export default {
         default:
           break;
       }
+      data.sign = this.$getSign(data);
       let res = await COMMENT_ADD(data);
       if (res.hasOwnProperty("response_code")) {
 
@@ -833,13 +854,16 @@ export default {
     },
     // 获取节目列表
     async programData() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         goods_id: this.baseData.goods_id,
         goods_no: this.rankType,
         page: this.programPage,
         page_size: 5,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await ALBUM_DETAIL(data);
 
       if (res.hasOwnProperty("response_code")) {
@@ -1138,12 +1162,15 @@ export default {
       this.allProgramData(info, "end");
     },
     async allProgramData(info, actionType) {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         goods_id: this.baseData.goods_id,
         goods_no: this.rankType,
         page_size: 1000000000000000,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await ALBUM_DETAIL(data);
 
       // 存储当前节目的下一项
@@ -1250,12 +1277,15 @@ export default {
       this.recommendData();
     },
     async recommendData () {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         goods_id: this.baseData.goods_id,
         page: this.recommendPage,
         page_size: 5,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await RECOMMEND(data);
 
       if (res.hasOwnProperty("response_code")) {

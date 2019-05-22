@@ -47,8 +47,9 @@
       </div>
 
       <div class="prototype">
-        <van-checkbox v-model="checked">阅读并同意</van-checkbox>
-        <router-link to="/login/prototype">《火把服务用户协议》</router-link>
+        <van-checkbox v-model="checked" @click="checkAction">阅读并同意</van-checkbox>
+        <router-link :to="{name: 'prototype', params: {type: 'prototype'}}">《火把服务用户协议》</router-link>
+        <router-link :to="{name: 'prototype', params: {type: 'private'}}">《隐私条款》</router-link>
       </div>
 
       <div class="submitBox">
@@ -99,7 +100,7 @@ export default {
       submitData: {
         disabled: true
       },
-      checked: false
+      checked: true,
     };
   },
   mounted() {
@@ -120,19 +121,26 @@ export default {
       if (
         regPassword.test(this.password) &&
         regPhone.test(this.phone) &&
-        this.code.length === 4
+        this.code.length === 4 &&
+        this.checked == true
       ) {
         this.submitData.disabled = false;
       } else {
         this.submitData.disabled = true;
       }
     },
+    checkAction () {
+      this.checkSubmit('submit');
+    },
     // 获取验证码
     async sms() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         mobile: this.phone,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await SMS(data);
       console.log(res);
     },
@@ -142,12 +150,15 @@ export default {
     },
     // 确认并注册
     async regist() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         mobile: this.phone,
         auth_code: this.code,
         pwd: this.password,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
 
       let res = await REG(data);
 

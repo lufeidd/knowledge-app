@@ -189,8 +189,9 @@ export default {
       }
 
       // console.log(info);
-
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         // 判断是否还有pid
         goods_id: __goodsId,
         // goods_id: this.goodsId,
@@ -198,6 +199,7 @@ export default {
         page_size: 5,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await ALBUM_DETAIL(data);
 
       if (res.hasOwnProperty("response_code")) {

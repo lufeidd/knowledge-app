@@ -450,11 +450,14 @@ export default {
 
       // 当前节目不为单个商品
       if(info[1] != 0) {
+        var tStamp = this.$getTimeStamp();
         let data = {
+          timestamp: tStamp,
           goods_id: info[1],
           page_size: 1000000000000000,
           version: "1.0"
         };
+        data.sign = this.$getSign(data);
         let res = await ALBUM_DETAIL(data);
         // 存储当前节目的prev和next
         var prev;

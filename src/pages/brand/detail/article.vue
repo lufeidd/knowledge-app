@@ -277,21 +277,26 @@ export default {
     async focusData(__type) {
       var data = {};
       var res;
+      var tStamp = this.$getTimeStamp();
       switch (__type) {
         case "focus":
           data = {
+            timestamp: tStamp,
             brand_id: this.articleInfo.brand_id,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await FOCUS_ADD(data);
           this.articleInfo.is_followed = 1;
           // this.$toast('已关注~');
           break;
         case "cancel":
           data = {
+            timestamp: tStamp,
             brand_id: this.articleInfo.brand_id,
             version: "1.0",
           };
+          data.sign = this.$getSign(data);
           res = await FOCUS_CANCEL(data);
           this.articleInfo.is_followed = 0;
           this.$toast("已取消关注~");
@@ -331,22 +336,27 @@ export default {
     async collectData(__type) {
       var data = {};
       var res;
+      var tStamp = this.$getTimeStamp();
       switch (__type) {
         case "collect":
           data = {
+            timestamp: tStamp,
             type: this.baseData.goods_type,
             target: this.baseData.article_id,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await COLLECT_ADD(data);
           this.baseData.collect_id = 1;
           // this.$toast("已收藏~");
           break;
         case "cancel":
           data = {
+            timestamp: tStamp,
             goods_id: this.baseData.article_id,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await COLLECT_CANCEL(data);
           this.baseData.collect_id = 0;
           this.$toast("已取消收藏~");
@@ -369,23 +379,28 @@ export default {
     async praiseData(__type) {
       var data = {};
       var res;
+      var tStamp = this.$getTimeStamp();
       switch (__type) {
         case "focus":
           data = {
+            timestamp: tStamp,
             goods_id: this.baseData.article_id,
             type: this.baseData.goods_type,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await GOODS_PRAISE_ADD(data);
           this.baseData.is_praised = 1;
           // this.$toast('已关注~');
           break;
         case "cancel":
           data = {
+            timestamp: tStamp,
             goods_id: this.baseData.article_id,
             type: this.baseData.goods_type,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await GOODS_PRAISE_DELETE(data);
           this.baseData.is_praised = 0;
           this.$toast("已取消点赞~");
@@ -408,6 +423,7 @@ export default {
     async getData() {
       var tStamp = this.$getTimeStamp();
       var data = {
+        timestamp: tStamp,
         // goods_id: this.goodsId,
         goods_id: this.goodsId,
         version: "1.0",
@@ -433,6 +449,7 @@ export default {
     async getRecommendData() {
       var tStamp = this.$getTimeStamp();
       var data = {
+        timestamp: tStamp,
         // goods_id: this.goodsId,
         goods_id:18,
         page:1,
@@ -457,12 +474,15 @@ export default {
       this.commentData();
     },
     async commentData() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         page: this.commentPage,
         goods_id: this.goodsId,
         page_size: 5,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await COMMENT(data);
 
       if (res.hasOwnProperty("response_code")) {
@@ -496,12 +516,15 @@ export default {
     },
     // 回复
     async replyData(comment_id, key) {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         comment_pid: comment_id,
         page: this.replyPage[key],
         page_size: 5,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await COMMENT(data);
 
       if (res.hasOwnProperty("response_code")) {
@@ -533,10 +556,12 @@ export default {
      * __type = 'reply';   新增回复
      */
     async addComment(__type) {
+      var tStamp = this.$getTimeStamp();
       var data = {};
       switch (__type) {
         case "comment":
           data = {
+            timestamp: tStamp,
             goods_id: this.baseData.article_id,
             content: this.contentModel,
             version: "1.0"
@@ -544,6 +569,7 @@ export default {
           break;
         case "reply":
           data = {
+            timestamp: tStamp,
             goods_id: this.baseData.article_id,
             comment_pid: this.commentId,
             content: this.contentModel,
@@ -553,6 +579,7 @@ export default {
         default:
           break;
       }
+      data.sign = this.$getSign(data);
       let res = await COMMENT_ADD(data);
       if (res.hasOwnProperty("response_code")) {
         this.commentPage = 1;

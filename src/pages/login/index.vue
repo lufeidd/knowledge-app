@@ -117,11 +117,14 @@ export default {
     },
     // 登录
     async login() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         mobile: this.phone,
         pwd: this.password,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await LOG(data);
       // 出错提示
       if (res.hasOwnProperty("response_code")) {

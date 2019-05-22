@@ -125,9 +125,12 @@ export default {
   },
   methods: {
     async homeData() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await USER_HOMEPAGE(data);
       console.log("123", res.response_data);
       if (res.hasOwnProperty("response_code")) {

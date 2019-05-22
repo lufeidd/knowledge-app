@@ -36,7 +36,7 @@
           <span class="publish">{{infoData.brand_name}}</span>
         </div>
       </div>
-      <div class="section" v-for="item in infoData.order_detail">
+      <div class="section" v-for="item in infoData.detail">
         <div class="bookDetail">
           <div class="ratiobox">
             <div class="box">

@@ -614,12 +614,15 @@ export default {
       this.allProgramData(info, "end");
     },
     async allProgramData(info, actionType) {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         goods_id: info[8],
         goods_no: this.rankType,
         page_size: 1000000000000000,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await ALBUM_DETAIL(data);
       // 存储当前节目的下一项
       var next;
@@ -702,13 +705,14 @@ export default {
     // ----------------------------------介绍------------------------------------
     // 获取专辑/商品接口信息
     async albumData() {
-      // var tStamp = this.$getTimeStamp();
+      var tStamp = this.$getTimeStamp();
       let data = {
-        // timeStamp: tStamp,
+        timeStamp: tStamp,
         pid: this.pid ? this.pid : null,
         goods_id: this.goodsId,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await ALBUM(data);
       if (res.hasOwnProperty("response_code")) {
 
@@ -737,25 +741,30 @@ export default {
     // 获取收藏接口信息
     async collectData(__status, __goodsId) {
       var data = {};
+      var tStamp = this.$getTimeStamp();
       var res;
       // 出错提示
       if (res.hasOwnProperty("response_code")) {
         switch (__status) {
           case "collect":
             data = {
+              timestamp: tStamp,
               type: this.baseData.goods_type,
               target: __goodsId,
               version: "1.0",
             };
+            data.sign = this.$getSign(data);
             res = await COLLECT_ADD(data);
             this.baseData.collect_id = 1;
             // this.$toast("已收藏~");
             break;
           case "cancel":
             data = {
+              timestamp: tStamp,
               goods_id: __goodsId,
               version: "1.0",
             };
+            data.sign = this.$getSign(data);
             res = await COLLECT_CANCEL(data);
             this.baseData.collect_id = 0;
             this.$toast("已取消收藏~");
@@ -775,23 +784,28 @@ export default {
     },
     // 获取关注接口信息
     async focusData(__type) {
+      var tStamp = this.$getTimeStamp();
       var data = {};
       var res;
       switch (__type) {
         case "focus":
           data = {
+            timestamp: tStamp,
             brand_id: this.baseData.brand_id,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await FOCUS_ADD(data);
           this.brandInfoData.is_followed = 1;
           // this.$toast('已关注~');
           break;
         case "cancel":
           data = {
+            timestamp: tStamp,
             brand_id: this.baseData.brand_id,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await FOCUS_CANCEL(data);
           this.brandInfoData.is_followed = 0;
           this.$toast("已取消关注~");
@@ -815,11 +829,14 @@ export default {
       this.commentData();
     },
     async commentData() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         page: this.commentPage,
         page_size: 5,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await COMMENT(data);
 
       if (res.hasOwnProperty("response_code")) {
@@ -853,12 +870,15 @@ export default {
     },
     // 回复
     async replyData(comment_id, key) {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         comment_pid: comment_id,
         page: this.replyPage[key],
         page_size: 5,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await COMMENT(data);
 
       if (res.hasOwnProperty("response_code")) {
@@ -892,10 +912,12 @@ export default {
      * __type = 'reply';   新增回复
      */
     async addComment(__type) {
+      var tStamp = this.$getTimeStamp();
       var data = {};
       switch (__type) {
         case "comment":
           data = {
+            timestamp: tStamp,
             goods_id: this.baseData.goods_id,
             content: this.contentModel,
             version: "1.0"
@@ -903,6 +925,7 @@ export default {
           break;
         case "reply":
           data = {
+            timestamp: tStamp,
             goods_id: this.baseData.goods_id,
             comment_pid: this.commentId,
             content: this.contentModel,
@@ -912,6 +935,7 @@ export default {
         default:
           break;
       }
+      data.sign = this.$getSign(data);
       let res = await COMMENT_ADD(data);
       if (res.hasOwnProperty("response_code")) {
 
@@ -964,12 +988,15 @@ export default {
     // --------------------------------相似----------------------------------
     // 推荐
     async recommendData () {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         goods_id: this.goodsId,
         page: 1,
         page_size: 6,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await RECOMMEND(data);
 
       if (res.hasOwnProperty("response_code")) {
