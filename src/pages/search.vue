@@ -65,9 +65,6 @@
 
 <style  src="@/style/scss/pages/search.scss"  lang="scss"></style>
 
-
-
-
 <script>
 import{SEARCH_HOTKEY_GETS} from "../apis/public.js"
 import searchHint from "../components/searchHint"
@@ -97,13 +94,13 @@ export default {
   mounted(){
     this.type = this.$route.query.type;
     this.searchHintData.type = this.$route.query.type;
-    this.getItem();
-    console.log('搜索历史:',this.list);
-    // if(this.type == 'order'){
-    //   this.searchHintData.placeholderText = '搜索全部订单'
-    // }
+
     // console.log(this.type);
     this.getHotKey();
+    
+    // console.log(123, history.length);
+    // let len = history.length;
+    // history.go(-(len-1));
   },
   methods:{
     clear(){

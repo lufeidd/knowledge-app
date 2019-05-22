@@ -132,7 +132,7 @@ export default {
     async getData(){
       var tStamp = this.$getTimeStamp();
       var data={
-        order_id:this.order_id,
+        order_id: this.order_id,
         version:"1.0",
         timestamp:tStamp,
       };

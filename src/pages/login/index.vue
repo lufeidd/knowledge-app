@@ -61,10 +61,23 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/login/index.scss" lang="scss"></style>
+<style src="@/style/scss/pages/login/index.scss" scoped lang="scss"></style>
+
+<style>
+
+  .van-field__label {
+    max-width: 50px;
+    margin-right: 10px;
+  }
+
+  .phone .van-field__label {
+    border-right: 1px #d6d6d6 solid;
+  }
+</style>
+
 
 <script>
-import axios from 'axios'
+// import axios from "axios";
 //  引入接口
 import { LOG } from "../../apis/passport.js";
 
@@ -74,20 +87,17 @@ export default {
       phone: "",
       password: "",
       submitData: {
-        disabled: true
+        disabled: true,
       }
     };
   },
   mounted() {
-
-
-// 获取动态接口地址
-// axios.get('./../../static/serverConfig.json').then((result) => {
-//   console.log(123, 'baseUrl', result)
-// }).catch((error) => {
-//   console.log(error)
-// })
-
+    // 获取动态接口地址
+    // axios.get('./../../static/serverConfig.json').then((result) => {
+    //   console.log('baseUrl', result)
+    // }).catch((error) => {
+    //   console.log(error)
+    // })
 
     this.phone = this.$route.query.mobile;
     this.password = this.$route.query.pwd;
@@ -116,7 +126,7 @@ export default {
       // 出错提示
       if (res.hasOwnProperty("response_code")) {
         console.log(res);
-        this.$router.push({ name: "personalIndex", params: '' });
+        this.$router.push({ name: "personalIndex", params: "" });
       } else {
         this.$toast(res.error_message);
       }

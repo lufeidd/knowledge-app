@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <router-view/>
+    <!-- 页面缓存, $route.meta.keepAlive默认false -->
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive"/>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"/>
   </div>
 </template>
 
@@ -96,46 +100,10 @@ img {
 </style>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
   name: "App",
   mounted() {
-    // 注册登录
-    // this.$router.push("/login/register");
-    // this.$router.push("/login/index");
-    // this.$router.push("/login/password");
-    // this.$router.push("/login/index");
-    // this.$router.push("/search");
-
-    // 个人中心
-    // this.$router.push("/personal/index");
-    // this.$router.push("/personal/set/index");
-    // this.$router.push("/personal/set/info");
-    // this.$router.push("/personal/set/bind");
-    // this.$router.push("/personal/comment/index");
-    // this.$router.push("/personal/set/address");
-    // this.$router.push("/personal/remain/account");
-
-    // 品牌商城
-    // this.$router.push("/brand/result");
-
-    // 品牌商城
-    // this.$router.push("/brand/index");
-    // this.$router.push("/brand/detail/book");
-    // this.$router.push("/brand/detail/article");
-
-    // 评价
-    // this.$router.push("/personal/order/comment/index");
-
-    // 我的评论
-    // this.$router.push("/personal/help/index");
-    // this.$router.push("/personal/help/index");
-
-    // 我的购买
-    this.$router.push("/personal/order/list");
-
-    // 专辑
-    // this.$router.push("/album/index");
 
   }
 };

@@ -199,7 +199,7 @@
         </svg>
         <svg class="icon" aria-hidden="true" v-else @click="collectAction">
           <use xlink:href="#icon-collect-line"></use>
-        </svg> &nbsp|&nbsp
+        </svg> &nbsp;|&nbsp;
         <svg
           class="icon"
           aria-hidden="true"
@@ -216,7 +216,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/brand/detail/article.scss" lang="scss"></style>
+<style src="@/style/scss/pages/brand/detail/article.scss" scoped lang="scss"></style>
 
 <script>
 import { ALBUM, ALBUM_DETAIL } from "../../../apis/album.js";

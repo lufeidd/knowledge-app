@@ -4,12 +4,12 @@
       <div class="box">
         <img v-if="baseData.pic" :src="baseData.pic[0]">
       </div>
-      <!-- goodsType区分商品类型，音频/视频/节目/文章/图书 -->
-      <router-link :to="{name: 'player', params: {}}" class="box layer" v-if="baseData.goods_type == 1">
+      <!-- goodsType区分商品类型，音频1/视频2/专辑9/文章6/图书 -->
+      <div @click="gotoPlayer('external')" class="box layer" v-if="baseData.goods_type == 1">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-audio-circle"></use>
         </svg>
-      </router-link>
+      </div>
       <div class="box layer" v-if="baseData.goods_type == 2">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-videoPause-line"></use>
@@ -86,7 +86,7 @@
       <van-col span="8" v-for="(item, key) in recommendList" :key="key">
         <div class="ratioBox">
           <div class="box">
-            <img :src="item.main_pic">
+            <img :src="item.pic[0]">
           </div>
         </div>
         <div class="title">{{ item.title }}</div>
@@ -173,6 +173,7 @@
       </van-list>
     </div>
 
+    <div style="height: 60px;"></div>
     <div v-if="myAudioData" style="height: 60px;"></div>
 
     <!-- 试听 - 购买 -->
@@ -191,7 +192,7 @@
 
     <!-- 音频缩略 -->
     <miniAudio
-      v-if="myAudioData"
+      :class="{isShow: myAudioData.src}"
       :audioData="myAudioData"
       :rank="rankType"
       ref="control"
@@ -239,6 +240,13 @@
 </template>
 
 <style src="@/style/scss/pages/album/detail.scss" lang="scss"></style>
+<style scoped>
+
+.van-button {
+  border-radius: 0;
+}
+</style>
+
 
 <script>
 import miniAudio from "./../../components/miniAudio";
@@ -291,6 +299,8 @@ export default {
       goodsId: null,
       // 账号信息，是否登录
       userInfo: false,
+      // 专辑基础信息
+      albumInfo: {},
       // 基础信息
       baseData: {
         title: "",
@@ -340,7 +350,22 @@ export default {
       recommendList: [],
     };
   },
+  beforeDestroy(){
+    $(window).off('scroll');
+  },
+  //离开当前页面
+  beforeRouteLeave(to, from, next) {
+    // console.log(to, from, from.params.pid);
+    if(to.name == 'album') {
+      // to.params.goods_id = from.params.pid;
+      // this.goodsId = from.params.pid;
+      localStorage.setItem('globalPid', this.$route.params.pid ? this.$route.params.pid: parseInt(localStorage.getItem('globalPid')));
+      // console.log(this.goodsId)
+    }
+    next();
+  },
   mounted() {
+
     $(window).on('scroll', function(){
       if($(window).scrollTop() >= $('#comment').offset().top) {
         $('#commentTitle').css({'position': 'fixed', 'border-bottom-width': '1px'});
@@ -348,15 +373,35 @@ export default {
         $('#commentTitle').css({'position': 'relative', 'border-bottom-width': 0});
       }
     })
+
+    // 刷新/回退存储goods_id,pid,goods_no
+    if(this.$route.params.goods_id) {
+      localStorage.setItem('globalGoodsId', this.$route.params.goods_id);
+    } else {
+      localStorage.setItem('globalGoodsId', parseInt(localStorage.getItem('globalGoodsId')));
+    }
+    if(this.$route.params.goods_id) {
+      localStorage.setItem('globalGoodsNo', this.$route.params.goods_no);
+    } else {
+      localStorage.setItem('globalGoodsNo', parseInt(localStorage.getItem('globalGoodsNo')));
+    }
+    if(this.$route.params.pid) {
+      localStorage.setItem('globalPid', this.$route.params.pid);
+    } else {
+      localStorage.setItem('globalPid', parseInt(localStorage.getItem('globalPid')));
+    }
+
     // 获取专辑id以及商品id
-    var queryData = this.$route.params;
-    this.pid = queryData.pid;
-    this.goodsId = queryData.goods_id;
+    this.pid = parseInt(localStorage.getItem('globalPid'));
+    this.goodsId = parseInt(localStorage.getItem('globalGoodsId'));
+    this.activeGoodNo = parseInt(localStorage.getItem('globalGoodsNo'));
 
     // 基础信息
     this.albumData();
     // 推荐
     this.recommendData();
+
+    // console.log(this.activeGoodNo);
   },
   methods: {
     // --------------------------------迷你缩略音频----------------------------------
@@ -375,18 +420,18 @@ export default {
     audioAction(item) {
       var goods_no = item.goods_no;
 
-      let __goodsNo = null;
-      let __type = true;
+      let __goodsNo = item.goods_no;
+      let __pid = this.baseData.goods_id ? this.baseData.goods_id : 0;;
       let __pic = this.baseData.pic[0];
-      let __src = null;
+      let __src = this.baseData.file_path;
       // let __src = require('./../../assets/music.mp3');
-      let __duration = null;
+      let __duration = this.baseData.duration;
       // 获取当前节目播放进度
-      let __currentTime = this.getAudioProgress(item);
-      let __program = null;
-      let __album = this.baseData.title;
+      let __currentTime = 0;
+      // let __currentTime = this.getAudioProgress(item);
+      let __program = this.baseData.title;
+      let __album = this.albumInfo.title;
       let __goodsId = this.goodsId;
-      // console.log('专辑基本信息：', this.baseData);
 
       // 存放当前音频信息
       for (let i = 0; i < this.programList.length; i++) {
@@ -417,23 +462,35 @@ export default {
 
       // 管理子组件播放状态
       this.activeGoodNo = goods_no;
-      __type = !this.audioPlaying;
 
-      var info = [
-        __goodsNo,
-        __type,
-        __pic,
-        __src,
-        __duration,
-        __currentTime,
-        __program,
-        __album,
-        __goodsId
-      ];
+      var info = [__goodsNo, __pid, __pic, __src, __duration, __currentTime, __program, __album, __goodsId];
       this.miniAudioData(info);
 
       // 解决子组件数据实时刷新问题
-      this.$refs.control.audioData.type = __type;
+      this.$refs.control.audioData.type = !this.audioPlaying;
+      // console.log(info)
+    },
+    // 获取当前节目播放进度
+    getAudioProgress(item) {
+      var pid = this.baseData.goods_id;
+      var goods_no = item.goods_no;
+      var goods_id = item.goods_id;
+      var result = JSON.parse(localStorage.getItem("audioProgress"));
+      // 默认从0播放,如果localStorage有播放进度记录则从记录处播放
+      var __currentTime = 0;
+
+      if(result != null && result.length > 0) {
+
+        // 遍历localStorage中记录进度的数组，获取当前节目当前进度
+        for(let i = 0; i < result.length; i++) {
+          if(goods_id == result[i].goods_id && pid == result[i].pid) {
+            __currentTime = result[i].progress;
+          }
+        }
+      }
+
+      // 如果当前节目有播放记录，跳到当前记录位置继续播放
+      return __currentTime;
     },
     // 将当前音频播放信息存放到localStorage: miniAudio
     miniAudioData(info) {
@@ -448,55 +505,57 @@ export default {
        * __album专辑标题
        * __goodsId专辑id
        */
-      let __goodsNo = info[0];
-      let __type = info[1];
-      let __pic = info[2];
-      let __src = info[3];
-      let __duration = info[4];
-      let __currentTime = info[5];
-      let __program = info[6];
-      let __album = info[7];
-      let __goodsId = info[8];
+      if(info != null && info.length != 0) {
+        let __goodsNo = info[0];
+        let __type = info[1];
+        let __pic = info[2];
+        let __src = info[3];
+        let __duration = info[4];
+        let __currentTime = info[5];
+        let __program = info[6];
+        let __album = info[7];
+        let __goodsId = info[8];
 
-      // 设置音频信息
-      this.$set(this.myAudioData, "goodsNo", __goodsNo);
-      this.$set(this.myAudioData, "type", __type);
-      this.$set(this.myAudioData, "pic", __pic);
-      this.$set(this.myAudioData, "src", __src);
-      this.$set(this.myAudioData, "duration", __duration);
-      this.$set(this.myAudioData, "currentTime", __currentTime);
-      this.$set(this.myAudioData, "program", __program);
-      this.$set(this.myAudioData, "album", __album);
-      this.$set(this.myAudioData, "goodsId", __goodsId);
+        // 设置音频信息
+        this.$set(this.myAudioData, "goodsNo", __goodsNo);
+        this.$set(this.myAudioData, "type", __type);
+        this.$set(this.myAudioData, "pic", __pic);
+        this.$set(this.myAudioData, "src", __src);
+        this.$set(this.myAudioData, "duration", __duration);
+        this.$set(this.myAudioData, "currentTime", __currentTime);
+        this.$set(this.myAudioData, "program", __program);
+        this.$set(this.myAudioData, "album", __album);
+        this.$set(this.myAudioData, "goodsId", __goodsId);
 
-      // localStorage存储
-      // info = JSON.parse(localStorage.getItem('miniAudio'));
-      localStorage.setItem("miniAudio", JSON.stringify(info));
+        // localStorage存储
+        // info = JSON.parse(localStorage.getItem('miniAudio'));
+        localStorage.setItem("miniAudio", JSON.stringify(info));
 
-      // 当前专辑与localStorage一致时,关联播放列表当前播放状态
-      if (info[8] == this.goodsId) this.activeGoodNo = info[0];
+        // 当前专辑与localStorage一致时,关联播放列表当前播放状态
+        if (info[8] == this.goodsId) this.activeGoodNo = info[0];
 
-      // console.log('存储迷你音频信息:', info);
+        // console.log('存储迷你音频信息:', info);
 
-      // 解决父页面子组件实时刷新问题
-      setTimeout(() => {
-        this.$refs.control.audioData.pic = __pic;
-        this.$refs.control.audioData.src = __src;
-        this.$refs.control.audioData.currentTime = __currentTime;
-        this.$refs.control.audioData.duration = __duration;
-        this.$refs.control.audioData.program = __program;
-        this.$refs.control.audioData.album = __album;
+        // 解决父页面子组件实时刷新问题
+        setTimeout(() => {
+          this.$refs.control.audioData.pic = __pic;
+          this.$refs.control.audioData.src = __src;
+          this.$refs.control.audioData.currentTime = __currentTime;
+          this.$refs.control.audioData.duration = __duration;
+          this.$refs.control.audioData.program = __program;
+          this.$refs.control.audioData.album = __album;
 
-        // this.$refs.control.audiobindtoslider(info[5]);
-        // 设置当前播放进度
-        // this.$refs.control.audioData.sliderValue = (info[5] / audio.duration) * 100;
-        // this.$refs.control.audioSliderChange();
-      }, 600);
+          // this.$refs.control.audiobindtoslider(info[5]);
+          // 设置当前播放进度
+          // this.$refs.control.audioData.sliderValue = (info[5] / audio.duration) * 100;
+          // this.$refs.control.audioSliderChange();
+        }, 600);
 
-      if (!__src) {
-        $("#miniAudio").css("display", "none");
-      } else {
-        $("#miniAudio").css("display", "block");
+        if (!__src) {
+          $("#miniAudio").css("display", "none");
+        } else {
+          $("#miniAudio").css("display", "block");
+        }
       }
     },
     // 将当前专辑节目列表播放进度信息存放到localStorage
@@ -518,10 +577,33 @@ export default {
       // 关联播放列表
       this.$refs.controlList.goodsNo = this.activeGoodNo;
     },
-    gotoPlayer(queryData) {
-      // console.log(queryData);
-      // this.$router.push({path: "../album/player", query: queryData});
-      this.$router.push("../album/player");
+    // 跳转到音乐播放器
+    gotoPlayer(__type) {
+      if(__type == 'external') {
+        // console.log(this.baseData)
+        // this.audioAction(this.baseData);
+
+        var info = JSON.parse(localStorage.getItem('miniAudio'));
+
+        if(info != null && info.length > 0) {
+          // 更新迷你缩放音频播放信息
+          info[0] = parseInt(localStorage.getItem('globalGoodsNo'));
+          info[1] = parseInt(localStorage.getItem('globalPid'));
+          info[2] = this.baseData.pic[0];
+          info[3] = this.baseData.file_path;
+          info[4] = this.baseData.duration;
+          info[5] = 0;
+          info[6] = this.baseData.title;
+          info[7] = this.albumInfo.title;
+          info[8] = parseInt(localStorage.getItem('globalGoodsId'));
+        }
+
+        // localStorage存储
+        localStorage.setItem("miniAudio", JSON.stringify(info));
+
+      }
+      // 外链至音乐播放器，设置info
+      this.$router.push({name: "player", params: {}});
     },
     // 当前节目播放结束，获取当前播放节目的专辑下所有节目（不分页）
     getAllProgramData(info) {
@@ -591,21 +673,26 @@ export default {
     getMiniAudioData() {
       // 设置迷你音频信息
       var info = JSON.parse(localStorage.getItem("miniAudio"));
-      // if (info[0] != "") this.activeGoodNo = info[0];
-      // 将当前音频播放信息存放到localStorage: miniAudio
-      this.miniAudioData(info);
 
-      // 解决子组件数据实时刷新问题
-      this.$refs.control.audioData.type = !this.audioPlaying;
-      // 设置当前播放进度
-      setTimeout(() => {
-        var audio = document.getElementById("myMiniAudio");
-        // currentTime关联slider进度
-        this.$refs.control.audioData.sliderValue =
-          (info[5] / audio.duration) * 100;
-        // 当无播放记录的时候
-        if (info[4] != "") this.$refs.control.audioSliderChange();
-      }, 600);
+      if(info != null && info.length > 0) {
+
+        // if (info[0] != "") this.activeGoodNo = info[0];
+        // 将当前音频播放信息存放到localStorage: miniAudio
+        this.miniAudioData(info);
+
+        // 解决子组件数据实时刷新问题
+        this.$refs.control.audioData.type = !this.audioPlaying;
+        // 设置当前播放进度
+        setTimeout(() => {
+          var audio = document.getElementById("myMiniAudio");
+          // currentTime关联slider进度
+          if(info[5] != null && info[5] != '')  this.$refs.control.audioData.sliderValue =
+            (info[5] / audio.duration) * 100;
+          // 当无播放记录的时候
+          if (info[4] != null && info[4] != "") this.$refs.control.audioSliderChange();
+        }, 600);
+        
+      }
 
     },
     // ----------------------------------介绍------------------------------------
@@ -614,16 +701,18 @@ export default {
       // var tStamp = this.$getTimeStamp();
       let data = {
         // timeStamp: tStamp,
-        pid: this.pid,
+        pid: this.pid ? this.pid : null,
         goods_id: this.goodsId,
         version: "1.0"
       };
       let res = await ALBUM(data);
       if (res.hasOwnProperty("response_code")) {
 
-        console.log(res.response_data)
+        // console.log(res.response_data)
 
         //专辑基础信息
+        this.albumInfo = res.response_data.album_info;
+        // 当前商品基础信息
         this.baseData = res.response_data.base;
         // 公号信息
         this.brandInfoData = res.response_data.brand_info;
@@ -862,7 +951,7 @@ export default {
     // 评论锚点
     tabChange(index, title) {
       // this.$toast(index);
-      if (index == 1) $(window).scrollTop($("#comment").offset().top);
+      if (index == 1 && $("#comment").length == 1) $(window).scrollTop($("#comment").offset().top);
     },
     // 购买
     buyAction(goodsId) {

@@ -4,18 +4,9 @@
 */
 @charset "UTF-8";
 
-// 组件
-@import url("./../components/button.scss");
-
-html {
-  background-color: $greyLight;
-}
-
 #paysuccessPage {
-
-  & .van-button--plain.van-button--danger {
-    margin-top: 25px;
-  }
+  background-color: $greyLight;
+  min-height: 100%;
 
   & .icon {
     @include font(null, 60px, $redDark);
@@ -31,7 +22,7 @@ html {
       line-height: 2;
     }
 
-    .money {
+    & .money {
       @include font(null, $fontSize - 2, #666);
 
       & .price {
@@ -47,6 +38,9 @@ html {
 }
 
 #accountPage {
+  background-color: $greyLight;
+  min-height: 100%;
+
   .content {
     padding: 45px 0 35px 0;
     color: $cl3;
@@ -106,7 +100,7 @@ html {
 }
 
 #recordPage {
-  height: 100%;
+  min-height: 100%;
   background-color: $greyLight;
   font-size: $fontSize - 2;
   color: $cl0;
@@ -196,7 +190,7 @@ html {
 }
 
 #detailPage {
-  height: 100%;
+  min-height: 100%;
   background-color: $greyLight;
   font-size: $fontSize - 2;
   color: $cl0;
@@ -288,6 +282,9 @@ html {
 }
 
 #payIndex {
+  
+  background-color: $greyLight;
+
   & .bottomBox {
     & .icon {
       width: 18px;
@@ -318,9 +315,8 @@ html {
 
 #payaccountPage {
 
-    & .van-dialog__confirm, .van-dialog__confirm:active {
-        display: none;
-    }
+  background-color: $greyLight;
+  min-height: 100%;
 
   & .codeBox {
 
@@ -337,9 +333,9 @@ html {
     }
 
     & .code {
-        @include font(null, $fontSize - 1, #999);
-        padding: 10px 0;
-        line-height: 30px;
+      @include font(null, $fontSize - 1, #999);
+      padding: 10px 0;
+      line-height: 30px;
     }
   }
 
@@ -364,61 +360,77 @@ html {
     }
   }
 
+
+  & .listBox.disable {
+    & .list {
+      opacity: .5;
+    }
+  }
+}
+
+#payaccountPage {
   & .listBox {
-    @include displayFlex (flex, center, center);
+    @include displayFlex (flex, flex-start, center);
     border-bottom: 1px $greyLight solid;
     background-color: $white;
     padding: 15px;
 
-    & .check {
-      margin-right: 10px;
+    & .title {
+      @include font("PingFangBold", $fontSize, #333);
+      @include twoLines;
+      white-space: pre-wrap;
+      position: relative;
+      height: 40px;
 
-      & .icon {
-        color: #999;
+      & .text {
+        @include twoLines;
+        white-space: pre-wrap;
       }
     }
 
-    & .left {
-      @include flexBasis(80px);
+    & .info {
+      position: relative;
+      margin-top: 10px;
+
+      & .history {
+        @include font("PingFangBold", $fontSize + 1, $redDark);
+        margin-right: 8px;
+      }
+    }
+
+    & .list {
+      @include displayFlex (flex, center, center);
+
+      & .check {
+        margin-right: 10px;
+
+        & .icon {
+          color: #999;
+        }
+      }
+
+      & .left {
+        @include flexBasis(80px);
+      }
+
+      & .center {
+        margin-left: 10px;
+
+      }
     }
 
     & .center {
-      margin-left: 10px;
+      @include textOverflow;
 
       & .title {
-        @include twoLines;
-        @include font("PingFangBold", $fontSize, #333);
-        position: relative;
-        height: 40px;
-
-        & .text {
-          @include twoLines;
-        }
-      }
-
-      & .subTitle {
-        @include font(null, $fontSize - 1, #999);
-        line-height: 17px;
-        height: 17px;
-      }
-
-      & .info {
-        position: relative;
-        margin-top: 10px;
-
-        & .history {
-          @include font("PingFangBold", $fontSize + 1, $redDark);
-          margin-right: 8px;
-        }
+        @include textOverflow;
+        @include font("PingFangBold", $fontSize + 1, #666);
+        top: 0;
       }
 
     }
 
-  }
-
-
-  & .listBox.weixin {
-    & .text {
+    & .weixin {
 
       & .icon {
         color: $greenLight;
@@ -427,27 +439,6 @@ html {
         position: relative;
       }
     }
-  }
-
-  & .listBox.yue.disable {
-    & .check {
-
-      & .icon {
-        color: #ccc;
-      }
-    }
-
-    & .center,
-    & .wallet {
-      opacity: .5;
-    }
-  }
-
-  & .listBox.yue {
-    @include displayFlex (flex, center, center);
-    border-bottom: 1px $greyLight solid;
-    background-color: $white;
-    padding: 0 15px;
 
     & .left.two {
       text-align: right;
@@ -458,27 +449,13 @@ html {
       }
     }
 
-    & .wallet .icon {
-      color: $redLight;
-      width: 25px;
-      height: 25px;
-      position: relative;
-    }
-
-    & .center {
-      @include textOverflow;
-
-      & .title {
-        @include textOverflow;
-        @include font("PingFangBold", $fontSize + 1, #666);
-        top: 0;
-
-        & .text {
-          @include textOverflow;
-          display: block;
-        }
+    & .wallet {
+      & .icon {
+        color: $redLight;
+        width: 25px;
+        height: 25px;
+        position: relative;
       }
-
     }
   }
 }

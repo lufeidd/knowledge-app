@@ -5,19 +5,9 @@
 
 @charset "UTF-8";
 
-html {
-  background-color: $greyLight;
-}
-
-.page {
-  // padding-bottom: 60px;
-}
-
-.page.active {
-  // padding-bottom: 60px;
-}
-
 #albumPage {
+  background-color: $greyLight;
+  min-height: 100%;
 
   & .audioList {
     position: relative;
@@ -70,7 +60,7 @@ html {
         }
       }
 
-      
+
     }
   }
 

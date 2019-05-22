@@ -63,12 +63,24 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/login/register.scss" lang="scss"></style>
+<style src="@/style/scss/pages/login/register.scss" scoped lang="scss"></style>
+
+<style>
+@import url("./../../style/scss/components/checkbox.scss");
+@import url("./../../style/scss/components/button.scss");
+
+.phone .van-field__label {
+  border-right: 1px #d6d6d6 solid;
+}
+
+.van-field__label {
+  max-width: 50px;
+  margin-right: 10px;
+}
+</style>
+
 
 <script>
-import Vue from "vue";
-// import regeneratorRuntime from "./../../regenerator-runtime/runtime.js";
-
 //  引入接口
 import { REG, SMS } from "../../apis/passport.js";
 

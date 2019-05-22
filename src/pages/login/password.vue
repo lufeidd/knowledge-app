@@ -57,7 +57,20 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/login/password.scss" lang="scss"></style>
+<style src="@/style/scss/pages/login/password.scss" scoped lang="scss"></style>
+
+<style>
+@import url("./../../style/scss/components/button.scss");
+.phone .van-field__label {
+  border-right: 1px #d6d6d6 solid;
+}
+
+.van-field__label {
+  max-width: 50px;
+  margin-right: 10px;
+}
+</style>
+
 
 <script>
 //  引入接口

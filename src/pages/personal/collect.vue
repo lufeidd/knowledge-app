@@ -18,7 +18,8 @@
         :left-width="0"
         :on-close="collectClose"
       >
-        <router-link v-if="collectStatus[key].id != null" to="/" class="listBox">
+        <!-- 音频 -->
+        <router-link v-if="collectStatus[key].id != null && item.type == 1" :to="{name: 'albumdetail', params: {goods_id: item.target}}" class="listBox">
           <div class="left">
             <div class="ratioBox">
               <div class="box">
@@ -45,6 +46,73 @@
             </svg>
           </div>
         </router-link>
+        <!-- 视频 -->
+        <router-link v-if="collectStatus[key].id != null && item.type == 2" :to="{name: 'albumdetail', params: {goods_id: item.target}}" class="listBox">
+          <div class="left">
+            <div class="ratioBox">
+              <div class="box">
+                <img :src="item.pic">
+              </div>
+            </div>
+          </div>
+          <div class="center">
+            <div class="title">{{ item.title }}</div>
+            <div class="subTitle">{{ item.sub_title }}</div>
+            <div class="info">
+              <span class="time">{{ item.update_time }}更新</span>
+            </div>
+          </div>
+          <div class="right">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-next-line"></use>
+            </svg>
+          </div>
+        </router-link>
+        <!-- 专辑 -->
+        <router-link v-if="collectStatus[key].id != null && item.type == 9" :to="{name: 'album', params: {goods_id: item.target}}" class="listBox">
+          <div class="left">
+            <div class="ratioBox">
+              <div class="box">
+                <img :src="item.pic">
+              </div>
+            </div>
+          </div>
+          <div class="center">
+            <div class="title">{{ item.title }}</div>
+            <div class="subTitle">{{ item.sub_title }}</div>
+            <div class="info">
+              <span class="time">{{ item.update_time }}更新</span>
+            </div>
+          </div>
+          <div class="right">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-next-line"></use>
+            </svg>
+          </div>
+        </router-link>
+        <!-- 文章 -->
+        <router-link v-if="collectStatus[key].id != null && item.type == 6" :to="{name: 'article', params: {goods_id: item.target}}" class="listBox">
+          <div class="left">
+            <div class="ratioBox">
+              <div class="box">
+                <img :src="item.pic">
+              </div>
+            </div>
+          </div>
+          <div class="center">
+            <div class="title">{{ item.title }}</div>
+            <div class="subTitle">{{ item.sub_title }}</div>
+            <div class="info">
+              <span class="time">{{ item.update_time }}更新</span>
+            </div>
+          </div>
+          <div class="right">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-next-line"></use>
+            </svg>
+          </div>
+        </router-link>
+        
         <span
           v-if="collectStatus[key].id != null"
           slot="right"
@@ -54,17 +122,32 @@
         </span>
       </van-swipe-cell>
     </van-list>
+    <!-- 快速导航 -->
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/collect.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/collect.scss" scoped lang="scss"></style>
 
 <script>
+import easyNav from "./../../components/easyNav";
 //  引入接口
 import { COLLECT, COLLECT_ADD, COLLECT_CANCEL } from "../../apis/public.js";
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
+      // 快速导航
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        personal: true,
+        personalLink: '/personal/index',
+      },
       collectList: [],
       // 临时存放收藏数据
       collectStatus: [],
@@ -88,7 +171,7 @@ export default {
         case "collect":
           data = {
             page: this.collectPage,
-            page_size: 4,
+            page_size: 5,
             version: "1.0"
           };
           res = await COLLECT(data);
@@ -109,7 +192,7 @@ export default {
                 this.collectFinished = true;
                 this.collectPage = 1;
               }
-              console.log("收藏列表：", result);
+              // console.log("收藏列表：", result);
             }, 500);
           } else {
             this.$toast(res.error_message);

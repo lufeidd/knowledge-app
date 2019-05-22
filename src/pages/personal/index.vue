@@ -22,10 +22,7 @@
                 <use xlink:href="#icon-personalNews"></use>
               </svg>
             </a>-->
-            <router-link
-              v-if="infoData.is_login"
-              :to="{path: '/personal/set/index'}"
-            >
+            <router-link v-if="infoData.is_login" :to="{path: '/personal/set/index'}">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-personalSet"></use>
               </svg>
@@ -59,7 +56,6 @@
             </div>
             <div class="desc">关注</div>
           </router-link>
-
         </van-col>
         <van-col span="6">
           <router-link to="/personal/collect" v-if="infoData.is_login">
@@ -99,15 +95,14 @@
     <!-- 入口 -->
     <div class="cellBox">
       <template>
-        
         <!-- 我的余额 -->
         <div class="cell">
-          <div class="svg">
+          <div class="svg" @click="gotoRemain">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-personalBuy"></use>
             </svg>
           </div>
-          <div class="desc">
+          <div class="desc" @click="gotoRemain">
             <span class="text">我的余额</span>
             <span class="tip">{{ infoData.balance }}</span>
           </div>
@@ -116,7 +111,7 @@
             <router-link v-else class="text" to="/login/index">充值</router-link>
           </div>
         </div>
-        
+
         <!-- 我的购买 -->
         <router-link v-if="infoData.is_login" to="/personal/order/list" class="cell">
           <div class="svg">
@@ -150,7 +145,7 @@
         </router-link>
 
         <!-- 我的购物车 -->
-        <router-link v-if="infoData.is_login" to="/cart" class="cell">
+        <!-- <router-link v-if="infoData.is_login" to="/cart" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-personalCart"></use>
@@ -179,7 +174,7 @@
               <use xlink:href="#icon-next-line"></use>
             </svg>
           </div>
-        </router-link>
+        </router-link> -->
 
         <!-- 我的评论 -->
         <router-link v-if="infoData.is_login" to="/personal/comment/index" class="cell">
@@ -244,37 +239,56 @@
             </svg>
           </div>
         </router-link>
-
       </template>
     </div>
+
+    <!-- 快速导航 -->
+    <easyNav :navData="navData"></easyNav>
+
+
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/index.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/index.scss" scoped lang="scss"></style>
 
 <script>
+import easyNav from "./../../components/easyNav";
 //  引入接口
 import { USER_HOMEPAGE } from "../../apis/user.js";
 
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
+      // 快速导航
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        personal: false,
+      },
       // 信息
-      infoData: {},
+      infoData: {}
     };
   },
   mounted() {
     this.homeData();
   },
   methods: {
+    gotoRemain () {
+      this.$router.push({name: 'remain'});
+    },
     async homeData() {
       let data = {
         version: "1.0"
       };
       let res = await USER_HOMEPAGE(data);
-      
-      console.log("123", res.response_data, this.$cookies.get('token'));
-      
+
+      console.log("123", res.response_data, this.$cookies.get("token"));
+
       if (res.hasOwnProperty("response_code")) {
         this.$set(this.infoData, "user_header", res.response_data.user_header);
         this.$set(this.infoData, "user_name", res.response_data.user_name);
@@ -283,7 +297,7 @@ export default {
         this.$set(this.infoData, "history_num", res.response_data.history_num);
         this.$set(this.infoData, "is_login", res.response_data.is_login);
         this.$set(this.infoData, "balance", res.response_data.balance);
-        
+
         if (this.infoData.is_login == 1) {
           $(".ratioBox").css(
             "background-image",

@@ -40,11 +40,11 @@
             >
               <div class="content" v-for="item,index in column_list_data" @click="linktoDetail(item)">
                 <div class="ratiobox">
-                  <div class="bookImg" v-lazy:background-image="item.pic"></div>
+                  <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
                 </div>
                 <div class="right">
-                  <div class="text">{{item.goods_name}}</div>
-                  <div class="pinpai">品牌名称</div>
+                  <div class="text">{{item.title}}</div>
+                  <div class="pinpai">{{ item.brand_name }}</div>
                   <div class="nice">
                     <span>
                       <svg class="icon" aria-hidden="true">
@@ -106,7 +106,7 @@ export default {
           brandData:{},
           column_list_data:[],
           packets_id:null,
-          brand_id:1,
+          brand_id: localStorage.getItem("globalBrandId"),
           currentPage:1,
           activekey: 0,
         }
@@ -195,7 +195,7 @@ export default {
       async columnListData(){
         var tStamp = this.$getTimeStamp();
         var data={
-          brand_id:this.brand_id,
+          brand_id: this.brand_id,
           packets_id:this.packets_id,
           page:this.currentPage,
           page_size:3,

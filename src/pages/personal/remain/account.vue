@@ -2,7 +2,8 @@
   <div id="accountPage">
     <div class="content">
       <span>¥</span>
-      <span class="money">{{money ? money:0}}</span>
+      <span class="money">{{money ? money : 0}}</span>
+
       <p class="currentRemain">当前余额</p>
     </div>
     <div class="account">
@@ -22,7 +23,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/remain/index.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/remain/index.scss" scoped lang="scss"></style>
 
 <script>
 import { USER_REMAIN_INFO } from "../../../apis/user.js";

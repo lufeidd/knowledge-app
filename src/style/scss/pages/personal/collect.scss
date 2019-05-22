@@ -3,29 +3,27 @@
  * date:2019/4/16
  */
 
- @charset "UTF-8";
+@charset "UTF-8";
 
- html {
-   background-color: $greyLight;
- }
- 
- #collectPage {
- 
-   & .listBox {
-     padding: 10px 15px;
-     background-color: $white;
-     border-bottom: 1px $greyLight solid;
- 
-     & .left {
- 
-       & .ratioBox {
-         border-radius: 2px;
-         overflow: hidden;
-         color: #fed2d2;
-         position: relative;
- 
-         & .box {
- 
+#collectPage {
+  min-height: 100%;
+  background-color: $greyLight;
+
+  & .listBox {
+    padding: 10px 15px;
+    background-color: $white;
+    border-bottom: 1px $greyLight solid;
+
+    & .left {
+
+      & .ratioBox {
+        border-radius: 2px;
+        overflow: hidden;
+        color: #fed2d2;
+        position: relative;
+
+        & .box {
+
           //  & .tip {
           //    @include position (absolute, 'bl', 0, 0, 100%, 15px, 0);
           //    @include font(null, $fontSize - 2, $white);
@@ -33,56 +31,55 @@
           //    background-color: rgba($color: #000000, $alpha: 0.3);
           //    text-align: center;
           //  }
-         }
-       }
-     }
- 
-     & .center {
-       margin-left: 10px;
-       line-height: 1.8;
-       flex-grow: 1;
-       @include textOverflow;
- 
-       & .title {
+        }
+      }
+    }
+
+    & .center {
+      margin-left: 10px;
+      line-height: 1.8;
+      flex-grow: 1;
+      @include textOverflow;
+
+      & .title {
         @include textOverflow;
-         @include font("PingFangBold", $fontSize + 2, #333);
-       }
- 
-       & .subTitle {
+        @include font("PingFangBold", $fontSize + 2, #333);
+      }
+
+      & .subTitle {
         @include textOverflow;
-         @include font(null, $fontSize, #666);
-       }
- 
-       & .info {
+        @include font(null, $fontSize, #666);
+      }
+
+      & .info {
         @include textOverflow;
-         @include font(null, $fontSize - 1, #999);
- 
-         & .type {
-           @include bgDecorate($greyDark, null, 2px, 0 4px, null);
-           @include font(null, $fontSize - 2, $white);
-           margin-right: 15px;
-         }
- 
-         & .count {
-           margin-right: 15px;
-         }
- 
-         & .time {
-           margin-right: 15px;
-         }
- 
-         & .icon {
-           width: 14px;
-           height: 14px;
-           margin-right: 2px;
-         }
-       }
-     }
- 
-     & .right {
-       flex-shrink: 0;
-     }
- 
-   }
- }
- 
+        @include font(null, $fontSize - 1, #999);
+
+        & .type {
+          @include bgDecorate($greyDark, null, 2px, 0 4px, null);
+          @include font(null, $fontSize - 2, $white);
+          margin-right: 15px;
+        }
+
+        & .count {
+          margin-right: 15px;
+        }
+
+        & .time {
+          margin-right: 15px;
+        }
+
+        & .icon {
+          width: 14px;
+          height: 14px;
+          margin-right: 2px;
+        }
+      }
+    }
+
+    & .right {
+      flex-shrink: 0;
+    }
+
+  }
+}

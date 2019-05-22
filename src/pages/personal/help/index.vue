@@ -1,7 +1,7 @@
 <template>
   <div id="helpPage">
     <div style="margin-bottom:60px;">
-      <van-cell :title="item.title" value is-link arrow-direction="down" :key="index" v-for="item,index in listData" @click="todetail(index)"/>
+      <van-cell :title="item.title" v-for="item,index in listData" value is-link arrow-direction="down" :key="index" @click="todetail(index)"/>
     </div>
     <div class="bottomBox" :class="{iphx:this.isIphx}">
       <van-button type="danger" size="large" replace to="/personal/help/feedback">我要反馈</van-button>

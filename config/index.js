@@ -10,19 +10,16 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
+    // 本地
     proxyTable: {
       '/apis': {
         // 测试环境
-        target: 'http://frontapi.huoba.net',
-        // target: 'http://198.210.12.253:8080', // 接口域名
-        // target: 'http://wap.huoba.net/api', // 接口域名
-        // target: 'http://frontapi.huoba.net', // 接口域名
-        changeOrigin: true, //是否跨域
+        target: 'http://frontapi.huoba.net',  //设置你调用的接口域名和端口号 别忘了加http
+        changeOrigin: true, // 是否跨域
         pathRewrite: {
-          //'^/apis': '/', //需要rewrite重写的,
-          '^/apis': '/'
+          '^/apis': '/', // 需要rewrite重写的
         }
-      }
+      },
     },
 
     // Various Dev Server settings

@@ -63,14 +63,19 @@ export default {
         autoCropHeight: $(window).width() * 0.72,
         centerBox: true,
         high: true,
-      }
+      },
     };
   },
   mounted () {
     this.option.img = this.$route.params.data;
     this.cropperShow = true;
 
-    // console.log('data:', this.$route.params.data);
+    console.log(456, this.$route.params.data);
+  },
+  beforeRouterLeave (to, from, next) {
+    // 设置下一个路由的 meta
+    // to.meta.keepAlive = false; // 跳转到 /personal/set/info false刷新,true缓存
+    // next();
   },
   methods: {
     // 头像裁切
@@ -104,7 +109,7 @@ export default {
         version: "1.0"
       };
       let res = await COMMON_UPLOAD(data);
-      console.log("123", res.response_data);
+      console.log("123", res.response_data[0].acc_url);
       if (res.hasOwnProperty("response_code")) {
           this.$router.push({name: 'info', params: {img: res.response_data[0].acc_url}});
       } else {
