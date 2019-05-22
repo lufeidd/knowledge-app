@@ -11,12 +11,12 @@
 
     <div class="descBox">
       <div class="title">{{ audioData.program }}</div>
-      <div class="subTitle">
+      <router-link :to="{name: 'albumdetail', params: {goods_id: baseData.goods_id}}" class="subTitle">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-list-line"></use>
         </svg>
         <span>文稿</span>
-      </div>
+      </router-link>
     </div>
 
     <!-- 音频播放器 -->
@@ -141,6 +141,10 @@ export default {
     this.setPlayerAudio();
     // 延时600ms设置duration
     this.setDuration();
+    // 暂停音频
+    setTimeout(() => {
+      this.pauseAudio();
+    }, 600);
   },
   methods: {
     // 清除倒计时
@@ -179,7 +183,8 @@ export default {
         }
         if(info[6] != null && info[6] != "") this.audioData.program = info[6];
         if(info[7] != null && info[7] != "") this.baseData.title = info[7];
-        
+        if(info[8] != null && info[8] != "") this.baseData.goods_id = info[8];
+        // console.log(this.baseData.goods_id);
       }
     },
     // 延时600ms设置duration
@@ -262,7 +267,7 @@ export default {
       // 关联播放列表当前播放状态
       this.activeGoodNo = info[0];
 
-      console.log(123, 'player', "info:", info, "result:", result);
+      // console.log('currentTime:', __currentTime, 'player', "info:", info, "result:", result);
     },
     // 更新播放进度记录
     updateProgressData (info, result, __currentTime) {
@@ -383,7 +388,13 @@ export default {
       // 存储到localStorage
       var info = JSON.parse(localStorage.getItem("miniAudio"));
       this.audioTimeChange(0, true);
+      // 调接口，获取所有节目，判断是否自动播放
+      this.getAllProgramData(info);
       console.log("当前音频播放结束");
+    },
+    // 当前节目播放结束，获取当前播放节目的专辑下所有节目（不分页）
+    getAllProgramData(info) {
+      this.allProgramData(info, "end");
     },
     // 绑定slider
     audiobindtoslider(second) {

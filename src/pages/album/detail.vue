@@ -89,7 +89,7 @@
             <img :src="item.pic[0]">
           </div>
         </div>
-        <div class="title">{{ item.title }}</div>
+        <div class="title" style="height: 40px;">{{ item.title }}</div>
       </van-col>
     </van-row>
 
@@ -366,6 +366,7 @@ export default {
   },
   mounted() {
 
+    // 跳转评论锚点
     $(window).on('scroll', function(){
       if($(window).scrollTop() >= $('#comment').offset().top) {
         $('#commentTitle').css({'position': 'fixed', 'border-bottom-width': '1px'});
@@ -380,7 +381,7 @@ export default {
     } else {
       localStorage.setItem('globalGoodsId', parseInt(localStorage.getItem('globalGoodsId')));
     }
-    if(this.$route.params.goods_id) {
+    if(this.$route.params.goods_no) {
       localStorage.setItem('globalGoodsNo', this.$route.params.goods_no);
     } else {
       localStorage.setItem('globalGoodsNo', parseInt(localStorage.getItem('globalGoodsNo')));
@@ -515,6 +516,7 @@ export default {
         let __program = info[6];
         let __album = info[7];
         let __goodsId = info[8];
+        let __albumPic = info[9];
 
         // 设置音频信息
         this.$set(this.myAudioData, "goodsNo", __goodsNo);
@@ -596,6 +598,8 @@ export default {
           info[6] = this.baseData.title;
           info[7] = this.albumInfo.title;
           info[8] = parseInt(localStorage.getItem('globalGoodsId'));
+          info[9] = this.albumInfo.pic;
+          // console.log(this.albumInfo);
         }
 
         // localStorage存储

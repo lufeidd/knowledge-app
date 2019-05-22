@@ -28,7 +28,7 @@
         </router-link>
       </div>
 
-      <van-tabs sticky animated swipeable color="#666" title-active-color="#333" @click="tabChange">
+      <van-tabs sticky animated color="#666" title-active-color="#333" @click="tabChange">
         <van-tab :title="items.name" v-for="items,index in brandData.column_list" :key="index" >
 
           <template v-if="activekey == index" >

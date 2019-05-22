@@ -848,7 +848,7 @@ export default {
 
         setTimeout(() => {
 
-          this.programList = [];
+          // this.programList = [];
           for (let i = 0; i < res.response_data.result.length; i++) {
             this.programList.push(result[i]);
             // 存放试听数据,只取第一条
@@ -875,7 +875,7 @@ export default {
           // 数据全部加载完成
           if (this.programList.length >= res.response_data.total_count) {
             this.programFinished = true;
-            this.programPage = 1;
+            // this.programPage = 1;
           }
         }, 600);
 
@@ -935,6 +935,7 @@ export default {
        * __program节目标题
        * __album专辑标题
        * __goodsId商品id
+       * __albumPic专辑图片，无专辑为null
        */
       if(info != null && info.length > 0) {
         let __goodsNo = info[0];
@@ -946,6 +947,7 @@ export default {
         let __program = info[6];
         let __album = info[7];
         let __goodsId = info[8];
+        let __albumPic = info[9];
 
         // 设置音频信息
         this.$set(this.myAudioData, "goodsNo", __goodsNo);
@@ -957,6 +959,7 @@ export default {
         this.$set(this.myAudioData, "program", __program);
         this.$set(this.myAudioData, "album", __album);
         this.$set(this.myAudioData, "goodsId", __goodsId);
+        this.$set(this.myAudioData, "albumPic", __albumPic);
         // console.logthis.myAudioData)
 
         // localStorage存储
@@ -970,6 +973,7 @@ export default {
           this.$refs.control.audioData.duration = __duration;
           this.$refs.control.audioData.program = __program;
           this.$refs.control.audioData.album = __album;
+          this.$refs.control.audioData.albumPic = __albumPic;
         }, 600);
 
         if (info[3] == null) {
@@ -1050,6 +1054,9 @@ export default {
       let __program = item.title;
       let __album = this.baseData.title;
       let __goodsId = item.goods_id;
+      let __albumPic = this.baseData.pic[0];
+
+      // console.log( this.baseData)
 
       // 判断是否点击当前或者第一次点击
       if (this.activeGoodNo == __goodsNo || this.activeGoodNo == null) {
@@ -1075,7 +1082,7 @@ export default {
       this.$refs.control.audioData.type = !this.audioPlaying;
 
       // 将当前音频播放信息存放到localStorage: miniAudio
-      var info = [ __goodsNo, __pid, __pic, __src, __duration, __currentTime, __program, __album, __goodsId ];
+      var info = [ __goodsNo, __pid, __pic, __src, __duration, __currentTime, __program, __album, __goodsId, __albumPic ];
       this.miniAudioData(info);
 
     },

@@ -278,7 +278,6 @@ export default {
       this.audioTimeChange(0, true);
       // 调接口，获取所有节目，判断是否自动播放
       this.$emit("getAllProgram", info);
-      // this.getAllProgramData(info);
       console.log("当前音频播放结束");
     },
     // 绑定slider
