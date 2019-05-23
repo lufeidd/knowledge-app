@@ -165,7 +165,7 @@ export default {
       // 设置迷你音频播放状态
       this.$emit("setMiniAudio", info);
 
-      console.log(456, 'mini', "info:", info, "result:", result);
+      console.log(123, 'miniAudio:', "info:", info, "result:", result, this.isAdd);
       
     },
     // 更新播放进度记录
@@ -224,7 +224,6 @@ export default {
       if(arr != null && arr.length >= 100) {
         arr = arr.pop();
       } else {
-        arr = [];
         arr.push(obj);
       }
       
