@@ -9,22 +9,35 @@
     <div class="bottomBox" :class="{iphx:this.isIphx}" v-else>
       <van-button type="danger" size="large" replace @click="submitFeedback">提交</van-button>
     </div>
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
-<style src="@/style/scss/pages/help/index.scss" lang="scss"></style>
+<style scoped src="@/style/scss/pages/help/index.scss" lang="scss"></style>
 
 <script>
 import upload from "../../../components/upload";
+import easyNav from "./../../../components/easyNav";
 import { USER_FEEDBACK_ADD } from "../../../apis/user.js";
 import { COMMON_UPLOAD } from "../../../apis/public.js";
 import { setTimeout } from 'timers';
 export default {
   components: {
-    upload
+    upload,
+    easyNav
   },
   data() {
     return {
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        // searchLink: "/search",
+        personal: true,
+        personalLink: "/personal/index",
+        type:'order',
+      },
       submit: true,
       uploadData: {
         maxlength: 3

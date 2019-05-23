@@ -187,7 +187,7 @@
       </div>
     </van-popup>
     <div class="pinglun">
-      <div class="write" @click="openAnswer">快来写评论吧!</div>
+      <div class="write" @click="openAnswer('comment', null)">快来写评论吧!</div>
       <div class="nice">
         <svg
           class="icon add"
@@ -213,6 +213,7 @@
         </svg>
       </div>
     </div>
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
@@ -220,6 +221,7 @@
 
 <script>
 import { ALBUM, ALBUM_DETAIL } from "../../../apis/album.js";
+import easyNav from "./../../../components/easyNav";
 import {
   COLLECT_ADD,
   COLLECT_CANCEL,
@@ -232,8 +234,21 @@ import {
   RECOMMEND
 } from "../../../apis/public.js";
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: true,
+        searchLink: "/search",
+        personal: true,
+        personalLink: "/personal/index",
+        type:'brand',
+      },
       // 评论
       discussData: [],
       commentPage: 1,
@@ -263,14 +278,14 @@ export default {
       // 推荐列表信息
       recommendData: [],
       recommendState:false,
-      goodsId: 18,
+      goodsId: 46,
     };
   },
   mounted() {
     this.goodsId = this.$route.params.goods_id;
     this.getData();
     this.getRecommendData();
-    console.log("ID:", this.recommendData);
+    // console.log("ID:", this.recommendData);
   },
   methods: {
     // 获取关注接口信息
@@ -287,7 +302,9 @@ export default {
           };
           data.sign = this.$getSign(data);
           res = await FOCUS_ADD(data);
+
           this.articleInfo.is_followed = 1;
+          this.articleInfo.fans +=1;
           // this.$toast('已关注~');
           break;
         case "cancel":
@@ -300,6 +317,7 @@ export default {
           res = await FOCUS_CANCEL(data);
           this.articleInfo.is_followed = 0;
           this.$toast("已取消关注~");
+          this.articleInfo.fans -=1;
           break;
       }
       // 出错提示
@@ -342,7 +360,7 @@ export default {
           data = {
             timestamp: tStamp,
             type: this.baseData.goods_type,
-            target: this.baseData.article_id,
+            target: this.goodsId,
             version: "1.0"
           };
           data.sign = this.$getSign(data);
@@ -392,6 +410,7 @@ export default {
           res = await GOODS_PRAISE_ADD(data);
           this.baseData.is_praised = 1;
           // this.$toast('已关注~');
+          this.baseData.praise_num +=1;
           break;
         case "cancel":
           data = {
@@ -404,6 +423,7 @@ export default {
           res = await GOODS_PRAISE_DELETE(data);
           this.baseData.is_praised = 0;
           this.$toast("已取消点赞~");
+          this.baseData.praise_num -=1;
           break;
       }
       // 出错提示
@@ -451,7 +471,7 @@ export default {
       var data = {
         timestamp: tStamp,
         // goods_id: this.goodsId,
-        goods_id:18,
+        goods_id:this.goodsId,
         page:1,
         page_size:6,
         version: "1.0",

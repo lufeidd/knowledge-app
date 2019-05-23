@@ -40,7 +40,7 @@
 #accountPage{
   background-color: $white;
   min-height: 100%;
-  
+
   .content{
     padding: 45px 0 35px 0;
     color: $cl3;
@@ -94,7 +94,7 @@
 }
 
 #recordPage{
-  height: 100%;
+  min-height: 100%;
   background-color: $greyLight;
   font-size: $fontSize - 2;
   color: $cl0;

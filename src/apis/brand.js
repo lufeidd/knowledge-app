@@ -10,3 +10,6 @@ export const BRAND_COLUMN_GETS = params => req('post', '/brand/column/gets', par
 
 //商品搜索
 export const BRAND_SEARCH_GOODS_GETS = params => req('post', '/search/goods/gets', params);
+
+//品牌商城
+export const BRAND_PAGE_MALL_INDEX = params => req('post', '/page/mall/index', params);
