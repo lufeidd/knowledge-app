@@ -82,17 +82,19 @@
     </van-tabs>
 
     <!-- 推荐 -->
-    <van-cell title="听了本节目的也在听" value/>
-    <van-row gutter="20" class="booklist">
-      <van-col span="8" v-for="(item, key) in recommendList" :key="key">
-        <div class="ratioBox">
-          <div class="box">
-            <img :src="item.pic[0]">
+    <template v-if="recommendList.length > 0">
+      <van-cell title="听了本节目的也在听" value/>
+      <van-row gutter="20" class="booklist">
+        <van-col span="8" v-for="(item, key) in recommendList" :key="key">
+          <div class="ratioBox">
+            <div class="box">
+              <img :src="item.pic[0]">
+            </div>
           </div>
-        </div>
-        <div class="title" style="height: 40px;">{{ item.title }}</div>
-      </van-col>
-    </van-row>
+          <div class="title" style="height: 40px;">{{ item.title }}</div>
+        </van-col>
+      </van-row>
+    </template>
 
     <!-- 评论 -->
     <div id="comment" class="commentBox">
