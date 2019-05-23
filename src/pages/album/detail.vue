@@ -1,7 +1,7 @@
 <template>
   <div id="detailPage" class="page" :class="{ active: this.isIphx }">
     <div class="ratioBox banner">
-      <div class="box">
+      <div class="box" v-if="baseData.goods_type != 2">
         <img v-if="baseData.pic" :src="baseData.pic[0]">
       </div>
       <!-- goodsType区分商品类型，音频1/视频2/专辑9/文章6/图书 -->
@@ -20,18 +20,21 @@
       <!-- 不属于专辑的商品显示收藏当前商品 -->
       <van-row class="action" v-if="!pid">
         <van-col class="title" span="18">{{ baseData.title }}</van-col>
-        <van-col span="6" @click="collectAction(baseData.collect_id, baseData.goods_id)" style="text-align:right;">
-          <svg class="icon" aria-hidden="true" v-if="baseData.collect_id > 0">
-            <use xlink:href="#icon-collect-block"></use>
-          </svg>
-          <svg class="icon" aria-hidden="true" v-else>
-            <use xlink:href="#icon-collect-line"></use>
-          </svg>
-          <span>
-            <template v-if="baseData.collect_id > 0">已</template>收藏
-          </span>
+        <van-col span="6">
+          <div @click="collectAction(baseData.collect_id, baseData.goods_id)" style="text-align:right;">
+            <svg class="icon" aria-hidden="true" v-if="baseData.collect_id > 0">
+              <use xlink:href="#icon-collect-block"></use>
+            </svg>
+            <svg class="icon" aria-hidden="true" v-else>
+              <use xlink:href="#icon-collect-line"></use>
+            </svg>
+            <span>
+              <template v-if="baseData.collect_id > 0">已</template>收藏
+            </span>
+          </div>
         </van-col>
       </van-row>
+
     </div>
 
     <!-- 属于专辑的节目显示是否收藏专辑 -->
@@ -46,8 +49,8 @@
 
         <div class="info">{{ baseData.sub_title }}</div>
       </div>
-      <div class="action" style="text-align:right;">
-        <van-tag plain type="danger" text-color="#f05654" @click="collectAction(baseData.collect_id, baseData.goods_id)">
+      <div class="action" style="text-align:right;" @click="collectAction(baseData.collect_id, baseData.goods_id)">
+        <van-tag plain type="danger" text-color="#f05654">
           <svg class="icon" aria-hidden="true" v-if="baseData.collect_id > 0">
             <use xlink:href="#icon-collect-block"></use>
           </svg>
@@ -82,11 +85,12 @@
     </van-tabs>
 
     <!-- 推荐 -->
+    <!-- 商品类型, 1=> 音频, 2=> 视频, 3=> 纸书, 4=> 电子书, 5=> 文创用品, 6=> 图文, 9=> 专辑 -->
     <template v-if="recommendList.length > 0">
       <van-cell title="听了本节目的也在听" value/>
       <van-row gutter="20" class="booklist">
         <van-col span="8" v-for="(item, key) in recommendList" :key="key">
-          <div class="ratioBox">
+          <div class="ratioBox" @click="gotoLink(item)">
             <div class="box">
               <img :src="item.pic[0]">
             </div>
@@ -359,11 +363,14 @@ export default {
   //离开当前页面
   beforeRouteLeave(to, from, next) {
     // console.log(to, from, from.params.pid);
-    if(to.name == 'album') {
+    if(to.name == 'album' ) {
       // to.params.goods_id = from.params.pid;
       // this.goodsId = from.params.pid;
       localStorage.setItem('globalPid', this.$route.params.pid ? this.$route.params.pid: parseInt(localStorage.getItem('globalPid')));
       // console.log(this.goodsId)
+    }
+    if(to.name == 'article') {
+      // console.log( parseInt(localStorage.getItem('globalGoodsId')))
     }
     next();
   },
@@ -378,22 +385,8 @@ export default {
       }
     })
 
-    // 刷新/回退存储goods_id,pid,goods_no
-    if(this.$route.params.goods_id) {
-      localStorage.setItem('globalGoodsId', this.$route.params.goods_id);
-    } else {
-      localStorage.setItem('globalGoodsId', parseInt(localStorage.getItem('globalGoodsId')));
-    }
-    if(this.$route.params.goods_no) {
-      localStorage.setItem('globalGoodsNo', this.$route.params.goods_no);
-    } else {
-      localStorage.setItem('globalGoodsNo', parseInt(localStorage.getItem('globalGoodsNo')));
-    }
-    if(this.$route.params.pid) {
-      localStorage.setItem('globalPid', this.$route.params.pid);
-    } else {
-      localStorage.setItem('globalPid', parseInt(localStorage.getItem('globalPid')));
-    }
+    // 设置缓存
+    this.cacheData ();
 
     // 获取专辑id以及商品id
     this.pid = parseInt(localStorage.getItem('globalPid'));
@@ -408,6 +401,26 @@ export default {
     // console.log(this.activeGoodNo);
   },
   methods: {
+    // 设置缓存
+    cacheData () {
+
+      // 刷新/回退存储goods_id,pid,goods_no
+      if(this.$route.params.goods_id) {
+        localStorage.setItem('globalGoodsId', this.$route.params.goods_id);
+      } else {
+        localStorage.setItem('globalGoodsId', parseInt(localStorage.getItem('globalGoodsId')));
+      }
+      if(this.$route.params.goods_no) {
+        localStorage.setItem('globalGoodsNo', this.$route.params.goods_no);
+      } else {
+        localStorage.setItem('globalGoodsNo', parseInt(localStorage.getItem('globalGoodsNo')));
+      }
+      if(this.$route.params.pid) {
+        localStorage.setItem('globalPid', this.$route.params.pid);
+      } else {
+        localStorage.setItem('globalPid', parseInt(localStorage.getItem('globalPid')));
+      }
+    },
     // --------------------------------迷你缩略音频----------------------------------
     // 点击播放，子组件关联父页面 - 切换miniAudio组件播放状态
     typeAction(__type) {
@@ -717,6 +730,8 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await ALBUM(data);
+      console.log(999, res.response_data)
+
       if (res.hasOwnProperty("response_code")) {
 
         //专辑基础信息
@@ -740,47 +755,51 @@ export default {
       this.getMiniAudioData();
     },
     // 获取收藏接口信息
+    collectAction(__collectId, __goodsId) {
+
+      if (__collectId > 0) {
+        this.collectData("cancel", __goodsId);
+      } else {
+        this.collectData("collect", __goodsId);
+      }
+    },
     async collectData(__status, __goodsId) {
       var data = {};
       var tStamp = this.$getTimeStamp();
       var res;
       // 出错提示
-      if (res.hasOwnProperty("response_code")) {
-        switch (__status) {
-          case "collect":
-            data = {
-              timestamp: tStamp,
-              type: this.baseData.goods_type,
-              target: __goodsId,
-              version: "1.0",
-            };
-            data.sign = this.$getSign(data);
-            res = await COLLECT_ADD(data);
+      switch (__status) {
+        case "collect":
+          data = {
+            timestamp: tStamp,
+            type: this.baseData.goods_type,
+            target: __goodsId,
+            version: "1.0",
+          };
+          data.sign = this.$getSign(data);
+          res = await COLLECT_ADD(data);
+          if (res.hasOwnProperty("response_code")) {
             this.baseData.collect_id = 1;
-            // this.$toast("已收藏~");
-            break;
-          case "cancel":
-            data = {
-              timestamp: tStamp,
-              goods_id: __goodsId,
-              version: "1.0",
-            };
-            data.sign = this.$getSign(data);
-            res = await COLLECT_CANCEL(data);
+          } else {
+            this.$toast(res.error_message);
+          }
+          // this.$toast("已收藏~");
+          break;
+        case "cancel":
+          data = {
+            timestamp: tStamp,
+            goods_id: __goodsId,
+            version: "1.0",
+          };
+          data.sign = this.$getSign(data);
+          res = await COLLECT_CANCEL(data);
+          if (res.hasOwnProperty("response_code")) {
             this.baseData.collect_id = 0;
             this.$toast("已取消收藏~");
-            break;
-        }
-        
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    collectAction(__collectId, __goodsId) {
-      if (__collectId > 0) {
-        this.collectData("cancel", __goodsId);
-      } else {
-        this.collectData("collect", __goodsId);
+          } else {
+            this.$toast(res.error_message);
+          }
+          break;
       }
     },
     // 获取关注接口信息
@@ -798,6 +817,7 @@ export default {
           data.sign = this.$getSign(data);
           res = await FOCUS_ADD(data);
           this.brandInfoData.is_followed = 1;
+          this.brandInfoData.fans++;
           // this.$toast('已关注~');
           break;
         case "cancel":
@@ -809,6 +829,7 @@ export default {
           data.sign = this.$getSign(data);
           res = await FOCUS_CANCEL(data);
           this.brandInfoData.is_followed = 0;
+          this.brandInfoData.fans--;
           this.$toast("已取消关注~");
           break;
       }
@@ -1007,12 +1028,34 @@ export default {
         for (let i = 0; i < res.response_data.result.length; i++) {
           this.recommendList.push(result[i]);
         }
+
+        // console.log(this.recommendList)
     
       } else {
         this.$toast(res.error_message);
       }
 
     },
+    gotoLink (item) {
+      var goodsType = item.goods_type;
+      if(goodsType == 1 || goodsType == 2) { // 音频/视频
+        localStorage.setItem('globalGoodsId', item.goods_id);
+        localStorage.setItem('globalGoodsNo', null);
+        localStorage.setItem('globalPid', null);
+        this.pid = null;
+        this.activeGoodNo = null;
+        location.reload();
+      } else if(goodsType == 6) {// 文章
+        // console.log(item);
+        localStorage.setItem('globalGoodsId', parseInt(item.goods_id));
+        this.goodsId = parseInt(item.goods_id);
+        this.$router.push({name: 'article', params: {goods_id: this.goodsId}});
+      } else if(goodsType == 9) { // 专辑
+        this.$router.push({name: 'album', params: {goods_id: this.goodsId}});
+      } else {
+
+      }
+    }
   }
 };
 </script>

@@ -282,7 +282,9 @@ export default {
     };
   },
   mounted() {
-    this.goodsId = this.$route.params.goods_id;
+    // 设置缓存
+    this.cacheData();
+    this.goodsId = parseInt(localStorage.getItem('globalGoodsId'));
     this.getData();
     this.getRecommendData();
     // console.log("ID:", this.recommendData);
@@ -649,13 +651,10 @@ export default {
         })
       }
       if(item.goods_type ==6){
-        this.$router.push({
-          name:'article',
-          params:{
-            goods_id:item.goods_id,
-            pid:null,
-          }
-        })
+      
+        localStorage.setItem('globalGoodsId', item.goods_id);
+        this.pid = null;
+        location.reload();
       }
       if(item.goods_type ==9){
         this.$router.push({
@@ -666,6 +665,18 @@ export default {
           }
         })
       }
+    },
+    // 设置缓存
+    cacheData () {
+
+      // 刷新/回退存储goods_id,pid,goods_no
+      if(this.$route.params.goods_id) {
+        localStorage.setItem('globalGoodsId', this.$route.params.goods_id);
+      } else {
+        localStorage.setItem('globalGoodsId', parseInt(localStorage.getItem('globalGoodsId')));
+      }
+
+      console.log(456, this.$route.params.goods_id)
     },
   }
 };

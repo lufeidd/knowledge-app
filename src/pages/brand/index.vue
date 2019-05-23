@@ -102,8 +102,8 @@ export default {
     return {
       navData: {
         fold: false,
-        home: true,
-        homeLink: "/brand/index",
+        home: false,
+        // homeLink: "/brand/index",
         search: true,
         searchLink: "/search",
         personal: true,
@@ -260,7 +260,7 @@ export default {
       }
       if(item.goods_type ==9){
         this.$router.push({
-          name:'albumlist',
+          name:'album',
           params:{
             goods_id:item.goods_id,
             pid:null,

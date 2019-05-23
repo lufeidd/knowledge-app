@@ -15,7 +15,11 @@
           @click="getActive(index)"
         >{{item}}元</li>
       </ul>
-      <p class="explain">充值说明:</p>
+      <p class="explain" style="padding: 10px 0;">充值说明:</p>
+      <div class="explain">1、充值金额仅限火把app内使用。</div>
+      <div class="explain">2、充值金额暂不支持跨系统使用（ios和android系统充值金额不可通用）。</div>
+      <div class="explain">3、充值成功后余额永久有效，但不可进行提现、退款、赠送他人等操作。</div>
+      <div class="explain">4、若充值后长时间未生效或有充值失败等情况，请联系客服：0571-nnnnnnn，也可去微信公众号找“号名称”解决。</div>
     </div>
     <div class="recharge">
       <van-button slot="button" size="large" round type="danger" @click="account()">充值</van-button>
@@ -46,7 +50,7 @@ export default {
         type:'order',
       },
       money: null,
-      rechargeAmount: [5, 20, 50, 100, 150, 200, 280, 320],
+      rechargeAmount: [6, 18, 38, 58, 118, 168, 218, 488],
       activeClass: 0,
     };
   },

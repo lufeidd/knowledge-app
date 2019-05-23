@@ -29,7 +29,7 @@
         <p class="address">收货地址：浙江省 杭州市 西湖区 西湖边东区23树6洞 3-3楼</p>
       </div>
     </div> -->
-    <div class="info">
+    <div class="info" v-if="infoData">
       <div class="head">
         <div class="titleFrom">
           <img v-lazy="infoData.brand_header_pic" class="icon">
@@ -79,7 +79,7 @@
       </div>
       <div class="orderInfo">
         <van-cell title="下单时间" v-model="infoData.order_time"/>
-        <van-cell title="支付方式" v-model="infoData.pay_info[0].pay_bank"/>
+        <van-cell title="支付方式" v-if="infoData.pay_info && infoData.pay_info.length > 0" v-model="infoData.pay_info[0].pay_bank"/>
         <van-cell title="支付时间" v-model="infoData.pay_time"/>
       </div>
     </div>

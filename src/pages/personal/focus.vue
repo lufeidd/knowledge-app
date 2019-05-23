@@ -100,7 +100,7 @@ export default {
           data = {
             timestamp: tStamp,
             page: this.focusPage,
-            page_size: 4,
+            page_size: 10,
             version: "1.0"
           };
           data.sign = this.$getSign(data);

@@ -12,7 +12,7 @@
     </div>
     <div class="recharge">
       <van-button size="large" round type="danger" :to="{name: 'orderdetail', params: {order_id: order_id}}">查看订单</van-button>
-      <van-button size="large" round plain type="danger">返回商铺</van-button>
+      <van-button style="background-color: #fff;" size="large" round plain :to="{name: 'brand'}" type="danger">返回商铺</van-button>
     </div>
   </div>
 </template>

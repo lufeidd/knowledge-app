@@ -1,6 +1,6 @@
 <template>
   <div id="helpPage">
-    <div style="margin-bottom:60px;">
+    <div style="padding-bottom:60px;">
       <van-cell :title="item.title" v-for="item,index in listData" value is-link arrow-direction="down" :key="index" @click="todetail(index)"/>
     </div>
     <div class="bottomBox" :class="{iphx:this.isIphx}">

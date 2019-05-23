@@ -16,7 +16,7 @@
       >
         <div class="content" v-for="item,index in brandData">
           <div class="ratiobox">
-            <div class="bookImg" v-lazy:background-image="item.main_pic"></div>
+            <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
           </div>
           <div class="right">
             <div class="text">{{item.sub_title}}</div>
@@ -67,17 +67,19 @@ export default {
       iconUrl:
         "https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75",
       state: "brand",
-      searchContent: "",
       brandData: [],
       programLoading: false,
       programFinished: false,
+      // 搜索结果参数
+      goods_type: null,
+      searchContent: "",
       page: 1,
-      page_size: 3
+      page_size: 10,
     };
   },
   mounted() {
-    this.searchContent = this.$route.params.searchContent;
-    console.log(this.searchContent);
+    this.searchContent = this.$route.params.searchContent ? this.$route.params.searchContent : null;
+    this.goods_type = this.$route.params.goods_type ? this.$route.params.goods_type : null;
     this.getGoods();
   },
   methods: {
@@ -88,15 +90,17 @@ export default {
       var tStamp = this.$getTimeStamp();
       var data = {
         keywords: this.searchContent,
-        // goods_type:9,
+        goods_type: this.goods_type,
+        brand_id: localStorage.getItem('globalBrandId'),
         page: this.page,
         page_size: this.page_size,
         version: "1.0",
-        timestamp: tStamp
+        timestamp: tStamp,
       };
-
       data.sign = this.$getSign(data);
       let res = await BRAND_SEARCH_GOODS_GETS(data);
+
+console.log(123, res)
       if (res.hasOwnProperty("response_code")) {
           var result = res.response_data.result;
 

@@ -192,7 +192,7 @@ export default {
           data = {
             timestamp: tStamp,
             page: this.collectPage,
-            page_size: 5,
+            page_size: 10,
             version: "1.0"
           };
           data.sign = this.$getSign(data);

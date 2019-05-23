@@ -168,7 +168,10 @@ export default new Router({
     {
       path: '/personal/order/detail',
       name: 'orderdetail',
-      component: orderdetail
+      component: orderdetail,
+      meta: {
+        keepAlive: true,  // false不需要被缓存，true需要缓存
+      },
     },
     {
       path: '/personal/order/list',
@@ -348,6 +351,10 @@ export default new Router({
       meta: {
         keepAlive: false,  // false不需要被缓存，true需要缓存
       },
+      //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
+      beforeEnter: (to, from, next) => {
+        from.path == '/brand/detail/article' ? next('/brand/index') : next();
+      },
     },
     {
       path: '/album/player',
@@ -441,7 +448,10 @@ export default new Router({
     {
       path: '/pay/success',
       name: 'paysuccess',
-      component: paysuccess
+      component: paysuccess,
+      meta: {
+        keepAlive: true,  // false不需要被缓存，true需要缓存
+      },
     }
   ]
 })

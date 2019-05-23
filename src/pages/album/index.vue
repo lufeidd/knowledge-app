@@ -560,7 +560,7 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await ALBUM(data);
-      // console.log(res.response_data, this.$cookies.get('token'), res.headers['Set-Cookie']);
+      console.log(666, res.response_data);
 
       if (res.hasOwnProperty("response_code")) {
         //专辑基础信息
@@ -577,6 +577,13 @@ export default {
       this.getMiniAudioData();
     },
     // 获取收藏接口信息
+    collectAction(__type, __collectId, __goodsId) {
+      if (__collectId > 0) {
+        this.collectData(__type, "cancel", __goodsId);
+      } else {
+        this.collectData(__type, "collect", __goodsId);
+      }
+    },
     async collectData(__type, __status, __goodsId) {
       var tStamp = this.$getTimeStamp();
       var data = {};
@@ -622,13 +629,6 @@ export default {
             this.$toast(res.error_message);
           }
           break;
-      }
-    },
-    collectAction(__type, __collectId, __goodsId) {
-      if (__collectId > 0) {
-        this.collectData(__type, "cancel", __goodsId);
-      } else {
-        this.collectData(__type, "collect", __goodsId);
       }
     },
     // 获取关注接口信息

@@ -117,7 +117,7 @@ export default {
   },
   methods:{
     clear(){
-      this.hotSearch=[];
+      this.list=[];
     },
     // 搜索按钮
     searchTo(_type){

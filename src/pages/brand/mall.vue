@@ -7,8 +7,8 @@
       </div>
       <div class="showContent">
         <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
-          <swiper-slide v-for="item,index in modleInfo.list" :key="index" >
-            <div class="slide" @click="toDetail(item)">
+          <swiper-slide v-for="item,index in modleInfo.list" :key="index">
+            <div class="slide" @click="linktoDetail(item.contents.link_params)">
               <div class="ratiobox">
                 <div class="bookImg" v-lazy:background-image="item.contents.pics[0]"></div>
               </div>
@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="materialObject" v-for="item,index in goodsInfo">
-      <div class="materialTitle">
+      <div class="materialTitle" @click="linktoDetail(item.module_more)">
         <div class="text">
           <span class="verticleLine"></span>
           <span class="lh titleOver">{{item.module_title}}</span>
@@ -36,7 +36,11 @@
         </span>
       </div>
       <div class="goods">
-        <div class="goodsInfo" v-for="value,index in item.list"  @click="linktoDetail(value)">
+        <div
+          class="goodsInfo"
+          v-for="value,index in item.list"
+          @click="linktoDetail(value.contents.link_params)"
+        >
           <div class="ratiobox">
             <div class="bookImg" v-lazy:background-image="value.contents.pics[0]"></div>
           </div>
@@ -54,8 +58,9 @@
 <style scoped src="@/style/scss/pages/brand/mall.scss" lang="scss"></style>
 
 <script>
+import qs from "Qs";
 import easyNav from "../../components/easyNav";
-import {BRAND_PAGE_MALL_INDEX} from "../../apis/brand";
+import { BRAND_PAGE_MALL_INDEX } from "../../apis/brand";
 export default {
   components: {
     easyNav
@@ -65,103 +70,48 @@ export default {
       navData: {
         fold: false,
         home: true,
-        homeLink: "/brand/indx",
+        homeLink: "/brand/index",
         search: true,
-        searchLink: '/search',
+        searchLink: "/search",
         personal: true,
-        personalLink: '/personal/index',
-        type:'brand',
+        personalLink: "/personal/index",
+        type: "brand"
       },
       swiperOption: {
         slidesPerView: 1.2
       },
-      supplier_id:5,
+      supplier_id: 5,
       modleInfo: [],
-      goodsInfo: [],
+      goodsInfo: []
     };
   },
-  mounted(){
+  mounted() {
     // this.supplier_id = this.$route.params.supplier_id;
     this.getData();
   },
-  methods:{
-    async getData(){
+  methods: {
+    async getData() {
       var tStamp = this.$getTimeStamp();
-      var data={
-        supplier_id:5,
-        version:"1.0",
-        timestamp:tStamp,
+      var data = {
+        supplier_id: 5,
+        version: "1.0",
+        timestamp: tStamp
       };
       data.sign = this.$getSign(data);
       let res = await BRAND_PAGE_MALL_INDEX(data);
-      if(res.hasOwnProperty("response_code")){
+      if (res.hasOwnProperty("response_code")) {
         console.log(res);
         this.modleInfo = res.response_data.module_list[0];
         this.goodsInfo = res.response_data.module_list.slice(1);
-      }else{
+      } else {
         this.$toast(res.error_message);
       }
     },
-    toDetail(item){
-      console.log(item);
-        if(item.contents.goods_type ==1 || item.contents.goods_type == 2){
-          this.$router.push({
-            name:'albumdetail',
-            params:{
-              goods_id:item.contents.goods_id,
-              pid:null,
-            }
-          })
-        }
-        if(item.contents.goods_type ==6){
-          this.$router.push({
-            name:'article',
-            params:{
-              goods_id:item.contents.goods_id,
-              pid:null,
-            }
-          })
-        }
-        if(item.contents.goods_type ==9){
-          this.$router.push({
-            name:'albumlist',
-            params:{
-              goods_id:item.contents.goods_id,
-              pid:null,
-            }
-          })
-        }
-    },
-    linktoDetail(value){
-      console.log(value);
-        if(value.contents.goods_type ==1 || value.contents.goods_type == 2){
-          this.$router.push({
-            name:'albumdetail',
-            params:{
-              goods_id:value.contents.goods_id,
-              pid:null,
-            }
-          })
-        }
-        if(value.contents.goods_type ==6){
-          this.$router.push({
-            name:'article',
-            params:{
-              goods_id:value.contents.goods_id,
-              pid:null,
-            }
-          })
-        }
-        if(value.contents.goods_type ==9){
-          this.$router.push({
-            name:'albumlist',
-            params:{
-              goods_id:value.contents.goods_id,
-              pid:null,
-            }
-          })
-        }
-    },
-  },
+    linktoDetail(link) {
+      console.log(123, link)
+      var data = this.$translate(JSON.parse(link));
+      this.$router.push(data);
+    }
+  }
 };
 </script>

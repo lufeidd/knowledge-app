@@ -10,15 +10,19 @@
       :finished="historyFinished"
       finished-text="没有更多了"
       @load="historyLoad"
-      v-for="(item, key) in historyList"
-      :key="key"
     >
-      <van-swipe-cell :right-width="65" :left-width="0" :on-close="historyClose">
+      <van-swipe-cell
+        v-for="(item, key) in historyList"
+        :key="key"
+        :right-width="65"
+        :left-width="0"
+        :on-close="historyClose"
+      >
         <router-link v-if="historyStatus[key].id != null" to="/" class="listBox">
           <div class="left">
             <div class="ratioBox">
               <div class="box">
-                <img :src="item.imgSrc">
+                <img :src="item.data.pic">
                 <!-- <div class="tip">
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-sound-line"></use>
@@ -29,8 +33,8 @@
             </div>
           </div>
           <div class="center">
-            <div class="title">{{ item.title }}</div>
-            <div class="subTitle">{{ item.subTitle }}</div>
+            <div class="title">{{ item.data.title }}</div>
+            <div class="subTitle">{{ item.data.subTitle }}</div>
             <div class="info">
               <span class="type" v-if="item.type == 'artical'">文章</span>
               <span class="type" v-if="item.type == 'audio'">音频</span>
@@ -45,13 +49,13 @@
                 <svg class="icon" aria-hidden="true" v-if="item.type == 'video'">
                   <use xlink:href="#icon-video-line"></use>
                 </svg>
-                {{ item.count }}
+                {{ item.data.play_num }}
               </span>
               <span class="time">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-time-line"></use>
                 </svg>
-                {{ item.time }}
+                {{ item.data.create_time }}
               </span>
             </div>
           </div>
@@ -64,7 +68,7 @@
         <span
           v-if="historyStatus[key].id != null"
           slot="right"
-          @click="historyCancel(item.target, key)"
+          @click="historyCancel(item.data.target, key)"
         >
           <div>取消历史</div>
         </span>
@@ -122,7 +126,7 @@ export default {
           data = {
             timestamp: tStamp,
             page: this.historyPage,
-            page_size: 4,
+            page_size: 10,
             version: "1.0"
           };
           data.sign = this.$getSign(data);

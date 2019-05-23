@@ -6,6 +6,7 @@
  #listPage{
   background-color: $greyLight;
   min-height: 100%;
+  box-sizing: border-box;
    padding-top: 5px;
    .content{
      background-color: $white;
@@ -27,6 +28,7 @@
           border: 1px solid $clC;
           border-radius: 21px;
           align-items: center;
+          margin-right: 5px;
         }
         .publish{
           font-size: $fontSize + 1;

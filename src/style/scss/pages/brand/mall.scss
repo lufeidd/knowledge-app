@@ -81,10 +81,11 @@
   .materialObject {
     background-color: $white;
     margin-top: 5px;
-    padding: 15px;
+    padding: 0 15px;
 
     .materialTitle {
       @include displayFlex(flex, space-between, null);
+      padding: 10px 0;
       // width: 100%;
       .text{
         max-width: 80%;
