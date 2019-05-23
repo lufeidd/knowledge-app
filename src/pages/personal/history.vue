@@ -66,18 +66,33 @@
         </span>
       </van-swipe-cell>
     </van-list>
+    <!-- 快速导航 -->
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/history.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/history.scss" scoped lang="scss"></style>
 
 <script>
+import easyNav from "./../../components/easyNav";
 //  引入接口
 import { USER_HISTORY, USER_HISTORY_CANCEL } from "../../apis/user.js";
 
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
+      // 快速导航
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        personal: true,
+        personalLink: '/personal/index',
+      },
       historyList: [],
       // 临时存放关注数据
       historyStatus: [],

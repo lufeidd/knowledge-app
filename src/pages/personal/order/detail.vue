@@ -33,10 +33,10 @@
       <div class="head">
         <div class="titleFrom">
           <img v-lazy="infoData.brand_header_pic" class="icon">
-          <span class="publish">{{infoData.brand_name}}</span>
+          <span class="publish" >{{infoData.brand_name}}</span>
         </div>
       </div>
-      <div class="section" v-for="item in infoData.order_detail">
+      <div class="section" v-for="item in infoData.detail" >
         <div class="bookDetail">
           <div class="ratiobox">
             <div class="box">
@@ -79,24 +79,29 @@
       </div>
       <div class="orderInfo">
         <van-cell title="下单时间" v-model="infoData.order_time"/>
-        <van-cell title="支付方式" v-model="infoData.payWay"/>
+        <van-cell title="支付方式" v-model="infoData.pay_info[0].pay_bank"/>
         <van-cell title="支付时间" v-model="infoData.pay_time"/>
       </div>
     </div>
-    <div class="foot bottomBox" :class="{iphx:this.isIphx}">
+    <!-- <div class="foot bottomBox" :class="{iphx:this.isIphx}">
       <span class="button2">评价</span>
-      <span class="button1">再次购买</span>
-    </div>
+      <span class="button1" @click="repurchase">再次购买</span>
+    </div> -->
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/order/detail.scss" lang="scss"></style>
+<style scoped src="@/style/scss/pages/personal/order/detail.scss" lang="scss"></style>
 
 <script>
 //调用cilpboard
 import Clipboard from "clipboard";
 import{USER_ORDER_DETAIL_GET} from "../../../apis/user.js"
+import easyNav from "./../../../components/easyNav";
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
       // fictitious: {
@@ -105,7 +110,17 @@ export default {
       //   payWay: "支付宝支付",
       //   payTime: "2019.4.17 19:16:02"
       // },
-      infoData:null,
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: true,
+        searchLink: "/search",
+        personal: true,
+        personalLink: "/personal/index",
+        type:'order',
+      },
+      infoData:{},
       order_id:'',
     };
   },
@@ -132,7 +147,7 @@ export default {
     async getData(){
       var tStamp = this.$getTimeStamp();
       var data={
-        order_id:this.order_id,
+        order_id: this.order_id,
         version:"1.0",
         timestamp:tStamp,
       };
@@ -145,6 +160,10 @@ export default {
       }else{
         this.$toast(res.error_message);
       }
+    },
+    //再次购买
+    repurchase(){
+
     },
   }
 };

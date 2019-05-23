@@ -53,7 +53,6 @@
   </div>
 </template>
 
-
 <style src="@/style/scss/components/miniAudio.scss" lang="scss"></style>
 
 <script>
@@ -81,6 +80,8 @@ export default {
     this.clearClock();
   },
   mounted() {
+    // 播放结束后销毁倒计时
+    // this.clearClock();
     setTimeout(() => {
       var audio = document.getElementById("myMiniAudio");
       if (this.audioData.currentTime) {
@@ -151,9 +152,9 @@ export default {
 
       // 判断是否需要新增进度
       this.progressAddOrUpdate(info, result);
-
+      // console.log(result)
       // 根据pid + goods_id来存储loacalStorage
-      if (result.length == 0 || this.isAdd) {
+      if ( result == null || this.isAdd) {
         // 新增播放进度记录
         this.addProgressData(info, result, __currentTime);
       } else {
@@ -163,19 +164,24 @@ export default {
 
       // 设置迷你音频播放状态
       this.$emit("setMiniAudio", info);
+
+      console.log(456, 'mini', "info:", info, "result:", result);
+      
     },
     // 更新播放进度记录
     updateProgressData (info, result, __currentTime) {
       var pid = info[1];
       var goodsId = info[8];
 
-      for(let i = 0; i < result.length; i++) {
-        // 当记录已经存在则更新
-        if(pid == result[i].pid && goodsId == result[i].goods_id) {
-          result[i].progress = __currentTime;
-          // 设置节目列表播放进度，只设置不显示
-          this.$emit("setProgress", result);
-          // console.log('更新音频播放进度', result);
+      if(result != null && result.length > 0) {
+        for(let i = 0; i < result.length; i++) {
+          // 当记录已经存在则更新
+          if(pid == result[i].pid && goodsId == result[i].goods_id) {
+            result[i].progress = __currentTime;
+            // 设置节目列表播放进度，只设置不显示
+            this.$emit("setProgress", result);
+            // console.log('更新音频播放进度', result);
+          }
         }
       }
     },
@@ -184,10 +190,14 @@ export default {
       var pid = info[1];
       var goodsId = info[8];
       this.isAdd = true;
-      for(let i = 0; i < result.length; i++) {
-        // 当记录已经存在则更新
-        if(pid == result[i].pid && goodsId == result[i].goods_id) {
-          this.isAdd = false;
+
+      if(result != null && result.length > 0) {
+          
+        for(let i = 0; i < result.length; i++) {
+          // 当记录已经存在则更新
+          if(pid == result[i].pid && goodsId == result[i].goods_id) {
+            this.isAdd = false;
+          }
         }
       }
     },
@@ -211,15 +221,16 @@ export default {
       obj.pid = info[1];
 
       // 100条上限，多于100条从第一条覆盖以此类推
-      if(arr.length <= 100) {
-        arr.push(obj);
-      } else {
+      if(arr != null && arr.length >= 100) {
         arr = arr.pop();
+      } else {
+        arr = [];
+        arr.push(obj);
       }
       
       localStorage.setItem("audioProgress", JSON.stringify(arr));
 
-      console.log("当记录不存在则添加", 'goods_id:', info[8], 'goods_no:', info[0], 'progress:', __currentTime, 'pid:', info[1], "result:", arr);
+      // console.log("当记录不存在则添加", 'goods_id:', info[8], 'goods_no:', info[0], 'progress:', __currentTime, 'pid:', info[1], "result:", arr);
 
     },
     // 点击播放

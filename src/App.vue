@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <router-view/>
+    <!-- 页面缓存, $route.meta.keepAlive默认false -->
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive"/>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"/>
   </div>
 </template>
 
@@ -96,7 +100,7 @@ img {
 </style>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
   name: "App",
   mounted() {
@@ -114,14 +118,14 @@ export default {
     // this.$router.push("/personal/set/bind");
     // this.$router.push("/personal/comment/index");
     // this.$router.push("/personal/set/address");
-    // this.$router.push("/personal/remain/account");
+    this.$router.push("/personal/remain/account");
 
     // 品牌商城
     // this.$router.push("/brand/result");
 
     // 品牌商城
-    this.$router.push("/brand/mall");
-    // this.$router.push("/brand/detail/book");
+    // this.$router.push("/brand/mall");
+    // this.$router.push("/brand/index");
     // this.$router.push("/brand/detail/article");
 
     // 评价

@@ -5,11 +5,9 @@
 
 @charset "UTF-8";
 
-html {
-  background-color: $greyLight;
-}
-
 #detailPage {
+  background-color: $greyLight;
+  min-height: 100%;
 
   & .albumBox {
     @include textOverflow;

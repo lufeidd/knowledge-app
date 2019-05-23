@@ -4,16 +4,31 @@
     <div class="content">
       <!-- <p>{{contentData.content}}</p> -->
     </div>
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
-<style src="@/style/scss/pages/help/index.scss" lang="scss"></style>
+<style scoped src="@/style/scss/pages/help/index.scss" lang="scss"></style>
 
 <script>
 import { USER_HELPER_DETAIL } from "../../../apis/user.js";
+import easyNav from "./../../../components/easyNav";
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        // searchLink: "/search",
+        personal: true,
+        personalLink: "/personal/index",
+        type:'order',
+      },
       contentData:{ },
     };
   },
@@ -35,7 +50,7 @@ export default {
 
       let res = await USER_HELPER_DETAIL(data);
       if(res.hasOwnProperty("response_code")){
-        this.contentData = res.response_data;                            
+        this.contentData = res.response_data;
         // console.log(res.response_data);
         $('.content').append(this.contentData.content);
       }else{

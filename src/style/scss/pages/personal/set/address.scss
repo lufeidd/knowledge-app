@@ -3,21 +3,24 @@
  * date:2019/4/18
  */
 
- @charset "UTF-8";
+@charset "UTF-8";
 
- @import url("./../../../components/button.scss");
- @import url("./../../../components/dateTimePicker.scss");
- #addressPage {
+// @import url("./../../../components/button.scss");
+// @import url("./../../../components/dateTimePicker.scss");
 
 
-    .van-address-edit__buttons {
-        padding: 100px 50px;
-    }
-    .van-cell:not(:last-child)::after {
-        border-bottom: 1px #f6f6f6 solid;
-    }
-    .van-cell {
-        font-size: $fontSize + 1;
-        color: #333;
-    }
- }
+#addressPage {
+
+  .van-address-edit__buttons {
+    padding: 100px 50px;
+  }
+
+  .van-cell:not(:last-child)::after {
+    border-bottom: 1px #f6f6f6 solid;
+  }
+
+  .van-cell {
+    font-size: $fontSize + 1;
+    color: #333;
+  }
+}

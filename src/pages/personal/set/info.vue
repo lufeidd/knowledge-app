@@ -74,16 +74,16 @@
     <div style="margin-top: 5px;">
       <van-button size="large" @click="save">保存</van-button>
     </div>
-    
   </div>
 </template>
 
 <style lang="scss" scoped>
-html {
-  background-color: $greyLight;
+.van-button {
+  border-radius: 0;
 }
-
 #infoPage {
+  min-height: 100%;
+  background-color: $greyLight;
   & .listBox {
     padding: 10px 15px;
     background-color: $white;
@@ -160,7 +160,7 @@ export default {
         mobile: "",
         nickname: "",
         birthday: "",
-        sex: 1,
+        sex: 1
       },
       // 生日
       birthdayModel: false,
@@ -185,7 +185,7 @@ export default {
         },
         {
           name: "女"
-        },
+        }
       ]
     };
   },
@@ -250,7 +250,7 @@ export default {
         // this.cropperShow = true;
 
         // 跳转到裁切页面
-        self.$router.push({name: "cropper", params: {data: data}});
+        self.$router.push({ name: "cropper", params: { data: data } });
         // console.log(data);
       };
     },
@@ -260,7 +260,7 @@ export default {
         version: "1.0"
       };
       let res = await USER_INFO(data);
-      console.log("123", res.response_data);
+      // console.log(res.response_data);
       if (res.hasOwnProperty("response_code")) {
         this.$set(this.infoList, "header_pic", res.response_data.header_pic);
         this.$set(this.infoList, "mobile", res.response_data.mobile);
@@ -268,8 +268,9 @@ export default {
         this.$set(this.infoList, "birthday", res.response_data.birthday);
         this.$set(this.infoList, "sex", res.response_data.sex);
         // 裁切后的图片
-        if(this.$route.params.img) this.$set(this.infoList, "header_pic", this.$route.params.img);
-        console.log("123头像图片：", this.infoList.header_pic);
+        if (this.$route.params.img)
+          this.$set(this.infoList, "header_pic", this.$route.params.img);
+        console.log(789, this.infoList.header_pic);
       } else {
         this.$toast(res.error_message);
       }
@@ -300,7 +301,7 @@ export default {
       // console.log(index)
     },
     // 保存
-    save () {
+    save() {
       this.editInfoData();
     },
     // 修改账号接口信息
@@ -310,27 +311,28 @@ export default {
         sex: this.infoList.sex,
         header_pic: this.infoList.header_pic,
         birthday: this.infoList.birthday,
-        version: "1.0",
+        version: "1.0"
       };
-      if(!this.infoList.nickname) {
-        this.$toast('请输入昵称~');
+      if (!this.infoList.nickname) {
+        this.$toast("请输入昵称~");
         return;
       }
-      if(!this.infoList.birthday) {
-        this.$toast('请输入生日~');
+      if (!this.infoList.birthday) {
+        this.$toast("请输入生日~");
         return;
       }
-      if(!this.infoList.sex) {
-        this.$toast('请输入性别~');
+      if (!this.infoList.sex) {
+        this.$toast("请输入性别~");
         return;
       }
       let res = await USER_INFO_EDIT(data);
       if (res.hasOwnProperty("response_code")) {
-        this.$toast('信息修改成功~');
+        this.$toast("信息修改成功~");
+        this.$router.push({name: 'set'});
       } else {
         this.$toast(res.error_message);
       }
-    },
+    }
   }
 };
 </script>

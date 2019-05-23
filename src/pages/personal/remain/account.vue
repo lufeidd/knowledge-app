@@ -2,7 +2,8 @@
   <div id="accountPage">
     <div class="content">
       <span>¥</span>
-      <span class="money">{{money ? money:0}}</span>
+      <span class="money">{{money ? money : 0}}</span>
+
       <p class="currentRemain">当前余额</p>
     </div>
     <div class="account">
@@ -19,16 +20,31 @@
     <div class="recharge">
       <van-button slot="button" size="large" round type="danger" @click="account()">充值</van-button>
     </div>
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/remain/index.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/remain/index.scss" scoped lang="scss"></style>
 
 <script>
 import { USER_REMAIN_INFO } from "../../../apis/user.js";
+import easyNav from "./../../../components/easyNav";
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        // searchLink: "/search",
+        personal: true,
+        personalLink: "/personal/index",
+        type:'order',
+      },
       money: null,
       rechargeAmount: [5, 20, 50, 100, 150, 200, 280, 320],
       activeClass: 0,

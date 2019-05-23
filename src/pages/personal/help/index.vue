@@ -1,21 +1,36 @@
 <template>
   <div id="helpPage">
     <div style="margin-bottom:60px;">
-      <van-cell :title="item.title" value is-link arrow-direction="down" :key="index" v-for="item,index in listData" @click="todetail(index)"/>
+      <van-cell :title="item.title" v-for="item,index in listData" value is-link arrow-direction="down" :key="index" @click="todetail(index)"/>
     </div>
     <div class="bottomBox" :class="{iphx:this.isIphx}">
       <van-button type="danger" size="large" replace to="/personal/help/feedback">我要反馈</van-button>
     </div>
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
-<style src="@/style/scss/pages/help/index.scss" lang="scss"></style>
+<style scoped src="@/style/scss/pages/help/index.scss" lang="scss"></style>
 
 <script>
 import { USER_HELPER_GETS } from "../../../apis/user.js";
+import easyNav from "./../../../components/easyNav";
 export default {
+  components: {
+    easyNav
+  },
   data () {
     return {
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        // searchLink: "/search",
+        personal: true,
+        personalLink: "/personal/index",
+        type:'order',
+      },
       listData:[],
     }
   },

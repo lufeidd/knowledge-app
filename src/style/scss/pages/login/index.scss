@@ -12,6 +12,8 @@
 @import url("./../../components/checkbox.scss");
 
 #loginPage {
+  background-color: $white;
+  min-height: 100%;
 
   .password {
 
@@ -44,16 +46,14 @@
     padding: 100px 50px 50px 50px;
   }
 
-  .van-field__label {
-    max-width: 50px;
-    margin-right: 10px;
-  }
+  // .van-field__label {
+  //   max-width: 50px;
+  //   margin-right: 10px;
+  // }
 
-  & .phone .van-field__label {
-    // @include clearfix;
-    // font-size: double($fontSize);
-    border-right: 1px #d6d6d6 solid;
-  }
+  // & .phone .van-field__label {
+  //   border-right: 1px #d6d6d6 solid;
+  // }
 
   .submitBox {
     margin: 50px 0;

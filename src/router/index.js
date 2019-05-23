@@ -92,12 +92,20 @@ import paysuccess from '@/pages/pay/success'
 Vue.use(Router)
 
 export default new Router({
+  // mode: 'history',  //把Router的mode修改为history模式,VueRouter默认的模式为HASH模式
+  mode: 'hash',  //把Router的mode修改为history模式,VueRouter默认的模式为HASH模式
+  // linkActiveClass: 'active',
   routes: [
+    // 根目录
+    {
+      path: '/',
+      redirect: '/login/index',
+    },
     // 登录/注册
     {
       path: '/login/index',
       name: 'login',
-      component: login
+      component: login,
     },
     {
       path: '/login/password',
@@ -118,7 +126,7 @@ export default new Router({
     {
       path: '/personal/index',
       name: 'personalIndex',
-      component: personal
+      component: personal,
     },
     {
       path: '/personal/collect',
@@ -175,7 +183,7 @@ export default new Router({
     {
       path:'/personal/order/result',
       name:'orderresult',
-      component: orderresult
+      component: orderresult,
     },
     // 个人中心 - 我的购买 - 评价
     {
@@ -233,52 +241,65 @@ export default new Router({
     {
       path: '/personal/set/index',
       name: 'set',
-      component: set
+      component: set,
+      //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
+      beforeEnter: (to, from, next) => {
+        from.path == '/personal/set/info' ? next('/personal/index') : next();
+        from.path == '/personal/set/phone' ? next('/personal/index') : next();
+      },
     },
     {
       path: '/personal/set/address',
       name: 'address',
-      component: address
+      component: address,
+      //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
+      beforeEnter: (to, from, next) => {
+        from.path == '/personal/set/index' ? next('/personal/index') : next();
+      },
     },
     {
       path: '/personal/set/list',
       name: 'addresslist',
-      component: addresslist
+      component: addresslist,
     },
     {
       path: '/personal/set/info',
       name: 'info',
-      component: info
+      component: info,
     },
     {
       path: '/personal/set/safe',
       name: 'safe',
-      component: safe
+      component: safe,
     },
     {
       path: '/personal/set/cropper',
       name: 'cropper',
-      component: cropper
+      component: cropper,
     },
     {
       path: '/personal/set/bind',
       name: 'bind',
-      component: bind
+      component: bind,
     },
     {
       path: '/personal/set/cancel',
       name: 'cancel',
-      component: cancel
+      component: cancel,
     },
     {
       path: '/personal/set/password',
       name: 'setpassword',
-      component: setpassword
+      component: setpassword,
+      //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
+      beforeEnter: (to, from, next) => {
+        from.path == '/login/index' ? next('/login/index') : next();
+      },
     },
     {
       path: '/personal/set/phone',
       name: 'setphone',
-      component: setphone
+      component: setphone,
     },
     // 个人中心 - 帮助与反馈
     {
@@ -306,23 +327,35 @@ export default new Router({
     {
       path: '/search',
       name: 'search',
-      component: search
+      component: search,
+      meta: {
+        keepAlive: false,  // false不需要被缓存，true需要缓存
+      },
     },
     // 专辑
     {
       path: '/album/index',
       name: 'album',
-      component: album
+      component: album,
+      meta: {
+        keepAlive: false,  // false不需要被缓存，true需要缓存
+      }
     },
     {
       path: '/album/detail',
       name: 'albumdetail',
-      component: albumdetail
+      component: albumdetail,
+      meta: {
+        keepAlive: false,  // false不需要被缓存，true需要缓存
+      },
     },
     {
       path: '/album/player',
       name: 'player',
-      component: player
+      component: player,
+      meta: {
+        keepAlive: false,  // false不需要被缓存，true需要缓存
+      },
     },
     {
       path: '/album/list',
@@ -338,12 +371,15 @@ export default new Router({
     {
       path: '/brand/detail/article',
       name: 'article',
-      component: article
+      component: article,
+      meta: {
+        keepAlive: true,  // false不需要被缓存，true需要缓存
+      },
     },
     {
       path: '/brand/detail/book',
       name: 'book',
-      component: book
+      component: book,
     },
     {
       path: '/brand/result',
@@ -353,7 +389,10 @@ export default new Router({
     {
       path: '/brand/index',
       name: 'brand',
-      component: brand
+      component: brand,
+      meta: {
+        keepAlive: false,  // false不需要被缓存，true需要缓存
+      },
     },
     // 购物车
     {
@@ -389,7 +428,15 @@ export default new Router({
     {
       path: '/pay/account',
       name: 'payaccount',
-      component: payaccount
+      component: payaccount,
+      meta: {
+        keepAlive: true,  // false不需要被缓存，true需要缓存
+      },
+      //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
+      beforeEnter: (to, from, next) => {
+        from.path == '/pay/success' ? next('/personal/index') : next();
+        from.path == '/personal/index' ? next('/personal/index') : next();
+      },
     },
     {
       path: '/pay/success',

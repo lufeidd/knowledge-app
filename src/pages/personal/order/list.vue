@@ -1,5 +1,9 @@
 <template>
   <div id="listPage">
+    <div class="nullBox" v-if="publishData.length == 0">
+      <img src="../../../assets/null/list.png" width="100%">
+      <div>您的订单列表为空</div>
+    </div>
     <!-- <div class="content">
       <div class="head">
         <div class="titleFrom">
@@ -104,6 +108,7 @@
       :finished="programFinished"
       finished-text="没有更多了"
       @load="programLoad"
+      v-else
     >
     <div class="content" v-for="item,index in publishData" @click="toDetail(item)">
       <div class="head">
@@ -141,7 +146,7 @@
   </div>
 </template>
 
-<style scoped src="@/style/scss/pages/personal/order/list.scss" lang="scss"></style>
+<style scoped  src="@/style/scss/pages/personal/order/list.scss" lang="scss"></style>
 
 <script>
 import easyNav from "./../../../components/easyNav";
@@ -155,7 +160,7 @@ export default {
       navData: {
         fold: false,
         home: true,
-        homeLink: "/",
+        homeLink: "/brand/index",
         search: true,
         searchLink: "/search",
         personal: true,
@@ -175,7 +180,8 @@ export default {
     };
   },
   mounted(){
-    // this.getData();
+    this.getData();
+    // console.log(brandId);
   },
   methods:{
     programLoad(){

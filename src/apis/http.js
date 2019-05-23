@@ -16,12 +16,8 @@ var instance
     // 创建axios的一个实例
     instance = axios.create({
         baseURL: 'http://wap.huoba.net:8080/apis',
-        //baseURL: 'http://frontapi.huoba.dev.zxw',
-        // baseURL: 'http://wap.huoba.net/api',
-        // baseURL: result.data.baseUrl,
         timeout: 6000,
     })
-    // console.log(123, result);
 
     // 一、请求拦截器 忽略
     instance.interceptors.request.use(function (config) {

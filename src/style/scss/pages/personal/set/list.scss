@@ -5,11 +5,9 @@
 
 @charset "UTF-8";
 
-html {
-  background-color: #f5f5f5;
-}
-
 #listPage {
+  background-color: #f5f5f5;
+  min-height: 100%;
 
   & .addressBox {
     padding-top: 10px;

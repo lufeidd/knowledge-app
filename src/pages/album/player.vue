@@ -134,6 +134,8 @@ export default {
     this.clearClock();
   },
   mounted() {
+    // 播放结束后销毁倒计时
+    // this.clearClock();
     this.audioData.type = true;
     // 设置音频播放状态
     this.setPlayerAudio();
@@ -156,22 +158,29 @@ export default {
     // 设置音频播放状态
     setPlayerAudio() {
       var info = JSON.parse(localStorage.getItem("miniAudio"));
-      // 当前播放节目
-      this.activeGoodNo = info[0];
-      this.programGoodsId = info[1];
-      this.audioData.pic = info[2];
-      this.audioData.src = info[3];
-      this.currentSecond = info[5];
-      this.audioData.program = info[6];
-      this.baseData.title = info[7];
-      // 专辑
-      this.baseData.pic = info[2];
-
-      // 初始化音频
-      this.audioData.src = info[3];
-      this.audioData.currentTime = info[5];
-      // 存储currentTime时间格式
-      this.currentTime__ = this.todate(info[5]);
+      
+      if(info != null && info.length != 0) {
+        // 当前播放节目
+        if(info[0] != null && info[0] != "") this.activeGoodNo = info[0];
+        if(info[1] != null && info[1] != "") this.programGoodsId = info[1];
+        if(info[2] != null && info[2] != "") this.audioData.pic = info[2];
+        // 专辑
+        if(info[2] != null && info[2] != "") this.baseData.pic = info[2];
+        if(info[3] != null && info[3] != "") {
+          this.audioData.src = info[3];
+          // 初始化音频
+          this.audioData.src = info[3];
+        }
+        if(info[5] != null && info[5] != "") {
+          this.currentSecond = info[5];
+          this.audioData.currentTime = info[5];
+          // 存储currentTime时间格式
+          this.currentTime__ = this.todate(info[5]);
+        }
+        if(info[6] != null && info[6] != "") this.audioData.program = info[6];
+        if(info[7] != null && info[7] != "") this.baseData.title = info[7];
+        
+      }
     },
     // 延时600ms设置duration
     setDuration () {
@@ -240,7 +249,7 @@ export default {
       this.progressAddOrUpdate(info, result);
 
       // 根据pid + goods_id来存储loacalStorage
-      if (result.length == 0 || this.isAdd) {
+      if (result == null || this.isAdd) {
         // 新增播放进度记录
         this.addProgressData(info, result, __currentTime);
       } else {
@@ -252,20 +261,25 @@ export default {
       localStorage.setItem("miniAudio", JSON.stringify(info));
       // 关联播放列表当前播放状态
       this.activeGoodNo = info[0];
+
+      console.log(123, 'player', "info:", info, "result:", result);
     },
     // 更新播放进度记录
     updateProgressData (info, result, __currentTime) {
       var pid = info[1];
       var goodsId = info[8];
 
-      for(let i = 0; i < result.length; i++) {
-        // 当记录已经存在则更新
-        if(pid == result[i].pid && goodsId == result[i].goods_id) {
-          result[i].progress = __currentTime;
-          // 设置节目列表播放进度，只设置不显示
-          this.audioProgressData(result);
-          // console.log('更新音频播放进度', result);
+      if(result != null && result.length > 0) {
+        for(let i = 0; i < result.length; i++) {
+          // 当记录已经存在则更新
+          if(pid == result[i].pid && goodsId == result[i].goods_id) {
+            result[i].progress = __currentTime;
+            // 设置节目列表播放进度，只设置不显示
+            this.audioProgressData(result);
+            // console.log('更新音频播放进度', result);
+          }
         }
+        
       }
     },
     // 将当前专辑节目列表播放进度信息存放到localStorage
@@ -286,10 +300,12 @@ export default {
       var pid = info[1];
       var goodsId = info[8];
       this.isAdd = true;
-      for(let i = 0; i < result.length; i++) {
-        // 当记录已经存在则更新
-        if(pid == result[i].pid && goodsId == result[i].goods_id) {
-          this.isAdd = false;
+      if(result != null && result.length > 0) {
+        for(let i = 0; i < result.length; i++) {
+          // 当记录已经存在则更新
+          if(pid == result[i].pid && goodsId == result[i].goods_id) {
+            this.isAdd = false;
+          }
         }
       }
     },
@@ -322,7 +338,7 @@ export default {
       
       localStorage.setItem("audioProgress", JSON.stringify(arr));
 
-      console.log("当记录不存在则添加", 'goods_id:', info[8], 'goods_no:', info[0], 'progress:', __currentTime, 'pid:', info[1], "result:", arr);
+      // console.log("当记录不存在则添加", 'goods_id:', info[8], 'goods_no:', info[0], 'progress:', __currentTime, 'pid:', info[1], "result:", arr);
 
     },
     // 点击播放
@@ -512,10 +528,12 @@ export default {
       // 默认从0播放,如果localStorage有播放进度记录则从记录处播放
       var __currentTime = 0;
 
-      // 遍历localStorage中记录进度的数组，获取当前节目当前进度
-      for(let i = 0; i < result.length; i++) {
-        if(goods_id == result[i].goods_id && pid == result[i].pid) {
-          __currentTime = result[i].progress;
+      if(result != null && result.length > 0) {
+        // 遍历localStorage中记录进度的数组，获取当前节目当前进度
+        for(let i = 0; i < result.length; i++) {
+          if(goods_id == result[i].goods_id && pid == result[i].pid) {
+            __currentTime = result[i].progress;
+          }
         }
       }
 

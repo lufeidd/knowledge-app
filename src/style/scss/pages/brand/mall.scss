@@ -5,7 +5,9 @@
 
 #mallPage {
   background-color: $greyLight;
+  min-height: 100%;
   padding-top: 5px;
+  // padding-bottom: 10px;
 
   .verticleLine {
     display: inline-block;
@@ -59,10 +61,12 @@
           // padding: 10px ;
           .title {
             line-height: 1.2;
+            @include twoColtextOverflow;
             @include font("PingFangBlod", $fontSize + 1, null);
           }
 
           .message {
+            @include textOverflow;
             @include font("PingFangMedium", $fontSize - 2, $cl6);
           }
 
@@ -81,6 +85,13 @@
 
     .materialTitle {
       @include displayFlex(flex, space-between, null);
+      // width: 100%;
+      .text{
+        max-width: 80%;
+        .titleOver{
+          @include textOverflow;
+        }
+      }
     }
 
     .goods {
@@ -102,11 +113,13 @@
 
         .name {
           @include font("PingFangBlod", $fontSize, $cl3);
+          @include twoColtextOverflow;
           height: 42px;
         }
 
         .message {
           @include font("PingFangMedium", $fontSize - 2, $cl6);
+          @include textOverflow;
         }
 
         .money {

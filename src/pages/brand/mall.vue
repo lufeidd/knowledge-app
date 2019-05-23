@@ -3,19 +3,19 @@
     <div class="popular">
       <div class="text">
         <span class="verticleLine"></span>
-        <span class="lh">热门推荐</span>
+        <span class="lh">{{modleInfo.module_title}}</span>
       </div>
       <div class="showContent">
         <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
-          <swiper-slide v-for="item,index in footInfo" :key="index">
-            <div class="slide">
+          <swiper-slide v-for="item,index in modleInfo.list" :key="index" >
+            <div class="slide" @click="toDetail(item)">
               <div class="ratiobox">
-                <div class="bookImg" v-lazy:background-image="item.imgUrl"></div>
+                <div class="bookImg" v-lazy:background-image="item.contents.pics[0]"></div>
               </div>
               <div class="content">
-                <p class="title">{{item.title}}</p>
-                <p class="message">{{item.message}}</p>
-                <p class="money">¥ {{item.money.toFixed(2)}}</p>
+                <p class="title">{{item.contents.title}}</p>
+                <p class="message">{{item.contents.sub_title}}</p>
+                <p class="money">¥ {{item.contents.price}}</p>
               </div>
             </div>
           </swiper-slide>
@@ -26,7 +26,7 @@
       <div class="materialTitle">
         <div class="text">
           <span class="verticleLine"></span>
-          <span class="lh">{{item.title}}</span>
+          <span class="lh titleOver">{{item.module_title}}</span>
         </div>
         <span class="all">
           全部
@@ -36,13 +36,13 @@
         </span>
       </div>
       <div class="goods">
-        <div class="goodsInfo" v-for="value,index in item.info">
+        <div class="goodsInfo" v-for="value,index in item.list"  @click="linktoDetail(value)">
           <div class="ratiobox">
-            <div class="bookImg" v-lazy:background-image="value.imgUrl"></div>
+            <div class="bookImg" v-lazy:background-image="value.contents.pics[0]"></div>
           </div>
-          <p class="name">{{value.name}}</p>
-          <p class="message">{{value.message}}</p>
-          <p class="money">¥ {{value.money.toFixed(2)}}</p>
+          <p class="name">{{value.contents.title}}</p>
+          <p class="message">{{value.contents.sub_title}}</p>
+          <p class="money">¥ {{value.contents.price}}</p>
         </div>
       </div>
     </div>
@@ -65,7 +65,7 @@ export default {
       navData: {
         fold: false,
         home: true,
-        homeLink: "/",
+        homeLink: "/brand/indx",
         search: true,
         searchLink: '/search',
         personal: true,
@@ -75,125 +75,93 @@ export default {
       swiperOption: {
         slidesPerView: 1.2
       },
-      footInfo: [
-        {
-          imgUrl:
-            "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
-          title: "这里是内容的标题，可能会很长有两行文字",
-          message: "我是一条次要信息",
-          money: 23.0
-        },
-        {
-          imgUrl:
-            "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
-          title: "这里是内容的标题，可能会很长有两行文字",
-          message: "我是一条次要信息",
-          money: 23.0
-        },
-        {
-          imgUrl:
-            "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
-          title: "这里是内容的标题，可能会很长有两行文字",
-          message: "我是一条次要信息",
-          money: 23.0
-        },
-        {
-          imgUrl:
-            "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
-          title: "这里是内容的标题，可能会很长有两行文字",
-          message: "我是一条次要信息",
-          money: 23.0
-        }
-      ],
-      goodsInfo: [
-        {
-          title: "实物商品",
-          info: [
-            {
-              imgUrl:
-                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
-              name: "我是一条商品名称，或许有两行",
-              message: "我是一条次要信息",
-              money: 23.0
-            },
-            {
-              imgUrl:
-                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
-              name: "我是一条商品名称，或许有两行",
-              message: "我是一条次要信息",
-              money: 23.0
-            },
-            {
-              imgUrl:
-                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
-              name: "我是一条商品名称，或许有两行",
-              message: "我是一条次要信息",
-              money: 23.0
-            },
-            {
-              imgUrl:
-                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
-              name: "我是一条商品名称，或许有两行",
-              message: "我是一条次要信息",
-              money: 23.0
-            }
-          ]
-        },
-        {
-          title: "专辑",
-          info: [
-            {
-              imgUrl:
-                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
-              name: "我是一条商品名称，或许有两行",
-              message: "我是一条次要信息",
-              money: 23.0
-            },
-            {
-              imgUrl:
-                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
-              name: "我是一条商品名称，或许有两行",
-              message: "我是一条次要信息",
-              money: 23.0
-            },
-            {
-              imgUrl:
-                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
-              name: "我是一条商品名称，或许有两行",
-              message: "我是一条次要信息",
-              money: 23.0
-            },
-            {
-              imgUrl:
-                "https://media2.v.bookuu.com/activity/14/27/20181113142721512.jpg@!q75",
-              name: "我是一条商品名称，或许有两行",
-              message: "我是一条次要信息",
-              money: 23.0
-            }
-          ]
-        }
-      ]
+      supplier_id:5,
+      modleInfo: [],
+      goodsInfo: [],
     };
   },
   mounted(){
+    // this.supplier_id = this.$route.params.supplier_id;
     this.getData();
   },
   methods:{
     async getData(){
       var tStamp = this.$getTimeStamp();
       var data={
-        brand_id:1,
+        supplier_id:5,
         version:"1.0",
         timestamp:tStamp,
       };
       data.sign = this.$getSign(data);
       let res = await BRAND_PAGE_MALL_INDEX(data);
       if(res.hasOwnProperty("response_code")){
-        console.log(res)
+        console.log(res);
+        this.modleInfo = res.response_data.module_list[0];
+        this.goodsInfo = res.response_data.module_list.slice(1);
       }else{
         this.$toast(res.error_message);
       }
-    }
+    },
+    toDetail(item){
+      console.log(item);
+        if(item.contents.goods_type ==1 || item.contents.goods_type == 2){
+          this.$router.push({
+            name:'albumdetail',
+            params:{
+              goods_id:item.contents.goods_id,
+              pid:null,
+            }
+          })
+        }
+        if(item.contents.goods_type ==6){
+          this.$router.push({
+            name:'article',
+            params:{
+              goods_id:item.contents.goods_id,
+              pid:null,
+            }
+          })
+        }
+        if(item.contents.goods_type ==9){
+          this.$router.push({
+            name:'albumlist',
+            params:{
+              goods_id:item.contents.goods_id,
+              pid:null,
+            }
+          })
+        }
+    },
+    linktoDetail(value){
+      console.log(value);
+        if(value.contents.goods_type ==1 || value.contents.goods_type == 2){
+          this.$router.push({
+            name:'albumdetail',
+            params:{
+              goods_id:value.contents.goods_id,
+              pid:null,
+            }
+          })
+        }
+        if(value.contents.goods_type ==6){
+          this.$router.push({
+            name:'article',
+            params:{
+              goods_id:value.contents.goods_id,
+              pid:null,
+            }
+          })
+        }
+        if(value.contents.goods_type ==9){
+          this.$router.push({
+            name:'albumlist',
+            params:{
+              goods_id:value.contents.goods_id,
+              pid:null,
+            }
+          })
+        }
+    },
   },
 };
 </script>

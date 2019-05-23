@@ -2,14 +2,15 @@
  * author: lufei
  * date:2019/4/28
  */
-html{
-  background-color: $greyLight;
-}
+
 #resultPage{
-  margin-top: 5px;
+  padding-top: 5px;
   padding-bottom: 50px;
+  background-color: $greyLight ;
+  min-height: 100%;
   .list{
     background-color: #fff;
+    margin-top: 10px;
     .content{
       @include displayFlex(flex, null, null);
       padding: 15px;

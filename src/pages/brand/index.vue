@@ -12,8 +12,8 @@
           <div class="focus" v-if="brandData.attention_state == 0" @click="focusAction">+关注</div>
           <div class="focus add" v-else @click="focusAction">已关注</div>
         </div>
-        <router-link to="/brand/mall">
-        <div class="sell">
+
+        <div class="sell" @click="toMall">
           <div>
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-shop-line"></use>
@@ -25,7 +25,6 @@
             </svg>
           </div>
         </div>
-        </router-link>
       </div>
 
       <van-tabs sticky animated swipeable color="#666" title-active-color="#333" @click="tabChange">
@@ -40,11 +39,11 @@
             >
               <div class="content" v-for="item,index in column_list_data" @click="linktoDetail(item)">
                 <div class="ratiobox">
-                  <div class="bookImg" v-lazy:background-image="item.pic"></div>
+                  <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
                 </div>
                 <div class="right">
-                  <div class="text">{{item.goods_name}}</div>
-                  <div class="pinpai">品牌名称</div>
+                  <div class="text">{{item.title}}</div>
+                  <div class="pinpai">{{ item.brand_name }}</div>
                   <div class="nice">
                     <span>
                       <svg class="icon" aria-hidden="true">
@@ -85,20 +84,33 @@
         <div class="line"></div>
         <div class="content">{{brandData.summary}}</div>
       </van-popup>
-
+    <easyNav :navData="navData"></easyNav>
     </div>
 </template>
 
-<style src="@/style/scss/pages/brand/index.scss" lang="scss"></style>
+<style scoped src="@/style/scss/pages/brand/index.scss" lang="scss"></style>
 
 <script>
 import { BRAND_INFO,BRAND_COLUMN_GETS } from "../../apis/brand.js";
 import { FOCUS_ADD,FOCUS_CANCEL } from "../../apis/public.js";
 import { setTimeout } from 'timers';
+import easyNav from "./../../components/easyNav";
 export default {
+  components: {
+    easyNav
+  },
     data(){
         return {
-          iconUrl:'https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75',
+          navData: {
+            fold: false,
+            home: true,
+            homeLink: "/brand/index",
+            search: true,
+            searchLink: "/search",
+            personal: true,
+            personalLink: "/personal/index",
+            type:'brand',
+          },
           focus:null,
           showPopup:false,
           programLoading: false,
@@ -106,7 +118,7 @@ export default {
           brandData:{},
           column_list_data:[],
           packets_id:null,
-          brand_id:1,
+          brand_id: localStorage.getItem("globalBrandId"),
           currentPage:1,
           activekey: 0,
         }
@@ -134,6 +146,7 @@ export default {
             res = await FOCUS_ADD(data);
             this.brandData.attention_state = 1;
             // this.$toast('已关注~');
+            this.brandData.statistic_list.fans_num +=1;
             break;
           case "cancel":
             data = {
@@ -143,6 +156,7 @@ export default {
             res = await FOCUS_CANCEL(data);
             this.brandData.attention_state = 0;
             this.$toast("已取消关注~");
+            this.brandData.statistic_list.fans_num -=1;
             break;
         }
         // 出错提示
@@ -195,7 +209,7 @@ export default {
       async columnListData(){
         var tStamp = this.$getTimeStamp();
         var data={
-          brand_id:this.brand_id,
+          brand_id: this.brand_id,
           packets_id:this.packets_id,
           page:this.currentPage,
           page_size:3,
@@ -255,6 +269,14 @@ export default {
           })
         }
       },
+      toMall(){
+        this.$router.push({
+          name:'mall',
+          params:{
+            supplier_id:this.brandData.supplier_id,
+          }
+        })
+      }
     }
 }
 </script>
