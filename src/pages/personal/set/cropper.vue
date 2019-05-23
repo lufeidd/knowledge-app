@@ -101,13 +101,16 @@ export default {
     },
     // 上传图片接口
     async uploadData (img) {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         file: img,
         opt_type: 'user',
         file_type: 'Base64',
         source: 1,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await COMMON_UPLOAD(data);
       console.log("123", res.response_data[0].acc_url);
       if (res.hasOwnProperty("response_code")) {

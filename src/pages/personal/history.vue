@@ -61,7 +61,11 @@
             </svg>
           </div>
         </router-link>
-        <span v-if="historyStatus[key].id != null" slot="right" @click="historyCancel(item.target, key)">
+        <span
+          v-if="historyStatus[key].id != null"
+          slot="right"
+          @click="historyCancel(item.target, key)"
+        >
           <div>取消历史</div>
         </span>
       </van-swipe-cell>
@@ -91,7 +95,7 @@ export default {
         homeLink: "/brand/index",
         search: false,
         personal: true,
-        personalLink: '/personal/index',
+        personalLink: "/personal/index"
       },
       historyList: [],
       // 临时存放关注数据
@@ -110,15 +114,18 @@ export default {
     },
     // 获取历史接口信息
     async historyData(__type, brandId, key) {
+      var tStamp = this.$getTimeStamp();
       var data = {};
       var res;
       switch (__type) {
         case "history":
           data = {
+            timestamp: tStamp,
             page: this.historyPage,
             page_size: 4,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await USER_HISTORY(data);
 
           // 出错提示
@@ -144,14 +151,16 @@ export default {
           break;
         case "cancel":
           data = {
+            timestamp: tStamp,
             brand_id: brandId,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await USER_HISTORY_CANCEL(data);
-          
+
           if (res.hasOwnProperty("response_code")) {
             this.historyStatus[key].id = null;
-            if(this.historyStatus.length == 1) {
+            if (this.historyStatus.length == 1) {
               this.historyList = [];
             }
             this.$toast("已取消历史~");

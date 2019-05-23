@@ -35,18 +35,21 @@
             <!-- <div class="new">
               <span class="text">更新</span>
               <span class="count">+{{ item.update_num }}</span>
-            </div> -->
+            </div>-->
           </div>
         </div>
-        <span v-if="focusStatus[key].brand_id != null" slot="right" @click="focusCancel(item.brand_id, key)">
+        <span
+          v-if="focusStatus[key].brand_id != null"
+          slot="right"
+          @click="focusCancel(item.brand_id, key)"
+        >
           <div>取消关注</div>
         </span>
       </van-swipe-cell>
     </van-list>
-    
+
     <!-- 快速导航 -->
     <easyNav :navData="navData"></easyNav>
-    
   </div>
 </template>
 
@@ -70,7 +73,7 @@ export default {
         homeLink: "/brand/index",
         search: false,
         personal: true,
-        personalLink: '/personal/index',
+        personalLink: "/personal/index"
       },
       focusList: [],
       // 临时存放关注数据
@@ -89,15 +92,18 @@ export default {
     },
     // 获取关注接口信息
     async focusData(__type, brandId, key) {
+      var tStamp = this.$getTimeStamp();
       var data = {};
       var res;
       switch (__type) {
         case "focus":
           data = {
+            timestamp: tStamp,
             page: this.focusPage,
             page_size: 4,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await FOCUS(data);
 
           // 出错提示
@@ -123,18 +129,19 @@ export default {
           break;
         case "cancel":
           data = {
+            timestamp: tStamp,
             brand_id: brandId,
             version: "1.0"
           };
-          res = await FOCUS_CANCEL(data);// 出错提示
+          data.sign = this.$getSign(data);
+          res = await FOCUS_CANCEL(data); // 出错提示
           if (res.hasOwnProperty("response_code")) {
             this.focusStatus[key].brand_id = null;
-            if(this.focusStatus.length == 1) {
+            if (this.focusStatus.length == 1) {
               this.focusList = [];
             }
             this.$toast("已取消关注~");
-          }else{
-
+          } else {
           }
           break;
       }

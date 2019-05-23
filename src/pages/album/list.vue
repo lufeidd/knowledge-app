@@ -20,10 +20,12 @@
           <div class="list">
             <div class="ratioBox">
               <div class="box">
-                <img :src="albumInfo.pic">
+                <!-- <img :src="albumInfo.pic"> -->
+                <img :src="albumPic__">
               </div>
             </div>
-            <div class="issue">{{ albumInfo.title }}</div>
+            <!-- <div class="issue">{{ albumInfo.title }}</div> -->
+            <div class="issue">{{ title__ }}</div>
           </div>
 
           <div v-for="(item, key) in programList" :key="key">
@@ -158,6 +160,10 @@ export default {
       popupModel: false,
       // 记录节目播放进度
       progressList: [],
+      // 专辑标题
+      title__: '',
+      // 专辑头像
+      albumPic__: '',
     };
   },
   mounted () {
@@ -173,13 +179,27 @@ export default {
     },
     // 获取节目列表
     async programData() {
+      var info = JSON.parse(localStorage.getItem('miniAudio'));
+      var __goodsId = null;
+
+      if(info != null && info.length > 0) {
+        __goodsId = parseInt(info[1]);
+        this.title__ = info[7];
+        this.albumPic__ = info[9];
+      }
+
+      // console.log(info);
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         // 判断是否还有pid
-        goods_id: this.goodsId,
+        goods_id: __goodsId,
+        // goods_id: this.goodsId,
         page: this.programPage,
         page_size: 5,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await ALBUM_DETAIL(data);
 
       if (res.hasOwnProperty("response_code")) {

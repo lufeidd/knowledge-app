@@ -174,7 +174,7 @@
               <use xlink:href="#icon-next-line"></use>
             </svg>
           </div>
-        </router-link> -->
+        </router-link>-->
 
         <!-- 我的评论 -->
         <router-link v-if="infoData.is_login" to="/personal/comment/index" class="cell">
@@ -244,8 +244,6 @@
 
     <!-- 快速导航 -->
     <easyNav :navData="navData"></easyNav>
-
-
   </div>
 </template>
 
@@ -268,7 +266,7 @@ export default {
         home: true,
         homeLink: "/brand/index",
         search: false,
-        personal: false,
+        personal: false
       },
       // 信息
       infoData: {}
@@ -278,13 +276,16 @@ export default {
     this.homeData();
   },
   methods: {
-    gotoRemain () {
-      this.$router.push({name: 'remain'});
+    gotoRemain() {
+      this.$router.push({ name: "remain" });
     },
     async homeData() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await USER_HOMEPAGE(data);
 
       console.log("123", res.response_data, this.$cookies.get("token"));

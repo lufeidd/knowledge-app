@@ -197,7 +197,7 @@ export default {
       });
       data = this.$getmd5(str).toUpperCase();
 
-      console.log("排序并拼接后的data:", str);
+      // console.log("排序并拼接后的data:", str);
       return data;
     }
     Vue.prototype.$getmd5 = function (str) {
@@ -206,7 +206,7 @@ export default {
       //update("中文", "utf8")
       md5.update(str);
       var res = md5.digest("hex");
-      console.log("md5:", res);
+      // console.log("md5:", res);
       return res;
     }
 
@@ -232,6 +232,7 @@ export default {
 
     // 获取brand_id
     localStorage.setItem('globalBrandId', 1);
+    // localStorage.setItem('globalBrandId', 28);
 
   }
 }

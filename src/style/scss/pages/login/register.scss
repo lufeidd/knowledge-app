@@ -11,6 +11,8 @@
 // @import url("./../../components/checkbox.scss");
 
 #registerPage {
+  background-color: $white;
+  min-height: 100%;
 
   & .prototype {
     @include displayFlex (flex, flex-start, center);

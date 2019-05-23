@@ -11,9 +11,10 @@
         </svg>
       </div>
       <div class="box layer" v-if="baseData.goods_type == 2">
-        <svg class="icon" aria-hidden="true">
+      <video :src="baseData.file_path" controls width="100%" height="100%"></video>
+        <!-- <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-videoPause-line"></use>
-        </svg>
+        </svg> -->
       </div>
 
       <!-- 不属于专辑的商品显示收藏当前商品 -->
@@ -89,7 +90,7 @@
             <img :src="item.pic[0]">
           </div>
         </div>
-        <div class="title">{{ item.title }}</div>
+        <div class="title" style="height: 40px;">{{ item.title }}</div>
       </van-col>
     </van-row>
 
@@ -239,7 +240,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/album/detail.scss" lang="scss"></style>
+<style src="@/style/scss/pages/album/detail.scss" scoped lang="scss"></style>
 <style scoped>
 
 .van-button {
@@ -366,6 +367,7 @@ export default {
   },
   mounted() {
 
+    // 跳转评论锚点
     $(window).on('scroll', function(){
       if($(window).scrollTop() >= $('#comment').offset().top) {
         $('#commentTitle').css({'position': 'fixed', 'border-bottom-width': '1px'});
@@ -380,7 +382,7 @@ export default {
     } else {
       localStorage.setItem('globalGoodsId', parseInt(localStorage.getItem('globalGoodsId')));
     }
-    if(this.$route.params.goods_id) {
+    if(this.$route.params.goods_no) {
       localStorage.setItem('globalGoodsNo', this.$route.params.goods_no);
     } else {
       localStorage.setItem('globalGoodsNo', parseInt(localStorage.getItem('globalGoodsNo')));
@@ -515,6 +517,7 @@ export default {
         let __program = info[6];
         let __album = info[7];
         let __goodsId = info[8];
+        let __albumPic = info[9];
 
         // 设置音频信息
         this.$set(this.myAudioData, "goodsNo", __goodsNo);
@@ -596,6 +599,8 @@ export default {
           info[6] = this.baseData.title;
           info[7] = this.albumInfo.title;
           info[8] = parseInt(localStorage.getItem('globalGoodsId'));
+          info[9] = this.albumInfo.pic;
+          // console.log(this.albumInfo);
         }
 
         // localStorage存储
@@ -610,12 +615,15 @@ export default {
       this.allProgramData(info, "end");
     },
     async allProgramData(info, actionType) {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         goods_id: info[8],
         goods_no: this.rankType,
         page_size: 1000000000000000,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await ALBUM_DETAIL(data);
       // 存储当前节目的下一项
       var next;
@@ -698,17 +706,16 @@ export default {
     // ----------------------------------介绍------------------------------------
     // 获取专辑/商品接口信息
     async albumData() {
-      // var tStamp = this.$getTimeStamp();
+      var tStamp = this.$getTimeStamp();
       let data = {
-        // timeStamp: tStamp,
+        timeStamp: tStamp,
         pid: this.pid ? this.pid : null,
         goods_id: this.goodsId,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await ALBUM(data);
       if (res.hasOwnProperty("response_code")) {
-
-        // console.log(res.response_data)
 
         //专辑基础信息
         this.albumInfo = res.response_data.album_info;
@@ -733,25 +740,30 @@ export default {
     // 获取收藏接口信息
     async collectData(__status, __goodsId) {
       var data = {};
+      var tStamp = this.$getTimeStamp();
       var res;
       // 出错提示
       if (res.hasOwnProperty("response_code")) {
         switch (__status) {
           case "collect":
             data = {
+              timestamp: tStamp,
               type: this.baseData.goods_type,
               target: __goodsId,
               version: "1.0",
             };
+            data.sign = this.$getSign(data);
             res = await COLLECT_ADD(data);
             this.baseData.collect_id = 1;
             // this.$toast("已收藏~");
             break;
           case "cancel":
             data = {
+              timestamp: tStamp,
               goods_id: __goodsId,
               version: "1.0",
             };
+            data.sign = this.$getSign(data);
             res = await COLLECT_CANCEL(data);
             this.baseData.collect_id = 0;
             this.$toast("已取消收藏~");
@@ -771,23 +783,28 @@ export default {
     },
     // 获取关注接口信息
     async focusData(__type) {
+      var tStamp = this.$getTimeStamp();
       var data = {};
       var res;
       switch (__type) {
         case "focus":
           data = {
+            timestamp: tStamp,
             brand_id: this.baseData.brand_id,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await FOCUS_ADD(data);
           this.brandInfoData.is_followed = 1;
           // this.$toast('已关注~');
           break;
         case "cancel":
           data = {
+            timestamp: tStamp,
             brand_id: this.baseData.brand_id,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await FOCUS_CANCEL(data);
           this.brandInfoData.is_followed = 0;
           this.$toast("已取消关注~");
@@ -811,11 +828,14 @@ export default {
       this.commentData();
     },
     async commentData() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         page: this.commentPage,
         page_size: 5,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await COMMENT(data);
 
       if (res.hasOwnProperty("response_code")) {
@@ -849,12 +869,15 @@ export default {
     },
     // 回复
     async replyData(comment_id, key) {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         comment_pid: comment_id,
         page: this.replyPage[key],
         page_size: 5,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await COMMENT(data);
 
       if (res.hasOwnProperty("response_code")) {
@@ -888,10 +911,12 @@ export default {
      * __type = 'reply';   新增回复
      */
     async addComment(__type) {
+      var tStamp = this.$getTimeStamp();
       var data = {};
       switch (__type) {
         case "comment":
           data = {
+            timestamp: tStamp,
             goods_id: this.baseData.goods_id,
             content: this.contentModel,
             version: "1.0"
@@ -899,6 +924,7 @@ export default {
           break;
         case "reply":
           data = {
+            timestamp: tStamp,
             goods_id: this.baseData.goods_id,
             comment_pid: this.commentId,
             content: this.contentModel,
@@ -908,6 +934,7 @@ export default {
         default:
           break;
       }
+      data.sign = this.$getSign(data);
       let res = await COMMENT_ADD(data);
       if (res.hasOwnProperty("response_code")) {
 
@@ -960,12 +987,15 @@ export default {
     // --------------------------------相似----------------------------------
     // 推荐
     async recommendData () {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         goods_id: this.goodsId,
         page: 1,
         page_size: 6,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await RECOMMEND(data);
 
       if (res.hasOwnProperty("response_code")) {

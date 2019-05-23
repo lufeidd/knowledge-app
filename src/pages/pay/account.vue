@@ -126,7 +126,6 @@
 
 <style src="@/style/scss/pages/pay.scss" scoped lang="scss"></style>
 <style lang="scss">
-
 .van-button {
   border-radius: 50px;
 }
@@ -194,12 +193,13 @@ export default {
   methods: {
     // 获取下单信息
     async infoData() {
-      // var tStamp = this.$getTimeStamp();
+      var tStamp = this.$getTimeStamp();
       let data = {
-        // timeStamp: tStamp,
+        timeStamp: tStamp,
         goods_id: this.goods_id,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADDINFO(data);
       if (res.hasOwnProperty("response_code")) {
         this.goodsInfo = res.response_data.goods_info;
@@ -233,10 +233,13 @@ export default {
       this.sms();
     },
     async sms() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         order_id: this.order_id,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADD_SENDCODE(data);
       if (res.hasOwnProperty("response_code")) {
         console.log(123, res);
@@ -277,12 +280,13 @@ export default {
     },
     // 新增虚拟订单
     async addOrderData() {
-      // var tStamp = this.$getTimeStamp();
+      var tStamp = this.$getTimeStamp();
       let data = {
-        // timeStamp: tStamp,
+        timeStamp: tStamp,
         goods_id: this.goodsInfo.goods_id,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADD(data);
       if (res.hasOwnProperty("response_code")) {
         this.pay_mobilephone = res.response_data.pay_mobilephone;
@@ -295,14 +299,15 @@ export default {
     },
     // 输完验证码获取支付接口
     async payData(__code) {
-      // var tStamp = this.$getTimeStamp();
+      var tStamp = this.$getTimeStamp();
       let data = {
-        // timeStamp: tStamp,
+        timeStamp: tStamp,
         order_id: this.order_id,
         pay_money: this.pay_money,
         code: __code,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADD_PAY(data);
       if (
         res.hasOwnProperty("response_code") &&

@@ -1,6 +1,9 @@
 <template>
   <div id="collectPage">
-    <div class="nullBox" v-if="collectList.length == 0 || collectStatus.length == 1 && collectStatus[0].id == null">
+    <div
+      class="nullBox"
+      v-if="collectList.length == 0 || collectStatus.length == 1 && collectStatus[0].id == null"
+    >
       <img src="./../../assets/null/list.png" width="100%">
       <div>还没有收藏的内容，快去看看吧~</div>
     </div>
@@ -19,7 +22,11 @@
         :on-close="collectClose"
       >
         <!-- 音频 -->
-        <router-link v-if="collectStatus[key].id != null && item.type == 1" :to="{name: 'albumdetail', params: {goods_id: item.target}}" class="listBox">
+        <router-link
+          v-if="collectStatus[key].id != null && item.type == 1"
+          :to="{name: 'albumdetail', params: {goods_id: item.target}}"
+          class="listBox"
+        >
           <div class="left">
             <div class="ratioBox">
               <div class="box">
@@ -47,7 +54,11 @@
           </div>
         </router-link>
         <!-- 视频 -->
-        <router-link v-if="collectStatus[key].id != null && item.type == 2" :to="{name: 'albumdetail', params: {goods_id: item.target}}" class="listBox">
+        <router-link
+          v-if="collectStatus[key].id != null && item.type == 2"
+          :to="{name: 'albumdetail', params: {goods_id: item.target}}"
+          class="listBox"
+        >
           <div class="left">
             <div class="ratioBox">
               <div class="box">
@@ -69,7 +80,11 @@
           </div>
         </router-link>
         <!-- 专辑 -->
-        <router-link v-if="collectStatus[key].id != null && item.type == 9" :to="{name: 'album', params: {goods_id: item.target}}" class="listBox">
+        <router-link
+          v-if="collectStatus[key].id != null && item.type == 9"
+          :to="{name: 'album', params: {goods_id: item.target}}"
+          class="listBox"
+        >
           <div class="left">
             <div class="ratioBox">
               <div class="box">
@@ -91,7 +106,11 @@
           </div>
         </router-link>
         <!-- 文章 -->
-        <router-link v-if="collectStatus[key].id != null && item.type == 6" :to="{name: 'article', params: {goods_id: item.target}}" class="listBox">
+        <router-link
+          v-if="collectStatus[key].id != null && item.type == 6"
+          :to="{name: 'article', params: {goods_id: item.target}}"
+          class="listBox"
+        >
           <div class="left">
             <div class="ratioBox">
               <div class="box">
@@ -112,7 +131,7 @@
             </svg>
           </div>
         </router-link>
-        
+
         <span
           v-if="collectStatus[key].id != null"
           slot="right"
@@ -146,14 +165,14 @@ export default {
         homeLink: "/brand/index",
         search: false,
         personal: true,
-        personalLink: '/personal/index',
+        personalLink: "/personal/index"
       },
       collectList: [],
       // 临时存放收藏数据
       collectStatus: [],
       collectLoading: false,
       collectFinished: false,
-      collectPage: 1,
+      collectPage: 1
     };
   },
   mounted() {
@@ -165,15 +184,18 @@ export default {
     },
     // 获取收藏接口信息
     async collectData(__type, goodsId, key) {
+      var tStamp = this.$getTimeStamp();
       var data = {};
       var res;
       switch (__type) {
         case "collect":
           data = {
+            timestamp: tStamp,
             page: this.collectPage,
             page_size: 5,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await COLLECT(data);
 
           // 出错提示
@@ -200,15 +222,17 @@ export default {
           break;
         case "cancel":
           data = {
+            timestamp: tStamp,
             goods_id: goodsId,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await COLLECT_CANCEL(data);
 
           // 出错提示
           if (res.hasOwnProperty("response_code")) {
             this.collectStatus[key].id = null;
-            if(this.collectStatus.length == 1) {
+            if (this.collectStatus.length == 1) {
               this.collectList = [];
             }
             this.$toast("已取消收藏~");

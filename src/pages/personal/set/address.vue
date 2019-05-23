@@ -85,11 +85,13 @@ export default {
   methods: {
     // 根据address_id获取当前用户地址信息
     async getAddress() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         address_id: this.addressId,
         version: "1.0"
       };
-
+      data.sign = this.$getSign(data);
       let res = await USER_ADDRESS(data);
       if (res.hasOwnProperty("response_code")) {
         this.addressInfo.name = res.response_data[0].consignee;
@@ -111,7 +113,9 @@ export default {
     },
     // 新增添加用户地址
     async addAddress() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         province_id: this.provinceId,
         city_id: this.cityId,
         county_id: this.countyId,
@@ -121,7 +125,7 @@ export default {
         is_default: this.addressInfo.isDefault ? 1 : 0,
         version: "1.0"
       };
-
+      data.sign = this.$getSign(data);
       let res = await USER_ADDRESS_ADD(data);
 
       if (res.hasOwnProperty("response_code")) {
@@ -134,7 +138,9 @@ export default {
     },
     // 修改当前地址
     async editAddress() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         address_id: this.addressId,
         province_id: this.provinceId,
         city_id: this.cityId,
@@ -145,7 +151,7 @@ export default {
         is_default: this.addressInfo.isDefault ? 1 : 0,
         version: "1.0"
       };
-
+      data.sign = this.$getSign(data);
       let res = await USER_ADDRESS_EDIT(data);
 
       console.log(456, this.cityId, this.countyId);
@@ -160,9 +166,12 @@ export default {
     },
     // 获取省市区数据
     async getAddressData() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await ADDRESS(data);
       if (res.hasOwnProperty("response_code")) {
         var pstr = new Array();
@@ -278,7 +287,6 @@ export default {
       this.cityId = city.substring(0, 4);
       this.countyId = county.substring(0, 6);
       // console.log(values, this.provinceId, this.cityId, this.countyId);
-      
     }
   }
 };

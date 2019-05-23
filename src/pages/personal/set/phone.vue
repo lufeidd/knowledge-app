@@ -154,20 +154,26 @@ export default {
     },
     // 获取验证码
     async sms() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         mobile: this.phone,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await SMS(data);
       console.log(res);
     },
     // 新手机号申请接口
     async resetSave() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         mobile: this.phone,
         auth_code: this.code,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await USER_PHONE_RESETSAVE(data);
       console.log("123", res.response_data);
       if (res.hasOwnProperty("response_code")) {
@@ -194,11 +200,14 @@ export default {
     },
     // 手机号重置申请接口
     async resetApply() {
-      console.log("code:", this.code);
+      // console.log("code:", this.code);
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         auth_code: this.code,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await USER_PHONE_RESET(data);
       console.log("123", res.response_data);
       if (res.hasOwnProperty("response_code")) {
