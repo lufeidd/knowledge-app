@@ -30,7 +30,8 @@
     }
     input {
       border: none;
-      padding-left: 5px;
+      padding-left: 15px;
+      background-color: #f5f5f5;
       width: 90%;
     }
     .clearIcon {

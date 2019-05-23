@@ -1,10 +1,15 @@
 <template>
   <div id="commentPage">
+    <div class="nullBox" v-if="commentData.length == 0">
+      <img src="../../../assets/null/list.png" width="100%">
+      <div>您还没有评论过商品</div>
+    </div>
     <van-list
       v-model="programLoading"
       :finished="programFinished"
       finished-text="没有更多了"
       @load="programLoad"
+      v-else
     >
       <div class="content" v-for="item in commentData">
         <div class="info">
@@ -32,18 +37,32 @@
         </div>
       </div>
     </van-list>
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/comment/index.scss" lang="scss"></style>
+<style scoped src="@/style/scss/pages/personal/comment/index.scss" lang="scss"></style>
 
 <script>
 //  引入接口
 import { USER_COMMENT } from "../../../apis/user.js";
-
+import easyNav from "./../../../components/easyNav";
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        // searchLink: "/search",
+        personal: true,
+        personalLink: "/personal/index",
+        type:'order',
+      },
       commentData: [],
       programLoading: false,
       programFinished: false,
@@ -52,7 +71,7 @@ export default {
     };
   },
   mounted() {
-    // this.getUserComment();
+    this.getUserComment();
   },
   methods: {
     programLoad(){

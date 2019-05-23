@@ -2,11 +2,10 @@
  * author: lufei
  * date:2019/4/17
  */
-body{
-  background-color: $greyLight;
-}
-#detailPage{
 
+#detailPage{
+  background-color: $greyLight;
+  min-height: 100%;
   // padding-bottom: 30px;
   .van-cell{
     font-size: $fontSize - 1;

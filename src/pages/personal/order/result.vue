@@ -121,7 +121,7 @@
       <div class="section" v-for="item1 in item.details">
         <div class="bookDetail">
           <div class="ratiobox">
-            <a class="bookImg" v-lazy:background-image="item1.pic"></a>
+            <a class="bookImg" v-lazy:background-image="item1.pic[0]"></a>
           </div>
           <span class="title">{{item1.goods_name}}</span>
         </div>
@@ -146,7 +146,7 @@
 </template>
 
 
-<style  src="@/style/scss/pages/personal/order/list.scss" lang="scss"></style>
+<style scoped  src="@/style/scss/pages/personal/order/list.scss" lang="scss"></style>
 
 <script>
 import easyNav from "./../../../components/easyNav";

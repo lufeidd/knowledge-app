@@ -18,18 +18,32 @@
     <div class="recharge">
       <van-button slot="button" size="large" round type="danger" @click="recharge()">充值</van-button>
     </div>
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/remain/index.scss" lang="scss"></style>
+<style scoped src="@/style/scss/pages/personal/remain/index.scss" lang="scss"></style>
 
 <script>
 import { USER_REMAIN_INFO } from "../../../apis/user.js";
-
+import easyNav from "./../../../components/easyNav";
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
-      money: ""
+      money: "",
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        // searchLink: "/search",
+        personal: true,
+        personalLink: "/personal/index",
+        type:'order',
+      },
     };
   },
   mounted() {

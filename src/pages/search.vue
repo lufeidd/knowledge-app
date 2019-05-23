@@ -45,7 +45,7 @@
       </p>
 
       <ul>
-        <li  v-for="item,index in hotSearch" :key="index">{{item}}</li>
+        <li  v-for="item,index in hotSearch" :key="index" @click="hotSearchItem(item)">{{item}}</li>
       </ul>
 
     </div>
@@ -56,21 +56,24 @@
       </p>
 
       <ul>
-        <li  v-for="item,index in list" :key="index">{{item.content}}</li>
+        <li  v-for="item,index in list" :key="index" @click="searchItem(item)">{{item.content}}</li>
       </ul>
 
     </div>
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
-<style  src="@/style/scss/pages/search.scss"  lang="scss"></style>
+<style scoped  src="@/style/scss/pages/search.scss"  lang="scss"></style>
 
 <script>
 import{SEARCH_HOTKEY_GETS} from "../apis/public.js"
 import searchHint from "../components/searchHint"
+import easyNav from "./../components/easyNav";
 export default {
   components: {
-    searchHint
+    searchHint,
+    easyNav
   },
   data () {
     return {
@@ -80,11 +83,21 @@ export default {
         list: [],
         type:'',
       },
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        // searchLink: "/search",
+        personal: true,
+        personalLink: "/personal/index",
+        type:'order',
+      },
       type:'',
       hotSearch:null,
       state:[
         {order_state:0,order_desc:'待付款'},
-        {order_state:1,order_desc:'代发货'},
+        {order_state:1,order_desc:'待发货'},
         {order_state:2,order_desc:'已发货'},
         {order_state:4,order_desc:'已完成'},
       ],
@@ -97,7 +110,7 @@ export default {
 
     // console.log(this.type);
     this.getHotKey();
-    
+    this.getLocalItem();
     // console.log(123, history.length);
     // let len = history.length;
     // history.go(-(len-1));
@@ -167,7 +180,7 @@ export default {
       this.$emit('func');
     },
     //读取本地历史记录
-    getItem(){
+    getLocalItem(){
         var list = JSON.parse(localStorage.getItem("cmts") || '[]');
         this.list = list ;
     },
@@ -181,7 +194,38 @@ export default {
             state:this.state.order_state,
           }
         })
-    }
+    },
+    hotSearchItem(item){
+      console.log(item)
+        this.$router.push({
+          name:'brandresult',
+          params:{
+            type:'brand',
+            searchContent:item,
+          }
+        })
+    },
+    searchItem(item){
+      console.log(item)
+      if(this.type == 'order'){
+        this.$router.push({
+          name:'orderresult',
+          params:{
+            type:'order',
+            searchContent:item.content,
+          }
+        })
+      }
+      if(this.type == 'brand'){
+        this.$router.push({
+          name:'brandresult',
+          params:{
+            type:'brand',
+            searchContent:item.content,
+          }
+        })
+      }
+    },
   }
 }
 </script>

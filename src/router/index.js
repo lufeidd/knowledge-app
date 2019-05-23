@@ -328,6 +328,9 @@ export default new Router({
       path: '/search',
       name: 'search',
       component: search,
+      meta: {
+        keepAlive: false,  // false不需要被缓存，true需要缓存
+      },
     },
     // 专辑
     {
@@ -376,7 +379,7 @@ export default new Router({
     {
       path: '/brand/detail/book',
       name: 'book',
-      component: book
+      component: book,
     },
     {
       path: '/brand/result',
@@ -386,7 +389,10 @@ export default new Router({
     {
       path: '/brand/index',
       name: 'brand',
-      component: brand
+      component: brand,
+      meta: {
+        keepAlive: false,  // false不需要被缓存，true需要缓存
+      },
     },
     // 购物车
     {

@@ -41,16 +41,31 @@
         @confirm="clickSearch"
       />
     </van-popup>
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/remain/index.scss" lang="scss"></style>
+<style scoped src="@/style/scss/pages/personal/remain/index.scss" lang="scss"></style>
 
 <script>
 import { USER_REMAIN_DETAILS } from "../../../apis/user.js";
+import easyNav from "./../../../components/easyNav";
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        // searchLink: "/search",
+        personal: true,
+        personalLink: "/personal/index",
+        type:'order',
+      },
       totalIncome: null,
       incomeData: [],
       clickSearchTime:null,

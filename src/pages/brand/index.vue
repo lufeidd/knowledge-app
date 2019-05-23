@@ -9,26 +9,25 @@
           <div class="name">{{brandData.name}}</div>
           <div class="fans" v-if="brandData.statistic_list">{{brandData.statistic_list.fans_num}}粉丝</div>
         </div>
+
         <div class="focus" v-if="brandData.attention_state == 0" @click="focusAction">+关注</div>
         <div class="focus add" v-else @click="focusAction">已关注</div>
       </div>
-      <router-link to="/brand/mall">
-        <div class="sell">
-          <div>
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-shop-line"></use>
-            </svg> 品牌商城
-          </div>
-          <div class="link">
-            136件商品在售
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line"></use>
-            </svg>
-          </div>
+      <div class="sell" @click="toMall">
+        <div>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-shop-line"></use>
+          </svg> 品牌商城
         </div>
-      </router-link>
+        <div class="link">
+          136件商品在售
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-next-line"></use>
+          </svg>
+        </div>
+      </div>
     </div>
-
+    
     <van-tabs sticky animated color="#666" title-active-color="#333" @click="tabChange">
       <van-tab :title="items.name" v-for="items,index in brandData.column_list" :key="index">
         <template v-if="activekey == index">
@@ -84,69 +83,79 @@
       <div class="line"></div>
       <div class="content">{{brandData.summary}}</div>
     </van-popup>
+
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
-<style src="@/style/scss/pages/brand/index.scss" lang="scss"></style>
+<style scoped src="@/style/scss/pages/brand/index.scss" lang="scss"></style>
 
 <script>
-import { BRAND_INFO, BRAND_COLUMN_GETS } from "../../apis/brand.js";
-import { FOCUS_ADD, FOCUS_CANCEL } from "../../apis/public.js";
-import { setTimeout } from "timers";
+import { BRAND_INFO,BRAND_COLUMN_GETS } from "../../apis/brand.js";
+import { FOCUS_ADD,FOCUS_CANCEL } from "../../apis/public.js";
+import easyNav from "./../../components/easyNav";
 export default {
-  data() {
+  components: {
+    easyNav
+  },
+  data(){
     return {
-      iconUrl:
-        "https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75",
-      focus: null,
-      showPopup: false,
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: true,
+        searchLink: "/search",
+        personal: true,
+        personalLink: "/personal/index",
+        type:'brand',
+      },
+      focus:null,
+      showPopup:false,
       programLoading: false,
       programFinished: false,
-      brandData: {},
-      column_list_data: [],
-      packets_id: null,
+      brandData:{},
+      column_list_data:[],
+      packets_id:null,
       brand_id: localStorage.getItem("globalBrandId"),
-      currentPage: 1,
-      activekey: 0
-    };
+      currentPage:1,
+      activekey: 0,
+    }
   },
   mounted() {
     this.brandGetData();
   },
   methods: {
-    show() {
-      this.showPopup = true;
+    show(){
+      this.showPopup=true;
     },
-    close() {
-      this.showPopup = false;
+    close(){
+      this.showPopup=false;
     },
     // 获取关注接口信息
     async focusData(__type) {
-      var tStamp = this.$getTimeStamp();
       var data = {};
       var res;
       switch (__type) {
         case "focus":
           data = {
-            timestamp: tStamp,
             brand_id: this.brand_id,
-            version: "1.0"
+            version: "1.0",
           };
-          data.sign = this.$getSign(data);
           res = await FOCUS_ADD(data);
           this.brandData.attention_state = 1;
           // this.$toast('已关注~');
+          this.brandData.statistic_list.fans_num +=1;
           break;
         case "cancel":
           data = {
-            timestamp: tStamp,
             brand_id: this.brand_id,
             version: "1.0"
           };
-          data.sign = this.$getSign(data);
           res = await FOCUS_CANCEL(data);
           this.brandData.attention_state = 0;
           this.$toast("已取消关注~");
+          this.brandData.statistic_list.fans_num -=1;
           break;
       }
       // 出错提示
@@ -163,30 +172,31 @@ export default {
       }
     },
     // 获取页面基本信息
-    async brandGetData() {
+    async brandGetData(){
       var tStamp = this.$getTimeStamp();
-      var data = {
-        timestamp: tStamp,
-        brand_id: this.brand_id,
-        version: "1.0"
+      var data={
+        brand_id:this.brand_id,
+        version:"1.0",
+        timestamp:tStamp,
       };
       data.sign = this.$getSign(data);
       let res = await BRAND_INFO(data);
-      if (res.hasOwnProperty("response_code")) {
+      if(res.hasOwnProperty("response_code")){
         this.brandData = res.response_data;
         this.packets_id = res.response_data.column_list[0].packets_id;
-      } else {
+      }else{
         this.$toast(res.error_message);
       }
     },
     // 列表下拉加载
-    programLoad() {
-      console.log("--load：");
+    programLoad(){
+
+      console.log('--load：');
       this.columnListData();
-      console.log("page:", this.currentPage, this.column_list_data);
+      console.log('page:',this.currentPage,this.column_list_data);
     },
     // 点击tab页切换
-    tabChange(index) {
+    tabChange(index){
       this.activekey = index;
       this.column_list_data = [];
       this.programFinished = false;
@@ -195,19 +205,19 @@ export default {
       this.packets_id = this.brandData.column_list[index].packets_id;
     },
     // 获取对应tab页下的列表
-    async columnListData() {
+    async columnListData(){
       var tStamp = this.$getTimeStamp();
-      var data = {
+      var data={
         brand_id: this.brand_id,
-        packets_id: this.packets_id,
-        page: this.currentPage,
-        page_size: 3,
-        version: "1.0",
-        timestamp: tStamp
+        packets_id:this.packets_id,
+        page:this.currentPage,
+        page_size:3,
+        version:"1.0",
+        timestamp:tStamp,
       };
       data.sign = this.$getSign(data);
       let res = await BRAND_COLUMN_GETS(data);
-      if (res.hasOwnProperty("response_code")) {
+      if(res.hasOwnProperty("response_code")){
         var result = res.response_data.result;
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
@@ -224,41 +234,49 @@ export default {
             this.currentPage = 1;
           }
         }, 500);
-      } else {
+      }else{
         this.$toast(res.error_message);
       }
     },
-    linktoDetail(item) {
+    linktoDetail(item){
       // console.log(item);
-      if (item.goods_type == 1 || item.goods_type == 2) {
+      if(item.goods_type ==1 || item.goods_type == 2){
         this.$router.push({
-          name: "albumdetail",
-          params: {
-            goods_id: item.goods_id,
-            pid: null
+          name:'albumdetail',
+          params:{
+            goods_id:item.goods_id,
+            pid:null,
           }
-        });
+        })
       }
-      if (item.goods_type == 6) {
+      if(item.goods_type ==6){
         this.$router.push({
-          name: "article",
-          params: {
-            goods_id: item.goods_id,
-            pid: null
+          name:'article',
+          params:{
+            goods_id:item.goods_id,
+            pid:null,
           }
-        });
+        })
       }
-      if (item.goods_type == 9) {
+      if(item.goods_type ==9){
         this.$router.push({
-          name: "albumlist",
-          params: {
-            goods_id: item.goods_id,
-            pid: null
+          name:'albumlist',
+          params:{
+            goods_id:item.goods_id,
+            pid:null,
           }
-        });
+        })
       }
+    },
+    toMall(){
+      this.$router.push({
+        name:'mall',
+        params:{
+          supplier_id:this.brandData.supplier_id,
+        }
+      })
     }
+    
   }
-};
+}
 </script>
-

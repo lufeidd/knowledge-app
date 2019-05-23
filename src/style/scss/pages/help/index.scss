@@ -5,7 +5,7 @@
 
 #helpPage {
   background-color: $greyLight;
-  height: 100%;
+  min-height: 100%;
 
   .van-icon-arrow-down:before {
     content: "\F00A"
@@ -14,6 +14,11 @@
   .van-cell__title {
     font-size: $fontSize + 1;
     color: $cl3;
+    @include textOverflow;
+    span{
+      white-space: nowrap;
+
+    }
   }
 }
 
