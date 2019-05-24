@@ -8,11 +8,12 @@ import qs from "Qs";
 
 // 创建axios的一个实例
 var instance = axios.create({
-    // run build
+    // dev
     // baseURL: window.location.protocol + "//" + window.location.hostname + ":" +  window.location.port + '/apis',
 
-    // dev
+    // run build
     baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
+    
     timeout: 6000,
 })
 

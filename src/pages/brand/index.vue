@@ -191,9 +191,9 @@ export default {
     // 列表下拉加载
     programLoad(){
 
-      console.log('--load：');
+      // console.log('--load：');
       this.columnListData();
-      console.log('page:',this.currentPage,this.column_list_data);
+      // console.log('page:',this.currentPage,this.column_list_data);
     },
     // 点击tab页切换
     tabChange(index){

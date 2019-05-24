@@ -278,11 +278,8 @@
                 </div>
                 <div class="center">
                   <div class="title">
-                    <!-- goodsType判断是专辑还是节目 -->
-
-                    <router-link v-if="item.goods_type == 6" :to="{ name: 'article', params: { pid: baseData.goods_id, goods_id: item.goods_id}}" class="text">{{ item.title }}</router-link>
-
-                    <router-link v-else :to="{ name: 'albumdetail', params: { pid: baseData.goods_id, goods_id: item.goods_id, goods_no: item.goods_no}}" class="text">{{ item.title }}</router-link>
+                    <!-- 专辑推荐的一定是专辑，goods_type: 9 -->
+                    <div @click="gotoLink(item.goods_id)" class="text">{{ item.title }}</div>
 
                     <div class="action" @click="collectAction(key, simularStatus[key].is_collect, item.goods_id)">
                       <van-tag plain round color="#fff" text-color="#f05654" type="danger">
@@ -297,6 +294,7 @@
                         </span>
                       </van-tag>
                     </div>
+
                   </div>
                   <div class="subTitle">{{ item.sub_title }}</div>
                   <div class="info">
@@ -336,8 +334,8 @@
       </van-tab>
     </van-tabs>
 
-    <div style="height: 60px;"></div>
-    <div v-if="myAudioData" style="height: 60px;"></div>
+    <div style="height: 60px;" v-if="baseData.is_free == 0 || baseData.is_payed == 0"></div>
+    <div v-if=" myAudioData.src" style="height: 60px;"></div>
 
     <!-- 试听 - 购买 -->
     <van-goods-action
@@ -534,17 +532,25 @@ export default {
   },
   destroyed() {},
   mounted() {
-    
-    // 刷新/回退存储goods_id
-    if(this.$route.params.goods_id) {
-      localStorage.setItem('globalPid', this.$route.params.goods_id);
-    } else {
-      localStorage.setItem('globalPid', parseInt(localStorage.getItem('globalPid')));
-    }
+    // globalAlbum 存放专辑页当前 pid
 
-    // 上个页面携带必要信息
-    // 如果是回退进来取local storage数据
-    this.baseData.goods_id = parseInt(localStorage.getItem('globalPid'));
+    // globalProgramPId 存放节目页当前 pid, 
+    // globalProgramGoodsId 存放节目页当前 goods_id, 
+    // globalProgramGoodsNo 存放节目页当前 activeGoodNo
+
+    // GlobalArtical 存放文章页当前 goods_id
+    // 1、路由进入，
+    // 2、当前页刷新（读取localStorage），
+    // 3、当前页推荐商品进入当前页（点击事件修改localStorage），
+    // 4、回退进入（上一个页面回退时修改localStorage），专辑、文章、节目三个页面回退情况
+    
+    // 当路由进入当前页面，参数读取路由并更新localstorage，当不是路由进入从localStorage读取参数
+    if(this.$route.params.goods_id) {
+      this.baseData.goods_id = this.$route.params.goods_id;
+      localStorage.setItem('globalAlbum', this.$route.params.goods_id);
+    } else {
+      this.baseData.goods_id = parseInt(localStorage.getItem('globalAlbum'))
+    }
     // 当前页接口信息
     this.albumData();
   },
@@ -560,7 +566,7 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await ALBUM(data);
-      console.log(666, res.response_data);
+      // console.log(res.response_data);
 
       if (res.hasOwnProperty("response_code")) {
         //专辑基础信息
@@ -703,7 +709,7 @@ export default {
       let data = {
         timestamp: tStamp,
         page: this.commentPage,
-        page_size: 5,
+        page_size: 10,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -745,7 +751,7 @@ export default {
         timestamp: tStamp,
         comment_pid: comment_id,
         page: this.replyPage[key],
-        page_size: 5,
+        page_size: 10,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -1315,7 +1321,11 @@ export default {
       }
 
     },
+    // 相似
+    gotoLink (goods_id) {
+      localStorage.setItem('globalAlbum' ,goods_id);
+      window.location.reload();
+    }
   }
 };
 </script>
-

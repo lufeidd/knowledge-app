@@ -180,8 +180,8 @@
       </van-list>
     </div>
 
-    <div style="height: 60px;"></div>
-    <div v-if="myAudioData" style="height: 60px;"></div>
+    <div v-if="baseData.is_free == 0 || baseData.is_payed == 0" style="height: 60px;"></div>
+    <div v-if="myAudioData.src" style="height: 60px;"></div>
 
     <!-- 试听 - 购买 -->
     <van-goods-action
@@ -361,19 +361,14 @@ export default {
     $(window).off('scroll');
   },
   //离开当前页面
-  beforeRouteLeave(to, from, next) {
-    // console.log(to, from, from.params.pid);
-    if(to.name == 'album' ) {
-      // to.params.goods_id = from.params.pid;
-      // this.goodsId = from.params.pid;
-      localStorage.setItem('globalPid', this.$route.params.pid ? this.$route.params.pid: parseInt(localStorage.getItem('globalPid')));
-      // console.log(this.goodsId)
-    }
-    if(to.name == 'article') {
-      // console.log( parseInt(localStorage.getItem('globalGoodsId')))
-    }
-    next();
-  },
+  // beforeRouteLeave(to, from, next) {
+  //   if(to.name == 'album' ) {
+  //     localStorage.setItem('globalPid', this.$route.params.pid ? this.$route.params.pid: parseInt(localStorage.getItem('globalPid')));
+  //   }
+  //   if(to.name == 'article') {
+  //   }
+  //   next();
+  // },
   mounted() {
 
     // 跳转评论锚点
@@ -384,43 +379,45 @@ export default {
         $('#commentTitle').css({'position': 'relative', 'border-bottom-width': 0});
       }
     })
+    // globalAlbum 存放专辑页当前 pid
 
-    // 设置缓存
-    this.cacheData ();
+    // globalProgramPId 存放节目页当前 pid, 
+    // globalProgramGoodsId 存放节目页当前 goods_id, 
+    // globalProgramGoodsNo 存放节目页当前 activeGoodNo
 
-    // 获取专辑id以及商品id
-    this.pid = parseInt(localStorage.getItem('globalPid'));
-    this.goodsId = parseInt(localStorage.getItem('globalGoodsId'));
-    this.activeGoodNo = parseInt(localStorage.getItem('globalGoodsNo'));
-
+    // GlobalArtical 存放文章页当前 goods_id
+    // 1、路由进入，
+    // 2、当前页刷新（读取localStorage），
+    // 3、当前页推荐商品进入当前页（点击事件修改localStorage），
+    // 4、回退进入（上一个页面回退时修改localStorage），专辑、文章、节目三个页面回退情况
+    
+    // 当路由进入当前页面，参数读取路由并更新localstorage，当不是路由进入从localStorage读取参数
+    if(this.$route.params.goods_id) {
+      this.pid = this.$route.params.pid;
+      localStorage.setItem('globalProgramPId', this.$route.params.pid);
+    } else {
+      this.pid = parseInt(localStorage.getItem('globalProgramPId'))
+    }
+    if(this.$route.params.goods_id) {
+      this.goodsId = this.$route.params.goods_id;
+      localStorage.setItem('globalProgramGoodsId', this.$route.params.goods_id);
+    } else {
+      this.goodsId = parseInt(localStorage.getItem('globalProgramGoodsId'))
+    }
+    if(this.$route.params.goods_no) {
+      this.activeGoodNo = this.$route.params.goods_no;
+      localStorage.setItem('globalProgramGoodsNo', this.$route.params.goods_no);
+    } else {
+      this.activeGoodNo = parseInt(localStorage.getItem('globalProgramGoodsNo'))
+    }
     // 基础信息
     this.albumData();
     // 推荐
     this.recommendData();
 
-    // console.log(this.activeGoodNo);
+    // console.log(parseInt(localStorage.getItem('globalGoodsId')));
   },
   methods: {
-    // 设置缓存
-    cacheData () {
-
-      // 刷新/回退存储goods_id,pid,goods_no
-      if(this.$route.params.goods_id) {
-        localStorage.setItem('globalGoodsId', this.$route.params.goods_id);
-      } else {
-        localStorage.setItem('globalGoodsId', parseInt(localStorage.getItem('globalGoodsId')));
-      }
-      if(this.$route.params.goods_no) {
-        localStorage.setItem('globalGoodsNo', this.$route.params.goods_no);
-      } else {
-        localStorage.setItem('globalGoodsNo', parseInt(localStorage.getItem('globalGoodsNo')));
-      }
-      if(this.$route.params.pid) {
-        localStorage.setItem('globalPid', this.$route.params.pid);
-      } else {
-        localStorage.setItem('globalPid', parseInt(localStorage.getItem('globalPid')));
-      }
-    },
     // --------------------------------迷你缩略音频----------------------------------
     // 点击播放，子组件关联父页面 - 切换miniAudio组件播放状态
     typeAction(__type) {
@@ -730,7 +727,7 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await ALBUM(data);
-      console.log(999, res.response_data)
+      // console.log(res.response_data)
 
       if (res.hasOwnProperty("response_code")) {
 
@@ -1036,18 +1033,27 @@ export default {
       }
 
     },
+    // 点击相似推荐
     gotoLink (item) {
       var goodsType = item.goods_type;
-      if(goodsType == 1 || goodsType == 2) { // 音频/视频
-        localStorage.setItem('globalGoodsId', item.goods_id);
-        localStorage.setItem('globalGoodsNo', null);
-        localStorage.setItem('globalPid', null);
+      if(goodsType == 1 || goodsType == 2) { // 音频/视频，当前页更新
+        // globalAlbum 存放专辑页当前 pid
+
+        // globalProgramPId 存放节目页当前 pid, 
+        // globalProgramGoodsId 存放节目页当前 goods_id, 
+        // globalProgramGoodsNo 存放节目页当前 activeGoodNo
+
+        // GlobalArtical 存放文章页当前 goods_id
+        // 1、路由进入，不更新localStorage，
+        // 2、当前页刷新（更新localStorage），
+        // 3、当前页推荐商品进入当前页（点击事件修改localStorage），
+        // 4、回退进入（上一个页面回退时修改localStorage），专辑、文章、节目三个页面回退情况
+        localStorage.setItem('globalProgramGoodsId', item.goods_id);
         this.pid = null;
         this.activeGoodNo = null;
         location.reload();
       } else if(goodsType == 6) {// 文章
-        // console.log(item);
-        localStorage.setItem('globalGoodsId', parseInt(item.goods_id));
+      
         this.goodsId = parseInt(item.goods_id);
         this.$router.push({name: 'article', params: {goods_id: this.goodsId}});
       } else if(goodsType == 9) { // 专辑

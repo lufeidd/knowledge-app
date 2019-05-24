@@ -45,7 +45,7 @@
       </swiper>-->
       <van-row gutter="20" class="booklist">
         <van-col span="8" v-for="item,index in recommendData" :key="index"  >
-          <div class="ratioBox" @click="toDetail(item)">
+          <div class="ratioBox" @click="gotoLink(item)">
             <div class="box">
               <img :src="item.pic">
             </div>
@@ -281,10 +281,33 @@ export default {
       goodsId: 46,
     };
   },
+  //离开当前页面
+  beforeRouteLeave(to, from, next) {
+  //   if(to.name == 'albumdetail' ) {
+  //     localStorage.setItem('globalGoodsId', this.$route.params.goodsId ? this.$route.params.pid: parseInt(localStorage.getItem('globalGoodsId')));
+  //   }
+    next();
+  },
   mounted() {
-    // 设置缓存
-    this.cacheData();
-    this.goodsId = parseInt(localStorage.getItem('globalGoodsId'));
+    // globalAlbum 存放专辑页当前 pid
+
+    // globalProgramPId 存放节目页当前 pid, 
+    // globalProgramGoodsId 存放节目页当前 goods_id, 
+    // globalProgramGoodsNo 存放节目页当前 activeGoodNo
+
+    // GlobalArtical 存放文章页当前 goods_id
+    // 1、路由进入，
+    // 2、当前页刷新（读取localStorage），
+    // 3、当前页推荐商品进入当前页（点击事件修改localStorage），
+    // 4、回退进入（上一个页面回退时修改localStorage），专辑、文章、节目三个页面回退情况
+    
+    // 当路由进入当前页面，参数读取路由并更新localstorage，当不是路由进入从localStorage读取参数
+    if(this.$route.params.goods_id) {
+      this.goodsId = this.$route.params.goods_id;
+      localStorage.setItem('GlobalArtical', this.$route.params.goods_id);
+    } else {
+      this.goodsId = parseInt(localStorage.getItem('GlobalArtical'))
+    }
     this.getData();
     this.getRecommendData();
     // console.log("ID:", this.recommendData);
@@ -640,7 +663,8 @@ export default {
     inputChange() {
       this.contentLength = this.contentModel.length;
     },
-    toDetail(item){
+    // 点击相似推荐
+    gotoLink(item){
       if(item.goods_type ==1 || item.goods_type == 2){
         this.$router.push({
           name:'albumdetail',
@@ -651,9 +675,23 @@ export default {
         })
       }
       if(item.goods_type ==6){
-      
-        localStorage.setItem('globalGoodsId', item.goods_id);
+
+        
+        // globalAlbum 存放专辑页当前 pid
+
+        // globalProgramPId 存放节目页当前 pid, 
+        // globalProgramGoodsId 存放节目页当前 goods_id, 
+        // globalProgramGoodsNo 存放节目页当前 activeGoodNo
+
+        // GlobalArtical 存放文章页当前 goods_id
+        // 1、路由进入，不更新localStorage，
+        // 2、当前页刷新（更新localStorage），
+        // 3、当前页推荐商品进入当前页（点击事件修改localStorage），
+        // 4、回退进入（上一个页面回退时修改localStorage），专辑、文章、节目三个页面回退情况
+        localStorage.setItem('GlobalArtical', item.goods_id);
         this.pid = null;
+        
+
         location.reload();
       }
       if(item.goods_type ==9){
@@ -665,18 +703,6 @@ export default {
           }
         })
       }
-    },
-    // 设置缓存
-    cacheData () {
-
-      // 刷新/回退存储goods_id,pid,goods_no
-      if(this.$route.params.goods_id) {
-        localStorage.setItem('globalGoodsId', this.$route.params.goods_id);
-      } else {
-        localStorage.setItem('globalGoodsId', parseInt(localStorage.getItem('globalGoodsId')));
-      }
-
-      console.log(456, this.$route.params.goods_id)
     },
   }
 };

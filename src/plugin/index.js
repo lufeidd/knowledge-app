@@ -251,7 +251,6 @@ export default {
 
     // 获取brand_id
     localStorage.setItem('globalBrandId', 1);
-    // localStorage.setItem('globalBrandId', 28);
 
   }
 }
