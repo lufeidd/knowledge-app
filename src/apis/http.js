@@ -6,37 +6,39 @@
 import axios from 'axios'
 import qs from "Qs";
 
+// 创建axios的一个实例
+var instance = axios.create({
+    // dev
+    // baseURL: window.location.protocol + "//" + window.location.hostname + ":" +  window.location.port + '/apis',
 
-var instance
+    // run build
+    baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
+    
+    timeout: 6000,
+})
+
+// 一、请求拦截器 忽略
+instance.interceptors.request.use(function (config) {
+    config.credentials = true;
+    return config;
+}, function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+});
+
+// 二、响应拦截器 忽略
+instance.interceptors.response.use(function (response) {
+    // console.log(response)
+    return response.data;
+}, function (error) {
+    // 对响应错误做点什么
+    return Promise.reject(error);
+});
 
 // 添加读取build之后的代码
-// axios.get('./../../static/serverConfig.json').then((result) => {
+// axios.get('./../../dist/static/serverConfig.json').then((result) => {
 // axios.get('serverConfig.json').then((result)=>{
-
-    // 创建axios的一个实例
-    instance = axios.create({
-        baseURL: 'http://wap.huoba.net:8080/apis',
-        timeout: 6000,
-    })
-
-    // 一、请求拦截器 忽略
-    instance.interceptors.request.use(function (config) {
-        config.credentials = true;
-        return config;
-    }, function (error) {
-        // 对请求错误做些什么
-        return Promise.reject(error);
-    });
-
-    // 二、响应拦截器 忽略
-    instance.interceptors.response.use(function (response) {
-        // console.log(response)
-        return response.data;
-    }, function (error) {
-        // 对响应错误做点什么
-        return Promise.reject(error);
-    });
-
+    // result.baseURL
 // }).catch((error) => {
 //     console.log(error)
 // })

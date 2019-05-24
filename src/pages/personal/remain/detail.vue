@@ -51,6 +51,11 @@
 
 <style scoped src="@/style/scss/pages/personal/remain/index.scss" lang="scss"></style>
 
+<style>
+@import url('./../../../style/scss/components/dateTimePicker.scss');
+</style>
+
+
 <script>
 import { USER_REMAIN_DETAILS } from "../../../apis/user.js";
 import easyNav from "./../../../components/easyNav";

@@ -168,7 +168,10 @@ export default new Router({
     {
       path: '/personal/order/detail',
       name: 'orderdetail',
-      component: orderdetail
+      component: orderdetail,
+      meta: {
+        keepAlive: true,  // false不需要被缓存，true需要缓存
+      },
     },
     {
       path: '/personal/order/list',
@@ -441,7 +444,10 @@ export default new Router({
     {
       path: '/pay/success',
       name: 'paysuccess',
-      component: paysuccess
+      component: paysuccess,
+      meta: {
+        keepAlive: true,  // false不需要被缓存，true需要缓存
+      },
     }
   ]
 })

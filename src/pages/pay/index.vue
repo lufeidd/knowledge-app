@@ -45,12 +45,13 @@ export default {
   methods: {
     // 新增虚拟订单
     async addOrderData () {
-      // var tStamp = this.$getTimeStamp();
+      var tStamp = this.$getTimeStamp();
       let data = {
-        // timeStamp: tStamp,
+        timeStamp: tStamp,
         goods_id: this.goodsId,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADD(data);
       if (res.hasOwnProperty("response_code")) {
         console.log(123, res.response_data[0])

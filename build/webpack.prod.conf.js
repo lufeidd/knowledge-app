@@ -13,13 +13,13 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 // 引入generate-asset-webpack-plugin
-const GeneraterAssetPlugin = require('generate-asset-webpack-plugin')
+// const GeneraterAssetPlugin = require('generate-asset-webpack-plugin')
 // 引入添加的serverConfig.json文件
-const serverConfig = require('../serverConfig.json')
+// const serverConfig = require('./../dist/static/serverConfig.json')
 // 添加打包时写入配置文件的代码
-const createJson = function(compilation) {
-  return JSON.stringify(serverConfig);
-};
+// const createJson = function(compilation) {
+//   return JSON.stringify(serverConfig);
+// };
 
 const env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
@@ -43,12 +43,12 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   plugins: [
     // 添加打包时输出配置文件的代码
-    new GeneraterAssetPlugin({
-      filename: 'serverConfig.json',  //输出到dist根目录下的serverConfig.json文件,名字可以按需改
-      fn: (compilation, cb) => {
-        cb(null, createJson(compilation));
-      }
-    }),
+    // new GeneraterAssetPlugin({
+    //   filename: 'serverConfig.json',  //输出到dist根目录下的serverConfig.json文件,名字可以按需改
+    //   fn: (compilation, cb) => {
+    //     cb(null, createJson(compilation));
+    //   }
+    // }),
 
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
@@ -135,7 +135,8 @@ const webpackConfig = merge(baseWebpackConfig, {
     // copy custom static assets
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, '../static'),
+        from: path.resolve(__dirname, '/'),
+        // from: path.resolve(__dirname, '../static'),
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }

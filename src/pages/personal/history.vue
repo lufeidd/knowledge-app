@@ -10,15 +10,19 @@
       :finished="historyFinished"
       finished-text="没有更多了"
       @load="historyLoad"
-      v-for="(item, key) in historyList"
-      :key="key"
     >
-      <van-swipe-cell :right-width="65" :left-width="0" :on-close="historyClose">
+      <van-swipe-cell
+        v-for="(item, key) in historyList"
+        :key="key"
+        :right-width="65"
+        :left-width="0"
+        :on-close="historyClose"
+      >
         <router-link v-if="historyStatus[key].id != null" to="/" class="listBox">
           <div class="left">
             <div class="ratioBox">
               <div class="box">
-                <img :src="item.imgSrc">
+                <img :src="item.data.pic">
                 <!-- <div class="tip">
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-sound-line"></use>
@@ -29,8 +33,8 @@
             </div>
           </div>
           <div class="center">
-            <div class="title">{{ item.title }}</div>
-            <div class="subTitle">{{ item.subTitle }}</div>
+            <div class="title">{{ item.data.title }}</div>
+            <div class="subTitle">{{ item.data.subTitle }}</div>
             <div class="info">
               <span class="type" v-if="item.type == 'artical'">文章</span>
               <span class="type" v-if="item.type == 'audio'">音频</span>
@@ -45,13 +49,13 @@
                 <svg class="icon" aria-hidden="true" v-if="item.type == 'video'">
                   <use xlink:href="#icon-video-line"></use>
                 </svg>
-                {{ item.count }}
+                {{ item.data.play_num }}
               </span>
               <span class="time">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-time-line"></use>
                 </svg>
-                {{ item.time }}
+                {{ item.data.create_time }}
               </span>
             </div>
           </div>
@@ -61,7 +65,11 @@
             </svg>
           </div>
         </router-link>
-        <span v-if="historyStatus[key].id != null" slot="right" @click="historyCancel(item.target, key)">
+        <span
+          v-if="historyStatus[key].id != null"
+          slot="right"
+          @click="historyCancel(item.data.target, key)"
+        >
           <div>取消历史</div>
         </span>
       </van-swipe-cell>
@@ -91,7 +99,7 @@ export default {
         homeLink: "/brand/index",
         search: false,
         personal: true,
-        personalLink: '/personal/index',
+        personalLink: "/personal/index"
       },
       historyList: [],
       // 临时存放关注数据
@@ -110,15 +118,18 @@ export default {
     },
     // 获取历史接口信息
     async historyData(__type, brandId, key) {
+      var tStamp = this.$getTimeStamp();
       var data = {};
       var res;
       switch (__type) {
         case "history":
           data = {
+            timestamp: tStamp,
             page: this.historyPage,
-            page_size: 4,
+            page_size: 10,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await USER_HISTORY(data);
 
           // 出错提示
@@ -144,14 +155,16 @@ export default {
           break;
         case "cancel":
           data = {
+            timestamp: tStamp,
             brand_id: brandId,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await USER_HISTORY_CANCEL(data);
-          
+
           if (res.hasOwnProperty("response_code")) {
             this.historyStatus[key].id = null;
-            if(this.historyStatus.length == 1) {
+            if (this.historyStatus.length == 1) {
               this.historyList = [];
             }
             this.$toast("已取消历史~");

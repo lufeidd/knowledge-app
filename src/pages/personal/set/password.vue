@@ -79,11 +79,14 @@ export default {
     },
     // 修改密码接口
     async editPassword() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         pwd: this.password1,
         newpwd: this.password2,
         version: "1.0",
       };
+      data.sign = this.$getSign(data);
       let res = await EDIT_PASSWORD(data);
       console.log("123", res.response_data);
       if (res.hasOwnProperty("response_code")) {

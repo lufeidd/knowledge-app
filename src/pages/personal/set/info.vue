@@ -146,6 +146,10 @@
   }
 }
 </style>
+<style>
+@import url("./../../../style/scss/components/dateTimePicker.scss");
+</style>
+
 
 <script>
 //  引入接口
@@ -256,9 +260,12 @@ export default {
     },
     // 获取账号接口信息
     async getInfoData() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await USER_INFO(data);
       // console.log(res.response_data);
       if (res.hasOwnProperty("response_code")) {
@@ -306,13 +313,16 @@ export default {
     },
     // 修改账号接口信息
     async editInfoData() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         nickname: this.infoList.nickname,
         sex: this.infoList.sex,
         header_pic: this.infoList.header_pic,
         birthday: this.infoList.birthday,
         version: "1.0"
       };
+
       if (!this.infoList.nickname) {
         this.$toast("请输入昵称~");
         return;
@@ -325,10 +335,11 @@ export default {
         this.$toast("请输入性别~");
         return;
       }
+      data.sign = this.$getSign(data);
       let res = await USER_INFO_EDIT(data);
       if (res.hasOwnProperty("response_code")) {
         this.$toast("信息修改成功~");
-        this.$router.push({name: 'set'});
+        this.$router.push({ name: "set" });
       } else {
         this.$toast(res.error_message);
       }

@@ -197,7 +197,7 @@ export default {
       });
       data = this.$getmd5(str).toUpperCase();
 
-      console.log("排序并拼接后的data:", str);
+      // console.log("排序并拼接后的data:", str);
       return data;
     }
     Vue.prototype.$getmd5 = function (str) {
@@ -206,28 +206,47 @@ export default {
       //update("中文", "utf8")
       md5.update(str);
       var res = md5.digest("hex");
-      console.log("md5:", res);
+      // console.log("md5:", res);
       return res;
     }
 
     // 不定外链传参翻译
     Vue.prototype.$translate = function (data) {
       var dataTmp = data;
+      var __name = null;
       var dataRes = {};
-      
-      switch (dataTmp.name) {
-        case 'book/detail':
+
+      switch (dataTmp.action) {
+        // 商品详情
+        case 'goods/detail':
+          // 音/视频
+          if (dataTmp.params.goods_type == 1 || dataTmp.params.goods_type == 2) {
+            __name = 'albumdetail';
+          } else if (dataTmp.params.goods_type == 6) { // 文章
+            __name = 'article';
+          } else if (dataTmp.params.goods_type == 9) { // 专辑
+            __name = 'album';
+          } else {
+
+          }
           dataRes = {
-            name: 'article',
+            name: __name,
             params: {
-              goods_id: dataTmp.params.book_id
+              goods_id: parseInt(dataTmp.params.goods_id),
             }
           }
-          return dataRes;
 
           break;
+        case 'search/result':
+          dataRes = {
+            name: 'brandresult',
+            params: {
+              goods_type: parseInt(dataTmp.params.goods_type),
+            }
+          }
+          break;
       }
-      return '';
+      return dataRes;
     }
 
     // 获取brand_id

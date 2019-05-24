@@ -42,9 +42,12 @@ export default {
   methods: {
     // 获取账号接口信息
     async getInfoData() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await USER_INFO(data);
       // console.log("123", res.response_data);
       if (res.hasOwnProperty("response_code")) {

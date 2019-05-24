@@ -10,7 +10,8 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    // 本地
+
+    // 本地跨域反向代理
     proxyTable: {
       '/apis': {
         // 测试环境
@@ -25,8 +26,10 @@ module.exports = {
     // Various Dev Server settings
     // host: 'localhost', // can be overwritten by process.env.HOST
     // host: '198.210.13.108', // can be overwritten by process.env.HOST
-    host: 'wap.huoba.net', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+
+    host: 'wap.huoba.dev.zzy', // can be overwritten by process.env.HOST
+    port: 82, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+
     autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: true,

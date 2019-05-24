@@ -25,6 +25,7 @@
 
     .flex-box {
       @include flexBasis(80px);
+      margin-right: 10px;
 
       & .box {
         position: relative;

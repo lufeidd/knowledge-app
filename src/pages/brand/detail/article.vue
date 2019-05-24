@@ -45,7 +45,7 @@
       </swiper>-->
       <van-row gutter="20" class="booklist">
         <van-col span="8" v-for="item,index in recommendData" :key="index"  >
-          <div class="ratioBox" @click="toDetail(item)">
+          <div class="ratioBox" @click="gotoLink(item)">
             <div class="box">
               <img :src="item.pic">
             </div>
@@ -281,8 +281,33 @@ export default {
       goodsId: 46,
     };
   },
+  //离开当前页面
+  beforeRouteLeave(to, from, next) {
+  //   if(to.name == 'albumdetail' ) {
+  //     localStorage.setItem('globalGoodsId', this.$route.params.goodsId ? this.$route.params.pid: parseInt(localStorage.getItem('globalGoodsId')));
+  //   }
+    next();
+  },
   mounted() {
-    this.goodsId = this.$route.params.goods_id;
+    // globalAlbum 存放专辑页当前 pid
+
+    // globalProgramPId 存放节目页当前 pid,
+    // globalProgramGoodsId 存放节目页当前 goods_id,
+    // globalProgramGoodsNo 存放节目页当前 activeGoodNo
+
+    // GlobalArtical 存放文章页当前 goods_id
+    // 1、路由进入，
+    // 2、当前页刷新（读取localStorage），
+    // 3、当前页推荐商品进入当前页（点击事件修改localStorage），
+    // 4、回退进入（上一个页面回退时修改localStorage），专辑、文章、节目三个页面回退情况
+
+    // 当路由进入当前页面，参数读取路由并更新localstorage，当不是路由进入从localStorage读取参数
+    if(this.$route.params.goods_id) {
+      this.goodsId = this.$route.params.goods_id;
+      localStorage.setItem('GlobalArtical', this.$route.params.goods_id);
+    } else {
+      this.goodsId = parseInt(localStorage.getItem('GlobalArtical'))
+    }
     this.getData();
     this.getRecommendData();
     // console.log("ID:", this.recommendData);
@@ -292,12 +317,15 @@ export default {
     async focusData(__type) {
       var data = {};
       var res;
+      var tStamp = this.$getTimeStamp();
       switch (__type) {
         case "focus":
           data = {
+            timestamp: tStamp,
             brand_id: this.articleInfo.brand_id,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await FOCUS_ADD(data);
 
           this.articleInfo.is_followed = 1;
@@ -306,9 +334,11 @@ export default {
           break;
         case "cancel":
           data = {
+            timestamp: tStamp,
             brand_id: this.articleInfo.brand_id,
             version: "1.0",
           };
+          data.sign = this.$getSign(data);
           res = await FOCUS_CANCEL(data);
           this.articleInfo.is_followed = 0;
           this.$toast("已取消关注~");
@@ -349,22 +379,27 @@ export default {
     async collectData(__type) {
       var data = {};
       var res;
+      var tStamp = this.$getTimeStamp();
       switch (__type) {
         case "collect":
           data = {
+            timestamp: tStamp,
             type: this.baseData.goods_type,
             target: this.goodsId,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await COLLECT_ADD(data);
           this.baseData.collect_id = 1;
           // this.$toast("已收藏~");
           break;
         case "cancel":
           data = {
-            goods_id: this.goodsId,
+            timestamp: tStamp,
+            goods_id: this.baseData.article_id,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await COLLECT_CANCEL(data);
           this.baseData.collect_id = 0;
           this.$toast("已取消收藏~");
@@ -387,13 +422,16 @@ export default {
     async praiseData(__type) {
       var data = {};
       var res;
+      var tStamp = this.$getTimeStamp();
       switch (__type) {
         case "focus":
           data = {
-            goods_id: this.goodsId,
+            timestamp: tStamp,
+            goods_id: this.baseData.article_id,
             type: this.baseData.goods_type,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await GOODS_PRAISE_ADD(data);
           this.baseData.is_praised = 1;
           // this.$toast('已关注~');
@@ -401,10 +439,12 @@ export default {
           break;
         case "cancel":
           data = {
-            goods_id: this.goodsId,
+            timestamp: tStamp,
+            goods_id: this.baseData.article_id,
             type: this.baseData.goods_type,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await GOODS_PRAISE_DELETE(data);
           this.baseData.is_praised = 0;
           this.$toast("已取消点赞~");
@@ -428,6 +468,7 @@ export default {
     async getData() {
       var tStamp = this.$getTimeStamp();
       var data = {
+        timestamp: tStamp,
         // goods_id: this.goodsId,
         goods_id: this.goodsId,
         version: "1.0",
@@ -453,6 +494,7 @@ export default {
     async getRecommendData() {
       var tStamp = this.$getTimeStamp();
       var data = {
+        timestamp: tStamp,
         // goods_id: this.goodsId,
         goods_id:this.goodsId,
         page:1,
@@ -477,12 +519,15 @@ export default {
       this.commentData();
     },
     async commentData() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         page: this.commentPage,
         goods_id: this.goodsId,
         page_size: 5,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await COMMENT(data);
 
       if (res.hasOwnProperty("response_code")) {
@@ -516,12 +561,14 @@ export default {
     },
     // 回复
     async replyData(comment_id, key) {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         comment_pid: comment_id,
         page: this.replyPage[key],
         page_size: 5,
         version: "1.0"
-      }; 
+      };
       let res = await COMMENT(data);
 
       if (res.hasOwnProperty("response_code")) {
@@ -553,18 +600,21 @@ export default {
      * __type = 'reply';   新增回复
      */
     async addComment(__type) {
+      var tStamp = this.$getTimeStamp();
       var data = {};
       switch (__type) {
         case "comment":
           data = {
-            goods_id: this.baseData.goods_id,
+            timestamp: tStamp,
+            goods_id: this.baseData.article_id,
             content: this.contentModel,
             version: "1.0"
           };
           break;
         case "reply":
           data = {
-            goods_id: this.baseData.goods_id,
+            timestamp: tStamp,
+            goods_id: this.baseData.article_id,
             comment_pid: this.commentId,
             content: this.contentModel,
             version: "1.0"
@@ -573,6 +623,7 @@ export default {
         default:
           break;
       }
+      data.sign = this.$getSign(data);
       let res = await COMMENT_ADD(data);
       if (res.hasOwnProperty("response_code")) {
         this.commentPage = 1;
@@ -611,7 +662,8 @@ export default {
     inputChange() {
       this.contentLength = this.contentModel.length;
     },
-    toDetail(item){
+    // 点击相似推荐
+    gotoLink(item){
       if(item.goods_type ==1 || item.goods_type == 2){
         this.$router.push({
           name:'albumdetail',
@@ -622,13 +674,24 @@ export default {
         })
       }
       if(item.goods_type ==6){
-        this.$router.push({
-          name:'article',
-          params:{
-            goods_id:item.goods_id,
-            pid:null,
-          }
-        })
+
+
+        // globalAlbum 存放专辑页当前 pid
+
+        // globalProgramPId 存放节目页当前 pid,
+        // globalProgramGoodsId 存放节目页当前 goods_id,
+        // globalProgramGoodsNo 存放节目页当前 activeGoodNo
+
+        // GlobalArtical 存放文章页当前 goods_id
+        // 1、路由进入，不更新localStorage，
+        // 2、当前页刷新（更新localStorage），
+        // 3、当前页推荐商品进入当前页（点击事件修改localStorage），
+        // 4、回退进入（上一个页面回退时修改localStorage），专辑、文章、节目三个页面回退情况
+        localStorage.setItem('GlobalArtical', item.goods_id);
+        this.pid = null;
+
+
+        location.reload();
       }
       if(item.goods_type ==9){
         this.$router.push({

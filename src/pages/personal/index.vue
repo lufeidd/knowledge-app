@@ -3,8 +3,8 @@
     <!-- 头部 -->
     <div class="infoBox">
       <div class="left">
-        <div class="ratioBox" v-if="infoData.is_login" :class="{ active: !infoData.user_header }"></div>
-        <div class="ratioBox" v-else>
+        <div class="ratioBox" v-if="infoData.is_login && infoData.user_header != ''"></div>
+        <div class="ratioBox active" v-else>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-personal-block"></use>
           </svg>
@@ -13,8 +13,8 @@
       <div class="right">
         <div class="title">
           <div class="desc">
-            <template v-if="infoData.is_login">{{ infoData.user_name }}</template>
-            <template v-else>点击登录</template>
+            <span v-if="infoData.is_login">{{ infoData.user_name }}</span>
+            <router-link style="color: #fff;" :to="{name: 'login'}" v-else>点击登录</router-link>
           </div>
           <div class="action">
             <!-- <a class="tip" href="/personal/news">
@@ -174,7 +174,7 @@
               <use xlink:href="#icon-next-line"></use>
             </svg>
           </div>
-        </router-link> -->
+        </router-link>-->
 
         <!-- 我的评论 -->
         <router-link v-if="infoData.is_login" to="/personal/comment/index" class="cell">
@@ -244,8 +244,6 @@
 
     <!-- 快速导航 -->
     <easyNav :navData="navData"></easyNav>
-
-
   </div>
 </template>
 
@@ -268,7 +266,7 @@ export default {
         home: true,
         homeLink: "/brand/index",
         search: false,
-        personal: false,
+        personal: false
       },
       // 信息
       infoData: {}
@@ -278,13 +276,20 @@ export default {
     this.homeData();
   },
   methods: {
-    gotoRemain () {
-      this.$router.push({name: 'remain'});
+    gotoRemain() {
+      if (this.infoData.is_login) {
+        this.$router.push({ name: "remain" });
+      } else {
+        this.$router.push({ name: "login" });
+      }
     },
     async homeData() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await USER_HOMEPAGE(data);
 
       console.log("123", res.response_data, this.$cookies.get("token"));

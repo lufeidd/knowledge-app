@@ -5,9 +5,9 @@
 
 #resultPage{
   padding-top: 5px;
-  padding-bottom: 50px;
   background-color: $greyLight ;
   min-height: 100%;
+  box-sizing: border-box;
   .list{
     background-color: #fff;
     margin-top: 10px;

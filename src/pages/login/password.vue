@@ -125,10 +125,14 @@ export default {
     },
     // 获取验证码
     async sms() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         mobile: this.phone,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
+
       let res = await SMS(data);
       console.log(res);
     },

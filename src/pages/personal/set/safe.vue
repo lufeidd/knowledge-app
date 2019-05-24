@@ -7,10 +7,10 @@
 </template>
 
 <style lang="scss" scoped>
- #safePage {
-   background-color: $greyLight;
-   min-height: 100%;
- }
+#safePage {
+  background-color: $greyLight;
+  min-height: 100%;
+}
 </style>
 
 
@@ -18,12 +18,10 @@
 export default {
   components: {},
   data() {
-    return {
-    }
+    return {};
   },
   created() {},
-  mounted() {
-  },
+  mounted() {},
   methods: {}
 };
 </script>

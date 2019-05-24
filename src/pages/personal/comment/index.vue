@@ -61,20 +61,20 @@ export default {
         // searchLink: "/search",
         personal: true,
         personalLink: "/personal/index",
-        type:'order',
+        type: "order"
       },
       commentData: [],
       programLoading: false,
       programFinished: false,
       page: 1,
-      page_size: 3
+      page_size: 10
     };
   },
   mounted() {
     this.getUserComment();
   },
   methods: {
-    programLoad(){
+    programLoad() {
       this.getUserComment();
     },
     async getUserComment() {
@@ -98,20 +98,20 @@ export default {
       data.sign = this.$getSign(data);
       let res = await USER_COMMENT(data);
       if (res.hasOwnProperty("response_code")) {
-          var result = res.response_data.result;
-          setTimeout(() => {
-            for (let i = 0; i < result.length; i++) {
-              this.commentData.push(result[i]);
-            }
-            this.programLoading = false;
-            this.page++;
+        var result = res.response_data.result;
+        setTimeout(() => {
+          for (let i = 0; i < result.length; i++) {
+            this.commentData.push(result[i]);
+          }
+          this.programLoading = false;
+          this.page++;
 
-            // 数据全部加载完成
-            if (this.commentData.length >= res.response_data.total_count) {
-              this.programFinished = true;
-              this.page = 1;
-            }
-          }, 500);
+          // 数据全部加载完成
+          if (this.commentData.length >= res.response_data.total_count) {
+            this.programFinished = true;
+            this.page = 1;
+          }
+        }, 500);
       } else {
         this.$toast(res.error_message);
       }

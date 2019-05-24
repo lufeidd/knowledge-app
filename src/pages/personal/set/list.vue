@@ -15,7 +15,11 @@
           <div class="address">{{ item.province }}{{ item.city }}{{ item.county }}{{ item.address }}</div>
         </div>
         <div class="action">
-          <div class="default" @click="editAction(item.address_id)" :class="{ active: item.is_default == 1 }">
+          <div
+            class="default"
+            @click="editAction(item.address_id)"
+            :class="{ active: item.is_default == 1 }"
+          >
             <svg class="icon" aria-hidden="true" v-if="item.is_default == 1">
               <use xlink:href="#icon-checked-block"></use>
             </svg>
@@ -28,7 +32,6 @@
             :to="{ name: 'address', params: {addressId: item.address_id, pageType: 'edit'}}"
             class="edit"
           >
-          
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-edit-line"></use>
             </svg>
@@ -57,7 +60,11 @@
 
 <script>
 //  引入接口
-import { USER_ADDRESS_LIST, USER_ADDRESS_DEL, USER_ADDRESS_EDIT } from "../../../apis/user.js";
+import {
+  USER_ADDRESS_LIST,
+  USER_ADDRESS_DEL,
+  USER_ADDRESS_EDIT
+} from "../../../apis/user.js";
 
 export default {
   data() {
@@ -71,9 +78,12 @@ export default {
   methods: {
     // 获取我的收货地址信息
     async getAddressData() {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await USER_ADDRESS_LIST(data);
       if (res.hasOwnProperty("response_code")) {
         this.addressData = [];
@@ -83,27 +93,27 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
-        console.log(123, res);
+      console.log(123, res);
     },
     // 修改当前地址
-    async editAddress (addressId, key) {
+    async editAddress(addressId, key) {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         address_id: addressId,
         is_default: 1,
-        version: "1.0",
+        version: "1.0"
       };
-      
+      data.sign = this.$getSign(data);
       let res = await USER_ADDRESS_EDIT(data);
       if (res.hasOwnProperty("response_code")) {
-
         this.getAddressData();
-
       } else {
         this.$toast(res.error_message);
       }
     },
     editAction(address_id, key) {
-      this.editAddress (address_id, key);
+      this.editAddress(address_id, key);
     },
     // 删除地址
     deleteAction(address_id) {
@@ -123,10 +133,13 @@ export default {
         });
     },
     async deleteAddress(addressId) {
+      var tStamp = this.$getTimeStamp();
       let data = {
+        timestamp: tStamp,
         address_id: addressId,
         version: "1.0"
       };
+      data.sign = this.$getSign(data);
       let res = await USER_ADDRESS_DEL(data);
 
       if (res.hasOwnProperty("response_code")) {
