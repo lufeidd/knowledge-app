@@ -521,7 +521,7 @@ export default {
         page: this.replyPage[key],
         page_size: 5,
         version: "1.0"
-      };
+      }; 
       let res = await COMMENT(data);
 
       if (res.hasOwnProperty("response_code")) {
