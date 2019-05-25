@@ -46,7 +46,7 @@
     <van-tabs v-model="tabModel" sticky animated @click="tabChange">
       <van-tab v-for="(item, key) in tabData" :title="item.title" :key="key">
         <!-- 介绍 -->
-        <template v-if="key == 0">
+        <template v-if="activeKey == 0">
           <div class="infoContent">
             <!-- 关注公众号 -->
             <div class="publish">
@@ -141,7 +141,7 @@
           </div>
         </template>
         <!-- 节目 -->
-        <template v-if="key == 1">
+        <template v-if="activeKey == 1">
           <van-list
             v-model="programLoading"
             :finished="programFinished"
@@ -260,7 +260,7 @@
           </van-list>
         </template>
         <!-- 相似 -->
-        <template v-if="key == 2">
+        <template v-if="activeKey == 2">
            <van-list
             v-model="recommendLoading"
             :finished="recommendFinished"
@@ -464,6 +464,7 @@ export default {
         }
       ],
       tabModel: 1,
+      activeKey: 1,
       // 评论
       discussData: [],
       commentPage: 1,
@@ -681,6 +682,7 @@ export default {
     },
     // tab切换
     tabChange(index, title) {
+      this.activeKey = index;
       // var __height = "auto";
 
       // switch (index) {

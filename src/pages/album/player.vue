@@ -543,9 +543,14 @@ export default {
             this.autoPlay = true;
           }
 
-          var count = this.allProgramList.length;
-          prev = prev < 0 ? count - 1 : prev;
-          next = next > count - 1 ? 0 : next;
+          if(this.allProgramList && this.allProgramList.length > 0) {
+            var count = this.allProgramList.length;
+            prev = prev < 0 ? count - 1 : prev;
+            next = next > count - 1 ? 0 : next;
+          }else {
+            prev = 0;
+            next = 0;
+          }
 
           // 判断是prev还是next，或者是自动播放完毕
           if (actionType == "prev") {

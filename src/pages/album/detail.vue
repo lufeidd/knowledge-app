@@ -258,7 +258,7 @@
 <script>
 import miniAudio from "./../../components/miniAudio";
 import audioList from "./../../pages/album/list";
-import { ALBUM } from "../../apis/album.js";
+import { ALBUM, ALBUM_DETAIL } from "../../apis/album.js";
 import {
   COLLECT_ADD,
   COLLECT_CANCEL,
@@ -669,8 +669,12 @@ export default {
           this.autoPlay = true;
         }
 
-        var count = this.allProgramList.length;
-        next = next > count - 1 ? 0 : next;
+        if(this.allProgramList && this.allProgramList.length > 0) {
+          var count = this.allProgramList.length;
+          next = next > count - 1 ? 0 : next;
+        }else {
+          next = 0;
+        }
 
         // 当点击全部播放，从第一条开始播放
         if (actionType == "all") next = 0;
