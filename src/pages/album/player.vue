@@ -135,7 +135,7 @@ export default {
   },
   mounted() {
     // 播放结束后销毁倒计时
-    // this.clearClock();
+    this.clearClock();
     this.audioData.type = true;
     // 设置音频播放状态
     this.setPlayerAudio();
@@ -401,15 +401,15 @@ export default {
     },
     // 点击播放
     playAudio(__currentTime) {
+      this.clearClock();
       // 切换播放状态
       this.audioData.type = false;
-      this.clearClock();
       var audio = document.getElementById("musicPlayer");
       var second = parseInt(audio.currentTime);
-      // 设置当前播放时间,false == 0,null != 0
-      if(__currentTime || __currentTime == 0) {
-        audio.currentTime = __currentTime;
-        second = __currentTime;
+      // 设置当前播放时间null != 0，null为点击播放按钮
+      if(__currentTime == null) {
+        // audio.currentTime = 0;
+        // second = __currentTime;
       } 
       // 播放
       audio.play();

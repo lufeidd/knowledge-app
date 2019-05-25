@@ -19,7 +19,7 @@
             <use xlink:href="#icon-shop-line"></use>
           </svg> 品牌商城
         </div>
-        <div class="link">
+        <div class="link" v-if="brandData.statistic_list">
           {{brandData.statistic_list.goods_num}}件商品在售
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-next-line"></use>
@@ -134,14 +134,17 @@ export default {
     },
     // 获取关注接口信息
     async focusData(__type) {
+      var tStamp = this.$getTimeStamp();
       var data = {};
       var res;
       switch (__type) {
         case "focus":
           data = {
+            timestamp:tStamp,
             brand_id: this.brand_id,
             version: "1.0",
           };
+          data.sign = this.$getSign(data);
           res = await FOCUS_ADD(data);
           this.brandData.attention_state = 1;
           // this.$toast('已关注~');
@@ -149,9 +152,11 @@ export default {
           break;
         case "cancel":
           data = {
+            timestamp:tStamp,
             brand_id: this.brand_id,
             version: "1.0"
           };
+          data.sign = this.$getSign(data);
           res = await FOCUS_CANCEL(data);
           this.brandData.attention_state = 0;
           this.$toast("已取消关注~");
