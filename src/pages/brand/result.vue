@@ -1,8 +1,7 @@
 <template>
   <div id="resultPage">
 
-
-    <div class="nullBox" v-if="brandData.length == 0">
+    <div class="nullBox" v-if="programFinished && brandData.length == 0">
       <img src="../../assets/null/list.png" width="100%">
       <div>您搜索的内容为空</div>
     </div>

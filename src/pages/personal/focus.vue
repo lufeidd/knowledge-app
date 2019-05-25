@@ -2,7 +2,7 @@
   <div id="focusPage">
     <!-- <div class="msgBox">已有23家自媒体更新了内容</div> -->
 
-    <div class="nullBox" v-if="focusList.length == 0">
+    <div class="nullBox" v-if="focusFinished && focusList.length == 0">
       <img src="./../../assets/null/list.png" width="100%">
       <div>还没有关注的内容，快去看看吧~</div>
     </div>

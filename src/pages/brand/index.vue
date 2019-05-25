@@ -20,7 +20,7 @@
           </svg> 品牌商城
         </div>
         <div class="link">
-          136件商品在售
+          {{brandData.statistic_list.goods_num}}件商品在售
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-next-line"></use>
           </svg>

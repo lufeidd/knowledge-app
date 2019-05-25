@@ -183,7 +183,10 @@ export default {
       var __goodsId = null;
 
       if(info != null && info.length > 0) {
-        __goodsId = parseInt(info[1]);
+        if(info[1] != null) {
+          // 专辑pid
+          __goodsId = parseInt(info[1]);
+        }
         this.title__ = info[7];
         this.albumPic__ = info[9];
       }

@@ -681,24 +681,24 @@ export default {
     },
     // tab切换
     tabChange(index, title) {
-      var __height = "auto";
+      // var __height = "auto";
 
-      switch (index) {
-        // case 0:
-        //   __height = $(".infoContent").height();
-        //   break;
-        case 1:
-          __height = $(".listContent").height();
-          break;
-        case 2:
-          __height = $(".simularContent").height();
-          break;
-      }
+      // switch (index) {
+      //   // case 0:
+      //   //   __height = $(".infoContent").height();
+      //   //   break;
+      //   case 1:
+      //     __height = $(".listContent").height();
+      //     break;
+      //   case 2:
+      //     __height = $(".simularContent").height();
+      //     break;
+      // }
 
-      $(".van-tabs__track").css("height", __height);
-      $(".van-tabs__track .van-tab__pane")
-        .eq(index)
-        .css("height", __height);
+      // $(".van-tabs__track").css("height", __height);
+      // $(".van-tabs__track .van-tab__pane")
+      //   .eq(index)
+      //   .css("height", __height);
     },
     // ----------------------------------评论------------------------------------
     commentLoad() {

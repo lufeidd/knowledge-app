@@ -19,8 +19,8 @@
           </div>
         </span>
       </van-col>
-      <van-col span="8" class="action">
-        <svg class="icon category" aria-hidden="true" @click="showList">
+      <van-col span="8" class="action" :class="{active: isList}">
+        <svg v-if="isList" class="icon category" aria-hidden="true" @click="showList">
           <use xlink:href="#icon-category-line"></use>
         </svg>
         
@@ -64,6 +64,8 @@ export default {
       playType: true,
       // 存储是否新增
       isAdd: false,
+      // 是否显示播放列表入口
+      isList: true,
     };
   },
   // 解决子组件数据实时刷新问题
@@ -80,6 +82,16 @@ export default {
     this.clearClock();
   },
   mounted() {
+    // 判断是否显示节目列表入口
+    this.hasList();
+    // 非专辑节目goods_id，不存在播放列表，隐藏miniAudio.vue列表入口
+    var info = JSON.parse(localStorage.getItem("miniAudio"));
+    if(info != null && info[1] == null) {
+      this.isList = false;
+    } else {
+      this.isList = true;
+    }
+    
     // 播放结束后销毁倒计时
     // this.clearClock();
     setTimeout(() => {
@@ -91,6 +103,16 @@ export default {
     }, 600);
   },
   methods: {
+    // 判断是否显示节目列表入口
+    hasList () {
+      // 非专辑节目goods_id，不存在播放列表，隐藏miniAudio.vue列表入口
+      var info = JSON.parse(localStorage.getItem("miniAudio"));
+      if(info[1] == null) {
+        this.isList = false;
+      } else {
+        this.isList = true;
+      }
+    },
     // 清除倒计时
     clearClock() {
       // 播放结束后销毁倒计时
@@ -234,6 +256,13 @@ export default {
     },
     // 点击播放
     playAudio(__currentTime) {
+      // 非专辑节目goods_id，不存在播放列表，隐藏miniAudio.vue列表入口
+      var info = JSON.parse(localStorage.getItem("miniAudio"));
+      if(info[1] == null) {
+        this.isList = false;
+      } else {
+        this.isList = true;
+      }
       // 切换播放状态
       this.playType = false;
       this.clearClock();
@@ -252,6 +281,8 @@ export default {
     },
     // 点击暂停
     pauseAudio() {
+      // 判断是否显示节目列表入口
+      this.hasList();
       this.clearClock();
       var audio = document.getElementById("myMiniAudio");
       // 暂停
@@ -290,7 +321,7 @@ export default {
     audioSliderChange() {
       var audio = document.getElementById("myMiniAudio");
       // 设置当前时间
-      audio.currentTime = (this.audioData.sliderValue / 100) * audio.duration;
+      if(this.audioData.sliderValue) audio.currentTime = (this.audioData.sliderValue / 100) * audio.duration;
       // 绑定slider
       this.audiobindtoslider(audio.currentTime);
       // this.audioData.currentTime = this.todate(audio.currentTime);
@@ -324,7 +355,7 @@ export default {
       // console.log(queryData);
       // this.$emit('linkToPlayer',  queryData);
       this.$emit("linkToPlayer", "");
-    }
+    },
     // 每5s、点击play、点击pzause、ended更新localStorage中audioProgress数据
   }
 };

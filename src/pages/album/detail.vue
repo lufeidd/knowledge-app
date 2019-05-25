@@ -246,7 +246,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/album/detail.scss" scoped lang="scss"></style>
+<style src="@/style/scss/pages/album/detail.scss" lang="scss"></style>
 <style scoped>
 
 .van-button {
@@ -410,12 +410,11 @@ export default {
     } else {
       this.activeGoodNo = parseInt(localStorage.getItem('globalProgramGoodsNo'))
     }
+
     // 基础信息
     this.albumData();
     // 推荐
     this.recommendData();
-
-    // console.log(parseInt(localStorage.getItem('globalGoodsId')));
   },
   methods: {
     // --------------------------------迷你缩略音频----------------------------------
@@ -589,8 +588,9 @@ export default {
     },  
     audioListShow(__type) {
       this.$refs.controlList.popupModel = true;
-      // 关联播放列表
+      // 关联list.vue播放列表
       this.$refs.controlList.goodsNo = this.activeGoodNo;
+      this.$refs.controlList.goodsId = this.goodsId;
     },
     // 跳转到音乐播放器
     gotoPlayer(__type) {
@@ -600,20 +600,20 @@ export default {
 
         var info = JSON.parse(localStorage.getItem('miniAudio'));
 
-        if(info != null && info.length > 0) {
-          // 更新迷你缩放音频播放信息
-          info[0] = parseInt(localStorage.getItem('globalGoodsNo'));
-          info[1] = parseInt(localStorage.getItem('globalPid'));
-          info[2] = this.baseData.pic[0];
-          info[3] = this.baseData.file_path;
-          info[4] = this.baseData.duration;
-          info[5] = 0;
-          info[6] = this.baseData.title;
-          info[7] = this.albumInfo.title;
-          info[8] = parseInt(localStorage.getItem('globalGoodsId'));
-          info[9] = this.albumInfo.pic;
-          // console.log(this.albumInfo);
+        if(info == null) {
+          info = [];
         }
+        // 新增迷你缩放音频播放信息
+        info[0] = parseInt(localStorage.getItem('globalGoodsNo'));
+        info[1] = parseInt(localStorage.getItem('globalPid'));
+        info[2] = this.baseData.pic[0];
+        info[3] = this.baseData.file_path;
+        info[4] = this.baseData.duration;
+        info[5] = 0;
+        info[6] = this.baseData.title;
+        info[7] = this.albumInfo.title;
+        info[8] = parseInt(localStorage.getItem('globalGoodsId'));
+        info[9] = this.albumInfo.pic;
 
         // localStorage存储
         localStorage.setItem("miniAudio", JSON.stringify(info));

@@ -49,7 +49,7 @@ exports.cssLoaders = function (options) {
         use: loaders,
         fallback: 'vue-style-loader',
         // run build
-        publicPath:'./',
+        publicPath:'/',
       })
     } else {
       return ['vue-style-loader'].concat(loaders)
@@ -79,7 +79,7 @@ exports.cssLoaders = function (options) {
         use: loaders,
         fallback: 'vue-style-loader',
         // run build
-        publicPath:'./',
+        publicPath:'/',
       })
     } else {
       return ['vue-style-loader'].concat(loaders)

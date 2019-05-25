@@ -1,6 +1,6 @@
 <template>
   <div id="commentPage">
-    <div class="nullBox" v-if="commentData.length == 0">
+    <div class="nullBox" v-if="programFinished && commentData.length == 0">
       <img src="../../../assets/null/list.png" width="100%">
       <div>您还没有评论过商品</div>
     </div>

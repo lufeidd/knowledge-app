@@ -1,6 +1,6 @@
 <template>
   <div id="historyPage">
-    <div class="nullBox" v-if="historyList.length == 0">
+    <div class="nullBox" v-if="historyFinished && historyList.length == 0">
       <img src="./../../assets/null/list.png" width="100%">
       <div>还没有历史的内容，快去看看吧~</div>
     </div>
