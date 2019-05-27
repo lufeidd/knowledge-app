@@ -44,7 +44,7 @@
         </swiper-slide>
       </swiper>-->
       <van-row gutter="20" class="booklist">
-        <van-col span="8" v-for="item,index in recommendData" :key="index"  >
+        <van-col span="8" v-for="item,index in recommendData" :key="index">
           <div class="ratioBox" @click="gotoLink(item)">
             <div class="box">
               <img :src="item.pic">
@@ -94,7 +94,7 @@
           </div>
           <div class="title">call me call my name</div>
         </van-col>
-      </van-row> -->
+      </van-row>-->
     </div>
     <!-- 评论 -->
     <div class="commentBox">
@@ -186,7 +186,11 @@
         </div>
       </div>
     </van-popup>
-    <div class="pinglun">
+    
+    <div style="height: 60px;"></div>
+    <div v-if="this.isIphx" style="height: 34px;"></div>
+    <!-- 快来写评论吧 -->
+    <div class="pinglun" :class="{iphx:this.isIphx}">
       <div class="write" @click="openAnswer('comment', null)">快来写评论吧!</div>
       <div class="nice">
         <svg
@@ -247,7 +251,7 @@ export default {
         searchLink: "/search",
         personal: true,
         personalLink: "/personal/index",
-        type:'brand',
+        type: "brand"
       },
       // 评论
       discussData: [],
@@ -277,22 +281,22 @@ export default {
       },
       // 推荐列表信息
       recommendData: [],
-      recommendState:false,
-      goodsId: 46,
+      recommendState: false,
+      goodsId: 46
     };
   },
   //离开当前页面
   beforeRouteLeave(to, from, next) {
-  //   if(to.name == 'albumdetail' ) {
-  //     localStorage.setItem('globalGoodsId', this.$route.params.goodsId ? this.$route.params.pid: parseInt(localStorage.getItem('globalGoodsId')));
-  //   }
+    //   if(to.name == 'albumdetail' ) {
+    //     localStorage.setItem('globalGoodsId', this.$route.params.goodsId ? this.$route.params.pid: parseInt(localStorage.getItem('globalGoodsId')));
+    //   }
     next();
   },
   mounted() {
     // globalAlbum 存放专辑页当前 pid
 
-    // globalProgramPId 存放节目页当前 pid, 
-    // globalProgramGoodsId 存放节目页当前 goods_id, 
+    // globalProgramPId 存放节目页当前 pid,
+    // globalProgramGoodsId 存放节目页当前 goods_id,
     // globalProgramGoodsNo 存放节目页当前 activeGoodNo
 
     // GlobalArtical 存放文章页当前 goods_id
@@ -300,13 +304,13 @@ export default {
     // 2、当前页刷新（读取localStorage），
     // 3、当前页推荐商品进入当前页（点击事件修改localStorage），
     // 4、回退进入（上一个页面回退时修改localStorage），专辑、文章、节目三个页面回退情况
-    
+
     // 当路由进入当前页面，参数读取路由并更新localstorage，当不是路由进入从localStorage读取参数
-    if(this.$route.params.goods_id) {
+    if (this.$route.params.goods_id) {
       this.goodsId = this.$route.params.goods_id;
-      localStorage.setItem('GlobalArtical', this.$route.params.goods_id);
+      localStorage.setItem("GlobalArtical", this.$route.params.goods_id);
     } else {
-      this.goodsId = parseInt(localStorage.getItem('GlobalArtical'))
+      this.goodsId = parseInt(localStorage.getItem("GlobalArtical"));
     }
     this.getData();
     this.getRecommendData();
@@ -329,20 +333,20 @@ export default {
           res = await FOCUS_ADD(data);
 
           this.articleInfo.is_followed = 1;
-          this.articleInfo.fans +=1;
+          this.articleInfo.fans += 1;
           // this.$toast('已关注~');
           break;
         case "cancel":
           data = {
             timestamp: tStamp,
             brand_id: this.articleInfo.brand_id,
-            version: "1.0",
+            version: "1.0"
           };
           data.sign = this.$getSign(data);
           res = await FOCUS_CANCEL(data);
           this.articleInfo.is_followed = 0;
           this.$toast("已取消关注~");
-          this.articleInfo.fans -=1;
+          this.articleInfo.fans -= 1;
           break;
       }
       // 出错提示
@@ -435,7 +439,7 @@ export default {
           res = await GOODS_PRAISE_ADD(data);
           this.baseData.is_praised = 1;
           // this.$toast('已关注~');
-          this.baseData.praise_num +=1;
+          this.baseData.praise_num += 1;
           break;
         case "cancel":
           data = {
@@ -448,7 +452,7 @@ export default {
           res = await GOODS_PRAISE_DELETE(data);
           this.baseData.is_praised = 0;
           this.$toast("已取消点赞~");
-          this.baseData.praise_num -=1;
+          this.baseData.praise_num -= 1;
           break;
       }
       // 出错提示
@@ -480,7 +484,7 @@ export default {
         this.baseData = res.response_data.base;
         this.articleInfo = res.response_data.brand_info;
         $(".contentData").append(this.baseData.desc);
-        if(this.baseData.desc.length<=0){
+        if (this.baseData.desc.length <= 0) {
           $(".contentData").remove();
           console.log(this.baseData.desc);
         }
@@ -496,17 +500,17 @@ export default {
       var data = {
         timestamp: tStamp,
         // goods_id: this.goodsId,
-        goods_id:this.goodsId,
-        page:1,
-        page_size:6,
+        goods_id: this.goodsId,
+        page: 1,
+        page_size: 6,
         version: "1.0",
-        timestamp: tStamp,
+        timestamp: tStamp
       };
       data.sign = this.$getSign(data);
       let res = await RECOMMEND(data);
       if (res.hasOwnProperty("response_code")) {
         this.recommendData = res.response_data.result;
-        if(this.recommendData.length>0){
+        if (this.recommendData.length > 0) {
           this.recommendState = true;
         }
         // console.log('recommendData',this.recommendData);
@@ -524,7 +528,7 @@ export default {
         timestamp: tStamp,
         page: this.commentPage,
         goods_id: this.goodsId,
-        page_size: 5,
+        page_size: 10,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -566,7 +570,7 @@ export default {
         timestamp: tStamp,
         comment_pid: comment_id,
         page: this.replyPage[key],
-        page_size: 5,
+        page_size: 10,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -664,23 +668,21 @@ export default {
       this.contentLength = this.contentModel.length;
     },
     // 点击相似推荐
-    gotoLink(item){
-      if(item.goods_type ==1 || item.goods_type == 2){
+    gotoLink(item) {
+      if (item.goods_type == 1 || item.goods_type == 2) {
         this.$router.push({
-          name:'albumdetail',
-          params:{
-            goods_id:item.goods_id,
-            pid:null,
+          name: "albumdetail",
+          params: {
+            goods_id: item.goods_id,
+            pid: null
           }
-        })
+        });
       }
-      if(item.goods_type ==6){
-
-        
+      if (item.goods_type == 6) {
         // globalAlbum 存放专辑页当前 pid
 
-        // globalProgramPId 存放节目页当前 pid, 
-        // globalProgramGoodsId 存放节目页当前 goods_id, 
+        // globalProgramPId 存放节目页当前 pid,
+        // globalProgramGoodsId 存放节目页当前 goods_id,
         // globalProgramGoodsNo 存放节目页当前 activeGoodNo
 
         // GlobalArtical 存放文章页当前 goods_id
@@ -688,22 +690,21 @@ export default {
         // 2、当前页刷新（更新localStorage），
         // 3、当前页推荐商品进入当前页（点击事件修改localStorage），
         // 4、回退进入（上一个页面回退时修改localStorage），专辑、文章、节目三个页面回退情况
-        localStorage.setItem('GlobalArtical', item.goods_id);
+        localStorage.setItem("GlobalArtical", item.goods_id);
         this.pid = null;
-        
 
         location.reload();
       }
-      if(item.goods_type ==9){
+      if (item.goods_type == 9) {
         this.$router.push({
-          name:'albumlist',
-          params:{
-            goods_id:item.goods_id,
-            pid:null,
+          name: "albumlist",
+          params: {
+            goods_id: item.goods_id,
+            pid: null
           }
-        })
+        });
       }
-    },
+    }
   }
 };
 </script>

@@ -145,7 +145,7 @@
         </router-link>
 
         <!-- 我的购物车 -->
-        <!-- <router-link v-if="infoData.is_login" to="/cart" class="cell">
+        <router-link v-if="infoData.is_login" to="/cart" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-personalCart"></use>
@@ -174,7 +174,7 @@
               <use xlink:href="#icon-next-line"></use>
             </svg>
           </div>
-        </router-link>-->
+        </router-link>
 
         <!-- 我的评论 -->
         <router-link v-if="infoData.is_login" to="/personal/comment/index" class="cell">

@@ -7,15 +7,15 @@
             <use xlink:href="#icon-search-line"></use>
           </svg>
       </div>
-    </van-search> -->
+    </van-search>-->
     <div class="searchHint">
       <span>
-          <svg class="icon searchIcon" aria-hidden="true">
-            <use xlink:href="#icon-search-line"></use>
-          </svg>
+        <svg class="icon searchIcon" aria-hidden="true">
+          <use xlink:href="#icon-search-line"></use>
+        </svg>
       </span>
       <search-hint :searchHintData="searchHintData"></search-hint>
-      <span  @click="onSearch" class="text">搜索</span>
+      <span @click="onSearch" class="text">搜索</span>
     </div>
     <!-- <div class="searchRecommend">
       <p class="recommend">搜索推荐</p>
@@ -25,7 +25,7 @@
         <van-col span="6"><van-tag round text-color="#666" size="large" color="#f5f5f5">已发货</van-tag></van-col>
         <van-col span="6"><van-tag round text-color="#666" size="large" color="#f5f5f5">已完成</van-tag></van-col>
       </van-row>
-    </div> -->
+    </div>-->
     <div class="searchHistory" v-if="type == 'order'">
       <p class="title">
         <span class="history">搜索推荐</span>
@@ -36,7 +36,6 @@
         <!-- <li  v-for="item,index in hotSearch" :key="index">{{item}}</li> -->
         <li v-for="item,index in state" @click="toResult(item)">{{item.order_desc}}</li>
       </ul>
-
     </div>
     <div class="searchHistory" v-if="type == 'brand'">
       <p class="title">
@@ -45,9 +44,8 @@
       </p>
 
       <ul>
-        <li  v-for="item,index in hotSearch" :key="index" @click="hotSearchItem(item)">{{item}}</li>
+        <li v-for="item,index in hotSearch" :key="index" @click="hotSearchItem(item)">{{item}}</li>
       </ul>
-
     </div>
     <div class="searchHistory">
       <p class="title">
@@ -56,9 +54,8 @@
       </p>
 
       <ul>
-        <li  v-for="item,index in list" :key="index" @click="searchItem(item)">{{item.content}}</li>
+        <li v-for="item,index in list" :key="index" @click="searchItem(item)">{{item.content}}</li>
       </ul>
-
     </div>
     <easyNav :navData="navData"></easyNav>
   </div>
@@ -67,21 +64,21 @@
 <style scoped  src="@/style/scss/pages/search.scss"  lang="scss"></style>
 
 <script>
-import{SEARCH_HOTKEY_GETS} from "../apis/public.js"
-import searchHint from "../components/searchHint"
+import { SEARCH_HOTKEY_GETS } from "../apis/public.js";
+import searchHint from "../components/searchHint";
 import easyNav from "./../components/easyNav";
 export default {
   components: {
     searchHint,
     easyNav
   },
-  data () {
+  data() {
     return {
       searchHintData: {
         search: null,
-        placeholderText:'请输入商品名称',
+        placeholderText: "请输入商品名称",
         list: [],
-        type:'',
+        type: ""
       },
       navData: {
         fold: false,
@@ -91,20 +88,20 @@ export default {
         // searchLink: "/search",
         personal: true,
         personalLink: "/personal/index",
-        type:'order',
+        type: "order"
       },
-      type:'',
-      hotSearch:null,
-      state:[
-        {order_state:0,order_desc:'待付款'},
-        {order_state:1,order_desc:'待发货'},
-        {order_state:2,order_desc:'已发货'},
-        {order_state:4,order_desc:'已完成'},
+      type: "",
+      hotSearch: null,
+      state: [
+        { order_state: 0, order_desc: "待付款" },
+        { order_state: 1, order_desc: "待发货" },
+        { order_state: 2, order_desc: "已发货" },
+        { order_state: 4, order_desc: "已完成" }
       ],
-      list:[],
-    }
+      list: []
+    };
   },
-  mounted(){
+  mounted() {
     this.type = this.$route.query.type;
     this.searchHintData.type = this.$route.query.type;
 
@@ -115,117 +112,117 @@ export default {
     // let len = history.length;
     // history.go(-(len-1));
   },
-  methods:{
-    clear(){
-      this.list=[];
+  methods: {
+    clear() {
+      this.list = [];
     },
     // 搜索按钮
-    searchTo(_type){
-      switch(_type){
-        case "order" :
-        this.$router.push({
-          name:'orderresult',
-          params:{
-            type:'order',
-            searchContent:this.searchHintData.search,
-            // state:this.state,
-          }
-        })
-        this.saveItem();
-        break;
-        case "brand" :
-        this.$router.push({
-          name:'brandresult',
-          params:{
-            type:'brand',
-            searchContent:this.searchHintData.search,
-          }
-        })
-        this.saveItem();
-        break;
+    searchTo(_type) {
+      switch (_type) {
+        case "order":
+          this.$router.push({
+            name: "orderresult",
+            params: {
+              type: "order",
+              searchContent: this.searchHintData.search
+              // state:this.state,
+            }
+          });
+          this.saveItem();
+          break;
+        case "brand":
+          this.$router.push({
+            name: "brandresult",
+            params: {
+              type: "brand",
+              searchContent: this.searchHintData.search
+            }
+          });
+          this.saveItem();
+          break;
       }
     },
-    onSearch(){
-      if(this.type == 'order'){
-        this.searchTo('order');
+    onSearch() {
+      if (this.type == "order") {
+        this.searchTo("order");
       }
-      if(this.type == 'brand'){
-        this.searchTo('brand');
+      if (this.type == "brand") {
+        this.searchTo("brand");
       }
     },
     //获取热搜词
-    async getHotKey(){
-      var data={
-        version:"1.0",
+    async getHotKey() {
+      var data = {
+        version: "1.0"
       };
       data.sign = this.$getSign(data);
       let res = await SEARCH_HOTKEY_GETS(data);
-      if(res.hasOwnProperty("response_code")){
+      if (res.hasOwnProperty("response_code")) {
         this.hotSearch = res.response_data;
         // console.log(res);
-      }else{
+      } else {
         this.$toast(res.error_message);
       }
     },
     //将搜索内容存储到本地
-    saveItem(){
-      var content = {content:this.searchHintData.search};
-      var list = JSON.parse(localStorage.getItem("cmts") || '[]');
-      if(list.length>10){
-        list = list.slice(0,9);
+    saveItem() {
+      var content = { content: this.searchHintData.search };
+      var list = JSON.parse(localStorage.getItem("cmts") || "[]");
+      if (list.length > 10) {
+        list = list.slice(0, 9);
       }
       list.unshift(content);
-      localStorage.setItem('cmts',JSON.stringify(list));
-      this.content = '';
-      this.$emit('func');
+      localStorage.setItem("cmts", JSON.stringify(list));
+      this.content = "";
+      this.$emit("func");
     },
     //读取本地历史记录
-    getLocalItem(){
-        var list = JSON.parse(localStorage.getItem("cmts") || '[]');
-        this.list = list ;
+    getLocalItem() {
+      var list = JSON.parse(localStorage.getItem("cmts") || "[]");
+      this.list = list;
     },
-    toResult(item){
-      console.log(item)
-        this.$router.push({
-          name:'orderresult',
-          params:{
-            type:'order',
-            searchContent:this.searchHintData.search,
-            state:this.state.order_state,
-          }
-        })
+    toResult(item) {
+      console.log(item);
+      this.$router.push({
+        name: "orderresult",
+        params: {
+          type: "order",
+          searchContent: this.searchHintData.search,
+          state: this.state.order_state
+        }
+      });
     },
-    hotSearchItem(item){
-      console.log(item)
-        this.$router.push({
-          name:'brandresult',
-          params:{
-            type:'brand',
-            searchContent:item,
-          }
-        })
+    hotSearchItem(item) {
+      console.log(item);
+      this.$router.push({
+        name: "brandresult",
+        params: {
+          type: "brand",
+          searchContent: item
+        }
+      });
     },
-    searchItem(item){
-      console.log(item)
-      if(this.type == 'order'){
+    searchItem(item) {
+      console.log(item);
+      if (this.type == "order") {
         this.$router.push({
-          name:'orderresult',
-          params:{
-            type:'order',
-            searchContent:item.content,
+          name: "orderresult",
+          params: {
+            type: "order",
+            searchContent: item.content
           }
-        })
+        });
       }
-      if(this.type == 'brand'){
+      if (this.type == "brand") {
         this.$router.push({
-          name:'brandresult',
-          params:{
-            type:'brand',
-            searchContent:item.content,
+          name: "brandresult",
+          params: {
+            type: "brand",
+            searchContent: item.content
           }
-        })
+        });
       }
-    },
+    }
   }
-}
+};
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div id="listPage" class="page" :class="{ active: this.isIphx }">
+  <div id="listPage">
     <div class="nullBox" v-if="addressData.length == 0">
       <img src="./../../../assets/null/address.png" width="100%">
       <div>暂时没有收货地址,去添加吧~</div>
@@ -48,7 +48,7 @@
     </ul>
 
     <div style="height: 60px;"></div>
-
+    <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="bottomBox" :class="{ iphx: this.isIphx }">
       <van-button size="large" type="danger" @click="addAddress">+新增收货地址</van-button>
       <div class="count">{{ addressData.length }}/50</div>

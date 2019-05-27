@@ -1,7 +1,7 @@
 <template>
   <div id="infoPage">
     <!-- 头像 -->
-    <div class="listBox" @click="showAction('pictrue')" style="margin-top: 5px;">
+    <div class="listBox" @click="showAction('pictrue')">
       <div class="center">
         <div class="title">头像</div>
       </div>

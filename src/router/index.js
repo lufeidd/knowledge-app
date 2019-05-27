@@ -150,7 +150,10 @@ export default new Router({
     {
       path: '/personal/remain/index',
       name: 'remain',
-      component: remain
+      component: remain,
+      meta: {
+        keepAlive: true,
+      }
     },
     {
       path: '/personal/remain/record',

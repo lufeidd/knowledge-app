@@ -6,6 +6,7 @@
   background-color: $greyLight;
   min-height: 100%;
   padding-bottom: 15px;
+  box-sizing: border-box;
 
   .article {
     background-color: $white;
@@ -271,6 +272,7 @@
     background-color: $white;
     color: $clC;
     font-size: $fontSize + 4;
+    border-top: 1px #eee solid;
     @include displayFlex(flex, space-between, null);
     @include position(fixed, "br", 0, null, 100%, null, null);
     z-index: 999;

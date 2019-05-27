@@ -5,11 +5,10 @@
 
 @charset "utf-8";
 
-html {
-  background-color: $greyLight;
-}
-
 #orderdetailPage {
+  min-height: 100%;
+  box-sizing: border-box;
+  background-color: $greyLight;
 
   & .editBox {
     @include displayFlex (flex, center, center);

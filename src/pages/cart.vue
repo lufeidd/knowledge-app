@@ -61,7 +61,7 @@
         <div class="info">
           <span class="history">¥23.00</span>
           <div class="action">
-            <van-stepper v-model="stepModel"/>
+            <van-stepper v-model="stepModel[0].value" integer @plus="addCount(0)" :min="1"/>
           </div>
         </div>
       </div>
@@ -99,13 +99,22 @@
         <div class="info">
           <span class="history">¥23.00</span>
           <div class="action">
-            <van-stepper v-model="stepModel"/>
+            <van-stepper v-model="stepModel[1].value" integer @plus="addCount(1)" :min="1"/>
           </div>
         </div>
       </div>
     </div>
 
-    <van-submit-bar safe-area-inset-bottom :price="3050" button-text="结算" @submit="onSubmit">
+    <div style="height: 60px;"></div>
+    <div v-if="this.isIphx" style="height: 34px;"></div>
+
+    <van-submit-bar
+      :class="{iphx:this.isIphx}"
+      safe-area-inset-bottom
+      :price="3050"
+      button-text="结算"
+      @submit="onSubmit"
+    >
       <!-- <van-checkbox v-model="checked">全选</van-checkbox> -->
       <div class="totalBox">
         <svg class="icon" aria-hidden="true">
@@ -118,7 +127,14 @@
       </div>
     </van-submit-bar>
 
-    <van-submit-bar class="deleteBox" safe-area-inset-bottom button-type="plain" button-text="删除" @submit="onSubmit">
+    <van-submit-bar
+      :class="{iphx:this.isIphx}"
+      class="deleteBox"
+      safe-area-inset-bottom
+      button-type="plain"
+      button-text="删除"
+      @submit="onSubmit"
+    >
       <!-- <van-checkbox v-model="checked">全选</van-checkbox> -->
       <div class="totalBox">
         <svg class="icon" aria-hidden="true">
@@ -129,9 +145,7 @@
         </svg>
         <span>全选</span>
       </div>
-
     </van-submit-bar>
-
   </div>
 </template>
 <style src="@/style/scss/pages/cart.scss" lang="scss"></style>
@@ -139,11 +153,13 @@
 export default {
   data() {
     return {
-      stepModel: true
+      stepModel: [{ value: 1 }, { value: 2 }]
     };
   },
   methods: {
-    onSubmit() {}
+    onSubmit() {},
+    addCount(key) {
+    }
   }
 };
 </script>

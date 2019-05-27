@@ -5,11 +5,13 @@
 
 @charset "utf-8";
 
-html {
-  background-color: $greyLight;
-}
-
 #cartPage {
+  padding-top: 5px;
+  min-height: 100%;
+  box-sizing: border-box;
+  background-color: $greyLight;       
+  padding-bottom: env(safe-area-inset-bottom);//为底下圆弧的高度 34px  
+
   & .totalBox {
     @include font(null, $fontSize - 1, #666);
 
@@ -32,7 +34,6 @@ html {
     padding: 0 15px;
     color: #666;
     font-size: $fontSize - 1;
-    margin-top: 5px;
 
     & .icon {
       width: 18px;

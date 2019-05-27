@@ -49,6 +49,7 @@
         @input="checkPhone"
       />
     </van-cell-group>
+    <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="bottomBox" :class="{iphx:this.isIphx}" @click="submitAction">
       <van-button type="danger" size="large">提交</van-button>
     </div>

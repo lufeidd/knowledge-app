@@ -8,6 +8,7 @@
       <span class="freightText">运费：</span>
       <input type="text" placeholder="请输入金额,例如5.00">元
     </div>
+    <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="bottomBox" :class="{iphx:this.isIphx}">
       <van-button type="danger" size="large">提交</van-button>
     </div>

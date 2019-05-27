@@ -182,6 +182,7 @@
 
     <div v-if="baseData.is_free == 0 || baseData.is_payed == 0" style="height: 60px;"></div>
     <div v-if="myAudioData.src" style="height: 60px;"></div>
+    <div v-if="this.isIphx" style="height: 34px;"></div>
 
     <!-- 试听 - 购买 -->
     <van-goods-action
