@@ -199,7 +199,7 @@ export default {
         goods_id: __goodsId,
         // goods_id: this.goodsId,
         page: this.programPage,
-        page_size: 5,
+        page_size: 10,
         version: "1.0"
       };
       data.sign = this.$getSign(data);

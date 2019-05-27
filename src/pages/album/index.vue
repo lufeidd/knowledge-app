@@ -869,7 +869,7 @@ export default {
         goods_id: this.baseData.goods_id,
         goods_no: this.rankType,
         page: this.programPage,
-        page_size: 5,
+        page_size: 10,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -1291,7 +1291,7 @@ export default {
         timestamp: tStamp,
         goods_id: this.baseData.goods_id,
         page: this.recommendPage,
-        page_size: 5,
+        page_size: 10,
         version: "1.0"
       };
       data.sign = this.$getSign(data);

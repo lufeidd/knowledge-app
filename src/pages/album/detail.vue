@@ -857,7 +857,7 @@ export default {
       let data = {
         timestamp: tStamp,
         page: this.commentPage,
-        page_size: 5,
+        page_size: 10,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -899,7 +899,7 @@ export default {
         timestamp: tStamp,
         comment_pid: comment_id,
         page: this.replyPage[key],
-        page_size: 5,
+        page_size: 10,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -1017,7 +1017,7 @@ export default {
         timestamp: tStamp,
         goods_id: this.goodsId,
         page: 1,
-        page_size: 6,
+        page_size: 10,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
