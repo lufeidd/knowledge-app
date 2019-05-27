@@ -102,7 +102,7 @@
         }
       }
   
-      & .action::before {
+      & .action.active::before {
         content: "";
         position: absolute;
         width: 1px;

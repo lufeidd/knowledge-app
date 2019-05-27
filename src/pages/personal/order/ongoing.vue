@@ -53,6 +53,7 @@
         </div>
       </div>
     </div>
+    <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="foot bottomBox" :class="{iphx:this.isIphx}">
       <span class="button">修改申请</span>
       <span class="button">重新申请</span>

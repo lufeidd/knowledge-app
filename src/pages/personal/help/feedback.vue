@@ -6,6 +6,7 @@
     <div class="bottomBox" :class="{iphx:this.isIphx}" v-if="submit">
       <van-button disabled type="danger" size="large" replace >提交</van-button>
     </div>
+    <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="bottomBox" :class="{iphx:this.isIphx}" v-else>
       <van-button type="danger" size="large" replace @click="submitFeedback">提交</van-button>
     </div>

@@ -26,6 +26,9 @@
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 15px;
+  background-color: $greyLight;
+  min-height: 100%;
+  box-sizing: border-box;
   .delet {
     font-size: $fontSize + 2;
     @include font("PingFangBlod", $fontSize + 2, null);
@@ -38,6 +41,8 @@
 #feedbackPage {
   padding-left: 15px;
   padding-right: 15px;
+  background-color: $greyLight;
+  min-height: 100%;
 
   textarea {
     width: 100%;

@@ -25,7 +25,8 @@
         :mode="option.mode"
       ></vueCropper>
     </template>
-    <div class="buttonBox">
+    <div v-if="this.isIphx" style="height: 34px;"></div>
+    <div class="buttonBox" :class="{ iphx: this.isIphx }">
       <div class="button" @click="cancel">取消</div>
       <div class="button" @click="save">保存</div>
     </div>

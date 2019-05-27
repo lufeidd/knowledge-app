@@ -48,3 +48,5 @@ export const USER_ADDRESS = params => req('post', '/user/address/get', params);
 export const USER_PHONE_RESET = params => req('post', '/user/info/mobile/reset', params);
 export const USER_PHONE_RESETSAVE = params => req('post', '/user/info/mobile/resetsave', params);
 
+// 用户播放进度记录
+export const USER_PLAYED_RECORD = params => req('post', '/user/played/record', params);

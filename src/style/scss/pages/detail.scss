@@ -8,12 +8,10 @@
 
 @import url("./../components/dateTimePicker.scss");
 
-html {
-  background-color: $greyLight;
-}
-
 #detailPage {
-    padding-bottom: 60px;
+    min-height: 100%;
+    box-sizing: border-box;
+    background-color: $greyLight;
   & .introduction {
     background-color: $white;
     padding: 10px 15px 0 15px;

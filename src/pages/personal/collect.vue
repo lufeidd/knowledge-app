@@ -2,7 +2,7 @@
   <div id="collectPage">
     <div
       class="nullBox"
-      v-if="collectList.length == 0 || collectStatus.length == 1 && collectStatus[0].id == null"
+      v-if="collectFinished && collectList.length == 0 || collectStatus.length == 1 && collectStatus[0].id == null"
     >
       <img src="./../../assets/null/list.png" width="100%">
       <div>还没有收藏的内容，快去看看吧~</div>

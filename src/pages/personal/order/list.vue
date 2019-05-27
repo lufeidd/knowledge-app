@@ -50,7 +50,7 @@
       <div class="foot">
         <span class="button2">去支付</span>
       </div>
-    </div> -->
+    </div>-->
 
     <!-- <div class="content">
       <div class="head">
@@ -102,7 +102,7 @@
           <span class="button1">再次购买</span>
         </div>
       </div>
-    </div> -->
+    </div>-->
     <van-list
       v-model="programLoading"
       :finished="programFinished"
@@ -110,36 +110,36 @@
       @load="programLoad"
       v-else
     >
-    <div class="content" v-for="item,index in publishData" @click="toDetail(item)">
-      <div class="head">
-        <div class="titleFrom">
-          <img v-lazy="item.brand_header_pic" alt class="icon">
-          <span class="publish">{{item.brand_name}}</span>
-        </div>
-        <span :class="item.state ==0? 'order1':'order2'">{{item.state_desc}}</span>
-      </div>
-      <div class="section" v-for="item1 in item.details">
-        <div class="bookDetail">
-          <div class="ratiobox">
-            <a class="bookImg" v-lazy:background-image="item1.pic"></a>
+      <div class="content" v-for="item,index in publishData" @click="toDetail(item)">
+        <div class="head">
+          <div class="titleFrom">
+            <img v-lazy="item.brand_header_pic" alt class="icon">
+            <span class="publish">{{item.brand_name}}</span>
           </div>
-          <span class="title">{{item1.goods_name}}</span>
+          <span :class="item.state ==0? 'order1':'order2'">{{item.state_desc}}</span>
         </div>
-        <div class="tip2">
-          <span class="noChange">虚拟内容不退不换</span>
-          <span class="actulPay">
-            实付款：
-            <span class="money">￥{{item1.real_price}}</span>
-          </span>
+        <div class="section" v-for="item1 in item.details">
+          <div class="bookDetail">
+            <div class="ratiobox">
+              <a class="bookImg" v-lazy:background-image="item1.pic"></a>
+            </div>
+            <span class="title">{{item1.goods_name}}</span>
+          </div>
+          <div class="tip2">
+            <span class="noChange">虚拟内容不退不换</span>
+            <span class="actulPay">
+              实付款：
+              <span class="money">￥{{item1.real_price}}</span>
+            </span>
+          </div>
         </div>
-      </div>
-      <!-- <div class="foot">
+        <!-- <div class="foot">
         <span class="button1">评价</span>
         <span class="button1" v-if="item.state ==1">再次购买</span>
         <span class="button2" >去支付</span>
         <span class="button2" v-if="item.state ==0">确认收货</span>
-      </div> -->
-    </div>
+        </div>-->
+      </div>
     </van-list>
 
     <easyNav :navData="navData"></easyNav>
@@ -150,7 +150,7 @@
 
 <script>
 import easyNav from "./../../../components/easyNav";
-import {USER_ORDER_DETAIL_GETS} from "../../../apis/user.js";
+import { USER_ORDER_DETAIL_GETS } from "../../../apis/user.js";
 export default {
   components: {
     easyNav
@@ -165,7 +165,7 @@ export default {
         searchLink: "/search",
         personal: true,
         personalLink: "/personal/index",
-        type:'order',
+        type: "order"
       },
       publishData: [],
       state: { evaluate: true, isPay: true, rePurchase: true, confirm: true },
@@ -174,57 +174,57 @@ export default {
       },
       programLoading: false,
       programFinished: false,
-      page:1,
-      page_size:5,
-      order_id:'',
+      page: 1,
+      page_size: 10,
+      order_id: ""
     };
   },
-  mounted(){
+  mounted() {
     this.getData();
     // console.log(brandId);
   },
-  methods:{
-    programLoad(){
+  methods: {
+    programLoad() {
       this.getData();
     },
-    async getData(){
+    async getData() {
       var tStamp = this.$getTimeStamp();
-      var data={
+      var data = {
         // order_id:1905062000270095,
-        page:this.page,
-        page_size:this.page_size,
-        version:"1.0",
-        timestamp:tStamp,
+        page: this.page,
+        page_size: this.page_size,
+        version: "1.0",
+        timestamp: tStamp
       };
       data.sign = this.$getSign(data);
       let res = await USER_ORDER_DETAIL_GETS(data);
-      if(res.hasOwnProperty("response_code")){
-          var result = res.response_data.result;
-          setTimeout(() => {
-            for (let i = 0; i < result.length; i++) {
-              this.publishData.push(result[i]);
-            }
-            this.programLoading = false;
-            this.page++;
+      if (res.hasOwnProperty("response_code")) {
+        var result = res.response_data.result;
+        setTimeout(() => {
+          for (let i = 0; i < result.length; i++) {
+            this.publishData.push(result[i]);
+          }
+          this.programLoading = false;
+          this.page++;
 
-            // 数据全部加载完成
-            if (this.publishData.length >= res.response_data.total_count) {
-              this.programFinished = true;
-              this.page = 1;
-            }
-          }, 500);
-      }else{
+          // 数据全部加载完成
+          if (this.publishData.length >= res.response_data.total_count) {
+            this.programFinished = true;
+            this.page = 1;
+          }
+        }, 500);
+      } else {
         this.$toast(res.error_message);
       }
     },
-    toDetail(item){
-      console.log(item)
+    toDetail(item) {
+      console.log(item);
       this.$router.push({
-          name:'orderdetail',
-          params:{
-            order_id:item.order_id,
-          }
-        })
+        name: "orderdetail",
+        params: {
+          order_id: item.order_id
+        }
+      });
     }
   }
 };

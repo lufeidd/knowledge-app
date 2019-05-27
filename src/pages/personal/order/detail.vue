@@ -83,6 +83,7 @@
         <van-cell title="支付时间" v-model="infoData.pay_time"/>
       </div>
     </div>
+    <div v-if="this.isIphx" style="height: 34px;"></div>
     <!-- <div class="foot bottomBox" :class="{iphx:this.isIphx}">
       <span class="button2">评价</span>
       <span class="button1" @click="repurchase">再次购买</span>

@@ -41,7 +41,7 @@
     <div class="controlBox">
 
       <!-- 当前节目属于专辑时展示 -->
-      <div class="category" v-if="programGoodsId != 0">
+      <div class="category" v-if="programGoodsId != null">
         <svg class="icon" aria-hidden="true" @click="showList">
           <use xlink:href="#icon-category-line"></use>
         </svg>
@@ -135,7 +135,7 @@ export default {
   },
   mounted() {
     // 播放结束后销毁倒计时
-    // this.clearClock();
+    this.clearClock();
     this.audioData.type = true;
     // 设置音频播放状态
     this.setPlayerAudio();
@@ -294,7 +294,7 @@ export default {
       // 存储到localStorage: audioProgress
       var result = JSON.parse(localStorage.getItem("audioProgress"));
 
-      info[5] = __currentTime;
+      if( info != null && info.length > 0) info[5] = __currentTime;
 
       // 判断是否需要新增进度
       this.progressAddOrUpdate(info, result);
@@ -311,7 +311,7 @@ export default {
       // 设置迷你音频播放状态
       localStorage.setItem("miniAudio", JSON.stringify(info));
       // 关联播放列表当前播放状态
-      this.activeGoodNo = info[0];
+      if(info != null && info.length > 0) this.activeGoodNo = info[0];
 
       console.log(123, 'currentTime:', __currentTime, 'player:', "info:", info, "result:", result);
     },
@@ -348,8 +348,12 @@ export default {
     },
     // 判断是否需要新增进度
     progressAddOrUpdate(info, result) {
-      var pid = info[1];
-      var goodsId = info[8];
+      var pid;
+      var goodsId;
+      if( info != null && info.length > 0)  {
+        pid = info[1];
+        goodsId = info[8];
+      }
       this.isAdd = true;
       if(result != null && result.length > 0) {
         for(let i = 0; i < result.length; i++) {
@@ -373,18 +377,21 @@ export default {
 
       var arr = JSON.parse(localStorage.getItem("audioProgress"));
 
-      var obj = {};
-      obj.goods_id = info[8];
-      obj.goods_no = info[0];
-      obj.progress = info[5];
-      obj.duration = info[4];
-      obj.pid = info[1];
+      if( info != null && info.length > 0) {
+        var obj = {};
+          obj.goods_id = info[8];
+          obj.goods_no = info[0];
+          obj.progress = info[5];
+          obj.duration = info[4];
+          obj.pid = info[1];
 
-      // 100条上限，多于100条从第一条覆盖以此类推
-      if(arr.length <= 100) {
-        arr.push(obj);
-      } else {
-        arr = arr.pop();
+          // 100条上限，多于100条从第一条覆盖以此类推
+          if(arr == null) arr = [];
+          if(arr.length <= 100) {
+            arr.push(obj);
+          } else {
+            arr = arr.pop();
+          }
       }
       
       localStorage.setItem("audioProgress", JSON.stringify(arr));
@@ -394,15 +401,15 @@ export default {
     },
     // 点击播放
     playAudio(__currentTime) {
+      this.clearClock();
       // 切换播放状态
       this.audioData.type = false;
-      this.clearClock();
       var audio = document.getElementById("musicPlayer");
       var second = parseInt(audio.currentTime);
-      // 设置当前播放时间,false == 0,null != 0
-      if(__currentTime || __currentTime == 0) {
-        audio.currentTime = __currentTime;
-        second = __currentTime;
+      // 设置当前播放时间null != 0，null为点击播放按钮
+      if(__currentTime == null) {
+        // audio.currentTime = 0;
+        // second = __currentTime;
       } 
       // 播放
       audio.play();
@@ -453,7 +460,7 @@ export default {
     audioSliderChange() {
       var audio = document.getElementById("musicPlayer");
       // 设置当前时间
-      audio.currentTime = (this.audioData.sliderValue / 100) * audio.duration;
+      if(this.audioData.sliderValue) audio.currentTime = (this.audioData.sliderValue / 100) * audio.duration;
       // 绑定slider
       this.audiobindtoslider(audio.currentTime);
       this.currentTime__ = this.todate(audio.currentTime);
@@ -536,9 +543,14 @@ export default {
             this.autoPlay = true;
           }
 
-          var count = this.allProgramList.length;
-          prev = prev < 0 ? count - 1 : prev;
-          next = next > count - 1 ? 0 : next;
+          if(this.allProgramList && this.allProgramList.length > 0) {
+            var count = this.allProgramList.length;
+            prev = prev < 0 ? count - 1 : prev;
+            next = next > count - 1 ? 0 : next;
+          }else {
+            prev = 0;
+            next = 0;
+          }
 
           // 判断是prev还是next，或者是自动播放完毕
           if (actionType == "prev") {

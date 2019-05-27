@@ -1,5 +1,5 @@
 <template>
-  <div id="cancelPage" :class="{ page: this.isIphx }">
+  <div id="cancelPage">
     <div class="tilte">请选择注销原因:</div>
     <ul class="reasonBox">
       <template v-for="(item, key) in reasonData">
@@ -16,6 +16,7 @@
         </li>
       </template>
     </ul>
+    <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="bottomBox" :class="{ iphx: this.isIphx }">
       <van-button size="large" type="danger">确定注销账号</van-button>
     </div>

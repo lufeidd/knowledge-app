@@ -284,6 +284,7 @@
 #payIndex {
   
   background-color: $greyLight;
+  min-height: 100%;
 
   & .bottomBox {
     & .icon {
@@ -369,6 +370,7 @@
 }
 
 #payaccountPage {
+  
   & .listBox {
     @include displayFlex (flex, flex-start, center);
     border-bottom: 1px $greyLight solid;

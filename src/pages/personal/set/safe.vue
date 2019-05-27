@@ -1,6 +1,6 @@
 <template>
   <div id="safePage">
-    <van-cell title="账号绑定" is-link to="/personal/set/bind" style="margin-top: 5px;"/>
+    <van-cell title="账号绑定" is-link to="/personal/set/bind"/>
     <van-cell title="修改密码" is-link to="/personal/set/password"/>
     <!-- <van-cell title="注销账户" is-link to="/personal/set/cancel"/> -->
   </div>
