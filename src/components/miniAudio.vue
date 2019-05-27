@@ -170,7 +170,7 @@ export default {
     hasList () {
       // 非专辑节目goods_id，不存在播放列表，隐藏miniAudio.vue列表入口
       var info = JSON.parse(localStorage.getItem("miniAudio"));
-      if(info[1] == null) {
+      if(info != null && info.length > 0 && info[1] == null) {
         this.isList = false;
       } else {
         this.isList = true;
