@@ -5,7 +5,6 @@
 #articlePage {
   background-color: $greyLight;
   min-height: 100%;
-  padding-bottom: 15px;
   box-sizing: border-box;
 
   .article {
@@ -128,7 +127,6 @@
   & .commentBox {
     background-color: $white;
     margin-top: 5px;
-    margin-bottom: 50px;
 
     & .listBox {
       @include displayFlex (flex, null, flex-start);

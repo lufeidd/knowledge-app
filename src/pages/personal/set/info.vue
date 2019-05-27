@@ -248,7 +248,7 @@ export default {
         //   timeout: 3000
         // });
 
-        // $(".cropper-box-canvas img[data-v-ebaf968c]").get(0).src = data;
+        // $(".cropper-box-canvas img").get(0).src = data;
 
         // 图片裁切后加载组件
         // this.cropperShow = true;

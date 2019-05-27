@@ -1,6 +1,6 @@
 <template>
   <div id="listPage">
-    <div class="nullBox" v-if="publishData.length == 0">
+    <div class="nullBox" v-if="programFinished && publishData.length == 0">
       <img src="../../../assets/null/list.png" width="100%">
       <div>您搜索的内容为空</div>
     </div>
@@ -181,10 +181,8 @@ export default {
     };
   },
   mounted() {
-    // this.getData();
     this.searchContent = this.$route.params.searchContent;
     this.state = this.$route.params.state;
-    this.getData();
   },
   methods: {
     programLoad() {
@@ -215,7 +213,6 @@ export default {
           // 数据全部加载完成
           if (this.publishData.length >= res.response_data.total_count) {
             this.programFinished = true;
-            this.page = 1;
           }
         }, 500);
       } else {

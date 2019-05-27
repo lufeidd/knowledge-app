@@ -78,8 +78,9 @@ export default {
   },
   mounted() {
     this.searchContent = this.$route.params.searchContent ? this.$route.params.searchContent : null;
-    this.goods_type = this.$route.params.goods_type ? this.$route.params.goods_type : null;
-    this.getGoods();
+    this.goods_type = this.$route.params.goods_type ? this.$route.params.goods_type : -1;
+
+    if(this.goods_type != null) this.getGoods();
   },
   methods: {
     programLoad(){
@@ -100,6 +101,7 @@ export default {
       let res = await BRAND_SEARCH_GOODS_GETS(data);
 
 console.log(123, res)
+
       if (res.hasOwnProperty("response_code")) {
           var result = res.response_data.result;
 
