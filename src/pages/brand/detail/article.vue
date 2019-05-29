@@ -186,7 +186,7 @@
         </div>
       </div>
     </van-popup>
-    
+
     <div style="height: 60px;"></div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <!-- 快来写评论吧 -->
@@ -573,7 +573,6 @@ export default {
         page_size: 10,
         version: "1.0"
       };
-      data.sign = this.$getSign(data);
       let res = await COMMENT(data);
 
       if (res.hasOwnProperty("response_code")) {
