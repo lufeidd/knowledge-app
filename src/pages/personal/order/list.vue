@@ -1,6 +1,6 @@
 <template>
   <div id="listPage">
-    <div class="nullBox" v-if="publishData.length == 0">
+    <div class="nullBox" v-if="programFinished && publishData.length == 0">
       <img src="../../../assets/null/list.png" width="100%">
       <div>您的订单列表为空</div>
     </div>
@@ -180,7 +180,7 @@ export default {
     };
   },
   mounted() {
-    this.getData();
+    // this.getData();
     // console.log(brandId);
   },
   methods: {

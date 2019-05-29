@@ -67,7 +67,7 @@
   // 详情
   & .publish {
     background-color: $white;
-    padding: 15px;
+    padding: 0 15px;
     margin-top: 5px;
     @include displayFlex(flex, space-between, center);
 

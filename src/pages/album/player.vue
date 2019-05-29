@@ -5,7 +5,7 @@
         <img :src="audioData.pic">
       </div>
       <div class="box pic">
-        <img :src="audioData.pic">
+        <img :src="audioData.pic" :class="{rotateAction: !audioData.type}">
       </div>
     </div>
 
@@ -188,6 +188,14 @@ export default {
     },
     // 点击节目
     audioAction(item) {
+      // 未支付
+      if (item.goods_id != null && item.is_payed == 0) {
+        this.$router.push({
+          name: "payaccount",
+          params: { goods_id: item.goods_id }
+        });
+        return;
+      }
       
       // 更新localStorage:miniAudio数据
       this.updateLocalStorage(item);
@@ -201,6 +209,7 @@ export default {
       // 获取localStorage数据
       var info = JSON.parse(localStorage.getItem("miniAudio"));
       info[0] = item.goods_no;
+      info[2] = item.pic;
       info[3] = item.file_path;
       info[4] = item.duration;
       // 获取当前节目播放进度
@@ -208,6 +217,8 @@ export default {
       info[5] = this.getAudioProgress(info, item);
       // info[5] = 0;
       info[6] = item.title;
+      info[8] = item.goods_id;
+      
       localStorage.setItem("miniAudio", JSON.stringify(info));
     },
     // 获取当前节目播放进度
@@ -307,7 +318,7 @@ export default {
         // 更新播放进度记录
         this.updateProgressData(info, result, __currentTime);
       }
-
+      
       // 设置迷你音频播放状态
       localStorage.setItem("miniAudio", JSON.stringify(info));
       // 关联播放列表当前播放状态
@@ -551,9 +562,23 @@ export default {
             prev = 0;
             next = 0;
           }
+            
+          // 当前列表只有一条
+          if(this.allProgramList.length == 1) {
+            this.$toast('当前列表只有一条');
+            return;
+          }
 
           // 判断是prev还是next，或者是自动播放完毕
           if (actionType == "prev") {
+            
+            // 节目已支付
+            if(this.allProgramList[prev].is_payed == 0) {
+              this.pauseAudio();
+              this.$toast('上一个节目收费');
+              return;
+            }
+            
             // 更新localStorage:miniAudio数据
             this.updateLocalStorage(this.allProgramList[prev]);
             this.setPlayerAudio();
@@ -561,6 +586,15 @@ export default {
             this.setDuration();
             this.playAudio(0);
           } else if (actionType == "next" || this.autoPlay) {
+
+            // 节目已支付
+            if(this.allProgramList[next].is_payed == 0) {
+              this.pauseAudio();
+              this.$toast('下一个节目收费');
+              return;
+            }
+
+            // 更新localStorage:miniAudio数据
             this.updateLocalStorage(this.allProgramList[next]);
             this.setPlayerAudio();
             // 音频切换时，设置下一音频duration显示时间

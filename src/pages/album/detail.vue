@@ -398,7 +398,7 @@ export default {
     // 4、回退进入（上一个页面回退时修改localStorage），专辑、文章、节目三个页面回退情况
 
     // 当路由进入当前页面，参数读取路由并更新localstorage，当不是路由进入从localStorage读取参数
-    if (this.$route.params.goods_id) {
+    if (this.$route.params.pid) {
       this.pid = this.$route.params.pid;
       localStorage.setItem("globalProgramPId", this.$route.params.pid);
     } else {
@@ -484,17 +484,7 @@ export default {
       // 管理子组件播放状态
       this.activeGoodNo = goods_no;
 
-      var info = [
-        __goodsNo,
-        __pid,
-        __pic,
-        __src,
-        __duration,
-        __currentTime,
-        __program,
-        __album,
-        __goodsId
-      ];
+      var info = [__goodsNo, __pid, __pic, __src, __duration, __currentTime, __program, __album, __goodsId];
       this.miniAudioData(info);
 
       // 解决子组件数据实时刷新问题
@@ -526,18 +516,19 @@ export default {
     miniAudioData(info) {
       /*
        * __goodsNo节目编号
-       * __type:true,默认暂停
+       * __pid当前节目对应专辑id，单个节目时pid为0
        * __pic专辑封面
        * __src音频地址
        * __duration音频时长，单位s
        * __currentTime音频当前播放位置，单位s
        * __program节目标题
        * __album专辑标题
-       * __goodsId专辑id
+       * __goodsId商品id
+       * __albumPic专辑图片，无专辑为null
        */
       if (info != null && info.length != 0) {
         let __goodsNo = info[0];
-        let __type = info[1];
+        let __pid = info[1];
         let __pic = info[2];
         let __src = info[3];
         let __duration = info[4];
@@ -545,11 +536,11 @@ export default {
         let __program = info[6];
         let __album = info[7];
         let __goodsId = info[8];
-        let __albumPic = info[9];
+        let __albumPic = info[9]
 
         // 设置音频信息
         this.$set(this.myAudioData, "goodsNo", __goodsNo);
-        this.$set(this.myAudioData, "type", __type);
+        this.$set(this.myAudioData, "pid", __pid);
         this.$set(this.myAudioData, "pic", __pic);
         this.$set(this.myAudioData, "src", __src);
         this.$set(this.myAudioData, "duration", __duration);
@@ -557,7 +548,8 @@ export default {
         this.$set(this.myAudioData, "program", __program);
         this.$set(this.myAudioData, "album", __album);
         this.$set(this.myAudioData, "goodsId", __goodsId);
-
+        this.$set(this.myAudioData, "albumPic", __albumPic);
+        
         // localStorage存储
         // info = JSON.parse(localStorage.getItem('miniAudio'));
         localStorage.setItem("miniAudio", JSON.stringify(info));
@@ -575,6 +567,7 @@ export default {
           this.$refs.control.audioData.duration = __duration;
           this.$refs.control.audioData.program = __program;
           this.$refs.control.audioData.album = __album;
+          this.$refs.control.audioData.albumPic = __albumPic;
 
           // this.$refs.control.audiobindtoslider(info[5]);
           // 设置当前播放进度
@@ -592,7 +585,7 @@ export default {
     // 将当前专辑节目列表播放进度信息存放到localStorage
     audioProgressData(result) {
       /*
-       * __goodsId专辑id
+       * __goodsId商品id
        * __goodsNo节目编号
        * __progress节目当前播放进度
        * __duration节目时长，单位s
@@ -639,7 +632,7 @@ export default {
         info[7] = this.albumInfo.title;
         info[8] = parseInt(localStorage.getItem("globalGoodsId"));
         info[9] = this.albumInfo.pic;
-
+        
         // localStorage存储
         localStorage.setItem("miniAudio", JSON.stringify(info));
       }

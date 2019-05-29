@@ -21,116 +21,87 @@
         :left-width="0"
         :on-close="collectClose"
       >
-        <!-- 音频 -->
-        <router-link
-          v-if="collectStatus[key].id != null && item.type == 1"
-          :to="{name: 'albumdetail', params: {goods_id: item.target}}"
-          class="listBox"
-        >
-          <div class="left">
-            <div class="ratioBox">
-              <div class="box">
-                <img :src="item.pic">
-                <!-- <div class="tip">
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-sound-line"></use>
-                  </svg>
-                  {{ item.collect }}
-                </div>-->
+
+        <template v-if="collectStatus[key].id != null">
+          <!-- 音频/视频 -->
+          <router-link
+            v-if="item.type == 1 || item.type == 2"
+            :to="{name: 'albumdetail', params: {goods_id: item.target}}"
+            class="listBox"
+          >
+            <div class="left">
+              <div class="ratioBox">
+                <div class="box">
+                  <img :src="item.pic">
+                </div>
               </div>
             </div>
-          </div>
-          <div class="center">
-            <div class="title">{{ item.title }}</div>
-            <div class="subTitle">{{ item.sub_title }}</div>
-            <div class="info">
-              <span class="time">{{ item.update_time }}更新</span>
-            </div>
-          </div>
-          <div class="right">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line"></use>
-            </svg>
-          </div>
-        </router-link>
-        <!-- 视频 -->
-        <router-link
-          v-if="collectStatus[key].id != null && item.type == 2"
-          :to="{name: 'albumdetail', params: {goods_id: item.target}}"
-          class="listBox"
-        >
-          <div class="left">
-            <div class="ratioBox">
-              <div class="box">
-                <img :src="item.pic">
+            <div class="center">
+              <div class="title">{{ item.title }}</div>
+              <div class="subTitle">{{ item.sub_title }}</div>
+              <div class="info">
+                <span class="time">{{ item.update_time }}更新</span>
               </div>
             </div>
-          </div>
-          <div class="center">
-            <div class="title">{{ item.title }}</div>
-            <div class="subTitle">{{ item.sub_title }}</div>
-            <div class="info">
-              <span class="time">{{ item.update_time }}更新</span>
+            <div class="right">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-next-line"></use>
+              </svg>
             </div>
-          </div>
-          <div class="right">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line"></use>
-            </svg>
-          </div>
-        </router-link>
-        <!-- 专辑 -->
-        <router-link
-          v-if="collectStatus[key].id != null && item.type == 9"
-          :to="{name: 'album', params: {goods_id: item.target}}"
-          class="listBox"
-        >
-          <div class="left">
-            <div class="ratioBox">
-              <div class="box">
-                <img :src="item.pic">
+          </router-link>
+          <!-- 专辑 -->
+          <router-link
+            v-if="item.type == 9"
+            :to="{name: 'album', params: {goods_id: item.target}}"
+            class="listBox"
+          >
+            <div class="left">
+              <div class="ratioBox">
+                <div class="box">
+                  <img :src="item.pic">
+                </div>
               </div>
             </div>
-          </div>
-          <div class="center">
-            <div class="title">{{ item.title }}</div>
-            <div class="subTitle">{{ item.sub_title }}</div>
-            <div class="info">
-              <span class="time">{{ item.update_time }}更新</span>
-            </div>
-          </div>
-          <div class="right">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line"></use>
-            </svg>
-          </div>
-        </router-link>
-        <!-- 文章 -->
-        <router-link
-          v-if="collectStatus[key].id != null && item.type == 6"
-          :to="{name: 'article', params: {goods_id: item.target}}"
-          class="listBox"
-        >
-          <div class="left">
-            <div class="ratioBox">
-              <div class="box">
-                <img :src="item.pic">
+            <div class="center">
+              <div class="title">{{ item.title }}</div>
+              <div class="subTitle">{{ item.sub_title }}</div>
+              <div class="info">
+                <span class="time">{{ item.update_time }}更新</span>
               </div>
             </div>
-          </div>
-          <div class="center">
-            <div class="title">{{ item.title }}</div>
-            <div class="subTitle">{{ item.sub_title }}</div>
-            <div class="info">
-              <span class="time">{{ item.update_time }}更新</span>
+            <div class="right">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-next-line"></use>
+              </svg>
             </div>
-          </div>
-          <div class="right">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line"></use>
-            </svg>
-          </div>
-        </router-link>
+          </router-link>
+          <!-- 文章 -->
+          <router-link
+            v-if="item.type == 6"
+            :to="{name: 'article', params: {goods_id: item.target}}"
+            class="listBox"
+          >
+            <div class="left">
+              <div class="ratioBox">
+                <div class="box">
+                  <img :src="item.pic">
+                </div>
+              </div>
+            </div>
+            <div class="center">
+              <div class="title">{{ item.title }}</div>
+              <div class="subTitle">{{ item.sub_title }}</div>
+              <div class="info">
+                <span class="time">{{ item.update_time }}更新</span>
+              </div>
+            </div>
+            <div class="right">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-next-line"></use>
+              </svg>
+            </div>
+          </router-link>
+        </template>
 
         <span
           v-if="collectStatus[key].id != null"
@@ -176,7 +147,7 @@ export default {
     };
   },
   mounted() {
-    this.collectData("collect", null, null);
+    // this.collectData("collect", null, null);
   },
   methods: {
     collectLoad() {

@@ -84,7 +84,7 @@ export default {
     };
   },
   mounted() {
-    this.focusData("focus", null, null);
+    // this.focusData("focus", null, null);
   },
   methods: {
     focusLoad() {
@@ -120,6 +120,7 @@ export default {
               // 数据全部加载完成
               if (this.focusList.length >= res.response_data.total_count) {
                 this.focusFinished = true;
+                this.focusPage = 1;
               }
               console.log("关注列表：", result);
             }, 500);

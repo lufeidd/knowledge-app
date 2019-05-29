@@ -14,6 +14,7 @@ html {
   line-height: 1.5;
   @include font("PingFangMedium", $fontSize, #333);
 }
+
 a {
   color: #000;
 }
@@ -288,8 +289,9 @@ img {
     margin-top: 100px;
     margin-bottom: 50px;
   }
+
   text-align: center;
-  font-size: $fontSize + 1;
+  font-size: $fontSize+1;
   color: #000;
 }
 
@@ -304,9 +306,12 @@ img {
 
 #miniAudio.isShow {
   opacity: 1;
+  display: block;
 }
+
 #miniAudio {
   opacity: 0;
+  display: none;
 }
 
 .bottomBox {
@@ -321,4 +326,32 @@ img {
   @include position (fixed, 'bl', 0, 0, 100%, 50px, 0);
   padding-bottom: 34px;
   background-color: $white;
+}
+
+// 播放中图片旋转动画
+.rotateAction {
+  -webkit-transition: all .3s;
+  -moz-transition: all .3s;
+  transition: all .3s;
+  -o-transition: all .3s;
+  -ms-transition: all .3s;
+  -webkit-animation: rotateAnimate 10s linear infinite;
+  -o-animation: rotateAnimate 10s linear infinite;
+  -moz-animation: rotateAnimate 10s linear infinite;
+  -ms-animation: rotateAnimate 10s linear infinite;
+  animation: rotateAnimate 10s linear infinite;
+}
+
+@-webkit-keyframes rotateAnimate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

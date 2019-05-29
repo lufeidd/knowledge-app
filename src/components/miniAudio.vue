@@ -6,7 +6,7 @@
         <div class="ratioBox" @click="toPlayer">
           <div class="box">
             <span>
-              <img :src="audioData.pic">
+              <img :src="audioData.pic" :class="{rotateAction: !audioData.type}">
             </span>
           </div>
         </div>
@@ -256,17 +256,7 @@ export default {
       // 用户播放进度记录
       if(info != null && info.length > 0 && info[1] != null) this.currentTimeData(info);
 
-      console.log(
-        123,
-        "miniAudio:",
-        "info:",
-        "currentTime:",
-        __currentTime,
-        info,
-        "result:",
-        result,
-        this.isAdd
-      );
+      console.log(123, "miniAudio:", "info:", "currentTime:", __currentTime, info, "result:", result, this.isAdd);
     },
     // 更新播放进度记录
     updateProgressData(info, result, __currentTime) {
@@ -433,9 +423,6 @@ export default {
     },
     // 链接到音乐播放器
     toPlayer() {
-      // let queryData = this.audioData;
-      // console.log(queryData);
-      // this.$emit('linkToPlayer',  queryData);
       this.$emit("linkToPlayer", "");
     }
     // 每5s、点击play、点击pzause、ended更新localStorage中audioProgress数据

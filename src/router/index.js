@@ -127,9 +127,6 @@ export default new Router({
       path: '/personal/index',
       name: 'personalIndex',
       component: personal,
-      meta: {
-        keepAlive: true,  // false不需要被缓存，true需要缓存
-      },
     },
     {
       path: '/personal/collect',
