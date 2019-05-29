@@ -4,7 +4,7 @@
  */
 
 #searchPage{
-  
+
   .searchHint{
     @include displayFlex(flex,null,center);
     position: relative;
@@ -52,44 +52,33 @@
     .recommend{
       font-size: $fontSize + 1;
       color: $cl0;
-      margin: 15px 0;
+      margin: 15px 0 0 0;
     }
-    .van-tag{
-      padding: 0.2em 1.0em;
-    }
-  }
-  .searchHistory{
-    padding-left: 15px;
-    padding-right: 15px;
-    margin-top: 50px;
-    .title{
-      @include displayFlex(flex,space-between,center);
-      .history{
-        font-size: $fontSize + 1;
-        color: $cl0;
-      }
-      .clear{
-        color: $cl6;
-      }
-    }
-    ul{
+    .van-col{
       margin-top: 15px;
-      li{
-        @include textOverflow;
+      @include textOverflow;
+      text-align: center;
+      .tag{
         display: inline-block;
-        width: 17%;
+        background-color: $greyLight;
         border-radius: 12px;
         line-height: 24px;
-        padding-left: 5px;
-        padding-right: 5px;
-        background-color: $greyLight;
+        width: 100%;
         color: $cl6;
-        margin: 0 0 15px 10px;
-        text-align: center;
-        &:nth-child(4n+1){
-          margin-left: 0px;
-        }
+        @include textOverflow;
+        padding: 0 8px;
+        box-sizing: border-box;
       }
+    }
+  }
+  .title{
+    @include displayFlex(flex,space-between,center);
+    .history{
+      font-size: $fontSize + 1;
+      color: $cl0;
+    }
+    .clear{
+      color: $cl6;
     }
   }
 }

@@ -23,7 +23,7 @@ body,
   /* 如果未竖屏时为0 */
   /* padding-bottom: env(safe-area-inset-bottom);  */
   /* 为底下圆弧的高度 34px */
-  
+
 }
 
 /* 隐藏滚动条 */
@@ -80,6 +80,8 @@ import axios from "axios";
 export default {
   name: "App",
   mounted() {
+    // this.$router.push('/personal/index')
+    // this.$router.push('/search')
   }
 };
 </script>

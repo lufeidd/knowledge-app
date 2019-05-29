@@ -17,45 +17,32 @@
       <search-hint :searchHintData="searchHintData"></search-hint>
       <span @click="onSearch" class="text">搜索</span>
     </div>
-    <!-- <div class="searchRecommend">
+    <div class="searchRecommend" v-if="this.type == 'order'">
       <p class="recommend">搜索推荐</p>
-      <van-row type="flex" justify="space-between">
-        <van-col span="6"><van-tag round text-color="#666" size="large" color="#f5f5f5">待支付</van-tag></van-col>
-        <van-col span="6"><van-tag round text-color="#666" size="large" color="#f5f5f5">待发货</van-tag></van-col>
-        <van-col span="6"><van-tag round text-color="#666" size="large" color="#f5f5f5">已发货</van-tag></van-col>
-        <van-col span="6"><van-tag round text-color="#666" size="large" color="#f5f5f5">已完成</van-tag></van-col>
+      <van-row type="flex" gutter="15">
+        <van-col span="6" v-for="item,index in state" :key="index">
+          <span class="tag" @click="toResult(item)">{{item.order_desc}}</span>
+        </van-col>
       </van-row>
-    </div>-->
-    <div class="searchHistory" v-if="type == 'order'">
-      <p class="title">
-        <span class="history">搜索推荐</span>
-        <!-- <span class="clear" @click="clear">清除</span> -->
-      </p>
-
-      <ul>
-        <!-- <li  v-for="item,index in hotSearch" :key="index">{{item}}</li> -->
-        <li v-for="item,index in state" @click="toResult(item)">{{item.order_desc}}</li>
-      </ul>
     </div>
-    <div class="searchHistory" v-if="type == 'brand'">
-      <p class="title">
-        <span class="history">热门搜索</span>
-        <span class="clear" @click="clear">清除</span>
-      </p>
-
-      <ul>
-        <li v-for="item,index in hotSearch" :key="index" @click="hotSearchItem(item)">{{item}}</li>
-      </ul>
+    <div class="searchRecommend" v-if="this.type == 'brand'">
+      <p class="recommend">热门搜索</p>
+      <van-row type="flex" gutter="15">
+        <van-col span="6" v-for="item,index in hotSearch" :key="index">
+          <span class="tag" @click="hotSearchItem(item)">{{item}}</span>
+        </van-col>
+      </van-row>
     </div>
-    <div class="searchHistory">
-      <p class="title">
+    <div class="searchRecommend searchHistory">
+      <p class="recommend title">
         <span class="history">搜索历史</span>
         <span class="clear" @click="clear">清除</span>
       </p>
-
-      <ul>
-        <li v-for="item,index in list" :key="index" @click="searchItem(item)">{{item.content}}</li>
-      </ul>
+      <van-row type="flex" gutter="15">
+        <van-col span="6" v-for="item,index in list" :key="index">
+          <span class="tag" @click="searchItem(item)">{{item.content}}</span>
+        </van-col>
+      </van-row>
     </div>
     <easyNav :navData="navData"></easyNav>
   </div>
@@ -75,7 +62,7 @@ export default {
   data() {
     return {
       searchHintData: {
-        search: null,
+        search: "",
         placeholderText: "请输入商品名称",
         list: [],
         type: ""
@@ -88,7 +75,7 @@ export default {
         // searchLink: "/search",
         personal: true,
         personalLink: "/personal/index",
-        type: "order"
+        type: "order",
       },
       type: "",
       hotSearch: null,
@@ -115,6 +102,7 @@ export default {
   methods: {
     clear() {
       this.list = [];
+      localStorage.removeItem("cmts");
     },
     // 搜索按钮
     searchTo(_type) {
@@ -143,11 +131,13 @@ export default {
       }
     },
     onSearch() {
-      if (this.type == "order") {
+      if (this.type == "order" && this.searchHintData.search.length > 0) {
         this.searchTo("order");
       }
-      if (this.type == "brand") {
+      else if (this.type == "brand" && this.searchHintData.search.length > 0) {
         this.searchTo("brand");
+      } else {
+        this.$toast("请输入您要搜索的内容！");
       }
     },
     //获取热搜词
@@ -172,6 +162,12 @@ export default {
         list = list.slice(0, 9);
       }
       list.unshift(content);
+      const age = "content";
+      list = list.reduce(
+        (all, next) =>
+          all.some(atom => atom[age] == next[age]) ? all : [...all, next],
+        []
+      );
       localStorage.setItem("cmts", JSON.stringify(list));
       this.content = "";
       this.$emit("func");
@@ -183,6 +179,7 @@ export default {
     },
     toResult(item) {
       console.log(item);
+      // return;
       this.$router.push({
         name: "orderresult",
         params: {
