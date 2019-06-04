@@ -110,15 +110,15 @@
       @load="programLoad"
       v-else
     >
-      <div class="content" v-for="item,index in publishData" @click="toDetail(item)">
-        <div class="head">
+      <div class="content" v-for="item,index in publishData">
+        <div class="head" @click="toBrandindex(item)">
           <div class="titleFrom">
             <img v-lazy="item.brand_header_pic" alt class="icon">
             <span class="publish">{{item.brand_name}}</span>
           </div>
           <span :class="item.state ==0? 'order1':'order2'">{{item.state_desc}}</span>
         </div>
-        <div class="section" v-for="item1 in item.details">
+        <div class="section" v-for="item1 in item.details" @click="toDetail(item)">
           <div class="bookDetail">
             <div class="ratiobox">
               <a class="bookImg" v-lazy:background-image="item1.pic"></a>
@@ -133,12 +133,15 @@
             </span>
           </div>
         </div>
-        <!-- <div class="foot">
-        <span class="button1">评价</span>
-        <span class="button1" v-if="item.state ==1">再次购买</span>
-        <span class="button2" >去支付</span>
-        <span class="button2" v-if="item.state ==0">确认收货</span>
-        </div>-->
+        <div class="foot">
+          <span class="button button1" @click="repply(item)">申请发票</span>
+          <div>
+            <span class="button button1">评价</span>
+            <!-- <span class="button1" v-if="item.state ==1">再次购买</span> -->
+            <!-- <span class="button2" >去支付</span> -->
+            <!-- <span class="button2" v-if="item.state ==0">确认收货</span> -->
+          </div>
+        </div>
       </div>
     </van-list>
 
@@ -223,6 +226,26 @@ export default {
         name: "orderdetail",
         query: {
           order_id: item.order_id
+        }
+      });
+    },
+    //申请发票
+    repply(item) {
+      // console.log(item);
+      this.$router.push({
+        name: "orderinvoice",
+        query: {
+          order_id: item.order_id,
+          money: item.order_money
+        }
+      });
+    },
+    //跳转公号主页
+    toBrandindex(item) {
+      this.$router.push({
+        name: "brand",
+        query: {
+          brand_id: item.brand_id,
         }
       });
     }
