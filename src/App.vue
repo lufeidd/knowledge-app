@@ -85,8 +85,7 @@ import wx from "weixin-js-sdk";
 export default {
   name: "App",
   mounted() {
-    // this.$router.push('/personal/index')
-    // this.$router.push('/search')
+    // this.$router.push('/personal/order/list')
   }
 };
 </script>

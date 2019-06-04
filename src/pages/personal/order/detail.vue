@@ -30,13 +30,13 @@
       </div>
     </div> -->
     <div class="info" v-if="infoData">
-      <div class="head">
+      <div class="head" @click="toBrandindex">
         <div class="titleFrom">
           <img v-lazy="infoData.brand_header_pic" class="icon">
           <span class="publish" >{{infoData.brand_name}}</span>
         </div>
       </div>
-      <div class="section" v-for="item in infoData.detail" >
+      <div class="section" v-for="item,index in infoData.detail" @click="goodsDetail(item)">
         <div class="bookDetail">
           <div class="ratiobox">
             <div class="box">
@@ -50,7 +50,10 @@
               </div> -->
             </div>
           </div>
-          <span class="title">{{item.goods_name}}</span>
+          <div class="rightInfo">
+            <span class="title">{{item.goods_name}}</span>
+            <span class="title red">￥{{item.real_price}}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -84,10 +87,13 @@
       </div>
     </div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
-    <!-- <div class="foot bottomBox" :class="{iphx:this.isIphx}">
-      <span class="button2">评价</span>
-      <span class="button1" @click="repurchase">再次购买</span>
-    </div> -->
+    <div class="foot bottomBox" :class="{iphx:this.isIphx}">
+      <span class="button button2" @click="apply">申请发票</span>
+      <div>
+        <span class="button button2" @click="toComment">评价</span>
+        <!-- <span class="button button1" @click="repurchase">再次购买</span> -->
+      </div>
+    </div>
     <easyNav :navData="navData"></easyNav>
   </div>
 </template>
@@ -164,6 +170,61 @@ export default {
     },
     //再次购买
     repurchase(){
+
+    },
+    //申请发票
+    apply(){
+      this.$router.push({
+        name:'orderinvoice',
+        query:{
+          order_id:this.infoData.order_id,
+          money:this.infoData.pay_money,
+        }
+      })
+    },
+    //跳转公号主页
+    toBrandindex(){
+      this.$router.push({
+        name:'brand',
+        query:{
+          brand_id:this.infoData.brand_id,
+        }
+      })
+    },
+    goodsDetail(item){
+      // 音频/视频
+      if (item.goods_type == 1 || item.goods_type == 2) {
+        this.$router.push({
+          name: "albumdetail",
+          query: {
+            goods_id: item.goods_id,
+            pid: null
+          }
+        });
+      }
+      // 专辑
+      if (item.goods_type == 6) {
+        this.$router.push({
+          name: "article",
+          query: {
+            goods_id: item.goods_id,
+            pid: null
+          }
+        });
+      }
+      // 文章
+      if (item.goods_type == 9) {
+        this.$router.push({
+          name: "album",
+          query: {
+            goods_id: item.goods_id,
+            pid: null
+          }
+        });
+      }
+    },
+    //评价
+    toComment(){
 
     },
   }

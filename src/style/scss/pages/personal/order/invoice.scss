@@ -34,6 +34,10 @@
     background-color: $redDark;
     border: 1px solid $redDark;
   }
+  .van-cell__title.van-field__label{
+    max-width: 100px;
+    white-space: nowrap;
+  }
   #two{
       border-bottom: 1px solid $greyLight;
   }
