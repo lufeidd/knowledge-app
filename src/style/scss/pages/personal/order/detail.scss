@@ -6,7 +6,7 @@
 #detailPage{
   background-color: $greyLight;
   min-height: 100%;
-  
+
   .van-cell{
     font-size: $fontSize - 1;
     color: $cl9;
@@ -189,35 +189,33 @@
     }
   }
   .foot{
-    @include displayFlex(flex,flex-end,center);
+    @include displayFlex(flex,space-between,center);
     background-color: $white;
     width: 100%;
     @include position (fixed, br, 0, null, null, 50px, null);
     border-top: 1px solid #d2d2d2;
-    .button1{
+    .button{
       display: inline-block;
       width: 60px;
       height: 24px;
-      border: 1px solid $greyDark;
       border-radius: 12px;
       text-align: center;
       line-height: 24px;
       font-size: $fontSize - 2;
-      color: $cl3;
       margin-left: 15px;
       margin-right: 15px;
      }
+     .button1{
+      border: 1px solid $greyDark;
+      color: $cl3;
+     }
      .button2{
-      display: inline-block;
-      width: 60px;
-      height: 24px;
       border: 1px solid $redDark;
-      border-radius: 12px;
-      text-align: center;
-      line-height: 24px;
-      font-size: $fontSize - 2;
       color: $redDark;
-      margin-left: 15px;
+     }
+     .button3{
+      border: 1px solid $cl3;
+      color: $cl3;
      }
   }
 }

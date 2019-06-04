@@ -5,12 +5,10 @@
         title="订单号:"
         v-model="invoiceData.orderNumber"
         value
-        is-link
-        arrow-direction="down"
       />
       <van-cell title="发票类型:"  :value="invoiceData.invoiceType"/>
       <van-field v-model="invoiceData.invoice_content" clearable clear label="发票内容:" placeholder="请填写发票内容"/>
-      <van-cell  title="开票抬头:" value="个人"  v-show="type == 1"/>
+      <van-cell  title="开票抬头:" value="个人"  is-link  arrow-direction="down"/>
       <van-cell  title="开票抬头:" value="单位"  v-show="type == 2 " id="two"/>
     </van-cell-group>
     <van-cell-group >
@@ -66,7 +64,7 @@ export default {
       username: "",
       type: 1,
       invoiceData: {
-        orderNumber: "4567892654",
+        orderNumber: '',
         invoiceType: "电子发票",
         invoice_content:"",
         invoice_money:120,
@@ -77,6 +75,9 @@ export default {
         error_message:"",
       }
     };
+  },
+  mounted(){
+    this.invoiceData.orderNumber = this.$route.query.order_id;
   },
   methods: {
       checkPhone(){

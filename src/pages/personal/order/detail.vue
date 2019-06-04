@@ -84,10 +84,13 @@
       </div>
     </div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
-    <!-- <div class="foot bottomBox" :class="{iphx:this.isIphx}">
-      <span class="button2">评价</span>
-      <span class="button1" @click="repurchase">再次购买</span>
-    </div> -->
+    <div class="foot bottomBox" :class="{iphx:this.isIphx}">
+      <span class="button button3" @click="apply">申请发票</span>
+      <div>
+        <span class="button button2">评价</span>
+        <span class="button button1" @click="repurchase">再次购买</span>
+      </div>
+    </div>
     <easyNav :navData="navData"></easyNav>
   </div>
 </template>
@@ -166,6 +169,15 @@ export default {
     repurchase(){
 
     },
+    //申请发票
+    apply(){
+      this.$router.push({
+        name:'orderinvoice',
+        query:{
+          order_id:this.infoData.order_id,
+        }
+      })
+    }
   }
 };
 </script>
