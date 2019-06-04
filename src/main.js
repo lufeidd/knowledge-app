@@ -36,6 +36,9 @@ import md5 from 'js-md5';
 // cookies
 import VueCookies from 'vue-cookies'
 
+//  引入接口
+import { SERVER_TIME } from "./apis/public";
+
 import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
   Cell, CellGroup,
@@ -104,6 +107,57 @@ Vue.prototype.$md5 = md5;
 Vue.use(VueCookies)
 
 Vue.config.productionTip = false
+
+// 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
+router.beforeEach((to, from, next) => {
+  //判断该页面有 brand_id
+  if (from.query.brand_id) {
+    //路由切换时，如果没有就添加，有就跳过执行，添加固定参数
+    if (!to.query.brand_id) {
+      //准备一个跳转的query对象
+      let query = to.query
+      query.brand_id = from.query.brand_id
+      next({
+        path: to.path,
+        query: query
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+
+  /* 路由发生变化修改页面 title */
+  if (to.meta.title) {
+    document.title = to.meta.title
+
+    next()
+  }
+  next()
+
+  //如果需要跳转 ，往下走（1）
+  if (to.meta.requireAuth) {
+     //判断是否登录过，如果有登陆过，说明有token,或者token未过期，可以跳过登录（2）
+    if (true) { 
+      //判断下一个路由是否为要验证的路由（3）          
+      if (to.path === '/login/index') {   
+        // 如果是直接跳到首页， 
+        next('/brand/index');         
+      } else {   
+        //如果该路由不需要验证，那么直接往后走          
+        next();
+      }
+    } else {
+      //如果没有登陆过，或者token 过期， 那么跳转到登录页
+      console.log('没有');      
+      next('/login/index');
+    }
+  } else { 
+    //不需要跳转，直接往下走                          
+    next();
+  }
+})
 
 /* eslint-disable no-new */
 new Vue({

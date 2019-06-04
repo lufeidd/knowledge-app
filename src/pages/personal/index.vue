@@ -292,7 +292,7 @@ export default {
       data.sign = this.$getSign(data);
       let res = await USER_HOMEPAGE(data);
 
-      console.log("123", res.response_data, this.$cookies.get("token"));
+      // console.log( res.response_data, this.$cookies.get("token"));
 
       if (res.hasOwnProperty("response_code")) {
         this.$set(this.infoData, "user_header", res.response_data.user_header);

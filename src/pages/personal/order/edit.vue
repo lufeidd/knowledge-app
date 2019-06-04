@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/order/refund.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/order/refund.scss" scoped lang="scss"></style>
 
 <script>
 import searchHint from "../../../components/searchHint";

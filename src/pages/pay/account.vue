@@ -126,14 +126,16 @@
 
 <style src="@/style/scss/pages/pay.scss" scoped lang="scss"></style>
 <style lang="scss">
+#payaccountPage {
 .van-button {
-  border-radius: 50px;
+  // border-radius: 50px;
 }
 
 .van-dialog__confirm,
 .van-dialog__confirm:active,
 .van-button::before {
   display: none;
+}
 }
 </style>
 
@@ -186,7 +188,7 @@ export default {
   },
   mounted() {
     // 上个页面携带必要信息
-    this.goods_id = this.$route.params.goods_id;
+    this.goods_id = this.$route.query.goods_id;
     // 获取下单信息
     this.infoData();
   },
@@ -266,7 +268,7 @@ export default {
       }
       // 微信支付
       if (this.activeIndex == 1) {
-        //   this.$router.push({name: 'pay', params: {goodsId: this.goodsInfo.goods_id, money: this.goodsInfo.price}});
+        //   this.$router.push({name: 'pay', query: {goodsId: this.goodsInfo.goods_id, money: this.goodsInfo.price}});
       }
     },
     onInput(key) {
@@ -290,7 +292,7 @@ export default {
       let res = await ORDER_VIRTUAL_ADD(data);
       if (res.hasOwnProperty("response_code")) {
         this.pay_mobilephone = res.response_data.pay_mobilephone;
-        this.pay_money = res.response_data.pay_money.toFixed(2);
+        this.pay_money = res.response_data.pay_money;
         this.order_id = res.response_data.order_id;
         // console.log(res.response_data)
       } else {
@@ -322,7 +324,7 @@ export default {
 
         this.$router.push({
           name: "paysuccess",
-          params: {
+          query: {
             order_id: res.response_data.order_id,
             pay_money: res.response_data.pay_money
           }

@@ -52,7 +52,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/order/comment.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/order/comment.scss" scoped lang="scss"></style>
 
 <script>
 import upload from "../../../../components/upload";

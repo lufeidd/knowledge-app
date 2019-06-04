@@ -8,6 +8,9 @@
   </div>
 </template>
 
+<style lang="scss" src="@/style/scss/app.scss">
+</style>
+
 <style>
 html,
 body,
@@ -23,7 +26,6 @@ body,
   /* 如果未竖屏时为0 */
   /* padding-bottom: env(safe-area-inset-bottom);  */
   /* 为底下圆弧的高度 34px */
-
 }
 
 /* 隐藏滚动条 */
@@ -77,6 +79,9 @@ body,
 
 <script>
 import axios from "axios";
+
+// 微信分享，引入sdk
+import wx from "weixin-js-sdk";
 export default {
   name: "App",
   mounted() {

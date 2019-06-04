@@ -138,9 +138,9 @@ export default {
     };
   },
   mounted() {
-    this.pageType = this.$route.params.pageType;
+    this.pageType = this.$route.query.pageType;
     if (this.pageType == "old") {
-      this.phone = this.$route.params.phone;
+      this.phone = this.$route.query.phone;
       this.codeData.disabled = false;
     }
   },
@@ -231,7 +231,7 @@ export default {
     },
     // 提交
     submitAction() {
-      if (this.phone == this.$route.params.phone) {
+      if (this.phone == this.$route.query.phone) {
         this.$toast("请输入正确的手机号~");
         return;
       }

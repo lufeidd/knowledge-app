@@ -208,7 +208,7 @@ export default {
           this.page++;
 
           // 数据全部加载完成
-          if (this.publishData.length >= res.response_data.total_count) {
+          if (this.page > res.response_data.total_page) {
             this.programFinished = true;
             this.page = 1;
           }
@@ -221,7 +221,7 @@ export default {
       console.log(item);
       this.$router.push({
         name: "orderdetail",
-        params: {
+        query: {
           order_id: item.order_id
         }
       });

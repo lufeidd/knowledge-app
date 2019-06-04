@@ -8,7 +8,7 @@
 #albumPage {
   background-color: $greyLight;
   min-height: 100%;
-
+  
   & .audioList {
     position: relative;
     height: 94vh;
@@ -225,7 +225,7 @@
         }
 
         & .action {
-          @include position (absolute, 'tr', -3px, 0, null, 20px, 20px);
+          @include position (absolute, 'tr', 0, 0, null, 25px, 20px);
 
           & .icon {
             width: 12px;

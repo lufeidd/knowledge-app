@@ -48,8 +48,8 @@
 
       <div class="prototype">
         <van-checkbox v-model="checked" @click="checkAction">阅读并同意</van-checkbox>
-        <router-link :to="{name: 'prototype', params: {type: 'prototype'}}">《火把服务用户协议》</router-link>
-        <router-link :to="{name: 'prototype', params: {type: 'private'}}">《隐私条款》</router-link>
+        <router-link :to="{name: 'prototype', query: {type: 'prototype'}}">《火把服务用户协议》</router-link>
+        <router-link :to="{name: 'prototype', query: {type: 'private'}}">《隐私条款》</router-link>
       </div>
 
       <div class="submitBox">
@@ -66,10 +66,10 @@
 
 <style src="@/style/scss/pages/login/register.scss" scoped lang="scss"></style>
 
-<style>
+<style lang="scss">
 @import url("./../../style/scss/components/checkbox.scss");
 @import url("./../../style/scss/components/button.scss");
-
+#registerPage {
 .phone .van-field__label {
   border-right: 1px #d6d6d6 solid;
 }
@@ -77,6 +77,7 @@
 .van-field__label {
   max-width: 50px;
   margin-right: 10px;
+}
 }
 </style>
 
@@ -104,7 +105,7 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$route.params);
+    console.log(this.$route.query);
   },
   methods: {
     // 格式校验
@@ -163,7 +164,7 @@ export default {
       let res = await REG(data);
 
       if (res.hasOwnProperty("response_code")) {
-        this.$router.push({ name: "personalIndex", params: data });
+        this.$router.push({ name: "personalIndex", query: data });
         console.log(res);
       } else {
         this.$toast(res.error_message);

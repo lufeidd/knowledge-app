@@ -3,11 +3,14 @@
  * date:2019/4/22
  */
 
+
+ * {
+  margin: 0;
+  padding: 0;
+}
 #mallPage {
   background-color: $greyLight;
   min-height: 100%;
-  padding-top: 5px;
-  // padding-bottom: 10px;
 
   .verticleLine {
     display: inline-block;
@@ -46,6 +49,7 @@
 
         .ratiobox {
           min-width: 80px;
+          margin-right: 10px;
 
           .bookImg {
             @include ratioBox (100%, 100%, null, contain, $white, null);

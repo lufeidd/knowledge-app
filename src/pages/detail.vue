@@ -119,7 +119,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/detail.scss" lang="scss"></style>
+<style src="@/style/scss/pages/detail.scss" scoped lang="scss"></style>
 
 <script>
 export default {

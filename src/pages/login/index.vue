@@ -63,8 +63,8 @@
 
 <style src="@/style/scss/pages/login/index.scss" scoped lang="scss"></style>
 
-<style>
-
+<style lang="scss">
+#loginPage {
   .van-field__label {
     max-width: 50px;
     margin-right: 10px;
@@ -73,6 +73,7 @@
   .phone .van-field__label {
     border-right: 1px #d6d6d6 solid;
   }
+}
 </style>
 
 
@@ -129,7 +130,7 @@ export default {
       // 出错提示
       if (res.hasOwnProperty("response_code")) {
         console.log(res);
-        this.$router.push({ name: "personalIndex", params: "" });
+        this.$router.push({ name: "personalIndex", query: "" });
       } else {
         this.$toast(res.error_message);
       }
@@ -141,7 +142,7 @@ export default {
       let data = {
         mobile: this.phone
       };
-      this.$router.push({ name: "password", params: data });
+      this.$router.push({ name: "password", query: data });
     }
   }
 };

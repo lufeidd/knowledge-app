@@ -71,7 +71,7 @@ export default {
     };
   },
   mounted() {
-    this.getUserComment();
+    // this.getUserComment();
   },
   methods: {
     programLoad() {
@@ -107,7 +107,7 @@ export default {
           this.page++;
 
           // 数据全部加载完成
-          if (this.commentData.length >= res.response_data.total_count) {
+          if (this.page > res.response_data.total_page) {
             this.programFinished = true;
             this.page = 1;
           }

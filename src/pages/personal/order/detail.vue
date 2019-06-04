@@ -126,7 +126,7 @@ export default {
     };
   },
   mounted(){
-    this.order_id = this.$route.params.order_id;
+    this.order_id = this.$route.query.order_id;
     this.getData()
   },
   methods: {

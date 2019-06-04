@@ -56,7 +56,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/order/invoice.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/order/invoice.scss" scoped lang="scss"></style>
 
 <script>
 import { USER_ORDER_INVOICE_ADD } from "../../../apis/user.js";

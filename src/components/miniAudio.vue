@@ -4,9 +4,9 @@
     <van-row class="miniAudio" :class="{ iphx: this.isIphx }">
       <van-col span="16">
         <div class="ratioBox" @click="toPlayer">
-          <div class="box">
+          <div class="box" :class="{rotateAction: !audioData.type}">
             <span>
-              <img :src="audioData.pic" :class="{rotateAction: !audioData.type}">
+              <img :src="audioData.pic">
             </span>
           </div>
         </div>
@@ -66,7 +66,9 @@ export default {
       // 存储是否新增
       isAdd: false,
       // 是否显示播放列表入口
-      isList: true
+      isList: true,
+      // 调用接口计数器防止重复
+      count: 0, // 1表示可调用记录接口
     };
   },
   // 解决子组件数据实时刷新问题
@@ -152,10 +154,16 @@ export default {
     },
     // 用户播放进度记录
     async currentTimeData(info) {
+      // 调用接口计数器防止重复
+      // 如果是非专辑，则传入goods_id
+      var _goodsId = info[1];
+      if(info[1] == null) {
+        _goodsId = info[8];
+      }
       var tStamp = this.$getTimeStamp();
       if (info != null && info.length > 0) {
         var data = {
-          goods_id: info[8],
+          goods_id: _goodsId,
           duration: info[5],
           timestamp: tStamp,
           version: "1.0"
@@ -236,7 +244,11 @@ export default {
       var result = JSON.parse(localStorage.getItem("audioProgress"));
 
       // 更新当前时间
-      if (info != null && info.length > 0) info[5] = __currentTime;
+      if (info != null && info.length > 0 && this.count == 1) {
+        info[5] = __currentTime;
+        // 用户播放进度记录
+        this.currentTimeData(info);
+      }
 
       // 判断是否需要新增进度
       this.progressAddOrUpdate(info, result);
@@ -252,10 +264,7 @@ export default {
 
       // 设置迷你音频播放状态
       this.$emit("setMiniAudio", info);
-
-      // 用户播放进度记录
-      if(info != null && info.length > 0 && info[1] != null) this.currentTimeData(info);
-
+      
       console.log(123, "miniAudio:", "info:", "currentTime:", __currentTime, info, "result:", result, this.isAdd);
     },
     // 更新播放进度记录
@@ -327,9 +336,14 @@ export default {
     },
     // 点击播放
     playAudio(__currentTime) {
+      this.count = 1;
       this.clearClock();
       // 非专辑节目goods_id，不存在播放列表，隐藏miniAudio.vue列表入口
       var info = JSON.parse(localStorage.getItem("miniAudio"));
+
+      // 用户播放进度记录
+      if(info != null && info.length > 0) this.currentTimeData(info);
+
       if (info[1] == null) {
         this.isList = false;
       } else {

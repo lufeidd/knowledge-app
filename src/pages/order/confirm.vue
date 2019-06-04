@@ -64,7 +64,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/order.scss" lang="scss"></style>
+<style src="@/style/scss/pages/order.scss" scoped lang="scss"></style>
 
 <script>
 export default {

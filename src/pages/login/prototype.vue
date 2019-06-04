@@ -149,7 +149,7 @@ export default {
     };
   },
   mounted () {
-    // this.type = this.$route.params.type;
+    this.type = this.$route.query.type;
   },
 };
 </script>

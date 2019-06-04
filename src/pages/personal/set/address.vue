@@ -10,10 +10,26 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/set/address.scss" scoped lang="scss"></style>
-<style>
+<style lang="scss">
 @import url("./../../../style/scss/components/dateTimePicker.scss");
 @import url("./../../../style/scss/components/button.scss");
+
+
+#addressPage {
+
+  .van-address-edit__buttons {
+    padding: 100px 50px;
+  }
+
+  .van-cell:not(:last-child)::after {
+    border-bottom: 1px #f6f6f6 solid;
+  }
+
+  .van-cell {
+    font-size: $fontSize + 1;
+    color: #333;
+  }
+}
 </style>
 <script>
 //  引入接口
@@ -71,10 +87,10 @@ export default {
       .html("设置默认地址");
 
     // 设置类型
-    this.pageType = this.$route.params.pageType;
+    this.pageType = this.$route.query.pageType;
     // 编辑
     if (this.pageType == "edit") {
-      this.addressId = this.$route.params.addressId;
+      this.addressId = this.$route.query.addressId;
       // 获取当前地址信息
       this.getAddress();
     }

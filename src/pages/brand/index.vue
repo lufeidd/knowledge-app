@@ -45,7 +45,7 @@
                 <div class="text">{{item.title}}</div>
                 <div class="pinpai">{{ item.brand_name }}</div>
                 <div class="nice">
-                  <span>
+                  <span class="good" v-if="item.goods_type == 6">
                     <svg class="icon" aria-hidden="true">
                       <use xlink:href="#icon-good-line"></use>
                     </svg>
@@ -73,7 +73,7 @@
       <div class="ratiobox">
         <div class="bookImg" v-lazy:background-image="brandData.header_pic"></div>
       </div>
-      <div class="name">磨铁教育自媒体</div>
+      <div class="name">{{brandData.name}}</div>
       <div class="company">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-zimeitigongsi"></use>
@@ -117,13 +117,16 @@ export default {
       brandData: {},
       column_list_data: [],
       packets_id: null,
-      brand_id: localStorage.getItem("globalBrandId"),
+      brand_id: null,
       currentPage: 1,
       activekey: 0
     };
   },
   mounted() {
+    this.brand_id = this.$route.query.brand_id;
     this.brandGetData();
+    // 微信分享
+    this.$getWxData();
   },
   methods: {
     show() {
@@ -188,7 +191,10 @@ export default {
       let res = await BRAND_INFO(data);
       if (res.hasOwnProperty("response_code")) {
         this.brandData = res.response_data;
-        this.packets_id = res.response_data.column_list[0].packets_id;
+        // title
+        document.title = this.brandData.name;
+        if (res.response_data.column_list.length > 0)
+          this.packets_id = res.response_data.column_list[0].packets_id;
       } else {
         this.$toast(res.error_message);
       }
@@ -233,7 +239,7 @@ export default {
           this.currentPage++;
 
           // 数据全部加载完成
-          if (this.column_list_data.length >= res.response_data.total_count) {
+          if (this.currentPage > res.response_data.total_page) {
             this.programFinished = true;
             this.currentPage = 1;
           }
@@ -244,28 +250,31 @@ export default {
     },
     linktoDetail(item) {
       // console.log(item);
+      // 音频/视频
       if (item.goods_type == 1 || item.goods_type == 2) {
         this.$router.push({
           name: "albumdetail",
-          params: {
+          query: {
             goods_id: item.goods_id,
             pid: null
           }
         });
       }
+      // 专辑
       if (item.goods_type == 6) {
         this.$router.push({
           name: "article",
-          params: {
+          query: {
             goods_id: item.goods_id,
             pid: null
           }
         });
       }
+      // 文章
       if (item.goods_type == 9) {
         this.$router.push({
           name: "album",
-          params: {
+          query: {
             goods_id: item.goods_id,
             pid: null
           }
@@ -275,8 +284,9 @@ export default {
     toMall() {
       this.$router.push({
         name: "mall",
-        params: {
-          supplier_id: this.brandData.supplier_id
+        query: {
+          supplier_id: this.brandData.supplier_id,
+          title: this.brandData.name
         }
       });
     }

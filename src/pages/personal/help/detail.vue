@@ -37,7 +37,7 @@ export default {
   },
   methods:{
     async getData(){
-      var helper_id = this.$route.params.helper_id;
+      var helper_id = this.$route.query.helper_id;
       var tStamp = this.$getTimeStamp();
       console.log(helper_id,111)
       var data={

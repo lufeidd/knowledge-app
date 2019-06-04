@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/pay.scss" lang="scss"></style>
+<style src="@/style/scss/pages/pay.scss" scoped lang="scss"></style>
 
 <script>
 //  引入接口
@@ -35,8 +35,8 @@ export default {
     };
   },
   mounted() {
-    this.goodsId = this.$route.params.goodsId;
-    this.money = this.$route.params.money;
+    this.goodsId = this.$route.query.goodsId;
+    this.money = this.$route.query.money;
     // 倒计时
     this.$timeCountDown(this.timeData);
     // 新增虚拟订单

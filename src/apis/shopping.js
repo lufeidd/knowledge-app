@@ -6,13 +6,13 @@
 import req from './http.js'
 
 // 新增虚拟订单
-export const ORDER_VIRTUAL_ADD = params => req('post', '/shopping/order/virtual/add', params);
+export const ORDER_VIRTUAL_ADD = query => req('post', '/shopping/order/virtual/add', query);
 
 // 订单余额支付手机验证码发送
-export const ORDER_VIRTUAL_ADD_SENDCODE = params => req('post', '/shopping/cashier/balance/sendcode', params);
+export const ORDER_VIRTUAL_ADD_SENDCODE = query => req('post', '/shopping/cashier/balance/sendcode', query);
 
 // 订单支付
-export const ORDER_VIRTUAL_ADD_PAY = params => req('post', '/shopping/cashier/balance/pay', params);
+export const ORDER_VIRTUAL_ADD_PAY = query => req('post', '/shopping/cashier/balance/pay', query);
 
 // 新增虚拟订单
-export const ORDER_VIRTUAL_ADDINFO = params => req('post', '/shopping/order/virtual/addinfo', params);
+export const ORDER_VIRTUAL_ADDINFO = query => req('post', '/shopping/order/virtual/addinfo', query);

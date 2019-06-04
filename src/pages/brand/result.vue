@@ -13,7 +13,7 @@
         @load="programLoad"
         class="list"
       >
-        <div class="content" v-for="item,index in brandData">
+        <div class="content" v-for="item,index in brandData" @click="gotoDetail(item)">
           <div class="ratiobox">
             <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
           </div>
@@ -21,7 +21,7 @@
             <div class="text">{{item.sub_title}}</div>
             <div class="pinpai">{{item.title}}</div>
             <div class="nice">
-              <span>
+              <span class="good" v-if="item.goods_type == 6">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-good-line"></use>
                 </svg>
@@ -31,7 +31,7 @@
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-comment-line"></use>
                 </svg>
-                <span>266</span>
+                <span>{{ item.comment_num }}</span>
               </span>
             </div>
           </div>
@@ -77,12 +77,37 @@ export default {
     };
   },
   mounted() {
-    this.searchContent = this.$route.params.searchContent ? this.$route.params.searchContent : null;
-    this.goods_type = this.$route.params.goods_type ? this.$route.params.goods_type : -1;
+    this.searchContent = this.$route.query.searchContent ? this.$route.query.searchContent : null;
+    this.goods_type = this.$route.query.goods_type;
 
-    if(this.goods_type != null) this.getGoods();
+    // if(this.goods_type != null) this.getGoods();
   },
   methods: {
+    gotoDetail(item) {
+
+      var goodsType = item.goods_type;
+      if (goodsType == 1 || goodsType == 2) {
+        // 音频/视频，当前页更新
+        this.$router.push({
+          name: "albumdetail",
+          query: { goods_id: item.goods_id }
+        });
+      } else if (goodsType == 6) {
+        // 文章
+        this.$router.push({
+          name: "article",
+          query: { goods_id: item.goods_id }
+        });
+      } else if (goodsType == 9) {
+        // 专辑
+        this.$router.push({
+          name: "album",
+          query: { goods_id: item.goods_id }
+        });
+      } else {
+      }
+    
+    },
     programLoad(){
       this.getGoods();
     },
@@ -91,7 +116,7 @@ export default {
       var data = {
         keywords: this.searchContent,
         goods_type: this.goods_type,
-        brand_id: localStorage.getItem('globalBrandId'),
+        brand_id: this.$route.query.brand_id,
         page: this.page,
         page_size: this.page_size,
         version: "1.0",
@@ -100,13 +125,8 @@ export default {
       data.sign = this.$getSign(data);
       let res = await BRAND_SEARCH_GOODS_GETS(data);
 
-console.log(123, res)
-
       if (res.hasOwnProperty("response_code")) {
           var result = res.response_data.result;
-
-          console.log(123, result)
-
 
           setTimeout(() => {
             for (let i = 0; i < result.length; i++) {
@@ -116,7 +136,7 @@ console.log(123, res)
             this.page++;
 
             // 数据全部加载完成
-            if (this.brandData.length >= res.response_data.total_count) {
+            if (this.page > res.response_data.total_page) {
               this.programFinished = true;
               this.page = 1;
             }

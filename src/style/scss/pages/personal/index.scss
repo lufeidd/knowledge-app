@@ -142,7 +142,7 @@
         flex-shrink: 0;
 
         & .text {
-          @include font(null, $fontSize / 2, $white);
+          @include font(null, $fontSize - 2, $white);
           @include bgDecorate($redDark, null, 27px, 5px 13px, null);
         }
 

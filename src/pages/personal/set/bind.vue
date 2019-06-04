@@ -1,6 +1,6 @@
 <template>
   <div id="bindPage">
-    <van-cell title="手机绑定" is-link :value="mobile" :to="{name: 'setphone', params: {phone: mobile, pageType: 'old'}}"/>
+    <van-cell title="手机绑定" is-link :value="mobile" :to="{name: 'setphone', query: {phone: mobile, pageType: 'old'}}"/>
     <!-- <van-cell title="微信绑定" is-link value="" @click="showAction('bind')"/> -->
 
     <van-actionsheet
@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
  #bindPage {
    background-color: $greyLight;
    min-height: 100%;

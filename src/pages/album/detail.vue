@@ -1,5 +1,6 @@
 <template>
   <div id="albumdetailPage" class="page">
+    <!-- 属于专辑 -->
     <div class="ratioBox banner">
       <div class="box" v-if="baseData.goods_type != 2">
         <img v-if="baseData.pic" :src="baseData.pic[0]">
@@ -11,13 +12,10 @@
         </svg>
       </div>
       <div class="box layer" v-if="baseData.goods_type == 2">
-        <video :src="baseData.file_path" controls width="100%" height="100%"></video>
-        <!-- <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-videoPause-line"></use>
-        </svg>-->
+        <video @play="videoPlay" :src="baseData.file_path" controls width="100%" height="100%"></video>
       </div>
 
-      <!-- 不属于专辑的商品显示收藏当前商品 -->
+      <!-- 不属于专辑 -->
       <van-row class="action" v-if="!pid">
         <van-col class="title" span="18">{{ baseData.title }}</van-col>
         <van-col span="6">
@@ -39,7 +37,7 @@
       </van-row>
     </div>
 
-    <!-- 属于专辑的节目显示是否收藏专辑 -->
+    <!-- 专辑 -->
     <div class="albumBox" v-if="pid">
       <div class="ratioBox">
         <div class="box">
@@ -54,30 +52,30 @@
       <div
         class="action"
         style="text-align:right;"
-        @click="collectAction(baseData.collect_id, baseData.goods_id)"
+        @click="collectAction(albumInfo.collect_id, baseData.goods_id)"
       >
         <van-tag plain type="danger" text-color="#f05654">
-          <svg class="icon" aria-hidden="true" v-if="baseData.collect_id > 0">
+          <svg class="icon" aria-hidden="true" v-if="albumInfo.collect_id > 0">
             <use xlink:href="#icon-collect-block"></use>
           </svg>
           <svg class="icon" aria-hidden="true" v-else>
             <use xlink:href="#icon-collect-line"></use>
           </svg>
           <span>
-            <template v-if="baseData.collect_id > 0">已</template>收藏
+            <template v-if="albumInfo.collect_id > 0">已</template>收藏
           </span>
         </van-tag>
       </div>
     </div>
     <!-- 不属于专辑的商品显示关注公号 -->
     <div class="publish" v-else>
-      <div class="from">
+      <router-link :to="{name: 'brand', query: {brand_id: brandInfoData.brand_id}}" class="from">
         <img v-lazy="brandInfoData.header_pic" class="icon">
         <div class="publishInfo">
           <p class="publishName">{{ brandInfoData.name }}</p>
           <p class="focusNumber">已有{{ brandInfoData.fans }}人关注</p>
         </div>
-      </div>
+      </router-link>
       <span class="focus add" v-if="brandInfoData.is_followed == 0" @click="focusAction">+关注</span>
       <span class="focus" v-else @click="focusAction">已关注</span>
     </div>
@@ -177,14 +175,14 @@
       </van-list>
     </div>
 
-    <div v-if="baseData.is_free == 0 || baseData.is_payed == 0" style="height: 60px;"></div>
+    <div v-if="baseData.is_free == 0 && baseData.is_payed == 0" style="height: 60px;"></div>
     <div v-if="myAudioData.src" style="height: 60px;"></div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
 
     <!-- 试听 - 购买 -->
     <van-goods-action
       :class="{ iphx: this.isIphx }"
-      v-if="baseData.is_free == 0 || baseData.is_payed == 0"
+      v-if="baseData.is_free == 0 && baseData.is_payed == 0"
     >
       <van-goods-action-mini-btn
         icon="play-circle-o"
@@ -249,9 +247,11 @@
 </template>
 
 <style src="@/style/scss/pages/album/detail.scss" lang="scss"></style>
-<style scoped>
-.van-button {
-  border-radius: 0;
+<style lang="scss">
+#albumdetailPage {
+  .van-button {
+    border-radius: 0;
+  }
 }
 </style>
 
@@ -338,7 +338,7 @@ export default {
       // 评论
       discussData: [],
       commentPage: 1,
-      totalCount: 0,
+      totalCount: "评论 (" + 0 + ")",
       // 发布评论
       commentModel: false,
       contentModel: "",
@@ -361,15 +361,6 @@ export default {
   beforeDestroy() {
     $(window).off("scroll");
   },
-  //离开当前页面
-  // beforeRouteLeave(to, from, next) {
-  //   if(to.name == 'album' ) {
-  //     localStorage.setItem('globalPid', this.$route.params.pid ? this.$route.params.pid: parseInt(localStorage.getItem('globalPid')));
-  //   }
-  //   if(to.name == 'article') {
-  //   }
-  //   next();
-  // },
   mounted() {
     // 跳转评论锚点
     $(window).on("scroll", function() {
@@ -385,39 +376,10 @@ export default {
         });
       }
     });
-    // globalAlbum 存放专辑页当前 pid
 
-    // globalProgramPId 存放节目页当前 pid,
-    // globalProgramGoodsId 存放节目页当前 goods_id,
-    // globalProgramGoodsNo 存放节目页当前 activeGoodNo
-
-    // GlobalArtical 存放文章页当前 goods_id
-    // 1、路由进入，
-    // 2、当前页刷新（读取localStorage），
-    // 3、当前页推荐商品进入当前页（点击事件修改localStorage），
-    // 4、回退进入（上一个页面回退时修改localStorage），专辑、文章、节目三个页面回退情况
-
-    // 当路由进入当前页面，参数读取路由并更新localstorage，当不是路由进入从localStorage读取参数
-    if (this.$route.params.pid) {
-      this.pid = this.$route.params.pid;
-      localStorage.setItem("globalProgramPId", this.$route.params.pid);
-    } else {
-      this.pid = parseInt(localStorage.getItem("globalProgramPId"));
-    }
-    if (this.$route.params.goods_id) {
-      this.goodsId = this.$route.params.goods_id;
-      localStorage.setItem("globalProgramGoodsId", this.$route.params.goods_id);
-    } else {
-      this.goodsId = parseInt(localStorage.getItem("globalProgramGoodsId"));
-    }
-    if (this.$route.params.goods_no) {
-      this.activeGoodNo = this.$route.params.goods_no;
-      localStorage.setItem("globalProgramGoodsNo", this.$route.params.goods_no);
-    } else {
-      this.activeGoodNo = parseInt(
-        localStorage.getItem("globalProgramGoodsNo")
-      );
-    }
+    this.pid = this.$route.query.pid;
+    this.goodsId = this.$route.query.goods_id;
+    this.activeGoodNo = this.$route.query.goods_no;
 
     // 基础信息
     this.albumData();
@@ -425,6 +387,25 @@ export default {
     this.recommendData();
   },
   methods: {
+    // 判断视频播放是否收费
+    videoPlay () {
+      // 需要收费
+      if (this.baseData.is_free == 0 && this.baseData.is_payed == 0) {
+        var _goodsId = null;
+        if(this.baseData.sale_style == 1) {
+          _goodsId = this.$route.query.pid;
+        } else {
+          _goodsId = this.$route.query.goods_id;
+        }
+        this.$router.push({
+          name: "payaccount",
+          query: { goods_id: _goodsId }
+        });
+        return;
+      } else {
+        this.$refs.control.pauseAudio();
+      }
+    },
     // --------------------------------迷你缩略音频----------------------------------
     // 点击播放，子组件关联父页面 - 切换miniAudio组件播放状态
     typeAction(__type) {
@@ -484,7 +465,17 @@ export default {
       // 管理子组件播放状态
       this.activeGoodNo = goods_no;
 
-      var info = [__goodsNo, __pid, __pic, __src, __duration, __currentTime, __program, __album, __goodsId];
+      var info = [
+        __goodsNo,
+        __pid,
+        __pic,
+        __src,
+        __duration,
+        __currentTime,
+        __program,
+        __album,
+        __goodsId
+      ];
       this.miniAudioData(info);
 
       // 解决子组件数据实时刷新问题
@@ -536,7 +527,7 @@ export default {
         let __program = info[6];
         let __album = info[7];
         let __goodsId = info[8];
-        let __albumPic = info[9]
+        let __albumPic = info[9];
 
         // 设置音频信息
         this.$set(this.myAudioData, "goodsNo", __goodsNo);
@@ -549,7 +540,7 @@ export default {
         this.$set(this.myAudioData, "album", __album);
         this.$set(this.myAudioData, "goodsId", __goodsId);
         this.$set(this.myAudioData, "albumPic", __albumPic);
-        
+
         // localStorage存储
         // info = JSON.parse(localStorage.getItem('miniAudio'));
         localStorage.setItem("miniAudio", JSON.stringify(info));
@@ -608,10 +599,20 @@ export default {
       if (__type == "external") {
         // console.log(this.baseData)
         // 未支付
-        if (this.baseData.goods_id != null && this.baseData.is_payed == 0) {
+        if (
+          this.baseData.goods_id != null &&
+          this.baseData.is_free == 0 &&
+          this.baseData.is_payed == 0
+        ) {
+          var _goodsId = null;
+          if(this.baseData.sale_style == 1) {
+            _goodsId = this.$route.query.pid;
+          }else {
+            _goodsId = this.$route.query.goods_id;
+          }
           this.$router.push({
             name: "payaccount",
-            params: { goods_id: this.baseData.goods_id }
+            query: { goods_id: _goodsId }
           });
           return;
         }
@@ -622,22 +623,22 @@ export default {
           info = [];
         }
         // 新增迷你缩放音频播放信息
-        info[0] = parseInt(localStorage.getItem("globalGoodsNo"));
-        info[1] = parseInt(localStorage.getItem("globalPid"));
+        info[0] = this.$route.query.goods_no;
+        info[1] = this.$route.query.pid;
         info[2] = this.baseData.pic[0];
         info[3] = this.baseData.file_path;
         info[4] = this.baseData.duration;
         info[5] = 0;
         info[6] = this.baseData.title;
         info[7] = this.albumInfo.title;
-        info[8] = parseInt(localStorage.getItem("globalGoodsId"));
+        info[8] = this.$route.query.goods_id;
         info[9] = this.albumInfo.pic;
-        
+
         // localStorage存储
         localStorage.setItem("miniAudio", JSON.stringify(info));
       }
       // 外链至音乐播放器，设置info
-      this.$router.push({ name: "player", params: {} });
+      this.$router.push({ name: "player", query: {} });
     },
     // 当前节目播放结束，获取当前播放节目的专辑下所有节目（不分页）
     getAllProgramData(info) {
@@ -680,7 +681,10 @@ export default {
         }
 
         // 专辑is_payed:0未支付；1已支付，未支付不能自动播放
-        if (eval(type1 + type2 + type3) > 1 || this.baseData.is_payed == 0) {
+        if (
+          eval(type1 + type2 + type3) > 1 ||
+          (this.baseData.is_free == 0 && this.baseData.is_payed == 0)
+        ) {
           this.autoPlay = false;
         } else {
           this.autoPlay = true;
@@ -794,7 +798,12 @@ export default {
           data.sign = this.$getSign(data);
           res = await COLLECT_ADD(data);
           if (res.hasOwnProperty("response_code")) {
-            this.baseData.collect_id = 1;
+            // 专辑
+            if (this.pid) {
+              this.albumInfo.collect_id = 1;
+            } else {
+              this.baseData.collect_id = 1;
+            }
           } else {
             this.$toast(res.error_message);
           }
@@ -808,8 +817,14 @@ export default {
           };
           data.sign = this.$getSign(data);
           res = await COLLECT_CANCEL(data);
+
           if (res.hasOwnProperty("response_code")) {
-            this.baseData.collect_id = 0;
+            // 专辑
+            if (this.pid) {
+              this.albumInfo.collect_id = 0;
+            } else {
+              this.baseData.collect_id = 0;
+            }
             this.$toast("已取消收藏~");
           } else {
             this.$toast(res.error_message);
@@ -868,6 +883,7 @@ export default {
     async commentData() {
       var tStamp = this.$getTimeStamp();
       let data = {
+        goods_id: this.$route.query.goods_id,
         timestamp: tStamp,
         page: this.commentPage,
         page_size: 10,
@@ -891,14 +907,14 @@ export default {
           this.commentPage++;
 
           // 数据全部加载完成
-          if (this.discussData.length >= res.response_data.total_count) {
+          if (this.commentPage > res.response_data.total_page) {
             this.commentFinished = true;
             this.commentPage = 1;
           }
         }, 600);
 
         // 设置总评论数
-        this.totalCount = "评论 " + res.response_data.total_count;
+        this.totalCount = "评论 (" + res.response_data.total_count + ")";
         // console.log("当前页数组：", this.replyPage);
         // console.log("评论列表：", result);
       } else {
@@ -924,7 +940,7 @@ export default {
         for (let i = 0; i < result.length; i++) {
           this.answerData[key].push(result[i]);
         }
-        if (this.replyPage[key] >= res.response_data.total_page) {
+        if (this.replyPage[key] > res.response_data.total_page) {
           this.replyPage[key] = res.response_data.total_page + 1;
         } else {
           this.replyPage[key]++;
@@ -1020,7 +1036,7 @@ export default {
       if (goodsId != null)
         this.$router.push({
           name: "payaccount",
-          params: { goods_id: goodsId }
+          query: { goods_id: goodsId }
         });
     },
     // --------------------------------相似----------------------------------
@@ -1053,36 +1069,29 @@ export default {
     // 点击相似推荐
     gotoLink(item) {
       var goodsType = item.goods_type;
+      
+      // 音频/视频
       if (goodsType == 1 || goodsType == 2) {
-        // 音频/视频，当前页更新
-        // globalAlbum 存放专辑页当前 pid
-
-        // globalProgramPId 存放节目页当前 pid,
-        // globalProgramGoodsId 存放节目页当前 goods_id,
-        // globalProgramGoodsNo 存放节目页当前 activeGoodNo
-
-        // GlobalArtical 存放文章页当前 goods_id
-        // 1、路由进入，不更新localStorage，
-        // 2、当前页刷新（更新localStorage），
-        // 3、当前页推荐商品进入当前页（点击事件修改localStorage），
-        // 4、回退进入（上一个页面回退时修改localStorage），专辑、文章、节目三个页面回退情况
-        localStorage.setItem("globalProgramGoodsId", item.goods_id);
         this.pid = null;
         this.activeGoodNo = null;
+
+        this.$router.replace({
+          name: "albumdetail",
+          query: { goods_id: item.goods_id }
+        });
         location.reload();
+
       } else if (goodsType == 6) {
         // 文章
-
-        this.goodsId = parseInt(item.goods_id);
         this.$router.push({
           name: "article",
-          params: { goods_id: this.goodsId }
+          query: { goods_id: item.goods_id }
         });
       } else if (goodsType == 9) {
         // 专辑
         this.$router.push({
           name: "album",
-          params: { goods_id: this.goodsId }
+          query: { goods_id: item.goods_id }
         });
       } else {
       }
