@@ -53,7 +53,10 @@
           <div class="infoContent" v-if="key == 0">
             <!-- 关注公众号 -->
             <div class="publish">
-              <router-link :to="{name: 'brand', query: {brand_id: brandInfoData.brand_id}}" class="from">
+              <router-link
+                :to="{name: 'brand', query: {brand_id: brandInfoData.brand_id}}"
+                class="from"
+              >
                 <img v-lazy="brandInfoData.header_pic" class="icon">
                 <div class="publishInfo">
                   <p class="publishName">{{ brandInfoData.name }}</p>
@@ -300,7 +303,14 @@
                       class="action"
                       @click="collectAction(key, simularStatus[key].is_collect, item.goods_id)"
                     >
-                      <van-tag style="position: relative; top: -5px;" plain round color="#fff" text-color="#f05654" type="danger">
+                      <van-tag
+                        style="position: relative; top: -5px;"
+                        plain
+                        round
+                        color="#fff"
+                        text-color="#f05654"
+                        type="danger"
+                      >
                         <svg
                           class="icon"
                           aria-hidden="true"
@@ -359,7 +369,10 @@
       </van-tab>
     </van-tabs>
 
-    <div style="height: 60px;" v-if="baseData.is_free == 0 && baseData.is_payed == 0 && baseData.sale_style == 1"></div>
+    <div
+      style="height: 60px;"
+      v-if="baseData.is_free == 0 && baseData.is_payed == 0 && baseData.sale_style == 1"
+    ></div>
     <div v-if=" myAudioData.src" style="height: 60px;"></div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
 
@@ -437,9 +450,9 @@
 <style src="@/style/scss/pages/album/index.scss" lang="scss"></style>
 <style lang="scss">
 #albumPage {
-.van-button {
-  border-radius: 0;
-}
+  .van-button {
+    border-radius: 0;
+  }
 }
 </style>
 
@@ -514,7 +527,7 @@ export default {
       // 评论
       discussData: [],
       commentPage: 1,
-      totalCount: "评论 ("+0+")",
+      totalCount: "评论 (" + 0 + ")",
       // 发布评论
       commentModel: false,
       contentModel: "",
@@ -579,7 +592,7 @@ export default {
   },
   destroyed() {},
   mounted() {
-    this.baseData.goods_id = this.$route.query.goods_id;
+    this.baseData.goods_id = parseInt(this.$route.query.goods_id);
 
     // 当前页接口信息
     this.albumData();
@@ -726,7 +739,7 @@ export default {
       let data = {
         timestamp: tStamp,
         page: this.commentPage,
-        goods_id: this.$route.query.goods_id,
+        goods_id: parseInt(this.$route.query.goods_id),
         page_size: 10,
         version: "1.0"
       };
@@ -755,7 +768,7 @@ export default {
         }, 600);
 
         // 设置总评论数
-        this.totalCount = "评论 (" + res.response_data.total_count +")";
+        this.totalCount = "评论 (" + res.response_data.total_count + ")";
         // console.log("当前页数组：", this.replyPage);
         // console.log("评论列表：", result);
       } else {
@@ -1094,7 +1107,7 @@ export default {
       // 未支付
       if (item.goods_id != null && item.is_payed == 0 && item.is_free == 0) {
         var _goodsId = null;
-        if(this.baseData.sale_style == 1) {
+        if (this.baseData.sale_style == 1) {
           _goodsId = this.baseData.goods_id;
         } else {
           _goodsId = item.goods_id;
@@ -1133,10 +1146,10 @@ export default {
         if (this.audioPlaying) {
           this.$refs.control.playAudio(__currentTime);
           // 设置全部播放状态
-          this.allPlayStatus = 'pause';
+          this.allPlayStatus = "pause";
         } else {
           this.$refs.control.pauseAudio();
-          this.allPlayStatus = 'continue';
+          this.allPlayStatus = "continue";
         }
       }, 600);
 
@@ -1253,13 +1266,18 @@ export default {
           if (result[i].goods_type != 6) {
             this.allProgramList.push(result[i]);
           }
-          if (result[i].goods_no == info[0]) {
+          if (info != null && info.length > 0 && result[i].goods_no == info[0]) {
             next = i + 1;
           }
         }
 
         // 专辑is_payed:0未支付；1已支付，is_freeL:0不免费，1免费，未支付不能自动播放
-        if (eval(type1 + type2 + type3) > 1 || (this.baseData.is_free == 0 && this.baseData.is_payed == 0 && this.baseData.sale_style == 1)) {
+        if (
+          eval(type1 + type2 + type3) > 1 ||
+          (this.baseData.is_free == 0 &&
+            this.baseData.is_payed == 0 &&
+            this.baseData.sale_style == 1)
+        ) {
           this.autoPlay = false;
         } else {
           this.autoPlay = true;
@@ -1289,6 +1307,7 @@ export default {
     // 更新localStorage数据
     updateLocalStorage(item) {
       var info = JSON.parse(localStorage.getItem("miniAudio"));
+      if(info == null) info = [];
       info[0] = item.goods_no;
       info[3] = item.file_path;
       info[4] = item.duration;
@@ -1374,14 +1393,17 @@ export default {
             this.recommendFinished = true;
             this.recommendPage = 1;
           }
-
         }, 600);
       } else {
         this.$toast(res.error_message);
       }
     },
     // 相似
-    gotoLink(goods_id) {
+    gotoLink(goodsId) {
+      this.$router.replace({
+        name: "album",
+        query: { goods_id: goodsId }
+      });
       window.location.reload();
     }
   }

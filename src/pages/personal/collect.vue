@@ -99,9 +99,7 @@
           </router-link>
         </template>
 
-        <span
-          v-if="collectStatus[key].id != null"
-          slot="right"
+        <span slot="right"
           @click="collectCancel(item.target, key)"
         >
           <div>取消收藏</div>

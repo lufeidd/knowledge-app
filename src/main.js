@@ -110,28 +110,29 @@ Vue.config.productionTip = false
 
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
-  //判断该页面有 brand_id
-  if (from.query.brand_id) {
-    //路由切换时，如果没有就添加，有就跳过执行，添加固定参数
-    if (!to.query.brand_id) {
-      //准备一个跳转的query对象
-      let query = to.query
-      query.brand_id = from.query.brand_id
-      next({
-        path: to.path,
-        query: query
-      })
-    } else {
-      next()
-    }
-  } else {
-    next()
-  }
+  next();
+
+  // //判断该页面有 brand_id
+  // if (from.query.brand_id) {
+  //   //路由切换时，如果没有就添加，有就跳过执行，添加固定参数
+  //   if (!to.query.brand_id) {
+  //     //准备一个跳转的query对象
+  //     let query = to.query
+  //     query.brand_id = from.query.brand_id
+  //     next({
+  //       path: to.path,
+  //       query: query
+  //     })
+  //   } else {
+  //     next()
+  //   }
+  // } else {
+  //   next()
+  // }
 
   /* 路由发生变化修改页面 title */
   if (to.meta.title) {
     document.title = to.meta.title
-
     next()
   }
   next()
@@ -157,6 +158,40 @@ router.beforeEach((to, from, next) => {
     //不需要跳转，直接往下走                          
     next();
   }
+  next()
+
+  // 重定向功能，为解决ios微信上复制链接功能不能复制到动态路由问题
+  // 获取地址前段部分，不算参数
+  var replaceUrl = window.location.href.split('#')[0] + '#' + to.path;
+  var index = 0; // 索引初始化
+  // 给replaceUrl拼接参数
+  for (var i in to.query) {
+    // 判断是否等于第一个参数
+    if (index == 0) {
+      // 拼接地址第一个参数，添加“?”号
+      replaceUrl += '?' + i + '=' + to.query[i]
+    } else {
+      // 拼接地址非第一个参数，添加“&”号
+      replaceUrl += '&' + i + '=' + to.query[i]
+    }
+    index++; // 索引++
+  }
+  //判断该页面有 brand_id
+  if (from.query.brand_id) {
+    // 路由切换时，如果没有就添加，有就跳过执行，添加固定参数
+    if (!to.query.brand_id) {
+      if(replaceUrl.indexOf("?") != -1) {
+        replaceUrl += '&brand_id=' + from.query.brand_id;
+      } else {
+        replaceUrl += '?brand_id=' + from.query.brand_id;
+      }
+      next()
+    }
+  } else {
+    next()
+  }
+  console.log('routerLink:', replaceUrl);
+  window.location.replace(replaceUrl); // 重定向跳转
 })
 
 /* eslint-disable no-new */

@@ -44,7 +44,6 @@
             </div>
         </div>
         <span
-          v-if="focusStatus[key].brand_id != null"
           slot="right"
           @click="focusCancel(item.brand_id, key)"
         >

@@ -1,7 +1,7 @@
 <template>
   <div id="helpPage">
     <div style="padding-bottom:60px;">
-      <van-cell :title="item.title" v-for="item,index in listData" value is-link arrow-direction="down" :key="index" @click="todetail(index)"/>
+      <van-cell :title="item.title" v-for="item,index in listData" value is-link arrow-direction="down" :key="index" @click="todetail(item)"/>
     </div>
     <div class="bottomBox" :class="{iphx:this.isIphx}">
       <van-button type="danger" size="large" replace to="/personal/help/feedback">我要反馈</van-button>
@@ -50,14 +50,13 @@ export default {
         this.$toast(res.error_message);
       }
     },
-    todetail(index){
+    todetail(item){
       this.$router.push({
         name:"helpdetail",
         query:{
-          helper_id:index + 1,
+          helper_id: item.helper_id,
           },
         });
-      console.log(index);
     }
   }
 }

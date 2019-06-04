@@ -95,7 +95,7 @@ export default {
   // 进入当前页面
   beforeRouteEnter (to, from, next) { 
 
-    console.log(666, to, from ,next);
+    // console.log(to, from ,next);
 
     // 外链进入
     // if(from.name != null) {
@@ -121,7 +121,7 @@ export default {
       }
     },
     linktoDetail(link) {
-      console.log(123, link);
+      // console.log(link);
       var data = this.$translate(JSON.parse(link));
       this.$router.push(data);
     }

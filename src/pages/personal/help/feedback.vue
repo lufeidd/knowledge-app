@@ -1,7 +1,17 @@
 <template>
   <div id="feedbackPage">
-    <textarea cols="30" rows="10" placeholder="请输入问题并留下联系方式，我们会尽快联系您" @input="question"></textarea>
-    <input type="text" placeholder="您的手机号、QQ或邮箱（三选一）" @input="question">
+    <textarea cols="30" rows="10" placeholder="请输入问题并留下联系方式，我们会尽快联系您" @input="question('text')"></textarea>
+    <!-- 字数限制 -->
+    <div class="count">
+      <span :class="{ active: textLength > textTotal }">{{ textLength }}</span>
+      /{{ textTotal }}
+    </div>
+    <input type="text" placeholder="您的手机号、QQ或邮箱（三选一）" @input="question('phone')">
+    <!-- 字数限制 -->
+    <div class="count">
+      <span :class="{ active: phoneLength > phoneTotal }">{{ phoneLength }}</span>
+      /{{ phoneTotal }}
+    </div>
     <upload :uploadData="uploadData"></upload>
 
     <div v-if="this.isIphx" style="height: 34px;"></div>
@@ -9,7 +19,7 @@
     <div class="bottomBox" :class="{iphx:this.isIphx}" v-if="submit">
       <van-button disabled type="danger" size="large" replace>提交</van-button>
     </div>
-    
+
     <div class="bottomBox" :class="{iphx:this.isIphx}" v-else>
       <van-button type="danger" size="large" replace @click="submitFeedback">提交</van-button>
     </div>
@@ -33,6 +43,10 @@ export default {
   },
   data() {
     return {
+      textLength: 0,
+      phoneLength: 0,
+      textTotal: 500,
+      phoneTotal: 50,
       navData: {
         fold: false,
         home: true,
@@ -59,20 +73,18 @@ export default {
     // console.log(input.length);
   },
   methods: {
-    change() {
-      var input = $("input")
-        .val()
-        .trim();
-      var textarea = $("textarea")
-        .val()
-        .trim();
+    change(_type) {
+      var input = $("input").val().trim();
+      var textarea = $("textarea").val().trim();
       var iphone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
       var qqNumber = /[1-9][0-9]{5,13}/;
       var email = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/;
       // var uploadFile =$('.contetn.set').length;
+      if(_type == 'text') this.textLength = $("textarea").val().length; 
+      if(_type == 'phone') this.phoneLength = $("input").val().length; 
       if (
         (iphone.test(input) || qqNumber.test(input) || email.test(input)) &&
-        textarea.length > 0
+        $("textarea").val().length > 0 && $("textarea").val().length <= this.textTotal && $("input").val().length > 0 && $("input").val().length <= this.phoneTotal
       ) {
         this.submit = false;
         // console.log(this.submit);
@@ -80,8 +92,8 @@ export default {
         this.submit = true;
       }
     },
-    question() {
-      this.change();
+    question(_type) {
+      this.change(_type);
     }, //获取上传图片路径
     async getImgUrl() {
       this.feedbackImgs =
@@ -130,16 +142,16 @@ export default {
     },
     //提交反馈
     async submitFeedback() {
-      if($('.flex-box').length >1){
+      if ($(".flex-box").length > 1) {
         this.getImgUrl();
       }
       var tStamp = this.$getTimeStamp();
       this.content = $("input")
-          .val()
-          .trim();
+        .val()
+        .trim();
       this.contact = $("textarea")
-          .val()
-          .trim();
+        .val()
+        .trim();
       var data = {
         version: "1.0",
         timestamp: tStamp,
@@ -159,7 +171,6 @@ export default {
         this.$toast(res1.error_message);
       }
     }
-
   }
 };
 </script>

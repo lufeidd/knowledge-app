@@ -4,6 +4,9 @@
  */
 
 import req from './http.js'
+// 微信分享sdk
+import wx from 'weixin-js-sdk'
+import axios from 'axios'
 
 // 定义公用接口
 
@@ -45,4 +48,5 @@ export const ADDRESS = query => req('post', '/common/area/gets', query);
 export const SEARCH_SUGGEST = query => req('post', '/search/goods/suggest', query);
 
 // 微信公众号分享基础配置信息获取
-export const WX_SHARE = query => req('post', '/weixin/jssdk', query);
+// export const WX_SHARE = query => req('post', '/weixin/jssdk', query);
+
