@@ -48,9 +48,9 @@
     <!-- 介绍 - 节目 - 相似 -->
     <van-tabs v-model="tabModel" sticky animated @click="tabChange">
       <van-tab v-for="(item, key) in tabData" :title="item.title" :key="key">
-        <!-- 介绍 -->
-        <template v-if="activeKey == 0">
-          <div class="infoContent">
+        <template v-if="activeKey == key">
+          <!-- 介绍 -->
+          <div class="infoContent" v-if="key == 0">
             <!-- 关注公众号 -->
             <div class="publish">
               <div class="from">
@@ -141,10 +141,9 @@
               </van-list>
             </div>
           </div>
-        </template>
-        <!-- 节目 -->
-        <template v-if="activeKey == 1">
+          <!-- 节目 -->
           <van-list
+            v-if="key == 1"
             v-model="programLoading"
             :finished="programFinished"
             finished-text="没有更多了"
@@ -252,7 +251,7 @@
                         <span
                           class="history"
                           v-if="item.goods_type != 6 && progressList[key].progressHistory"
-                        >已播{{ (progressList[key].progressHistory / progressList[key].ori_duration).toFixed(2) }}%</span>
+                        >已播{{ (progressList[key].progressHistory / progressList[key].ori_duration * 100).toFixed(2) }}%</span>
                       </template>
                     </div>
                   </van-col>
@@ -275,10 +274,9 @@
               </div>
             </div>
           </van-list>
-        </template>
-        <!-- 相似 -->
-        <template v-if="activeKey == 2">
+          <!-- 相似 -->
           <van-list
+            v-if="key == 2"
             v-model="recommendLoading"
             :finished="recommendFinished"
             finished-text="没有更多了"
@@ -429,6 +427,9 @@
         </div>
       </div>
     </van-popup>
+
+    <!-- 快速导航 -->
+    <!-- <easyNav :navData="navData"></easyNav> -->
   </div>
 </template>
 
@@ -442,6 +443,7 @@
 <script>
 import miniAudio from "./../../components/miniAudio";
 import audioList from "./../../pages/album/list";
+// import easyNav from "./../../components/easyNav";
 //  引入接口
 import { ALBUM, ALBUM_DETAIL } from "../../apis/album.js";
 import {
@@ -454,6 +456,7 @@ import {
   RECOMMEND
 } from "../../apis/public.js";
 import { setTimeout } from "timers";
+import { truncate } from 'fs';
 
 export default {
   components: {
@@ -462,6 +465,15 @@ export default {
   },
   data() {
     return {
+      // 快速导航
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: false,
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      // },
       /*
        * ----------------------------------介绍----------------------------------
        */
@@ -646,6 +658,7 @@ export default {
           } else {
             this.$toast(res.error_message);
           }
+          this.baseData.collection_num++;
           // this.$toast("已收藏~");
           break;
         case "cancel":
@@ -666,6 +679,7 @@ export default {
           } else {
             this.$toast(res.error_message);
           }
+          this.baseData.collection_num--;
           break;
       }
     },
@@ -1020,7 +1034,7 @@ export default {
         this.$set(this.myAudioData, "goodsId", __goodsId);
         this.$set(this.myAudioData, "albumPic", __albumPic);
         // console.logthis.myAudioData)
-
+        
         // localStorage存储
         localStorage.setItem("miniAudio", JSON.stringify(info));
 
@@ -1298,6 +1312,7 @@ export default {
       info[6] = item.title;
       info[8] = item.goods_id;
       this.activeGoodNo = info[0];
+      
       localStorage.setItem("miniAudio", JSON.stringify(info));
 
       // 更新播放器当前播放音频
@@ -1338,6 +1353,7 @@ export default {
     // load
     recommendLoad() {
       this.recommendData();
+      console.log(999, this.activeKey)
     },
     async recommendData() {
       var tStamp = this.$getTimeStamp();
@@ -1350,8 +1366,9 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await RECOMMEND(data);
-
+      console.log(666, res)
       if (res.hasOwnProperty("response_code")) {
+        
         // 异步更新数据
         var result = res.response_data.result;
         setTimeout(() => {

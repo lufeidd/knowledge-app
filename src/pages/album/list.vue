@@ -57,7 +57,7 @@
                     <span
                       class="history"
                       v-if="item.goods_type != 6 && progressList[key].progressHistory"
-                    >已播{{ (progressList[key].progressHistory / progressList[key].ori_duration).toFixed(2) }}%</span>
+                    >已播{{ (progressList[key].progressHistory / progressList[key].ori_duration * 100).toFixed(2) }}%</span>
                   </template>
 
                 </div>

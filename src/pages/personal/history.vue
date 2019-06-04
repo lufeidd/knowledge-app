@@ -18,57 +18,119 @@
         :left-width="0"
         :on-close="historyClose"
       >
-        <router-link v-if="historyStatus[key].id != null" to="/" class="listBox">
-          <div class="left">
-            <div class="ratioBox">
-              <div class="box">
-                <img :src="item.data.pic">
-                <!-- <div class="tip">
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-sound-line"></use>
-                  </svg>
-                  {{ item.focus }}
-                </div>-->
+        <template v-if="historyStatus[key].id != null">
+          <!-- 音频/视频 -->
+          <router-link v-if="item.type == 1 || item.type == 2" :to="{name: 'albumdetail', params: {goods_id: item.target}}" class="listBox">
+            <div class="left">
+              <div class="ratioBox">
+                <div class="box">
+                  <img :src="item.data.pic">
+                </div>
               </div>
             </div>
-          </div>
-          <div class="center">
-            <div class="title">{{ item.data.title }}</div>
-            <div class="subTitle">{{ item.data.subTitle }}</div>
-            <div class="info">
-              <span class="type" v-if="item.type == 'artical'">文章</span>
-              <span class="type" v-if="item.type == 'audio'">音频</span>
-              <span class="type" v-if="item.type == 'video'">视频</span>
-              <span class="count">
-                <svg class="icon" aria-hidden="true" v-if="item.type == 'artical'">
-                  <use xlink:href="#icon-eye-line"></use>
-                </svg>
-                <svg class="icon" aria-hidden="true" v-if="item.type == 'audio'">
-                  <use xlink:href="#icon-audio-line"></use>
-                </svg>
-                <svg class="icon" aria-hidden="true" v-if="item.type == 'video'">
-                  <use xlink:href="#icon-video-line"></use>
-                </svg>
-                {{ item.data.play_num }}
-              </span>
-              <span class="time">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-time-line"></use>
-                </svg>
-                {{ item.data.create_time }}
-              </span>
+            <div class="center">
+              <div class="title">{{ item.data.title }}</div>
+              <div class="subTitle">{{ item.data.subTitle }}</div>
+              <div class="info">
+                <span class="type" v-if="item.type == 1">音频</span>
+                <span class="type" v-if="item.type == 2">视频</span>
+                <span class="count">
+                  <svg class="icon" aria-hidden="true" v-if="item.type == 1">
+                    <use xlink:href="#icon-audio-line"></use>
+                  </svg>
+                  <svg class="icon" aria-hidden="true" v-if="item.type == 2">
+                    <use xlink:href="#icon-video-line"></use>
+                  </svg>
+                  {{ item.data.play_num }}
+                </span>
+                <span class="time">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-time-line"></use>
+                  </svg>
+                  {{ item.data.create_time }}
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="right">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line"></use>
-            </svg>
-          </div>
-        </router-link>
+            <div class="right">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-next-line"></use>
+              </svg>
+            </div>
+          </router-link>
+          <!-- 专辑 -->
+          <router-link v-if="item.type == 9" :to="{name: 'album', params: {goods_id: item.target}}" class="listBox">
+            <div class="left">
+              <div class="ratioBox">
+                <div class="box">
+                  <img :src="item.data.pic">
+                </div>
+              </div>
+            </div>
+            <div class="center">
+              <div class="title">{{ item.data.title }}</div>
+              <div class="subTitle">{{ item.data.subTitle }}</div>
+              <div class="info">
+                <span class="type">专辑</span>
+                <span class="count">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-eye-line"></use>
+                  </svg>
+                  {{ item.data.play_num }}
+                </span>
+                <span class="time">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-time-line"></use>
+                  </svg>
+                  {{ item.data.create_time }}
+                </span>
+              </div>
+            </div>
+            <div class="right">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-next-line"></use>
+              </svg>
+            </div>
+          </router-link>
+          <!-- 文章 -->
+          <router-link v-if="item.type == 6" :to="{name: 'article', params: {goods_id: item.target}}" class="listBox">
+            <div class="left">
+              <div class="ratioBox">
+                <div class="box">
+                  <img :src="item.data.pic">
+                </div>
+              </div>
+            </div>
+            <div class="center">
+              <div class="title">{{ item.data.title }}</div>
+              <div class="subTitle">{{ item.data.subTitle }}</div>
+              <div class="info">
+                <span class="type" v-if="item.type == 6">文章</span>
+                <span class="count">
+                  <svg class="icon" aria-hidden="true" v-if="item.type == 6">
+                    <use xlink:href="#icon-eye-line"></use>
+                  </svg>
+                  {{ item.data.play_num }}
+                </span>
+                <span class="time">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-time-line"></use>
+                  </svg>
+                  {{ item.data.create_time }}
+                </span>
+              </div>
+            </div>
+            <div class="right">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-next-line"></use>
+              </svg>
+            </div>
+          </router-link>
+        </template>
+
         <span
           v-if="historyStatus[key].id != null"
           slot="right"
-          @click="historyCancel(item.data.target, key)"
+          @click="historyCancel(item.target, key)"
         >
           <div>取消历史</div>
         </span>
@@ -110,7 +172,7 @@ export default {
     };
   },
   mounted() {
-    this.historyData("history", null, null);
+    // this.historyData("history", null, null);
   },
   methods: {
     historyLoad() {
