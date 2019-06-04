@@ -21,7 +21,7 @@
         v-for="(item, key) in focusList"
         :key="key"
       >
-        <div class="listBox" v-if="focusStatus[key].brand_id != null">
+        <div @click="gotoBrand(item.brand_id, item.brand_name)" class="listBox" v-if="focusStatus[key].brand_id != null">
           <div class="left">
             <div class="ratioBox">
               <div class="box">
@@ -37,6 +37,11 @@
               <span class="count">+{{ item.update_num }}</span>
             </div>-->
           </div>
+            <div class="left" style="flex-basis: 0;margin-right: 10px;">
+              <svg class="icon" aria-hidden="true" style="width: 14px;height: 14px;color: #ccc;">
+                <use xlink:href="#icon-next-line"></use>
+              </svg>
+            </div>
         </div>
         <span
           v-if="focusStatus[key].brand_id != null"
@@ -83,12 +88,12 @@ export default {
       focusPage: 1
     };
   },
-  mounted() {
-    // this.focusData("focus", null, null);
-  },
   methods: {
     focusLoad() {
       this.focusData("focus", null, null);
+    },
+    gotoBrand(brandId, brandName){
+      this.$router.push({name: 'brand', query: {brand_id: brandId}});
     },
     // 获取关注接口信息
     async focusData(__type, brandId, key) {
@@ -118,11 +123,10 @@ export default {
               this.focusLoading = false;
               this.focusPage++;
               // 数据全部加载完成
-              if (this.focusList.length >= res.response_data.total_count) {
+              if (this.focusPage > res.response_data.total_page) {
                 this.focusFinished = true;
-                this.focusPage = 1;
               }
-              console.log("关注列表：", result);
+              console.log("关注列表：", res);
             }, 500);
           } else {
             this.$toast(res.error_message);

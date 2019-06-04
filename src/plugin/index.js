@@ -2,9 +2,12 @@ import crypto from "crypto";
 import axios from 'axios'
 import qs from "Qs";
 
+// 微信分享，引入sdk
+import wx from 'weixin-js-sdk';
+
 //  引入时间戳接口
 // import req from "./../apis/http.js";
-import { SERVER_TIME } from "./../apis/public.js";
+import { SERVER_TIME, WX_SHARE } from "./../apis/public.js";
 
 // 支持await async
 import regeneratorRuntime from './../regenerator-runtime/runtime.js';
@@ -14,6 +17,76 @@ import regeneratorRuntime from './../regenerator-runtime/runtime.js';
 
 export default {
   install: function (Vue, options) {
+    // 微信分享
+    Vue.prototype.$getWxData = async function () {
+      let url = encodeURIComponent(window.location.href.split('#')[0]); //去掉签名
+      let tStamp = this.$getTimeStamp();
+      let data = {
+        url: url,
+        timestamp: tStamp,
+        version: "1.0",
+      }
+      data.sign = this.$getSign(data);
+      let res = await WX_SHARE(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log('微信分享：', res)
+
+        let appId = res.response_data.appId;
+        let nonceStr = res.response_data.nonceStr;
+        let signature = res.response_data.signature;
+        let timestamp = res.response_data.timestamp;
+
+        wx.config({
+          debug: false,
+          appId: appId,         // 和获取Ticke的必须一样------必填，公众号的唯一标识
+          timestamp: timestamp,    // 必填，生成签名的时间戳
+          nonceStr: nonceStr,   // 必填，生成签名的随机串
+          signature: signature, // 必填，签名，见附录1
+          // 需要分享的列表项:发送给朋友，分享到朋友圈，分享到QQ，分享到QQ空间
+          jsApiList: [
+            'onMenuShareAppMessage',
+            'onMenuShareTimeline',
+            'onMenuShareQQ',
+            'onMenuShareQZone'
+          ]
+        });
+      } else {
+        this.$toast(res.error_message);
+      }
+
+      // 处理验证失败的信息
+      wx.error(function (res) {
+        // logUtil.printLog('验证失败返回的信息:', res);
+      });
+
+      wx.ready(function () {
+        let newUrl = encodeURIComponent(window.location.href);
+        // 分享所需参数
+        let shareData = {
+          title: document.title,
+          desc: 'test',
+          link: newUrl,
+          imgUrl: 'https://wdimg3.bookuu.com/goods/08/33/06/2018041730137678-62926.jpg@!w210',
+          // type: '',     // 分享类型，music、video或link，不填默认为link
+          // dataUrl: '',  // 如果type是music或video，则要提供数据链接，默认为空
+          success: function (res) {
+            // 用户确认分享后执行的回调函数
+            // logUtil.printLog("分享给朋友成功返回的信息为:", res);
+          },
+          cancel: function (res) {
+            // 用户取消分享后执行的回调函数
+            // logUtil.printLog("取消分享给朋友返回的信息为:", res);
+          }
+        }
+        
+        wx.onMenuShareAppMessage(shareData);  // 分享给朋友
+        wx.onMenuShareTimeline(shareData);    // 分享到朋友圈
+        wx.onMenuShareQQ(shareData);          // 分享到QQ
+        wx.onMenuShareWeibo(shareData);       // 分享到weibo
+        wx.onMenuShareQZone(shareData);       // 分享到QQ空间
+      });
+
+    }
 
     // 获取并储存服务器和本地时间差
     Vue.prototype.$getServerTime = async function () {
@@ -231,7 +304,7 @@ export default {
           }
           dataRes = {
             name: __name,
-            params: {
+            query: {
               goods_id: parseInt(dataTmp.params.goods_id),
             }
           }
@@ -240,7 +313,8 @@ export default {
         case 'search/result':
           dataRes = {
             name: 'brandresult',
-            params: {
+            query: {
+              supplier_id: parseInt(dataTmp.params.supplier_id),
               goods_type: parseInt(dataTmp.params.goods_type),
             }
           }
@@ -249,8 +323,7 @@ export default {
       return dataRes;
     }
 
-    // 获取brand_id
-    localStorage.setItem('globalBrandId', 1);
-
+    // 获取 brand_id
+    // localStorage.setItem('globalBrandId', 1);
   }
 }

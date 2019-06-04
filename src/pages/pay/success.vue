@@ -11,18 +11,21 @@
       </div>
     </div>
     <div class="recharge">
-      <van-button size="large" round type="danger" :to="{name: 'orderdetail', params: {order_id: order_id}}">查看订单</van-button>
-      <van-button style="background-color: #fff;" size="large" round plain :to="{name: 'brand'}" type="danger">返回商铺</van-button>
+      <van-button size="large" round type="danger" :to="{name: 'orderdetail', query: {order_id: order_id}}">查看订单</van-button>
+      <van-button style="background-color: #fff;" size="large" round plain :to="{name: 'brand', query: {brand_id: this.$route.query.brand_id}}" type="danger">返回商铺</van-button>
     </div>
   </div>
 </template>
 
 <style src="@/style/scss/pages/pay.scss" lang="scss" scoped></style>
 
-<style>
+<style lang="scss">
 
-  #paysuccessPage .van-button--plain.van-button--danger {
+  #paysuccessPage {
+    .van-button--plain.van-button--danger {
     margin-top: 25px;
+  }
+
   }
 </style>
 
@@ -36,8 +39,8 @@ export default {
     };
   },
   mounted () {
-    this.order_id = this.$route.params.order_id;
-    this.pay_money = this.$route.params.pay_money;
+    this.order_id = this.$route.query.order_id;
+    this.pay_money = this.$route.query.pay_money;
   },
 };
 </script>

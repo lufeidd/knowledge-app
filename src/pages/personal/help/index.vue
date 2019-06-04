@@ -53,7 +53,7 @@ export default {
     todetail(index){
       this.$router.push({
         name:"helpdetail",
-        params:{
+        query:{
           helper_id:index + 1,
           },
         });

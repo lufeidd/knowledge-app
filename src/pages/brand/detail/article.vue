@@ -221,7 +221,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/brand/detail/article.scss" scoped lang="scss"></style>
+<style src="@/style/scss/pages/brand/detail/article.scss" lang="scss"></style>
 
 <script>
 import { ALBUM, ALBUM_DETAIL } from "../../../apis/album.js";
@@ -256,7 +256,7 @@ export default {
       // 评论
       discussData: [],
       commentPage: 1,
-      totalCount: 0,
+      totalCount: "评论 (" + 0 + ")",
       // 发布评论
       commentModel: false,
       contentModel: "",
@@ -285,33 +285,8 @@ export default {
       goodsId: 46
     };
   },
-  //离开当前页面
-  beforeRouteLeave(to, from, next) {
-    //   if(to.name == 'albumdetail' ) {
-    //     localStorage.setItem('globalGoodsId', this.$route.params.goodsId ? this.$route.params.pid: parseInt(localStorage.getItem('globalGoodsId')));
-    //   }
-    next();
-  },
   mounted() {
-    // globalAlbum 存放专辑页当前 pid
-
-    // globalProgramPId 存放节目页当前 pid,
-    // globalProgramGoodsId 存放节目页当前 goods_id,
-    // globalProgramGoodsNo 存放节目页当前 activeGoodNo
-
-    // GlobalArtical 存放文章页当前 goods_id
-    // 1、路由进入，
-    // 2、当前页刷新（读取localStorage），
-    // 3、当前页推荐商品进入当前页（点击事件修改localStorage），
-    // 4、回退进入（上一个页面回退时修改localStorage），专辑、文章、节目三个页面回退情况
-
-    // 当路由进入当前页面，参数读取路由并更新localstorage，当不是路由进入从localStorage读取参数
-    if (this.$route.params.goods_id) {
-      this.goodsId = this.$route.params.goods_id;
-      localStorage.setItem("GlobalArtical", this.$route.params.goods_id);
-    } else {
-      this.goodsId = parseInt(localStorage.getItem("GlobalArtical"));
-    }
+    this.goodsId = this.$route.query.goods_id;
     this.getData();
     this.getRecommendData();
     // console.log("ID:", this.recommendData);
@@ -549,14 +524,14 @@ export default {
           this.commentPage++;
 
           // 数据全部加载完成
-          if (this.discussData.length >= res.response_data.total_count) {
+          if (this.commentPage > res.response_data.total_page) {
             this.commentFinished = true;
             this.commentPage = 1;
           }
         }, 600);
 
         // 设置总评论数
-        this.totalCount = "评论 " + res.response_data.total_count;
+        this.totalCount = "评论 (" + res.response_data.total_count + ")";
         // console.log("当前页数组：", this.replyPage);
         // console.log("评论列表：", result);
       } else {
@@ -581,7 +556,7 @@ export default {
         for (let i = 0; i < result.length; i++) {
           this.answerData[key].push(result[i]);
         }
-        if (this.replyPage[key] >= res.response_data.total_page) {
+        if (this.replyPage[key] > res.response_data.total_page) {
           this.replyPage[key] = res.response_data.total_page + 1;
         } else {
           this.replyPage[key]++;
@@ -668,39 +643,28 @@ export default {
     },
     // 点击相似推荐
     gotoLink(item) {
+      console.log(item)
+      // 音频/视频
       if (item.goods_type == 1 || item.goods_type == 2) {
         this.$router.push({
           name: "albumdetail",
-          params: {
-            goods_id: item.goods_id,
-            pid: null
-          }
+          query: {goods_id: item.goods_id}
         });
       }
+      // 文章
       if (item.goods_type == 6) {
-        // globalAlbum 存放专辑页当前 pid
-
-        // globalProgramPId 存放节目页当前 pid,
-        // globalProgramGoodsId 存放节目页当前 goods_id,
-        // globalProgramGoodsNo 存放节目页当前 activeGoodNo
-
-        // GlobalArtical 存放文章页当前 goods_id
-        // 1、路由进入，不更新localStorage，
-        // 2、当前页刷新（更新localStorage），
-        // 3、当前页推荐商品进入当前页（点击事件修改localStorage），
-        // 4、回退进入（上一个页面回退时修改localStorage），专辑、文章、节目三个页面回退情况
-        localStorage.setItem("GlobalArtical", item.goods_id);
         this.pid = null;
-
+        this.$router.replace({
+          name: "article",
+          query: {goods_id: item.goods_id}
+        });
         location.reload();
       }
+      // 专辑
       if (item.goods_type == 9) {
         this.$router.push({
-          name: "albumlist",
-          params: {
-            goods_id: item.goods_id,
-            pid: null
-          }
+          name: "album",
+          query: {goods_id: item.goods_id}
         });
       }
     }

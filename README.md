@@ -91,6 +91,9 @@ cnpm i webpack-node-externals
 // vue+webpack实现vue打包后生成配置文件用以外部修改公共路径
 cnpm install --save-dev generate-asset-webpack-plugin
 
+// 微信分享，引入sdk
+cnpm install weixin-js-sdk --save-dev
+
 cnpm install
 
 cnpm run dev

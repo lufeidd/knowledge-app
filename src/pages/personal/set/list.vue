@@ -1,6 +1,6 @@
 <template>
   <div id="listPage">
-    <div class="nullBox" v-if="addressData.length == 0">
+    <div class="nullBox" v-if="finished && addressData.length == 0">
       <img src="./../../../assets/null/address.png" width="100%">
       <div>暂时没有收货地址,去添加吧~</div>
     </div>
@@ -29,7 +29,7 @@
             <span>默认地址</span>
           </div>
           <router-link
-            :to="{ name: 'address', params: {addressId: item.address_id, pageType: 'edit'}}"
+            :to="{ name: 'address', query: {addressId: item.address_id, pageType: 'edit'}}"
             class="edit"
           >
             <svg class="icon" aria-hidden="true">
@@ -50,13 +50,17 @@
     <div style="height: 60px;"></div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="bottomBox" :class="{ iphx: this.isIphx }">
-      <van-button size="large" type="danger" @click="addAddress">+新增收货地址</van-button>
+
+      <van-button v-if="addressData.length < 50" size="large" type="danger" @click="addAddress">+新增收货地址</van-button>
+      <van-button v-else size="large" type="danger" disabled>+新增收货地址</van-button>
+      
       <div class="count">{{ addressData.length }}/50</div>
     </div>
   </div>
 </template>
 
 <style src="@/style/scss/pages/personal/set/list.scss" scoped lang="scss"></style>
+<style src="@/style/scss/components/button.scss" scoped lang="scss"></style>
 
 <script>
 //  引入接口
@@ -69,7 +73,8 @@ import {
 export default {
   data() {
     return {
-      addressData: []
+      addressData: [],
+      finished: false,
     };
   },
   mounted() {
@@ -90,6 +95,7 @@ export default {
         for (let i = 0; i < res.response_data.length; i++) {
           this.addressData.push(res.response_data[i]);
         }
+        this.finished = true;
       } else {
         this.$toast(res.error_message);
       }
@@ -120,13 +126,12 @@ export default {
       // console.log(address_id);
       this.$dialog
         .confirm({
-          title: "标题",
-          message: "弹窗内容"
+          message: "确定要删除该地址吗？"
         })
         .then(() => {
           // on confirm
           this.deleteAddress(address_id);
-          this.getAddressData();
+          location.reload()
         })
         .catch(() => {
           // on cancel
@@ -150,7 +155,7 @@ export default {
     },
     // 新增收货地址
     addAddress() {
-      this.$router.push({ name: "address", params: { pageType: "add" } });
+      this.$router.push({ name: "address", query: { pageType: "add" } });
     }
   }
 };

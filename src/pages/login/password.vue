@@ -1,5 +1,5 @@
 <template>
-  <div id="passwordPage">
+  <div id="lpasswordPage" class="passwordPage">
     <div class="fieldBox">
       <van-field
         v-bind:class="{ phone: isPhone }"
@@ -59,15 +59,17 @@
 
 <style src="@/style/scss/pages/login/password.scss" scoped lang="scss"></style>
 
-<style>
+<style lang="scss">
 @import url("./../../style/scss/components/button.scss");
-.phone .van-field__label {
-  border-right: 1px #d6d6d6 solid;
-}
+#lpasswordPage {
+  .phone .van-field__label {
+    border-right: 1px #d6d6d6 solid;
+  }
 
-.van-field__label {
-  max-width: 50px;
-  margin-right: 10px;
+  .van-field__label {
+    max-width: 50px;
+    margin-right: 10px;
+  }
 }
 </style>
 
@@ -94,7 +96,7 @@ export default {
     };
   },
   mounted() {
-    this.phone = this.$route.params.mobile;
+    this.phone = this.$route.query.mobile;
     this.checkSubmit("phone");
     // 获取并储存服务器和本地时间差
     this.$getServerTime();
@@ -166,7 +168,7 @@ export default {
         pwd: this.password
       };
       this.findPwd();
-      this.$router.push({ name: "login", params: data });
+      this.$router.push({ name: "login", query: data });
     }
   }
 };

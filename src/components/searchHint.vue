@@ -3,6 +3,7 @@
     <div class="logistics">
       <!-- <span class="text">物流公司:</span> -->
       <input
+        maxlength="50"
         type="text"
         v-model="searchHintData.search"
         @input="showList"
@@ -13,7 +14,11 @@
       <van-icon name="clear" size="16" color="#ccc" class="clearIcon" @click="clearText"/>
     </div>
     <ul>
-      <li v-for="(item,index) in searchHintData.list" :key="index" @click="select(item,index)">{{item}}</li>
+      <li
+        v-for="(item,index) in searchHintData.list"
+        :key="index"
+        @click="select(item,index)"
+      >{{item}}</li>
     </ul>
   </div>
 </template>
@@ -30,13 +35,14 @@
     }
     input {
       border: none;
-      padding-left: 15px;
+      padding-left: 25px;
       background-color: #f5f5f5;
       width: 90%;
+      box-sizing: border-box;
     }
     .clearIcon {
       position: absolute;
-      right: 15px;
+      right: 8px;
       top: 50%;
       margin-top: -7px;
       display: none;
@@ -56,7 +62,8 @@
 </style>
 
 <script>
-import {SEARCH_SUGGEST} from "../apis/public"
+import { SEARCH_SUGGEST } from "../apis/public";
+import { setTimeout } from 'timers';
 export default {
   name: "search-hint",
   props: ["searchHintData"],
@@ -81,16 +88,22 @@ export default {
   },
   methods: {
     select(item, index) {
-      console.log(item)
+      console.log(item);
       this.searchHintData.search = item;
       $("#searchHint ul").css({ display: "none" });
     },
     async showList() {
-      console.log(this.searchHintData.type)
-      // if(this.searchHintData.type == 'brand'){
+      if (this.searchHintData.search.trim() == "") {
+        this.searchData();
+        return;
+      }
+      console.log(this.searchHintData.search.trim() == "");
+
+      // setTimeout(()=> {
+        
         var tStamp = this.$getTimeStamp();
         var data = {
-          k:this.searchHintData.search,
+          k: this.searchHintData.search,
           version: "1.0",
           timestamp: tStamp
         };
@@ -103,7 +116,8 @@ export default {
         } else {
           this.$toast(res.error_message);
         }
-      // }
+      
+      // }, 600)
     },
     clearText() {
       $("#searchHint input").val("");

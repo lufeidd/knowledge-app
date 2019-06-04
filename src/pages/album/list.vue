@@ -221,7 +221,7 @@ export default {
           this.programPage++;
 
           // 数据全部加载完成
-          if (this.programList.length >= res.response_data.total_count) {
+          if (this.programPage > res.response_data.total_page) {
             this.programFinished = true;
             this.programPage = 1;
           }

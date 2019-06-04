@@ -29,6 +29,8 @@ img {
 }
 
 
+
+
 /* 字体图标 */
 .icon {
   width: 1em;
@@ -41,6 +43,11 @@ img {
 // 遮罩
 .van-overlay {
   background-color: rgba($color: #000000, $alpha: 0.4);
+}
+
+// 弹窗
+.van-dialog__confirm, .van-dialog__confirm:active {
+  color: $redDark;
 }
 
 // 开关
@@ -314,6 +321,11 @@ img {
   display: none;
 }
 
+// button
+.van-button:before {
+  display: none;
+}
+
 .bottomBox {
   @include position (fixed, 'bl', 0, 0, 100%, 50px, 0);
 
@@ -321,37 +333,15 @@ img {
     border-radius: 0;
   }
 }
+.van-tag--round {
+  border-radius: 1em;
+}
+.van-tag--round:after {
+  border-radius: 2em;
+}
 
 .iphx {
   @include position (fixed, 'bl', 0, 0, 100%, 50px, 0);
   padding-bottom: 34px;
   background-color: $white;
-}
-
-// 播放中图片旋转动画
-.rotateAction {
-  -webkit-transition: all .3s;
-  -moz-transition: all .3s;
-  transition: all .3s;
-  -o-transition: all .3s;
-  -ms-transition: all .3s;
-  -webkit-animation: rotateAnimate 10s linear infinite;
-  -o-animation: rotateAnimate 10s linear infinite;
-  -moz-animation: rotateAnimate 10s linear infinite;
-  -ms-animation: rotateAnimate 10s linear infinite;
-  animation: rotateAnimate 10s linear infinite;
-}
-
-@-webkit-keyframes rotateAnimate {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  50% {
-    transform: rotate(180deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
 }

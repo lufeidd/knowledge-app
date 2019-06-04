@@ -33,7 +33,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/set/cropper.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/set/cropper.scss" scoped lang="scss"></style>
 
 <script>
 //  引入接口
@@ -63,20 +63,29 @@ export default {
         autoCropWidth: $(window).width() * 0.72,
         autoCropHeight: $(window).width() * 0.72,
         centerBox: true,
-        high: true,
-      },
+        high: true
+      }
     };
   },
-  mounted () {
-    this.option.img = this.$route.params.data;
+  mounted() {
+    this.option.img = this.$route.query.data ? this.$route.query.data : null;
     this.cropperShow = true;
 
-    console.log(456, this.$route.params.data);
+    if (this.option.img == null) {
+      this.$router.push("/personal/index");
+    }
   },
-  beforeRouterLeave (to, from, next) {
+  beforeRouterLeave(to, from, next) {
     // 设置下一个路由的 meta
     // to.meta.keepAlive = false; // 跳转到 /personal/set/info false刷新,true缓存
     // next();
+  },
+  // 进入当前页面
+  beforeRouteEnter(to, from, next) {
+    // 当前页刷新
+    if (from.name == null) {
+    }
+    next();
   },
   methods: {
     // 头像裁切
@@ -92,7 +101,7 @@ export default {
         var self = this;
         this.$refs.cropper.getCropBlob(data => {
           var img = window.URL.createObjectURL(data);
-          console.log('img:', img);
+          console.log("img:", img);
         });
       } else {
         this.$refs.cropper.getCropData(data => {
@@ -101,13 +110,13 @@ export default {
       }
     },
     // 上传图片接口
-    async uploadData (img) {
+    async uploadData(img) {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
         file: img,
-        opt_type: 'user',
-        file_type: 'Base64',
+        opt_type: "user",
+        file_type: "Base64",
         source: 1,
         version: "1.0"
       };
@@ -115,11 +124,14 @@ export default {
       let res = await COMMON_UPLOAD(data);
       console.log("123", res.response_data[0].acc_url);
       if (res.hasOwnProperty("response_code")) {
-          this.$router.push({name: 'info', params: {img: res.response_data[0].acc_url}});
+        this.$router.push({
+          name: "info",
+          query: { img: res.response_data[0].acc_url }
+        });
       } else {
         this.$toast(res.error_message);
       }
-    },
+    }
   }
 };
 </script>

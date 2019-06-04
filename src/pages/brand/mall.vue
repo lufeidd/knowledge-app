@@ -1,5 +1,5 @@
 <template>
-  <div id="mallPage">
+  <div id="mallPage" v-if="goodsInfo != null">
     <div class="popular">
       <div class="text">
         <span class="verticleLine"></span>
@@ -36,8 +36,7 @@
         </span>
       </div>
       <div class="goods">
-        <div
-          class="goodsInfo"
+        <div class="goodsInfo"
           v-for="value,index in item.list"
           @click="linktoDetail(value.contents.link_params)"
         >
@@ -80,20 +79,34 @@ export default {
       swiperOption: {
         slidesPerView: 1.2
       },
-      supplier_id: 5,
+      supplier_id: null,
+      title: null,
       modleInfo: [],
-      goodsInfo: []
+      goodsInfo: null,
     };
   },
   mounted() {
-    // this.supplier_id = this.$route.params.supplier_id;
+    this.title = this.$route.query.title;
+    this.supplier_id = this.$route.query.supplier_id;
+    // title
+    document.title = '商城-' + this.title;
     this.getData();
+  },
+  // 进入当前页面
+  beforeRouteEnter (to, from, next) { 
+
+    console.log(666, to, from ,next);
+
+    // 外链进入
+    // if(from.name != null) {
+    // }
+    next();
   },
   methods: {
     async getData() {
       var tStamp = this.$getTimeStamp();
       var data = {
-        supplier_id: 5,
+        supplier_id: this.supplier_id,
         version: "1.0",
         timestamp: tStamp
       };
@@ -108,7 +121,7 @@ export default {
       }
     },
     linktoDetail(link) {
-      console.log(123, link)
+      console.log(123, link);
       var data = this.$translate(JSON.parse(link));
       this.$router.push(data);
     }

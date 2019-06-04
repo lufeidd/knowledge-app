@@ -6,47 +6,47 @@
 import req from './http.js'
 
 // 个人中心首页
-export const USER_HOMEPAGE = params => req('post', '/user/homepage', params);
+export const USER_HOMEPAGE = query => req('post', '/user/homepage', query);
 
 // 获取用户基本信息
-export const USER_INFO = params => req('post', '/user/info/get', params);
-export const USER_INFO_EDIT = params => req('post', '/user/info/edit', params);
+export const USER_INFO = query => req('post', '/user/info/get', query);
+export const USER_INFO_EDIT = query => req('post', '/user/info/edit', query);
 
 // 定义我的评论接口
-export const USER_COMMENT = params => req('post', '/user/comment/gets', params);
+export const USER_COMMENT = query => req('post', '/user/comment/gets', query);
 
 // 历史
-export const USER_HISTORY = params => req('post', '/user/history/gets', params);
-export const USER_HISTORY_CANCEL = params => req('post', '/user/history/delete', params);
+export const USER_HISTORY = query => req('post', '/user/history/gets', query);
+export const USER_HISTORY_CANCEL = query => req('post', '/user/history/delete', query);
 
 //我的余额
-export const USER_REMAIN_INFO = params => req('post', '/user/wallet/info', params);
+export const USER_REMAIN_INFO = query => req('post', '/user/wallet/info', query);
 // 我的余额-明细
-export const USER_REMAIN_DETAILS = params => req('post', '/user/wallet/details', params);
+export const USER_REMAIN_DETAILS = query => req('post', '/user/wallet/details', query);
 
 //帮助与反馈
-export const USER_HELPER_GETS = params => req('post', '/helper/gets', params);
-export const USER_HELPER_DETAIL = params => req('post', '/helper/detail', params);
-export const USER_FEEDBACK_ADD = params => req('post', '/user/feedback/add', params);
+export const USER_HELPER_GETS = query => req('post', '/helper/gets', query);
+export const USER_HELPER_DETAIL = query => req('post', '/helper/detail', query);
+export const USER_FEEDBACK_ADD = query => req('post', '/user/feedback/add', query);
 
 //我的购买--订单
-export const USER_ORDER_INVOICE_ADD = params => req('post', '/shopping/order/invoice/add', params);
+export const USER_ORDER_INVOICE_ADD = query => req('post', '/shopping/order/invoice/add', query);
 
 
 
-export const USER_ORDER_DETAIL_GET = params => req('post', '/shopping/order/get', params);
-export const USER_ORDER_DETAIL_GETS = params => req('post', '/shopping/order/gets', params);
+export const USER_ORDER_DETAIL_GET = query => req('post', '/shopping/order/get', query);
+export const USER_ORDER_DETAIL_GETS = query => req('post', '/shopping/order/gets', query);
 
 // 获取用户地址列表
-export const USER_ADDRESS_LIST = params => req('post', '/user/address/gets', params);
-export const USER_ADDRESS_ADD = params => req('post', '/user/address/add', params);
-export const USER_ADDRESS_DEL = params => req('post', '/user/address/delete', params);
-export const USER_ADDRESS_EDIT = params => req('post', '/user/address/edit', params);
-export const USER_ADDRESS = params => req('post', '/user/address/get', params);
+export const USER_ADDRESS_LIST = query => req('post', '/user/address/gets', query);
+export const USER_ADDRESS_ADD = query => req('post', '/user/address/add', query);
+export const USER_ADDRESS_DEL = query => req('post', '/user/address/delete', query);
+export const USER_ADDRESS_EDIT = query => req('post', '/user/address/edit', query);
+export const USER_ADDRESS = query => req('post', '/user/address/get', query);
 
 // 手机绑定
-export const USER_PHONE_RESET = params => req('post', '/user/info/mobile/reset', params);
-export const USER_PHONE_RESETSAVE = params => req('post', '/user/info/mobile/resetsave', params);
+export const USER_PHONE_RESET = query => req('post', '/user/info/mobile/reset', query);
+export const USER_PHONE_RESETSAVE = query => req('post', '/user/info/mobile/resetsave', query);
 
 // 用户播放进度记录
-export const USER_PLAYED_RECORD = params => req('post', '/user/played/record', params);
+export const USER_PLAYED_RECORD = query => req('post', '/user/played/record', query);

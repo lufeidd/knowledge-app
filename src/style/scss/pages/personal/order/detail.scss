@@ -95,7 +95,7 @@
       padding: 13px 15px 30px 15px;
       border-bottom: 1px solid $greyLight;
        .bookDetail{
-         @include displayFlex(flex,flex-start,flex-start);
+         @include displayFlex(flex,null,null);
          .ratiobox{
           border-radius: 2px;
           overflow: hidden;
@@ -121,6 +121,13 @@
            margin-left: 10px;
            @include textOverflow;
            @include font("PingFangBlod", $fontSize + 2, $cl3);
+         }
+         .rightInfo{
+          @include displayFlex(flex,space-between,space-between);
+          flex-direction: column;
+          .red{
+            color: $redDark;
+          }
          }
        }
      }

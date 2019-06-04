@@ -99,49 +99,77 @@ export default new Router({
     // 根目录
     {
       path: '/',
-      redirect: '/login/index',
+      redirect: '/brand/index',
     },
     // 登录/注册
     {
       path: '/login/index',
       name: 'login',
       component: login,
+      meta: {
+        title: '登录'
+      }
     },
     {
       path: '/login/password',
       name: 'password',
-      component: password
+      component: password,
+      meta: {
+        title: '找回密码'
+      }
     },
     {
       path: '/login/register',
       name: 'register',
-      component: register
+      component: register,
+      meta: {
+        title: '注册'
+      }
     },
     {
       path: '/login/prototype',
       name: 'prototype',
-      component: prototype
+      component: prototype,
+      meta: {
+        title: ''
+      }
     },
     // 个人中心 - 首页
     {
       path: '/personal/index',
       name: 'personalIndex',
       component: personal,
+      meta: {
+        title: '个人中心',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/collect',
       name: 'collect',
-      component: collect
+      component: collect,
+      meta: {
+        title: '收藏',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/history',
       name: 'history',
-      component: history
+      component: history,
+      meta: {
+        title: '历史',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/focus',
       name: 'focus',
-      component: focus
+      component: focus,
+      meta: {
+        title: '关注',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     // 个人中心 - 我的余额
     {
@@ -149,23 +177,37 @@ export default new Router({
       name: 'remain',
       component: remain,
       meta: {
-        keepAlive: true,
+        keepAlive: false,
+        title: '我的余额',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
     {
       path: '/personal/remain/record',
       name: 'record',
-      component: record
+      component: record,
+      meta: {
+        title: '充值记录',
+        requireAuth: false // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/remain/account',
       name: 'account',
-      component: account
+      component: account,
+      meta: {
+        title: '充值',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/remain/detail',
       name: 'remaindetail',
-      component: remaindetail
+      component: remaindetail,
+      meta: {
+        title: '账单明细',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     // 个人中心 - 我的购买 - 下单
     {
@@ -173,13 +215,19 @@ export default new Router({
       name: 'orderdetail',
       component: orderdetail,
       meta: {
-        keepAlive: true,  // false不需要被缓存，true需要缓存
+        keepAlive: false,  // false不需要被缓存，true需要缓存
+        title: '我的订单',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       },
     },
     {
       path: '/personal/order/list',
       name: 'orderlist',
-      component: orderlist
+      component: orderlist,
+      meta: {
+        title: '我的购买',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/order/invoice',
@@ -187,8 +235,8 @@ export default new Router({
       component: orderinvoice
     },
     {
-      path:'/personal/order/result',
-      name:'orderresult',
+      path: '/personal/order/result',
+      name: 'orderresult',
       component: orderresult,
     },
     // 个人中心 - 我的购买 - 评价
@@ -253,6 +301,10 @@ export default new Router({
         from.path == '/personal/set/info' ? next('/personal/index') : next();
         from.path == '/personal/set/phone' ? next('/personal/index') : next();
       },
+      meta: {
+        title: '设置',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/set/address',
@@ -262,37 +314,61 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         from.path == '/personal/set/index' ? next('/personal/index') : next();
       },
+      meta: {
+        title: '我的收货地址',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/set/list',
       name: 'addresslist',
       component: addresslist,
+      meta: {
+        title: '我的收货地址',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/set/info',
       name: 'info',
       component: info,
+      meta: {
+        title: '个人资料',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/set/safe',
       name: 'safe',
       component: safe,
+      meta: {
+        title: '账号和安全',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/set/cropper',
       name: 'cropper',
       component: cropper,
+      meta: {
+        title: '头像裁切',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/set/bind',
       name: 'bind',
       component: bind,
+      meta: {
+        title: '账号绑定',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
-    {
-      path: '/personal/set/cancel',
-      name: 'cancel',
-      component: cancel,
-    },
+    // {
+    //   path: '/personal/set/cancel',
+    //   name: 'cancel',
+    //   component: cancel,
+    // },
     {
       path: '/personal/set/password',
       name: 'setpassword',
@@ -301,33 +377,57 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         from.path == '/login/index' ? next('/login/index') : next();
       },
+      meta: {
+        title: '修改密码',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/set/phone',
       name: 'setphone',
       component: setphone,
+      meta: {
+        title: '手机绑定',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     // 个人中心 - 帮助与反馈
     {
       path: '/personal/help/index',
       name: 'help',
-      component: help
+      component: help,
+      meta: {
+        title: '帮助与反馈',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/help/detail',
       name: 'helpdetail',
-      component: helpdetail
+      component: helpdetail,
+      meta: {
+        title: '帮助与反馈',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/help/feedback',
       name: 'feedback',
-      component: feedback
+      component: feedback,
+      meta: {
+        title: '我要反馈',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     // 个人中心 - 我的评论
     {
       path: '/personal/comment/index',
       name: 'comment',
-      component: comment
+      component: comment,
+      meta: {
+        title: '我的评论',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     // 搜索
     {
@@ -336,6 +436,7 @@ export default new Router({
       component: search,
       meta: {
         keepAlive: false,  // false不需要被缓存，true需要缓存
+        title: '搜索'
       },
     },
     // 专辑
@@ -345,6 +446,7 @@ export default new Router({
       component: album,
       meta: {
         keepAlive: false,  // false不需要被缓存，true需要缓存
+        title: '专辑详情'
       }
     },
     {
@@ -353,6 +455,7 @@ export default new Router({
       component: albumdetail,
       meta: {
         keepAlive: false,  // false不需要被缓存，true需要缓存
+        title: '节目详情'
       },
     },
     {
@@ -361,6 +464,7 @@ export default new Router({
       component: player,
       meta: {
         keepAlive: false,  // false不需要被缓存，true需要缓存
+        title: '正在播放'
       },
     },
     {
@@ -379,7 +483,8 @@ export default new Router({
       name: 'article',
       component: article,
       meta: {
-        keepAlive: true,  // false不需要被缓存，true需要缓存
+        keepAlive: false,  // false不需要被缓存，true需要缓存
+        title: '文章详情'
       },
     },
     {
@@ -404,7 +509,10 @@ export default new Router({
     {
       path: '/cart',
       name: 'cart',
-      component: cart
+      component: cart,
+      meta: {
+        title: '购物车',
+      }
     },
     // 商品详情
     {
@@ -429,14 +537,19 @@ export default new Router({
     {
       path: '/pay/index',
       name: 'pay',
-      component: pay
+      component: pay,
+      meta: {
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/pay/account',
       name: 'payaccount',
       component: payaccount,
       meta: {
-        keepAlive: true,  // false不需要被缓存，true需要缓存
+        keepAlive: false,  // false不需要被缓存，true需要缓存
+        title: '结算',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       },
       //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
       beforeEnter: (to, from, next) => {
@@ -449,7 +562,9 @@ export default new Router({
       name: 'paysuccess',
       component: paysuccess,
       meta: {
-        keepAlive: true,  // false不需要被缓存，true需要缓存
+        keepAlive: false,  // false不需要被缓存，true需要缓存
+        title: '支付成功',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       },
     }
   ]

@@ -44,7 +44,8 @@
     />
 
     <!-- 性别 -->
-    <van-cell title="性别" is-link :value="infoList.sex == 1 ? '男' : '女'" @click="showAction('sex')"/>
+    <van-cell title="性别" is-link v-if="infoList.sex == 0" :value="''" @click="showAction('sex')"/>
+    <van-cell title="性别" is-link v-else :value="infoList.sex == 1 ? '男' : '女'" @click="showAction('sex')"/>
 
     <!-- 头像裁切，异步组件 -->
     <!-- 性别 -->
@@ -77,11 +78,11 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
+#infoPage {
 .van-button {
   border-radius: 0;
 }
-#infoPage {
   min-height: 100%;
   background-color: $greyLight;
   & .listBox {
@@ -164,7 +165,7 @@ export default {
         mobile: "",
         nickname: "",
         birthday: "",
-        sex: 1
+        sex: 0
       },
       // 生日
       birthdayModel: false,
@@ -254,7 +255,7 @@ export default {
         // this.cropperShow = true;
 
         // 跳转到裁切页面
-        self.$router.push({ name: "cropper", params: { data: data } });
+        self.$router.push({ name: "cropper", query: { data: data } });
         // console.log(data);
       };
     },
@@ -275,8 +276,8 @@ export default {
         this.$set(this.infoList, "birthday", res.response_data.birthday);
         this.$set(this.infoList, "sex", res.response_data.sex);
         // 裁切后的图片
-        if (this.$route.params.img)
-          this.$set(this.infoList, "header_pic", this.$route.params.img);
+        if (this.$route.query.img)
+          this.$set(this.infoList, "header_pic", this.$route.query.img);
         console.log(789, this.infoList.header_pic);
       } else {
         this.$toast(res.error_message);
@@ -313,6 +314,18 @@ export default {
     },
     // 修改账号接口信息
     async editInfoData() {
+      if (!this.infoList.nickname) {
+        this.$toast("请输入昵称~");
+        return;
+      }
+      if (!this.infoList.birthday) {
+        this.$toast("请输入生日~");
+        return;
+      }
+      if (this.infoList.sex == 0) {
+        this.$toast("请选择性别~");
+        return;
+      }
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
@@ -323,18 +336,6 @@ export default {
         version: "1.0"
       };
 
-      if (!this.infoList.nickname) {
-        this.$toast("请输入昵称~");
-        return;
-      }
-      if (!this.infoList.birthday) {
-        this.$toast("请输入生日~");
-        return;
-      }
-      if (!this.infoList.sex) {
-        this.$toast("请输入性别~");
-        return;
-      }
       data.sign = this.$getSign(data);
       let res = await USER_INFO_EDIT(data);
       if (res.hasOwnProperty("response_code")) {

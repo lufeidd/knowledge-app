@@ -15,10 +15,12 @@ exports.assetsPath = function (_path) {
 exports.cssLoaders = function (options) {
   options = options || {}
 
+  // 解决vue打包之后部分css不生效问题
   const cssLoader = {
     loader: 'css-loader',
     options: {
-      sourceMap: options.sourceMap
+      sourceMap: options.sourceMap,
+      minimize:true
     }
   }
 

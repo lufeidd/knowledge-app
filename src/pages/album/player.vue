@@ -4,14 +4,14 @@
       <div class="box bg">
         <img :src="audioData.pic">
       </div>
-      <div class="box pic">
-        <img :src="audioData.pic" :class="{rotateAction: !audioData.type}">
+      <div class="box pic" :class="{rotateAction: !audioData.type}">
+        <img :src="audioData.pic">
       </div>
     </div>
 
     <div class="descBox">
       <div class="title">{{ audioData.program }}</div>
-      <router-link :to="{name: 'albumdetail', params: {goods_id: baseData.goods_id}}" class="subTitle">
+      <router-link :to="{name: 'albumdetail', query: {goods_id: baseData.goods_id}}" class="subTitle">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-list-line"></use>
         </svg>
@@ -86,6 +86,7 @@
 import audioList from "./../../pages/album/list";
 //  引入接口
 import { ALBUM_DETAIL } from "../../apis/album.js";
+import { USER_PLAYED_RECORD } from "../../apis/user.js";
 import { setTimeout } from "timers";
 export default {
   components: {
@@ -127,6 +128,8 @@ export default {
       autoPlay: true,
       // 存储是否新增
       isAdd: false,
+      // 调用接口计数器防止重复
+      count: 0, // 1表示可调用记录接口
     };
   },
   beforeDestroy() {
@@ -192,7 +195,7 @@ export default {
       if (item.goods_id != null && item.is_payed == 0) {
         this.$router.push({
           name: "payaccount",
-          params: { goods_id: item.goods_id }
+          query: { goods_id: item.goods_id }
         });
         return;
       }
@@ -304,8 +307,13 @@ export default {
       var info = JSON.parse(localStorage.getItem("miniAudio"));
       // 存储到localStorage: audioProgress
       var result = JSON.parse(localStorage.getItem("audioProgress"));
-
-      if( info != null && info.length > 0) info[5] = __currentTime;
+      
+      // 更新当前时间
+      if (info != null && info.length > 0 && this.count == 1) {
+        info[5] = __currentTime;
+        // 用户播放进度记录
+        this.currentTimeData(info);
+      }
 
       // 判断是否需要新增进度
       this.progressAddOrUpdate(info, result);
@@ -412,6 +420,7 @@ export default {
     },
     // 点击播放
     playAudio(__currentTime) {
+      this.count = 1;
       this.clearClock();
       // 切换播放状态
       this.audioData.type = false;
@@ -508,12 +517,36 @@ export default {
     nextProgram() {
       this.allProgramData("next");
     },
+    // 用户播放进度记录
+    async currentTimeData(info) {
+      // 调用接口计数器防止重复
+      // 如果是非专辑，则传入goods_id
+      var _goodsId = info[1];
+      if(info[1] == null) {
+        _goodsId = info[8];
+      }
+      var tStamp = this.$getTimeStamp();
+      if (info != null && info.length > 0) {
+        var data = {
+          goods_id: _goodsId,
+          duration: info[5],
+          timestamp: tStamp,
+          version: "1.0"
+        };
+        data.sign = this.$getSign(data);
+        let res = await USER_PLAYED_RECORD(data);
+        if (res.hasOwnProperty("response_code")) {
+        } else {
+          this.$toast(res.error_message);
+        }
+      }
+    },
     async allProgramData(actionType) {
       // 获取localStorage数据
       var info = JSON.parse(localStorage.getItem("miniAudio"));
 
       // 当前节目不为单个商品
-      if(info[1] != 0) {
+      if(info[1] != null) {
         var tStamp = this.$getTimeStamp();
         let data = {
           timestamp: tStamp,
@@ -573,7 +606,7 @@ export default {
           if (actionType == "prev") {
             
             // 节目已支付
-            if(this.allProgramList[prev].is_payed == 0) {
+            if(this.allProgramList[prev].is_payed == 0 && this.allProgramList[prev].is_free == 0) {
               this.pauseAudio();
               this.$toast('上一个节目收费');
               return;
@@ -588,7 +621,7 @@ export default {
           } else if (actionType == "next" || this.autoPlay) {
 
             // 节目已支付
-            if(this.allProgramList[next].is_payed == 0) {
+            if(this.allProgramList[next].is_payed == 0 && this.allProgramList[next].is_free == 0) {
               this.pauseAudio();
               this.$toast('下一个节目收费');
               return;
@@ -609,6 +642,8 @@ export default {
         } else {
           this.$toast(res.error_message);
         }
+      } else {
+        this.$toast('当前为单个节目');
       }
     },
   }

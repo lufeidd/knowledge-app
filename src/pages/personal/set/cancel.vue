@@ -23,7 +23,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/set/cancel.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/set/cancel.scss" scoped lang="scss"></style>
 
 <script>
 export default {

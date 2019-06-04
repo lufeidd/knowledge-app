@@ -16,6 +16,33 @@ html {
   bottom: 0;
   padding-bottom: 50px;
   background-color: $white;
+  /* 播放中图片旋转动画 */
+  .rotateAction {
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    transition: all .3s;
+    -o-transition: all .3s;
+    -ms-transition: all .3s;
+    -webkit-animation: rotateAnimate 10s linear infinite;
+    -o-animation: rotateAnimate 10s linear infinite;
+    -moz-animation: rotateAnimate 10s linear infinite;
+    -ms-animation: rotateAnimate 10s linear infinite;
+    animation: rotateAnimate 10s linear infinite;
+  }
+  
+  @-webkit-keyframes rotateAnimate {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    50% {
+      transform: rotate(180deg);
+    }
+  
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 
   & .audioListBox {
     @include position(absolute, "tl", 44px, 0, 100%, null, null);
@@ -34,6 +61,7 @@ html {
         width: 65px;
         padding-bottom: 65px;
         border-radius: 4px;
+        overflow: hidden;
         flex-shrink: 0;
       }
 
@@ -131,9 +159,9 @@ html {
       left: 25%;
       top: 25%;
       border-radius: 100%;
-      background-color: $greyLight;
-      box-shadow: 4px 13px 32px rgba(0, 0, 0, 0.43);
       overflow: hidden;
+      background-color: $greyLight;
+      // box-shadow: 4px 13px 32px rgba(0, 0, 0, 0.43);
     }
   }
 

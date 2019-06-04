@@ -3,13 +3,17 @@
     <textarea cols="30" rows="10" placeholder="请输入问题并留下联系方式，我们会尽快联系您" @input="question"></textarea>
     <input type="text" placeholder="您的手机号、QQ或邮箱（三选一）" @input="question">
     <upload :uploadData="uploadData"></upload>
+
+    <div v-if="this.isIphx" style="height: 34px;"></div>
+
     <div class="bottomBox" :class="{iphx:this.isIphx}" v-if="submit">
       <van-button disabled type="danger" size="large" replace>提交</van-button>
     </div>
-    <div v-if="this.isIphx" style="height: 34px;"></div>
+
     <div class="bottomBox" :class="{iphx:this.isIphx}" v-else>
       <van-button type="danger" size="large" replace @click="submitFeedback">提交</van-button>
     </div>
+
     <easyNav :navData="navData"></easyNav>
   </div>
 </template>
@@ -78,8 +82,7 @@ export default {
     },
     question() {
       this.change();
-    },
-    //获取上传图片路径
+    }, //获取上传图片路径
     async getImgUrl() {
       this.feedbackImgs =
         $(".content.set")
@@ -125,7 +128,7 @@ export default {
         this.$toast(res.error_message);
       }
     },
-
+    //提交反馈
     async submitFeedback() {
       if($('.flex-box').length >1){
         this.getImgUrl();
@@ -156,6 +159,7 @@ export default {
         this.$toast(res1.error_message);
       }
     }
+
   }
 };
 </script>

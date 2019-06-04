@@ -1,5 +1,5 @@
 <template>
-  <div id="passwordPage">
+  <div id="spasswordPage" class="passwordPage">
     <div class="fieldBox">
 
       <van-field
@@ -38,11 +38,16 @@
 
 <style>
 @import url("./../../../style/scss/components/button.scss");
-#passwordPage .van-field__label {
-    max-width: 0;
-}
-#passwordPage .van-field__label {
-    margin-right: 0;
+</style>
+
+<style lang="scss">
+#spasswordPage {
+  .van-field__label {
+      max-width: 0;
+  }
+  .van-field__label {
+      margin-right: 0;
+  }
 }
 </style>
 

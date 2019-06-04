@@ -148,7 +148,7 @@
     </van-submit-bar>
   </div>
 </template>
-<style src="@/style/scss/pages/cart.scss" lang="scss"></style>
+<style src="@/style/scss/pages/cart.scss" scoped lang="scss"></style>
 <script>
 export default {
   data() {

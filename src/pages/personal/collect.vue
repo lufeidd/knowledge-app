@@ -1,9 +1,6 @@
 <template>
   <div id="collectPage">
-    <div
-      class="nullBox"
-      v-if="collectFinished && collectList.length == 0 || collectStatus.length == 1 && collectStatus[0].id == null"
-    >
+    <div class="nullBox" v-if="collectFinished && collectList.length == 0">
       <img src="./../../assets/null/list.png" width="100%">
       <div>还没有收藏的内容，快去看看吧~</div>
     </div>
@@ -21,12 +18,11 @@
         :left-width="0"
         :on-close="collectClose"
       >
-
-        <template v-if="collectStatus[key].id != null">
+        <template>
           <!-- 音频/视频 -->
           <router-link
             v-if="item.type == 1 || item.type == 2"
-            :to="{name: 'albumdetail', params: {goods_id: item.target}}"
+            :to="{name: 'albumdetail', query: {goods_id: item.target}}"
             class="listBox"
           >
             <div class="left">
@@ -52,7 +48,7 @@
           <!-- 专辑 -->
           <router-link
             v-if="item.type == 9"
-            :to="{name: 'album', params: {goods_id: item.target}}"
+            :to="{name: 'album', query: {goods_id: item.target}}"
             class="listBox"
           >
             <div class="left">
@@ -78,7 +74,7 @@
           <!-- 文章 -->
           <router-link
             v-if="item.type == 6"
-            :to="{name: 'article', params: {goods_id: item.target}}"
+            :to="{name: 'article', query: {goods_id: item.target}}"
             class="listBox"
           >
             <div class="left">
@@ -146,9 +142,7 @@ export default {
       collectPage: 1
     };
   },
-  mounted() {
-    // this.collectData("collect", null, null);
-  },
+  mounted() {},
   methods: {
     collectLoad() {
       this.collectData("collect", null, null);
@@ -170,27 +164,34 @@ export default {
           res = await COLLECT(data);
 
           // 出错提示
-          if (res.hasOwnProperty("response_code")) {
+          if (
+            res.hasOwnProperty("response_code") &&
+            res.response_data.hasOwnProperty("result")
+          ) {
             setTimeout(() => {
               var result = res.response_data.result;
+
               for (let i = 0; i < result.length; i++) {
                 this.collectList.push(result[i]);
                 this.collectStatus.push(result[i]);
               }
+
+              // console.log(this.collectList)
               // 加载状态结束
               this.collectLoading = false;
               this.collectPage++;
               // 数据全部加载完成
-              if (this.collectList.length >= res.response_data.total_count) {
+
+              if (this.collectPage > res.response_data.total_page) {
                 this.collectFinished = true;
-                this.collectPage = 1;
               }
-              // console.log("收藏列表：", result);
             }, 500);
           } else {
             this.$toast(res.error_message);
           }
           break;
+
+          console.log("收藏列表：", this.collectList);
         case "cancel":
           data = {
             timestamp: tStamp,

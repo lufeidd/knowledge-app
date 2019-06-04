@@ -28,7 +28,7 @@ module.exports = {
     // host: '198.210.13.108', // can be overwritten by process.env.HOST
 
     host: 'wap.huoba.dev.zw', // can be overwritten by process.env.HOST
-    port: 82, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 80, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
 
     autoOpenBrowser: true,
     errorOverlay: true,

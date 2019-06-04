@@ -31,13 +31,13 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-.van-button {
-  border-radius: 0;
-}
+<style lang="scss">
 #setindexPage {
   background-color: $greyLight;
   min-height: 100%;
+.van-button {
+  border-radius: 0;
+}
 
   & .listBox {
     padding: 10px 15px;

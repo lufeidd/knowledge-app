@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #safePage {
   background-color: $greyLight;
   min-height: 100%;

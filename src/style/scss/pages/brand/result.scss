@@ -4,13 +4,11 @@
  */
 
 #resultPage{
-  padding-top: 5px;
   background-color: $greyLight ;
   min-height: 100%;
   box-sizing: border-box;
   .list{
     background-color: #fff;
-    margin-top: 10px;
     .content{
       @include displayFlex(flex, null, null);
       padding: 15px;
@@ -40,8 +38,9 @@
         .nice{
           color: $cl9;
           font-size: $fontSize - 2;
-          .comment{
-            margin-left: 10px;
+          .comment,
+          .good{
+            margin-right: 10px;
           }
         }
       }

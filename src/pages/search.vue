@@ -110,7 +110,7 @@ export default {
         case "order":
           this.$router.push({
             name: "orderresult",
-            params: {
+            query: {
               type: "order",
               searchContent: this.searchHintData.search
               // state:this.state,
@@ -121,7 +121,7 @@ export default {
         case "brand":
           this.$router.push({
             name: "brandresult",
-            params: {
+            query: {
               type: "brand",
               searchContent: this.searchHintData.search
             }
@@ -131,6 +131,10 @@ export default {
       }
     },
     onSearch() {
+      if(this.searchHintData.search.trim() == "") {
+        this.$toast("请输入您要搜索的内容！");
+        return;
+      }
       if (this.type == "order" && this.searchHintData.search.length > 0) {
         this.searchTo("order");
       }
@@ -143,6 +147,7 @@ export default {
     //获取热搜词
     async getHotKey() {
       var data = {
+        brand_id: this.$route.query.brand_id,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -182,7 +187,7 @@ export default {
       // return;
       this.$router.push({
         name: "orderresult",
-        params: {
+        query: {
           type: "order",
           searchContent: this.searchHintData.search,
           state: this.state.order_state
@@ -193,7 +198,7 @@ export default {
       console.log(item);
       this.$router.push({
         name: "brandresult",
-        params: {
+        query: {
           type: "brand",
           searchContent: item
         }
@@ -204,7 +209,7 @@ export default {
       if (this.type == "order") {
         this.$router.push({
           name: "orderresult",
-          params: {
+          query: {
             type: "order",
             searchContent: item.content
           }
@@ -213,7 +218,7 @@ export default {
       if (this.type == "brand") {
         this.$router.push({
           name: "brandresult",
-          params: {
+          query: {
             type: "brand",
             searchContent: item.content
           }

@@ -20,7 +20,7 @@
       >
         <template v-if="historyStatus[key].id != null">
           <!-- 音频/视频 -->
-          <router-link v-if="item.type == 1 || item.type == 2" :to="{name: 'albumdetail', params: {goods_id: item.target}}" class="listBox">
+          <router-link v-if="item.type == 1 || item.type == 2" :to="{name: 'albumdetail', query: {goods_id: item.target}}" class="listBox">
             <div class="left">
               <div class="ratioBox">
                 <div class="box">
@@ -58,7 +58,7 @@
             </div>
           </router-link>
           <!-- 专辑 -->
-          <router-link v-if="item.type == 9" :to="{name: 'album', params: {goods_id: item.target}}" class="listBox">
+          <router-link v-if="item.type == 9" :to="{name: 'album', query: {goods_id: item.target}}" class="listBox">
             <div class="left">
               <div class="ratioBox">
                 <div class="box">
@@ -92,7 +92,7 @@
             </div>
           </router-link>
           <!-- 文章 -->
-          <router-link v-if="item.type == 6" :to="{name: 'article', params: {goods_id: item.target}}" class="listBox">
+          <router-link v-if="item.type == 6" :to="{name: 'article', query: {goods_id: item.target}}" class="listBox">
             <div class="left">
               <div class="ratioBox">
                 <div class="box">
@@ -130,7 +130,7 @@
         <span
           v-if="historyStatus[key].id != null"
           slot="right"
-          @click="historyCancel(item.target, key)"
+          @click="historyCancel(item.id, key)"
         >
           <div>取消历史</div>
         </span>
@@ -179,7 +179,7 @@ export default {
       this.historyData("history", null, null);
     },
     // 获取历史接口信息
-    async historyData(__type, brandId, key) {
+    async historyData(__type, historyId, key) {
       var tStamp = this.$getTimeStamp();
       var data = {};
       var res;
@@ -198,6 +198,7 @@ export default {
           if (res.hasOwnProperty("response_code")) {
             setTimeout(() => {
               var result = res.response_data.result;
+
               for (let i = 0; i < result.length; i++) {
                 this.historyList.push(result[i]);
                 this.historyStatus.push(result[i]);
@@ -206,10 +207,12 @@ export default {
               this.historyLoading = false;
               this.historyPage++;
               // 数据全部加载完成
-              if (this.historyList.length >= res.response_data.total_count) {
+              if (this.historyPage > res.response_data.total_page) {
                 this.historyFinished = true;
               }
               console.log("历史列表：", result);
+
+
             }, 500);
           } else {
             this.$toast(res.error_message);
@@ -218,7 +221,7 @@ export default {
         case "cancel":
           data = {
             timestamp: tStamp,
-            brand_id: brandId,
+            history_id: historyId,
             version: "1.0"
           };
           data.sign = this.$getSign(data);
@@ -237,8 +240,8 @@ export default {
       }
     },
     // 取消历史
-    historyCancel(brandId, key) {
-      this.historyData("cancel", brandId, key);
+    historyCancel(historyId, key) {
+      this.historyData("cancel", historyId, key);
     },
     historyClose(clickPosition, instance) {
       instance.close();

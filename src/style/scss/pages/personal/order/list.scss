@@ -7,7 +7,6 @@
   background-color: $greyLight;
   min-height: 100%;
   box-sizing: border-box;
-   padding-top: 5px;
    .content{
      background-color: $white;
      padding-left: 15px;
@@ -88,29 +87,23 @@
         }
       }
      }
-     .button1{
+     .button{
       display: inline-block;
       width: 60px;
       height: 24px;
-      border: 1px solid $greyDark;
       border-radius: 12px;
       text-align: center;
       line-height: 24px;
       font-size: $fontSize - 2;
-      color: $cl3;
       margin-left: 15px;
      }
+     .button1{
+      border: 1px solid $greyDark;
+      color: $cl3;
+     }
      .button2{
-      display: inline-block;
-      width: 60px;
-      height: 24px;
       border: 1px solid $redDark;
-      border-radius: 12px;
-      text-align: center;
-      line-height: 24px;
-      font-size: $fontSize - 2;
       color: $redDark;
-      margin-left: 15px;
      }
      .footFinish{
       height: 44px;
@@ -121,7 +114,7 @@
      }
      .foot{
        height: 44px;
-      @include displayFlex(flex,flex-end,center);
+      @include displayFlex(flex,space-between,center);
      }
    }
  }

@@ -53,13 +53,13 @@
           <div class="infoContent" v-if="key == 0">
             <!-- 关注公众号 -->
             <div class="publish">
-              <div class="from">
+              <router-link :to="{name: 'brand', query: {brand_id: brandInfoData.brand_id}}" class="from">
                 <img v-lazy="brandInfoData.header_pic" class="icon">
                 <div class="publishInfo">
                   <p class="publishName">{{ brandInfoData.name }}</p>
                   <p class="focusNumber">已有{{ brandInfoData.fans }}人关注</p>
                 </div>
-              </div>
+              </router-link>
               <span class="focus add" v-if="brandInfoData.is_followed == 0" @click="focusAction">+关注</span>
               <span class="focus" v-else @click="focusAction">已关注</span>
             </div>
@@ -202,11 +202,11 @@
                   <van-col span="2" class="rank">{{ item.goods_no }}</van-col>
                   <van-col span="16">
                     <router-link
-                      :to="{ name: 'albumdetail', params: { pid: baseData.goods_id, goods_id: item.goods_id, goods_no: item.goods_no}}"
+                      :to="{ name: 'albumdetail', query: { pid: baseData.goods_id, goods_id: item.goods_id, goods_no: item.goods_no}}"
                       class="desc"
                     >
                       <template v-if="item.goods_type != 6">
-                        <span class="tag" v-if="item.is_free == 1">试听</span>
+                        <span class="tag" v-if="item.is_free == 1">免费</span>
                         <span class="tag" v-if="item.is_payed == 1">已购</span>
                       </template>
                       {{ item.title }}
@@ -287,7 +287,7 @@
                 <div class="left">
                   <div class="ratioBox">
                     <div class="box">
-                      <img :src="item.main_pic">
+                      <img :src="item.pic[0]">
                     </div>
                   </div>
                 </div>
@@ -300,7 +300,7 @@
                       class="action"
                       @click="collectAction(key, simularStatus[key].is_collect, item.goods_id)"
                     >
-                      <van-tag plain round color="#fff" text-color="#f05654" type="danger">
+                      <van-tag style="position: relative; top: -5px;" plain round color="#fff" text-color="#f05654" type="danger">
                         <svg
                           class="icon"
                           aria-hidden="true"
@@ -359,14 +359,15 @@
       </van-tab>
     </van-tabs>
 
-    <div style="height: 60px;" v-if="baseData.is_free == 0 || baseData.is_payed == 0"></div>
+    <div style="height: 60px;" v-if="baseData.is_free == 0 && baseData.is_payed == 0 && baseData.sale_style == 1"></div>
     <div v-if=" myAudioData.src" style="height: 60px;"></div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
 
     <!-- 试听 - 购买 -->
+
     <van-goods-action
       :class="{ iphx: this.isIphx }"
-      v-if="baseData.is_free == 0 || baseData.is_payed == 0"
+      v-if="baseData.is_free == 0 && baseData.is_payed == 0 && baseData.sale_style == 1"
     >
       <van-goods-action-mini-btn
         icon="play-circle-o"
@@ -434,9 +435,11 @@
 </template>
 
 <style src="@/style/scss/pages/album/index.scss" lang="scss"></style>
-<style scoped lang="scss">
+<style lang="scss">
+#albumPage {
 .van-button {
   border-radius: 0;
+}
 }
 </style>
 
@@ -456,7 +459,7 @@ import {
   RECOMMEND
 } from "../../apis/public.js";
 import { setTimeout } from "timers";
-import { truncate } from 'fs';
+import { truncate } from "fs";
 
 export default {
   components: {
@@ -511,7 +514,7 @@ export default {
       // 评论
       discussData: [],
       commentPage: 1,
-      totalCount: 0,
+      totalCount: "评论 ("+0+")",
       // 发布评论
       commentModel: false,
       contentModel: "",
@@ -576,25 +579,8 @@ export default {
   },
   destroyed() {},
   mounted() {
-    // globalAlbum 存放专辑页当前 pid
+    this.baseData.goods_id = this.$route.query.goods_id;
 
-    // globalProgramPId 存放节目页当前 pid,
-    // globalProgramGoodsId 存放节目页当前 goods_id,
-    // globalProgramGoodsNo 存放节目页当前 activeGoodNo
-
-    // GlobalArtical 存放文章页当前 goods_id
-    // 1、路由进入，
-    // 2、当前页刷新（读取localStorage），
-    // 3、当前页推荐商品进入当前页（点击事件修改localStorage），
-    // 4、回退进入（上一个页面回退时修改localStorage），专辑、文章、节目三个页面回退情况
-
-    // 当路由进入当前页面，参数读取路由并更新localstorage，当不是路由进入从localStorage读取参数
-    if (this.$route.params.goods_id) {
-      this.baseData.goods_id = this.$route.params.goods_id;
-      localStorage.setItem("globalAlbum", this.$route.params.goods_id);
-    } else {
-      this.baseData.goods_id = parseInt(localStorage.getItem("globalAlbum"));
-    }
     // 当前页接口信息
     this.albumData();
   },
@@ -730,24 +716,6 @@ export default {
     // tab切换
     tabChange(index, title) {
       this.activeKey = index;
-      // var __height = "auto";
-
-      // switch (index) {
-      //   // case 0:
-      //   //   __height = $(".infoContent").height();
-      //   //   break;
-      //   case 1:
-      //     __height = $(".listContent").height();
-      //     break;
-      //   case 2:
-      //     __height = $(".simularContent").height();
-      //     break;
-      // }
-
-      // $(".van-tabs__track").css("height", __height);
-      // $(".van-tabs__track .van-tab__pane")
-      //   .eq(index)
-      //   .css("height", __height);
     },
     // ----------------------------------评论------------------------------------
     commentLoad() {
@@ -758,6 +726,7 @@ export default {
       let data = {
         timestamp: tStamp,
         page: this.commentPage,
+        goods_id: this.$route.query.goods_id,
         page_size: 10,
         version: "1.0"
       };
@@ -779,14 +748,14 @@ export default {
           this.commentPage++;
 
           // 数据全部加载完成
-          if (this.discussData.length >= res.response_data.total_count) {
+          if (this.commentPage > res.response_data.total_page) {
             this.commentFinished = true;
             this.commentPage = 1;
           }
         }, 600);
 
         // 设置总评论数
-        this.totalCount = "评论 " + res.response_data.total_count;
+        this.totalCount = "评论 (" + res.response_data.total_count +")";
         // console.log("当前页数组：", this.replyPage);
         // console.log("评论列表：", result);
       } else {
@@ -812,7 +781,7 @@ export default {
         for (let i = 0; i < result.length; i++) {
           this.answerData[key].push(result[i]);
         }
-        if (this.replyPage[key] >= res.response_data.total_page) {
+        if (this.replyPage[key] > res.response_data.total_page) {
           this.replyPage[key] = res.response_data.total_page + 1;
         } else {
           this.replyPage[key]++;
@@ -947,7 +916,7 @@ export default {
           this.programPage++;
 
           // 数据全部加载完成
-          if (this.programList.length >= res.response_data.total_count) {
+          if (this.programPage > res.response_data.total_page) {
             this.programFinished = true;
             // this.programPage = 1;
           }
@@ -1034,7 +1003,7 @@ export default {
         this.$set(this.myAudioData, "goodsId", __goodsId);
         this.$set(this.myAudioData, "albumPic", __albumPic);
         // console.logthis.myAudioData)
-        
+
         // localStorage存储
         localStorage.setItem("miniAudio", JSON.stringify(info));
 
@@ -1123,13 +1092,20 @@ export default {
     audioAction(item) {
       // console.log(item);
       // 未支付
-      if (item.goods_id != null && item.is_payed == 0) {
+      if (item.goods_id != null && item.is_payed == 0 && item.is_free == 0) {
+        var _goodsId = null;
+        if(this.baseData.sale_style == 1) {
+          _goodsId = this.baseData.goods_id;
+        } else {
+          _goodsId = item.goods_id;
+        }
         this.$router.push({
           name: "payaccount",
-          params: { goods_id: item.goods_id }
+          query: { goods_id: _goodsId }
         });
         return;
       }
+
       let __goodsNo = item.goods_no;
       let __pid = this.baseData.goods_id ? this.baseData.goods_id : 0;
       let __pic = item.pic;
@@ -1156,8 +1132,11 @@ export default {
       setTimeout(() => {
         if (this.audioPlaying) {
           this.$refs.control.playAudio(__currentTime);
+          // 设置全部播放状态
+          this.allPlayStatus = 'pause';
         } else {
           this.$refs.control.pauseAudio();
+          this.allPlayStatus = 'continue';
         }
       }, 600);
 
@@ -1225,14 +1204,18 @@ export default {
     },
     // 点击试听
     preListenAction() {
-      this.$router.push({
-        name: "albumdetail",
-        params: {
-          pid: this.baseData.goods_id,
-          goods_id: this.preListen[0].goods_id,
-          goods_no: this.preListen[0].goods_no
-        }
-      });
+      if (this.preListen != null && this.preListen.length > 0) {
+        this.$router.push({
+          name: "albumdetail",
+          query: {
+            pid: this.baseData.goods_id,
+            goods_id: this.preListen[0].goods_id,
+            goods_no: this.preListen[0].goods_no
+          }
+        });
+      } else {
+        this.$toast("无试听节目~");
+      }
     },
     // 当前节目播放结束，获取当前播放节目的专辑下所有节目（不分页）
     getAllProgramData(info) {
@@ -1275,8 +1258,8 @@ export default {
           }
         }
 
-        // 专辑is_payed:0未支付；1已支付，未支付不能自动播放
-        if (eval(type1 + type2 + type3) > 1 || this.baseData.is_payed == 0) {
+        // 专辑is_payed:0未支付；1已支付，is_freeL:0不免费，1免费，未支付不能自动播放
+        if (eval(type1 + type2 + type3) > 1 || (this.baseData.is_free == 0 && this.baseData.is_payed == 0 && this.baseData.sale_style == 1)) {
           this.autoPlay = false;
         } else {
           this.autoPlay = true;
@@ -1297,9 +1280,10 @@ export default {
         // console.log("当前播放的下一项：", this.allProgramList[next]);
         // console.log("单一类型，自动播放");
       } else {
+        this.$refs.control.pauseAudio();
+        this.allPlayStatus = "pause";
         // 含多种类型，不自动播放
         this.$toast("含多种类型或者专辑未支付，不自动播放");
-        this.$refs.control.pauseAudio();
       }
     },
     // 更新localStorage数据
@@ -1312,7 +1296,7 @@ export default {
       info[6] = item.title;
       info[8] = item.goods_id;
       this.activeGoodNo = info[0];
-      
+
       localStorage.setItem("miniAudio", JSON.stringify(info));
 
       // 更新播放器当前播放音频
@@ -1323,7 +1307,7 @@ export default {
     },
     // 全部播放
     allAction() {
-      if (this.baseData.is_payed == 0) {
+      if (this.baseData.is_free == 0 && this.baseData.is_payed == 0) {
         this.$toast("专辑收费~");
         return;
       }
@@ -1347,13 +1331,17 @@ export default {
     },
     // 购买
     buyAction(goodsId) {
-      if(goodsId != null) this.$router.push({ name: "payaccount", params: { goods_id: goodsId } });
+      if (goodsId != null)
+        this.$router.push({
+          name: "payaccount",
+          query: { goods_id: goodsId }
+        });
     },
     // --------------------------------相似----------------------------------
     // load
     recommendLoad() {
       this.recommendData();
-      console.log(999, this.activeKey)
+      console.log(999, this.activeKey);
     },
     async recommendData() {
       var tStamp = this.$getTimeStamp();
@@ -1366,9 +1354,8 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await RECOMMEND(data);
-      console.log(666, res)
+      console.log(666, res);
       if (res.hasOwnProperty("response_code")) {
-        
         // 异步更新数据
         var result = res.response_data.result;
         setTimeout(() => {
@@ -1383,12 +1370,11 @@ export default {
           this.recommendPage++;
 
           // 数据全部加载完成
-          if (this.recommendList.length >= res.response_data.total_count) {
+          if (this.recommendPage > res.response_data.total_page) {
             this.recommendFinished = true;
             this.recommendPage = 1;
           }
 
-          // console.log(this.recommendList.length, res.response_data.total_count)
         }, 600);
       } else {
         this.$toast(res.error_message);
@@ -1396,7 +1382,6 @@ export default {
     },
     // 相似
     gotoLink(goods_id) {
-      localStorage.setItem("globalAlbum", goods_id);
       window.location.reload();
     }
   }

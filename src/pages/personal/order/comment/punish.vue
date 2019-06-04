@@ -52,7 +52,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/order/comment.scss" lang="scss"></style>
+<style src="@/style/scss/pages/personal/order/comment.scss" scoped lang="scss"></style>
 
 <script>
 import upload from "../../../../components/upload";
@@ -66,7 +66,7 @@ export default {
         "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
       value1: 0,
       value2: 0,
-      value2: 0,
+      value3: 0,
       uploadData: {
         maxlength: 3,
         text: "上传图片(最多三张)"
