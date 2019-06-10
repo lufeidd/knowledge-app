@@ -51,7 +51,7 @@
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-time-line"></use>
                   </svg>
-                  {{ item.data.create_time }}
+                  {{ item.data.update_time }}
                 </span>
               </div>
             </div>
@@ -89,7 +89,7 @@
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-time-line"></use>
                   </svg>
-                  {{ item.data.create_time }}
+                  {{ item.data.update_time }}
                 </span>
               </div>
             </div>
@@ -127,7 +127,7 @@
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-time-line"></use>
                   </svg>
-                  {{ item.data.create_time }}
+                  {{ item.data.update_time }}
                 </span>
               </div>
             </div>

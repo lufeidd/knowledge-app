@@ -58,11 +58,12 @@ export default {
 
         // 分享所需参数
         // console.log('route:', localStorage.getItem('routerLink'), 'loginState:', sessionStorage.getItem('loginState'))
-        let _link = localStorage.getItem('routerLink');
+        // let _link = localStorage.getItem('routerLink');
         let shareData = {
           title: _title,
           desc: _desc,
-          link: _link,
+          // link: _link,
+          link: _route,
           imgUrl: _imgUrl,
           // type: '',
           // 分享类型，music、video或link，不填默认为link

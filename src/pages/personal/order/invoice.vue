@@ -2,14 +2,24 @@
   <div id="invoicePage">
     <van-cell-group id="one">
       <van-cell title="订单号:" v-model="invoiceData.orderNumber" value/>
+<!--       
       <van-cell
         title="发票类型:"
-        value="普通发票"
+        value="电子发票"
         v-if="this.invoiceData.invoiceType == 1"
         is-link
         arrow-direction="down"
         @click="choosetype"
+      /> -->
+      <van-cell
+        title="发票类型:"
+        value="电子发票"
+        v-if="this.invoiceData.invoiceType == 1"
+        arrow-direction="down"
+        @click="choosetype"
       />
+
+
       <van-cell
         title="发票类型:"
         value="电子发票"

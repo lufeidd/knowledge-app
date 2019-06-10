@@ -13,7 +13,7 @@
         is-link
         arrow-direction="down"
         :key="index"
-        @click="todetail(index)"
+        @click="todetail(item)"
       />
     </van-list>
 

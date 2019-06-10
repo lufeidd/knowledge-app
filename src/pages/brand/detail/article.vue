@@ -1,5 +1,10 @@
 <template>
   <div id="articlePage">
+    <div class="nullBox" v-if="onsale == 0">
+      <img src="./../../../assets/null/product.png" width="100%">
+      <div>该商品已下架~</div>
+    </div>
+    <div v-if="onsale == 1">
     <div class="article">
       <div class="title">{{baseData.title}}</div>
       <div class="from">
@@ -218,6 +223,7 @@
       </div>
     </div>
     <easyNav :navData="navData"></easyNav>
+    </div>
   </div>
 </template>
 
@@ -243,6 +249,7 @@ export default {
   },
   data() {
     return {
+      onsale: null,
       navData: {
         fold: false,
         home: true,
@@ -465,7 +472,13 @@ export default {
         }
 
         // console.log(this.baseData);
+        
+        this.onsale = 1;
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 401) {
+          // 上下架状态, 1=> 在架, 0=> 下架
+          this.onsale = 0;
+        }
         this.$toast(res.error_message);
       }
     },
@@ -643,12 +656,12 @@ export default {
     },
     // 点击相似推荐
     gotoLink(item) {
-      console.log(item)
+      console.log(item);
       // 音频/视频
       if (item.goods_type == 1 || item.goods_type == 2) {
         this.$router.push({
           name: "albumdetail",
-          query: {goods_id: item.goods_id}
+          query: { goods_id: item.goods_id }
         });
       }
       // 文章
@@ -656,7 +669,7 @@ export default {
         this.pid = null;
         this.$router.replace({
           name: "article",
-          query: {goods_id: item.goods_id}
+          query: { goods_id: item.goods_id }
         });
         location.reload();
       }
@@ -664,7 +677,7 @@ export default {
       if (item.goods_type == 9) {
         this.$router.push({
           name: "album",
-          query: {goods_id: item.goods_id}
+          query: { goods_id: item.goods_id }
         });
       }
     }

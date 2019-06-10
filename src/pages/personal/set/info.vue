@@ -261,8 +261,9 @@ export default {
         // this.cropperShow = true;
 
         // 跳转到裁切页面
-        self.$router.push({ name: "cropper", query: { data: data } });
-        // console.log(data);
+        self.$router.push({ name: "cropper" });
+        sessionStorage.setItem('headPic', data);
+        // console.log( data);
       };
     },
     // 获取账号接口信息

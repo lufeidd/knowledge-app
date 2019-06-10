@@ -1,248 +1,255 @@
 <template>
   <div id="albumdetailPage" class="page">
-    <!-- 属于专辑 -->
-    <div class="ratioBox banner">
-      <div class="box" v-if="baseData.goods_type != 2">
-        <img v-if="baseData.pic" :src="baseData.pic[0]">
-      </div>
-      <!-- goodsType区分商品类型，音频1/视频2/专辑9/文章6/图书 -->
-      <div @click="gotoPlayer('external')" class="box layer" v-if="baseData.goods_type == 1">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-audio-circle"></use>
-        </svg>
-      </div>
-      <div class="box layer" v-if="baseData.goods_type == 2">
-        <video @play="videoPlay" :src="baseData.file_path" controls width="100%" height="100%"></video>
+    <div class="nullBox" v-if="onsale == 0">
+      <img src="./../../assets/null/product.png" width="100%">
+      <div>该商品已下架~</div>
+    </div>
+
+    <div v-if="onsale == 1">
+      <!-- 属于专辑 -->
+      <div class="ratioBox banner">
+        <div class="box" v-if="baseData.goods_type != 2">
+          <img v-if="baseData.pic" :src="baseData.pic[0]">
+        </div>
+        <!-- goodsType区分商品类型，音频1/视频2/专辑9/文章6/图书 -->
+        <div @click="gotoPlayer('external')" class="box layer" v-if="baseData.goods_type == 1">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-audio-circle"></use>
+          </svg>
+        </div>
+        <div class="box layer" v-if="baseData.goods_type == 2">
+          <video @play="videoPlay" :src="baseData.file_path" controls width="100%" height="100%"></video>
+        </div>
+
+        <!-- 不属于专辑 -->
+        <van-row class="action" v-if="!pid">
+          <van-col class="title" span="18">{{ baseData.title }}</van-col>
+          <van-col span="6">
+            <div
+              @click="collectAction(baseData.collect_id, baseData.goods_id)"
+              style="text-align:right;"
+            >
+              <svg class="icon" aria-hidden="true" v-if="baseData.collect_id > 0">
+                <use xlink:href="#icon-collect-block"></use>
+              </svg>
+              <svg class="icon" aria-hidden="true" v-else>
+                <use xlink:href="#icon-collect-line"></use>
+              </svg>
+              <span>
+                <template v-if="baseData.collect_id > 0">已</template>收藏
+              </span>
+            </div>
+          </van-col>
+        </van-row>
       </div>
 
-      <!-- 不属于专辑 -->
-      <van-row class="action" v-if="!pid">
-        <van-col class="title" span="18">{{ baseData.title }}</van-col>
-        <van-col span="6">
-          <div
-            @click="collectAction(baseData.collect_id, baseData.goods_id)"
-            style="text-align:right;"
-          >
-            <svg class="icon" aria-hidden="true" v-if="baseData.collect_id > 0">
+      <!-- 专辑 -->
+      <div class="albumBox" v-if="pid">
+        <div class="ratioBox">
+          <div class="box">
+            <img :src="baseData.pic[0]">
+          </div>
+        </div>
+        <div class="issue">
+          <div class="title">{{ baseData.title }}</div>
+
+          <div class="info">{{ baseData.sub_title }}</div>
+        </div>
+        <div
+          class="action"
+          style="text-align:right;"
+          @click="collectAction(albumInfo.collect_id, baseData.goods_id)"
+        >
+          <van-tag plain type="danger" text-color="#f05654">
+            <svg class="icon" aria-hidden="true" v-if="albumInfo.collect_id > 0">
               <use xlink:href="#icon-collect-block"></use>
             </svg>
             <svg class="icon" aria-hidden="true" v-else>
               <use xlink:href="#icon-collect-line"></use>
             </svg>
             <span>
-              <template v-if="baseData.collect_id > 0">已</template>收藏
+              <template v-if="albumInfo.collect_id > 0">已</template>收藏
             </span>
-          </div>
-        </van-col>
-      </van-row>
-    </div>
-
-    <!-- 专辑 -->
-    <div class="albumBox" v-if="pid">
-      <div class="ratioBox">
-        <div class="box">
-          <img :src="baseData.pic[0]">
+          </van-tag>
         </div>
       </div>
-      <div class="issue">
-        <div class="title">{{ baseData.title }}</div>
-
-        <div class="info">{{ baseData.sub_title }}</div>
-      </div>
-      <div
-        class="action"
-        style="text-align:right;"
-        @click="collectAction(albumInfo.collect_id, baseData.goods_id)"
-      >
-        <van-tag plain type="danger" text-color="#f05654">
-          <svg class="icon" aria-hidden="true" v-if="albumInfo.collect_id > 0">
-            <use xlink:href="#icon-collect-block"></use>
-          </svg>
-          <svg class="icon" aria-hidden="true" v-else>
-            <use xlink:href="#icon-collect-line"></use>
-          </svg>
-          <span>
-            <template v-if="albumInfo.collect_id > 0">已</template>收藏
-          </span>
-        </van-tag>
-      </div>
-    </div>
-    <!-- 不属于专辑的商品显示关注公号 -->
-    <div class="publish" v-else>
-      <router-link :to="{name: 'brand', query: {brand_id: brandInfoData.brand_id}}" class="from">
-        <img v-lazy="brandInfoData.header_pic" class="icon">
-        <div class="publishInfo">
-          <p class="publishName">{{ brandInfoData.name }}</p>
-          <p class="focusNumber">已有{{ brandInfoData.fans }}人关注</p>
-        </div>
-      </router-link>
-      <span class="focus add" v-if="brandInfoData.is_followed == 0" @click="focusAction">+关注</span>
-      <span class="focus" v-else @click="focusAction">已关注</span>
-    </div>
-
-    <!-- 介绍 - 评论 -->
-    <van-tabs v-model="tabModel" sticky @click="tabChange">
-      <van-tab v-for="(item, key) in tabData" :title="item.title" :key="key">
-        <template v-if="item.type == 'info'"></template>
-        <template v-if="item.type == 'list'"></template>
-      </van-tab>
-    </van-tabs>
-
-    <!-- 推荐 -->
-    <!-- 商品类型, 1=> 音频, 2=> 视频, 3=> 纸书, 4=> 电子书, 5=> 文创用品, 6=> 图文, 9=> 专辑 -->
-    <template v-if="recommendList.length > 0">
-      <van-cell title="听了本节目的也在听" value/>
-      <van-row gutter="20" class="booklist">
-        <van-col span="8" v-for="(item, key) in recommendList" :key="key">
-          <div class="ratioBox" @click="gotoLink(item)">
-            <div class="box">
-              <img :src="item.pic[0]">
-            </div>
+      <!-- 不属于专辑的商品显示关注公号 -->
+      <div class="publish" v-else>
+        <router-link :to="{name: 'brand', query: {brand_id: brandInfoData.brand_id}}" class="from">
+          <img v-lazy="brandInfoData.header_pic" class="icon">
+          <div class="publishInfo">
+            <p class="publishName">{{ brandInfoData.name }}</p>
+            <p class="focusNumber">已有{{ brandInfoData.fans }}人关注</p>
           </div>
-          <div class="title" style="height: 40px;">{{ item.title }}</div>
-        </van-col>
-      </van-row>
-    </template>
-
-    <!-- 评论 -->
-    <div id="comment" class="commentBox">
-      <div id="commentTitle">
-        <van-cell :title="totalCount" is-link value="我要评论" @click="openAnswer('comment', null)"/>
+        </router-link>
+        <span class="focus add" v-if="brandInfoData.is_followed == 0" @click="focusAction">+关注</span>
+        <span class="focus" v-else @click="focusAction">已关注</span>
       </div>
 
-      <van-list
-        v-model="commentLoading"
-        :finished="commentFinished"
-        finished-text="没有更多了"
-        @load="commentLoad"
-      >
-        <div class="listBox" v-for="(item, key) in discussData" :key="key">
-          <div class="left">
-            <div class="ratioBox">
+      <!-- 介绍 - 评论 -->
+      <van-tabs v-model="tabModel" sticky @click="tabChange">
+        <van-tab v-for="(item, key) in tabData" :title="item.title" :key="key">
+          <template v-if="item.type == 'info'"></template>
+          <template v-if="item.type == 'list'"></template>
+        </van-tab>
+      </van-tabs>
+
+      <!-- 推荐 -->
+      <!-- 商品类型, 1=> 音频, 2=> 视频, 3=> 纸书, 4=> 电子书, 5=> 文创用品, 6=> 图文, 9=> 专辑 -->
+      <template v-if="recommendList.length > 0">
+        <van-cell title="听了本节目的也在听" value/>
+        <van-row gutter="20" class="booklist">
+          <van-col span="8" v-for="(item, key) in recommendList" :key="key">
+            <div class="ratioBox" @click="gotoLink(item)">
               <div class="box">
-                <img :src="item.user_header">
+                <img :src="item.pic[0]">
               </div>
             </div>
-          </div>
-          <div class="center">
-            <div class="title">
-              <div class="text">{{ item.nick_name }}</div>
+            <div class="title" style="height: 40px;">{{ item.title }}</div>
+          </van-col>
+        </van-row>
+      </template>
+
+      <!-- 评论 -->
+      <div id="comment" class="commentBox">
+        <div id="commentTitle">
+          <van-cell :title="totalCount" is-link value="我要评论" @click="openAnswer('comment', null)"/>
+        </div>
+
+        <van-list
+          v-model="commentLoading"
+          :finished="commentFinished"
+          finished-text="没有更多了"
+          @load="commentLoad"
+        >
+          <div class="listBox" v-for="(item, key) in discussData" :key="key">
+            <div class="left">
+              <div class="ratioBox">
+                <div class="box">
+                  <img :src="item.user_header">
+                </div>
+              </div>
             </div>
-            <div class="subTitle">{{ item.content }}</div>
+            <div class="center">
+              <div class="title">
+                <div class="text">{{ item.nick_name }}</div>
+              </div>
+              <div class="subTitle">{{ item.content }}</div>
 
-            <div class="messageBox" v-if="answerData[key].length > 0">
-              <!-- 回复 -->
+              <div class="messageBox" v-if="answerData[key].length > 0">
+                <!-- 回复 -->
 
-              <!-- <div
+                <!-- <div
                 class="message active"
                 v-for="(replyItem, key) in item.reply_list"
                 :key="key"
               >
                 <span class="name">{{ replyItem.nick_name }}</span>
                 <span class="dialog">{{ replyItem.content }}</span>
-              </div>-->
+                </div>-->
 
-              <div class="message active" v-for="(replyItem, key) in answerData[key]" :key="key">
-                <span class="name">{{ replyItem.nick_name }}</span>
-                <span class="dialog">{{ replyItem.content }}</span>
-              </div>
+                <div class="message active" v-for="(replyItem, key) in answerData[key]" :key="key">
+                  <span class="name">{{ replyItem.nick_name }}</span>
+                  <span class="dialog">{{ replyItem.content }}</span>
+                </div>
 
-              <div
-                class="message active"
-                v-if="item.reply_num > 2 && replyPage[key] - 1 < item.reply_total_page"
-              >
-                <!-- <van-pagination v-model="item.reply_current_page" :page-count="item.reply_total_page" mode="simple" @change="pageChange(item.comment_id, key)" /> -->
+                <div
+                  class="message active"
+                  v-if="item.reply_num > 2 && replyPage[key] - 1 < item.reply_total_page"
+                >
+                  <!-- <van-pagination v-model="item.reply_current_page" :page-count="item.reply_total_page" mode="simple" @change="pageChange(item.comment_id, key)" /> -->
 
-                <span class="name" @click="pageChange(item.comment_id, key)">
-                  共{{ item.reply_num }}条回复
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-fold-line"></use>
-                  </svg>
-                  <!-- <svg class="icon" aria-hidden="true">
+                  <span class="name" @click="pageChange(item.comment_id, key)">
+                    共{{ item.reply_num }}条回复
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-fold-line"></use>
+                    </svg>
+                    <!-- <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-unfold-line"></use>
-                  </svg>-->
-                </span>
+                    </svg>-->
+                  </span>
+                </div>
+              </div>
+
+              <!-- 回复 -->
+              <div class="answerBox">
+                <span class="date">{{ item.create_time }}</span>
+                <span class="action" @click="openAnswer('reply', item.comment_id)">回复</span>
               </div>
             </div>
+          </div>
+        </van-list>
+      </div>
 
-            <!-- 回复 -->
-            <div class="answerBox">
-              <span class="date">{{ item.create_time }}</span>
-              <span class="action" @click="openAnswer('reply', item.comment_id)">回复</span>
+      <div v-if="baseData.is_free == 0 && baseData.is_payed == 0" style="height: 60px;"></div>
+      <div v-if="myAudioData.src" style="height: 60px;"></div>
+      <div v-if="this.isIphx" style="height: 34px;"></div>
+
+      <!-- 试听 - 购买 -->
+      <van-goods-action
+        :class="{ iphx: this.isIphx }"
+        v-if="baseData.is_free == 0 && baseData.is_payed == 0"
+      >
+        <van-goods-action-mini-btn
+          icon="play-circle-o"
+          text="试听"
+          @click="preListenAction"
+          v-if="baseData.has_free && preListen"
+        />
+        <van-goods-action-big-btn
+          primary
+          :text="'¥ '+baseData.price + ' 购买'"
+          @click="buyAction(goodsId)"
+        />
+      </van-goods-action>
+
+      <!-- 音频缩略 -->
+      <miniAudio
+        :class="{isShow: myAudioData.src}"
+        :audioData="myAudioData"
+        :rank="rankType"
+        ref="control"
+        @setType="typeAction"
+        @setMiniAudio="miniAudioData"
+        @setProgress="audioProgressData"
+        @showAudioList="audioListShow"
+        @linkToPlayer="gotoPlayer"
+        @getAllProgram="getAllProgramData"
+      ></miniAudio>
+
+      <!-- 播放列表 -->
+      <audioList
+        :goodsId="goodsId"
+        :albumInfo="baseData"
+        :goodsNo="activeGoodNo"
+        :audioStatus="audioPlaying"
+        @audioChange="audioAction"
+        ref="controlList"
+      ></audioList>
+
+      <!-- 评论 -->
+      <van-popup v-model="commentModel" position="bottom">
+        <div class="audioList">
+          <div class="title">
+            <div class="action" @click="commentClose">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-fold-line"></use>
+              </svg>
+            </div>
+            <div>发表评论</div>
+            <div class="punish" @click="punishComment">发布</div>
+          </div>
+          <!-- 音频列表 -->
+          <div class="content">
+            <textarea v-model="contentModel" placeholder="快来写评论吧!" @input="inputChange"></textarea>
+            <div class="count">
+              <span :class="{ active: contentLength > contentTotal }">{{ contentLength }}</span>
+              /{{ contentTotal }}
             </div>
           </div>
         </div>
-      </van-list>
+      </van-popup>
     </div>
-
-    <div v-if="baseData.is_free == 0 && baseData.is_payed == 0" style="height: 60px;"></div>
-    <div v-if="myAudioData.src" style="height: 60px;"></div>
-    <div v-if="this.isIphx" style="height: 34px;"></div>
-
-    <!-- 试听 - 购买 -->
-    <van-goods-action
-      :class="{ iphx: this.isIphx }"
-      v-if="baseData.is_free == 0 && baseData.is_payed == 0"
-    >
-      <van-goods-action-mini-btn
-        icon="play-circle-o"
-        text="试听"
-        @click="preListenAction"
-        v-if="baseData.has_free && preListen"
-      />
-      <van-goods-action-big-btn
-        primary
-        :text="'¥ '+baseData.price + ' 购买'"
-        @click="buyAction(goodsId)"
-      />
-    </van-goods-action>
-
-    <!-- 音频缩略 -->
-    <miniAudio
-      :class="{isShow: myAudioData.src}"
-      :audioData="myAudioData"
-      :rank="rankType"
-      ref="control"
-      @setType="typeAction"
-      @setMiniAudio="miniAudioData"
-      @setProgress="audioProgressData"
-      @showAudioList="audioListShow"
-      @linkToPlayer="gotoPlayer"
-      @getAllProgram="getAllProgramData"
-    ></miniAudio>
-
-    <!-- 播放列表 -->
-    <audioList
-      :goodsId="goodsId"
-      :albumInfo="baseData"
-      :goodsNo="activeGoodNo"
-      :audioStatus="audioPlaying"
-      @audioChange="audioAction"
-      ref="controlList"
-    ></audioList>
-
-    <!-- 评论 -->
-    <van-popup v-model="commentModel" position="bottom">
-      <div class="audioList">
-        <div class="title">
-          <div class="action" @click="commentClose">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-fold-line"></use>
-            </svg>
-          </div>
-          <div>发表评论</div>
-          <div class="punish" @click="punishComment">发布</div>
-        </div>
-        <!-- 音频列表 -->
-        <div class="content">
-          <textarea v-model="contentModel" placeholder="快来写评论吧!" @input="inputChange"></textarea>
-          <div class="count">
-            <span :class="{ active: contentLength > contentTotal }">{{ contentLength }}</span>
-            /{{ contentTotal }}
-          </div>
-        </div>
-      </div>
-    </van-popup>
   </div>
 </template>
 
@@ -277,6 +284,7 @@ export default {
   },
   data() {
     return {
+      onsale: null,
       /*
        * ----------------------------------节目----------------------------------
        */
@@ -552,7 +560,7 @@ export default {
 
         // 解决父页面子组件实时刷新问题
         setTimeout(() => {
-          if (this.myAudioData) {
+          if (this.$refs.control && this.myAudioData) {
             this.$refs.control.audioData.pic = __pic;
             this.$refs.control.audioData.src = __src;
             this.$refs.control.audioData.currentTime = __currentTime;
@@ -727,7 +735,7 @@ export default {
         this.miniAudioData(info);
 
         // 解决子组件数据实时刷新问题
-        this.$refs.control.audioData.type = !this.audioPlaying;
+        if(this.$refs.control) this.$refs.control.audioData.type = !this.audioPlaying;
         // 设置当前播放进度
         setTimeout(() => {
           var audio = document.getElementById("myMiniAudio");
@@ -753,7 +761,7 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await ALBUM(data);
-      // console.log(res.response_data)
+      console.log(res);
 
       if (res.hasOwnProperty("response_code")) {
         //专辑基础信息
@@ -767,11 +775,15 @@ export default {
 
         // 所属媒体信息
         // this.brandInfoData = res.response_data.brand_info;
+        
+        this.onsale = 1;
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 401) {
+          // 上下架状态, 1=> 在架, 0=> 下架
+          this.onsale = 0;
+        }
         this.$toast(res.error_message);
       }
-
-      // console.log("商品基础信息:", res.response_data.base);
 
       // 读取localStorage音频缩略播放器数据
       this.getMiniAudioData();

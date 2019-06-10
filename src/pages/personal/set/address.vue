@@ -4,8 +4,10 @@
       show-set-default
       :address-info="addressInfo"
       :area-list="areaList"
+      :validator="validator"
       @save="saveAddress"
       @change-area="changeAction"
+      ref="address"
     />
   </div>
 </template>
@@ -97,6 +99,28 @@ export default {
   },
 
   methods: {
+    validator(key, value) {
+      // console.log("validator", key, value);
+      switch (key) {
+        case "name":
+          if (value.trim().length > 20) {
+            return "收货人长度不能大于20个字符~";
+          }
+          break;
+        case "tel":
+          var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
+          if (!regPhone.test(value)) {
+            return "请输入正确格式的手机号码~";
+          }
+          break;
+        case "areaCode":
+          var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
+          if (value.trim().length > 200) {
+            return "详细地址长度不能大于200个字符~";
+          }
+          break;
+      }
+    },
     // 根据address_id获取当前用户地址信息
     async getAddress() {
       var tStamp = this.$getTimeStamp();
@@ -110,25 +134,27 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        
+
         this.addressInfo.name = res.response_data[0].consignee;
         this.addressInfo.tel = res.response_data[0].mobile;
         this.addressInfo.addressDetail = res.response_data[0].address;
+
         this.addressInfo.province = res.response_data[0].province;
         this.addressInfo.city = res.response_data[0].city;
         this.addressInfo.county = res.response_data[0].county;
-        this.addressInfo.isDefault =
-          res.response_data[0].is_default == 1 ? true : false;
+
+        this.addressInfo.isDefault = res.response_data[0].is_default == 1 ? true : false;
 
         this.provinceId = res.response_data[0].province_id;
         this.cityId = res.response_data[0].city_id;
         this.countyId = res.response_data[0].county_id;
         // console.log(res, res.response_data[0]);
+
+        // console.log(res.response_data[0], this.addressInfo);
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          
         }
         this.$toast(res.error_message);
       }
@@ -175,8 +201,6 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await USER_ADDRESS_EDIT(data);
-
-      console.log(456, this.cityId, this.countyId);
 
       if (res.hasOwnProperty("response_code")) {
         this.$toast("地址修改成功~");
@@ -263,6 +287,7 @@ export default {
           this.areaList.city_list = this.stringToJson(cstr);
           // 区
           this.areaList.county_list = this.stringToJson(ctstr);
+          // console.log(this.areaList.city_list)
         }
       } else {
         this.$toast(res.error_message);
@@ -308,7 +333,8 @@ export default {
       this.provinceId = province.substring(0, 2);
       this.cityId = city.substring(0, 4);
       this.countyId = county.substring(0, 6);
-      // console.log(values, this.provinceId, this.cityId, this.countyId);
+
+      console.log(456, values, this.provinceId, this.cityId, this.countyId);
     }
   }
 };
