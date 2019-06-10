@@ -90,6 +90,7 @@ export default {
   },
   mounted(){
     // this.getData();
+    this.curDateTime();
   },
   methods: {
     showPopup() {
@@ -137,6 +138,8 @@ export default {
         version:"1.0",
         page:this.page,
         type:1,
+        begin_time:this.begintime,
+        end_time:this.endtime,
         timestamp:tStamp,
       };
       data.sign = this.$getSign(data);
@@ -216,6 +219,23 @@ export default {
         }else{
           this.$toast(res.error_message);
         }
+    },
+    //获取当前时间
+    curDateTime() {
+      var d = new Date();
+      var year = d.getFullYear();
+      var month = d.getMonth() + 1;
+      var date = d.getDate();
+      var day = d.getDay();
+      // var curDateTime = year;
+      var nextmonth = month + 1;
+      if(month < 9) month = '0'+ month;
+      if(nextmonth < 9) nextmonth = '0'+ nextmonth;
+      var beginTime = year + '-' + month + '-' + '01' + ' 00:00:00';
+      var endTime = year + '-' + nextmonth + '-' + '01' + ' 00:00:00';
+      this.begintime = beginTime;
+      this.endtime = endTime;
+      console.log("当前日期"+beginTime,endTime);   
     },
   }
 };

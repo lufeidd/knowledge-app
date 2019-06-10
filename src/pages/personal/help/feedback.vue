@@ -134,12 +134,8 @@ export default {
         this.getImgUrl();
       }
       var tStamp = this.$getTimeStamp();
-      this.content = $("input")
-          .val()
-          .trim();
-      this.contact = $("textarea")
-          .val()
-          .trim();
+      this.contact = $("input").val().trim();
+      this.content= $("textarea").val().trim();
       var data = {
         version: "1.0",
         timestamp: tStamp,
@@ -158,7 +154,7 @@ export default {
       } else {
         this.$toast(res1.error_message);
       }
-    }
+    },
 
   }
 };
