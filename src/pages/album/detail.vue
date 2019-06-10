@@ -377,9 +377,9 @@ export default {
       }
     });
 
-    this.pid = this.$route.query.pid;
-    this.goodsId = this.$route.query.goods_id;
-    this.activeGoodNo = this.$route.query.goods_no;
+    this.pid = parseInt(this.$route.query.pid);
+    this.goodsId = parseInt(this.$route.query.goods_id);
+    this.activeGoodNo = parseInt(this.$route.query.goods_no);
 
     // 基础信息
     this.albumData();
@@ -388,14 +388,14 @@ export default {
   },
   methods: {
     // 判断视频播放是否收费
-    videoPlay () {
+    videoPlay() {
       // 需要收费
       if (this.baseData.is_free == 0 && this.baseData.is_payed == 0) {
         var _goodsId = null;
-        if(this.baseData.sale_style == 1) {
-          _goodsId = this.$route.query.pid;
+        if (this.baseData.sale_style == 1) {
+          _goodsId = parseInt(this.$route.query.pid);
         } else {
-          _goodsId = this.$route.query.goods_id;
+          _goodsId = parseInt(this.$route.query.goods_id);
         }
         this.$router.push({
           name: "payaccount",
@@ -552,13 +552,15 @@ export default {
 
         // 解决父页面子组件实时刷新问题
         setTimeout(() => {
-          this.$refs.control.audioData.pic = __pic;
-          this.$refs.control.audioData.src = __src;
-          this.$refs.control.audioData.currentTime = __currentTime;
-          this.$refs.control.audioData.duration = __duration;
-          this.$refs.control.audioData.program = __program;
-          this.$refs.control.audioData.album = __album;
-          this.$refs.control.audioData.albumPic = __albumPic;
+          if (this.myAudioData) {
+            this.$refs.control.audioData.pic = __pic;
+            this.$refs.control.audioData.src = __src;
+            this.$refs.control.audioData.currentTime = __currentTime;
+            this.$refs.control.audioData.duration = __duration;
+            this.$refs.control.audioData.program = __program;
+            this.$refs.control.audioData.album = __album;
+            this.$refs.control.audioData.albumPic = __albumPic;
+          }
 
           // this.$refs.control.audiobindtoslider(info[5]);
           // 设置当前播放进度
@@ -605,10 +607,10 @@ export default {
           this.baseData.is_payed == 0
         ) {
           var _goodsId = null;
-          if(this.baseData.sale_style == 1) {
-            _goodsId = this.$route.query.pid;
-          }else {
-            _goodsId = this.$route.query.goods_id;
+          if (this.baseData.sale_style == 1) {
+            _goodsId = parseInt(this.$route.query.pid);
+          } else {
+            _goodsId = parseInt(this.$route.query.goods_id);
           }
           this.$router.push({
             name: "payaccount",
@@ -623,15 +625,15 @@ export default {
           info = [];
         }
         // 新增迷你缩放音频播放信息
-        info[0] = this.$route.query.goods_no;
-        info[1] = this.$route.query.pid;
+        info[0] = parseInt(this.$route.query.goods_no);
+        info[1] = parseInt(this.$route.query.pid);
         info[2] = this.baseData.pic[0];
         info[3] = this.baseData.file_path;
         info[4] = this.baseData.duration;
         info[5] = 0;
         info[6] = this.baseData.title;
         info[7] = this.albumInfo.title;
-        info[8] = this.$route.query.goods_id;
+        info[8] = parseInt(this.$route.query.goods_id);
         info[9] = this.albumInfo.pic;
 
         // localStorage存储
@@ -730,7 +732,7 @@ export default {
         setTimeout(() => {
           var audio = document.getElementById("myMiniAudio");
           // currentTime关联slider进度
-          if (info[5] != null && info[5] != "")
+          if (audio && info[5] != null && info[5] != "")
             this.$refs.control.audioData.sliderValue =
               (info[5] / audio.duration) * 100;
           // 当无播放记录的时候
@@ -883,7 +885,7 @@ export default {
     async commentData() {
       var tStamp = this.$getTimeStamp();
       let data = {
-        goods_id: this.$route.query.goods_id,
+        goods_id: parseInt(this.$route.query.goods_id),
         timestamp: tStamp,
         page: this.commentPage,
         page_size: 10,
@@ -1069,7 +1071,7 @@ export default {
     // 点击相似推荐
     gotoLink(item) {
       var goodsType = item.goods_type;
-      
+
       // 音频/视频
       if (goodsType == 1 || goodsType == 2) {
         this.pid = null;
@@ -1080,7 +1082,6 @@ export default {
           query: { goods_id: item.goods_id }
         });
         location.reload();
-
       } else if (goodsType == 6) {
         // 文章
         this.$router.push({

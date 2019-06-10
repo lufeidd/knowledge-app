@@ -88,7 +88,8 @@
 
     <!-- 支付 -->
     <div class="bottomBox" :class="{ iphx: this.isIphx }">
-      <van-button size="large" type="danger" @click="payAction">支付</van-button>
+      <van-button size="large" type="danger" disabled v-if="user_balance < goodsInfo.price">支付</van-button>
+      <van-button size="large" type="danger" @click="payAction" v-else>支付</van-button>
     </div>
 
     <!-- 数字键盘 -->
@@ -125,7 +126,9 @@
 </template>
 
 <style src="@/style/scss/pages/pay.scss" scoped lang="scss"></style>
+
 <style lang="scss">
+@import url("./../../style/scss/components/button.scss");
 #payaccountPage {
 .van-button {
   // border-radius: 50px;

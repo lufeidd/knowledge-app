@@ -125,8 +125,6 @@ export default {
   mounted() {
     this.brand_id = this.$route.query.brand_id;
     this.brandGetData();
-    // 微信分享
-    this.$getWxData();
   },
   methods: {
     show() {
@@ -191,6 +189,10 @@ export default {
       let res = await BRAND_INFO(data);
       if (res.hasOwnProperty("response_code")) {
         this.brandData = res.response_data;
+
+        // 微信分享
+        this.$getWxData(this.brandData.name, this.brandData.summary, this.brandData.header_pic);
+
         // title
         document.title = this.brandData.name;
         if (res.response_data.column_list.length > 0)

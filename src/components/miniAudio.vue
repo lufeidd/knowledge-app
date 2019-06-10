@@ -265,7 +265,7 @@ export default {
       // 设置迷你音频播放状态
       this.$emit("setMiniAudio", info);
       
-      console.log(123, "miniAudio:", "info:", "currentTime:", __currentTime, info, "result:", result, this.isAdd);
+      console.log(123, "miniAudio:", "info:", info, "currentTime:", __currentTime, "result:", result, this.isAdd);
     },
     // 更新播放进度记录
     updateProgressData(info, result, __currentTime) {
@@ -371,7 +371,7 @@ export default {
       this.clearClock();
       var audio = document.getElementById("myMiniAudio");
       // 暂停
-      audio.pause();
+      if(audio) audio.pause();
       // 切换播放状态
       this.$emit("setType", true);
       this.playType = true;
@@ -406,8 +406,7 @@ export default {
     audioSliderChange() {
       var audio = document.getElementById("myMiniAudio");
       // 设置当前时间
-      if (this.audioData.sliderValue)
-        audio.currentTime = (this.audioData.sliderValue / 100) * audio.duration;
+      if (audio && this.audioData.sliderValue) audio.currentTime = (this.audioData.sliderValue / 100) * audio.duration;
       // 绑定slider
       this.audiobindtoslider(audio.currentTime);
       // this.audioData.currentTime = this.todate(audio.currentTime);

@@ -242,7 +242,7 @@ export default {
         }
       }
 
-      console.log(456, "currentTime:", __currentTime);
+      // console.log("currentTime:", __currentTime);
 
       // 如果当前节目有播放记录，跳到当前记录位置继续播放
       return __currentTime;

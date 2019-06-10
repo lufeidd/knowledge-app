@@ -128,7 +128,6 @@
         </template>
 
         <span
-          v-if="historyStatus[key].id != null"
           slot="right"
           @click="historyCancel(item.id, key)"
         >
