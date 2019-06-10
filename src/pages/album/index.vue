@@ -484,7 +484,8 @@ import {
   FOCUS_CANCEL,
   COMMENT,
   COMMENT_ADD,
-  RECOMMEND
+  RECOMMEND,
+  WX_SHARE
 } from "../../apis/public.js";
 import { setTimeout } from "timers";
 import { truncate } from "fs";
@@ -614,6 +615,30 @@ export default {
     this.albumData();
   },
   methods: {
+    // 获取页面分享信息
+    async wxShareData() {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        page_name: "album/index",
+        params: JSON.stringify({ brand_id: this.$route.query.brand_id }),
+        version: "1.0",
+        timestamp: tStamp
+      };
+      data.sign = this.$getSign(data);
+      let res = await WX_SHARE(data);
+      if (res.hasOwnProperty("response_code")) {
+        console.log(res.response_data)
+        // 微信分享
+        this.$getWxData(
+          res.response_data.share_info.title,
+          res.response_data.share_info.desc,
+          res.response_data.share_info.pic,
+          res.response_data.share_info.url
+        );
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
     // --------------------------------专辑信息----------------------------------
     // 获取专辑接口信息
     async albumData() {
@@ -635,6 +660,8 @@ export default {
         this.brandInfoData = res.response_data.brand_info;
 
         this.onsale = 1;
+        // 获取页面分享信息
+        this.wxShareData();
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 401) {
           // 上下架状态, 1=> 在架, 0=> 下架

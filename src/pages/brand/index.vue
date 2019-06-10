@@ -213,7 +213,7 @@ export default {
       data.sign = this.$getSign(data);
       let res = await WX_SHARE(data);
       if (res.hasOwnProperty("response_code")) {
-        console.log(res.response_data)
+        // console.log(res.response_data)
         // 微信分享
         this.$getWxData(
           res.response_data.share_info.title,
