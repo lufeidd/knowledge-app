@@ -134,7 +134,8 @@
           </div>
         </div>
         <div class="foot">
-          <span class="button button1" @click="repply(item)">申请发票</span>
+          <span class="button button1" @click="repply(item)" v-if="item.invoice_id == 0">申请发票</span>
+          <span class="button button1" v-else>查看发票</span>
           <div>
             <span class="button button1">评价</span>
             <!-- <span class="button1" v-if="item.state ==1">再次购买</span> -->

@@ -1,8 +1,24 @@
 <template>
   <div id="helpPage">
-    <div style="padding-bottom:60px;">
-      <van-cell :title="item.title" v-for="item,index in listData" value is-link arrow-direction="down" :key="index" @click="todetail(item)"/>
-    </div>
+    <van-list
+      v-model="programLoading"
+      :finished="programFinished"
+      finished-text="没有更多了"
+      @load="programLoad"
+    >
+      <van-cell
+        :title="item.title"
+        v-for="(item,index) in listData"
+        value
+        is-link
+        arrow-direction="down"
+        :key="index"
+        @click="todetail(index)"
+      />
+    </van-list>
+
+    <div style="height: 60px;"></div>
+
     <div class="bottomBox" :class="{iphx:this.isIphx}">
       <van-button type="danger" size="large" replace to="/personal/help/feedback">我要反馈</van-button>
     </div>
@@ -19,7 +35,7 @@ export default {
   components: {
     easyNav
   },
-  data () {
+  data() {
     return {
       navData: {
         fold: false,
@@ -29,43 +45,62 @@ export default {
         // searchLink: "/search",
         personal: true,
         personalLink: "/personal/index",
-        type:'order',
+        type: "order"
       },
-      listData:[],
-    }
+      listData: [],
+      programLoading: false,
+      programFinished: false,
+      page: 1,
+      page_size: 10
+    };
   },
-  mounted(){
-    this.getData();
+  mounted() {
+    // this.getData();
   },
-  methods:{
-    async getData(){
+  methods: {
+    programLoad() {
+      this.getData();
+    },
+    async getData() {
       var data = {
-        version:"1.0",
+        version: "1.0",
+        page: this.page,
+        page_size: this.page_size
       };
+      data.sign = this.$getSign(data);
       let res = await USER_HELPER_GETS(data);
-      if(res.hasOwnProperty("response_code")){
-        // store 设置登录状态
-        this.$store.commit("changeLoginState", 1);
-        
-        this.listData = res.response_data.result;
-        // console.log(res.response_data);
-      }else{
+      if (res.hasOwnProperty("response_code")) {
+        // this.listData = res.response_data.result;
+        var result = res.response_data.result;
+        setTimeout(() => {
+          for (let i = 0; i < result.length; i++) {
+            this.listData.push(result[i]);
+          }
+          this.programLoading = false;
+          this.page++;
+
+          // 数据全部加载完成
+          if (this.page > res.response_data.total_page) {
+            this.programFinished = true;
+            this.page = 1;
+          }
+        }, 500);
+      } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          
         }
         this.$toast(res.error_message);
       }
     },
-    todetail(item){
+    todetail(item) {
       this.$router.push({
-        name:"helpdetail",
-        query:{
-          helper_id: item.helper_id,
-          },
-        });
+        name: "helpdetail",
+        query: {
+          helper_id: item.helper_id
+        }
+      });
     }
   }
-}
+};
 </script>

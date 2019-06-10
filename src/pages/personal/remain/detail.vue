@@ -97,6 +97,7 @@ export default {
   },
   mounted() {
     // this.getData();
+    this.curDateTime();
   },
   methods: {
     showPopup() {
@@ -144,23 +145,17 @@ export default {
       var data = {
         version: "1.0",
         page: this.page,
+        begin_time: this.begintime,
+        end_time: this.endtime,
         timestamp: tStamp
       };
       data.sign = this.$getSign(data);
       let res = await USER_REMAIN_DETAILS(data);
 
-      if (
-        res.hasOwnProperty("response_code") &&
-        res.response_data.hasOwnProperty("result")
-      ) {
+      if (res.hasOwnProperty("response_code")) {
         this.totalIncome += Number(res.response_data.total_money_in);
         this.totalOutput += Number(res.response_data.total_money_out);
         var result = res.response_data.result;
-
-        // store 设置登录状态
-        this.$store.commit("changeLoginState", 1);
-        
-
         setTimeout(() => {
           for (let i = 0; i < res.response_data.result.length; i++) {
             this.incomeData.push(result[i]);
@@ -178,11 +173,6 @@ export default {
           }
         }, 500);
       } else {
-        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 100);
-          
-        }
         this.$toast(res.error_message);
       }
     },
@@ -237,6 +227,23 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
+    },
+    //获取当前时间
+    curDateTime() {
+      var d = new Date();
+      var year = d.getFullYear();
+      var month = d.getMonth() + 1;
+      var date = d.getDate();
+      var day = d.getDay();
+      // var curDateTime = year;
+      var nextmonth = month + 1;
+      if (month < 9) month = "0" + month;
+      if (nextmonth < 9) nextmonth = "0" + nextmonth;
+      var beginTime = year + "-" + month + "-" + "01" + " 00:00:00";
+      var endTime = year + "-" + nextmonth + "-" + "01" + " 00:00:00";
+      this.begintime = beginTime;
+      this.endtime = endTime;
+      console.log("当前日期" + beginTime, endTime);
     }
   }
 };

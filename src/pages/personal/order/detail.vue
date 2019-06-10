@@ -88,7 +88,8 @@
     </div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="foot bottomBox" :class="{iphx:this.isIphx}">
-      <span class="button button2" @click="apply">申请发票</span>
+      <span class="button button1"  v-if="invoice !== undefined && Object.keys(invoice).length > 0 ">查看发票</span>
+      <span class="button button1" @click="apply" v-else>申请发票</span>
       <div>
         <span class="button button2" @click="toComment">评价</span>
         <!-- <span class="button button1" @click="repurchase">再次购买</span> -->
@@ -129,11 +130,13 @@ export default {
       },
       infoData:{},
       order_id:'',
+      invoice:{},
     };
   },
   mounted(){
     this.order_id = this.$route.query.order_id;
-    this.getData()
+    this.getData();
+    console.log(Object.keys(this.invoice).length);
   },
   methods: {
     copy() {
@@ -162,6 +165,7 @@ export default {
       let res = await USER_ORDER_DETAIL_GET(data);
       if(res.hasOwnProperty("response_code")){
         this.infoData = res.response_data;
+        this.invoice = res.response_data.invoice_info;
         // this.articleInfo = res.response_data.brand_info;
         console.log(res);
       }else{

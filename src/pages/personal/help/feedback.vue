@@ -74,17 +74,24 @@ export default {
   },
   methods: {
     change(_type) {
-      var input = $("input").val().trim();
-      var textarea = $("textarea").val().trim();
+      var input = $("input")
+        .val()
+        .trim();
+      var textarea = $("textarea")
+        .val()
+        .trim();
       var iphone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
       var qqNumber = /[1-9][0-9]{5,13}/;
       var email = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/;
       // var uploadFile =$('.contetn.set').length;
-      if(_type == 'text') this.textLength = $("textarea").val().length; 
-      if(_type == 'phone') this.phoneLength = $("input").val().length; 
+      if (_type == "text") this.textLength = $("textarea").val().length;
+      if (_type == "phone") this.phoneLength = $("input").val().length;
       if (
         (iphone.test(input) || qqNumber.test(input) || email.test(input)) &&
-        $("textarea").val().length > 0 && $("textarea").val().length <= this.textTotal && $("input").val().length > 0 && $("input").val().length <= this.phoneTotal
+        $("textarea").val().length > 0 &&
+        $("textarea").val().length <= this.textTotal &&
+        $("input").val().length > 0 &&
+        $("input").val().length <= this.phoneTotal
       ) {
         this.submit = false;
         // console.log(this.submit);
@@ -129,7 +136,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        
+
         // console.log(res);
         var arr = [];
         for (let i = 0; i < res.response_data.length; i++) {
@@ -143,7 +150,6 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          
         }
         this.$toast(res.error_message);
       }

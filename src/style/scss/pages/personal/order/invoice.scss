@@ -3,40 +3,52 @@
  * date:2019/4/17
  */
 
-#invoicePage{
-  #one{
-    .van-cell__value{
+#invoicePage {
+  #one {
+    .van-cell__value {
       font-size: $fontSize;
       color: $cl3;
     }
   }
-  .van-cell__title{
+
+  .van-cell__title {
     font-size: $fontSize + 2;
     color: $cl3;
     flex: 0 1 auto;
   }
-  .van-cell__value{
+
+  .van-cell__value {
     text-align: left;
     margin-left: 5px;
   }
-  .van-icon-arrow-down:before{
+
+  .van-icon-arrow-down:before {
     content: "\F00A"
   }
-  .van-field__label{
+  .van-hairline--top-bottom:after {
+    border-width: 1px 0 0 0;
+    border-color: #ebedf0;
+  }
+
+  .van-field__label {
     max-width: 120px;
   }
-  .van-button{
+
+  .van-button {
     border-radius: 0;
   }
-  .van-button--danger{
-    background-color: $redDark;
-    border: 1px solid $redDark;
-  }
-  .van-cell__title.van-field__label{
+
+  // .van-button--danger {
+  //   background-color: $redDark;
+  //   border: 1px solid $redDark;
+  // }
+
+  .van-cell__title.van-field__label {
     max-width: 100px;
     white-space: nowrap;
   }
-  #two{
-      border-bottom: 1px solid $greyLight;
+
+  #two {
+    border-bottom: 1px solid $greyLight;
   }
 }
