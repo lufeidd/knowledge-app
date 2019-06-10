@@ -50,10 +50,18 @@ export default {
 
       let res = await USER_HELPER_DETAIL(data);
       if(res.hasOwnProperty("response_code")){
+        // store 设置登录状态
+        this.$store.commit("changeLoginState", 1);
+        
         this.contentData = res.response_data;
         // console.log(res.response_data);
         $('.content').append(this.contentData.content);
       }else{
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          // store 设置登录状态
+          this.$store.commit("changeLoginState", 100);
+          
+        }
         this.$toast(res.error_message);
       }
     }

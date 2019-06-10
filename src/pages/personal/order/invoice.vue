@@ -73,6 +73,15 @@
 </template>
 
 <style src="@/style/scss/pages/personal/order/invoice.scss"  lang="scss"></style>
+<style lang="scss">
+#invoicePage {
+.van-hairline--top-bottom:after {
+border-width: 1px 0 0 0;
+border-color: #ebedf0;
+}
+}
+</style>
+
 
 <script>
 import easyNav from "./../../../components/easyNav";

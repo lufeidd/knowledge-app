@@ -191,7 +191,7 @@ export default {
         this.brandData = res.response_data;
 
         // 微信分享
-        this.$getWxData(this.brandData.name, this.brandData.summary, this.brandData.header_pic);
+        this.$getWxData(this.brandData.name, this.brandData.summary, this.brandData.header_pic, this.$route.query);
 
         // title
         document.title = this.brandData.name;

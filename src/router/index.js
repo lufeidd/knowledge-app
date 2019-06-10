@@ -107,7 +107,8 @@ export default new Router({
       name: 'login',
       component: login,
       meta: {
-        title: '登录'
+        title: '登录',
+        // requireAuth: true
       }
     },
     {
@@ -115,7 +116,8 @@ export default new Router({
       name: 'password',
       component: password,
       meta: {
-        title: '找回密码'
+        title: '找回密码',
+        // requireAuth: true
       }
     },
     {
@@ -123,7 +125,8 @@ export default new Router({
       name: 'register',
       component: register,
       meta: {
-        title: '注册'
+        title: '注册',
+        // requireAuth: true
       }
     },
     {
@@ -142,7 +145,7 @@ export default new Router({
       meta: {
         title: '个人中心',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
-      }
+      },
     },
     {
       path: '/personal/collect',
@@ -188,7 +191,7 @@ export default new Router({
       component: record,
       meta: {
         title: '充值记录',
-        requireAuth: false // 需要登录才能进入的页面可以增加一个meta属性
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
     {
@@ -343,7 +346,7 @@ export default new Router({
       component: safe,
       meta: {
         title: '账号和安全',
-        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+        requireAuth: false // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
     {
@@ -361,7 +364,7 @@ export default new Router({
       component: bind,
       meta: {
         title: '账号绑定',
-        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+        requireAuth: false // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
     // {

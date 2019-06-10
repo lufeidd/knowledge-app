@@ -45,7 +45,13 @@
 
     <!-- 性别 -->
     <van-cell title="性别" is-link v-if="infoList.sex == 0" :value="''" @click="showAction('sex')"/>
-    <van-cell title="性别" is-link v-else :value="infoList.sex == 1 ? '男' : '女'" @click="showAction('sex')"/>
+    <van-cell
+      title="性别"
+      is-link
+      v-else
+      :value="infoList.sex == 1 ? '男' : '女'"
+      @click="showAction('sex')"
+    />
 
     <!-- 头像裁切，异步组件 -->
     <!-- 性别 -->
@@ -80,9 +86,9 @@
 
 <style lang="scss">
 #infoPage {
-.van-button {
-  border-radius: 0;
-}
+  .van-button {
+    border-radius: 0;
+  }
   min-height: 100%;
   background-color: $greyLight;
   & .listBox {
@@ -270,6 +276,10 @@ export default {
       let res = await USER_INFO(data);
       // console.log(res.response_data);
       if (res.hasOwnProperty("response_code")) {
+        // store 设置登录状态
+        this.$store.commit("changeLoginState", 1);
+        
+
         this.$set(this.infoList, "header_pic", res.response_data.header_pic);
         this.$set(this.infoList, "mobile", res.response_data.mobile);
         this.$set(this.infoList, "nickname", res.response_data.nickname);
@@ -278,8 +288,13 @@ export default {
         // 裁切后的图片
         if (this.$route.query.img)
           this.$set(this.infoList, "header_pic", this.$route.query.img);
-        console.log(789, this.infoList.header_pic);
+        // console.log(this.infoList.header_pic);
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          // store 设置登录状态
+          this.$store.commit("changeLoginState", 100);
+          
+        }
         this.$toast(res.error_message);
       }
     },

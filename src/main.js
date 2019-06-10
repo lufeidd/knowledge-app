@@ -36,8 +36,8 @@ import md5 from 'js-md5';
 // cookies
 import VueCookies from 'vue-cookies'
 
-//  引入接口
-import { SERVER_TIME } from "./apis/public";
+// 引入 store
+import store from './store'
 
 import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
@@ -111,25 +111,6 @@ Vue.config.productionTip = false
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
   next();
-
-  // //判断该页面有 brand_id
-  // if (from.query.brand_id) {
-  //   //路由切换时，如果没有就添加，有就跳过执行，添加固定参数
-  //   if (!to.query.brand_id) {
-  //     //准备一个跳转的query对象
-  //     let query = to.query
-  //     query.brand_id = from.query.brand_id
-  //     next({
-  //       path: to.path,
-  //       query: query
-  //     })
-  //   } else {
-  //     next()
-  //   }
-  // } else {
-  //   next()
-  // }
-
   /* 路由发生变化修改页面 title */
   if (to.meta.title) {
     document.title = to.meta.title
@@ -137,33 +118,39 @@ router.beforeEach((to, from, next) => {
   }
   next()
 
-  //如果需要跳转 ，往下走（1）
-  if (to.meta.requireAuth) {
-     //判断是否登录过，如果有登陆过，说明有token,或者token未过期，可以跳过登录（2）
-    if (true) { 
-      //判断下一个路由是否为要验证的路由（3）          
-      if (to.path === '/login/index') {   
-        // 如果是直接跳到首页， 
-        next('/brand/index');         
-      } else {   
-        //如果该路由不需要验证，那么直接往后走          
-        next();
-      }
-    } else {
-      //如果没有登陆过，或者token 过期， 那么跳转到登录页
-      console.log('没有');      
-      next('/login/index');
-    }
-  } else { 
-    //不需要跳转，直接往下走                          
-    next();
-  }
-  next()
-
   // 重定向功能，为解决ios微信上复制链接功能不能复制到动态路由问题
   // 获取地址前段部分，不算参数
   var replaceUrl = window.location.href.split('#')[0] + '#' + to.path;
+
   var index = 0; // 索引初始化
+  var token = parseInt(sessionStorage.getItem('loginState'));
+  // const isLogin = store.state.isLogin;
+
+  next()
+  // 如果页面需要登录才跳转，未登录跳转到登录页
+  if (to.meta.requireAuth) {
+
+    next();
+    // 非当前页面刷新，判断是否登录，未登录跳转到登录页面
+    // 个人中心页面除个人中心首页其他页面当前刷新未登录都需要跳转到登录页面
+    if (from.name != null || (from.name == null && to.name != 'personalIndex')) {
+
+      // 判断是否登录过，如果有登陆过，说明有token,或者token未过期，可以跳过登录（2）
+      // 未登录跳转到登录页面   
+      if (!token || token == 100) {
+        replaceUrl = window.location.href.split('#')[0] + '#' + '/login/index';
+        console.log(999)
+        next();
+      } else {
+        //如果该路由不需要验证，那么直接往后走          
+        next();
+      }
+      next();
+    }
+    next();
+  }
+
+  next()
   // 给replaceUrl拼接参数
   for (var i in to.query) {
     // 判断是否等于第一个参数
@@ -176,21 +163,44 @@ router.beforeEach((to, from, next) => {
     }
     index++; // 索引++
   }
+  next()
   //判断该页面有 brand_id
   if (from.query.brand_id) {
     // 路由切换时，如果没有就添加，有就跳过执行，添加固定参数
     if (!to.query.brand_id) {
-      if(replaceUrl.indexOf("?") != -1) {
-        replaceUrl += '&brand_id=' + from.query.brand_id;
+      next()
+      // 朋友圈   from=timeline&isappinstalled=0
+      // 微信群   from=groupmessage&isappinstalled=0
+      // 好友分享 from=singlemessage&isappinstalled=0
+      if (replaceUrl.indexOf('timeline') != -1 || replaceUrl.indexOf('groupmessage') != -1 || replaceUrl.indexOf('singlemessage') != -1) {
+        next()
+        if (replaceUrl.split('#')[1].indexOf("?") != -1) {
+          replaceUrl += '&brand_id=' + from.query.brand_id;
+          next()
+        } else {
+          replaceUrl += '?brand_id=' + from.query.brand_id;
+          next()
+        }
       } else {
-        replaceUrl += '?brand_id=' + from.query.brand_id;
+        next()
+        if (replaceUrl.indexOf("?") != -1) {
+          replaceUrl += '&brand_id=' + from.query.brand_id;
+          next()
+        } else {
+          replaceUrl += '?brand_id=' + from.query.brand_id;
+          next()
+        }
       }
+
       next()
     }
   } else {
     next()
   }
-  console.log('routerLink:', replaceUrl);
+  next()
+
+  console.log('routerLink:', replaceUrl, 'token:', token);
+  localStorage.setItem('routerLink:', replaceUrl);
   window.location.replace(replaceUrl); // 重定向跳转
 })
 
@@ -198,6 +208,7 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: '#app',
   router,
+  store,  // 使用store
   components: { App },
   template: '<App/>'
 })

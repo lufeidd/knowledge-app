@@ -91,15 +91,23 @@ export default {
       data.sign = this.$getSign(data);
       let res = await USER_ADDRESS_LIST(data);
       if (res.hasOwnProperty("response_code")) {
+        // store 设置登录状态
+        this.$store.commit("changeLoginState", 1);
+        
         this.addressData = [];
         for (let i = 0; i < res.response_data.length; i++) {
           this.addressData.push(res.response_data[i]);
         }
         this.finished = true;
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          // store 设置登录状态
+          this.$store.commit("changeLoginState", 100);
+          
+        }
         this.$toast(res.error_message);
       }
-      console.log(123, res);
+      // console.log(res);
     },
     // 修改当前地址
     async editAddress(addressId, key) {

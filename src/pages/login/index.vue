@@ -88,7 +88,7 @@ export default {
       phone: "",
       password: "",
       submitData: {
-        disabled: true,
+        disabled: true
       }
     };
   },
@@ -129,9 +129,16 @@ export default {
       let res = await LOG(data);
       // 出错提示
       if (res.hasOwnProperty("response_code")) {
-        console.log(res);
+        // store 设置登录状态
+        this.$store.commit("changeLoginState", 1);
+        // console.log(res);
         this.$router.push({ name: "personalIndex", query: "" });
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          // store 设置登录状态
+          this.$store.commit("changeLoginState", 100);
+          
+        }
         this.$toast(res.error_message);
       }
     },

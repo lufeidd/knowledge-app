@@ -94,6 +94,9 @@ cnpm install --save-dev generate-asset-webpack-plugin
 // 微信分享，引入sdk
 cnpm install weixin-js-sdk --save-dev
 
+// vue 集中式存储和管理应用程序中所有组件的状态
+cnpm install vuex --save
+
 cnpm install
 
 cnpm run dev

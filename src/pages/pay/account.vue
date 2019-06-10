@@ -318,6 +318,9 @@ export default {
         res.hasOwnProperty("response_code") &&
         res.response_data.success == 1
       ) {
+        // store 设置登录状态
+        this.$store.commit("changeLoginState", 1);
+        
         this.showDialog = false;
         this.showKeyboard = false;
         clearInterval(this.clock);
@@ -333,6 +336,11 @@ export default {
           }
         });
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          // store 设置登录状态
+          this.$store.commit("changeLoginState", 100);
+          
+        }
         this.$toast(res.error_message);
       }
     }

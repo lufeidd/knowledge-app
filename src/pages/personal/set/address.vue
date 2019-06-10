@@ -14,9 +14,7 @@
 @import url("./../../../style/scss/components/dateTimePicker.scss");
 @import url("./../../../style/scss/components/button.scss");
 
-
 #addressPage {
-
   .van-address-edit__buttons {
     padding: 100px 50px;
   }
@@ -110,6 +108,9 @@ export default {
       data.sign = this.$getSign(data);
       let res = await USER_ADDRESS(data);
       if (res.hasOwnProperty("response_code")) {
+        // store 设置登录状态
+        this.$store.commit("changeLoginState", 1);
+        
         this.addressInfo.name = res.response_data[0].consignee;
         this.addressInfo.tel = res.response_data[0].mobile;
         this.addressInfo.addressDetail = res.response_data[0].address;
@@ -124,6 +125,11 @@ export default {
         this.countyId = res.response_data[0].county_id;
         // console.log(res, res.response_data[0]);
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          // store 设置登录状态
+          this.$store.commit("changeLoginState", 100);
+          
+        }
         this.$toast(res.error_message);
       }
     },

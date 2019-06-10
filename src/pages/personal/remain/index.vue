@@ -42,8 +42,8 @@ export default {
         // searchLink: "/search",
         personal: true,
         personalLink: "/personal/index",
-        type:'order',
-      },
+        type: "order"
+      }
     };
   },
   mounted() {
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     recharge() {
-      this.$router.push('/personal/remain/account');
+      this.$router.push("/personal/remain/account");
     },
     //获取页面数据
     async getRemainData() {
@@ -62,8 +62,15 @@ export default {
       let res = await USER_REMAIN_INFO(data);
       if (res.hasOwnProperty("response_code")) {
         this.money = res.response_data.balance;
-        console.log(res.response_data.balance);
+        // store 设置登录状态
+        this.$store.commit("changeLoginState", 1);
+        
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          // store 设置登录状态
+          this.$store.commit("changeLoginState", 100);
+          
+        }
         this.$toast(res.error_message);
       }
     }
