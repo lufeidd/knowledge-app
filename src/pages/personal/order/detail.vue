@@ -91,7 +91,7 @@
       <span class="button button1"  v-if="invoice !== undefined && Object.keys(invoice).length > 0 ">查看发票</span>
       <span class="button button1" @click="apply" v-else>申请发票</span>
       <div>
-        <span class="button button2" @click="toComment">评价</span>
+        <span class="button button2" @click="toComment" v-if="infoData.if_comment == 0">评价</span>
         <!-- <span class="button button1" @click="repurchase">再次购买</span> -->
       </div>
     </div>
@@ -229,7 +229,13 @@ export default {
     },
     //评价
     toComment(){
-
+      console.log(this.infoData.order_id);
+      this.$router.push({
+        name:'ordercomment',
+        query:{
+          order_id:this.infoData.order_id,
+        }
+      })
     },
   }
 };

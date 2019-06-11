@@ -222,7 +222,7 @@ export default {
       // 出错提示
       if (res.hasOwnProperty("response_code")) {
         console.log(res);
-        this.$router.go(-1).$reload();
+        this.$router.go(-1);
         // this.$router.push('/personal/order/list');
         // this.$reload();
       } else {

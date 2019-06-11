@@ -31,11 +31,11 @@ export const USER_FEEDBACK_ADD = query => req('post', '/user/feedback/add', quer
 
 //我的购买--订单
 export const USER_ORDER_INVOICE_ADD = query => req('post', '/shopping/order/invoice/add', query);
-
-
-
 export const USER_ORDER_DETAIL_GET = query => req('post', '/shopping/order/get', query);
 export const USER_ORDER_DETAIL_GETS = query => req('post', '/shopping/order/gets', query);
+    //订单评价
+export const USER_ORDER_ORDER_COMMENT_ADD = query => req('post', '/shopping/order/comment/add', query);
+export const USER_ORDER_COMMENT_UNDO_GETS = query => req('post', '/shopping/order/comment/undo/gets', query);
 
 // 获取用户地址列表
 export const USER_ADDRESS_LIST = query => req('post', '/user/address/gets', query);

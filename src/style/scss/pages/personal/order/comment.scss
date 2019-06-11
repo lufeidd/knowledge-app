@@ -10,6 +10,7 @@
     padding: 15px 15px 28px 15px;
     background-color: $white;
     border-bottom: 1px solid $greyLight;
+    position: relative;
     .bookDetail{
       @include displayFlex(flex,flex-start,flex-start);
       position: relative;
@@ -24,7 +25,7 @@
       }
       .info{
         position: absolute;
-        left: 80px;
+        left: 90px;
         height: 100%;
         display: flex;
         flex-grow: 1;
@@ -37,15 +38,6 @@
         }
         .commentLine{
           @include displayFlex(flex,space-between,null);
-          .button{
-            display: inline-block;
-            line-height: 24px;
-            border-radius: 12px;
-            padding-left: 18px;
-            padding-right: 18px;
-            color: $redDark;
-            border: 1px solid $redDark;
-          }
           .number{
             color: $cl9;
             .money{
@@ -54,6 +46,18 @@
           }
         }
       }
+    }
+    .button{
+      display: inline-block;
+      line-height: 24px;
+      border-radius: 12px;
+      padding-left: 18px;
+      padding-right: 18px;
+      color: $redDark;
+      border: 1px solid $redDark;
+      position: absolute;
+      right: 15px;
+      bottom:28px;
     }
   }
   .thanks{

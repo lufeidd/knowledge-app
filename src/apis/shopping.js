@@ -16,3 +16,5 @@ export const ORDER_VIRTUAL_ADD_PAY = query => req('post', '/shopping/cashier/bal
 
 // 新增虚拟订单
 export const ORDER_VIRTUAL_ADDINFO = query => req('post', '/shopping/order/virtual/addinfo', query);
+
+
