@@ -167,6 +167,7 @@ export default {
       }
     },
     check(){
+      // console.log(this.value1,this.value2,this.value3)
       this.content= $("textarea").val().trim();
       if(this.value1 > 0 && this.value2 > 0 && this.value3 > 0 && this.content.length > 0){
         this.submit = false;
