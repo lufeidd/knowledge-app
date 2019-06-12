@@ -13,7 +13,7 @@ var instance = axios.create({
 
     // run build
     // baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
-    
+
     headers: {'App-version': 'wap'},
     timeout: 6000,
 })

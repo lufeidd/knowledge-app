@@ -1,5 +1,6 @@
 <template>
   <div id="helpPage">
+
     <van-list
       v-model="programLoading"
       :finished="programFinished"

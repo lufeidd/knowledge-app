@@ -142,8 +142,15 @@
         font-size: $fontSize - 1;
         color: $cl3;
       }
+      .van-cell__title{
+        color: $cl3;
+        font-size: $fontSize + 1;
+      }
     }
-
+    .van-cell__title{
+      color: $cl9;
+      font-size: $fontSize - 1;
+    }
     .acturalPay{
       text-align: right;
       padding-right: 15px;

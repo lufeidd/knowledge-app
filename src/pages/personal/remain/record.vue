@@ -13,17 +13,16 @@
       finished-text="没有更多了"
       @load="programLoad"
     >
-      <div class="content" v-for="item in incomeData">
-        <div class="chong">充</div>
-        <div class="detail">
-          <div class="top">
-            <span class="into">充值-转入余额</span>
-            <span class="money">{{item.amount}}</span>
-          </div>
-          <div class="bottom">
-            <span class="date">{{item.create_time}}</span>
-            <span class="order">{{item.order==0 ? '待发货':''}}</span>
-          </div>
+    <div class="content" v-for="item,index in incomeData" :key="index">
+      <div class="chong">充</div>
+      <div class="detail">
+        <div class="top">
+          <span class="into">充值-转入余额</span>
+          <span class="money">{{item.amount}}</span>
+        </div>
+        <div class="bottom">
+          <span class="date">{{item.create_time}}</span>
+          <span class="order">{{item.order==0 ? '待发货':''}}</span>
         </div>
       </div>
     </van-list>
@@ -245,7 +244,7 @@ export default {
       var endTime = year + '-' + nextmonth + '-' + '01' + ' 00:00:00';
       this.begintime = beginTime;
       this.endtime = endTime;
-      console.log("当前日期"+beginTime,endTime);   
+      console.log("当前日期"+beginTime,endTime);
     },
   }
 };

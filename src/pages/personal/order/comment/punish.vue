@@ -3,7 +3,7 @@
     <div class="commodity">
       <div class="line">
         <div class="ratiobox">
-          <a class="bookImg" v-lazy:background-image="imgUrl"></a>
+          <a class="bookImg" v-lazy:background-image="pic"></a>
         </div>
         <div class="stars">
           <span class="text">商品评价</span>
@@ -13,10 +13,11 @@
             color="#f05654"
             void-icon="star"
             void-color="#f5f5f5"
+            @change="check"
           />
         </div>
       </div>
-      <textarea placeholder="说说你对产品的了解吧!"></textarea>
+      <textarea placeholder="说说你对产品的了解吧!" @input="check"></textarea>
       <upload :uploadData="uploadData"></upload>
     </div>
     <div class="service">
@@ -35,6 +36,7 @@
             color="#f05654"
             void-icon="star"
             void-color="#f5f5f5"
+            @change="check"
           />
         </div>
         <div class="descrip">
@@ -45,10 +47,19 @@
             color="#f05654"
             void-icon="star"
             void-color="#f5f5f5"
+            @change="check"
           />
         </div>
       </div>
     </div>
+    <div class="bottomBox" :class="{iphx:this.isIphx}" v-if="submit">
+      <van-button disabled type="danger" size="large" replace>发布</van-button>
+    </div>
+
+    <div class="bottomBox" :class="{iphx:this.isIphx}" v-else>
+      <van-button type="danger" size="large" replace @click="submitComment">发布</van-button>
+    </div>
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
@@ -56,51 +67,125 @@
 
 <script>
 import upload from "../../../../components/upload";
+import { COMMON_UPLOAD } from "../../../../apis/public.js";
+import { USER_ORDER_ORDER_COMMENT_ADD } from "../../../../apis/user.js";
+import easyNav from "./../../../../components/easyNav";
 export default {
   components: {
-    upload
+    upload,easyNav
   },
   data() {
     return {
-      imgUrl:
-        "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
+      pic:"",
+      order_id:null,
+      detail_id:null,
       value1: 0,
       value2: 0,
       value3: 0,
+      url:"",
+      content:"",
+      commentImg:"",
+      submit:true,
       uploadData: {
         maxlength: 3,
         text: "上传图片(最多三张)"
-      }
+      },
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        // searchLink: "/search",
+        personal: true,
+        personalLink: "/personal/index",
+        type:'order',
+      },
     };
   },
+  mounted(){
+    this.pic = this.$route.query.pic;
+    this.order_id = this.$route.query.order_id;
+    this.detail_id = this.$route.query.detail_id;
+    console.log(this.detail_id)
+  },
   methods: {
-    uploadImg(e, num) {
-      //上传图片
-      // this.option.img
-      var file = e.target.files[0];
-      if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
-        alert("图片类型必须是.gif,jpeg,jpg,png,bmp中的一种");
-        return false;
-      }
-      var reader = new FileReader();
-      reader.onload = e => {
-        let data;
-        if (typeof e.target.result === "object") {
-          // 把Array Buffer转化为blob 如果是base64不需要
-          data = window.URL.createObjectURL(new Blob([e.target.result]));
-        } else {
-          data = e.target.result;
-        }
-        if (num === 1) {
-          this.option.img = data;
-        } else if (num === 2) {
-          this.example2.img = data;
-        }
+    async getImgUrl() {
+      this.commentImg =
+        $(".content.set")
+          .eq(0)
+          .attr("data-src") +
+        "||" +
+        $(".content.set")
+          .eq(1)
+          .attr("data-src") +
+        "||" +
+        $(".content.set")
+          .eq(2)
+          .attr("data-src");
+      this.commentImg = this.commentImg
+        .split("||")
+        .filter(item => item !== "undefined")
+        .join("||");
+      // console.log(this.feedbackImgs)
+
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+        file: this.commentImg,
+        opt_type: "feedback",
+        file_type: "Base64",
+        source: 1
       };
-      // 转化为base64
-      // reader.readAsDataURL(file)
-      // 转化为blob
-      reader.readAsArrayBuffer(file);
+
+      data.sign = this.$getSign(data);
+      let res = await COMMON_UPLOAD(data);
+      if (res.hasOwnProperty("response_code")) {
+        console.log(res);
+        var arr = [];
+        for (let i = 0; i < res.response_data.length; i++) {
+          arr.push(res.response_data[i].url);
+        }
+        this.url = arr.join("|");
+        console.log(this.url)
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    async submitComment(){
+      if ($(".flex-box").length > 1) {
+        this.getImgUrl();
+      }
+
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+        desc_pic: this.url,
+        contents: this.content,
+        order_id:this.order_id,
+        detail_id:this.detail_id,
+        score:this.value1,
+        service_score:this.value3,
+        dispatching_score:this.value2,
+      };
+      data.sign = this.$getSign(data);
+      let res = await USER_ORDER_ORDER_COMMENT_ADD(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.$toast("发布成功!");
+        this.$router.push("/personal/order/comment/success");
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    check(){
+      // console.log(this.value1,this.value2,this.value3)
+      this.content= $("textarea").val().trim();
+      if(this.value1 > 0 && this.value2 > 0 && this.value3 > 0 && this.content.length > 0){
+        this.submit = false;
+      }else{
+        this.submit = true;
+      }
     }
   }
 };

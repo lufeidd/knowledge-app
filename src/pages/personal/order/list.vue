@@ -137,7 +137,7 @@
           <span class="button button1" @click="repply(item)" v-if="item.invoice_id == 0">申请发票</span>
           <span class="button button1" v-else>查看发票</span>
           <div>
-            <span class="button button1">评价</span>
+            <span class="button button1" @click="toComment(item,index)" v-if="item.if_comment == 0">评价</span>
             <!-- <span class="button1" v-if="item.state ==1">再次购买</span> -->
             <!-- <span class="button2" >去支付</span> -->
             <!-- <span class="button2" v-if="item.state ==0">确认收货</span> -->
@@ -180,7 +180,7 @@ export default {
       programFinished: false,
       page: 1,
       page_size: 10,
-      order_id: ""
+      order_id: "",
     };
   },
   mounted() {
@@ -263,6 +263,18 @@ export default {
           brand_id: item.brand_id
         }
       });
+    },
+    //评价
+    toComment(item,index){
+      console.log(item)
+      // console.log(item.details[index].detail_id);
+      // return;
+      this.$router.push({
+        name:'ordercomment',
+        query:{
+          order_id:item.order_id,
+        }
+      })
     }
   }
 };
