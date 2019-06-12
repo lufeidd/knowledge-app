@@ -2,8 +2,8 @@
   <div id="invoicePage">
     <van-cell-group id="one">
       <van-cell title="订单号:" v-model="invoiceData.orderNumber" value/>
-      <van-cell title="发票类型:" value="普通发票" v-if="this.invoiceData.invoiceType == 1" is-link arrow-direction="down" @click="choosetype"/>
-      <van-cell title="发票类型:" value="电子发票" v-else is-link arrow-direction="down" @click="choosetype"/>
+      <!-- <van-cell title="发票类型:" value="普通发票" v-if="this.invoiceData.invoiceType == 1" is-link arrow-direction="down" @click="choosetype"/> -->
+      <van-cell title="发票类型:" value="电子发票" />
       <van-cell title="发票内容:" :value="invoiceData.invoice_content"/>
       <!-- <van-field
         v-model="invoiceData.invoice_content"
@@ -77,13 +77,13 @@
       @select="invoiceSelect"
       @cancel="invoiceModel=false"
     />
-    <van-actionsheet
+    <!-- <van-actionsheet
       v-model="invoiceTypeModle"
       :actions="invoiceTypeActions"
       cancel-text="取消"
       @select="invoiceTypeSelect"
       @cancel="invoiceTypeModle=false"
-    />
+    /> -->
   </div>
 </template>
 
@@ -125,7 +125,7 @@ export default {
         number_message:"",
       },
       invoiceModle: false,
-      invoiceTypeModle: false,
+      // invoiceTypeModle: false,
       invoiceActions: [
         {
           name: "个人"
@@ -134,14 +134,14 @@ export default {
           name: "单位"
         }
       ],
-      invoiceTypeActions: [
-        {
-          name: "普通发票"
-        },
-        {
-          name: "电子发票"
-        }
-      ]
+      // invoiceTypeActions: [
+      //   {
+      //     name: "普通发票"
+      //   },
+      //   {
+      //     name: "电子发票"
+      //   }
+      // ]
     };
   },
   mounted() {
@@ -258,20 +258,20 @@ export default {
       // console.log(item.name)
     },
     //选择发票类型
-    choosetype(){
-      this.invoiceTypeModle = true;
-    },
-    invoiceTypeSelect(item, index) {
-      // 点击选项时默认不会关闭菜单，可以手动关闭
-      this.invoiceTypeModle = false;
-      // this.infoList.sex = index + 1;
-      if(item.name == '普通发票'){
-        this.invoiceData.invoiceType = 1;
-      }else if(item.name == '电子发票'){
-        this.invoiceData.invoiceType = 2;
-      }
-      // console.log(item.name)
-    },
+    // choosetype(){
+    //   this.invoiceTypeModle = true;
+    // },
+    // invoiceTypeSelect(item, index) {
+    //   // 点击选项时默认不会关闭菜单，可以手动关闭
+    //   this.invoiceTypeModle = false;
+    //   // this.infoList.sex = index + 1;
+    //   if(item.name == '普通发票'){
+    //     this.invoiceData.invoiceType = 1;
+    //   }else if(item.name == '电子发票'){
+    //     this.invoiceData.invoiceType = 2;
+    //   }
+    //   // console.log(item.name)
+    // },
   }
 };
 </script>

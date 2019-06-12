@@ -57,18 +57,18 @@
         </div>
       </div>
     </div>
-    <!-- <div class="priceInfo">
+    <div class="priceInfo">
       <div class="first">
-        <van-cell title="商品总额" v-model="'-¥'+priceInfo.totalPrice.toFixed(2)"/>
+        <van-cell title="商品总额" v-model="'¥'+infoData.order_money"/>
       </div>
-      <van-cell title="运费" v-model="'¥'+priceInfo.freight.toFixed(2)"/>
-      <van-cell title="商品优惠" v-model="'¥'+priceInfo.discount.toFixed(2)"/>
-      <van-cell title="余额" v-model="'-¥'+priceInfo.remain.toFixed(2)"/>
-      <p class="acturalPay">
+      <van-cell title="运费" v-model="'¥'+infoData.dispatch_price"/>
+      <!-- <van-cell title="商品优惠" v-model="discount"/> -->
+      <!-- <van-cell title="余额" v-model="'-¥'+priceInfo.remain.toFixed(2)"/> -->
+      <p class="acturalPay" style="margin-top:10px;">
         实付款
-        <span>¥{{priceInfo.acturalPay}}</span>
+        <span>¥{{infoData.pay_money}}</span>
       </p>
-    </div> -->
+    </div>
     <div class="fictitious">
       <div class="text">
         <van-cell title="虚拟物品"/>
@@ -136,7 +136,12 @@ export default {
   mounted(){
     this.order_id = this.$route.query.order_id;
     this.getData();
-    console.log(Object.keys(this.invoice).length);
+    console.log(this.infoData.order_money - this.infoData.pay_money);
+  },
+  computed:{
+    discount:function(){
+      return '-￥' + this.infoData.order_money - this.infoData.pay_money;
+    }
   },
   methods: {
     copy() {

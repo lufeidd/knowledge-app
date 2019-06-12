@@ -16,7 +16,7 @@
       finished-text="没有更多了"
       @load="programLoad"
     >
-    <div class="content" v-for="item in incomeData">
+    <div class="content" v-for="item,index in incomeData" :key="index">
       <div class="chong">{{item.type==1 ? '收':'支'}}</div>
       <div class="detail">
         <div class="top">
@@ -246,7 +246,7 @@ export default {
       var endTime = year + '-' + nextmonth + '-' + '01' + ' 00:00:00';
       this.begintime = beginTime;
       this.endtime = endTime;
-      console.log("当前日期"+beginTime,endTime);   
+      console.log("当前日期"+beginTime,endTime);
     },
   }
 }

@@ -30,6 +30,7 @@
        <span class="button" @click="toComment(item)">评价</span>
     </div>
     </van-list>
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
@@ -37,15 +38,28 @@
 
 <script>
 import { USER_ORDER_COMMENT_UNDO_GETS } from "../../../../apis/user.js";
+import easyNav from "./../../../../components/easyNav";
 export default {
+  components: {
+    easyNav
+  },
   data() {
     return {
-      imgUrl: "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
       listData:[],
       page:1,
       page_size:5,
       programLoading: false,
       programFinished: false,
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        // searchLink: "/search",
+        personal: true,
+        personalLink: "/personal/index",
+        type:'order',
+      },
     };
   },
   mounted(){

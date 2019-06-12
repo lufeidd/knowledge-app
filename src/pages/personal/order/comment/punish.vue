@@ -59,6 +59,7 @@
     <div class="bottomBox" :class="{iphx:this.isIphx}" v-else>
       <van-button type="danger" size="large" replace @click="submitComment">发布</van-button>
     </div>
+    <easyNav :navData="navData"></easyNav>
   </div>
 </template>
 
@@ -68,9 +69,10 @@
 import upload from "../../../../components/upload";
 import { COMMON_UPLOAD } from "../../../../apis/public.js";
 import { USER_ORDER_ORDER_COMMENT_ADD } from "../../../../apis/user.js";
+import easyNav from "./../../../../components/easyNav";
 export default {
   components: {
-    upload
+    upload,easyNav
   },
   data() {
     return {
@@ -87,7 +89,17 @@ export default {
       uploadData: {
         maxlength: 3,
         text: "上传图片(最多三张)"
-      }
+      },
+      navData: {
+        fold: false,
+        home: true,
+        homeLink: "/brand/index",
+        search: false,
+        // searchLink: "/search",
+        personal: true,
+        personalLink: "/personal/index",
+        type:'order',
+      },
     };
   },
   mounted(){
