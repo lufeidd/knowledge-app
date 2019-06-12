@@ -136,11 +136,11 @@ export default {
   mounted(){
     this.order_id = this.$route.query.order_id;
     this.getData();
-    console.log(this.infoData.order_money - this.infoData.pay_money);
   },
   computed:{
     discount:function(){
-      return '-￥' + (this.infoData.order_money - this.infoData.pay_money);
+      // return '-￥' + (this.infoData.order_money - this.infoData.pay_money);
+      return '-￥' + 0;
     }
   },
   methods: {
