@@ -62,7 +62,7 @@
         <van-cell title="商品总额" v-model="'¥'+infoData.order_money"/>
       </div>
       <van-cell title="运费" v-model="'¥'+infoData.dispatch_price"/>
-      <!-- <van-cell title="商品优惠" v-model="discount"/> -->
+      <van-cell title="商品优惠" v-model="discount"/>
       <!-- <van-cell title="余额" v-model="'-¥'+priceInfo.remain.toFixed(2)"/> -->
       <p class="acturalPay" style="margin-top:10px;">
         实付款
@@ -140,7 +140,7 @@ export default {
   },
   computed:{
     discount:function(){
-      return '-￥' + this.infoData.order_money - this.infoData.pay_money;
+      return '-￥' + (this.infoData.order_money - this.infoData.pay_money);
     }
   },
   methods: {
