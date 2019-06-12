@@ -144,7 +144,7 @@ export default new Router({
       component: personal,
       meta: {
         title: '个人中心',
-        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+        requireAuth: false // 需要登录才能进入的页面可以增加一个meta属性
       },
     },
     {

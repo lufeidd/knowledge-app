@@ -129,7 +129,7 @@ router.beforeEach((to, from, next) => {
   next()
   // 如果页面需要登录才跳转，未登录跳转到登录页
   if (to.meta.requireAuth) {
-
+    console.log('token:', token)
     next();
     // 非当前页面刷新，判断是否登录，未登录跳转到登录页面
     // 个人中心页面除个人中心首页其他页面当前刷新未登录都需要跳转到登录页面
@@ -139,7 +139,7 @@ router.beforeEach((to, from, next) => {
       // 未登录跳转到登录页面   
       if (!token || token == 100) {
         replaceUrl = window.location.href.split('#')[0] + '#' + '/login/index';
-        console.log(999)
+      
         next();
       } else {
         //如果该路由不需要验证，那么直接往后走          
@@ -199,7 +199,7 @@ router.beforeEach((to, from, next) => {
   }
   next()
 
-  console.log('routerLink:', replaceUrl, 'token:', token);
+  // console.log('routerLink:', replaceUrl, 'token:', token);
   localStorage.setItem('routerLink:', replaceUrl);
   window.location.replace(replaceUrl); // 重定向跳转
 })

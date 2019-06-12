@@ -208,6 +208,7 @@
         :class="{isShow: myAudioData.src}"
         :audioData="myAudioData"
         :rank="rankType"
+        :loginStatus="isLogin"
         ref="control"
         @setType="typeAction"
         @setMiniAudio="miniAudioData"
@@ -274,8 +275,7 @@ import {
   FOCUS_CANCEL,
   COMMENT,
   COMMENT_ADD,
-  RECOMMEND,
-  WX_SHARE
+  RECOMMEND
 } from "../../apis/public.js";
 
 export default {
@@ -315,7 +315,7 @@ export default {
       // 商品id
       goodsId: null,
       // 账号信息，是否登录
-      userInfo: false,
+      isLogin: null,
       // 专辑基础信息
       albumInfo: {},
       // 基础信息
@@ -396,30 +396,6 @@ export default {
     this.recommendData();
   },
   methods: {
-    // 获取页面分享信息
-    async wxShareData() {
-      var tStamp = this.$getTimeStamp();
-      var data = {
-        page_name: "album/detail",
-        params: JSON.stringify({ brand_id: this.$route.query.brand_id }),
-        version: "1.0",
-        timestamp: tStamp
-      };
-      data.sign = this.$getSign(data);
-      let res = await WX_SHARE(data);
-      if (res.hasOwnProperty("response_code")) {
-        console.log(res.response_data)
-        // 微信分享
-        this.$getWxData(
-          res.response_data.share_info.title,
-          res.response_data.share_info.desc,
-          res.response_data.share_info.pic,
-          res.response_data.share_info.url
-        );
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
     // 判断视频播放是否收费
     videoPlay() {
       // 需要收费
@@ -453,10 +429,25 @@ export default {
     },
     // 播放/暂停音频
     audioAction(item) {
+      // 未支付
+      if (item.goods_id != null && item.is_payed == 0 && item.is_free == 0) {
+        var _goodsId = null;
+        if (this.baseData.sale_style == 1) {
+          _goodsId = this.baseData.goods_id;
+        } else {
+          _goodsId = item.goods_id;
+        }
+        this.$router.push({
+          name: "payaccount",
+          query: { goods_id: _goodsId }
+        });
+        return;
+      }
+
       var goods_no = item.goods_no;
 
       let __goodsNo = item.goods_no;
-      let __pid = this.baseData.goods_id ? this.baseData.goods_id : 0;
+      let __pid = JSON.parse(localStorage.getItem("miniAudio"))[1];
       let __pic = this.baseData.pic[0];
       let __src = this.baseData.file_path;
       // let __src = require('./../../assets/music.mp3');
@@ -673,7 +664,7 @@ export default {
         localStorage.setItem("miniAudio", JSON.stringify(info));
       }
       // 外链至音乐播放器，设置info
-      this.$router.push({ name: "player", query: {} });
+      this.$router.push({name: "player", query: {isLogin: this.isLogin}});
     },
     // 当前节目播放结束，获取当前播放节目的专辑下所有节目（不分页）
     getAllProgramData(info) {
@@ -786,7 +777,7 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await ALBUM(data);
-      console.log(res);
+      // console.log(res);
 
       if (res.hasOwnProperty("response_code")) {
         //专辑基础信息
@@ -796,13 +787,10 @@ export default {
         // 公号信息
         this.brandInfoData = res.response_data.brand_info;
         // 账号信息，是否登录
-        this.userInfo = res.response_data.user_info;
+        this.isLogin = res.response_data.user_info.is_login;
 
         // 所属媒体信息
         // this.brandInfoData = res.response_data.brand_info;
-
-        // 获取页面分享信息
-        this.wxShareData();
         
         this.onsale = 1;
       } else {

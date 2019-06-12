@@ -168,8 +168,15 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await LOGOUT(data);
-      console.log("123", res.response_data);
+      console.log(res.response_data);
       if (res.hasOwnProperty("response_code")) {
+        // 退出登录将localstorage中进度数据清空
+        localStorage.setItem('miniAudio', null);
+        localStorage.setItem('audioProgress', null);
+        localStorage.setItem('cmts', null);
+        sessionStorage.setItem('headPic', null);
+        this.$store.commit("changeLoginState", 100);
+
         this.$router.push("/login/index");
       } else {
         this.$toast(res.error_message);

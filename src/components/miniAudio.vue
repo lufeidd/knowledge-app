@@ -59,7 +59,7 @@
 import { USER_PLAYED_RECORD } from "./../apis/user.js";
 export default {
   name: "music",
-  props: ["audioData", "rank"],
+  props: ["audioData", "rank", "loginStatus"],
   data() {
     return {
       playType: true,
@@ -78,6 +78,12 @@ export default {
         // console.log(newValue)
       },
       deep: true
+    },
+    loginStatus: {
+      handler(newValue, oldValue) {
+        // console.log(newValue)
+      },
+      deep: true
     }
   },
   beforeDestroy() {
@@ -85,6 +91,7 @@ export default {
     this.clearClock();
   },
   mounted() {
+    console.log(999, this.loginStatus)
     // 播放结束后销毁倒计时
     this.clearClock();
     // 判断是否显示节目列表入口
@@ -154,16 +161,24 @@ export default {
     },
     // 用户播放进度记录
     async currentTimeData(info) {
+      // 已登录账号才存储到数据库
+      if(this.loginStatus == 0) {
+        return;
+      }
+      
       // 调用接口计数器防止重复
       // 如果是非专辑，则传入goods_id
-      var _goodsId = info[1];
+      var _pid = info[1];
+      var _goodsId = info[8];
       if(info[1] == null) {
-        _goodsId = info[8];
+        _pid = info[8];
+        _goodsId = null;
       }
       var tStamp = this.$getTimeStamp();
       if (info != null && info.length > 0) {
         var data = {
-          goods_id: _goodsId,
+          goods_id: _pid,
+          sub_goods_id: _goodsId,
           duration: info[5],
           timestamp: tStamp,
           version: "1.0"
