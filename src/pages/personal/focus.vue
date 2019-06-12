@@ -21,7 +21,11 @@
         v-for="(item, key) in focusList"
         :key="key"
       >
-        <div @click="gotoBrand(item.brand_id, item.brand_name)" class="listBox" v-if="focusStatus[key].brand_id != null">
+        <div
+          @click="gotoBrand(item.brand_id, item.brand_name)"
+          class="listBox"
+          v-if="focusStatus[key].brand_id != null"
+        >
           <div class="left">
             <div class="ratioBox">
               <div class="box">
@@ -37,16 +41,13 @@
               <span class="count">+{{ item.update_num }}</span>
             </div>-->
           </div>
-            <div class="left" style="flex-basis: 0;margin-right: 10px;">
-              <svg class="icon" aria-hidden="true" style="width: 14px;height: 14px;color: #ccc;">
-                <use xlink:href="#icon-next-line"></use>
-              </svg>
-            </div>
+          <div class="left" style="flex-basis: 0;margin-right: 10px;">
+            <svg class="icon" aria-hidden="true" style="width: 14px;height: 14px;color: #ccc;">
+              <use xlink:href="#icon-next-line"></use>
+            </svg>
+          </div>
         </div>
-        <span
-          slot="right"
-          @click="focusCancel(item.brand_id, key)"
-        >
+        <span slot="right" @click="focusCancel(item.brand_id, key)">
           <div>取消关注</div>
         </span>
       </van-swipe-cell>
@@ -63,6 +64,7 @@
 import easyNav from "./../../components/easyNav";
 //  引入接口
 import { FOCUS, FOCUS_CANCEL } from "../../apis/public.js";
+import { truncate } from "fs";
 
 export default {
   components: {
@@ -91,8 +93,8 @@ export default {
     focusLoad() {
       this.focusData("focus", null, null);
     },
-    gotoBrand(brandId, brandName){
-      this.$router.push({name: 'brand', query: {brand_id: brandId}});
+    gotoBrand(brandId, brandName) {
+      this.$router.push({ name: "brand", query: { brand_id: brandId } });
     },
     // 获取关注接口信息
     async focusData(__type, brandId, key) {
@@ -111,9 +113,15 @@ export default {
           res = await FOCUS(data);
 
           // 出错提示
-          if (res.hasOwnProperty("response_code")) {
+          if (
+            res.hasOwnProperty("response_code") &&
+            res.response_data.hasOwnProperty("result")
+          ) {
             setTimeout(() => {
               var result = res.response_data.result;
+              // store 设置登录状态
+              this.$store.commit("changeLoginState", 1);
+              
               for (let i = 0; i < result.length; i++) {
                 this.focusList.push(result[i]);
                 this.focusStatus.push(result[i]);
@@ -128,7 +136,13 @@ export default {
               console.log("关注列表：", res);
             }, 500);
           } else {
-            this.$toast(res.error_message);
+            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+              // store 设置登录状态
+              this.$store.commit("changeLoginState", 100);
+              
+            }
+            this.focusFinished = true;
+            // this.$toast(res.error_message);
           }
           break;
         case "cancel":
@@ -146,6 +160,7 @@ export default {
             }
             this.$toast("已取消关注~");
           } else {
+            this.$toast(res.error_message);
           }
           break;
       }

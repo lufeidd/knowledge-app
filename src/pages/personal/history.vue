@@ -20,7 +20,11 @@
       >
         <template v-if="historyStatus[key].id != null">
           <!-- 音频/视频 -->
-          <router-link v-if="item.type == 1 || item.type == 2" :to="{name: 'albumdetail', query: {goods_id: item.target}}" class="listBox">
+          <router-link
+            v-if="item.type == 1 || item.type == 2"
+            :to="{name: 'albumdetail', query: {goods_id: item.target}}"
+            class="listBox"
+          >
             <div class="left">
               <div class="ratioBox">
                 <div class="box">
@@ -47,7 +51,7 @@
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-time-line"></use>
                   </svg>
-                  {{ item.data.create_time }}
+                  {{ item.data.update_time }}
                 </span>
               </div>
             </div>
@@ -58,7 +62,11 @@
             </div>
           </router-link>
           <!-- 专辑 -->
-          <router-link v-if="item.type == 9" :to="{name: 'album', query: {goods_id: item.target}}" class="listBox">
+          <router-link
+            v-if="item.type == 9"
+            :to="{name: 'album', query: {goods_id: item.target}}"
+            class="listBox"
+          >
             <div class="left">
               <div class="ratioBox">
                 <div class="box">
@@ -81,7 +89,7 @@
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-time-line"></use>
                   </svg>
-                  {{ item.data.create_time }}
+                  {{ item.data.update_time }}
                 </span>
               </div>
             </div>
@@ -92,7 +100,11 @@
             </div>
           </router-link>
           <!-- 文章 -->
-          <router-link v-if="item.type == 6" :to="{name: 'article', query: {goods_id: item.target}}" class="listBox">
+          <router-link
+            v-if="item.type == 6"
+            :to="{name: 'article', query: {goods_id: item.target}}"
+            class="listBox"
+          >
             <div class="left">
               <div class="ratioBox">
                 <div class="box">
@@ -115,7 +127,7 @@
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-time-line"></use>
                   </svg>
-                  {{ item.data.create_time }}
+                  {{ item.data.update_time }}
                 </span>
               </div>
             </div>
@@ -127,10 +139,7 @@
           </router-link>
         </template>
 
-        <span
-          slot="right"
-          @click="historyCancel(item.id, key)"
-        >
+        <span slot="right" @click="historyCancel(item.id, key)">
           <div>取消历史</div>
         </span>
       </van-swipe-cell>
@@ -194,7 +203,13 @@ export default {
           res = await USER_HISTORY(data);
 
           // 出错提示
-          if (res.hasOwnProperty("response_code")) {
+          if (
+            res.hasOwnProperty("response_code") &&
+            res.response_data.hasOwnProperty("result")
+          ) {
+            // store 设置登录状态
+            this.$store.commit("changeLoginState", 1);
+            
             setTimeout(() => {
               var result = res.response_data.result;
 
@@ -210,11 +225,15 @@ export default {
                 this.historyFinished = true;
               }
               console.log("历史列表：", result);
-
-
             }, 500);
           } else {
-            this.$toast(res.error_message);
+            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+              // store 设置登录状态
+              this.$store.commit("changeLoginState", 100);
+              
+            }
+            this.historyFinished = true;
+            // this.$toast(res.error_message);
           }
           break;
         case "cancel":

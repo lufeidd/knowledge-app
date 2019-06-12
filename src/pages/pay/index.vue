@@ -54,7 +54,7 @@ export default {
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADD(data);
       if (res.hasOwnProperty("response_code")) {
-        console.log(123, res.response_data[0])
+        // console.log(res.response_data[0])
       } else {
         this.$toast(res.error_message);
       }

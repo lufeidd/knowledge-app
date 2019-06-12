@@ -68,8 +68,10 @@ export default {
     };
   },
   mounted() {
-    this.option.img = this.$route.query.data ? this.$route.query.data : null;
+    this.option.img = sessionStorage.getItem('headPic');
     this.cropperShow = true;
+
+    // console.log(this.option.img);
 
     if (this.option.img == null) {
       this.$router.push("/personal/index");
@@ -101,7 +103,7 @@ export default {
         var self = this;
         this.$refs.cropper.getCropBlob(data => {
           var img = window.URL.createObjectURL(data);
-          console.log("img:", img);
+          // console.log(img);
         });
       } else {
         this.$refs.cropper.getCropData(data => {
@@ -122,7 +124,7 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await COMMON_UPLOAD(data);
-      console.log("123", res.response_data[0].acc_url);
+      // console.log(res.response_data[0].acc_url);
       if (res.hasOwnProperty("response_code")) {
         this.$router.push({
           name: "info",

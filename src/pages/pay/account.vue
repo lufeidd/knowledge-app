@@ -207,6 +207,9 @@ export default {
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADDINFO(data);
       if (res.hasOwnProperty("response_code")) {
+        // store 设置登录状态
+        this.$store.commit("changeLoginState", 1);
+        
         this.goodsInfo = res.response_data.goods_info;
         this.payBank = res.response_data.pay_bank;
         this.descInfo = res.response_data.desc;
@@ -214,6 +217,10 @@ export default {
 
         // console.log(res);
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          // store 设置登录状态
+          this.$store.commit("changeLoginState", 100);
+        }
         this.$toast(res.error_message);
       }
     },
@@ -315,9 +322,9 @@ export default {
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADD_PAY(data);
       if (
-        res.hasOwnProperty("response_code") &&
-        res.response_data.success == 1
+        res.hasOwnProperty("response_code")
       ) {
+        
         this.showDialog = false;
         this.showKeyboard = false;
         clearInterval(this.clock);

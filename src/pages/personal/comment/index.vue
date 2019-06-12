@@ -73,6 +73,26 @@ export default {
   mounted() {
     // this.getUserComment();
   },
+  // 进入当前页面
+  beforeRouteEnter(to, from, next) {
+    // console.log(to, from ,next);
+
+    // 外链进入
+    // if(from.name != null) {
+    // }
+    console.log("进入当前页面");
+    next();
+  },
+  // 离开当前页面
+  beforeRouteLeave(to, from, next) {
+    // console.log(to, from ,next);
+
+    // 外链进入
+    // if(from.name != null) {
+    // }
+    console.log("离开当前页面");
+    next();
+  },
   methods: {
     programLoad() {
       this.getUserComment();
@@ -97,7 +117,10 @@ export default {
 
       data.sign = this.$getSign(data);
       let res = await USER_COMMENT(data);
-      if (res.hasOwnProperty("response_code")) {
+      if (
+        res.hasOwnProperty("response_code") &&
+        res.response_data.hasOwnProperty("result")
+      ) {
         var result = res.response_data.result;
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
@@ -112,7 +135,16 @@ export default {
             this.page = 1;
           }
         }, 500);
+
+        // store 设置登录状态
+        this.$store.commit("changeLoginState", 1);
+        
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          // store 设置登录状态
+          this.$store.commit("changeLoginState", 100);
+          
+        }
         this.$toast(res.error_message);
       }
     }

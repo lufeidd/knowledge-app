@@ -2,8 +2,11 @@
   <div id="invoicePage">
     <van-cell-group id="one">
       <van-cell title="订单号:" v-model="invoiceData.orderNumber" value/>
+
       <!-- <van-cell title="发票类型:" value="普通发票" v-if="this.invoiceData.invoiceType == 1" is-link arrow-direction="down" @click="choosetype"/> -->
+      
       <van-cell title="发票类型:" value="电子发票" />
+      
       <van-cell title="发票内容:" :value="invoiceData.invoice_content"/>
       <!-- <van-field
         v-model="invoiceData.invoice_content"
@@ -11,7 +14,7 @@
         clear
         label="发票内容:"
         placeholder="请填写发票内容"
-      /> -->
+      />-->
       <van-cell
         title="开票抬头:"
         value="个人"
@@ -20,8 +23,15 @@
         arrow-direction="down"
         @click="showAction()"
       />
-      <van-cell title="开票抬头:" value="单位" v-else id="two" @click="showAction()" is-link
-        arrow-direction="down"/>
+      <van-cell
+        title="开票抬头:"
+        value="单位"
+        v-else
+        id="two"
+        @click="showAction()"
+        is-link
+        arrow-direction="down"
+      />
     </van-cell-group>
     <van-cell-group>
       <template>
@@ -66,8 +76,9 @@
       />
     </van-cell-group>
     <div v-if="this.isIphx" style="height: 34px;"></div>
-    <div class="bottomBox" :class="{iphx:this.isIphx}" @click="submitAction">
-      <van-button type="danger" size="large">提交</van-button>
+    <div class="bottomBox" :class="{iphx:this.isIphx}">
+      <van-button type="danger" size="large" @click="submitAction">提交</van-button>
+    
     </div>
     <easyNav :navData="navData"></easyNav>
     <van-actionsheet
@@ -87,7 +98,11 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/order/invoice.scss"  lang="scss"></style>
+<style src="@/style/scss/pages/personal/order/invoice.scss" lang="scss"></style>
+<style scoped>
+@import url("./../../../style/scss/components/button.scss");
+</style>
+
 
 <script>
 import easyNav from "./../../../components/easyNav";
@@ -120,9 +135,9 @@ export default {
         username: "",
         phone: "",
         error_message: "",
-        name_message:"",
-        company_message:"",
-        number_message:"",
+        name_message: "",
+        company_message: "",
+        number_message: ""
       },
       invoiceModle: false,
       // invoiceTypeModle: false,
@@ -147,41 +162,44 @@ export default {
   mounted() {
     this.invoiceData.orderNumber = this.$route.query.order_id;
     this.invoiceData.invoice_money = this.$route.query.money;
-    console.log(this.invoiceData.invoice_money)
+    console.log(this.invoiceData.invoice_money);
   },
   methods: {
     checkPhone() {
       var phoneNumber = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
-      if (phoneNumber.test(this.invoiceData.phone)) {
-        this.invoiceData.error_message = "";
-      } else {
+      this.invoiceData.phone = this.invoiceData.phone.substring(0, 11);
+      if (!phoneNumber.test(this.invoiceData.phone)) {
         this.invoiceData.error_message = "请输入正确的手机号";
-        // this.invoiceData.phone.length = 11 ;
+      } else {
+        this.invoiceData.error_message = "";
       }
     },
-    checka(){
+    checka() {
       // console.log(this.invoiceData.username.length)
-      if( this.invoiceData.username.length > 20){
-        this.invoiceData.name_message = "内容不能大于20字";
-        this.invoiceData.username = this.invoiceData.username.substring(0,20);
-      }else{
+      if (this.invoiceData.username.length > 20) {
+        // this.invoiceData.name_message = "内容不能大于20字";
+        this.invoiceData.username = this.invoiceData.username.substring(0, 20);
+      } else {
         this.invoiceData.name_message = "";
         // console.log(111)
       }
     },
-    check50(){
-      if( this.invoiceData.number.length > 50 ){
-        this.invoiceData.number_message = "税号不能大于50字";
-        this.invoiceData.number = this.invoiceData.number.substring(0,50);
-      }else{
+    check50() {
+      if (this.invoiceData.number.length > 50) {
+        // this.invoiceData.number_message = "税号不能大于50字";
+        this.invoiceData.number = this.invoiceData.number.substring(0, 50);
+      } else {
         this.invoiceData.number_message = "";
       }
     },
-    checkb(){
-      if( this.invoiceData.companyName.length > 50 ){
-        this.invoiceData.company_message = "公司名称不能大于50字";
-        this.invoiceData.companyName = this.invoiceData.companyName.substring(0,50);
-      }else{
+    checkb() {
+      if (this.invoiceData.companyName.length > 50) {
+        // this.invoiceData.company_message = "公司名称不能大于50字";
+        this.invoiceData.companyName = this.invoiceData.companyName.substring(
+          0,
+          50
+        );
+      } else {
         this.invoiceData.company_message = "";
       }
     },
@@ -198,7 +216,7 @@ export default {
             invoice_money: this.invoiceData.invoice_money,
             notify_people: this.invoiceData.username,
             notify_mobile: this.invoiceData.phone,
-            version: "1.0",
+            version: "1.0"
           };
           res = await USER_ORDER_INVOICE_ADD(data);
           this.$toast("已提交个人发票~");
@@ -213,7 +231,7 @@ export default {
             tax_number: this.invoiceData.number,
             notify_people: this.invoiceData.username,
             notify_mobile: this.invoiceData.phone,
-            version: "1.0",
+            version: "1.0"
           };
           res = await USER_ORDER_INVOICE_ADD(data);
           this.$toast("已提交单位发票~");
@@ -223,18 +241,26 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         console.log(res);
         this.$router.go(-1);
-        // this.$router.push('/personal/order/list');
-        // this.$reload();
       } else {
         this.$toast(res.error_message);
       }
     },
     submitAction() {
-      if ( this.type == 1 && this.invoiceData.phone.length > 0 && this.invoiceData.username.length > 0
+      var phoneNumber = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
+      
+      if (
+        this.type == 1 &&
+        phoneNumber.test(this.invoiceData.phone) &&
+        this.invoiceData.username.length > 0
       ) {
         this.submitInvoice("personal");
         // console.log(this.invoiceData.invoice_money)
-      } else if (this.type == 2 && this.invoiceData.number.length > 0 && this.invoiceData.phone.length > 0 &&this.invoiceData.username.length > 0 && this.invoiceData.companyName.length > 0
+      } else if (
+        this.type == 2 &&
+        this.invoiceData.number.length > 0 &&
+        phoneNumber.test(this.invoiceData.phone) &&
+        this.invoiceData.username.length > 0 &&
+        this.invoiceData.companyName.length > 0
       ) {
         this.submitInvoice("company");
         // console.log(this.invoiceData.invoice_money)
@@ -250,9 +276,9 @@ export default {
       // 点击选项时默认不会关闭菜单，可以手动关闭
       this.invoiceModle = false;
       // this.infoList.sex = index + 1;
-      if(item.name == '个人'){
+      if (item.name == "个人") {
         this.type = 1;
-      }else if(item.name == '单位'){
+      } else if (item.name == "单位") {
         this.type = 2;
       }
       // console.log(item.name)
