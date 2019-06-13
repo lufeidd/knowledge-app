@@ -3,7 +3,7 @@
     <div class="commodity">
       <div class="line">
         <div class="ratiobox">
-          <a class="bookImg" v-lazy:background-image="pic"></a>
+          <a class="bookImg" :style="{backgroundImage:'url(' + pic + ')'}"></a>
         </div>
         <div class="stars">
           <span class="text">商品评价</span>
@@ -17,7 +17,7 @@
           />
         </div>
       </div>
-      <textarea placeholder="说说你对产品的了解吧!" @input="check"></textarea>
+      <textarea placeholder="说说你对产品的了解吧!（不得少于8个字）" @input="check"></textarea>
       <upload :uploadData="uploadData"></upload>
     </div>
     <div class="service">
@@ -173,7 +173,7 @@ export default {
       let res = await USER_ORDER_ORDER_COMMENT_ADD(data);
       if (res.hasOwnProperty("response_code")) {
         this.$toast("发布成功!");
-        this.$router.push("/personal/order/comment/success");
+        this.$router.replace("/personal/order/comment/success");
       } else {
         this.$toast(res.error_message);
       }
@@ -181,7 +181,7 @@ export default {
     check(){
       // console.log(this.value1,this.value2,this.value3)
       this.content= $("textarea").val().trim();
-      if(this.value1 > 0 && this.value2 > 0 && this.value3 > 0 && this.content.length > 0){
+      if(this.value1 > 0 && this.value2 > 0 && this.value3 > 0 && this.content.length > 7){
         this.submit = false;
       }else{
         this.submit = true;

@@ -248,7 +248,7 @@ export default new Router({
     {
       path: '/personal/order/comment/punish',
       name: 'commentpunish',
-      component: commentpunish
+      component: commentpunish,
     },
     {
       path: '/personal/order/comment/success',

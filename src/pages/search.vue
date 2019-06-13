@@ -163,7 +163,8 @@ export default {
     saveItem() {
       var content = { content: this.searchHintData.search };
       var list = JSON.parse(localStorage.getItem("cmts") || "[]");
-      if (list.length > 10) {
+      if( list == null ) list = [];
+      if ( list.length > 10) {
         list = list.slice(0, 9);
       }
       list.unshift(content);
