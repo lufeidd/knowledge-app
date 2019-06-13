@@ -17,6 +17,7 @@
       @load="programLoad"
     >
       <div class="content" v-for="(item,index) in incomeData" :key="index">
+
         <div class="chong">{{item.type==1 ? '收':'支'}}</div>
         <div class="detail">
           <div class="top">

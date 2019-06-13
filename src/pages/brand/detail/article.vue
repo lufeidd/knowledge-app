@@ -18,7 +18,7 @@
         <span class="foucsButton" v-if="articleInfo.is_followed == 0" @click="focusAction">+关注</span>
         <span class="foucsButton cancel" v-else @click="focusAction">已关注</span>
       </div>
-      <div class="contentData"></div>
+      <div class="contentData" v-html="baseData.desc">{{baseData.desc}}</div>
       <div class="message">
         <span>
           <svg class="icon" aria-hidden="true">
@@ -289,7 +289,8 @@ export default {
       // 推荐列表信息
       recommendData: [],
       recommendState: false,
-      goodsId: 46
+      goodsId: null,
+      isLogin:null,
     };
   },
   mounted() {
@@ -338,6 +339,12 @@ export default {
       }
     },
     focusAction() {
+      // 未登录跳转至登录页
+      if(this.isLogin == 0) {
+        this.$router.push({ name: "login", params: {} });
+        this.$toast('用户未登录!');
+        return;
+      }
       if (this.articleInfo.is_followed > 0) {
         this.focusData("cancel");
       } else {
@@ -398,6 +405,12 @@ export default {
       }
     },
     collectAction() {
+      // 未登录跳转至登录页
+      if(this.isLogin == 0) {
+        this.$router.push({ name: "login", params: {} });
+        this.$toast('用户未登录!');
+        return;
+      }
       if (this.baseData.collect_id > 0) {
         this.collectData("cancel");
       } else {
@@ -444,6 +457,12 @@ export default {
       }
     },
     praiseAction() {
+    // 未登录跳转至登录页
+      if(this.isLogin == 0) {
+        this.$router.push({ name: "login", params: {} });
+        this.$toast('用户未登录!');
+        return;
+      }
       if (this.baseData.is_praised > 0) {
         this.praiseData("cancel");
       } else {
@@ -465,7 +484,8 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.baseData = res.response_data.base;
         this.articleInfo = res.response_data.brand_info;
-        $(".contentData").append(this.baseData.desc);
+        this.isLogin = res.response_data.user_info.is_login;
+        // $(".contentData").append(this.baseData.desc);
         if (this.baseData.desc.length <= 0) {
           $(".contentData").remove();
           console.log(this.baseData.desc);
@@ -646,6 +666,12 @@ export default {
      * __type: 'reply'; 回复评论，comment_id: 必填;
      */
     openAnswer(__type, comment_id) {
+      // 未登录跳转至登录页
+      if(this.isLogin == 0) {
+        this.$router.push({ name: "login", params: {} });
+        this.$toast('用户未登录!');
+        return;
+      }
       this.punishType = __type;
       if (__type == "reply") this.commentId = comment_id;
       this.commentModel = true;
