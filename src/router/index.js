@@ -574,7 +574,6 @@ export default new Router({
       //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
       beforeEnter: (to, from, next) => {
         from.path == '/pay/success' ? next('/personal/index') : next();
-        from.path == '/personal/index' ? next('/personal/index') : next();
       },
     },
     {

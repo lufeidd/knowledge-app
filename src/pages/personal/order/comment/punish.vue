@@ -65,11 +65,6 @@
 
 <style src="@/style/scss/pages/personal/order/comment.scss" scoped lang="scss"></style>
 
-<style>
-@import url("./../../../../style/scss/components/button.scss");
-</style>
-
-
 <script>
 import upload from "../../../../components/upload";
 import { COMMON_UPLOAD } from "../../../../apis/public.js";

@@ -74,7 +74,7 @@ export default {
     // console.log(this.option.img);
 
     if (this.option.img == null) {
-      this.$router.push("/personal/index");
+      this.$router.replace("/personal/index");
     }
   },
   beforeRouterLeave(to, from, next) {
@@ -92,7 +92,7 @@ export default {
   methods: {
     // 头像裁切
     cancel() {
-      this.$router.push("/personal/set/info");
+      this.$router.replace("/personal/set/info");
     },
     save() {
       this.finish("");
@@ -126,7 +126,7 @@ export default {
       let res = await COMMON_UPLOAD(data);
       // console.log(res.response_data[0].acc_url);
       if (res.hasOwnProperty("response_code")) {
-        this.$router.push({
+        this.$router.replace({
           name: "info",
           query: { img: res.response_data[0].acc_url }
         });
