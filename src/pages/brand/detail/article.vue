@@ -299,6 +299,9 @@ export default {
     this.getRecommendData();
     // console.log("ID:", this.recommendData);
   },
+  beforeDestroy() {
+    $(window).off("scroll");
+  },
   methods: {
     // 获取关注接口信息
     async focusData(__type) {
