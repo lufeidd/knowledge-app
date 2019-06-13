@@ -132,13 +132,16 @@ export default {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
         // console.log(res);
-        this.$router.push({ name: "personalIndex", query: "" });
+        // this.$router.push({ name: "personalIndex", query: "" });
+
+        this.$router.go(-1);
+
       } else {
+        this.$toast(res.error_message);
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
         }
-        this.$toast(res.error_message);
       }
     },
     loginAction() {

@@ -13,16 +13,17 @@
       finished-text="没有更多了"
       @load="programLoad"
     >
-    <div class="content" v-for="item,index in incomeData" :key="index">
-      <div class="chong">充</div>
-      <div class="detail">
-        <div class="top">
-          <span class="into">充值-转入余额</span>
-          <span class="money">{{item.amount}}</span>
-        </div>
-        <div class="bottom">
-          <span class="date">{{item.create_time}}</span>
-          <span class="order">{{item.order==0 ? '待发货':''}}</span>
+      <div class="content" v-for="(item,index) in incomeData" :key="index">
+        <div class="chong">充</div>
+        <div class="detail">
+          <div class="top">
+            <span class="into">充值-转入余额</span>
+            <span class="money">{{item.amount}}</span>
+          </div>
+          <div class="bottom">
+            <span class="date">{{item.create_time}}</span>
+            <span class="order">{{item.order==0 ? '待发货':''}}</span>
+          </div>
         </div>
       </div>
     </van-list>
@@ -133,13 +134,13 @@ export default {
     // 获取页面基本信息
     async getData() {
       var tStamp = this.$getTimeStamp();
-      var data={
-        version:"1.0",
-        page:this.page,
-        type:1,
-        begin_time:this.begintime,
-        end_time:this.endtime,
-        timestamp:tStamp,
+      var data = {
+        version: "1.0",
+        page: this.page,
+        type: 1,
+        begin_time: this.begintime,
+        end_time: this.endtime,
+        timestamp: tStamp
       };
       data.sign = this.$getSign(data);
       let res = await USER_REMAIN_DETAILS(data);
@@ -152,7 +153,7 @@ export default {
         var result = res.response_data.result;
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        
+
         setTimeout(() => {
           for (let i = 0; i < res.response_data.result.length; i++) {
             this.incomeData.push(result[i]);
@@ -173,7 +174,6 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          
         }
         this.$toast(res.error_message);
       }
@@ -218,16 +218,16 @@ export default {
           this.searchPage++;
           this.programFinished = false;
 
-            // 数据全部加载完成
-            if (this.searchPage > res.response_data.total_page) {
-              this.programFinished = true;
-              this.searchPage = 1;
-              this.ning = false;
-            }
-          }, 500);
-        }else{
-          this.$toast(res.error_message);
-        }
+          // 数据全部加载完成
+          if (this.searchPage > res.response_data.total_page) {
+            this.programFinished = true;
+            this.searchPage = 1;
+            this.ning = false;
+          }
+        }, 500);
+      } else {
+        this.$toast(res.error_message);
+      }
     },
     //获取当前时间
     curDateTime() {
@@ -238,14 +238,14 @@ export default {
       var day = d.getDay();
       // var curDateTime = year;
       var nextmonth = month + 1;
-      if(month < 9) month = '0'+ month;
-      if(nextmonth < 9) nextmonth = '0'+ nextmonth;
-      var beginTime = year + '-' + month + '-' + '01' + ' 00:00:00';
-      var endTime = year + '-' + nextmonth + '-' + '01' + ' 00:00:00';
+      if (month < 9) month = "0" + month;
+      if (nextmonth < 9) nextmonth = "0" + nextmonth;
+      var beginTime = year + "-" + month + "-" + "01" + " 00:00:00";
+      var endTime = year + "-" + nextmonth + "-" + "01" + " 00:00:00";
       this.begintime = beginTime;
       this.endtime = endTime;
-      console.log("当前日期"+beginTime,endTime);
-    },
+      console.log("当前日期" + beginTime, endTime);
+    }
   }
 };
 </script>

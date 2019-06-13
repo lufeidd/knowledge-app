@@ -147,9 +147,16 @@ export default {
           };
           data.sign = this.$getSign(data);
           res = await FOCUS_ADD(data);
-          this.brandData.attention_state = 1;
-          // this.$toast('已关注~');
-          this.brandData.statistic_list.fans_num += 1;
+          if (res.hasOwnProperty("response_code")) {
+            this.brandData.attention_state = 1;
+            // this.$toast('已关注~');
+            this.brandData.statistic_list.fans_num += 1;
+          } else {
+            this.$toast(res.error_message);
+            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+              this.$router.push({ name: "login", params: {} });
+            }
+          }
           break;
         case "cancel":
           data = {
@@ -159,15 +166,17 @@ export default {
           };
           data.sign = this.$getSign(data);
           res = await FOCUS_CANCEL(data);
-          this.brandData.attention_state = 0;
-          this.$toast("已取消关注~");
-          this.brandData.statistic_list.fans_num -= 1;
+          if (res.hasOwnProperty("response_code")) {
+            this.brandData.attention_state = 0;
+            this.$toast("已取消关注~");
+            this.brandData.statistic_list.fans_num -= 1;
+          } else {
+            this.$toast(res.error_message);
+            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+              this.$router.push({ name: "login", params: {} });
+            }
+          }
           break;
-      }
-      // 出错提示
-      if (res.hasOwnProperty("response_code")) {
-      } else {
-        this.$toast(res.error_message);
       }
     },
     focusAction() {
@@ -206,7 +215,7 @@ export default {
       var tStamp = this.$getTimeStamp();
       var data = {
         page_name: "brand/index",
-        params: JSON.stringify({brand_id: this.$route.query.brand_id}),
+        params: JSON.stringify({ brand_id: this.$route.query.brand_id }),
         version: "1.0",
         timestamp: tStamp
       };

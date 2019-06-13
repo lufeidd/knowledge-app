@@ -246,17 +246,34 @@ export default new Router({
     {
       path: '/personal/order/comment/index',
       name: 'ordercomment',
-      component: ordercomment
+      component: ordercomment,
+      meta: {
+        title: '评价',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/order/comment/punish',
       name: 'commentpunish',
-      component: commentpunish
+      component: commentpunish,
+      meta: {
+        title: '发布评价',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/order/comment/success',
       name: 'commentsuccess',
-      component: commentsuccess
+      component: commentsuccess,
+      //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
+      // beforeEnter: (to, from, next) => {
+      //   console.log(from.path)
+      //   from.path == '/personal/order/comment/punish' ? next('/personal/order/comment/index') : next();
+      // },
+      meta: {
+        title: '评价成功',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     // 个人中心 - 我的购买 - 退款
     {
