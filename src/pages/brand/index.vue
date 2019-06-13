@@ -92,7 +92,7 @@
 
 <script>
 import { BRAND_INFO, BRAND_COLUMN_GETS } from "../../apis/brand.js";
-import { FOCUS_ADD, FOCUS_CANCEL } from "../../apis/public.js";
+import { FOCUS_ADD, FOCUS_CANCEL, WX_SHARE } from "../../apis/public.js";
 import easyNav from "./../../components/easyNav";
 export default {
   components: {
@@ -190,13 +190,37 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.brandData = res.response_data;
 
-        // 微信分享
-        this.$getWxData(this.brandData.name, this.brandData.summary, this.brandData.header_pic);
+        // 获取页面分享信息
+        this.wxShareData();
 
         // title
         document.title = this.brandData.name;
         if (res.response_data.column_list.length > 0)
           this.packets_id = res.response_data.column_list[0].packets_id;
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 获取页面分享信息
+    async wxShareData() {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        page_name: "brand/index",
+        params: JSON.stringify({brand_id: this.$route.query.brand_id}),
+        version: "1.0",
+        timestamp: tStamp
+      };
+      data.sign = this.$getSign(data);
+      let res = await WX_SHARE(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res.response_data)
+        // 微信分享
+        this.$getWxData(
+          res.response_data.share_info.title,
+          res.response_data.share_info.desc,
+          res.response_data.share_info.pic,
+          res.response_data.share_info.url
+        );
       } else {
         this.$toast(res.error_message);
       }

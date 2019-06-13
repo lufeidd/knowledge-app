@@ -202,8 +202,16 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await USER_ORDER_DETAIL_GETS(data);
-      if (res.hasOwnProperty("response_code")) {
+      if (
+        res.hasOwnProperty("response_code") &&
+        res.response_data.hasOwnProperty("result")
+      ) {
         var result = res.response_data.result;
+
+        // store 设置登录状态
+        this.$store.commit("changeLoginState", 1);
+        
+
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
             this.publishData.push(result[i]);
@@ -218,11 +226,17 @@ export default {
           }
         }, 500);
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          // store 设置登录状态
+          this.$store.commit("changeLoginState", 100);
+          
+        }
+
         this.$toast(res.error_message);
       }
     },
     toDetail(item) {
-      console.log(item);
+      // console.log(item);
       this.$router.push({
         name: "orderdetail",
         query: {
@@ -246,7 +260,7 @@ export default {
       this.$router.push({
         name: "brand",
         query: {
-          brand_id: item.brand_id,
+          brand_id: item.brand_id
         }
       });
     },

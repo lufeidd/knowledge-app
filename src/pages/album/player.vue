@@ -192,10 +192,16 @@ export default {
     // 点击节目
     audioAction(item) {
       // 未支付
-      if (item.goods_id != null && item.is_payed == 0) {
+      if (item.goods_id != null && item.is_payed == 0 && item.is_free == 0) {
+        var _goodsId = null;
+        if (this.baseData.sale_style == 1) {
+          _goodsId = this.baseData.goods_id;
+        } else {
+          _goodsId = item.goods_id;
+        }
         this.$router.push({
           name: "payaccount",
-          query: { goods_id: item.goods_id }
+          query: { goods_id: _goodsId }
         });
         return;
       }
@@ -519,16 +525,24 @@ export default {
     },
     // 用户播放进度记录
     async currentTimeData(info) {
+      // 已登录账号才存储到数据库
+      if(this.$route.query.isLogin == 0) {
+        return;
+      }
+      
       // 调用接口计数器防止重复
       // 如果是非专辑，则传入goods_id
-      var _goodsId = info[1];
+      var _pid = info[1];
+      var _goodsId = info[8];
       if(info[1] == null) {
-        _goodsId = info[8];
+        _pid = info[8];
+        _goodsId = null;
       }
       var tStamp = this.$getTimeStamp();
       if (info != null && info.length > 0) {
         var data = {
-          goods_id: _goodsId,
+          goods_id: _pid,
+          sub_goods_id: _goodsId,
           duration: info[5],
           timestamp: tStamp,
           version: "1.0"

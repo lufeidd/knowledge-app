@@ -47,11 +47,11 @@ export default {
         // searchLink: "/search",
         personal: true,
         personalLink: "/personal/index",
-        type:'order',
+        type: "order"
       },
       money: null,
       rechargeAmount: [6, 18, 38, 58, 118, 168, 218, 488],
-      activeClass: 0,
+      activeClass: 0
     };
   },
   mounted() {
@@ -62,7 +62,7 @@ export default {
       this.activeClass = index;
     },
     account() {
-      if(this.activeClass>=0){
+      if (this.activeClass >= 0) {
         console.log(this.activeClass);
       }
     },
@@ -74,9 +74,17 @@ export default {
       data.sign = this.$getSign(data);
       let res = await USER_REMAIN_INFO(data);
       if (res.hasOwnProperty("response_code")) {
+        // store 设置登录状态
+        this.$store.commit("changeLoginState", 1);
+        
         this.money = res.response_data.balance;
         console.log(res.response_data.balance);
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          // store 设置登录状态
+          this.$store.commit("changeLoginState", 100);
+          
+        }
         this.$toast(res.error_message);
       }
     }

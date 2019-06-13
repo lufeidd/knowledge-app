@@ -19,7 +19,7 @@ export default {
   install: function (Vue, options) {
 
     // 微信分享
-    Vue.prototype.$getWxData = async function (_title, _desc, _imgUrl) {
+    Vue.prototype.$getWxData = async function (_title, _desc, _imgUrl, _route) {
       let url = 'http://wap.huoba.net/callback/weixin/jssdk?url=' + encodeURIComponent(window.location.href.split('#')[0]); //去掉签名
       var self = this
       axios.get(url)
@@ -55,29 +55,32 @@ export default {
       });
 
       wx.ready(function () {
+
         // 分享所需参数
-        let _link = encodeURIComponent(window.location.href);
+        // console.log('route:', localStorage.getItem('routerLink'), 'loginState:', sessionStorage.getItem('loginState'))
+        // let _link = localStorage.getItem('routerLink');
         let shareData = {
           title: _title,
           desc: _desc,
-          link: _link,
+          // link: _link,
+          link: _route,
           imgUrl: _imgUrl,
           // type: '',
           // 分享类型，music、video或link，不填默认为link
           // dataUrl: '',
           // 如果type是music或video，则要提供数据链接，默认为空
-          success: function(res) {
+          success: function (res) {
             // 用户确认分享后执行的回调函数
             // logUtil.printLog("分享给朋友成功返回的信息为:", res);
           },
-          cancel: function(res) {
+          cancel: function (res) {
             // 用户取消分享后执行的回调函数
             // logUtil.printLog("取消分享给朋友返回的信息为:", res);
           }
         };
         console.log('shareData:', shareData);
-        wx.onMenuShareAppMessage(shareData);  // 分享给朋友
         wx.onMenuShareTimeline(shareData);    // 分享到朋友圈
+        wx.onMenuShareAppMessage(shareData);  // 分享给朋友
         wx.onMenuShareQQ(shareData);          // 分享到QQ
         wx.onMenuShareWeibo(shareData);       // 分享到weibo
         wx.onMenuShareQZone(shareData);       // 分享到QQ空间

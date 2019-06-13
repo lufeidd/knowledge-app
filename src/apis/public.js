@@ -47,6 +47,6 @@ export const ADDRESS = query => req('post', '/common/area/gets', query);
 //词条建议
 export const SEARCH_SUGGEST = query => req('post', '/search/goods/suggest', query);
 
-// 微信公众号分享基础配置信息获取
-// export const WX_SHARE = query => req('post', '/weixin/jssdk', query);
+// 获取页面分享信息
+export const WX_SHARE = query => req('post', '/page/share/info', query);
 

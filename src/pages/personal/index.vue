@@ -174,7 +174,7 @@
               <use xlink:href="#icon-next-line"></use>
             </svg>
           </div>
-        </router-link> -->
+        </router-link>-->
 
         <!-- 我的评论 -->
         <router-link v-if="infoData.is_login" to="/personal/comment/index" class="cell">
@@ -251,6 +251,7 @@
 
 <script>
 import easyNav from "./../../components/easyNav";
+import { mapState, mapGetters, mapActions } from "vuex";
 //  引入接口
 import { USER_HOMEPAGE } from "../../apis/user.js";
 
@@ -274,6 +275,7 @@ export default {
   },
   mounted() {
     this.homeData();
+    // console.log("token:", this.$cookies.get("token"));
   },
   methods: {
     gotoRemain() {
@@ -303,6 +305,10 @@ export default {
         this.$set(this.infoData, "is_login", res.response_data.is_login);
         this.$set(this.infoData, "balance", res.response_data.balance);
 
+        // store 设置登录状态
+        this.$store.commit("changeLoginState", 1);
+        
+
         if (this.infoData.is_login == 1) {
           $(".ratioBox").css(
             "background-image",
@@ -310,6 +316,11 @@ export default {
           );
         }
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          // store 设置登录状态
+          this.$store.commit("changeLoginState", 100);
+          
+        }
         this.$toast(res.error_message);
       }
     }

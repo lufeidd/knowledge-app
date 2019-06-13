@@ -35,9 +35,9 @@
 #setindexPage {
   background-color: $greyLight;
   min-height: 100%;
-.van-button {
-  border-radius: 0;
-}
+  .van-button {
+    border-radius: 0;
+  }
 
   & .listBox {
     padding: 10px 15px;
@@ -114,7 +114,7 @@ export default {
         homeLink: "/brand/index",
         search: false,
         personal: true,
-        personalLink: '/personal/index',
+        personalLink: "/personal/index"
       },
       // 信息
       infoData: {}
@@ -132,11 +132,14 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await USER_HOMEPAGE(data);
-      console.log("123", res.response_data);
+      // console.log(res.response_data);
       if (res.hasOwnProperty("response_code")) {
         this.$set(this.infoData, "user_header", res.response_data.user_header);
         this.$set(this.infoData, "user_name", res.response_data.user_name);
         this.$set(this.infoData, "is_login", res.response_data.is_login);
+        // store 设置登录状态
+        this.$store.commit("changeLoginState", 1);
+        
 
         if (this.infoData.is_login == 1) {
           $(".ratioBox").css(
@@ -145,6 +148,11 @@ export default {
           );
         }
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          // store 设置登录状态
+          this.$store.commit("changeLoginState", 100);
+          
+        }
         this.$toast(res.error_message);
       }
     },
@@ -160,8 +168,15 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await LOGOUT(data);
-      console.log("123", res.response_data);
+      console.log(res.response_data);
       if (res.hasOwnProperty("response_code")) {
+        // 退出登录将localstorage中进度数据清空
+        localStorage.setItem('miniAudio', null);
+        localStorage.setItem('audioProgress', null);
+        localStorage.setItem('cmts', null);
+        sessionStorage.setItem('headPic', null);
+        this.$store.commit("changeLoginState", 100);
+
         this.$router.push("/login/index");
       } else {
         this.$toast(res.error_message);

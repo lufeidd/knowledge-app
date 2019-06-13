@@ -18,7 +18,7 @@
         :left-width="0"
         :on-close="collectClose"
       >
-        <template>
+        <template v-if="collectStatus[key].target != null">
           <!-- 音频/视频 -->
           <router-link
             v-if="item.type == 1 || item.type == 2"
@@ -99,9 +99,7 @@
           </router-link>
         </template>
 
-        <span slot="right"
-          @click="collectCancel(item.target, key)"
-        >
+        <span slot="right" @click="collectCancel(item.target, key)">
           <div>取消收藏</div>
         </span>
       </van-swipe-cell>
@@ -160,12 +158,14 @@ export default {
           };
           data.sign = this.$getSign(data);
           res = await COLLECT(data);
-
           // 出错提示
           if (
             res.hasOwnProperty("response_code") &&
             res.response_data.hasOwnProperty("result")
           ) {
+            // store 设置登录状态
+            this.$store.commit("changeLoginState", 1);
+            
             setTimeout(() => {
               var result = res.response_data.result;
 
@@ -185,11 +185,17 @@ export default {
               }
             }, 500);
           } else {
-            this.$toast(res.error_message);
+            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+              // store 设置登录状态
+              this.$store.commit("changeLoginState", 100);
+              
+            }
+            this.collectFinished = true;
+            // this.$toast(res.error_message);
           }
           break;
 
-          console.log("收藏列表：", this.collectList);
+        // console.log("收藏列表：", this.collectList);
         case "cancel":
           data = {
             timestamp: tStamp,
@@ -201,7 +207,7 @@ export default {
 
           // 出错提示
           if (res.hasOwnProperty("response_code")) {
-            this.collectStatus[key].id = null;
+            this.collectStatus[key].target = null;
             if (this.collectStatus.length == 1) {
               this.collectList = [];
             }
