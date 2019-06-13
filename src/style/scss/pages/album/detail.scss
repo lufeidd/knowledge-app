@@ -219,14 +219,15 @@
 
   & .ratioBox.banner {
     padding-bottom: 50%;
+    margin-top: 40px;
 
     & .action {
-      position: absolute;
-      top: 10px;
-      left: 20px;
-      right: 20px;
+      position: relative;
+      padding:  10px 20px;
+      top: -40px;
       z-index: 1;
-      color: $white;
+      // color: $white;
+      // background-color: #333;
       @include textOverflow;
 
       & .title {

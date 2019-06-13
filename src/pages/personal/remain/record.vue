@@ -13,7 +13,9 @@
       finished-text="没有更多了"
       @load="programLoad"
     >
-      <div class="content" v-for="item,index in incomeData" :key="index">
+
+      <div class="content" v-for="(item,index) in incomeData" :key="index">
+
         <div class="chong">充</div>
         <div class="detail">
           <div class="top">

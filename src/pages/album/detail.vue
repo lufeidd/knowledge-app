@@ -89,8 +89,13 @@
       <!-- 介绍 - 评论 -->
       <van-tabs v-model="tabModel" sticky @click="tabChange">
         <van-tab v-for="(item, key) in tabData" :title="item.title" :key="key">
-          <template v-if="item.type == 'info'"></template>
-          <template v-if="item.type == 'list'"></template>
+          <template v-if="activeKey == 0">
+            <div
+              v-html="baseData.desc"
+              style="background-color: #fff;padding: 10px;"
+            >{{ baseData.desc }}</div>
+          </template>
+          <template v-if="activeKey == 1"></template>
         </van-tab>
       </van-tabs>
 
@@ -193,8 +198,8 @@
         <van-goods-action-mini-btn
           icon="play-circle-o"
           text="试听"
-          @click="preListenAction"
-          v-if="baseData.has_free && preListen"
+          @click="gotoPlayer('preListen')"
+          v-if="baseData.free_path != '' && baseData.goods_type != 9"
         />
         <van-goods-action-big-btn
           primary
@@ -285,6 +290,7 @@ export default {
   },
   data() {
     return {
+      activeKey: 0,
       onsale: null,
       /*
        * ----------------------------------节目----------------------------------
@@ -621,7 +627,22 @@ export default {
     },
     // 跳转到音乐播放器
     gotoPlayer(__type) {
-      // console.log(this.baseData);
+      var info = JSON.parse(localStorage.getItem("miniAudio"));
+      var _info0 = parseInt(this.$route.query.goods_no);
+      var _info1 = parseInt(this.$route.query.pid);
+      var _info2 = this.baseData.pic[0];
+      var _info3;
+      var _info4 = this.baseData.duration;
+      var _info5 = 0;
+      var _info6 = this.baseData.title;
+      var _info7 = this.albumInfo.title;
+      var _info8 = parseInt(this.$route.query.goods_id);
+      var _info9 = this.albumInfo.pic;
+
+      // 试听
+      if (__type == "preListen") {
+        _info3 = this.baseData.free_path;
+      }
       if (__type == "external") {
         // console.log(this.baseData)
         // 未支付
@@ -643,28 +664,27 @@ export default {
           return;
         }
 
-        var info = JSON.parse(localStorage.getItem("miniAudio"));
-
         if (info == null) {
           info = [];
         }
-        // 新增迷你缩放音频播放信息
-        info[0] = parseInt(this.$route.query.goods_no);
-        info[1] = parseInt(this.$route.query.pid);
-        info[2] = this.baseData.pic[0];
-        info[3] = this.baseData.file_path;
-        info[4] = this.baseData.duration;
-        info[5] = 0;
-        info[6] = this.baseData.title;
-        info[7] = this.albumInfo.title;
-        info[8] = parseInt(this.$route.query.goods_id);
-        info[9] = this.albumInfo.pic;
 
-        // localStorage存储
-        localStorage.setItem("miniAudio", JSON.stringify(info));
+        _info3 = this.baseData.file_path;
       }
+      // 更新迷你缩放音频播放信息
+      info[0] = _info0;
+      info[1] = _info1;
+      info[2] = _info2;
+      info[3] = _info3;
+      info[4] = _info4;
+      info[5] = _info5;
+      info[6] = _info6;
+      info[7] = _info7;
+      info[8] = _info8;
+      info[9] = _info9;
+      // localStorage存储
+      localStorage.setItem("miniAudio", JSON.stringify(info));
       // 外链至音乐播放器，设置info
-      this.$router.push({name: "player", query: {isLogin: this.isLogin}});
+      this.$router.push({ name: "player", query: { isLogin: this.isLogin } });
     },
     // 当前节目播放结束，获取当前播放节目的专辑下所有节目（不分页）
     getAllProgramData(info) {
@@ -751,7 +771,8 @@ export default {
         this.miniAudioData(info);
 
         // 解决子组件数据实时刷新问题
-        if(this.$refs.control) this.$refs.control.audioData.type = !this.audioPlaying;
+        if (this.$refs.control)
+          this.$refs.control.audioData.type = !this.audioPlaying;
         // 设置当前播放进度
         setTimeout(() => {
           var audio = document.getElementById("myMiniAudio");
@@ -791,7 +812,7 @@ export default {
 
         // 所属媒体信息
         // this.brandInfoData = res.response_data.brand_info;
-        
+
         this.onsale = 1;
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 401) {
@@ -836,6 +857,9 @@ export default {
             }
           } else {
             this.$toast(res.error_message);
+            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+              this.$router.push({ name: "login", params: {} });
+            }
           }
           // this.$toast("已收藏~");
           break;
@@ -858,6 +882,9 @@ export default {
             this.$toast("已取消收藏~");
           } else {
             this.$toast(res.error_message);
+            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+              this.$router.push({ name: "login", params: {} });
+            }
           }
           break;
       }
@@ -876,9 +903,16 @@ export default {
           };
           data.sign = this.$getSign(data);
           res = await FOCUS_ADD(data);
-          this.brandInfoData.is_followed = 1;
-          this.brandInfoData.fans++;
-          // this.$toast('已关注~');
+          if (res.hasOwnProperty("response_code")) {
+            this.brandInfoData.is_followed = 1;
+            this.brandInfoData.fans++;
+            // this.$toast('已关注~');
+          } else {
+            this.$toast(res.error_message);
+            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+              this.$router.push({ name: "login", params: {} });
+            }
+          }
           break;
         case "cancel":
           data = {
@@ -888,15 +922,17 @@ export default {
           };
           data.sign = this.$getSign(data);
           res = await FOCUS_CANCEL(data);
-          this.brandInfoData.is_followed = 0;
-          this.brandInfoData.fans--;
-          this.$toast("已取消关注~");
+          if (res.hasOwnProperty("response_code")) {
+            this.brandInfoData.is_followed = 0;
+            this.brandInfoData.fans--;
+            this.$toast("已取消关注~");
+          } else {
+            this.$toast(res.error_message);
+            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+              this.$router.push({ name: "login", params: {} });
+            }
+          }
           break;
-      }
-      // 出错提示
-      if (res.hasOwnProperty("response_code")) {
-      } else {
-        this.$toast(res.error_message);
       }
     },
     focusAction() {
@@ -1047,6 +1083,12 @@ export default {
      * __type: 'reply'; 回复评论，comment_id: 必填;
      */
     openAnswer(__type, comment_id) {
+      // 未登录跳转至登录页
+      if (this.isLogin == 0) {
+        this.$router.push({ name: "login", params: {} });
+        this.$toast("用户未登录!");
+        return;
+      }
       this.punishType = __type;
       if (__type == "reply") this.commentId = comment_id;
       this.commentModel = true;
@@ -1057,6 +1099,7 @@ export default {
     },
     // 评论锚点
     tabChange(index, title) {
+      this.activeKey = index;
       // this.$toast(index);
       if (index == 1 && $("#comment").length == 1)
         $(window).scrollTop($("#comment").offset().top);

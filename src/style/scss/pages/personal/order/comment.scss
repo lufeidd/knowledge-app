@@ -3,27 +3,32 @@
  * date:2019/4/25
  */
 
-.comment{
+.comment {
   background-color: $greyLight;
   height: 100%;
-  .list{
+
+  .list {
     padding: 15px 15px 28px 15px;
     background-color: $white;
     border-bottom: 1px solid $greyLight;
     position: relative;
-    .bookDetail{
-      @include displayFlex(flex,flex-start,flex-start);
+
+    .bookDetail {
+      @include displayFlex(flex, flex-start, flex-start);
       position: relative;
-      .ratiobox{
+
+      .ratiobox {
         min-width: 80px;
         border-radius: 3px;
-       .bookImg{
-         display: block;
-         border-radius: 3px;
-        @include ratioBox ( 100%, 85%, null,contain, $white, null);
-       }
+
+        .bookImg {
+          display: block;
+          border-radius: 3px;
+          @include ratioBox (100%, 85%, null, contain, $white, null);
+        }
       }
-      .info{
+
+      .info {
         position: absolute;
         left: 90px;
         height: 100%;
@@ -32,22 +37,27 @@
         flex-direction: column;
         align-content: space-between;
         justify-content: space-between;
-        .title{
+
+        .title {
           @include font("PingFangBlod", $fontSize + 2, $cl3);
           line-height: 1.2;
         }
-        .commentLine{
-          @include displayFlex(flex,space-between,null);
-          .number{
+
+        .commentLine {
+          @include displayFlex(flex, space-between, null);
+
+          .number {
             color: $cl9;
-            .money{
+
+            .money {
               @include font("PingFangBlod", $fontSize, $redDark);
             }
           }
         }
       }
     }
-    .button{
+
+    .button {
       display: inline-block;
       line-height: 24px;
       border-radius: 12px;
@@ -57,10 +67,11 @@
       border: 1px solid $redDark;
       position: absolute;
       right: 15px;
-      bottom:28px;
+      bottom: 28px;
     }
   }
-  .thanks{
+
+  .thanks {
     height: 120px;
     background-color: $redDark;
     font-size: $fontSize + 4;
@@ -69,12 +80,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    .order{
+
+    .order {
       font-size: $fontSize + 11;
       margin-bottom: 5px;
     }
   }
-  .continue{
+
+  .continue {
     height: 38px;
     line-height: 38px;
     text-align: center;
@@ -83,29 +96,35 @@
     color: $cl9;
   }
 }
-#successPage{
-    background-color: $white;
+
+#successPage {
+  background-color: $white;
 }
 
-#punishPage{
-  .van-rate__item{
+#punishPage {
+  .van-rate__item {
     margin-right: 15px;
   }
-  .commodity{
+
+  .commodity {
     padding: 15px;
-    .ratiobox{
+
+    .ratiobox {
       width: 57px;
       border-radius: 3px;
-     .bookImg{
-       display: block;
-       border-radius: 3px;
-      @include ratioBox ( null, 85%, null,contain, $white, null);
-     }
+
+      .bookImg {
+        display: block;
+        border-radius: 3px;
+        @include ratioBox (null, 85%, null, contain, $white, null);
+      }
     }
-    .line{
-      @include displayFlex(flex,null,null);
+
+    .line {
+      @include displayFlex(flex, null, null);
       position: relative;
-      .stars{
+
+      .stars {
         position: absolute;
         left: 62px;
         height: 100%;
@@ -114,45 +133,55 @@
         flex-direction: column;
         align-content: space-between;
         justify-content: space-between;
-        .text{
+
+        .text {
           font-size: $fontSize + 2;
         }
       }
     }
-    textarea{
+
+    textarea {
       width: 100%;
       border-color: $greyLight;
       resize: none;
       height: 90px;
       margin-top: 30px;
-      &::placeholder{
+
+      &::placeholder {
         color: $cl9;
         font-size: $fontSize;
         padding-left: 5px;
         padding-top: 5px;
       }
     }
-    #upload{
+
+    #upload {
       margin-top: 25px;
-      .flex-box{
+
+      .flex-box {
         margin-right: 20px;
       }
     }
   }
-  .service{
+
+  .service {
     border-top: 5px solid $greyLight;
-    .serviceLine{
+
+    .serviceLine {
       padding: 15px;
       border-bottom: 1px solid $greyLight;
       font-size: $fontSize + 1;
       color: $cl3;
     }
-    .serviceStars{
+
+    .serviceStars {
       padding: 20px 15px 0 15px;
-      .descrip{
-        @include displayFlex(flex,null,center);
+
+      .descrip {
+        @include displayFlex(flex, null, center);
         margin-bottom: 30px;
-        .serviceText{
+
+        .serviceText {
           font-size: $fontSize + 1;
           color: $cl9;
           margin-right: 18px;
