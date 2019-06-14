@@ -113,7 +113,10 @@
       <div class="content" v-for="item in publishData" @click="toDetail(item)">
         <div class="head">
           <div class="titleFrom">
-            <img v-lazy="item.brand_header_pic" alt class="icon">
+            <!-- <img v-lazy="item.brand_header_pic" alt class="icon"> -->
+            <div class="ratiobox">
+              <a class="bookImg" v-lazy:background-image="item.brand_header_pic"></a>
+            </div>
             <span class="publish">{{item.brand_name}}</span>
           </div>
           <span :class="item.state ==0? 'order1':'order2'">{{item.state_desc}}</span>
@@ -121,7 +124,7 @@
         <div class="section" v-for="item1 in item.details">
           <div class="bookDetail">
             <div class="ratiobox">
-              <a class="bookImg" v-lazy:background-image="item1.pic[0]"></a>
+              <a class="bookImg" v-lazy:background-image="item1.pic"></a>
             </div>
             <span class="title">{{item1.goods_name}}</span>
           </div>

@@ -21,17 +21,26 @@
        @include displayFlex(flex,space-between,center);
        .titleFrom{
         @include displayFlex(flex,flex-start,center);
-         .icon{
-          width: 21px;
-          height: 21px;
-          border: 1px solid $clC;
-          border-radius: 21px;
-          align-items: center;
-          margin-right: 5px;
-        }
+        //  .icon{
+        //   width: 21px;
+        //   height: 21px;
+        //   border: 1px solid $clC;
+        //   border-radius: 21px;
+        //   align-items: center;
+        //   margin-right: 5px;
+        // }
         .publish{
           font-size: $fontSize + 1;
           color: $cl3;
+        }
+        .ratiobox{
+          min-width: 21px;
+          margin-right: 5px;
+         .bookImg{
+           display: block;
+           border-radius:50%;
+          @include ratioBox ( null, 100%, 1px solid $greyLight,contain, $white, null);
+         }
         }
        }
        .order1{

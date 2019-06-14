@@ -113,7 +113,10 @@
       <div class="content" v-for="item,index in publishData">
         <div class="head" @click="toBrandindex(item)">
           <div class="titleFrom">
-            <img v-lazy="item.brand_header_pic" alt class="icon">
+            <!-- <img v-lazy="item.brand_header_pic" alt class="icon"> -->
+            <div class="ratiobox">
+              <a class="bookImg" v-lazy:background-image="item.brand_header_pic"></a>
+            </div>
             <span class="publish">{{item.brand_name}}</span>
           </div>
           <span :class="item.state ==0? 'order1':'order2'">{{item.state_desc}}</span>
@@ -210,7 +213,7 @@ export default {
 
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        
+
 
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
@@ -229,7 +232,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          
+
         }
 
         this.$toast(res.error_message);

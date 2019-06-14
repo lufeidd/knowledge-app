@@ -1,12 +1,12 @@
 <template>
   <div id="feedbackPage">
-    <textarea cols="30" rows="10" placeholder="请输入问题并留下联系方式，我们会尽快联系您" @input="question('text')"></textarea>
+    <textarea cols="30" v-model="content" rows="10" placeholder="请输入问题并留下联系方式，我们会尽快联系您" @input="question('text')"></textarea>
     <!-- 字数限制 -->
     <div class="count">
       <span :class="{ active: textLength > textTotal }">{{ textLength }}</span>
       /{{ textTotal }}
     </div>
-    <input type="text" placeholder="您的手机号、QQ或邮箱（三选一）" @input="question('phone')">
+    <input type="text" v-model="contact" placeholder="您的手机号、QQ或邮箱（三选一）" @input="question('phone')">
     <!-- 字数限制 -->
     <div class="count">
       <span :class="{ active: phoneLength > phoneTotal }">{{ phoneLength }}</span>
@@ -84,8 +84,18 @@ export default {
       var qqNumber = /[1-9][0-9]{5,13}/;
       var email = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/;
       // var uploadFile =$('.contetn.set').length;
-      if (_type == "text") this.textLength = $("textarea").val().length;
+      // 判断字数是否超出，限制字数
+      if (_type == "text") this.textLength = textarea.length;
       if (_type == "phone") this.phoneLength = $("input").val().length;
+      if (_type == "text" && this.textLength > this.textTotal) {
+        this.content = this.content.trim().substring(0,this.textTotal);
+        this.textLength = this.textTotal;
+      }
+      if (_type == "phone" && this.phoneLength > this.phoneTotal) {
+        this.contact = this.contact.trim().substring(0,this.phoneTotal);
+        this.phoneLength = this.phoneTotal;
+      }
+
       if (
         (iphone.test(input) || qqNumber.test(input) || email.test(input)) &&
         $("textarea").val().length > 0 &&

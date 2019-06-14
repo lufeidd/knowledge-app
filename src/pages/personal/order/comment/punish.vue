@@ -17,7 +17,11 @@
           />
         </div>
       </div>
-      <textarea placeholder="说说你对产品的了解吧!（不得少于8个字）" @input="check"></textarea>
+      <textarea v-model="content" placeholder="说说你对产品的了解吧!（不得少于8个字）" @input="check"></textarea>
+      <!-- 字数限制 -->
+      <div class="count">
+        {{ contentLength }}/{{ contentTotal }}
+      </div>
       <upload :uploadData="uploadData"></upload>
     </div>
     <div class="service">
@@ -100,6 +104,8 @@ export default {
         personalLink: "/personal/index",
         type:'order',
       },
+      contentLength:0,
+      contentTotal:200,
     };
   },
   mounted(){
@@ -181,6 +187,11 @@ export default {
     check(){
       // console.log(this.value1,this.value2,this.value3)
       this.content= $("textarea").val().trim();
+      this.contentLength = this.content.length;
+      if(this.contentLength >= this.contentTotal ){
+        this.content = this.content.substring(0,this.contentTotal);
+        this.contentLength = this.contentTotal;
+      };
       if(this.value1 > 0 && this.value2 > 0 && this.value3 > 0 && this.content.length > 7){
         this.submit = false;
       }else{

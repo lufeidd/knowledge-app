@@ -25,7 +25,7 @@
         </van-col>
       </van-row>
     </div>
-    <div class="searchRecommend" v-if="this.type == 'brand'">
+    <div class="searchRecommend" v-if="this.type == 'brand' && hotSearch ">
       <p class="recommend">热门搜索</p>
       <van-row type="flex" gutter="15">
         <van-col span="6" v-for="item,index in hotSearch" :key="index">

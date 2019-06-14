@@ -9,7 +9,9 @@
         <div class="title">{{baseData.title}}</div>
         <div class="from">
           <div class="articleInfo">
-            <img v-lazy="articleInfo.header_pic" class="icon">
+            <div class="ratiobox">
+              <a class="bookImg" v-lazy:background-image="articleInfo.header_pic"></a>
+            </div>
             <div class="detail">
               <p>{{articleInfo.name}}</p>
               <p class="number">{{articleInfo.fans}}人关注</p>
