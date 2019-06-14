@@ -9,7 +9,6 @@
         <div class="title">{{baseData.title}}</div>
         <div class="from">
           <div class="articleInfo">
-            <!-- <img v-lazy="articleInfo.header_pic" class="icon"> -->
             <div class="ratiobox">
               <a class="bookImg" v-lazy:background-image="articleInfo.header_pic"></a>
             </div>
@@ -244,7 +243,8 @@ import {
   COMMENT_ADD,
   GOODS_PRAISE_ADD,
   GOODS_PRAISE_DELETE,
-  RECOMMEND
+  RECOMMEND,
+  WX_SHARE
 } from "../../../apis/public.js";
 export default {
   components: {
@@ -302,7 +302,42 @@ export default {
     this.getRecommendData();
     // console.log("ID:", this.recommendData);
   },
+  beforeDestroy() {
+    $(window).off("scroll");
+  },
   methods: {
+    // 获取页面分享信息
+    async wxShareData() {
+      var tStamp = this.$getTimeStamp();
+      var tmp = {};
+      tmp.goods_id = this.$route.query.goods_id;
+      if (this.$route.query.pid != null) tmp.album_id = this.$route.query.pid;
+
+      var data = {
+        page_name: "goods/detail",
+        params: JSON.stringify({
+          goods_id: this.$route.query.goods_id,
+          album_id: this.$route.query.pid
+        }),
+        version: "1.0",
+        timestamp: tStamp
+      };
+      data.sign = this.$getSign(data);
+
+      let res = await WX_SHARE(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res.response_data)
+        // 微信分享
+        this.$getWxData(
+          res.response_data.share_info.title,
+          res.response_data.share_info.desc,
+          res.response_data.share_info.pic,
+          res.response_data.share_info.url
+        );
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
     // 获取关注接口信息
     async focusData(__type) {
       var data = {};
@@ -488,6 +523,10 @@ export default {
         this.baseData = res.response_data.base;
         this.articleInfo = res.response_data.brand_info;
         this.isLogin = res.response_data.user_info.is_login;
+
+        // 获取页面分享信息
+        this.wxShareData();
+
         // $(".contentData").append(this.baseData.desc);
         if (this.baseData.desc.length <= 0) {
           $(".contentData").remove();

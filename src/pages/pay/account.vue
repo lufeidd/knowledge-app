@@ -332,7 +332,7 @@ export default {
         this.codeData.disabled = false;
         this.codeData.timeMsg = "获取验证码";
 
-        this.$router.push({
+        this.$router.replace({
           name: "paysuccess",
           query: {
             order_id: res.response_data.order_id,

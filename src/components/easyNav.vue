@@ -19,12 +19,28 @@
         </svg>
         <div>首页</div>
       </router-link>
-      <router-link :to="{path:navData.searchLink,query:{type:navData.type}}" class="link" v-if="navData.search">
+
+      <router-link
+        v-if="navData.type == 'brand' && navData.search"
+        :to="{path:navData.searchLink,query:{type:navData.type}}"
+        class="link"
+      >
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-littleSearch-line"></use>
         </svg>
         <div>搜索</div>
       </router-link>
+      <router-link
+        v-if="navData.type == 'mall' && navData.search"
+        :to="{path:navData.searchLink,query:{type:navData.type, supplier_id: navData.supplier_id}}"
+        class="link"
+      >
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-littleSearch-line"></use>
+        </svg>
+        <div>搜索</div>
+      </router-link>
+
       <router-link :to="navData.personalLink" class="link" v-if="navData.personal">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-personal-line"></use>
@@ -85,8 +101,7 @@ export default {
   data() {
     return {};
   },
-  mounted () {
-  },
+  mounted() {},
   methods: {
     foldAction() {
       this.navData.fold = !this.navData.fold;
