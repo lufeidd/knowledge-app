@@ -92,6 +92,15 @@
     margin-right: 15px;
   }
   .commodity{
+    & .count {
+      font-size: $fontSize - 2;
+      color: #999;
+      text-align: right;
+  
+      & .active {
+        color: $redDark;
+      }
+    }
     padding: 15px;
     .ratiobox{
       width: 57px;

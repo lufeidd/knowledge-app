@@ -3,23 +3,26 @@
  * date:2019/4/17
  */
 
-#detailPage{
+#detailPage {
   background-color: $greyLight;
   min-height: 100%;
 
-  .van-cell{
+  .van-cell {
     font-size: $fontSize - 1;
     color: $cl9;
     padding: 5px 15px;
-     &:not(:last-child)::after{
+
+    &:not(:last-child)::after {
       border: 0;
     }
-    .van-cell__value{
+
+    .van-cell__value {
       font-size: $fontSize - 1;
       color: $cl3;
     }
   }
-  .state{
+
+  .state {
     padding-left: 15px;
     padding-right: 15px;
     height: 60px;
@@ -27,38 +30,45 @@
     @include font(null, $fontSize + 4, null);
     @include bgDecorate($redDark, $white, null, null, null);
   }
-  .signfor{
+
+  .signfor {
     padding: 10px 15px;
     position: relative;
     background-color: $white;
     border-bottom: 1px solid $greyLight;
-    @include displayFlex(flex,null,null);
-    .signforFrom{
+    @include displayFlex(flex, null, null);
+
+    .signforFrom {
       margin-left: 5px;
       display: flex;
       flex-direction: column;
       align-content: space-between;
       @include textOverflow;
-      .signDate{
+
+      .signDate {
         font-size: $fontSize - 1;
         color: $cl9;
         margin-top: 5px;
       }
-      .signforPeople{
+
+      .signforPeople {
         @include textOverflow;
       }
-      .address{
+
+      .address {
         white-space: pre-wrap;
         margin-top: 5px;
         font-size: $fontSize - 1;
         color: $cl6;
       }
     }
-    .car{
+
+    .car {
       margin-top: 3px;
       color: $cl6;
     }
-    .arrow{
+
+    .arrow {
       position: absolute;
       right: 15px;
       top: 50%;
@@ -66,46 +76,68 @@
       color: $cl9;
     }
   }
-  .info{
+
+  .info {
     background-color: $white;
     margin-top: 10px;
-    .head{
+
+    .head {
       line-height: 40px;
       border-bottom: 1px solid $greyLight;
       padding-left: 15px;
       padding-right: 15px;
-      @include displayFlex(flex,space-between,center);
-      .titleFrom{
-       @include displayFlex(flex,flex-start,center);
-        .icon{
-         width: 21px;
-         height: 21px;
-         border: 1px solid $clC;
-         border-radius: 21px;
-         align-items: center;
-       }
-       .publish{
-         font-size: $fontSize;
-         color: $cl3;
-         margin-left: 5px;
-       }
+      @include displayFlex(flex, space-between, center);
+
+      .titleFrom {
+        @include displayFlex(flex, flex-start, center);
+
+        // .icon {
+        //   width: 21px;
+        //   height: 21px;
+        //   border: 1px solid $clC;
+        //   border-radius: 21px;
+        //   align-items: center;
+        // }
+
+        .publish {
+          font-size: $fontSize;
+          color: $cl3;
+          margin-left: 5px;
+        }
+
+        .ratiobox {
+          min-width: 21px;
+          margin-right: 5px;
+
+          .bookImg {
+            display: block;
+            border-radius: 50%;
+            @include ratioBox (null, 100%, 1px solid $greyLight, contain, $white, null);
+          }
+        }
       }
     }
-    .section{
+
+    .section {
       padding: 13px 15px 30px 15px;
       border-bottom: 1px solid $greyLight;
-       .bookDetail{
-         @include displayFlex(flex,null,null);
-         .ratiobox{
+
+      .bookDetail {
+        @include displayFlex(flex, null, null);
+
+        .ratiobox {
+          min-width: 65px;
+          margin-right: 5px;
           border-radius: 2px;
           overflow: hidden;
           position: relative;
-          .box{
-            .bookImg{
+
+          .box {
+            .bookImg {
               display: block;
-              width: 65px;
-              height: 65px;
+              @include ratioBox (null, 100%, 1px solid $greyLight, contain, $white, null);
             }
+
             & .tip {
               @include position (absolute, 'bl', 0, 0, 100%, 15px, 0);
               @include font(null, $fontSize - 2, $white);
@@ -114,77 +146,92 @@
               text-align: center;
             }
           }
-         }
-         .title{
-           display: inline-block;
-           max-width: 220px;
-           margin-left: 10px;
-           @include textOverflow;
-           @include font("PingFangBlod", $fontSize + 2, $cl3);
-         }
-         .rightInfo{
-          @include displayFlex(flex,space-between,space-between);
+        }
+
+        .title {
+          display: inline-block;
+          max-width: 220px;
+          margin-left: 10px;
+          @include textOverflow;
+          @include font("PingFangBlod", $fontSize + 2, $cl3);
+        }
+
+        .rightInfo {
+          @include displayFlex(flex, space-between, space-between);
           flex-direction: column;
-          .red{
+
+          .red {
             color: $redDark;
           }
-         }
-       }
-     }
+        }
+      }
+    }
   }
-  .priceInfo{
+
+  .priceInfo {
     background-color: $white;
     margin-top: 10px;
     padding-bottom: 5px;
-    .first{
-      .van-cell{
+
+    .first {
+      .van-cell {
         border-bottom: 1px solid $greyLight;
         font-size: $fontSize - 1;
         color: $cl3;
       }
-      .van-cell__title{
+
+      .van-cell__title {
         color: $cl3;
         font-size: $fontSize + 1;
       }
     }
-    .van-cell__title{
+
+    .van-cell__title {
       color: $cl9;
       font-size: $fontSize - 1;
     }
-    .acturalPay{
+
+    .acturalPay {
       text-align: right;
       padding-right: 15px;
       margin: 0;
-      span{
+
+      span {
         color: $redDark;
       }
     }
   }
-  .fictitious{
+
+  .fictitious {
     margin-top: 5px;
     margin-bottom: 50px;
-    .text{
-      .van-cell__title{
+
+    .text {
+      .van-cell__title {
         color: $cl3;
       }
     }
-    .orderNumber{
-      @include displayFlex(flex,space-between,center);
-      padding:5px 15px;
+
+    .orderNumber {
+      @include displayFlex(flex, space-between, center);
+      padding: 5px 15px;
       background-color: $white;
       font-size: $fontSize - 1;
-      .order{
+
+      .order {
         color: $cl9;
       }
-      .copybox{
+
+      .copybox {
         flex-grow: 1;
-        @include displayFlex(flex,flex-end,center);
-        .copy{
+        @include displayFlex(flex, flex-end, center);
+
+        .copy {
           margin-right: 20px;
           font-size: $fontSize - 2;
           color: $cl3;
           display: inline-block;
-          width:40px;
+          width: 40px;
           height: 18px;
           border: 1px solid $cl9;
           border-radius: 9px;
@@ -192,23 +239,27 @@
         }
       }
     }
-    .orderInfo{
-      .van-cell{
-        .van-cell__title{
+
+    .orderInfo {
+      .van-cell {
+        .van-cell__title {
           font-size: $fontSize - 1;
           color: $cl9;
         }
+
         border-bottom: 1px solid $greyLight;
       }
     }
   }
-  .foot{
-    @include displayFlex(flex,space-between,center);
+
+  .foot {
+    @include displayFlex(flex, space-between, center);
     background-color: $white;
     width: 100%;
     @include position (fixed, br, 0, null, null, 50px, null);
     border-top: 1px solid #d2d2d2;
-    .button{
+
+    .button {
       display: inline-block;
       width: 60px;
       height: 24px;
@@ -218,18 +269,21 @@
       font-size: $fontSize - 2;
       margin-left: 15px;
       margin-right: 15px;
-     }
-     .button1{
+    }
+
+    .button1 {
       border: 1px solid $greyDark;
       color: $cl3;
-     }
-     .button2{
+    }
+
+    .button2 {
       border: 1px solid $redDark;
       color: $redDark;
-     }
-     .button3{
+    }
+
+    .button3 {
       border: 1px solid $cl3;
       color: $cl3;
-     }
+    }
   }
 }

@@ -32,7 +32,10 @@
     <div class="info" v-if="infoData">
       <div class="head" @click="toBrandindex">
         <div class="titleFrom">
-          <img v-lazy="infoData.brand_header_pic" class="icon">
+          <!-- <img v-lazy="infoData.brand_header_pic" class="icon"> -->
+          <div class="ratiobox">
+            <a class="bookImg" v-lazy:background-image="infoData.brand_header_pic"></a>
+          </div>
           <span class="publish" >{{infoData.brand_name}}</span>
         </div>
       </div>
@@ -40,8 +43,8 @@
         <div class="bookDetail">
           <div class="ratiobox">
             <div class="box">
-              <!-- <a class="bookImg" v-lazy:background-image="publishData.imgUrl"></a> -->
-              <img v-lazy="item.pic" class="bookImg">
+              <a class="bookImg" v-lazy:background-image="item.pic"></a>
+              <!-- <img v-lazy="item.pic" class="bookImg"> -->
               <!-- <div class="tip">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-sound-line"></use>
@@ -61,8 +64,8 @@
       <div class="first">
         <van-cell title="商品总额" v-model="'¥'+infoData.order_money"/>
       </div>
-      <van-cell title="运费" v-model="'¥'+infoData.dispatch_price"/>
-      <van-cell title="商品优惠" v-model="discount"/>
+      <van-cell title="运费" v-model="'¥'+infoData.dispatch_price" v-if="infoData.dispatch_price !== 0"/>
+      <!-- <van-cell title="商品优惠" v-model="discount"/> -->
       <!-- <van-cell title="余额" v-model="'-¥'+priceInfo.remain.toFixed(2)"/> -->
       <p class="acturalPay" style="margin-top:10px;">
         实付款
