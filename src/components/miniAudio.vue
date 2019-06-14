@@ -1,7 +1,7 @@
 <template>
-  <div id="miniAudio">
+  <div id="miniAudio" :class="{ iphx: this.isIphx }">
     <!-- 播放器缩略 -->
-    <van-row class="miniAudio" :class="{ iphx: this.isIphx }">
+    <van-row class="miniAudio" :class="{ patch: showBuyButton }">
       <van-col span="16">
         <div class="ratioBox" @click="toPlayer">
           <div class="box" :class="{rotateAction: !audioData.type}">
@@ -59,7 +59,7 @@
 import { USER_PLAYED_RECORD } from "./../apis/user.js";
 export default {
   name: "music",
-  props: ["audioData", "rank", "loginStatus"],
+  props: ["audioData", "rank", "loginStatus", "showBuyButton"],
   data() {
     return {
       playType: true,
@@ -79,7 +79,19 @@ export default {
       },
       deep: true
     },
+    rank: {
+      handler(newValue, oldValue) {
+        // console.log(newValue)
+      },
+      deep: true
+    },
     loginStatus: {
+      handler(newValue, oldValue) {
+        // console.log(newValue)
+      },
+      deep: true
+    },
+    showBuyButton: {
       handler(newValue, oldValue) {
         // console.log(newValue)
       },
@@ -91,7 +103,7 @@ export default {
     this.clearClock();
   },
   mounted() {
-    console.log(999, this.loginStatus)
+    console.log(999, this.showBuyButton)
     // 播放结束后销毁倒计时
     this.clearClock();
     // 判断是否显示节目列表入口

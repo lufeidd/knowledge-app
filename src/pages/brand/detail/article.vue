@@ -5,37 +5,37 @@
       <div>该商品已下架~</div>
     </div>
     <div v-if="onsale == 1">
-    <div class="article">
-      <div class="title">{{baseData.title}}</div>
-      <div class="from">
-        <div class="articleInfo">
-          <img v-lazy="articleInfo.header_pic" class="icon">
-          <div class="detail">
-            <p>{{articleInfo.name}}</p>
-            <p class="number">{{articleInfo.fans}}人关注</p>
+      <div class="article">
+        <div class="title">{{baseData.title}}</div>
+        <div class="from">
+          <div class="articleInfo">
+            <img v-lazy="articleInfo.header_pic" class="icon">
+            <div class="detail">
+              <p>{{articleInfo.name}}</p>
+              <p class="number">{{articleInfo.fans}}人关注</p>
+            </div>
           </div>
+          <span class="foucsButton" v-if="articleInfo.is_followed == 0" @click="focusAction">+关注</span>
+          <span class="foucsButton cancel" v-else @click="focusAction">已关注</span>
         </div>
-        <span class="foucsButton" v-if="articleInfo.is_followed == 0" @click="focusAction">+关注</span>
-        <span class="foucsButton cancel" v-else @click="focusAction">已关注</span>
+        <div class="contentData" v-html="baseData.desc">{{baseData.desc}}</div>
+        <div class="message">
+          <span>
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-eye-line"></use>
+            </svg>
+            {{baseData.play_num}}
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-good-line"></use>
+            </svg>
+            {{baseData.praise_num}}
+          </span>
+          <span>{{baseData.create_time}}</span>
+        </div>
       </div>
-      <div class="contentData" v-html="baseData.desc">{{baseData.desc}}</div>
-      <div class="message">
-        <span>
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-eye-line"></use>
-          </svg>
-          {{baseData.play_num}}
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-good-line"></use>
-          </svg>
-          {{baseData.praise_num}}
-        </span>
-        <span>{{baseData.create_time}}</span>
-      </div>
-    </div>
-    <!-- 轮播部分 -->
-    <div class="showContent" v-if="recommendState">
-      <!-- <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
+      <!-- 轮播部分 -->
+      <div class="showContent" v-if="recommendState">
+        <!-- <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
         <swiper-slide v-for="item,index in recommendData" :key="index">
           <div class="foot">
             <div class="ratiobox">
@@ -47,182 +47,182 @@
             </div>
           </div>
         </swiper-slide>
-      </swiper>-->
-      <van-row gutter="20" class="booklist">
-        <van-col span="8" v-for="item,index in recommendData" :key="index">
-          <div class="ratioBox" @click="gotoLink(item)">
-            <div class="box">
-              <img :src="item.pic">
-            </div>
-          </div>
-          <div class="title">{{ item.title }}</div>
-        </van-col>
-      </van-row>
-      <!-- <van-row gutter="20" class="booklist">
-        <van-col span="8" >
-          <div class="ratioBox">
-            <div class="box">
-              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
-            </div>
-          </div>
-          <div class="title">call me call my name</div>
-        </van-col>
-        <van-col span="8" >
-          <div class="ratioBox">
-            <div class="box">
-              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
-            </div>
-          </div>
-          <div class="title">call me call my name</div>
-        </van-col>
-        <van-col span="8" >
-          <div class="ratioBox">
-            <div class="box">
-              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
-            </div>
-          </div>
-          <div class="title">call me call my name</div>
-        </van-col>
-        <van-col span="8" >
-          <div class="ratioBox">
-            <div class="box">
-              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
-            </div>
-          </div>
-          <div class="title">call me call my name</div>
-        </van-col>
-        <van-col span="8" >
-          <div class="ratioBox">
-            <div class="box">
-              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
-            </div>
-          </div>
-          <div class="title">call me call my name</div>
-        </van-col>
-      </van-row>-->
-    </div>
-    <!-- 评论 -->
-    <div class="commentBox">
-      <van-cell :title="totalCount" is-link value="我要评论" @click="openAnswer('comment', null)"/>
-
-      <van-list
-        v-model="commentLoading"
-        :finished="commentFinished"
-        finished-text="没有更多了"
-        @load="commentLoad"
-      >
-        <div class="listBox" v-for="(item, key) in discussData" :key="key">
-          <div class="left">
-            <div class="ratioBox">
+        </swiper>-->
+        <van-row gutter="20" class="booklist">
+          <van-col span="8" v-for="item,index in recommendData" :key="index">
+            <div class="ratioBox" @click="gotoLink(item)">
               <div class="box">
-                <img :src="item.user_header">
+                <img :src="item.pic">
               </div>
             </div>
-          </div>
-          <div class="center">
-            <div class="title">
-              <div class="text">{{ item.nick_name }}</div>
+            <div class="title">{{ item.title }}</div>
+          </van-col>
+        </van-row>
+        <!-- <van-row gutter="20" class="booklist">
+        <van-col span="8" >
+          <div class="ratioBox">
+            <div class="box">
+              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
             </div>
-            <div class="subTitle">{{ item.content }}</div>
+          </div>
+          <div class="title">call me call my name</div>
+        </van-col>
+        <van-col span="8" >
+          <div class="ratioBox">
+            <div class="box">
+              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+            </div>
+          </div>
+          <div class="title">call me call my name</div>
+        </van-col>
+        <van-col span="8" >
+          <div class="ratioBox">
+            <div class="box">
+              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+            </div>
+          </div>
+          <div class="title">call me call my name</div>
+        </van-col>
+        <van-col span="8" >
+          <div class="ratioBox">
+            <div class="box">
+              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+            </div>
+          </div>
+          <div class="title">call me call my name</div>
+        </van-col>
+        <van-col span="8" >
+          <div class="ratioBox">
+            <div class="box">
+              <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
+            </div>
+          </div>
+          <div class="title">call me call my name</div>
+        </van-col>
+        </van-row>-->
+      </div>
+      <!-- 评论 -->
+      <div class="commentBox">
+        <van-cell :title="totalCount" is-link value="我要评论" @click="openAnswer('comment', null)"/>
 
-            <div class="messageBox" v-if="answerData[key].length > 0">
-              <!-- 回复 -->
+        <van-list
+          v-model="commentLoading"
+          :finished="commentFinished"
+          finished-text="没有更多了"
+          @load="commentLoad"
+        >
+          <div class="listBox" v-for="(item, key) in discussData" :key="key">
+            <div class="left">
+              <div class="ratioBox">
+                <div class="box">
+                  <img :src="item.user_header">
+                </div>
+              </div>
+            </div>
+            <div class="center">
+              <div class="title">
+                <div class="text">{{ item.nick_name }}</div>
+              </div>
+              <div class="subTitle">{{ item.content }}</div>
 
-              <!-- <div
+              <div class="messageBox" v-if="answerData[key].length > 0">
+                <!-- 回复 -->
+
+                <!-- <div
                         class="message active"
                         v-for="(replyItem, key) in item.reply_list"
                         :key="key"
                       >
                         <span class="name">{{ replyItem.nick_name }}</span>
                         <span class="dialog">{{ replyItem.content }}</span>
-              </div>-->
+                </div>-->
 
-              <div class="message active" v-for="(replyItem, key) in answerData[key]" :key="key">
-                <span class="name">{{ replyItem.nick_name }}</span>
-                <span class="dialog">{{ replyItem.content }}</span>
-              </div>
+                <div class="message active" v-for="(replyItem, key) in answerData[key]" :key="key">
+                  <span class="name">{{ replyItem.nick_name }}</span>
+                  <span class="dialog">{{ replyItem.content }}</span>
+                </div>
 
-              <div
-                class="message active"
-                v-if="item.reply_num > 2 && replyPage[key] <= item.reply_total_page"
-              >
-                <!-- <van-pagination v-model="item.reply_current_page" :page-count="item.reply_total_page" mode="simple" @change="pageChange(item.comment_id, key)" /> -->
+                <div
+                  class="message active"
+                  v-if="item.reply_num > 2 && replyPage[key] <= item.reply_total_page"
+                >
+                  <!-- <van-pagination v-model="item.reply_current_page" :page-count="item.reply_total_page" mode="simple" @change="pageChange(item.comment_id, key)" /> -->
 
-                <span class="name" @click="pageChange(item.comment_id, key)">
-                  共{{ item.reply_num }}条回复
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-fold-line"></use>
-                  </svg>
-                  <!-- <svg class="icon" aria-hidden="true">
+                  <span class="name" @click="pageChange(item.comment_id, key)">
+                    共{{ item.reply_num }}条回复
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-fold-line"></use>
+                    </svg>
+                    <!-- <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-unfold-line"></use>
-                  </svg>-->
-                </span>
+                    </svg>-->
+                  </span>
+                </div>
+              </div>
+
+              <!-- 回复 -->
+              <div class="answerBox">
+                <span class="date">{{ item.create_time }}</span>
+                <span class="action" @click="openAnswer('reply', item.comment_id)">回复</span>
               </div>
             </div>
-
-            <!-- 回复 -->
-            <div class="answerBox">
-              <span class="date">{{ item.create_time }}</span>
-              <span class="action" @click="openAnswer('reply', item.comment_id)">回复</span>
+          </div>
+        </van-list>
+      </div>
+      <!-- 评论 -->
+      <van-popup v-model="commentModel" position="bottom">
+        <div class="audioList">
+          <div class="title">
+            <div class="action" @click="commentClose">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-fold-line"></use>
+              </svg>
+            </div>
+            <div>发表评论</div>
+            <div class="punish" @click="punishComment">发布</div>
+          </div>
+          <!-- 音频列表 -->
+          <div class="content">
+            <textarea v-model="contentModel" placeholder="快来写评论吧!" @input="inputChange"></textarea>
+            <div class="count">
+              <span :class="{ active: contentLength > contentTotal }">{{ contentLength }}</span>
+              /{{ contentTotal }}
             </div>
           </div>
         </div>
-      </van-list>
-    </div>
-    <!-- 评论 -->
-    <van-popup v-model="commentModel" position="bottom">
-      <div class="audioList">
-        <div class="title">
-          <div class="action" @click="commentClose">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-fold-line"></use>
-            </svg>
-          </div>
-          <div>发表评论</div>
-          <div class="punish" @click="punishComment">发布</div>
-        </div>
-        <!-- 音频列表 -->
-        <div class="content">
-          <textarea v-model="contentModel" placeholder="快来写评论吧!" @input="inputChange"></textarea>
-          <div class="count">
-            <span :class="{ active: contentLength > contentTotal }">{{ contentLength }}</span>
-            /{{ contentTotal }}
-          </div>
-        </div>
-      </div>
-    </van-popup>
+      </van-popup>
 
-    <div style="height: 60px;"></div>
-    <div v-if="this.isIphx" style="height: 34px;"></div>
-    <!-- 快来写评论吧 -->
-    <div class="pinglun" :class="{iphx:this.isIphx}">
-      <div class="write" @click="openAnswer('comment', null)">快来写评论吧!</div>
-      <div class="nice">
-        <svg
-          class="icon add"
-          aria-hidden="true"
-          v-if="baseData.collect_id > 0"
-          @click="collectAction"
-        >
-          <use xlink:href="#icon-collect-block"></use>
-        </svg>
-        <svg class="icon" aria-hidden="true" v-else @click="collectAction">
-          <use xlink:href="#icon-collect-line"></use>
-        </svg> &nbsp;|&nbsp;
-        <svg
-          class="icon"
-          aria-hidden="true"
-          v-if="baseData.is_praised == 0"
-          @click="praiseAction"
-        >
-          <use xlink:href="#icon-good-line"></use>
-        </svg>
-        <svg class="icon add" aria-hidden="true" v-else @click="praiseAction">
-          <use xlink:href="#icon-good-block"></use>
-        </svg>
+      <div style="height: 60px;"></div>
+      <div v-if="this.isIphx" style="height: 34px;"></div>
+      <!-- 快来写评论吧 -->
+      <div class="pinglun" :class="{iphx:this.isIphx}">
+        <div class="write" @click="openAnswer('comment', null)">快来写评论吧!</div>
+        <div class="nice">
+          <svg
+            class="icon add"
+            aria-hidden="true"
+            v-if="baseData.collect_id > 0"
+            @click="collectAction"
+          >
+            <use xlink:href="#icon-collect-block"></use>
+          </svg>
+          <svg class="icon" aria-hidden="true" v-else @click="collectAction">
+            <use xlink:href="#icon-collect-line"></use>
+          </svg> &nbsp;|&nbsp;
+          <svg
+            class="icon"
+            aria-hidden="true"
+            v-if="baseData.is_praised == 0"
+            @click="praiseAction"
+          >
+            <use xlink:href="#icon-good-line"></use>
+          </svg>
+          <svg class="icon add" aria-hidden="true" v-else @click="praiseAction">
+            <use xlink:href="#icon-good-block"></use>
+          </svg>
+        </div>
       </div>
-    </div>
-    <easyNav :navData="navData"></easyNav>
+      <easyNav :navData="navData"></easyNav>
     </div>
   </div>
 </template>
@@ -241,7 +241,8 @@ import {
   COMMENT_ADD,
   GOODS_PRAISE_ADD,
   GOODS_PRAISE_DELETE,
-  RECOMMEND
+  RECOMMEND,
+  WX_SHARE
 } from "../../../apis/public.js";
 export default {
   components: {
@@ -290,7 +291,7 @@ export default {
       recommendData: [],
       recommendState: false,
       goodsId: null,
-      isLogin:null,
+      isLogin: null
     };
   },
   mounted() {
@@ -303,6 +304,38 @@ export default {
     $(window).off("scroll");
   },
   methods: {
+    // 获取页面分享信息
+    async wxShareData() {
+      var tStamp = this.$getTimeStamp();
+      var tmp = {};
+      tmp.goods_id = this.$route.query.goods_id;
+      if (this.$route.query.pid != null) tmp.album_id = this.$route.query.pid;
+
+      var data = {
+        page_name: "goods/detail",
+        params: JSON.stringify({
+          goods_id: this.$route.query.goods_id,
+          album_id: this.$route.query.pid
+        }),
+        version: "1.0",
+        timestamp: tStamp
+      };
+      data.sign = this.$getSign(data);
+
+      let res = await WX_SHARE(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res.response_data)
+        // 微信分享
+        this.$getWxData(
+          res.response_data.share_info.title,
+          res.response_data.share_info.desc,
+          res.response_data.share_info.pic,
+          res.response_data.share_info.url
+        );
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
     // 获取关注接口信息
     async focusData(__type) {
       var data = {};
@@ -343,9 +376,9 @@ export default {
     },
     focusAction() {
       // 未登录跳转至登录页
-      if(this.isLogin == 0) {
+      if (this.isLogin == 0) {
         this.$router.push({ name: "login", params: {} });
-        this.$toast('用户未登录!');
+        this.$toast("用户未登录!");
         return;
       }
       if (this.articleInfo.is_followed > 0) {
@@ -409,9 +442,9 @@ export default {
     },
     collectAction() {
       // 未登录跳转至登录页
-      if(this.isLogin == 0) {
+      if (this.isLogin == 0) {
         this.$router.push({ name: "login", params: {} });
-        this.$toast('用户未登录!');
+        this.$toast("用户未登录!");
         return;
       }
       if (this.baseData.collect_id > 0) {
@@ -460,10 +493,10 @@ export default {
       }
     },
     praiseAction() {
-    // 未登录跳转至登录页
-      if(this.isLogin == 0) {
+      // 未登录跳转至登录页
+      if (this.isLogin == 0) {
         this.$router.push({ name: "login", params: {} });
-        this.$toast('用户未登录!');
+        this.$toast("用户未登录!");
         return;
       }
       if (this.baseData.is_praised > 0) {
@@ -488,6 +521,10 @@ export default {
         this.baseData = res.response_data.base;
         this.articleInfo = res.response_data.brand_info;
         this.isLogin = res.response_data.user_info.is_login;
+
+        // 获取页面分享信息
+        this.wxShareData();
+
         // $(".contentData").append(this.baseData.desc);
         if (this.baseData.desc.length <= 0) {
           $(".contentData").remove();
@@ -495,7 +532,7 @@ export default {
         }
 
         // console.log(this.baseData);
-        
+
         this.onsale = 1;
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 401) {
@@ -670,9 +707,9 @@ export default {
      */
     openAnswer(__type, comment_id) {
       // 未登录跳转至登录页
-      if(this.isLogin == 0) {
+      if (this.isLogin == 0) {
         this.$router.push({ name: "login", params: {} });
-        this.$toast('用户未登录!');
+        this.$toast("用户未登录!");
         return;
       }
       this.punishType = __type;

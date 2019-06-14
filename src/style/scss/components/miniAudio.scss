@@ -76,6 +76,7 @@
       margin-top: 5px;
       overflow: hidden;
       position: absolute;
+
       & .box {
         border-radius: 40px;
         overflow: hidden;
@@ -146,6 +147,10 @@
       right: 55px;
       background-color: #e6e6e6;
     }
+  }
+
+  & .miniAudio.patch {
+    bottom: 5px;
   }
 
   .miniAudio.iphx {

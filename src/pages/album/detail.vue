@@ -6,6 +6,26 @@
     </div>
 
     <div v-if="onsale == 1">
+      <!-- 不属于专辑 -->
+      <van-row class="actionPatch" v-if="!pid">
+        <van-col class="title" span="18">{{ baseData.title }}</van-col>
+        <van-col span="6">
+          <div
+            @click="collectAction(baseData.collect_id, baseData.goods_id)"
+            style="text-align:right;"
+          >
+            <svg class="icon" aria-hidden="true" v-if="baseData.collect_id > 0">
+              <use xlink:href="#icon-collect-block"></use>
+            </svg>
+            <svg class="icon" aria-hidden="true" v-else>
+              <use xlink:href="#icon-collect-line"></use>
+            </svg>
+            <span>
+              <template v-if="baseData.collect_id > 0">已</template>收藏
+            </span>
+          </div>
+        </van-col>
+      </van-row>
       <!-- 属于专辑 -->
       <div class="ratioBox banner">
         <div class="box" v-if="baseData.goods_type != 2">
@@ -20,41 +40,19 @@
         <div class="box layer" v-if="baseData.goods_type == 2">
           <video @play="videoPlay" :src="baseData.file_path" controls width="100%" height="100%"></video>
         </div>
-
-        <!-- 不属于专辑 -->
-        <van-row class="action" v-if="!pid">
-          <van-col class="title" span="18">{{ baseData.title }}</van-col>
-          <van-col span="6">
-            <div
-              @click="collectAction(baseData.collect_id, baseData.goods_id)"
-              style="text-align:right;"
-            >
-              <svg class="icon" aria-hidden="true" v-if="baseData.collect_id > 0">
-                <use xlink:href="#icon-collect-block"></use>
-              </svg>
-              <svg class="icon" aria-hidden="true" v-else>
-                <use xlink:href="#icon-collect-line"></use>
-              </svg>
-              <span>
-                <template v-if="baseData.collect_id > 0">已</template>收藏
-              </span>
-            </div>
-          </van-col>
-        </van-row>
       </div>
 
       <!-- 专辑 -->
       <div class="albumBox" v-if="pid">
-        <div class="ratioBox">
+        <router-link :to="{ name: 'album', query: {goods_id: pid}}" class="ratioBox">
           <div class="box">
             <img :src="baseData.pic[0]">
           </div>
-        </div>
-        <div class="issue">
+        </router-link>
+        <router-link :to="{ name: 'album', query: {goods_id: pid}}" class="issue">
           <div class="title">{{ baseData.title }}</div>
-
           <div class="info">{{ baseData.sub_title }}</div>
-        </div>
+        </router-link>
         <div
           class="action"
           style="text-align:right;"
@@ -214,6 +212,7 @@
         :audioData="myAudioData"
         :rank="rankType"
         :loginStatus="isLogin"
+        :showBuyButton="showBuyButton"
         ref="control"
         @setType="typeAction"
         @setMiniAudio="miniAudioData"
@@ -280,7 +279,8 @@ import {
   FOCUS_CANCEL,
   COMMENT,
   COMMENT_ADD,
-  RECOMMEND
+  RECOMMEND,
+  WX_SHARE
 } from "../../apis/public.js";
 
 export default {
@@ -290,6 +290,7 @@ export default {
   },
   data() {
     return {
+      showBuyButton: true,
       activeKey: 0,
       onsale: null,
       /*
@@ -402,6 +403,37 @@ export default {
     this.recommendData();
   },
   methods: {
+    // 获取页面分享信息
+    async wxShareData() {
+      var tStamp = this.$getTimeStamp();
+      var tmp = {};
+      tmp.goods_id = this.$route.query.goods_id;
+      if (this.$route.query.pid != null) tmp.album_id = this.$route.query.pid;
+
+      var data = {
+        page_name: "goods/detail",
+        params: JSON.stringify({
+          goods_id: this.$route.query.goods_id,
+          album_id: this.$route.query.pid
+        }),
+        version: "1.0",
+        timestamp: tStamp
+      };
+      data.sign = this.$getSign(data);
+      let res = await WX_SHARE(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res.response_data)
+        // 微信分享
+        this.$getWxData(
+          res.response_data.share_info.title,
+          res.response_data.share_info.desc,
+          res.response_data.share_info.pic,
+          res.response_data.share_info.url
+        );
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
     // 判断视频播放是否收费
     videoPlay() {
       // 需要收费
@@ -454,16 +486,15 @@ export default {
 
       let __goodsNo = item.goods_no;
       let __pid = JSON.parse(localStorage.getItem("miniAudio"))[1];
-      let __pic = this.baseData.pic[0];
-      let __src = this.baseData.file_path;
-      // let __src = require('./../../assets/music.mp3');
-      let __duration = this.baseData.duration;
+      let __pic = item.pic;
+      let __src = item.file_path;
+      let __duration = item.duration;
       // 获取当前节目播放进度
       let __currentTime = 0;
       // let __currentTime = this.getAudioProgress(item);
-      let __program = this.baseData.title;
-      let __album = this.albumInfo.title;
-      let __goodsId = this.goodsId;
+      let __program = item.title;
+      let __album = JSON.parse(localStorage.getItem("miniAudio"))[7];
+      let __goodsId = item.goodsId;
 
       // 存放当前音频信息
       for (let i = 0; i < this.programList.length; i++) {
@@ -812,6 +843,12 @@ export default {
 
         // 所属媒体信息
         // this.brandInfoData = res.response_data.brand_info;
+
+        // 获取页面分享信息
+        this.wxShareData();
+
+        // 是否显示底部购买按钮
+        this.showBuyButton = !(this.baseData.is_free == 0 && this.baseData.is_payed == 0);
 
         this.onsale = 1;
       } else {
