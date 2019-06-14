@@ -79,13 +79,13 @@
 export default {
   name: "upload",
   props: ["uploadData"],
-  mounted(){
+  mounted() {
     this.content;
   },
-  computed:{
-    content(){
-       var text=this.uploadData.text;
-       return $('.text').text(text);
+  computed: {
+    content() {
+      var text = this.uploadData.text;
+      return $("#upload .text").text(text);
     }
   },
   methods: {
@@ -141,7 +141,7 @@ export default {
       var src = file.content;
 
       var maxlength = this.uploadData.maxlength;
-      var text=this.uploadData.text;
+      var text = this.uploadData.text;
       var box = $("#upload .flex-box .box");
       var length = box.length;
       var van = $("#van");
@@ -150,7 +150,9 @@ export default {
       $("#upload").prepend(
         '<div class="flex-box">' +
           '<div class="box">' +
-          '<div class="content set" data-src="'+src+'" style="background-image: url(' +
+          '<div class="content set" data-src="' +
+          src +
+          '" style="background-image: url(' +
           src +
           ');">' +
           '<div class="del">' +

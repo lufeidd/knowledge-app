@@ -140,7 +140,7 @@
         </template>
 
         <span slot="right" @click="historyCancel(item.id, key)">
-          <div>取消历史</div>
+          <div>删除历史</div>
         </span>
       </van-swipe-cell>
     </van-list>
@@ -250,14 +250,14 @@ export default {
             if (this.historyStatus.length == 1) {
               this.historyList = [];
             }
-            this.$toast("已取消历史~");
+            this.$toast("已删除历史~");
           } else {
             this.$toast(res.error_message);
           }
           break;
       }
     },
-    // 取消历史
+    // 删除历史
     historyCancel(historyId, key) {
       this.historyData("cancel", historyId, key);
     },

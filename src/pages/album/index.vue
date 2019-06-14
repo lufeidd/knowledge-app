@@ -61,6 +61,11 @@
           <template v-if="activeKey == key">
             <!-- 介绍 -->
             <div class="infoContent" v-if="key == 0">
+              <!-- 介绍 -->
+              <div
+                v-html="baseData.desc"
+                style="background-color: #fff;padding: 10px;"
+              >{{ baseData.desc }}</div>
               <!-- 关注公众号 -->
               <div class="publish">
                 <router-link
@@ -367,11 +372,10 @@
                       </template>
                       <span class="time">
                         <svg class="icon" aria-hidden="true">
-                          <use xlink:href="#icon-time-line"></use>
+                          <use xlink:href="#icon-eye-line"></use>
                         </svg>
-                        <!-- {{ item.create_time }} -->
-                        <!-- {{ item.goods_type }} -->
-                        {{ item.item_count }}
+                        {{ item.play_num }}
+                        共{{ item.item_count }}集
                       </span>
                       <!-- <span class="history"></span> -->
                     </div>
@@ -683,6 +687,9 @@ export default {
             }
           } else {
             this.$toast(res.error_message);
+            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+              this.$router.push({ name: "login", params: {} });
+            }
           }
           this.baseData.collection_num++;
           // this.$toast("已收藏~");
@@ -704,6 +711,9 @@ export default {
             this.$toast("已取消收藏~");
           } else {
             this.$toast(res.error_message);
+            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+              this.$router.push({ name: "login", params: {} });
+            }
           }
           this.baseData.collection_num--;
           break;
@@ -723,8 +733,15 @@ export default {
           };
           data.sign = this.$getSign(data);
           res = await FOCUS_ADD(data);
-          this.brandInfoData.is_followed = 1;
-          this.brandInfoData.fans++;
+          if (res.hasOwnProperty("response_code")) {
+            this.brandInfoData.is_followed = 1;
+            this.brandInfoData.fans++;
+          } else {
+            this.$toast(res.error_message);
+            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+              this.$router.push({ name: "login", params: {} });
+            }
+          }
           // this.$toast('已关注~');
           break;
         case "cancel":
@@ -735,17 +752,20 @@ export default {
           };
           data.sign = this.$getSign(data);
           res = await FOCUS_CANCEL(data);
-          this.brandInfoData.is_followed = 0;
-          this.brandInfoData.fans--;
-          this.$toast("已取消关注~");
+          if (res.hasOwnProperty("response_code")) {
+            this.brandInfoData.is_followed = 0;
+            this.brandInfoData.fans--;
+            this.$toast("已取消关注~");
+          } else {
+            this.$toast(res.error_message);
+            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+              this.$router.push({ name: "login", params: {} });
+            }
+          }
           break;
       }
-      // 出错提示
-      if (res.hasOwnProperty("response_code")) {
-      } else {
-        this.$toast(res.error_message);
-      }
     },
+    // 关注
     focusAction() {
       if (this.brandInfoData.is_followed > 0) {
         this.focusData("cancel");
@@ -898,6 +918,12 @@ export default {
      * __type: 'reply'; 回复评论，comment_id: 必填;
      */
     openAnswer(__type, comment_id) {
+      // 未登录跳转至登录页
+      if (this.isLogin == 0) {
+        this.$router.push({ name: "login", params: {} });
+        this.$toast("用户未登录!");
+        return;
+      }
       this.punishType = __type;
       if (__type == "reply") this.commentId = comment_id;
       this.commentModel = true;
@@ -996,11 +1022,12 @@ export default {
 
         // currentTime关联slider进度
         if (info != null && info[5] != null && info[5] != "") {
-          if(this.$refs.control) this.$refs.control.audioData.sliderValue =
-            (info[5] / audio.duration) * 100;
+          if (this.$refs.control)
+            this.$refs.control.audioData.sliderValue =
+              (info[5] / audio.duration) * 100;
         }
         if (info != null && info[4] != null && info[4] != "") {
-          if(this.$refs.control) this.$refs.control.audioSliderChange();
+          if (this.$refs.control) this.$refs.control.audioSliderChange();
         }
       }, 600);
 
@@ -1127,12 +1154,26 @@ export default {
       this.rankType = this.rankType == 1 ? 0 : 1;
       // 实时刷新先置空
       this.programList = [];
+      this.programData();
       // 分页状态重置
       this.programPage = 1;
       this.programFinished = false;
     },
     // 节目列表播放/暂停音频
     audioAction(item) {
+      console.log(item.goods_type);
+      // 视频跳转到节目详情页
+      if (item.goods_type == 2) {
+        this.$router.push({
+          name: "albumdetail",
+          query: {
+            pid: this.baseData.goods_id,
+            goods_id: item.goods_id,
+            goods_no: item.goods_no
+          }
+        });
+        return;
+      }
       // console.log(item);
       // 未支付
       if (item.goods_id != null && item.is_payed == 0 && item.is_free == 0) {
@@ -1243,7 +1284,7 @@ export default {
       this.$refs.controlList.goodsNo = this.activeGoodNo;
     },
     gotoPlayer(queryData) {
-      this.$router.push({name: "player", query: {isLogin: this.isLogin}});
+      this.$router.push({ name: "player", query: { isLogin: this.isLogin } });
     },
     // 点击试听
     preListenAction() {
@@ -1343,11 +1384,15 @@ export default {
       var info = JSON.parse(localStorage.getItem("miniAudio"));
       if (info == null) info = [];
       info[0] = item.goods_no;
+      info[1] = this.baseData.goods_id;
+      info[2] = item.pic;
       info[3] = item.file_path;
       info[4] = item.duration;
       info[5] = 0;
       info[6] = item.title;
+      info[7] = this.baseData.title;
       info[8] = item.goods_id;
+      info[9] = this.baseData.pic[0];
       this.activeGoodNo = info[0];
 
       localStorage.setItem("miniAudio", JSON.stringify(info));
