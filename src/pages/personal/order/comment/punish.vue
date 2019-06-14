@@ -194,7 +194,7 @@ export default {
       this.content= $("textarea").val().trim();
       this.contentLength = this.content.length;
       if(this.contentLength >= this.contentTotal ){
-        this.content = this.content.substring(0,200);
+        this.content = this.content.substring(0,this.contentTotal);
         this.contentLength = this.contentTotal;
       };
       if(this.value1 > 0 && this.value2 > 0 && this.value3 > 0 && this.content.length > 7){
