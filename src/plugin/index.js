@@ -322,6 +322,15 @@ export default {
           if (dataTmp.params.goods_type) queryTmp.keywords = dataTmp.params.goods_type;
 
           break;
+        // 商城商品搜索结果页
+        case 'mall/goods/search':
+          __name = 'brandresult';
+          queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
+          queryTmp.brand_id = parseInt(dataTmp.params.brand_id);
+          if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
+          if (dataTmp.params.goods_type) queryTmp.keywords = dataTmp.params.goods_type;
+
+          break;
         // 供应商商城首页
         case 'mall/index':
           __name = 'mall';
@@ -330,10 +339,10 @@ export default {
           break;
         // 公号首页
         case 'brand/index':
-            __name = 'brand';
-            queryTmp.brand_id = parseInt(dataTmp.params.brand_id);
-  
-            break;
+          __name = 'brand';
+          queryTmp.brand_id = parseInt(dataTmp.params.brand_id);
+
+          break;
       }
 
       dataRes = {

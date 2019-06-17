@@ -136,7 +136,7 @@ export default {
       var tStamp = this.$getTimeStamp();
       var data = {
         page_name: "brand/mall",
-        params: JSON.stringify({ brand_id: this.$route.query.brand_id }),
+        params: JSON.stringify({ brand_id: this.$route.query.brand_id, supplier_id: this.$route.query.supplier_id }),
         version: "1.0",
         timestamp: tStamp
       };

@@ -60,7 +60,6 @@
         }
       }
 
-
     }
   }
 
@@ -225,7 +224,7 @@
         }
 
         & .action {
-          @include position (absolute, 'tr', 0, 0, null, 25px, 20px);
+          @include position (absolute, 'tr', 0, 0, null, 20px, 20px);
 
           & .icon {
             width: 12px;

@@ -12,10 +12,10 @@
         </div>
 
         <span class="info" @click="toPlayer">
-          <div class="album">{{ audioData.album }}</div>
+          <div class="album">{{ audioData.program }}</div>
           <div class="program">
             <span class="duration">{{ audioData.duration }}</span>
-            {{ audioData.program }}
+            {{ audioData.album }}
           </div>
         </span>
       </van-col>
@@ -371,7 +371,7 @@ export default {
       // 用户播放进度记录
       if(info != null && info.length > 0) this.currentTimeData(info);
 
-      if (info[1] == null) {
+      if (info != null && info.length > 0 && info[1] == null) {
         this.isList = false;
       } else {
         this.isList = true;

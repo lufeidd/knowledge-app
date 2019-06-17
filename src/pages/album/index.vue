@@ -223,17 +223,14 @@
                   <van-row class="list">
                     <van-col span="2" class="rank">{{ item.goods_no }}</van-col>
                     <van-col span="16">
-                      <router-link
-                        :to="{ name: 'albumdetail', query: { pid: baseData.goods_id, goods_id: item.goods_id, goods_no: item.goods_no}}"
-                        class="desc"
-                      >
+                      <div class="desc" @click="gotoDetail(item)">
                         <template v-if="item.goods_type != 6">
                           <span class="tag" v-if="item.is_free == 1">免费</span>
                           <span class="tag" v-if="item.is_payed == 1">已购</span>
                         </template>
                         {{ item.title }}
-                      </router-link>
-                      <div class="info">
+                      </div>
+                      <div class="info" @click="gotoDetail(item)">
                         <template v-if="item.goods_type == 1">
                           <van-tag color="#c8c8c8" text-color="#fff">音频</van-tag>
                           <span class="count">
@@ -321,9 +318,10 @@
                       <div
                         class="action"
                         @click="collectAction(key, simularStatus[key].is_collect, item.goods_id)"
+                        style="border: 1px #ccc solid;"
                       >
                         <van-tag
-                          style="position: relative; top: -5px;"
+                          style="position: relative; top: -7px;z-index: 1;border: none;"
                           plain
                           round
                           color="#fff"
@@ -474,6 +472,10 @@
   .van-button {
     border-radius: 0;
   }
+
+  [class*="van-hairline"]:after {
+    border: none;
+  }
 }
 </style>
 
@@ -623,6 +625,24 @@ export default {
     this.albumData();
   },
   methods: {
+    // 进入详情
+    gotoDetail(item) {
+      var _name;
+      if (item.goods_type == 1 || item.goods_type == 2) {
+        _name = "albumdetail";
+      }
+      if (item.goods_type == 6) {
+        _name = "article";
+      }
+      this.$router.push({
+        name: _name,
+        query: {
+          pid: this.baseData.goods_id,
+          goods_id: item.goods_id,
+          goods_no: item.goods_no
+        }
+      });
+    },
     // 获取页面分享信息
     async wxShareData() {
       var tStamp = this.$getTimeStamp();
@@ -671,7 +691,11 @@ export default {
         this.wxShareData();
 
         // 是否显示底部购买按钮
-        this.showBuyButton = !(this.baseData.is_free == 0 && this.baseData.is_payed == 0 && this.baseData.sale_style == 1);
+        this.showBuyButton = !(
+          this.baseData.is_free == 0 &&
+          this.baseData.is_payed == 0 &&
+          this.baseData.sale_style == 1
+        );
 
         this.onsale = 1;
       } else {
@@ -1394,9 +1418,23 @@ export default {
 
         // 当点击全部播放，从第一条开始播放
         if (actionType == "all") next = 0;
+        // 当收费方式非专辑收费为单个节目收费时，跳转到需要收费的单个节目的支付页面
+        if (
+          this.allProgramList[next].is_payed == 0 &&
+          this.allProgramList[next].is_free == 0
+        ) {
+          this.$router.push({
+            name: "payaccount",
+            query: { goods_id: parseInt(this.allProgramList[next].goods_id) }
+          });
+          return;
+        }
       } else {
         this.$toast(res.error_message);
+        return;
       }
+
+      this.allPlayStatus = "pause";
 
       if (this.autoPlay) {
         // 单一类型，自动播放
@@ -1405,7 +1443,7 @@ export default {
         // console.log("单一类型，自动播放");
       } else {
         this.$refs.control.pauseAudio();
-        this.allPlayStatus = "pause";
+        this.allPlayStatus = "play";
         // 含多种类型，不自动播放
         this.$toast("含多种类型或者专辑未支付，不自动播放");
       }
@@ -1442,7 +1480,6 @@ export default {
       }
       // 全部播放
       if (this.allPlayStatus == "play") {
-        this.allPlayStatus = "pause";
         var info = JSON.parse(localStorage.getItem("miniAudio"));
         // 从第一条开始播放，是否自动播放规则同上
         this.allProgramData(info, "all");

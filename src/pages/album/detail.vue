@@ -38,7 +38,25 @@
           </svg>
         </div>
         <div class="box layer" v-if="baseData.goods_type == 2">
-          <video @play="videoPlay" :src="baseData.file_path" controls width="100%" height="100%"></video>
+          <video
+            id="myVideo"
+            @play="videoPlay"
+            v-if="baseData.is_free == 0 && baseData.is_payed == 0 && this.baseData.free_path != ''"
+            :src="baseData.free_path"
+            controls
+            width="100%"
+            height="100%"
+          ></video>
+
+          <video
+            id="myVideo"
+            @play="videoPlay"
+            v-else
+            :src="baseData.file_path"
+            controls
+            width="100%"
+            height="100%"
+          ></video>
         </div>
       </div>
 
@@ -50,13 +68,13 @@
           </div>
         </router-link>
         <router-link :to="{ name: 'album', query: {goods_id: pid}}" class="issue">
-          <div class="title">{{ baseData.title }}</div>
-          <div class="info">{{ baseData.sub_title }}</div>
+          <div class="title">{{ albumInfo.title }}</div>
+          <div class="info">已有{{ albumInfo.collection_num }}人收藏</div>
         </router-link>
         <div
           class="action"
           style="text-align:right;"
-          @click="collectAction(albumInfo.collect_id, baseData.goods_id)"
+          @click="collectAction(albumInfo.collect_id, pid)"
         >
           <van-tag plain type="danger" text-color="#f05654">
             <svg class="icon" aria-hidden="true" v-if="albumInfo.collect_id > 0">
@@ -74,7 +92,9 @@
       <!-- 不属于专辑的商品显示关注公号 -->
       <div class="publish" v-else>
         <router-link :to="{name: 'brand', query: {brand_id: brandInfoData.brand_id}}" class="from">
-          <img v-lazy="brandInfoData.header_pic" class="icon">
+          <div class="icon">
+            <img v-lazy="brandInfoData.header_pic">
+          </div>
           <div class="publishInfo">
             <p class="publishName">{{ brandInfoData.name }}</p>
             <p class="focusNumber">已有{{ brandInfoData.fans }}人关注</p>
@@ -197,7 +217,13 @@
           icon="play-circle-o"
           text="试听"
           @click="gotoPlayer('preListen')"
-          v-if="baseData.free_path != '' && baseData.goods_type != 9"
+          v-if="baseData.free_path != '' && baseData.goods_type == 1"
+        />
+        <van-goods-action-mini-btn
+          icon="play-circle-o"
+          text="试听"
+          @click="gotoPlayer('video')"
+          v-if="baseData.free_path != '' && baseData.goods_type == 2"
         />
         <van-goods-action-big-btn
           primary
@@ -436,6 +462,11 @@ export default {
     },
     // 判断视频播放是否收费
     videoPlay() {
+      // 含有试听视频，播放该试听视频
+      if (this.baseData.free_path != "") {
+        this.$refs.control.pauseAudio();
+        return;
+      }
       // 需要收费
       if (this.baseData.is_free == 0 && this.baseData.is_payed == 0) {
         var _goodsId = null;
@@ -669,10 +700,16 @@ export default {
       var _info7 = this.albumInfo.title;
       var _info8 = parseInt(this.$route.query.goods_id);
       var _info9 = this.albumInfo.pic;
+      // console.log(this.baseData);
 
       // 试听
       if (__type == "preListen") {
         _info3 = this.baseData.free_path;
+      }
+      // 视频试听
+      if (__type == "video") {
+        document.getElementById("myVideo").play();
+        return;
       }
       if (__type == "external") {
         // console.log(this.baseData)
@@ -695,11 +732,11 @@ export default {
           return;
         }
 
-        if (info == null) {
-          info = [];
-        }
-
         _info3 = this.baseData.file_path;
+      }
+
+      if (info == null) {
+        info = [];
       }
       // 更新迷你缩放音频播放信息
       info[0] = _info0;
@@ -848,7 +885,9 @@ export default {
         this.wxShareData();
 
         // 是否显示底部购买按钮
-        this.showBuyButton = !(this.baseData.is_free == 0 && this.baseData.is_payed == 0);
+        this.showBuyButton = !(
+          this.baseData.is_free == 0 && this.baseData.is_payed == 0
+        );
 
         this.onsale = 1;
       } else {
@@ -892,6 +931,7 @@ export default {
             } else {
               this.baseData.collect_id = 1;
             }
+            this.albumInfo.collection_num++;
           } else {
             this.$toast(res.error_message);
             if (res.hasOwnProperty("error_code") && res.error_code == 100) {
@@ -910,6 +950,7 @@ export default {
           res = await COLLECT_CANCEL(data);
 
           if (res.hasOwnProperty("response_code")) {
+            this.albumInfo.collection_num--;
             // 专辑
             if (this.pid) {
               this.albumInfo.collect_id = 0;
@@ -1143,10 +1184,15 @@ export default {
     },
     // 购买
     buyAction(goodsId) {
+      var _goodsId = goodsId;
+      // 根据专辑购买
+      if (this.baseData.sale_style == 1) {
+        _goodsId = this.pid;
+      }
       if (goodsId != null)
         this.$router.push({
           name: "payaccount",
-          query: { goods_id: goodsId }
+          query: { goods_id: _goodsId }
         });
     },
     // --------------------------------相似----------------------------------

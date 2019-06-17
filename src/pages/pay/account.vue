@@ -4,9 +4,9 @@
     <div class="listBox">
       <div class="left" style="margin-right: 10px;">
         <div class="ratioBox">
-          <router-link to="/detail" class="box">
+          <!-- <router-link to="/detail" class="box"> -->
             <img :src="goodsInfo.pic[0]">
-          </router-link>
+          <!-- </router-link> -->
         </div>
       </div>
       <div class="center">
