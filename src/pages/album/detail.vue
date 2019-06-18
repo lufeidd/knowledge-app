@@ -29,7 +29,7 @@
       <!-- 属于专辑 -->
       <div class="ratioBox banner">
         <div class="box" v-if="baseData.goods_type != 2">
-          <img v-if="baseData.pic" :src="baseData.pic[0]">
+          <img v-if="albumInfo.pic" :src="baseData.pic[0]">
         </div>
         <!-- goodsType区分商品类型，音频1/视频2/专辑9/文章6/图书 -->
         <div @click="gotoPlayer('external')" class="box layer" v-if="baseData.goods_type == 1">
@@ -694,7 +694,7 @@ export default {
       var _info1 = parseInt(this.$route.query.pid);
       var _info2 = this.baseData.pic[0];
       var _info3;
-      var _info4 = this.baseData.duration;
+      var _info4 = this.baseData.duration_str;
       var _info5 = 0;
       var _info6 = this.baseData.title;
       var _info7 = this.albumInfo.title;

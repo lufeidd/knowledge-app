@@ -72,7 +72,10 @@
                   :to="{name: 'brand', query: {brand_id: brandInfoData.brand_id}}"
                   class="from"
                 >
-                  <img v-lazy="brandInfoData.header_pic" class="icon">
+                  <div class="icon">
+                    <img v-lazy="brandInfoData.header_pic">
+                  </div>
+
                   <div class="publishInfo">
                     <p class="publishName">{{ brandInfoData.name }}</p>
                     <p class="focusNumber">已有{{ brandInfoData.fans }}人关注</p>
@@ -1213,6 +1216,7 @@ export default {
       // 分页状态重置
       this.programPage = 1;
       this.programFinished = false;
+      this.allPlayStatus = "play";
     },
     // 节目列表播放/暂停音频
     audioAction(item) {
@@ -1389,9 +1393,9 @@ export default {
           if (type == 2) type2 = 1;
           if (type == 6) type3 = 1;
           // 不包含文章类型
-          if (result[i].goods_type != 6) {
-            this.allProgramList.push(result[i]);
-          }
+          // if (result[i].goods_type != 6) {
+          this.allProgramList.push(result[i]);
+          // }
           if (
             info != null &&
             info.length > 0 &&
@@ -1426,6 +1430,27 @@ export default {
           this.$router.push({
             name: "payaccount",
             query: { goods_id: parseInt(this.allProgramList[next].goods_id) }
+          });
+          return;
+        }
+        // 当第一条是视频或者是文章时，跳转到对应详情
+        if (this.allProgramList[next].goods_type == 6) {
+          this.$router.push({
+            name: "article",
+            query: {
+              pid: parseInt(this.$route.query.goods_id),
+              goods_id: parseInt(this.allProgramList[next].goods_id)
+            }
+          });
+          return;
+        }
+        if (this.allProgramList[next].goods_type == 2) {
+          this.$router.push({
+            name: "albumdetail",
+            query: {
+              pid: parseInt(this.$route.query.goods_id),
+              goods_id: parseInt(this.allProgramList[next].goods_id)
+            }
           });
           return;
         }
