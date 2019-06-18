@@ -288,6 +288,7 @@ export default {
       var dataTmp = data;
       var __name = null;
       var dataRes = {};
+      var queryTmp = {};
 
       switch (dataTmp.action) {
         // 商品详情
@@ -295,35 +296,51 @@ export default {
           // 音/视频
           if (dataTmp.params.goods_type == 1 || dataTmp.params.goods_type == 2) {
             __name = 'albumdetail';
-          } else if (dataTmp.params.goods_type == 6) { // 文章
+          }
+          if (dataTmp.params.goods_type == 6) { // 文章
             __name = 'article';
-          } else if (dataTmp.params.goods_type == 9) { // 专辑
+          }
+          if (dataTmp.params.goods_type == 9) { // 专辑
             __name = 'album';
-          } else {
-
           }
-          dataRes = {
-            name: __name,
-            query: {
-              goods_id: parseInt(dataTmp.params.goods_id),
-            }
-          }
+          queryTmp.goods_id = parseInt(dataTmp.params.goods_id);
+          if (dataTmp.params.album_id) queryTmp.album_id = parseInt(dataTmp.params.album_id);
 
           break;
-        case 'search/result':
-          dataRes = {
-            name: 'brandresult',
-            query: {
-              supplier_id: parseInt(dataTmp.params.supplier_id),
-              goods_type: parseInt(dataTmp.params.goods_type),
-            }
-          }
+        // 公号商品搜索结果页
+        case 'brand/goods/search':
+          __name = 'brandresult';
+          queryTmp.brand_id = parseInt(dataTmp.params.brand_id);
+          queryTmp.keywords = dataTmp.params.keywords;
           break;
+        // 商城商品搜索结果页
+        case 'mall/goods/search':
+          __name = 'brandresult';
+          queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
+          queryTmp.brand_id = parseInt(dataTmp.params.brand_id);
+          if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
+          if (dataTmp.params.goods_type) queryTmp.keywords = dataTmp.params.goods_type;
+
+          break;
+        // 供应商商城首页
+        case 'mall/index':
+          __name = 'mall';
+          queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
+
+          break;
+        // 公号首页
+        case 'brand/index':
+            __name = 'brand';
+            queryTmp.brand_id = parseInt(dataTmp.params.brand_id);
+  
+            break;
+      }
+
+      dataRes = {
+        name: __name,
+        query: queryTmp
       }
       return dataRes;
     }
-
-    // 获取 brand_id
-    // localStorage.setItem('globalBrandId', 1);
   }
 }

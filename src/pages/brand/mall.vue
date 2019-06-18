@@ -7,7 +7,7 @@
       </div>
       <div class="showContent">
         <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
-          <swiper-slide v-for="item,index in modleInfo.list" :key="index">
+          <swiper-slide v-for="(item,index) in modleInfo.list" :key="index">
             <div class="slide" @click="linktoDetail(item.contents.link_params)">
               <div class="ratiobox">
                 <div class="bookImg" v-lazy:background-image="item.contents.pics[0]"></div>
@@ -22,7 +22,7 @@
         </swiper>
       </div>
     </div>
-    <div class="materialObject" v-for="item,index in goodsInfo">
+    <div class="materialObject" v-for="(item,index) in goodsInfo" :key="index">
       <div class="materialTitle" @click="linktoDetail(item.module_more)">
         <div class="text">
           <span class="verticleLine"></span>
@@ -37,8 +37,9 @@
       </div>
       <div class="goods">
         <div class="goodsInfo"
-          v-for="value,index in item.list"
+          v-for="(value,index) in item.list"
           @click="linktoDetail(value.contents.link_params)"
+          :key="index"
         >
           <div class="ratiobox">
             <div class="bookImg" v-lazy:background-image="value.contents.pics[0]"></div>
@@ -75,7 +76,8 @@ export default {
         searchLink: "/search",
         personal: true,
         personalLink: "/personal/index",
-        type: "brand"
+        type: "mall",
+        supplier_id: null,
       },
       swiperOption: {
         slidesPerView: 1.2
@@ -89,6 +91,7 @@ export default {
   mounted() {
     this.title = this.$route.query.title;
     this.supplier_id = this.$route.query.supplier_id;
+    this.navData.supplier_id = this.supplier_id;
     // title
     document.title = '商城-' + this.title;
     this.getData();

@@ -261,7 +261,7 @@ export default {
         // this.cropperShow = true;
 
         // 跳转到裁切页面
-        self.$router.push({ name: "cropper" });
+        self.$router.replace({ name: "cropper" });
         sessionStorage.setItem('headPic', data);
         // console.log( data);
       };

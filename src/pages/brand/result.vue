@@ -85,6 +85,54 @@ export default {
     // if(this.goods_type != null) this.getGoods();
   },
   methods: {
+    // 获取页面分享信息
+    async wxShareData() {
+      var tStamp = this.$getTimeStamp();
+      var data;
+      switch (this.$route.query.type) {
+        case "mall":
+          var tmp = {};
+          tmp.supplier_id = this.$route.query.supplier_id;
+          tmp.brand_id = this.$route.query.brand_id;
+          if (this.$route.query.searchContent)
+            tmp.keywords = this.$route.query.searchContent;
+          if (this.$route.query.goods_type)
+            tmp.goods_type = this.$route.query.goods_type;
+
+          data = {
+            page_name: "mall/goods/search",
+            params: JSON.stringify(tmp),
+            version: "1.0",
+            timestamp: tStamp
+          };
+          break;
+        case "brand":
+          data = {
+            page_name: "brand/goods/search",
+            params: JSON.stringify({
+              brand_id: this.$route.query.brand_id,
+              keywords: this.$route.query.searchContent
+            }),
+            version: "1.0",
+            timestamp: tStamp
+          };
+          break;
+      }
+      data.sign = this.$getSign(data);
+      let res = await WX_SHARE(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res.response_data)
+        // 微信分享
+        this.$getWxData(
+          res.response_data.share_info.title,
+          res.response_data.share_info.desc,
+          res.response_data.share_info.pic,
+          res.response_data.share_info.url
+        );
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
     gotoDetail(item) {
       var goodsType = item.goods_type;
       if (goodsType == 1 || goodsType == 2) {
@@ -144,30 +192,6 @@ export default {
 
         // 获取页面分享信息
         this.wxShareData();
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    // 获取页面分享信息
-    async wxShareData() {
-      var tStamp = this.$getTimeStamp();
-      var data = {
-        page_name: "brand/result",
-        params: JSON.stringify({ brand_id: this.$route.query.brand_id }),
-        version: "1.0",
-        timestamp: tStamp
-      };
-      data.sign = this.$getSign(data);
-      let res = await WX_SHARE(data);
-      if (res.hasOwnProperty("response_code")) {
-        // console.log(res.response_data)
-        // 微信分享
-        this.$getWxData(
-          res.response_data.share_info.title,
-          res.response_data.share_info.desc,
-          res.response_data.share_info.pic,
-          res.response_data.share_info.url
-        );
       } else {
         this.$toast(res.error_message);
       }

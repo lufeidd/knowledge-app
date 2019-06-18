@@ -163,7 +163,7 @@ export default {
     },
     // 新增收货地址
     addAddress() {
-      this.$router.push({ name: "address", query: { pageType: "add" } });
+      this.$router.replace({ name: "address", query: { pageType: "add" } });
     }
   }
 };

@@ -279,7 +279,7 @@
                     </van-col>
                     <van-col span="6" style="text-align:right;align-self:flex-start;">
                       <div class="date">{{ item.create_time }}</div>
-                      <div class="status" v-if="item.goods_type != 6" @click="audioAction(item)">
+                      <div class="status" v-if="item.goods_type == 1" @click="audioAction(item)">
                         <svg
                           class="icon"
                           aria-hidden="true"
@@ -419,6 +419,7 @@
         :audioData="myAudioData"
         :rank="rankType"
         :loginStatus="isLogin"
+        :showBuyButton="showBuyButton"
         ref="control"
         @setType="typeAction"
         @setMiniAudio="miniAudioData"
@@ -489,7 +490,8 @@ import {
   FOCUS_CANCEL,
   COMMENT,
   COMMENT_ADD,
-  RECOMMEND
+  RECOMMEND,
+  WX_SHARE
 } from "../../apis/public.js";
 import { setTimeout } from "timers";
 import { truncate } from "fs";
@@ -501,6 +503,7 @@ export default {
   },
   data() {
     return {
+      showBuyButton: true,
       isLogin: null,
       onsale: null,
       // 快速导航
@@ -620,6 +623,30 @@ export default {
     this.albumData();
   },
   methods: {
+    // 获取页面分享信息
+    async wxShareData() {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        page_name: "goods/detail",
+        params: JSON.stringify({ goods_id: this.$route.query.goods_id }),
+        version: "1.0",
+        timestamp: tStamp
+      };
+      data.sign = this.$getSign(data);
+      let res = await WX_SHARE(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res.response_data)
+        // 微信分享
+        this.$getWxData(
+          res.response_data.share_info.title,
+          res.response_data.share_info.desc,
+          res.response_data.share_info.pic,
+          res.response_data.share_info.url
+        );
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
     // --------------------------------专辑信息----------------------------------
     // 获取专辑接口信息
     async albumData() {
@@ -632,8 +659,6 @@ export default {
       data.sign = this.$getSign(data);
       let res = await ALBUM(data);
 
-      // console.log(res.response_data);
-
       if (res.hasOwnProperty("response_code")) {
         //专辑基础信息
         this.baseData = res.response_data.base;
@@ -641,6 +666,12 @@ export default {
         this.brandInfoData = res.response_data.brand_info;
         // 登录状态
         this.isLogin = res.response_data.user_info.is_login;
+
+        // 获取页面分享信息
+        this.wxShareData();
+
+        // 是否显示底部购买按钮
+        this.showBuyButton = !(this.baseData.is_free == 0 && this.baseData.is_payed == 0 && this.baseData.sale_style == 1);
 
         this.onsale = 1;
       } else {
@@ -1163,17 +1194,17 @@ export default {
     audioAction(item) {
       console.log(item.goods_type);
       // 视频跳转到节目详情页
-      if (item.goods_type == 2) {
-        this.$router.push({
-          name: "albumdetail",
-          query: {
-            pid: this.baseData.goods_id,
-            goods_id: item.goods_id,
-            goods_no: item.goods_no
-          }
-        });
-        return;
-      }
+      // if (item.goods_type == 2) {
+      //   this.$router.push({
+      //     name: "albumdetail",
+      //     query: {
+      //       pid: this.baseData.goods_id,
+      //       goods_id: item.goods_id,
+      //       goods_no: item.goods_no
+      //     }
+      //   });
+      //   return;
+      // }
       // console.log(item);
       // 未支付
       if (item.goods_id != null && item.is_payed == 0 && item.is_free == 0) {
