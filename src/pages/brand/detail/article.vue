@@ -13,8 +13,8 @@
               <a class="bookImg" v-lazy:background-image="articleInfo.header_pic"></a>
             </div>
             <div class="detail">
-              <p>{{articleInfo.name}}</p>
-              <p class="number">{{articleInfo.fans}}人关注</p>
+              <span>{{articleInfo.name}}</span>
+              <span class="number">{{articleInfo.fans}}人关注</span>
             </div>
           </div>
           <span class="foucsButton" v-if="articleInfo.is_followed == 0" @click="focusAction">+关注</span>
