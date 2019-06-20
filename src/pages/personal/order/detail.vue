@@ -77,7 +77,7 @@
        <div class="invoiceContent">
          <span class="title">发票类型</span>
          <span class="text">{{invoice.type == 1 ? '普通发票':'电子发票'}}</span>
-         <a class="button button3" :href="invoice.url" target="_blank" download="invoice.pdf" v-if="invoice !== undefined && Object.keys(invoice).length > 0 && invoice.flag == 2">查看发票</a>
+         <a class="button button3" :href="invoice.url" target="_blank" download="invoice.pdf" v-if="invoice !== undefined && Object.keys(invoice).length > 0 && invoice.flag == 2">下载发票</a>
          <span class="button button1" v-if="invoice !== undefined && Object.keys(invoice).length > 0 && invoice.flag == 1">等待开票</span>
        </div>
        <div class="invoiceContent">
