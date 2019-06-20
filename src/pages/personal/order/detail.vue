@@ -72,6 +72,23 @@
         <span>¥{{infoData.pay_money}}</span>
       </p>
     </div>
+    <!-- 发票 -->
+    <div class="invoiceInfo" v-if="invoice !== undefined && Object.keys(invoice).length > 0">
+       <div class="invoiceContent">
+         <span class="title">发票类型</span>
+         <span class="text">{{invoice.type == 1 ? '普通发票':'电子发票'}}</span>
+         <a class="button button3" :href="invoice.url" target="_blank" download="invoice.pdf" v-if="invoice !== undefined && Object.keys(invoice).length > 0 && invoice.flag == 2">查看发票</a>
+         <span class="button button1" v-if="invoice !== undefined && Object.keys(invoice).length > 0 && invoice.flag == 1">等待开票</span>
+       </div>
+       <div class="invoiceContent">
+         <span class="title">发票抬头</span>
+         <span class="text">{{invoice.invoice_title}}</span>
+       </div>
+       <div class="invoiceContent">
+         <span class="title">发票内容</span>
+         <span class="text">{{invoice.remarks}}</span>
+       </div>
+    </div>
     <div class="fictitious">
       <div class="text">
         <van-cell title="虚拟物品"/>
@@ -90,9 +107,8 @@
       </div>
     </div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
-    <div class="foot bottomBox" :class="{iphx:this.isIphx}">
-      <span class="button button1"  v-if="invoice !== undefined && Object.keys(invoice).length > 0 ">查看发票</span>
-      <span class="button button1" @click="apply" v-else>申请发票</span>
+    <div class="foot bottomBox" :class="{iphx:this.isIphx}" :style="{'justify-content': Object.keys(invoice).length > 0 ? 'flex-end':'space-between'}">
+      <span class="button button1" @click="apply" v-if="invoice !== undefined && Object.keys(invoice).length == 0">申请发票</span>
       <div>
         <span class="button button2" @click="toComment" v-if="infoData.if_comment == 0">评价</span>
         <!-- <span class="button button1" @click="repurchase">再次购买</span> -->

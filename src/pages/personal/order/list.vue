@@ -136,9 +136,8 @@
             </span>
           </div>
         </div>
-        <div class="foot">
+        <div class="foot" :style="{'justify-content': item.invoice_id ? 'flex-end':'space-between'}">
           <span class="button button1" @click="repply(item)" v-if="item.invoice_id == 0">申请发票</span>
-          <span class="button button1" v-else>查看发票</span>
           <div>
             <span class="button button1" @click="toComment(item,index)" v-if="item.if_comment == 0">评价</span>
             <!-- <span class="button1" v-if="item.state ==1">再次购买</span> -->

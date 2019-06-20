@@ -4,9 +4,9 @@
       <van-cell title="订单号:" v-model="invoiceData.orderNumber" value/>
 
       <!-- <van-cell title="发票类型:" value="普通发票" v-if="this.invoiceData.invoiceType == 1" is-link arrow-direction="down" @click="choosetype"/> -->
-      
+
       <van-cell title="发票类型:" value="电子发票" />
-      
+
       <van-cell title="发票内容:" :value="invoiceData.invoice_content"/>
       <!-- <van-field
         v-model="invoiceData.invoice_content"
@@ -78,7 +78,7 @@
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="bottomBox" :class="{iphx:this.isIphx}">
       <van-button type="danger" size="large" @click="submitAction">提交</van-button>
-    
+
     </div>
     <easyNav :navData="navData"></easyNav>
     <van-actionsheet
@@ -127,7 +127,7 @@ export default {
       type: 1,
       invoiceData: {
         orderNumber: "",
-        invoiceType: 1,
+        invoiceType: 2,
         invoice_content: "明细",
         invoice_money: null,
         companyName: "",
@@ -247,7 +247,7 @@ export default {
     },
     submitAction() {
       var phoneNumber = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
-      
+
       if (
         this.type == 1 &&
         phoneNumber.test(this.invoiceData.phone) &&
