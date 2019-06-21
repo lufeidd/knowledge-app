@@ -29,3 +29,15 @@ export const LOGOUT = query => req('post', '/passport/logout', query);
 
 // 修改密码
 export const EDIT_PASSWORD = query => req('post', '/passport/editpwd', query);
+
+// 第三方用户登录接口
+export const LOGIN_PARTERNER = query => req('post', '/passport/parterner', query);
+
+// 第三方绑定手机号接口
+export const LOGIN_BIND_PARTERNER = query => req('post', '/passport/bindparterner', query);
+
+// 取消绑定接口
+export const LOGIN_BIND_DELETE = query => req('post', '/passport/binding/delete', query);
+
+// 用户第三方绑定列表接口
+export const LOGIN_BIND_LIST = query => req('post', '/passport/binding/gets', query);

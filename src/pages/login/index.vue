@@ -43,20 +43,19 @@
           <van-button slot="button" size="large" round type="danger" @click="loginAction">登录</van-button>
         </template>
       </div>
-      <!-- 
+
       <van-row class="loginType">
-        <van-col span="12">
-          <svg class="icon myIconStyle" aria-hidden="true">
+        <van-col span="24" v-if="isWxLogin">
+          <svg class="icon myIconStyle" aria-hidden="true" @click="wxLogin">
             <use xlink:href="#icon-weixin-block"></use>
           </svg>
         </van-col>
-        <van-col span="12">
+        <!-- <van-col span="12">
           <svg class="icon myIconStyle" aria-hidden="true">
             <use xlink:href="#icon-qq-block"></use>
           </svg>
-        </van-col>
+        </van-col>-->
       </van-row>
-      -->
     </div>
   </div>
 </template>
@@ -76,11 +75,10 @@
 }
 </style>
 
-
 <script>
-// import axios from "axios";
+import axios from "axios";
 //  引入接口
-import { LOG } from "../../apis/passport.js";
+import { LOG, LOGIN_PARTERNER } from "../../apis/passport.js";
 
 export default {
   data() {
@@ -93,18 +91,19 @@ export default {
     };
   },
   mounted() {
-    // 获取动态接口地址
-    // axios.get('./../../static/serverConfig.json').then((result) => {
-    //   console.log('baseUrl', result)
-    // }).catch((error) => {
-    //   console.log(error)
-    // })
-
     this.phone = this.$route.query.mobile;
     this.password = this.$route.query.pwd;
     this.checkSubmit();
+
+    // 获取第三方微信登录code
+    this.$getWxCode();
+    if (this.wxCodeStr.length > 6) this.$getWxLoginData();
   },
   methods: {
+    // 微信登录
+    wxLogin() {
+      this.$wxLogin();
+    },
     // 校验格式
     checkSubmit() {
       var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
@@ -134,8 +133,11 @@ export default {
         // console.log(res);
         // this.$router.push({ name: "personalIndex", query: "" });
 
-        this.$router.go(-1);
-
+        if (localStorage.getItem("fromLink") == null) {
+          this.$router.replace({ name: "personalIndex" });
+        } else {
+          this.$router.go(-1);
+        }
       } else {
         this.$toast(res.error_message);
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
@@ -151,6 +153,7 @@ export default {
       let data = {
         mobile: this.phone
       };
+      sessionStorage.setItem("loginState", 1);
       this.$router.push({ name: "password", query: data });
     }
   }

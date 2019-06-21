@@ -9,13 +9,13 @@ import qs from "Qs";
 // 创建axios的一个实例
 var instance = axios.create({
     // dev
-    baseURL: window.location.protocol + "//" + window.location.hostname + ":" +  window.location.port + '/apis',
+    baseURL: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis',
 
     // run build
     // baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
 
-    headers: {'App-version': 'wap'},
-    timeout: 6000,
+    headers: { 'App-version': 'wap' },
+    timeout: 3000,
 })
 
 // 一、请求拦截器 忽略
@@ -24,22 +24,54 @@ instance.interceptors.request.use(function (config) {
     return config;
 }, function (error) {
     // 对请求错误做些什么
+    // console.log('request error');
     return Promise.reject(error);
 });
 
 // 二、响应拦截器 忽略
 instance.interceptors.response.use(function (response) {
-    // console.log(response)
+    // 对响应错误做点什么
     return response.data;
 }, function (error) {
-    // 对响应错误做点什么
+
+    // 网络响应超时，调整到超时页面
+    var routerLink = localStorage.getItem('routerLink');
+    var replaceUrl = window.location.href.split('#')[0] + '#' + '/timeout';
+    var brandId;
+
+    if (routerLink.match(/brand_id/)) {
+        var sIndex = routerLink.indexOf('brand_id=') + 9;
+        brandId = routerLink.substring(sIndex, routerLink.length);
+        // console.log(routerLink.substring(sIndex, routerLink.length));
+    }
+
+    // 朋友圈   from=timeline&isappinstalled=0
+    // 微信群   from=groupmessage&isappinstalled=0
+    // 好友分享 from=singlemessage&isappinstalled=0
+    if (routerLink.indexOf('timeline') != -1 || routerLink.indexOf('groupmessage') != -1 || routerLink.indexOf('singlemessage') != -1) {
+        if (routerLink.split('#')[1].indexOf("?") != -1) {
+            routerLink += '&brand_id=' + brandId;
+        } else {
+            routerLink += '?brand_id=' + brandId;
+        }
+    } else {
+        if (routerLink.indexOf("?") != -1) {
+            routerLink += '&brand_id=' + brandId;
+        } else {
+            routerLink += '?brand_id=' + brandId;
+        }
+    }
+
+    console.log('网络请求超时:', replaceUrl);
+    window.location.href = replaceUrl;
+
     return Promise.reject(error);
 });
 
 // 添加读取build之后的代码
 // axios.get('./../../dist/static/serverConfig.json').then((result) => {
 // axios.get('serverConfig.json').then((result)=>{
-    // result.baseURL
+// result.baseURL
 // }).catch((error) => {
 //     console.log(error)
 // })

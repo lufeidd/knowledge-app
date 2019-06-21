@@ -8,15 +8,101 @@ import wx from 'weixin-js-sdk';
 //  引入时间戳接口
 // import req from "./../apis/http.js";
 import { SERVER_TIME, WX_SHARE } from "./../apis/public.js";
+import { LOGIN_PARTERNER } from "./../apis/passport.js";
 
 // 支持await async
-import regeneratorRuntime from './../regenerator-runtime/runtime.js';
+// import regeneratorRuntime from './../regenerator-runtime/runtime.js';
 
 // 时间戳
 // export const SERVER_TIME = params => req('post', '/timestamp', params);
 
 export default {
   install: function (Vue, options) {
+    // 存储第三方登录code
+    Vue.prototype.wxCodeStr = '';
+
+    // 获取第三方微信登录code
+    Vue.prototype.$getWxCode = async function () {
+      // 获取微信登录授权code
+      var str = window.location.href;
+      str = str.split("#")[0];
+      var sIndex = str.split("#")[0].indexOf("?") + 6;
+      var eIndex = str.split("#")[0].indexOf("&");
+      // console.log(str, str.substring(sIndex, eIndex));
+      // 存储第三方登录code
+      this.wxCodeStr = str.substring(sIndex, eIndex);
+    }
+
+    // 第三方微信登录
+    Vue.prototype.$getWxLoginData = async function () {
+      let url = "http://wap.huoba.net/callback/weixin/Userinfo?code=" + this.wxCodeStr;
+      var self = this;
+      axios
+        .get(url)
+        .then(function (response) {
+          console.log("response:", response);
+          // 第三方用户登录接口
+          self.$getLoginParterner(response.data.openid, response.data.nickname, 2);
+        })
+        .catch(function (error) {
+          self.fetchError = error;
+        });
+    }
+
+    Vue.prototype.$wxLogin = async function () {
+      var url = encodeURIComponent(window.location.href);
+      var appid = "wx54149bd57b9b51b1";
+      // var appid = "wx0980638eef192092";
+      var type = "code";
+      var scope = "snsapi_userinfo";
+
+      window.location.href =
+        "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
+        appid +
+        "&redirect_uri=" +
+        url +
+        "&response_type=" +
+        type +
+        "&scope=" +
+        scope +
+        "&state=STATE#wechat_redirect";
+    }
+    // 第三方用户登录接口
+    Vue.prototype.$getLoginParterner = async function (_openid, _outerName, _type) {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        outer_id: _openid,
+        outer_name: _outerName,
+        timestamp: tStamp,
+        type: _type,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await LOGIN_PARTERNER(data);
+
+      // 出错提示
+      if (res.hasOwnProperty("response_code")) {
+        console.log("openid:", _openid, "parterner:", res.response_data);
+        // 登录成功exist = 1；没有绑定过 exist = 0；
+        if (res.response_data.exist == 0) {
+          this.$router.replace({
+            name: "bindphone",
+            query: { bindtype: _type, outerId: _openid }
+          });
+        }
+        if (res.response_data.exist == 1) {
+          // if (localStorage.getItem('fromLink') == null) {
+          //   localStorage.setItem('fromLink', localStorage.getItem('routerLink').split("#")[0] + "#/personal/index");
+          // }
+          // var replaceUrl = localStorage.getItem('fromLink');
+          window.location.href = window.location.protocol + "//" + window.location.hostname + '/#/personal/index';
+          this.wxCodeStr = '';
+          console.log('from:', replaceUrl);
+        }
+      } else {
+        this.$toast(res.error_message);
+      }
+    }
 
     // 微信分享
     Vue.prototype.$getWxData = async function (_title, _desc, _imgUrl, _route) {
@@ -113,6 +199,7 @@ export default {
     Vue.prototype.winHeight = $(window).height();
     const ua = window.navigator.userAgent.toLowerCase();
     Vue.prototype.isIphx = ua.match(/mobile/) && $(window).width() == 375 && $(window).height() == 812;
+
     // 全局变量
     // 倒计时
     Vue.prototype.clock = null
@@ -120,6 +207,8 @@ export default {
     Vue.prototype.videoDuration = null
     // 音频实时播放进度
     Vue.prototype.progressClock = null
+    // useragent
+    Vue.prototype.isWxLogin = ua.match(/MicroMessenger/i) == 'micromessenger';
 
     // 验证码倒计时
     Vue.prototype.$countDown = function (options) {
@@ -351,5 +440,20 @@ export default {
       }
       return dataRes;
     }
+
+    // 字符串转换成json格式
+    // Vue.prototype.$strToJson = function (str) {
+    //   var arr1 = new Array();
+    //   var arr2 = new Array();
+    //   var __json = new Array();
+
+    //   arr1 = str.split("/");
+    //   arr2 = "{" + arr1 + "}";
+    //   __json = eval("(" + arr2 + ")");
+
+    //   console.log('__json:', __json);
+    //   return __json;
+    // }
+
   }
 }

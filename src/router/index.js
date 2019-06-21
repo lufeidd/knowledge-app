@@ -6,6 +6,7 @@ import login from '@/pages/login/index'
 import password from '@/pages/login/password'
 import register from '@/pages/login/register'
 import prototype from '@/pages/login/prototype'
+import bindphone from '@/pages/login/bindphone'
 
 // 个人中心 - 我的余额
 import remain from '@/pages/personal/remain/index'
@@ -46,7 +47,7 @@ import info from '@/pages/personal/set/info'
 import safe from '@/pages/personal/set/safe'
 import cropper from '@/pages/personal/set/cropper'
 import bind from '@/pages/personal/set/bind'
-import cancel from '@/pages/personal/set/cancel'
+// import cancel from '@/pages/personal/set/cancel'
 import setpassword from '@/pages/personal/set/password'
 import setphone from '@/pages/personal/set/phone'
 
@@ -89,6 +90,12 @@ import pay from '@/pages/pay/index'
 import payaccount from '@/pages/pay/account'
 import paysuccess from '@/pages/pay/success'
 
+// 404
+import nullpage from '@/pages/404'
+
+// 访问超时
+import timeout from '@/pages/timeout'
+
 Vue.use(Router)
 
 export default new Router({
@@ -96,6 +103,24 @@ export default new Router({
   mode: 'hash',  //把Router的mode修改为history模式,VueRouter默认的模式为HASH模式
   // linkActiveClass: 'active',
   routes: [
+    // 404
+    {
+      path: '/404',
+      name: 'nullpage',
+      component: nullpage,
+      meta: {
+        title: '页面不见了',
+      }
+    },
+    // 访问超时
+    {
+      path: '/timeout',
+      name: 'timeout',
+      component: timeout,
+      meta: {
+        title: '访问超时',
+      }
+    },
     // 根目录
     {
       path: '/',
@@ -134,7 +159,15 @@ export default new Router({
       name: 'prototype',
       component: prototype,
       meta: {
-        title: ''
+        title: '协议'
+      }
+    },
+    {
+      path: '/login/bindphone',
+      name: 'bindphone',
+      component: bindphone,
+      meta: {
+        title: '绑定手机号'
       }
     },
     // 个人中心 - 首页
@@ -381,7 +414,7 @@ export default new Router({
       component: bind,
       meta: {
         title: '账号绑定',
-        requireAuth: false // 需要登录才能进入的页面可以增加一个meta属性
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
     // {

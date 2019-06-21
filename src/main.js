@@ -139,7 +139,7 @@ router.beforeEach((to, from, next) => {
       // 未登录跳转到登录页面   
       if (!token || token == 100) {
         replaceUrl = window.location.href.split('#')[0] + '#' + '/login/index';
-      
+
         next();
       } else {
         //如果该路由不需要验证，那么直接往后走          

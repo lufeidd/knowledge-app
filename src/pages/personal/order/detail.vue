@@ -28,7 +28,7 @@
         </div>
         <p class="address">收货地址：浙江省 杭州市 西湖区 西湖边东区23树6洞 3-3楼</p>
       </div>
-    </div> -->
+    </div>-->
     <div class="info" v-if="infoData">
       <div class="head" @click="toBrandindex">
         <div class="titleFrom">
@@ -36,7 +36,7 @@
           <div class="ratiobox">
             <a class="bookImg" v-lazy:background-image="infoData.brand_header_pic"></a>
           </div>
-          <span class="publish" >{{infoData.brand_name}}</span>
+          <span class="publish">{{infoData.brand_name}}</span>
         </div>
       </div>
       <div class="section" v-for="item,index in infoData.detail" @click="goodsDetail(item)">
@@ -50,7 +50,7 @@
                   <use xlink:href="#icon-sound-line"></use>
                 </svg>
                 {{ publishData.watch }}
-              </div> -->
+              </div>-->
             </div>
           </div>
           <div class="rightInfo">
@@ -64,7 +64,11 @@
       <div class="first">
         <van-cell title="商品总额" v-model="'¥'+infoData.order_money"/>
       </div>
-      <van-cell title="运费" v-model="'¥'+infoData.dispatch_price" v-if="infoData.dispatch_price !== 0"/>
+      <van-cell
+        title="运费"
+        v-model="'¥'+infoData.dispatch_price"
+        v-if="infoData.dispatch_price !== 0"
+      />
       <!-- <van-cell title="商品优惠" v-model="discount"/> -->
       <!-- <van-cell title="余额" v-model="'-¥'+priceInfo.remain.toFixed(2)"/> -->
       <p class="acturalPay" style="margin-top:10px;">
@@ -85,13 +89,20 @@
       </div>
       <div class="orderInfo">
         <van-cell title="下单时间" v-model="infoData.order_time"/>
-        <van-cell title="支付方式" v-if="infoData.pay_info && infoData.pay_info.length > 0" v-model="infoData.pay_info[0].pay_bank"/>
+        <van-cell
+          title="支付方式"
+          v-if="infoData.pay_info && infoData.pay_info.length > 0"
+          v-model="infoData.pay_info[0].pay_bank"
+        />
         <van-cell title="支付时间" v-model="infoData.pay_time"/>
       </div>
     </div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="foot bottomBox" :class="{iphx:this.isIphx}">
-      <span class="button button1"  v-if="invoice !== undefined && Object.keys(invoice).length > 0 ">查看发票</span>
+      <span
+        class="button button1"
+        v-if="invoice !== undefined && Object.keys(invoice).length > 0 "
+      >查看发票</span>
       <span class="button button1" @click="apply" v-else>申请发票</span>
       <div>
         <span class="button button2" @click="toComment" v-if="infoData.if_comment == 0">评价</span>
@@ -107,7 +118,7 @@
 <script>
 //调用cilpboard
 import Clipboard from "clipboard";
-import{USER_ORDER_DETAIL_GET} from "../../../apis/user.js"
+import { USER_ORDER_DETAIL_GET } from "../../../apis/user.js";
 import easyNav from "./../../../components/easyNav";
 export default {
   components: {
@@ -129,21 +140,21 @@ export default {
         searchLink: "/search",
         personal: true,
         personalLink: "/personal/index",
-        type:'order',
+        type: "order"
       },
-      infoData:{},
-      order_id:'',
-      invoice:{},
+      infoData: {},
+      order_id: "",
+      invoice: {}
     };
   },
-  mounted(){
+  mounted() {
     this.order_id = this.$route.query.order_id;
     this.getData();
   },
-  computed:{
-    discount:function(){
+  computed: {
+    discount: function() {
       // return '-￥' + (this.infoData.order_money - this.infoData.pay_money);
-      return '-￥' + 0;
+      return "-￥" + 0;
     }
   },
   methods: {
@@ -162,48 +173,46 @@ export default {
       });
     },
     //获取页面基本信息
-    async getData(){
+    async getData() {
       var tStamp = this.$getTimeStamp();
-      var data={
+      var data = {
         order_id: this.order_id,
-        version:"1.0",
-        timestamp:tStamp,
+        version: "1.0",
+        timestamp: tStamp
       };
       data.sign = this.$getSign(data);
       let res = await USER_ORDER_DETAIL_GET(data);
-      if(res.hasOwnProperty("response_code")){
+      if (res.hasOwnProperty("response_code")) {
         this.infoData = res.response_data;
         this.invoice = res.response_data.invoice_info;
         // this.articleInfo = res.response_data.brand_info;
         console.log(res);
-      }else{
+      } else {
         this.$toast(res.error_message);
       }
     },
     //再次购买
-    repurchase(){
-
-    },
+    repurchase() {},
     //申请发票
-    apply(){
+    apply() {
       this.$router.push({
-        name:'orderinvoice',
-        query:{
-          order_id:this.infoData.order_id,
-          money:this.infoData.pay_money,
+        name: "orderinvoice",
+        query: {
+          order_id: this.infoData.order_id,
+          money: this.infoData.pay_money
         }
-      })
+      });
     },
     //跳转公号主页
-    toBrandindex(){
+    toBrandindex() {
       this.$router.push({
-        name:'brand',
-        query:{
-          brand_id:this.infoData.brand_id,
+        name: "brand",
+        query: {
+          brand_id: this.infoData.brand_id
         }
-      })
+      });
     },
-    goodsDetail(item){
+    goodsDetail(item) {
       // 音频/视频
       if (item.goods_type == 1 || item.goods_type == 2) {
         this.$router.push({
@@ -236,15 +245,15 @@ export default {
       }
     },
     //评价
-    toComment(){
+    toComment() {
       console.log(this.infoData.order_id);
       this.$router.push({
-        name:'ordercomment',
-        query:{
-          order_id:this.infoData.order_id,
+        name: "ordercomment",
+        query: {
+          order_id: this.infoData.order_id
         }
-      })
-    },
+      });
+    }
   }
 };
 </script>

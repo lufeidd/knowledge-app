@@ -127,7 +127,7 @@ export default {
       type: 1,
       invoiceData: {
         orderNumber: "",
-        invoiceType: 1,
+        invoiceType: 2,
         invoice_content: "明细",
         invoice_money: null,
         companyName: "",

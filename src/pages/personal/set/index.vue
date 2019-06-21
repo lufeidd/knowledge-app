@@ -174,6 +174,7 @@ export default {
         localStorage.setItem('miniAudio', null);
         localStorage.setItem('audioProgress', null);
         localStorage.setItem('cmts', null);
+        // localStorage.setItem('fromLink', null);
         sessionStorage.setItem('headPic', null);
         this.$store.commit("changeLoginState", 100);
 
