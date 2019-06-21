@@ -139,7 +139,11 @@
         <div class="foot" :style="{'justify-content': item.invoice_id ? 'flex-end':'space-between'}">
           <span class="button button1" @click="repply(item)" v-if="item.invoice_id == 0">申请发票</span>
           <div>
-            <span class="button button1" @click="toComment(item,index)" v-if="item.if_comment == 0">评价</span>
+            <span
+              class="button button1"
+              @click="toComment(item,index)"
+              v-if="item.if_comment == 0"
+            >评价</span>
             <!-- <span class="button1" v-if="item.state ==1">再次购买</span> -->
             <!-- <span class="button2" >去支付</span> -->
             <!-- <span class="button2" v-if="item.state ==0">确认收货</span> -->
@@ -182,7 +186,7 @@ export default {
       programFinished: false,
       page: 1,
       page_size: 10,
-      order_id: "",
+      order_id: ""
     };
   },
   mounted() {
@@ -213,7 +217,6 @@ export default {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
 
-
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
             this.publishData.push(result[i]);
@@ -231,7 +234,6 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-
         }
 
         this.$toast(res.error_message);
@@ -267,16 +269,16 @@ export default {
       });
     },
     //评价
-    toComment(item,index){
-      console.log(item)
+    toComment(item, index) {
+      console.log(item);
       // console.log(item.details[index].detail_id);
       // return;
       this.$router.push({
-        name:'ordercomment',
-        query:{
-          order_id:item.order_id,
+        name: "ordercomment",
+        query: {
+          order_id: item.order_id
         }
-      })
+      });
     }
   }
 };

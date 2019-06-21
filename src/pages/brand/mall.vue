@@ -135,8 +135,8 @@ export default {
     async wxShareData() {
       var tStamp = this.$getTimeStamp();
       var data = {
-        page_name: "brand/mall",
-        params: JSON.stringify({ brand_id: this.$route.query.brand_id }),
+        page_name: "mall/index",
+        params: JSON.stringify({ brand_id: this.$route.query.brand_id, supplier_id: this.$route.query.supplier_id }),
         version: "1.0",
         timestamp: tStamp
       };

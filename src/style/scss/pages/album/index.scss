@@ -8,7 +8,7 @@
 #albumPage {
   background-color: $greyLight;
   min-height: 100%;
-  
+
   & .audioList {
     position: relative;
     height: 94vh;
@@ -60,7 +60,6 @@
         }
       }
 
-
     }
   }
 
@@ -74,12 +73,21 @@
     .from {
       @include displayFlex(flex, flex-start, center);
 
+
       .icon {
         width: 35px;
         height: 35px;
         border: 1px solid $clC;
         border-radius: 35px;
+        display: flex;
+        justify-content: center;
         align-items: center;
+        overflow: hidden;
+
+        img {
+          max-width: 100%;
+          max-height: 100%;
+        }
       }
 
       .publishInfo {
@@ -225,7 +233,7 @@
         }
 
         & .action {
-          @include position (absolute, 'tr', 0, 0, null, 25px, 20px);
+          @include position (absolute, 'tr', 0, 0, null, 20px, 20px);
 
           & .icon {
             width: 12px;
