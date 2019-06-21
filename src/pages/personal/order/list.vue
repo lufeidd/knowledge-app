@@ -136,9 +136,8 @@
             </span>
           </div>
         </div>
-        <div class="foot">
+        <div class="foot" :style="{'justify-content': item.invoice_id ? 'flex-end':'space-between'}">
           <span class="button button1" @click="repply(item)" v-if="item.invoice_id == 0">申请发票</span>
-          <a target="_blank" href="https://inv.jss.com.cn/group4/M01/0F/07/wKj6yF0C8raIYpsvAACIO54J0R0AAJOaAMrmyUAAIhT545.pdf" class="button button1" v-else>查看发票</a>
           <div>
             <span
               class="button button1"

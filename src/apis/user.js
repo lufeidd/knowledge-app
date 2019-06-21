@@ -12,6 +12,10 @@ export const USER_HOMEPAGE = query => req('post', '/user/homepage', query);
 export const USER_INFO = query => req('post', '/user/info/get', query);
 export const USER_INFO_EDIT = query => req('post', '/user/info/edit', query);
 
+//获取用户余额充值信息
+export const USER_WALLET_RECHARGE_INFO = query => req('post', '/user/wallet/recharge/info', query);
+
+
 // 定义我的评论接口
 export const USER_COMMENT = query => req('post', '/user/comment/gets', query);
 
