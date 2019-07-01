@@ -34,7 +34,7 @@
             </router-link>
           </div>
         </div>
-        <div class="subTitle">登录后同步您的收藏</div>
+        <div class="subTitle" v-if="!infoData.is_login">登录后同步您的收藏</div>
       </div>
     </div>
 
@@ -307,7 +307,6 @@ export default {
 
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        
 
         if (this.infoData.is_login == 1) {
           $(".ratioBox").css(
@@ -319,7 +318,6 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          
         }
         this.$toast(res.error_message);
       }

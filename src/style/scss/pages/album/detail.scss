@@ -107,6 +107,7 @@
             @include textOverflow;
             display: block;
             padding-right: 0;
+            word-break: break-all;
           }
         }
 
@@ -116,6 +117,7 @@
           white-space: pre-wrap;
           overflow: visible;
           -webkit-line-clamp: 1000;
+          word-break: break-all;
         }
 
         & .messageBox {
@@ -134,6 +136,7 @@
 
             & .dialog {
               color: #666;
+              word-break: break-all;
             }
           }
 

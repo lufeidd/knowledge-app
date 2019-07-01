@@ -39,7 +39,12 @@
           <span class="publish">{{infoData.brand_name}}</span>
         </div>
       </div>
-      <div class="section" v-for="item,index in infoData.detail" @click="goodsDetail(item)">
+      <div
+        class="section"
+        v-for="(item,index) in infoData.detail"
+        @click="goodsDetail(item)"
+        :key="index"
+      >
         <div class="bookDetail">
           <div class="ratiobox">
             <div class="box">
@@ -76,6 +81,35 @@
         <span>¥{{infoData.pay_money}}</span>
       </p>
     </div>
+    <!-- 发票 -->
+    <div class="invoiceInfo" v-if="invoice !== undefined && Object.keys(invoice).length > 0">
+      <div class="invoiceContent">
+        <span class="title">发票类型</span>
+        <span class="text">{{invoice.type == 1 ? '普通发票':'电子发票'}}</span>
+        <a
+          class="button button3"
+          :href="invoice.url"
+          target="_blank"
+          download="invoice.pdf"
+          v-if="invoice !== undefined && Object.keys(invoice).length > 0 && invoice.flag == 2"
+        >下载发票</a>
+
+        <!-- 测试blob格式 -->
+
+        <span
+          class="button button1"
+          v-if="invoice !== undefined && Object.keys(invoice).length > 0 && invoice.flag == 1"
+        >等待开票</span>
+      </div>
+      <div class="invoiceContent">
+        <span class="title">发票抬头</span>
+        <span class="text">{{invoice.invoice_title}}</span>
+      </div>
+      <div class="invoiceContent">
+        <span class="title">发票内容</span>
+        <span class="text">{{invoice.remarks}}</span>
+      </div>
+    </div>
     <div class="fictitious">
       <div class="text">
         <van-cell title="虚拟物品"/>
@@ -97,18 +131,24 @@
         <van-cell title="支付时间" v-model="infoData.pay_time"/>
       </div>
     </div>
+
     <div v-if="this.isIphx" style="height: 34px;"></div>
-    <div class="foot bottomBox" :class="{iphx:this.isIphx}">
-      <span
-        class="button button1"
-        v-if="invoice !== undefined && Object.keys(invoice).length > 0 "
-      >查看发票</span>
-      <span class="button button1" @click="apply" v-else>申请发票</span>
-      <div>
-        <span class="button button2" @click="toComment" v-if="infoData.if_comment == 0">评价</span>
-        <!-- <span class="button button1" @click="repurchase">再次购买</span> -->
+    <div v-if="infoData.if_comment == 0 || showInvoice">
+      <div style="height: 60px;"></div>
+
+      <div
+        class="foot bottomBox"
+        :class="{iphx:this.isIphx}"
+        :style="{'justify-content': !showInvoice ? 'flex-end':'space-between'}"
+      >
+        <span class="button button1" @click="apply" v-if="showInvoice">申请发票</span>
+        <div>
+          <span class="button button2" @click="toComment" v-if="infoData.if_comment == 0">评价</span>
+          <!-- <span class="button button1" @click="repurchase">再次购买</span> -->
+        </div>
       </div>
     </div>
+
     <easyNav :navData="navData"></easyNav>
   </div>
 </template>
@@ -144,12 +184,17 @@ export default {
       },
       infoData: {},
       order_id: "",
-      invoice: {}
+      invoice: {},
+      showInvoice: false
     };
   },
   mounted() {
     this.order_id = this.$route.query.order_id;
+    this.showInvoice =
+      parseInt(this.$route.query.invoice_id) == 0 ? true : false;
     this.getData();
+
+    console.log(this.$route.query.invoice_id);
   },
   computed: {
     discount: function() {
@@ -182,11 +227,14 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await USER_ORDER_DETAIL_GET(data);
+
       if (res.hasOwnProperty("response_code")) {
         this.infoData = res.response_data;
         this.invoice = res.response_data.invoice_info;
+
+        // if (Object.keys(res.response_data.invoice_info).length > 0)
+        // this.showInvoice = true;
         // this.articleInfo = res.response_data.brand_info;
-        console.log(res);
       } else {
         this.$toast(res.error_message);
       }

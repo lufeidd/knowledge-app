@@ -31,7 +31,11 @@
 <script>
 //  引入接口
 import { USER_INFO, USER_INFO_EDIT } from "../../../apis/user.js";
-import { LOGIN_BIND_DELETE, LOGIN_BIND_LIST } from "../../../apis/passport.js";
+import {
+  LOGIN_BIND_DELETE,
+  LOGIN_BIND_LIST,
+  LOGIN_BIND_PARTERNER
+} from "../../../apis/passport.js";
 export default {
   data() {
     return {
@@ -51,12 +55,37 @@ export default {
 
     // 获取第三方微信登录code
     this.$getWxCode();
-    if (this.wxCodeStr.length > 6) this.$getWxLoginData();
+    if (
+      this.wxCodeStr.length > 6 &&
+      sessionStorage.getItem("gotoLogin") == "yes"
+    )
+      this.$getWxLoginData();
   },
   methods: {
+    // 判断当前微信是否已经绑定过手机号
+    async phoneBindData() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        outer_id: localStorage.getItem("unionid"),
+        outer_name: localStorage.getItem("nickname"),
+        type: 2,
+        timestamp: tStamp,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await LOGIN_BIND_PARTERNER(data);
+
+      // 出错提示
+      if (res.hasOwnProperty("response_code")) {
+        sessionStorage.setItem("gotoLogin", "yes");
+        this.$wxLogin();
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
     showAction() {
       if (this.wxBind == "去绑定") {
-        this.$wxLogin();
+        this.phoneBindData();
 
         return;
       }
@@ -114,7 +143,6 @@ export default {
     onSelect(item) {
       // 点击选项时默认不会关闭菜单，可以手动关闭
       this.bindModel = false;
-      //   this.$toast(item.name);
     }
   }
 };

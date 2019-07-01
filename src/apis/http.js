@@ -15,12 +15,17 @@ var instance = axios.create({
     // baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
 
     headers: { 'App-version': 'wap' },
-    timeout: 3000,
+    // responseType: 'blob',    // 测试发票下载
+    timeout: 15000,
 })
 
 // 一、请求拦截器 忽略
 instance.interceptors.request.use(function (config) {
     config.credentials = true;
+    // 网页端跳转 404 页面
+    if (sessionStorage.getItem("isWxLogin") == "no" && (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/account') != -1)) {
+        window.location.href = window.location.href.split('#')[0] + '#/404';
+    }
     return config;
 }, function (error) {
     // 对请求错误做些什么
@@ -36,7 +41,7 @@ instance.interceptors.response.use(function (response) {
 
     // 网络响应超时，调整到超时页面
     var routerLink = localStorage.getItem('routerLink');
-    var replaceUrl = window.location.href.split('#')[0] + '#' + '/timeout';
+    var replaceUrl = window.location.href.split('#')[0] + '#/timeout';
     var brandId;
 
     if (routerLink.match(/brand_id/)) {

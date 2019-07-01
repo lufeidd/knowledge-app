@@ -97,11 +97,14 @@ export default {
 
     // 获取第三方微信登录code
     this.$getWxCode();
-    if (this.wxCodeStr.length > 6) this.$getWxLoginData();
+    console.log(999, this.wxCodeStr, sessionStorage.getItem('gotoLogin'));
+    if (this.wxCodeStr.length > 6 && sessionStorage.getItem('gotoLogin') == 'yes') this.$getWxLoginData();
   },
   methods: {
     // 微信登录
     wxLogin() {
+      this.gotoLogin = true;
+      sessionStorage.setItem('gotoLogin', 'yes');
       this.$wxLogin();
     },
     // 校验格式
@@ -126,14 +129,23 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await LOG(data);
-      // 出错提示
+
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
         // console.log(res);
         // this.$router.push({ name: "personalIndex", query: "" });
 
-        if (localStorage.getItem("fromLink") == null) {
+        var fromLink = localStorage.getItem("fromLink");
+        console.log("fromLink:", fromLink);
+
+        if (
+          fromLink.indexOf("/login/index") != -1 ||
+          fromLink.indexOf("/personal/set/index") != -1 ||
+          fromLink.indexOf("/login/password") != -1 ||
+          fromLink.indexOf("/login/register") != -1 ||
+          fromLink == "/"
+        ) {
           this.$router.replace({ name: "personalIndex" });
         } else {
           this.$router.go(-1);

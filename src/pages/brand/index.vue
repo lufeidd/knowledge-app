@@ -13,7 +13,7 @@
         <div class="focus" v-if="brandData.attention_state == 0" @click="focusAction">+关注</div>
         <div class="focus add" v-else @click="focusAction">已关注</div>
       </div>
-      <div class="sell" @click="toMall">
+      <div class="sell" @click="toMall" v-if="brandData.mall_show == 1">
         <div>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-shop-line"></use>
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <van-tabs sticky animated color="#666" title-active-color="#333" @click="tabChange">
+    <van-tabs sticky animated color="#666" title-active-color="#333" @click="tabChange" v-if="brandData.column_list.length > 0">
       <van-tab :title="items.name" v-for="items,index in brandData.column_list" :key="index">
         <template v-if="activekey == index">
           <van-list
@@ -123,6 +123,7 @@ export default {
     };
   },
   mounted() {
+    if (this.$route.query.title) document.title = this.$route.query.title;
     this.brand_id = this.$route.query.brand_id;
     this.brandGetData();
   },
@@ -200,13 +201,17 @@ export default {
         this.brandData = res.response_data;
 
         // 获取页面分享信息
-        this.wxShareData();
+        if (this.isWxLogin) this.wxShareData();
 
         // title
         document.title = this.brandData.name;
         if (res.response_data.column_list.length > 0)
           this.packets_id = res.response_data.column_list[0].packets_id;
       } else {
+        this.$router.replace({
+          name: "personalIndex",
+          query: {}
+        });
         this.$toast(res.error_message);
       }
     },

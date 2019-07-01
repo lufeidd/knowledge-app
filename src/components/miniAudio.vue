@@ -103,7 +103,7 @@ export default {
     this.clearClock();
   },
   mounted() {
-    console.log(999, this.showBuyButton)
+    // console.log(this.showBuyButton)
     // 播放结束后销毁倒计时
     this.clearClock();
     // 判断是否显示节目列表入口
@@ -292,7 +292,7 @@ export default {
       // 设置迷你音频播放状态
       this.$emit("setMiniAudio", info);
       
-      console.log(123, "miniAudio:", "info:", info, "currentTime:", __currentTime, "result:", result, this.isAdd);
+      // console.log(123, "miniAudio:", "info:", info, "currentTime:", __currentTime, "result:", result, this.isAdd);
     },
     // 更新播放进度记录
     updateProgressData(info, result, __currentTime) {
@@ -463,7 +463,7 @@ export default {
     },
     // 链接到音乐播放器
     toPlayer() {
-      this.$emit("linkToPlayer", "");
+      this.$emit("linkToPlayer", "mini");
     }
     // 每5s、点击play、点击pzause、ended更新localStorage中audioProgress数据
   }

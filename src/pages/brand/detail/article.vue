@@ -523,9 +523,10 @@ export default {
         this.baseData = res.response_data.base;
         this.articleInfo = res.response_data.brand_info;
         this.isLogin = res.response_data.user_info.is_login;
+        document.title = "文章详情-" + res.response_data.base.title;
 
         // 获取页面分享信息
-        this.wxShareData();
+        if(this.isWxLogin) this.wxShareData();
 
         // $(".contentData").append(this.baseData.desc);
         if (this.baseData.desc.length <= 0) {
@@ -685,6 +686,7 @@ export default {
         this.answerData = [];
         this.discussData = [];
         this.replyPage = [];
+        this.contentModel = "";
         this.commentData();
       } else {
         this.$toast(res.error_message);

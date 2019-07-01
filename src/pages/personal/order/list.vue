@@ -110,7 +110,7 @@
       @load="programLoad"
       v-else
     >
-      <div class="content" v-for="item,index in publishData">
+      <div class="content" v-for="(item,index) in publishData" :key="index">
         <div class="head" @click="toBrandindex(item)">
           <div class="titleFrom">
             <!-- <img v-lazy="item.brand_header_pic" alt class="icon"> -->
@@ -136,9 +136,8 @@
             </span>
           </div>
         </div>
-        <div class="foot">
+        <div class="foot" :style="{'justify-content': item.invoice_id ? 'flex-end':'space-between'}">
           <span class="button button1" @click="repply(item)" v-if="item.invoice_id == 0">申请发票</span>
-          <a target="_blank" href="https://inv.jss.com.cn/group4/M01/0F/07/wKj6yF0C8raIYpsvAACIO54J0R0AAJOaAMrmyUAAIhT545.pdf" class="button button1" v-else>查看发票</a>
           <div>
             <span
               class="button button1"
@@ -245,7 +244,8 @@ export default {
       this.$router.push({
         name: "orderdetail",
         query: {
-          order_id: item.order_id
+          order_id: item.order_id,
+          invoice_id: item.invoice_id,
         }
       });
     },
@@ -256,7 +256,7 @@ export default {
         name: "orderinvoice",
         query: {
           order_id: item.order_id,
-          money: item.order_money
+          money: item.order_money,
         }
       });
     },

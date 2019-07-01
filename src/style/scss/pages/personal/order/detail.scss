@@ -201,10 +201,49 @@
       }
     }
   }
-
+  .invoiceInfo{
+    padding:5px 15px;
+    margin-top:5px;
+    background-color:$white;
+    .invoiceContent{
+      padding:5px 0;
+      .title{
+        font-size:$fontSize - 1;
+        color:$cl9;
+        margin-right:5px;
+      }
+      .text{
+        font-size:$fontSize - 2;
+      }
+      .button {
+        display: inline-block;
+        width: 60px;
+        height: 18px;
+        border-radius: 9px;
+        text-align: center;
+        line-height: 18px;
+        font-size: $fontSize - 2;
+        margin-left: 15px;
+      }
+  
+      .button1 {
+        border: 1px solid $greyDark;
+        color: $greyDark;
+      }
+  
+      .button2 {
+        border: 1px solid $redDark;
+        color: $redDark;
+      }
+  
+      .button3 {
+        border: 1px solid $cl6;
+        color: $cl3;
+      }
+    }
+  }
   .fictitious {
     margin-top: 5px;
-    margin-bottom: 50px;
 
     .text {
       .van-cell__title {
@@ -282,7 +321,7 @@
     }
 
     .button3 {
-      border: 1px solid $cl3;
+      border: 1px solid $cl6;
       color: $cl3;
     }
   }

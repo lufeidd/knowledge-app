@@ -28,35 +28,51 @@
       </van-row>
       <!-- 属于专辑 -->
       <div class="ratioBox banner">
-        <div class="box" v-if="baseData.goods_type != 2">
-          <img v-if="albumInfo.pic" :src="baseData.pic[0]">
-        </div>
         <!-- goodsType区分商品类型，音频1/视频2/专辑9/文章6/图书 -->
-        <div @click="gotoPlayer('external')" class="box layer" v-if="baseData.goods_type == 1">
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-audio-circle"></use>
-          </svg>
+        <!-- 音频 -->
+        <div v-if="baseData.goods_type == 1">
+          <div @click="gotoPlayer('external')" class="box layer">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-audio-circle"></use>
+            </svg>
+          </div>
+          <!-- 遮罩 -->
+          <div class="box">
+            <img :src="baseData.pic[0]">
+          </div>
         </div>
-        <div class="box layer" v-if="baseData.goods_type == 2">
-          <video
-            id="myVideo"
-            @play="videoPlay"
-            v-if="baseData.is_free == 0 && baseData.is_payed == 0 && this.baseData.free_path != ''"
-            :src="baseData.free_path"
-            controls
-            width="100%"
-            height="100%"
-          ></video>
-
-          <video
-            id="myVideo"
-            @play="videoPlay"
-            v-else
-            :src="baseData.file_path"
-            controls
-            width="100%"
-            height="100%"
-          ></video>
+        <!-- 视频 -->
+        <div v-if="baseData.goods_type == 2">
+          <!-- 需要支付 -->
+          <div v-if="baseData.is_free == 0 && baseData.is_payed == 0">
+            <!-- 需要支付 但 不含试听 -->
+            <div @click="gotoPlayer('external')" class="box layer" v-if="baseData.free_path == ''">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-videoPause-line"></use>
+              </svg>
+            </div>
+            <div class="box">
+              <video
+                id="myVideo"
+                @play="videoPlay"
+                :src="baseData.file_path"
+                controls
+                width="100%"
+                height="100%"
+              ></video>
+            </div>
+          </div>
+          <!-- 不需要支付 -->
+          <div v-else class="box">
+            <video
+              id="myVideo"
+              @play="videoPlay"
+              :src="baseData.file_path"
+              controls
+              width="100%"
+              height="100%"
+            ></video>
+          </div>
         </div>
       </div>
 
@@ -689,28 +705,38 @@ export default {
     },
     // 跳转到音乐播放器
     gotoPlayer(__type) {
-      var info = JSON.parse(localStorage.getItem("miniAudio"));
-      var _info0 = parseInt(this.$route.query.goods_no);
-      var _info1 = parseInt(this.$route.query.pid);
-      var _info2 = this.baseData.pic[0];
-      var _info3;
-      var _info4 = this.baseData.duration_str;
-      var _info5 = 0;
-      var _info6 = this.baseData.title;
-      var _info7 = this.albumInfo.title;
-      var _info8 = parseInt(this.$route.query.goods_id);
-      var _info9 = this.albumInfo.pic;
-      // console.log(this.baseData);
+      var queryTmp = {};
+      queryTmp.isLogin = this.isLogin;
 
-      // 试听
-      if (__type == "preListen") {
-        _info3 = this.baseData.free_path;
+      // 点击迷你播放音频
+      if (__type == "mini") {
+        this.$router.push({ name: "player", query: queryTmp });
+        return;
       }
       // 视频试听
       if (__type == "video") {
         document.getElementById("myVideo").play();
         return;
       }
+
+      var info = JSON.parse(localStorage.getItem("miniAudio"));
+
+      var _info0 = parseInt(this.$route.query.goods_no);
+      var _info1 = parseInt(this.$route.query.pid);
+      var _info2 = this.baseData.pic[0];
+      var _info3 = this.baseData.file_path;
+      var _info4 = this.baseData.duration_str;
+      var _info5 = 0;
+      var _info6 = this.baseData.title;
+      var _info7 = this.albumInfo.title;
+      var _info8 = parseInt(this.$route.query.goods_id);
+      var _info9 = this.albumInfo.pic;
+
+      // 试听
+      if (__type == "preListen") {
+        _info3 = this.baseData.free_path;
+      }
+
       if (__type == "external") {
         // console.log(this.baseData)
         // 未支付
@@ -749,10 +775,12 @@ export default {
       info[7] = _info7;
       info[8] = _info8;
       info[9] = _info9;
+
       // localStorage存储
       localStorage.setItem("miniAudio", JSON.stringify(info));
       // 外链至音乐播放器，设置info
-      this.$router.push({ name: "player", query: { isLogin: this.isLogin } });
+
+      this.$router.push({ name: "player", query: queryTmp });
     },
     // 当前节目播放结束，获取当前播放节目的专辑下所有节目（不分页）
     getAllProgramData(info) {
@@ -877,12 +905,13 @@ export default {
         this.brandInfoData = res.response_data.brand_info;
         // 账号信息，是否登录
         this.isLogin = res.response_data.user_info.is_login;
+        document.title = "节目详情-" + res.response_data.base.title;
 
         // 所属媒体信息
         // this.brandInfoData = res.response_data.brand_info;
 
         // 获取页面分享信息
-        this.wxShareData();
+        if (this.isWxLogin) this.wxShareData();
 
         // 是否显示底部购买按钮
         this.showBuyButton = !(
@@ -1138,6 +1167,7 @@ export default {
         this.answerData = [];
         this.discussData = [];
         this.replyPage = [];
+        this.contentModel = "";
         this.commentData();
       } else {
         this.$toast(res.error_message);

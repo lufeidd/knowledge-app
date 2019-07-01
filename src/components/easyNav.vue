@@ -31,6 +31,16 @@
         <div>搜索</div>
       </router-link>
       <router-link
+        v-if="navData.type == 'order' && navData.search"
+        :to="{path:navData.searchLink,query:{type:navData.type}}"
+        class="link"
+      >
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-littleSearch-line"></use>
+        </svg>
+        <div>搜索</div>
+      </router-link>
+      <router-link
         v-if="navData.type == 'mall' && navData.search"
         :to="{path:navData.searchLink,query:{type:navData.type, supplier_id: navData.supplier_id}}"
         class="link"

@@ -18,60 +18,57 @@ import { LOGIN_PARTERNER } from "./../apis/passport.js";
 
 export default {
   install: function (Vue, options) {
-    // 存储第三方登录code
-    Vue.prototype.wxCodeStr = '';
 
-    // 获取第三方微信登录code
+    // 判断是否是iphonex
+    Vue.prototype.winWidth = $(window).width();
+    Vue.prototype.winHeight = $(window).height();
+    const ua = window.navigator.userAgent.toLowerCase();
+
+    Vue.prototype.isIphx = ua.match(/mobile/) && $(window).width() == 375 && $(window).height() == 812;
+    Vue.prototype.isWxLogin = ua.match(/MicroMessenger/i) == 'micromessenger';
+
+    // 存储第三方登录
+    Vue.prototype.wxCodeStr = '';
+    Vue.prototype.appid = "wx0980638eef192092";
+
+    // 获取第三方微信登录
     Vue.prototype.$getWxCode = async function () {
       // 获取微信登录授权code
       var str = window.location.href;
       str = str.split("#")[0];
-      var sIndex = str.split("#")[0].indexOf("?") + 6;
-      var eIndex = str.split("#")[0].indexOf("&");
-      // console.log(str, str.substring(sIndex, eIndex));
-      // 存储第三方登录code
-      this.wxCodeStr = str.substring(sIndex, eIndex);
-    }
+      if (str.indexOf('code=') != -1) {
+        var sIndex = str.split("#")[0].indexOf("code=") + 5;
+        var eIndex = str.split("#")[0].indexOf("code=") + 37;
 
-    // 第三方微信登录
+        // 存储第三方登录code
+        this.wxCodeStr = str.substring(sIndex, eIndex);
+        console.log('code:', this.wxCodeStr);
+      }
+    }
     Vue.prototype.$getWxLoginData = async function () {
-      let url = "http://wap.huoba.net/callback/weixin/Userinfo?code=" + this.wxCodeStr;
+      let url = window.location.protocol + "//" + window.location.hostname + "/callback/weixin/Userinfo?code=" + this.wxCodeStr;
       var self = this;
+      // console.log('url:', url)
       axios
         .get(url)
         .then(function (response) {
-          console.log("response:", response);
+          // console.log(response);
+          localStorage.setItem('nickname', response.data.nickname);
+          localStorage.setItem('openid', response.data.openid);
+          localStorage.setItem('unionid', response.data.unionid);
           // 第三方用户登录接口
-          self.$getLoginParterner(response.data.openid, response.data.nickname, 2);
+          self.$getLoginParterner(response.data.unionid, response.data.nickname, 2);
         })
         .catch(function (error) {
           self.fetchError = error;
+          console.log('error:', error);
         });
     }
+    Vue.prototype.$getLoginParterner = async function (_unionid, _outerName, _type) {
 
-    Vue.prototype.$wxLogin = async function () {
-      var url = encodeURIComponent(window.location.href);
-      var appid = "wx54149bd57b9b51b1";
-      // var appid = "wx0980638eef192092";
-      var type = "code";
-      var scope = "snsapi_userinfo";
-
-      window.location.href =
-        "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
-        appid +
-        "&redirect_uri=" +
-        url +
-        "&response_type=" +
-        type +
-        "&scope=" +
-        scope +
-        "&state=STATE#wechat_redirect";
-    }
-    // 第三方用户登录接口
-    Vue.prototype.$getLoginParterner = async function (_openid, _outerName, _type) {
       var tStamp = this.$getTimeStamp();
       let data = {
-        outer_id: _openid,
+        outer_id: _unionid,
         outer_name: _outerName,
         timestamp: tStamp,
         type: _type,
@@ -80,33 +77,49 @@ export default {
       data.sign = this.$getSign(data);
       let res = await LOGIN_PARTERNER(data);
 
+      // console.log(res);
+
       // 出错提示
       if (res.hasOwnProperty("response_code")) {
-        console.log("openid:", _openid, "parterner:", res.response_data);
+        console.log("unionid:", _unionid, "parterner:", res.response_data);
         // 登录成功exist = 1；没有绑定过 exist = 0；
         if (res.response_data.exist == 0) {
           this.$router.replace({
             name: "bindphone",
-            query: { bindtype: _type, outerId: _openid }
+            query: { bindtype: _type, outerId: _unionid }
           });
         }
         if (res.response_data.exist == 1) {
-          // if (localStorage.getItem('fromLink') == null) {
-          //   localStorage.setItem('fromLink', localStorage.getItem('routerLink').split("#")[0] + "#/personal/index");
-          // }
-          // var replaceUrl = localStorage.getItem('fromLink');
           window.location.href = window.location.protocol + "//" + window.location.hostname + '/#/personal/index';
           this.wxCodeStr = '';
-          console.log('from:', replaceUrl);
+          // console.log('from:', replaceUrl);
         }
       } else {
         this.$toast(res.error_message);
       }
     }
+    // 微信授权，确定授权返回code
+    Vue.prototype.$wxLogin = async function () {
+      var url = encodeURIComponent(window.location.href);
+      var type = "code";
+      var scope = "snsapi_userinfo";
+
+      window.location.href =
+        "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
+        this.appid +
+        "&redirect_uri=" +
+        url +
+        "&response_type=" +
+        type +
+        "&scope=" +
+        scope +
+        "&state=STATE#wechat_redirect";
+    }
 
     // 微信分享
     Vue.prototype.$getWxData = async function (_title, _desc, _imgUrl, _route) {
-      let url = 'http://wap.huoba.net/callback/weixin/jssdk?url=' + encodeURIComponent(window.location.href.split('#')[0]); //去掉签名
+      let url = window.location.protocol + "//" + window.location.hostname + '/callback/weixin/jssdk?url=' + encodeURIComponent(window.location.href.split('#')[0]); //去掉签名
+
       var self = this
       axios.get(url)
         .then(function (response) {
@@ -126,7 +139,7 @@ export default {
               'onMenuShareAppMessage',
               'onMenuShareTimeline',
               'onMenuShareQQ',
-              'onMenuShareQZone'
+              'onMenuShareQZone',
             ]
           });
 
@@ -143,21 +156,17 @@ export default {
       wx.ready(function () {
 
         // 分享所需参数
-        // console.log('route:', localStorage.getItem('routerLink'), 'loginState:', sessionStorage.getItem('loginState'))
-        // let _link = localStorage.getItem('routerLink');
         let shareData = {
           title: _title,
           desc: _desc,
-          // link: _link,
           link: _route,
           imgUrl: _imgUrl,
-          // type: '',
-          // 分享类型，music、video或link，不填默认为link
-          // dataUrl: '',
           // 如果type是music或video，则要提供数据链接，默认为空
           success: function (res) {
             // 用户确认分享后执行的回调函数
             // logUtil.printLog("分享给朋友成功返回的信息为:", res);
+            console.log('111', res);
+            console.log('shareData111:', shareData);
           },
           cancel: function (res) {
             // 用户取消分享后执行的回调函数
@@ -194,12 +203,6 @@ export default {
       return timeStamp;
     }
 
-    // 判断是否是iphonex
-    Vue.prototype.winWidth = $(window).width();
-    Vue.prototype.winHeight = $(window).height();
-    const ua = window.navigator.userAgent.toLowerCase();
-    Vue.prototype.isIphx = ua.match(/mobile/) && $(window).width() == 375 && $(window).height() == 812;
-
     // 全局变量
     // 倒计时
     Vue.prototype.clock = null
@@ -207,8 +210,6 @@ export default {
     Vue.prototype.videoDuration = null
     // 音频实时播放进度
     Vue.prototype.progressClock = null
-    // useragent
-    Vue.prototype.isWxLogin = ua.match(/MicroMessenger/i) == 'micromessenger';
 
     // 验证码倒计时
     Vue.prototype.$countDown = function (options) {
@@ -406,16 +407,6 @@ export default {
         case 'mall/goods/search':
           __name = 'brandresult';
           queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
-          queryTmp.brand_id = parseInt(dataTmp.params.brand_id);
-          if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
-          if (dataTmp.params.goods_type) queryTmp.keywords = dataTmp.params.goods_type;
-
-          break;
-        // 商城商品搜索结果页
-        case 'mall/goods/search':
-          __name = 'brandresult';
-          queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
-          queryTmp.brand_id = parseInt(dataTmp.params.brand_id);
           if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
           if (dataTmp.params.goods_type) queryTmp.keywords = dataTmp.params.goods_type;
 
@@ -439,6 +430,49 @@ export default {
         query: queryTmp
       }
       return dataRes;
+    }
+
+    // 微信支付
+    Vue.prototype.$onBridgeReady = function (_timestamp, _nonceStr, _package, _paySign, _orderId, _payMoney) {
+      var self = this;
+      WeixinJSBridge.invoke(
+        "getBrandWCPayRequest",
+        {
+          appId: self.appid, //公众号名称，由商户传入
+          timeStamp: _timestamp.toString(), //时间戳，自1970年以来的秒数
+          nonceStr: _nonceStr, //随机串
+          package: _package,
+          signType: "MD5", //微信签名方式：
+          paySign: _paySign //微信签名
+        },
+        function (res) {
+          if (res.err_msg == "get_brand_wcpay_request:ok") {
+            // 余额充值
+            if (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1) {
+              self.$toast('充值成功~');
+              window.location.reload();
+            }
+            // 商品购买
+            if (localStorage.getItem('routerLink').indexOf('/pay/account') != -1) {
+              self.$toast('支付成功~');
+              self.$router.replace({
+                name: "paysuccess",
+                query: {
+                  order_id: _orderId,
+                  pay_money: _payMoney
+                }
+              });
+
+            }
+            console.log(res.err_msg);
+            // 使用以上方式判断前端返回,微信团队郑重提示：
+            //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+          } else {
+            console.log(res);
+          }
+        }
+      );
+
     }
 
     // 字符串转换成json格式

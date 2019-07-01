@@ -85,7 +85,75 @@ import wx from "weixin-js-sdk";
 export default {
   name: "App",
   mounted() {
-    // this.$router.push('/personal/order/list')
+    sessionStorage.setItem("gotoLogin", "no");
+    sessionStorage.setItem("isWxLogin", "no");
+
+    // 未授权时微信端访问授权页面
+    if (
+      window.navigator.userAgent.toLowerCase().match(/MicroMessenger/i) ==
+      "micromessenger"
+    ) {
+      sessionStorage.setItem("isWxLogin", "yes");
+      if (
+        localStorage.getItem("openid") == "null" ||
+        localStorage.getItem("openid") == null ||
+        localStorage.getItem("nickname") == "null" ||
+        localStorage.getItem("nickname") == null ||
+        localStorage.getItem("unionid") == "null" ||
+        localStorage.getItem("unionid") == null
+      ) {
+        // 微信登录 code
+        this.$getWxCode();
+        // 微信授权
+        if (this.wxCodeStr == "") this.$wxLogin();
+        if (this.wxCodeStr.length > 6) {
+          let url =
+            window.location.protocol +
+            "//" +
+            window.location.hostname +
+            "/callback/weixin/Userinfo?code=" +
+            this.wxCodeStr;
+          // 获取 openid，nickname
+          var self = this;
+          axios
+            .get(url)
+            .then(function(response) {
+              console.log(666, response);
+              if (
+                response.data.hasOwnProperty("code") &&
+                response.data.code == "1000"
+              ) {
+                console.log(response.data.msg);
+              } else {
+                localStorage.setItem("openid", response.data.openid);
+                localStorage.setItem("nickname", response.data.nickname);
+                localStorage.setItem("unionid", response.data.unionid);
+                self.wxCodeStr = "";
+                window.location.href =
+                  window.location.protocol +
+                  "//" +
+                  window.location.hostname +
+                  "/#" +
+                  window.location.href.split("#")[1];
+              }
+            })
+            .catch(function(error) {
+              self.fetchError = error;
+              console.log("error:", error);
+            });
+        } else {
+          this.$toast("未获取到code");
+        }
+      }
+      console.log(
+        "openid:",
+        localStorage.getItem("openid"),
+        "unionid:",
+        localStorage.getItem("unionid"),
+        "nickname:",
+        localStorage.getItem("nickname")
+      );
+    }
   }
 };
 </script>

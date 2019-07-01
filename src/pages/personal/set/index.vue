@@ -174,7 +174,13 @@ export default {
         localStorage.setItem('miniAudio', null);
         localStorage.setItem('audioProgress', null);
         localStorage.setItem('cmts', null);
-        // localStorage.setItem('fromLink', null);
+        localStorage.setItem('fromLink', null);
+        // localStorage.setItem('nickname', null);
+        // localStorage.setItem('unionid', null);
+
+        this.wxCodeStr = '';  
+        this.nickname = '';
+        this.unionid = '';
         sessionStorage.setItem('headPic', null);
         this.$store.commit("changeLoginState", 100);
 

@@ -2,8 +2,8 @@
   <div id="nullPage">
     <div class="nullBox">
       <img src="./../assets/null/link.png" width="100%">
-      <div>似乎是迷路了，检查一下来源链接是否正确~</div>
-      <router-link :to="{name: 'brand'}">
+      <div>请在微信端打开~</div>
+      <!-- <router-link :to="{name: 'brand'}">
         <van-tag
           style="border: 1px #ff504e solid;margin-top: 50px;"
           plain
@@ -12,7 +12,7 @@
           text-color="#ff504e"
           type="danger"
         >返回首页</van-tag>
-      </router-link>
+      </router-link> -->
     </div>
   </div>
 </template>

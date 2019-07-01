@@ -150,6 +150,7 @@ export default {
     },
     // 绑定手机号
     async bindphoneData() {
+      // console.log(localStorage.getItem('nickname'));
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
@@ -157,13 +158,18 @@ export default {
         auth_code: this.code,
         outer_id: this.outerId,
         type: this.bindtype,
+        outer_name: localStorage.getItem('nickname'),
         version: "1.0"
       };
       data.sign = this.$getSign(data);
       let res = await LOGIN_BIND_PARTERNER(data);
       console.log("bindphone:", res.response_data);
       if (res.hasOwnProperty("response_code")) {
-        window.location.href = "http://wap.huoba.net/#/personal/index";
+        window.location.href =
+          window.location.protocol +
+          "//" +
+          window.location.hostname +
+          "/#/personal/index";
       } else {
         this.$toast(res.error_message);
       }

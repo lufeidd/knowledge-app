@@ -20,15 +20,15 @@
     <div class="searchRecommend" v-if="this.type == 'order'">
       <p class="recommend">搜索推荐</p>
       <van-row type="flex" gutter="15">
-        <van-col span="6" v-for="item,index in state" :key="index">
+        <van-col span="6" v-for="(item,index) in state" :key="index">
           <span class="tag" @click="toResult(item)">{{item.order_desc}}</span>
         </van-col>
       </van-row>
     </div>
-    <div class="searchRecommend" v-if="this.type == 'brand' && hotSearch ">
+    <div class="searchRecommend" v-if="(this.type == 'brand' || this.type == 'mall') && hotSearch ">
       <p class="recommend">热门搜索</p>
       <van-row type="flex" gutter="15">
-        <van-col span="6" v-for="item,index in hotSearch" :key="index">
+        <van-col span="6" v-for="(item,index) in hotSearch" :key="index">
           <span class="tag" @click="hotSearchItem(item)">{{item}}</span>
         </van-col>
       </van-row>
@@ -39,7 +39,7 @@
         <span class="clear" @click="clear">清除</span>
       </p>
       <van-row type="flex" gutter="15">
-        <van-col span="6" v-for="item,index in list" :key="index">
+        <van-col span="6" v-for="(item,index) in list" :key="index">
           <span class="tag" @click="searchItem(item)">{{item.content}}</span>
         </van-col>
       </van-row>
@@ -75,7 +75,7 @@ export default {
         // searchLink: "/search",
         personal: true,
         personalLink: "/personal/index",
-        type: "order",
+        type: "order"
       },
       type: "",
       hotSearch: null,
@@ -128,18 +128,34 @@ export default {
           });
           this.saveItem();
           break;
+        case "mall":
+          this.$router.push({
+            name: "brandresult",
+            query: {
+              type: "mall",
+              supplier_id: this.$route.query.supplier_id,
+              searchContent: this.searchHintData.search
+            }
+          });
+          this.saveItem();
+          break;
       }
     },
     onSearch() {
-      if(this.searchHintData.search.trim() == "") {
+      if (
+        this.searchHintData.search.trim() == "" ||
+        this.searchHintData.search.length == 0
+      ) {
         this.$toast("请输入您要搜索的内容！");
         return;
       }
-      if (this.type == "order" && this.searchHintData.search.length > 0) {
+
+      if (this.type == "order") {
         this.searchTo("order");
-      }
-      else if (this.type == "brand" && this.searchHintData.search.length > 0) {
+      } else if (this.type == "brand") {
         this.searchTo("brand");
+      } else if (this.type == "mall") {
+        this.searchTo("mall");
       } else {
         this.$toast("请输入您要搜索的内容！");
       }
@@ -163,8 +179,8 @@ export default {
     saveItem() {
       var content = { content: this.searchHintData.search };
       var list = JSON.parse(localStorage.getItem("cmts") || "[]");
-      if( list == null ) list = [];
-      if ( list.length > 10) {
+      if (list == null) list = [];
+      if (list.length > 10) {
         list = list.slice(0, 9);
       }
       list.unshift(content);
@@ -197,12 +213,15 @@ export default {
     },
     hotSearchItem(item) {
       console.log(item);
+      var queryTmp = {};
+      queryTmp.searchContent = item;
+      queryTmp.type = this.$route.query.type;
+      if (this.$route.query.supplier_id)
+        queryTmp.supplier_id = this.$route.query.supplier_id;
+
       this.$router.push({
         name: "brandresult",
-        query: {
-          type: "brand",
-          searchContent: item
-        }
+        query: queryTmp
       });
     },
     searchItem(item) {
@@ -221,6 +240,16 @@ export default {
           name: "brandresult",
           query: {
             type: "brand",
+            searchContent: item.content
+          }
+        });
+      }
+      if (this.type == "mall") {
+        this.$router.push({
+          name: "brandresult",
+          query: {
+            type: "mall",
+            supplier_id: this.$route.query.supplier_id,
             searchContent: item.content
           }
         });
