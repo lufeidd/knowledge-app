@@ -54,6 +54,7 @@ export default {
         .then(function (response) {
           // console.log(response);
           localStorage.setItem('nickname', response.data.nickname);
+          localStorage.setItem('headimg', response.data.headimgurl);
           localStorage.setItem('openid', response.data.openid);
           localStorage.setItem('unionid', response.data.unionid);
           // 第三方用户登录接口

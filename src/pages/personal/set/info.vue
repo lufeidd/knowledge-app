@@ -280,16 +280,29 @@ export default {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
         
-
         this.$set(this.infoList, "header_pic", res.response_data.header_pic);
         this.$set(this.infoList, "mobile", res.response_data.mobile);
         this.$set(this.infoList, "nickname", res.response_data.nickname);
         this.$set(this.infoList, "birthday", res.response_data.birthday);
         this.$set(this.infoList, "sex", res.response_data.sex);
         // 裁切后的图片
-        if (this.$route.query.img)
-          this.$set(this.infoList, "header_pic", this.$route.query.img);
+        if (this.$route.query.img) this.$set(this.infoList, "header_pic", this.$route.query.img);
         // console.log(this.infoList.header_pic);
+
+        // 第三方登录获取头像昵称
+        if (
+          localStorage.getItem("nickname") != "null" &&
+          localStorage.getItem("nickname") != null
+        ) {
+          this.$set(this.infoList, "nickname", localStorage.getItem("nickname"));
+        }
+        if (
+          localStorage.getItem("headimg") != "null" &&
+          localStorage.getItem("headimg") != null
+        ) {
+          this.$set(this.infoList, "header_pic", localStorage.getItem("headimg"));
+        }
+
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
