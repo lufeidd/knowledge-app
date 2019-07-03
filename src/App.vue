@@ -100,7 +100,9 @@ export default {
         localStorage.getItem("nickname") == "null" ||
         localStorage.getItem("nickname") == null ||
         localStorage.getItem("unionid") == "null" ||
-        localStorage.getItem("unionid") == null
+        localStorage.getItem("unionid") == null ||
+        localStorage.getItem("headimg") == "null" ||
+        localStorage.getItem("headimg") == null
       ) {
         // 微信登录 code
         this.$getWxCode();
@@ -128,6 +130,7 @@ export default {
                 localStorage.setItem("openid", response.data.openid);
                 localStorage.setItem("nickname", response.data.nickname);
                 localStorage.setItem("unionid", response.data.unionid);
+                localStorage.setItem('headimg', response.data.headimgurl);
                 self.wxCodeStr = "";
                 window.location.href =
                   window.location.protocol +

@@ -289,20 +289,6 @@ export default {
         if (this.$route.query.img) this.$set(this.infoList, "header_pic", this.$route.query.img);
         // console.log(this.infoList.header_pic);
 
-        // 第三方登录获取头像昵称
-        if (
-          localStorage.getItem("nickname") != "null" &&
-          localStorage.getItem("nickname") != null
-        ) {
-          this.$set(this.infoList, "nickname", localStorage.getItem("nickname"));
-        }
-        if (
-          localStorage.getItem("headimg") != "null" &&
-          localStorage.getItem("headimg") != null
-        ) {
-          this.$set(this.infoList, "header_pic", localStorage.getItem("headimg"));
-        }
-
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态

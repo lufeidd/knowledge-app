@@ -68,6 +68,7 @@ export default {
       let data = {
         outer_id: localStorage.getItem("unionid"),
         outer_name: localStorage.getItem("nickname"),
+        header_pic: localStorage.getItem("headimg"),
         type: 2,
         timestamp: tStamp,
         version: "1.0"
