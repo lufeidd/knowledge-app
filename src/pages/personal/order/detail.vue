@@ -168,12 +168,10 @@ export default {
       clipboard.on("success", e => {
         this.$toast("复制成功");
         // this.$message({ type: 'success', message: '复制成功' });
-
         clipboard.destroy();
       });
       clipboard.on("error", e => {
         // this.$message({ type: 'waning', message: '该浏览器不支持自动复制' });
-
         clipboard.destroy();
       });
     },
@@ -198,7 +196,6 @@ export default {
     },
     //再次购买
     repurchase(){
-
     },
     //申请发票
     apply(){
