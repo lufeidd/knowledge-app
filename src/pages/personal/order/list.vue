@@ -110,7 +110,7 @@
       @load="programLoad"
       v-else
     >
-      <div class="content" v-for="item,index in publishData">
+      <div class="content" v-for="(item,index) in publishData" :key="index">
         <div class="head" @click="toBrandindex(item)">
           <div class="titleFrom">
             <!-- <img v-lazy="item.brand_header_pic" alt class="icon"> -->
@@ -244,7 +244,8 @@ export default {
       this.$router.push({
         name: "orderdetail",
         query: {
-          order_id: item.order_id
+          order_id: item.order_id,
+          invoice_id: item.invoice_id,
         }
       });
     },
@@ -255,7 +256,7 @@ export default {
         name: "orderinvoice",
         query: {
           order_id: item.order_id,
-          money: item.order_money
+          money: item.order_money,
         }
       });
     },

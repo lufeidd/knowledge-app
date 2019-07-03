@@ -154,8 +154,8 @@ export default {
       let res = await USER_REMAIN_DETAILS(data);
 
       if (res.hasOwnProperty("response_code")) {
-        this.totalIncome += Number(res.response_data.total_money_in);
-        this.totalOutput += Number(res.response_data.total_money_out);
+        this.totalIncome = Number(res.response_data.total_money_in);
+        this.totalOutput = Number(res.response_data.total_money_out);
         var result = res.response_data.result;
         setTimeout(() => {
           for (let i = 0; i < res.response_data.result.length; i++) {
@@ -204,8 +204,8 @@ export default {
       let res = await USER_REMAIN_DETAILS(data);
 
       if (res.hasOwnProperty("response_code")) {
-        this.totalIncome += Number(res.response_data.total_money_in);
-        this.totalOutput += Number(res.response_data.total_money_out);
+        this.totalIncome = Number(res.response_data.total_money_in);
+        this.totalOutput = Number(res.response_data.total_money_out);
 
         var result = res.response_data.result;
         setTimeout(() => {

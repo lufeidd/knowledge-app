@@ -1,6 +1,6 @@
 <template>
-  <div id="phonePage" style="margin-top: 0;">
-    <div class="fieldBox" style="margin-top: 0;">
+  <div id="phonePage">
+    <div class="fieldBox">
       <p style="padding: 10px 0 30px 0;" v-if="pageType == 'new'">更换手机号后，下次可用新手机号登录</p>
 
       <van-field
@@ -89,7 +89,6 @@
 
   .fieldBox {
     padding: 20px;
-    margin-top: 50px;
   }
 
   .phone .van-field__label {
@@ -145,9 +144,6 @@ export default {
     }
   },
   methods: {
-    onClickLeft() {
-      this.$router.go(-1);
-    },
     getCode() {
       this.$countDown(this.codeData);
       this.sms();

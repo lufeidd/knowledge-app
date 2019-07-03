@@ -88,7 +88,7 @@ export default {
     // 获取页面分享信息
     async wxShareData() {
       var tStamp = this.$getTimeStamp();
-      var data;
+      var data = {};
       switch (this.$route.query.type) {
         case "mall":
           var tmp = {};
@@ -191,7 +191,7 @@ export default {
         }, 500);
 
         // 获取页面分享信息
-        this.wxShareData();
+        if(this.isWxLogin) this.wxShareData();
       } else {
         this.$toast(res.error_message);
       }

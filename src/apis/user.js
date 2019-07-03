@@ -15,6 +15,8 @@ export const USER_INFO_EDIT = query => req('post', '/user/info/edit', query);
 //获取用户余额充值信息
 export const USER_WALLET_RECHARGE_INFO = query => req('post', '/user/wallet/recharge/info', query);
 
+// 用户余额充值申请创建
+export const USER_WALLET_RECHARGE_ADD = query => req('post', '/user/wallet/recharge/add', query);
 
 // 定义我的评论接口
 export const USER_COMMENT = query => req('post', '/user/comment/gets', query);
@@ -37,7 +39,7 @@ export const USER_FEEDBACK_ADD = query => req('post', '/user/feedback/add', quer
 export const USER_ORDER_INVOICE_ADD = query => req('post', '/shopping/order/invoice/add', query);
 export const USER_ORDER_DETAIL_GET = query => req('post', '/shopping/order/get', query);
 export const USER_ORDER_DETAIL_GETS = query => req('post', '/shopping/order/gets', query);
-    //订单评价
+//订单评价
 export const USER_ORDER_ORDER_COMMENT_ADD = query => req('post', '/shopping/order/comment/add', query);
 export const USER_ORDER_COMMENT_UNDO_GETS = query => req('post', '/shopping/order/comment/undo/gets', query);
 

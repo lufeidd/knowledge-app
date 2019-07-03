@@ -3,9 +3,9 @@
     <!-- 商品信息 -->
     <div class="listBox">
       <div class="left" style="margin-right: 10px;">
-        <div class="ratioBox">
+        <div style="display: flex;justify-content: center;align-items: center;">
           <!-- <router-link to="/detail" class="box"> -->
-            <img :src="goodsInfo.pic[0]">
+          <img :src="goodsInfo.pic[0]">
           <!-- </router-link> -->
         </div>
       </div>
@@ -30,9 +30,9 @@
     <div v-for="(item, key) in payBank" :key="key">
       <div
         class="listBox"
-        :class="{disable: user_balance < goodsInfo.price || item.state == 0}"
+        :class="{disable: user_balance < goodsInfo.price && item.bank_type == 'balance' || item.state == 0}"
         style="padding: 8px 15px;"
-        v-if="item.bank_type != 'alipay'"
+        v-if="item.bank_type == 'balance' || (isWxLogin && item.bank_type == 'wxpay')"
       >
         <div class="list" style="display:flex;flex-grow: 1;" @click="payType(key, item)">
           <div class="check">
@@ -73,7 +73,7 @@
         </div>
 
         <div class="left two" v-if="item.bank_type == 'balance' && user_balance < goodsInfo.price">
-          <router-link to="../personal/remain/index">
+          <router-link to="../personal/remain/account">
             <van-button round type="danger">充值</van-button>
           </router-link>
         </div>
@@ -88,8 +88,15 @@
 
     <!-- 支付 -->
     <div class="bottomBox" :class="{ iphx: this.isIphx }">
-      <van-button size="large" type="danger" disabled v-if="user_balance < goodsInfo.price">支付</van-button>
-      <van-button size="large" type="danger" @click="payAction" v-else>支付</van-button>
+      <!-- <van-button
+        size="large"
+        type="danger"
+        disabled
+        v-if="activeIndex != 1 && user_balance < goodsInfo.price"
+      >支付</van-button>
+      <van-button size="large" type="danger" @click="payAction" v-else>支付</van-button>-->
+
+      <van-button size="large" type="danger" @click="payAction">支付</van-button>
     </div>
 
     <!-- 数字键盘 -->
@@ -130,15 +137,15 @@
 <style lang="scss">
 @import url("./../../style/scss/components/button.scss");
 #payaccountPage {
-.van-button {
-  // border-radius: 50px;
-}
+  .van-button {
+    // border-radius: 50px;
+  }
 
-.van-dialog__confirm,
-.van-dialog__confirm:active,
-.van-button::before {
-  display: none;
-}
+  .van-dialog__confirm,
+  .van-dialog__confirm:active,
+  .van-button::before {
+    display: none;
+  }
 }
 </style>
 
@@ -151,6 +158,7 @@ import {
   ORDER_VIRTUAL_ADD_PAY,
   ORDER_VIRTUAL_ADDINFO
 } from "../../apis/shopping.js";
+import { CASHIER_PAY_ADD } from "../../apis/public.js";
 
 export default {
   data() {
@@ -186,7 +194,8 @@ export default {
       pay_mobilephone: "",
       pay_money: "",
       // 订单号
-      order_id: ""
+      order_id: "",
+      pay_id: ""
     };
   },
   mounted() {
@@ -209,11 +218,13 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        
+
         this.goodsInfo = res.response_data.goods_info;
         this.payBank = res.response_data.pay_bank;
         this.descInfo = res.response_data.desc;
         this.user_balance = res.response_data.user_balance;
+
+        this.activeIndex = this.user_balance >= this.goodsInfo.price ? 0 : 1;
 
         // console.log(res);
       } else {
@@ -236,6 +247,8 @@ export default {
       if (item.state == 0) {
         this.$toast("暂不支持~");
         return;
+      }
+      if (item.wxpay == "wxpay") {
       }
       this.activeIndex = key;
     },
@@ -263,11 +276,19 @@ export default {
       this.showKeyboard = true;
       $(".van-number-keyboard").css("z-index", 10000);
     },
+    onInput(key) {
+      this.value = (this.value + key).slice(0, 6);
+      if (this.value.length == 6) {
+        this.payData(this.value);
+      }
+    },
+    onDelete() {
+      this.value = this.value.slice(0, this.value.length - 1);
+    },
     // 支付
     payAction() {
       // 余额支付
       if (this.activeIndex == 0) {
-        this.addOrderData();
         this.value = "";
         this.showDialog = true;
         // 重置倒计时
@@ -278,20 +299,46 @@ export default {
       }
       // 微信支付
       if (this.activeIndex == 1) {
-        //   this.$router.push({name: 'pay', query: {goodsId: this.goodsInfo.goods_id, money: this.goodsInfo.price}});
       }
+      this.addOrderData(this.activeIndex);
     },
-    onInput(key) {
-      this.value = (this.value + key).slice(0, 6);
-      if (this.value.length == 6) {
-        this.payData(this.value);
+    // 交易支付请求发起
+    async cashierPayData(_payId) {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        pay_id: _payId,
+        openid: localStorage.getItem("openid"),
+        type: "WXJS",
+        timeStamp: tStamp,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await CASHIER_PAY_ADD(data);
+
+      console.log(999, res.response_data);
+
+      if (res.hasOwnProperty("response_code")) {
+        // var _package = "prepay_id=" + res.response_data.pay_arr.prepayid;
+        console.log(
+          888,
+          res.response_data.pay_arr.timeStamp,
+          res.response_data.pay_arr.nonceStr,
+          res.response_data.pay_arr.sign
+        );
+        this.$onBridgeReady(
+          res.response_data.pay_arr.timeStamp,
+          res.response_data.pay_arr.nonceStr,
+          res.response_data.pay_arr.package,
+          res.response_data.pay_arr.sign,
+          this.order_id,
+          this.pay_money
+        );
+      } else {
+        this.$toast(res.error_message);
       }
-    },
-    onDelete() {
-      this.value = this.value.slice(0, this.value.length - 1);
     },
     // 新增虚拟订单
-    async addOrderData() {
+    async addOrderData(_index) {
       var tStamp = this.$getTimeStamp();
       let data = {
         timeStamp: tStamp,
@@ -304,7 +351,10 @@ export default {
         this.pay_mobilephone = res.response_data.pay_mobilephone;
         this.pay_money = res.response_data.pay_money;
         this.order_id = res.response_data.order_id;
-        // console.log(res.response_data)
+        this.pay_id = res.response_data.pay_id;
+
+        // 交易支付请求发起
+        if (_index == 1) this.cashierPayData(this.pay_id);
       } else {
         this.$toast(res.error_message);
       }
@@ -314,17 +364,14 @@ export default {
       var tStamp = this.$getTimeStamp();
       let data = {
         timeStamp: tStamp,
-        order_id: this.order_id,
-        pay_money: this.pay_money,
+        pay_id: this.pay_id,
+        type: "NORMAL",
         code: __code,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADD_PAY(data);
-      if (
-        res.hasOwnProperty("response_code")
-      ) {
-        
+      if (res.hasOwnProperty("response_code")) {
         this.showDialog = false;
         this.showKeyboard = false;
         clearInterval(this.clock);

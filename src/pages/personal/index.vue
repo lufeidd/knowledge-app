@@ -6,7 +6,7 @@
         <div class="ratioBox" v-if="infoData.is_login && infoData.user_header != ''"></div>
         <div class="ratioBox active" v-else>
           <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-personal-block"></use>
+            <use xlink:href="#icon-personal-block" />
           </svg>
         </div>
       </div>
@@ -24,17 +24,17 @@
             </a>-->
             <router-link v-if="infoData.is_login" :to="{path: '/personal/set/index'}">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-personalSet"></use>
+                <use xlink:href="#icon-personalSet" />
               </svg>
             </router-link>
             <router-link v-else :to="{path: '/login/index'}">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-personalSet"></use>
+                <use xlink:href="#icon-personalSet" />
               </svg>
             </router-link>
           </div>
         </div>
-        <div class="subTitle">登录后同步您的收藏</div>
+        <div class="subTitle" v-if="!infoData.is_login">登录后同步您的收藏</div>
       </div>
     </div>
 
@@ -99,7 +99,7 @@
         <div class="cell">
           <div class="svg" @click="gotoRemain">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-personalBuy"></use>
+              <use xlink:href="#icon-personalBuy" />
             </svg>
           </div>
           <div class="desc" @click="gotoRemain">
@@ -116,7 +116,7 @@
         <router-link v-if="infoData.is_login" to="/personal/order/list" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-personalAccount"></use>
+              <use xlink:href="#icon-personalAccount" />
             </svg>
           </div>
           <div class="desc">
@@ -124,14 +124,14 @@
           </div>
           <div class="action">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line"></use>
+              <use xlink:href="#icon-next-line" />
             </svg>
           </div>
         </router-link>
         <router-link v-else to="/login/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-personalAccount"></use>
+              <use xlink:href="#icon-personalAccount" />
             </svg>
           </div>
           <div class="desc">
@@ -139,7 +139,7 @@
           </div>
           <div class="action">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line"></use>
+              <use xlink:href="#icon-next-line" />
             </svg>
           </div>
         </router-link>
@@ -180,7 +180,7 @@
         <router-link v-if="infoData.is_login" to="/personal/comment/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-personalComment"></use>
+              <use xlink:href="#icon-personalComment" />
             </svg>
           </div>
           <div class="desc">
@@ -188,14 +188,14 @@
           </div>
           <div class="action">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line"></use>
+              <use xlink:href="#icon-next-line" />
             </svg>
           </div>
         </router-link>
         <router-link v-else to="/login/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-personalComment"></use>
+              <use xlink:href="#icon-personalComment" />
             </svg>
           </div>
           <div class="desc">
@@ -203,7 +203,7 @@
           </div>
           <div class="action">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line"></use>
+              <use xlink:href="#icon-next-line" />
             </svg>
           </div>
         </router-link>
@@ -212,7 +212,7 @@
         <router-link v-if="infoData.is_login" to="/personal/help/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-personalHelp"></use>
+              <use xlink:href="#icon-personalHelp" />
             </svg>
           </div>
           <div class="desc">
@@ -220,14 +220,14 @@
           </div>
           <div class="action">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line"></use>
+              <use xlink:href="#icon-next-line" />
             </svg>
           </div>
         </router-link>
         <router-link v-else to="/login/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-personalHelp"></use>
+              <use xlink:href="#icon-personalHelp" />
             </svg>
           </div>
           <div class="desc">
@@ -235,7 +235,7 @@
           </div>
           <div class="action">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line"></use>
+              <use xlink:href="#icon-next-line" />
             </svg>
           </div>
         </router-link>
@@ -305,21 +305,35 @@ export default {
         this.$set(this.infoData, "is_login", res.response_data.is_login);
         this.$set(this.infoData, "balance", res.response_data.balance);
 
+        // 第三方登录获取头像昵称
+        if (
+          localStorage.getItem("nickname") != "null" &&
+          localStorage.getItem("nickname") != null
+        ) {
+          this.$set(this.infoData, "is_login", 1);
+          this.$set(this.infoData, "user_name", localStorage.getItem("nickname"));
+        }
+        if (
+          localStorage.getItem("headimg") != "null" &&
+          localStorage.getItem("headimg") != null
+        ) {
+          this.$set(this.infoData, "is_login", 1);
+          this.$set(this.infoData, "user_header", localStorage.getItem("headimg"));
+        }
+
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        
 
         if (this.infoData.is_login == 1) {
           $(".ratioBox").css(
             "background-image",
-            "url(" + res.response_data.user_header + ")"
+            "url(" + this.infoData.user_header + ")"
           );
         }
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          
         }
         this.$toast(res.error_message);
       }

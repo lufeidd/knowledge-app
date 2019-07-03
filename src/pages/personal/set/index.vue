@@ -141,6 +141,23 @@ export default {
         this.$store.commit("changeLoginState", 1);
         
 
+        // 第三方登录获取头像昵称
+        if (
+          localStorage.getItem("nickname") != "null" &&
+          localStorage.getItem("nickname") != null
+        ) {
+          this.$set(this.infoData, "is_login", 1);
+          this.$set(this.infoData, "user_name", localStorage.getItem("nickname"));
+        }
+        if (
+          localStorage.getItem("headimg") != "null" &&
+          localStorage.getItem("headimg") != null
+        ) {
+          this.$set(this.infoData, "is_login", 1);
+          this.$set(this.infoData, "user_header", localStorage.getItem("headimg"));
+        }
+
+        
         if (this.infoData.is_login == 1) {
           $(".ratioBox").css(
             "background-image",
@@ -174,6 +191,13 @@ export default {
         localStorage.setItem('miniAudio', null);
         localStorage.setItem('audioProgress', null);
         localStorage.setItem('cmts', null);
+        localStorage.setItem('fromLink', null);
+        // localStorage.setItem('nickname', null);
+        // localStorage.setItem('unionid', null);
+
+        this.wxCodeStr = '';  
+        this.nickname = '';
+        this.unionid = '';
         sessionStorage.setItem('headPic', null);
         this.$store.commit("changeLoginState", 100);
 

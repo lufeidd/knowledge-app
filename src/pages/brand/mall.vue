@@ -36,7 +36,8 @@
         </span>
       </div>
       <div class="goods">
-        <div class="goodsInfo"
+        <div
+          class="goodsInfo"
           v-for="(value,index) in item.list"
           @click="linktoDetail(value.contents.link_params)"
           :key="index"
@@ -77,7 +78,7 @@ export default {
         personal: true,
         personalLink: "/personal/index",
         type: "mall",
-        supplier_id: null,
+        supplier_id: null
       },
       swiperOption: {
         slidesPerView: 1.2
@@ -85,20 +86,19 @@ export default {
       supplier_id: null,
       title: null,
       modleInfo: [],
-      goodsInfo: null,
+      goodsInfo: null
     };
   },
   mounted() {
-    this.title = this.$route.query.title;
+    this.title = this.$route.query.title ? this.$route.query.title : '';
     this.supplier_id = this.$route.query.supplier_id;
     this.navData.supplier_id = this.supplier_id;
     // title
-    document.title = '商城-' + this.title;
+    document.title = "商城-" + this.title;
     this.getData();
   },
   // 进入当前页面
-  beforeRouteEnter (to, from, next) { 
-
+  beforeRouteEnter(to, from, next) {
     // console.log(to, from ,next);
 
     // 外链进入
@@ -121,6 +121,7 @@ export default {
         this.modleInfo = res.response_data.module_list[0];
         this.goodsInfo = res.response_data.module_list.slice(1);
         // 获取页面分享信息
+        // if(this.isWxLogin) this.wxShareData();
         this.wxShareData();
       } else {
         this.$toast(res.error_message);
@@ -129,6 +130,7 @@ export default {
     linktoDetail(link) {
       // console.log(link);
       var data = this.$translate(JSON.parse(link));
+      data.query.type = 'mall';
       this.$router.push(data);
     },
     // 获取页面分享信息
@@ -136,7 +138,10 @@ export default {
       var tStamp = this.$getTimeStamp();
       var data = {
         page_name: "mall/index",
-        params: JSON.stringify({ brand_id: this.$route.query.brand_id, supplier_id: this.$route.query.supplier_id }),
+        params: JSON.stringify({
+          brand_id: this.$route.query.brand_id,
+          supplier_id: this.$route.query.supplier_id
+        }),
         version: "1.0",
         timestamp: tStamp
       };
@@ -144,6 +149,7 @@ export default {
       let res = await WX_SHARE(data);
       if (res.hasOwnProperty("response_code")) {
         // console.log(res.response_data)
+        document.title = res.response_data.share_info.title;
         // 微信分享
         this.$getWxData(
           res.response_data.share_info.title,

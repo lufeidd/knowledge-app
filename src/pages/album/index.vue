@@ -689,9 +689,11 @@ export default {
         this.brandInfoData = res.response_data.brand_info;
         // 登录状态
         this.isLogin = res.response_data.user_info.is_login;
+        // title
+        document.title = "节目详情-" + res.response_data.base.title;
 
         // 获取页面分享信息
-        this.wxShareData();
+        if (this.isWxLogin) this.wxShareData();
 
         // 是否显示底部购买按钮
         this.showBuyButton = !(
@@ -953,6 +955,7 @@ export default {
         this.answerData = [];
         this.discussData = [];
         this.replyPage = [];
+        this.contentModel = "";
         this.commentData();
       } else {
         this.$toast(res.error_message);

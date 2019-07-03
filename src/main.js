@@ -110,10 +110,21 @@ Vue.config.productionTip = false
 
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
+
   next();
+
+  // 存放页面来源地址
+  if (from.path != to.path) {
+    localStorage.setItem('fromLink', from.path);
+
+    // console.log('from path:', from.path, 'to path:', to.path);
+    next();
+  }
+  next();
+
   /* 路由发生变化修改页面 title */
   if (to.meta.title) {
-    document.title = to.meta.title
+    document.title = to.meta.title;
     next()
   }
   next()
@@ -139,7 +150,7 @@ router.beforeEach((to, from, next) => {
       // 未登录跳转到登录页面   
       if (!token || token == 100) {
         replaceUrl = window.location.href.split('#')[0] + '#' + '/login/index';
-      
+
         next();
       } else {
         //如果该路由不需要验证，那么直接往后走          
@@ -156,10 +167,10 @@ router.beforeEach((to, from, next) => {
     // 判断是否等于第一个参数
     if (index == 0) {
       // 拼接地址第一个参数，添加“?”号
-      replaceUrl += '?' + i + '=' + to.query[i]
+      replaceUrl += '?' + i + '=' + to.query[i];
     } else {
       // 拼接地址非第一个参数，添加“&”号
-      replaceUrl += '&' + i + '=' + to.query[i]
+      replaceUrl += '&' + i + '=' + to.query[i];
     }
     index++; // 索引++
   }
@@ -199,8 +210,7 @@ router.beforeEach((to, from, next) => {
   }
   next()
 
-  // console.log('routerLink:', replaceUrl, 'token:', token);
-  localStorage.setItem('routerLink:', replaceUrl);
+  localStorage.setItem('routerLink', replaceUrl);
   window.location.replace(replaceUrl); // 重定向跳转
 })
 
