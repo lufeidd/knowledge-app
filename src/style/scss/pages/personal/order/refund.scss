@@ -10,7 +10,7 @@
      background-color: $greyLight;
    }
    .orderExpress{
-     padding: 15px 0 15px 20px;
+     padding: 0 15px;
      @include displayFlex(flex,flex-start,center);
      .ratiobox{
       width: 52px;
@@ -35,41 +35,12 @@
        color: $cl9;
        font-size: $fontSize - 1;
      }
-     .van-step__circle {
-      width: 7px;
-      height: 7px;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      }
-      .van-step--vertical .van-step__circle {
-      top: 16px;
-      left: -19px;
-     }
-    //  .van-icon-checked:before{
-    //     width: 7px;
-    //     height: 7px;
-    //     border: 1px solid $redDark;
-    //     content: "";
-    //     border-radius: 50%;
-    //     // color: $redDark;
-    //     // position: absolute;
-    //     // top: 16px;
-    //     // left: -19px;
-    //  }
-    //  .van-step--finish .van-step__circle, .van-step--finish .van-step__line{
-    //    background-color: $clC;
-    //  }
-    .van-step__circle{
-      background-color: $white;
-    }
-    .van-step--vertical .van-step__line{
-      background-color: $clC;
-    }
    }
  }
 
  #editPage{
    padding: 20px 15px 0 15px;
+
   .company{
     @include displayFlex(flex,null,center);
     border-bottom: 1px solid $greyLight;
@@ -101,7 +72,7 @@
 
  #typePage{
    .refund{
-     padding: 15px;
+     padding:0 15px;
      @include displayFlex(flex,space-between,center);
      border-bottom: 1px solid $greyLight;
      .refundText{

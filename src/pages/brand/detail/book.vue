@@ -7,9 +7,9 @@
           <a class="bookImg" v-lazy:background-image="bookInfo.imgUrl"></a>
         </div>
         <div class="bookContent">
-          <p class="title">{{bookInfo.title}}</p>
-          <p class="author">{{bookInfo.author}}</p>
-          <p class="message">
+          <span class="title">{{bookInfo.title}}</span>
+          <span class="author">{{bookInfo.author}}</span>
+          <span class="message">
             <span v-if="collect" @click="iconCollect">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-collect-line"></use>
@@ -25,7 +25,7 @@
                 <use xlink:href="#icon-list-line"></use>
               </svg> 信息
             </span>
-          </p>
+          </span>
         </div>
       </div>
       <swiper class="swiperTags" :options="swiperOption1" ref="mySwiper">
@@ -164,8 +164,8 @@
               <a class="bookImg" v-lazy:background-image="item.imgUrl"></a>
             </div>
             <div class="content">
-              <p class="title">{{item.title}}</p>
-              <p class="name">{{item.name}}</p>
+              <span class="title">{{item.title}}</span>
+              <span class="name">{{item.name}}</span>
             </div>
           </div>
         </swiper-slide>
@@ -293,7 +293,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/brand/detail/book.scss" lang="scss"></style>
+<style src="@/style/scss/pages/brand/detail/book.scss" scoped lang="scss"></style>
 
 <script>
 import { fail } from "assert";

@@ -12,7 +12,7 @@
     <div class="line"></div>
     <div class="logisticsInfo">
       <div class="text">物流信息</div>
-      <van-steps direction="vertical" :active="2" active-color="#ff504e" active-icon="circle">
+      <van-steps direction="vertical"  active-color="#ff504e" active-icon="circle">
         <van-step>
           <p>您的快递以交由中通快递发出</p>
           <p>2019-03-14 12:12:38</p>

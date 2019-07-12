@@ -85,6 +85,7 @@ import wx from "weixin-js-sdk";
 export default {
   name: "App",
   mounted() {
+    // this.$router.push('/brand/detail/book')
     sessionStorage.setItem("gotoLogin", "no");
     sessionStorage.setItem("isWxLogin", "no");
 
