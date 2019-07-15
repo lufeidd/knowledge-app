@@ -305,22 +305,6 @@ export default {
         this.$set(this.infoData, "is_login", res.response_data.is_login);
         this.$set(this.infoData, "balance", res.response_data.balance);
 
-        // 第三方登录获取头像昵称
-        if (
-          localStorage.getItem("nickname") != "null" &&
-          localStorage.getItem("nickname") != null
-        ) {
-          this.$set(this.infoData, "is_login", 1);
-          this.$set(this.infoData, "user_name", localStorage.getItem("nickname"));
-        }
-        if (
-          localStorage.getItem("headimg") != "null" &&
-          localStorage.getItem("headimg") != null
-        ) {
-          this.$set(this.infoData, "is_login", 1);
-          this.$set(this.infoData, "user_header", localStorage.getItem("headimg"));
-        }
-
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
 

@@ -58,19 +58,20 @@ export default {
           localStorage.setItem('openid', response.data.openid);
           localStorage.setItem('unionid', response.data.unionid);
           // 第三方用户登录接口
-          self.$getLoginParterner(response.data.unionid, response.data.nickname, 2);
+          self.$getLoginParterner(response.data.headimgurl, response.data.unionid, response.data.nickname, 2);
         })
         .catch(function (error) {
           self.fetchError = error;
           console.log('error:', error);
         });
     }
-    Vue.prototype.$getLoginParterner = async function (_unionid, _outerName, _type) {
+    Vue.prototype.$getLoginParterner = async function (_headimg, _unionid, _outerName, _type) {
 
       var tStamp = this.$getTimeStamp();
       let data = {
         outer_id: _unionid,
         outer_name: _outerName,
+        header_pic: _headimg,
         timestamp: tStamp,
         type: _type,
         version: "1.0"

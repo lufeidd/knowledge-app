@@ -155,6 +155,7 @@ export default {
       let data = {
         timestamp: tStamp,
         mobile: this.phone,
+        header_pic: localStorage.getItem('headimg'),
         auth_code: this.code,
         outer_id: this.outerId,
         type: this.bindtype,
