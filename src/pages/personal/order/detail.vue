@@ -5,30 +5,32 @@
         <use xlink:href="#icon-checked-right"></use>
       </svg> 订单已完成
     </div>
-    <!-- <div class="signfor">
-      <svg class="icon car" aria-hidden="true">
-        <use xlink:href="#icon-interflow-line"></use>
-      </svg>
-      <div class="signforFrom">
-        <span class="signforPeople">浙江省杭州市西湖中公司 已签收 签收人：西湖</span>
-        <span class="signDate">2017.04.21 14:00:22</span>
-      </div>
-      <svg class="icon arrow" aria-hidden="true">
-        <use xlink:href="#icon-next-line"></use>
-      </svg>
-    </div>
-    <div class="signfor">
-      <svg class="icon car" aria-hidden="true">
-        <use xlink:href="#icon-location-line"></use>
-      </svg>
-      <div class="signforFrom">
-        <div class="personalInfo">
-          <span>王老板</span>
-          <span>15000007777</span>
+    <div v-if="infoData.type == 2">
+      <div class="signfor">
+        <svg class="icon car" aria-hidden="true">
+          <use xlink:href="#icon-interflow-line"></use>
+        </svg>
+        <div class="signforFrom">
+          <span class="signforPeople">浙江省杭州市西湖中公司 已签收 签收人：西湖</span>
+          <span class="signDate">2017.04.21 14:00:22</span>
         </div>
-        <p class="address">收货地址：浙江省 杭州市 西湖区 西湖边东区23树6洞 3-3楼</p>
+        <svg class="icon arrow" aria-hidden="true">
+          <use xlink:href="#icon-next-line"></use>
+        </svg>
       </div>
-    </div>-->
+      <div class="signfor">
+        <svg class="icon car" aria-hidden="true">
+          <use xlink:href="#icon-location-line"></use>
+        </svg>
+        <div class="signforFrom">
+          <div class="personalInfo">
+            <span>{{infoData.consignee_name}}</span>
+            <span>{{infoData.consignee_mobilephone}}</span>
+          </div>
+          <p class="address">收货地址：{{infoData.consignee_address}}</p>
+        </div>
+      </div>
+    </div>
     <div class="info" v-if="infoData">
       <div class="head" @click="toBrandindex">
         <div class="titleFrom">
@@ -49,19 +51,13 @@
           <div class="ratiobox">
             <div class="box">
               <a class="bookImg" v-lazy:background-image="item.pic"></a>
-              <!-- <img v-lazy="item.pic" class="bookImg"> -->
-              <!-- <div class="tip">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-sound-line"></use>
-                </svg>
-                {{ publishData.watch }}
-              </div>-->
             </div>
           </div>
           <div class="rightInfo">
             <span class="title">{{item.goods_name}}</span>
             <span class="title red">￥{{item.real_price}}</span>
           </div>
+          <span class="button button3 applyrefund" @click="torefund(item)" v-if="infoData.type == 2">申请售后</span>
         </div>
       </div>
     </div>
@@ -112,7 +108,7 @@
     </div>
     <div class="fictitious">
       <div class="text">
-        <van-cell title="虚拟物品"/>
+        <van-cell :title="infoData.type==1?'虚拟商品(不退不换)':'实物商品'"/>
       </div>
       <div class="orderNumber">
         <span class="order">订单编号</span>
@@ -141,10 +137,10 @@
         :class="{iphx:this.isIphx}"
         :style="{'justify-content': !showInvoice ? 'flex-end':'space-between'}"
       >
-        <span class="button button1" @click="apply" v-if="showInvoice">申请发票</span>
+        <span class="button button3" @click="apply" v-if="showInvoice">申请发票</span>
         <div>
           <span class="button button2" @click="toComment" v-if="infoData.if_comment == 0">评价</span>
-          <!-- <span class="button button1" @click="repurchase">再次购买</span> -->
+          <span class="button button3" @click="repurchase" v-if="infoData.type == 2" style="margin-right:15px;">再次购买</span>
         </div>
       </div>
     </div>
@@ -299,6 +295,32 @@ export default {
           order_id: this.infoData.order_id
         }
       });
+    },
+    // 选择退款类型
+    torefund(item){
+      console.log(item);
+      if(this.infoData.state == 5){
+        this.$router.push({
+          name:"refundtype",
+          query:{
+            order_id:this.infoData.order_id,
+            detail_id:item.id,
+            refund_money:item.real_price,
+            refund_count:item.buy_count,
+          }
+        })
+      }else if(this.infoData.state == 2){
+        this.$router.push({
+          name:"refundone",
+          query:{
+            order_id:this.infoData.order_id,
+            detail_id:item.id,
+            refund_money:item.real_price,
+            refund_count:item.buy_count,
+          }
+        })
+      }
+
     }
   }
 };

@@ -16,3 +16,9 @@ export const ORDER_VIRTUAL_ADD_PAY = query => req('post', '/shopping/cashier/bal
 
 // 新增虚拟订单
 export const ORDER_VIRTUAL_ADDINFO = query => req('post', '/shopping/order/virtual/addinfo', query);
+
+//退款申请
+export const ORDER_REFUND_ADD = query => req('post', '/shopping/order/refund/add', query);
+
+//获取退款申请信息
+export const ORDER_REFUND_ADDINFO = query => req('post', '/shopping/order/refund/addinfo', query);

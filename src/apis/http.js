@@ -9,10 +9,10 @@ import qs from "Qs";
 // 创建axios的一个实例
 var instance = axios.create({
     // dev
-    // baseURL: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis',
+    baseURL: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis',
 
     // run build
-    baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
+    // baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
 
     headers: { 'App-version': 'wap' },
     // responseType: 'blob',    // 测试发票下载

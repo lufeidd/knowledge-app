@@ -302,6 +302,15 @@
       }
     }
   }
+  & .count {
+    font-size: $fontSize - 2;
+    color: #999;
+    text-align: right;
+
+    & .active {
+      color: $redDark;
+    }
+  }
 }
 
 #twoPage{

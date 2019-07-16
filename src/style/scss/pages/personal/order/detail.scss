@@ -57,7 +57,7 @@
 
       .address {
         white-space: pre-wrap;
-        margin-top: 5px;
+        margin: 5px 0;
         font-size: $fontSize - 1;
         color: $cl6;
       }
@@ -124,6 +124,7 @@
 
       .bookDetail {
         @include displayFlex(flex, null, null);
+        position: relative;
 
         .ratiobox {
           min-width: 65px;
@@ -159,10 +160,15 @@
         .rightInfo {
           @include displayFlex(flex, space-between, space-between);
           flex-direction: column;
-
+          flex-grow: 1;
           .red {
             color: $redDark;
           }
+        }
+        .applyrefund{
+          position: absolute;
+          right: 5px;
+          bottom:0;
         }
       }
     }
@@ -214,31 +220,6 @@
       }
       .text{
         font-size:$fontSize - 2;
-      }
-      .button {
-        display: inline-block;
-        width: 60px;
-        height: 18px;
-        border-radius: 9px;
-        text-align: center;
-        line-height: 18px;
-        font-size: $fontSize - 2;
-        margin-left: 15px;
-      }
-  
-      .button1 {
-        border: 1px solid $greyDark;
-        color: $greyDark;
-      }
-  
-      .button2 {
-        border: 1px solid $redDark;
-        color: $redDark;
-      }
-  
-      .button3 {
-        border: 1px solid $cl6;
-        color: $cl3;
       }
     }
   }
@@ -298,31 +279,30 @@
     @include position (fixed, br, 0, null, null, 50px, null);
     border-top: 1px solid #d2d2d2;
 
-    .button {
-      display: inline-block;
-      width: 60px;
-      height: 24px;
-      border-radius: 12px;
-      text-align: center;
-      line-height: 24px;
-      font-size: $fontSize - 2;
-      margin-left: 15px;
-      margin-right: 15px;
-    }
+  }
+  .button {
+    display: inline-block;
+    width: 60px;
+    height: 18px;
+    border-radius: 9px;
+    text-align: center;
+    line-height: 18px;
+    font-size: $fontSize - 2;
+    margin-left: 15px;
+  }
 
-    .button1 {
-      border: 1px solid $greyDark;
-      color: $cl3;
-    }
+  .button1 {
+    border: 1px solid $greyDark;
+    color: $greyDark;
+  }
 
-    .button2 {
-      border: 1px solid $redDark;
-      color: $redDark;
-    }
+  .button2 {
+    border: 1px solid $redDark;
+    color: $redDark;
+  }
 
-    .button3 {
-      border: 1px solid $cl6;
-      color: $cl3;
-    }
+  .button3 {
+    border: 1px solid $cl6;
+    color: $cl3;
   }
 }
