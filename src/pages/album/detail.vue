@@ -1,7 +1,7 @@
 <template>
   <div id="albumdetailPage" class="page">
     <div class="nullBox" v-if="onsale == 0">
-      <img src="./../../assets/null/product.png" width="100%">
+      <img src="./../../assets/null/product.png" width="100%" />
       <div>该商品已下架~</div>
     </div>
 
@@ -15,10 +15,10 @@
             style="text-align:right;"
           >
             <svg class="icon" aria-hidden="true" v-if="baseData.collect_id > 0">
-              <use xlink:href="#icon-collect-block"></use>
+              <use xlink:href="#icon-collect-block" />
             </svg>
             <svg class="icon" aria-hidden="true" v-else>
-              <use xlink:href="#icon-collect-line"></use>
+              <use xlink:href="#icon-collect-line" />
             </svg>
             <span>
               <template v-if="baseData.collect_id > 0">已</template>收藏
@@ -33,12 +33,12 @@
         <div v-if="baseData.goods_type == 1">
           <div @click="gotoPlayer('external')" class="box layer">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-audio-circle"></use>
+              <use xlink:href="#icon-audio-circle" />
             </svg>
           </div>
           <!-- 遮罩 -->
           <div class="box">
-            <img :src="baseData.pic[0]">
+            <img :src="baseData.pic[0]" />
           </div>
         </div>
         <!-- 视频 -->
@@ -48,7 +48,7 @@
             <!-- 需要支付 但 不含试听 -->
             <div @click="gotoPlayer('external')" class="box layer" v-if="baseData.free_path == ''">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-videoPause-line"></use>
+                <use xlink:href="#icon-videoPause-line" />
               </svg>
             </div>
             <div class="box">
@@ -80,7 +80,7 @@
       <div class="albumBox" v-if="pid">
         <router-link :to="{ name: 'album', query: {goods_id: pid}}" class="ratioBox">
           <div class="box">
-            <img :src="baseData.pic[0]">
+            <img :src="baseData.pic[0]" />
           </div>
         </router-link>
         <router-link :to="{ name: 'album', query: {goods_id: pid}}" class="issue">
@@ -94,10 +94,10 @@
         >
           <van-tag plain type="danger" text-color="#f05654">
             <svg class="icon" aria-hidden="true" v-if="albumInfo.collect_id > 0">
-              <use xlink:href="#icon-collect-block"></use>
+              <use xlink:href="#icon-collect-block" />
             </svg>
             <svg class="icon" aria-hidden="true" v-else>
-              <use xlink:href="#icon-collect-line"></use>
+              <use xlink:href="#icon-collect-line" />
             </svg>
             <span>
               <template v-if="albumInfo.collect_id > 0">已</template>收藏
@@ -109,7 +109,7 @@
       <div class="publish" v-else>
         <router-link :to="{name: 'brand', query: {brand_id: brandInfoData.brand_id}}" class="from">
           <div class="icon">
-            <img v-lazy="brandInfoData.header_pic">
+            <img v-lazy="brandInfoData.header_pic" />
           </div>
           <div class="publishInfo">
             <p class="publishName">{{ brandInfoData.name }}</p>
@@ -136,12 +136,12 @@
       <!-- 推荐 -->
       <!-- 商品类型, 1=> 音频, 2=> 视频, 3=> 纸书, 4=> 电子书, 5=> 文创用品, 6=> 图文, 9=> 专辑 -->
       <template v-if="recommendList.length > 0">
-        <van-cell title="听了本节目的也在听" value/>
+        <van-cell title="听了本节目的也在听" value />
         <van-row gutter="20" class="booklist">
           <van-col span="8" v-for="(item, key) in recommendList" :key="key">
             <div class="ratioBox" @click="gotoLink(item)">
               <div class="box">
-                <img :src="item.pic[0]">
+                <img :src="item.pic[0]" />
               </div>
             </div>
             <div class="title" style="height: 40px;">{{ item.title }}</div>
@@ -152,7 +152,7 @@
       <!-- 评论 -->
       <div id="comment" class="commentBox">
         <div id="commentTitle">
-          <van-cell :title="totalCount" is-link value="我要评论" @click="openAnswer('comment', null)"/>
+          <van-cell :title="totalCount" is-link value="我要评论" @click="openAnswer('comment', null)" />
         </div>
 
         <van-list
@@ -165,7 +165,7 @@
             <div class="left">
               <div class="ratioBox">
                 <div class="box">
-                  <img :src="item.user_header">
+                  <img :src="item.user_header" />
                 </div>
               </div>
             </div>
@@ -201,7 +201,7 @@
                   <span class="name" @click="pageChange(item.comment_id, key)">
                     共{{ item.reply_num }}条回复
                     <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-fold-line"></use>
+                      <use xlink:href="#icon-fold-line" />
                     </svg>
                     <!-- <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-unfold-line"></use>
@@ -280,7 +280,7 @@
           <div class="title">
             <div class="action" @click="commentClose">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-fold-line"></use>
+                <use xlink:href="#icon-fold-line" />
               </svg>
             </div>
             <div>发表评论</div>
@@ -297,6 +297,7 @@
         </div>
       </van-popup>
     </div>
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -446,36 +447,36 @@ export default {
   },
   methods: {
     // 获取页面分享信息
-    async wxShareData() {
-      var tStamp = this.$getTimeStamp();
-      var tmp = {};
-      tmp.goods_id = this.$route.query.goods_id;
-      if (this.$route.query.pid != null) tmp.album_id = this.$route.query.pid;
+    // async wxShareData() {
+    //   var tStamp = this.$getTimeStamp();
+    //   var tmp = {};
+    //   tmp.goods_id = this.$route.query.goods_id;
+    //   if (this.$route.query.pid != null) tmp.album_id = this.$route.query.pid;
 
-      var data = {
-        page_name: "goods/detail",
-        params: JSON.stringify({
-          goods_id: this.$route.query.goods_id,
-          album_id: this.$route.query.pid
-        }),
-        version: "1.0",
-        timestamp: tStamp
-      };
-      data.sign = this.$getSign(data);
-      let res = await WX_SHARE(data);
-      if (res.hasOwnProperty("response_code")) {
-        // console.log(res.response_data)
-        // 微信分享
-        this.$getWxData(
-          res.response_data.share_info.title,
-          res.response_data.share_info.desc,
-          res.response_data.share_info.pic,
-          res.response_data.share_info.url
-        );
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
+    //   var data = {
+    //     page_name: "goods/detail",
+    //     params: JSON.stringify({
+    //       goods_id: this.$route.query.goods_id,
+    //       album_id: this.$route.query.pid
+    //     }),
+    //     version: "1.0",
+    //     timestamp: tStamp
+    //   };
+    //   data.sign = this.$getSign(data);
+    //   let res = await WX_SHARE(data);
+    //   if (res.hasOwnProperty("response_code")) {
+    //     // console.log(res.response_data)
+    //     // 微信分享
+    //     this.$getWxData(
+    //       res.response_data.share_info.title,
+    //       res.response_data.share_info.desc,
+    //       res.response_data.share_info.pic,
+    //       res.response_data.share_info.url
+    //     );
+    //   } else {
+    //     this.$toast(res.error_message);
+    //   }
+    // },
     // 判断视频播放是否收费
     videoPlay() {
       // 含有试听视频，播放该试听视频
@@ -517,8 +518,8 @@ export default {
       // 未支付
       if (item.goods_id != null && item.is_payed == 0 && item.is_free == 0) {
         var _goodsId = null;
-        if (this.baseData.sale_style == 1) {
-          _goodsId = this.baseData.goods_id;
+        if (item.sale_style == 1) {
+          _goodsId = parseInt(this.$route.query.pid);
         } else {
           _goodsId = item.goods_id;
         }
@@ -887,7 +888,8 @@ export default {
     async albumData() {
       var tStamp = this.$getTimeStamp();
       let data = {
-        timeStamp: tStamp,
+        ad: parseInt(this.$route.query.ad) == 1 ? 1 : 0,
+        timestamp: tStamp,
         pid: this.pid ? this.pid : null,
         goods_id: this.goodsId,
         version: "1.0"
@@ -911,7 +913,13 @@ export default {
         // this.brandInfoData = res.response_data.brand_info;
 
         // 获取页面分享信息
-        if (this.isWxLogin) this.wxShareData();
+        // if (this.isWxLogin) this.wxShareData();
+        var _pageName = "goods/detail";
+        var _params = JSON.stringify({
+          goods_id: this.$route.query.goods_id,
+          album_id: this.$route.query.pid
+        });
+        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
 
         // 是否显示底部购买按钮
         this.showBuyButton = !(

@@ -209,7 +209,7 @@ export default {
     async infoData() {
       var tStamp = this.$getTimeStamp();
       let data = {
-        timeStamp: tStamp,
+        timestamp: tStamp,
         goods_id: this.goods_id,
         version: "1.0"
       };
@@ -218,6 +218,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
+        localStorage.setItem("loginState", 1);
 
         this.goodsInfo = res.response_data.goods_info;
         this.payBank = res.response_data.pay_bank;
@@ -231,6 +232,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
+          localStorage.setItem("loginState", 100);
         }
         this.$toast(res.error_message);
       }
@@ -309,7 +311,7 @@ export default {
         pay_id: _payId,
         openid: localStorage.getItem("openid"),
         type: "WXJS",
-        timeStamp: tStamp,
+        timestamp: tStamp,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -320,7 +322,6 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // var _package = "prepay_id=" + res.response_data.pay_arr.prepayid;
         console.log(
-          888,
           res.response_data.pay_arr.timeStamp,
           res.response_data.pay_arr.nonceStr,
           res.response_data.pay_arr.sign
@@ -341,7 +342,7 @@ export default {
     async addOrderData(_index) {
       var tStamp = this.$getTimeStamp();
       let data = {
-        timeStamp: tStamp,
+        timestamp: tStamp,
         goods_id: this.goodsInfo.goods_id,
         version: "1.0"
       };
@@ -363,7 +364,7 @@ export default {
     async payData(__code) {
       var tStamp = this.$getTimeStamp();
       let data = {
-        timeStamp: tStamp,
+        timestamp: tStamp,
         pay_id: this.pay_id,
         type: "NORMAL",
         code: __code,

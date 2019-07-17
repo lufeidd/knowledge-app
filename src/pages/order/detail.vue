@@ -1,70 +1,83 @@
 <template>
   <div id="orderdetailPage">
-    <van-row class="editBox">
-      <van-col span="12">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-package-line"></use>
-        </svg>
-        <span class="title">包裹1</span>
-        <span class="type">自营</span>
-        <span class="count">共3件</span>
-      </van-col>
-      <van-col span="12" class="postage" style="text-align: right;">运费5元</van-col>
-    </van-row>
+    <div v-for="(citem, cindex) in cartlist" :key="cindex">
+      <van-row class="editBox">
+        <van-col span="12">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-package-line" />
+          </svg>
+          <span class="title">{{ citem.brand_name }}</span>
+          <!-- <span class="type">自营</span> -->
+          <span class="count">共{{ citem.goods_nums }}件</span>
+        </van-col>
+        <van-col span="12" class="postage" style="text-align: right;">运费5元</van-col>
+      </van-row>
 
-    <div class="listBox">
-      <div class="left">
-        <div class="ratioBox">
-          <router-link to="/detail" class="box">
-            <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
-          </router-link>
+      <div v-for="(gitem, gindex) in citem.goodslist" :key="gindex" class="listBox">
+        <div class="left">
+          <div class="ratioBox">
+            <router-link :to="{name: 'detail', query: {goods_id: gitem.goods_id}}" class="box">
+              <img :src="gitem.pic" />
+            </router-link>
+          </div>
         </div>
-      </div>
-      <div class="center">
-        <div class="title">
-          <router-link
-            to="/detail"
-            class="text"
-          >是地方军阀撒旦发射点发射点发生是地方军阀撒旦发射点发射点发生是地方军阀撒旦发射点发射点发生是地方军阀撒旦发射点发射点发生是地方军阀撒旦发射点发射点发生</router-link>
-        </div>
-        <div class="subTitle"></div>
-        <div class="info">
-          <span class="history">¥23.00</span>
-          <span class="count">×2</span>
-        </div>
-      </div>
-    </div>
-    <div class="listBox">
-      <div class="left">
-        <div class="ratioBox">
-          <router-link to="/detail" class="box">
-            <img src="https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75">
-          </router-link>
-        </div>
-      </div>
-      <div class="center">
-        <div class="title">
-          <router-link
-            to="/detail"
-            class="text"
-          >是地方军阀撒旦发射点发射点发生是地方军阀撒旦发射点发射点发生是地方军阀撒旦发射点发射点发生是地方军阀撒旦发射点发射点发生是地方军阀撒旦发射点发射点发生</router-link>
-        </div>
-        <div class="subTitle"></div>
-        <div class="info">
-          <span class="history">¥23.00</span>
-          <span class="count">×2</span>
+        <div class="center">
+          <div class="title">
+            <router-link
+              :to="{name: 'detail', query: {goods_id: gitem.goods_id}}"
+              class="text"
+            >{{ gitem.title }}</router-link>
+          </div>
+          <div class="subTitle"></div>
+          <div class="info">
+            <span class="history">¥{{ gitem.price }}</span>
+            <span class="count">×{{ gitem.count }}</span>
+          </div>
         </div>
       </div>
     </div>
+    <EazyNav type="order"></EazyNav>
   </div>
 </template>
 
 <style src="@/style/scss/pages/order.scss" scoped lang="scss"></style>
 
 <script>
+import { CART_INFO } from "./../../apis/shopping";
 export default {
   data() {
-    return {};
+    return {
+      money: null,
+      goods_nums: null,
+      cartlist: []
+    };
+  },
+  mounted() {
+    this.cartData();
+  },
+  methods: {
+    // 获取购物车信息
+    async cartData() {
+      var tStamp = this.$getTimeStamp();
+      var data = {};
+      data.timestamp = tStamp;
+      data.version = "1.0";
+      if(this.$route.query.detail_ids) data.detail_ids = this.$route.query.detail_ids;
+      if(this.$route.query.detail) data.detail = this.$route.query.detail;
+      data.sign = this.$getSign(data);
+      let res = await CART_INFO(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.goods_nums = res.response_data.goods_nums;
+        this.cartlist = res.response_data.cartlist;
+        this.money =
+          res.response_data.money * 100
+            ? res.response_data.money * 100
+            : this.money;
+      } else {
+        this.$toast(res.error_message);
+      }
+    }
   }
 };
 </script>

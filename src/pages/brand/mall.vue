@@ -31,7 +31,7 @@
         <span class="all">
           全部
           <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-next-line"></use>
+            <use xlink:href="#icon-next-line" />
           </svg>
         </span>
       </div>
@@ -52,7 +52,8 @@
       </div>
     </div>
 
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="mall"></EazyNav>
   </div>
 </template>
 
@@ -60,26 +61,26 @@
 
 <script>
 import qs from "Qs";
-import easyNav from "../../components/easyNav";
+// import easyNav from "../../components/easyNav";
 import { BRAND_PAGE_MALL_INDEX } from "../../apis/brand";
 import { WX_SHARE } from "../../apis/public.js";
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: true,
-        searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type: "mall",
-        supplier_id: null
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: true,
+      //   searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type: "mall",
+      //   supplier_id: null
+      // },
       swiperOption: {
         slidesPerView: 1.2
       },
@@ -90,7 +91,7 @@ export default {
     };
   },
   mounted() {
-    this.title = this.$route.query.title ? this.$route.query.title : '';
+    this.title = this.$route.query.title ? this.$route.query.title : "";
     this.supplier_id = this.$route.query.supplier_id;
     this.navData.supplier_id = this.supplier_id;
     // title
@@ -122,7 +123,12 @@ export default {
         this.goodsInfo = res.response_data.module_list.slice(1);
         // 获取页面分享信息
         // if(this.isWxLogin) this.wxShareData();
-        this.wxShareData();
+        var _pageName = "mall/index";
+        var _params = JSON.stringify({
+          brand_id: this.$route.query.brand_id,
+          supplier_id: this.$route.query.supplier_id
+        });
+        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
       } else {
         this.$toast(res.error_message);
       }
@@ -130,37 +136,38 @@ export default {
     linktoDetail(link) {
       // console.log(link);
       var data = this.$translate(JSON.parse(link));
-      data.query.type = 'mall';
+      if (data.name == "") return;
+      data.query.type = "mall";
       this.$router.push(data);
-    },
-    // 获取页面分享信息
-    async wxShareData() {
-      var tStamp = this.$getTimeStamp();
-      var data = {
-        page_name: "mall/index",
-        params: JSON.stringify({
-          brand_id: this.$route.query.brand_id,
-          supplier_id: this.$route.query.supplier_id
-        }),
-        version: "1.0",
-        timestamp: tStamp
-      };
-      data.sign = this.$getSign(data);
-      let res = await WX_SHARE(data);
-      if (res.hasOwnProperty("response_code")) {
-        // console.log(res.response_data)
-        document.title = res.response_data.share_info.title;
-        // 微信分享
-        this.$getWxData(
-          res.response_data.share_info.title,
-          res.response_data.share_info.desc,
-          res.response_data.share_info.pic,
-          res.response_data.share_info.url
-        );
-      } else {
-        this.$toast(res.error_message);
-      }
     }
+    // 获取页面分享信息
+    // async wxShareData() {
+    //   var tStamp = this.$getTimeStamp();
+    //   var data = {
+    //     page_name: "mall/index",
+    //     params: JSON.stringify({
+    //       brand_id: this.$route.query.brand_id,
+    //       supplier_id: this.$route.query.supplier_id
+    //     }),
+    //     version: "1.0",
+    //     timestamp: tStamp
+    //   };
+    //   data.sign = this.$getSign(data);
+    //   let res = await WX_SHARE(data);
+    //   if (res.hasOwnProperty("response_code")) {
+    //     // console.log(res.response_data)
+    //     document.title = res.response_data.share_info.title;
+    //     // 微信分享
+    //     this.$getWxData(
+    //       res.response_data.share_info.title,
+    //       res.response_data.share_info.desc,
+    //       res.response_data.share_info.pic,
+    //       res.response_data.share_info.url
+    //     );
+    //   } else {
+    //     this.$toast(res.error_message);
+    //   }
+    // }
   }
 };
 </script>

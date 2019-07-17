@@ -144,7 +144,8 @@
         </div>-->
       </div>
     </van-list>
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -152,24 +153,24 @@
 <style scoped  src="@/style/scss/pages/personal/order/list.scss" lang="scss"></style>
 
 <script>
-import easyNav from "./../../../components/easyNav";
+// import easyNav from "./../../../components/easyNav";
 import { USER_ORDER_DETAIL_GETS } from "../../../apis/user.js";
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/",
-        search: true,
-        searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type: "order"
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/",
+      //   search: true,
+      //   searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type: "order"
+      // },
       publishData: [],
       swiperOption: {
         slidesPerView: 5.3

@@ -7,7 +7,7 @@ import wx from 'weixin-js-sdk';
 
 //  引入时间戳接口
 // import req from "./../apis/http.js";
-import { SERVER_TIME, WX_SHARE } from "./../apis/public.js";
+import { SERVER_TIME, WX_SHARE, WX_SHARE_LOG, ADDRESS } from "./../apis/public.js";
 import { LOGIN_PARTERNER } from "./../apis/passport.js";
 
 // 支持await async
@@ -18,6 +18,14 @@ import { LOGIN_PARTERNER } from "./../apis/passport.js";
 
 export default {
   install: function (Vue, options) {
+
+    // 省市区
+    // 省
+    Vue.prototype.provinceList = {};
+    // 市
+    Vue.prototype.cityList = {};
+    // 区
+    Vue.prototype.countyList = {};
 
     // 判断是否是iphonex
     Vue.prototype.winWidth = $(window).width();
@@ -66,7 +74,6 @@ export default {
         });
     }
     Vue.prototype.$getLoginParterner = async function (_headimg, _unionid, _outerName, _type) {
-
       var tStamp = this.$getTimeStamp();
       let data = {
         outer_id: _unionid,
@@ -92,7 +99,13 @@ export default {
           });
         }
         if (res.response_data.exist == 1) {
-          window.location.href = window.location.protocol + "//" + window.location.hostname + '/#/personal/index';
+          // brand_id等信息
+          var route = window.location.href.split('#')[1];
+          var query = '';
+          if(route.indexOf('?') != -1) {
+            query = '?' + route.split('?')[1];
+          }
+          window.location.href = window.location.protocol + "//" + window.location.hostname + '/#/personal/index' + query;
           this.wxCodeStr = '';
           // console.log('from:', replaceUrl);
         }
@@ -144,6 +157,8 @@ export default {
               'onMenuShareQZone',
             ]
           });
+          // 分享成功后通知后台
+          self.$getShareLog(_pageName, _params);
 
         })
         .catch(function (error) {
@@ -169,6 +184,7 @@ export default {
             // logUtil.printLog("分享给朋友成功返回的信息为:", res);
             console.log('111', res);
             console.log('shareData111:', shareData);
+
           },
           cancel: function (res) {
             // 用户取消分享后执行的回调函数
@@ -183,6 +199,51 @@ export default {
         wx.onMenuShareQZone(shareData);       // 分享到QQ空间
       });
 
+    }
+
+    // 获取页面分享信息
+    Vue.prototype.$getWxShareData = async function (_pageName, _params) {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        page_name: _pageName,
+        params: _params,
+        timestamp: tStamp,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await WX_SHARE(data);
+      if (res.hasOwnProperty("response_code")) {
+        // 微信分享
+        this.$getWxData(
+          res.response_data.share_info.title,
+          res.response_data.share_info.desc,
+          res.response_data.share_info.pic,
+          res.response_data.share_info.url
+        );
+
+      } else {
+        this.$toast(res.error_message);
+      }
+
+    }
+    
+    // 分享成功后通知后台
+    Vue.prototype.$getShareLog = async function (_pageName, _params) {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        page_name: _pageName,
+        params: _params,
+        timestamp: tStamp,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await WX_SHARE_LOG(data);
+
+      console.log('shareLog:', res);
+      if (res.hasOwnProperty("response_code")) {
+      } else {
+        this.$toast(res.error_message);
+      }
     }
 
     // 获取并储存服务器和本地时间差
@@ -477,19 +538,107 @@ export default {
 
     }
 
+    // 省市区
+    Vue.prototype.$getAddressData = async function () {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await ADDRESS(data);
+      if (res.hasOwnProperty("response_code")) {
+        var pstr = new Array();
+        var cstr = new Array();
+        var ctstr = new Array();
+
+        if (res.response_data) {
+          for (let i = 0; i < res.response_data.length; i++) {
+            // console.log('省：', res.response_data[i]);
+            pstr +=
+              '"' +
+              res.response_data[i].id +
+              "0000" +
+              '"' +
+              ":" +
+              '"' +
+              res.response_data[i].name +
+              '"' +
+              ",";
+
+            // console.log('省str：', pstr)
+
+            // 市
+            if (res.response_data[i].city) {
+              for (let j = 0; j < res.response_data[i].city.length; j++) {
+                // console.log("市：", res.response_data[i].city[j]);
+                cstr +=
+                  '"' +
+                  res.response_data[i].city[j].id +
+                  "00" +
+                  '"' +
+                  ":" +
+                  '"' +
+                  res.response_data[i].city[j].name +
+                  '"' +
+                  ",";
+
+                // console.log('市str：', cstr)
+
+                // 区
+                if (res.response_data[i].city[j].county) {
+                  for (
+                    let k = 0;
+                    k < res.response_data[i].city[j].county.length;
+                    k++
+                  ) {
+                    // console.log("区：", res.response_data[i].city[j].county[k]);
+                    ctstr +=
+                      '"' +
+                      res.response_data[i].city[j].county[k].id +
+                      '"' +
+                      ":" +
+                      '"' +
+                      res.response_data[i].city[j].county[k].name +
+                      '"' +
+                      ",";
+                  }
+                  // console.log('区str：', ctstr)
+                }
+              }
+            }
+          }
+
+          // 省
+          this.provinceList = this.$strToJson(pstr);
+          // 市
+          this.cityList = this.$strToJson(cstr);
+          // 区
+          this.countyList = this.$strToJson(ctstr);
+
+          this.areaList.province_list = this.provinceList;
+          this.areaList.city_list = this.cityList;
+          this.areaList.county_list = this.countyList;
+          console.log("省市区：", this.provinceList, this.cityList, this.countyList);
+        }
+      } else {
+        this.$toast(res.error_message);
+      }
+    }
+
     // 字符串转换成json格式
-    // Vue.prototype.$strToJson = function (str) {
-    //   var arr1 = new Array();
-    //   var arr2 = new Array();
-    //   var __json = new Array();
+    Vue.prototype.$strToJson = function (str) {
+      var arr1 = new Array();
+      var arr2 = new Array();
+      var __json = new Array();
 
-    //   arr1 = str.split("/");
-    //   arr2 = "{" + arr1 + "}";
-    //   __json = eval("(" + arr2 + ")");
+      arr1 = str.split(",");
+      arr2 = "{" + arr1 + "}";
+      __json = eval("(" + arr2 + ")");
 
-    //   console.log('__json:', __json);
-    //   return __json;
-    // }
+      // console.log('__json:', __json);
+      return __json;
+    }
 
   }
 }

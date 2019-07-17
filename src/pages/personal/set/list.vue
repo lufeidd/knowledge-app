@@ -1,7 +1,7 @@
 <template>
   <div id="listPage">
     <div class="nullBox" v-if="finished && addressData.length == 0">
-      <img src="./../../../assets/null/address.png" width="100%">
+      <img src="./../../../assets/null/address.png" width="100%" />
       <div>暂时没有收货地址,去添加吧~</div>
     </div>
 
@@ -21,10 +21,10 @@
             :class="{ active: item.is_default == 1 }"
           >
             <svg class="icon" aria-hidden="true" v-if="item.is_default == 1">
-              <use xlink:href="#icon-checked-block"></use>
+              <use xlink:href="#icon-checked-block" />
             </svg>
             <svg class="icon" aria-hidden="true" v-else>
-              <use xlink:href="#icon-uncheck-line"></use>
+              <use xlink:href="#icon-uncheck-line" />
             </svg>
             <span>默认地址</span>
           </div>
@@ -33,13 +33,13 @@
             class="edit"
           >
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-edit-line"></use>
+              <use xlink:href="#icon-edit-line" />
             </svg>
             <span>编辑</span>
           </router-link>
           <div class="delete" @click="deleteAction(item.address_id, key)">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-delete-line"></use>
+              <use xlink:href="#icon-delete-line" />
             </svg>
             <span>删除</span>
           </div>
@@ -50,12 +50,17 @@
     <div style="height: 60px;"></div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="bottomBox" :class="{ iphx: this.isIphx }">
-
-      <van-button v-if="addressData.length < 50" size="large" type="danger" @click="addAddress">+新增收货地址</van-button>
+      <van-button
+        v-if="addressData.length < 50"
+        size="large"
+        type="danger"
+        @click="addAddress"
+      >+新增收货地址</van-button>
       <van-button v-else size="large" type="danger" disabled>+新增收货地址</van-button>
-      
+
       <div class="count">{{ addressData.length }}/50</div>
     </div>
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -74,7 +79,7 @@ export default {
   data() {
     return {
       addressData: [],
-      finished: false,
+      finished: false
     };
   },
   mounted() {
@@ -93,7 +98,8 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        
+        localStorage.setItem("loginState", 1);
+
         this.addressData = [];
         for (let i = 0; i < res.response_data.length; i++) {
           this.addressData.push(res.response_data[i]);
@@ -103,7 +109,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          
+          localStorage.setItem("loginState", 100);
         }
         this.$toast(res.error_message);
       }
@@ -139,7 +145,6 @@ export default {
         .then(() => {
           // on confirm
           this.deleteAddress(address_id);
-          location.reload()
         })
         .catch(() => {
           // on cancel
@@ -156,6 +161,7 @@ export default {
       let res = await USER_ADDRESS_DEL(data);
 
       if (res.hasOwnProperty("response_code")) {
+        this.getAddressData();
         this.$toast("地址删除成功~");
       } else {
         this.$toast(res.error_message);

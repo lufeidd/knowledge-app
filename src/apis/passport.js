@@ -30,6 +30,12 @@ export const LOGOUT = query => req('post', '/passport/logout', query);
 // 修改密码
 export const EDIT_PASSWORD = query => req('post', '/passport/editpwd', query);
 
+// 设置密码
+export const ADD_PASSWORD = query => req('post', '/passport/installpwd', query);
+
+// 用户账号和安全列表接口
+export const ACCOUNTS = query => req('post', '/passport/accounts', query);
+
 // 第三方用户登录接口
 export const LOGIN_PARTERNER = query => req('post', '/passport/parterner', query);
 

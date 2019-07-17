@@ -145,32 +145,33 @@
       </div>
     </van-list>
 
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="order"></EazyNav>
   </div>
 </template>
 
 <style scoped  src="@/style/scss/pages/personal/order/list.scss" lang="scss"></style>
 
 <script>
-import easyNav from "./../../../components/easyNav";
+// import easyNav from "./../../../components/easyNav";
 import { USER_ORDER_DETAIL_GETS } from "../../../apis/user.js";
 import { ORDER_RECEIVE } from "../../../apis/shopping.js";
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: true,
-        searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type: "order"
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: true,
+      //   searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type: "order"
+      // },
       publishData: [],
       goodsData:[],
       state: { evaluate: true, isPay: true, rePurchase: true, confirm: true },
@@ -211,6 +212,7 @@ export default {
 
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
+        localStorage.setItem("loginState", 1);
 
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
@@ -234,6 +236,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
+          localStorage.setItem("loginState", 100);
         }
 
         this.$toast(res.error_message);

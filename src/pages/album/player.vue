@@ -198,11 +198,12 @@ export default {
       // 未支付
       if (item.goods_id != null && item.is_payed == 0 && item.is_free == 0) {
         var _goodsId = null;
-        if (this.baseData.sale_style == 1) {
-          _goodsId = this.baseData.goods_id;
+        if (item.sale_style == 1) {
+          _goodsId = this.programGoodsId;
         } else {
           _goodsId = item.goods_id;
         }
+        console.log('goodsid:', this.programGoodsId, 'baseData:', this.baseData);
         this.$router.push({
           name: "payaccount",
           query: { goods_id: _goodsId }

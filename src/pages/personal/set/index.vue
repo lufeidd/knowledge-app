@@ -4,7 +4,7 @@
       <div class="left">
         <div class="ratioBox">
           <div class="box">
-            <img :src="infoData.user_header">
+            <img :src="infoData.user_header" />
           </div>
         </div>
       </div>
@@ -13,13 +13,13 @@
       </div>
       <div class="right">
         <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-next-line"></use>
+          <use xlink:href="#icon-next-line" />
         </svg>
       </div>
     </router-link>
 
-    <van-cell title="账号和安全" is-link to="/personal/set/safe"/>
-    <van-cell title="我的收货地址" is-link to="/personal/set/list" style="margin-top: 5px;"/>
+    <van-cell title="账号和安全" is-link to="/personal/set/safe" />
+    <van-cell title="我的收货地址" is-link to="/personal/set/list" style="margin-top: 5px;" />
     <!-- <van-cell title="推送设置" is-link to="/personal/set/send"/> -->
     <!-- <van-cell title="关于" is-link to="/personal/set/about"/> -->
 
@@ -27,7 +27,8 @@
       <van-button size="large" @click="logoutAction">退出登录</van-button>
     </div>
     <!-- 快速导航 -->
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -96,26 +97,26 @@
 </style>
 
 <script>
-import easyNav from "./../../../components/easyNav";
+// import easyNav from "./../../../components/easyNav";
 //  引入接口
 import { USER_HOMEPAGE } from "../../../apis/user.js";
 import { LOGOUT } from "../../../apis/passport.js";
 
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
       // 快速导航
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: false,
-        personal: true,
-        personalLink: "/personal/index"
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: false,
+      //   personal: true,
+      //   personalLink: "/personal/index"
+      // },
       // 信息
       infoData: {}
     };
@@ -139,6 +140,7 @@ export default {
         this.$set(this.infoData, "is_login", res.response_data.is_login);
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
+        localStorage.setItem("loginState", 1);
 
         if (this.infoData.is_login == 1) {
           $(".ratioBox").css(
@@ -150,7 +152,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          
+          localStorage.setItem("loginState", 100);
         }
         this.$toast(res.error_message);
       }
@@ -169,20 +171,24 @@ export default {
       let res = await LOGOUT(data);
       console.log(res.response_data);
       if (res.hasOwnProperty("response_code")) {
+        this.$store.commit("changeLoginState", 1);
+        localStorage.setItem("loginState", 1);
         // 退出登录将localstorage中进度数据清空
-        localStorage.setItem('miniAudio', null);
-        localStorage.setItem('audioProgress', null);
-        localStorage.setItem('cmts', null);
-        localStorage.setItem('fromLink', null);
+        localStorage.setItem("miniAudio", null);
+        localStorage.setItem("audioProgress", null);
+        localStorage.setItem("cmts", null);
+        localStorage.setItem("fromLink", null);
         // localStorage.setItem('nickname', null);
         // localStorage.setItem('unionid', null);
 
-        this.wxCodeStr = '';  
-        this.nickname = '';
-        this.unionid = '';
-        sessionStorage.setItem('headPic', null);
-        this.$store.commit("changeLoginState", 100);
+        this.wxCodeStr = "";
+        this.nickname = "";
+        this.unionid = "";
 
+        sessionStorage.setItem("headPic", null);
+
+        this.$store.commit("changeLoginState", 100);
+        localStorage.setItem("loginState", 100);
         this.$router.push("/login/index");
       } else {
         this.$toast(res.error_message);

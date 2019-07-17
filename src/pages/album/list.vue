@@ -208,8 +208,10 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // 异步更新数据
         var result = res.response_data.result;
+        
         setTimeout(() => {
           for (let i = 0; i < res.response_data.result.length; i++) {
+            result[i].sale_style = res.response_data.sale_style;
             this.programList.push(result[i]);
           }
 
@@ -219,6 +221,9 @@ export default {
           // 加载状态结束
           this.programLoading = false;
           this.programPage++;
+
+          // 获取支付方式
+          // this.programList.sale_style
 
           // 数据全部加载完成
           if (this.programPage > res.response_data.total_page) {

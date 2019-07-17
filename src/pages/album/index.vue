@@ -2,7 +2,7 @@
 <template>
   <div id="albumPage" class="page">
     <div class="nullBox" v-if="onsale == 0">
-      <img src="./../../assets/null/product.png" width="100%">
+      <img src="./../../assets/null/product.png" width="100%" />
       <div>该商品已下架~</div>
     </div>
 
@@ -12,7 +12,7 @@
         <div class="left">
           <div class="ratioBox">
             <div class="box">
-              <img :src="baseData.pic[0]">
+              <img :src="baseData.pic[0]" />
             </div>
           </div>
         </div>
@@ -25,10 +25,10 @@
             >
               <van-tag round color="#fff" text-color="#f05654">
                 <svg class="icon" aria-hidden="true" v-if="baseData.collect_id > 0">
-                  <use xlink:href="#icon-collect-block"></use>
+                  <use xlink:href="#icon-collect-block" />
                 </svg>
                 <svg class="icon" aria-hidden="true" v-else>
-                  <use xlink:href="#icon-collect-line"></use>
+                  <use xlink:href="#icon-collect-line" />
                 </svg>
                 <span>
                   <template v-if="baseData.collect_id > 0">已</template>收藏
@@ -40,7 +40,7 @@
           <div class="info">
             <div class="name">
               <van-tag round color="rgba(0,0,0,.12)" text-color="#fff">
-                <img :src="brandInfoData.header_pic" width="15" height="15">
+                <img :src="brandInfoData.header_pic" width="15" height="15" />
                 {{ brandInfoData.name }}
               </van-tag>
             </div>
@@ -73,7 +73,7 @@
                   class="from"
                 >
                   <div class="icon">
-                    <img v-lazy="brandInfoData.header_pic">
+                    <img v-lazy="brandInfoData.header_pic" />
                   </div>
 
                   <div class="publishInfo">
@@ -107,7 +107,7 @@
                     <div class="left">
                       <div class="ratioBox">
                         <div class="box">
-                          <img :src="item.user_header">
+                          <img :src="item.user_header" />
                         </div>
                       </div>
                     </div>
@@ -147,7 +147,7 @@
                           <span class="name" @click="pageChange(item.comment_id, key)">
                             共{{ item.reply_num }}条回复
                             <svg class="icon" aria-hidden="true">
-                              <use xlink:href="#icon-fold-line"></use>
+                              <use xlink:href="#icon-fold-line" />
                             </svg>
                             <!-- <svg class="icon" aria-hidden="true">
                               <use xlink:href="#icon-unfold-line"></use>
@@ -184,7 +184,7 @@
                         text-color="#666"
                         @click="allAction"
                       >
-                        <van-icon name="play"/>全部播放
+                        <van-icon name="play" />全部播放
                       </van-tag>
                       <van-tag
                         v-if="allPlayStatus == 'pause'"
@@ -192,7 +192,7 @@
                         text-color="#666"
                         @click="allAction"
                       >
-                        <van-icon name="pause"/>暂停播放
+                        <van-icon name="pause" />暂停播放
                       </van-tag>
                       <van-tag
                         v-if="allPlayStatus == 'continue'"
@@ -200,13 +200,13 @@
                         text-color="#666"
                         @click="allAction"
                       >
-                        <van-icon name="play"/>继续播放
+                        <van-icon name="play" />继续播放
                       </van-tag>
 
                       <span class="tag" v-if="showHistory && myAudioData.src">
                         <span class="text">{{ myAudioData.program }}</span>
                         <svg class="icon" aria-hidden="true" @click="historyAction">
-                          <use xlink:href="#icon-close-line"></use>
+                          <use xlink:href="#icon-close-line" />
                         </svg>
                       </span>
                     </span>
@@ -214,10 +214,10 @@
                   </van-col>
                   <van-col span="12" style="text-align:right;">
                     <svg class="icon" aria-hidden="true" v-if="rankType == 0" @click="rankAction">
-                      <use xlink:href="#icon-reverse-line"></use>
+                      <use xlink:href="#icon-reverse-line" />
                     </svg>
                     <svg class="icon" aria-hidden="true" v-if="rankType == 1" @click="rankAction">
-                      <use xlink:href="#icon-upright-line"></use>
+                      <use xlink:href="#icon-upright-line" />
                     </svg>
                   </van-col>
                 </van-row>
@@ -238,7 +238,7 @@
                           <van-tag color="#c8c8c8" text-color="#fff">音频</van-tag>
                           <span class="count">
                             <svg class="icon" aria-hidden="true">
-                              <use xlink:href="#icon-audio-line"></use>
+                              <use xlink:href="#icon-audio-line" />
                             </svg>
                             {{ item.play_num }}
                           </span>
@@ -247,7 +247,7 @@
                           <van-tag color="#c8c8c8" text-color="#fff">视频</van-tag>
                           <span class="count">
                             <svg class="icon" aria-hidden="true">
-                              <use xlink:href="#icon-video-line"></use>
+                              <use xlink:href="#icon-video-line" />
                             </svg>
                             {{ item.play_num }}
                           </span>
@@ -256,7 +256,7 @@
                           <van-tag color="#c8c8c8" text-color="#fff">文章</van-tag>
                           <span class="count">
                             <svg class="icon" aria-hidden="true">
-                              <use xlink:href="#icon-list-line"></use>
+                              <use xlink:href="#icon-list-line" />
                             </svg>
                             {{ item.play_num }}
                           </span>
@@ -264,7 +264,7 @@
 
                         <span class="time" v-if="item.goods_type != 6">
                           <svg class="icon" aria-hidden="true">
-                            <use xlink:href="#icon-time-line"></use>
+                            <use xlink:href="#icon-time-line" />
                           </svg>
                           {{ item.duration }}
                         </span>
@@ -285,10 +285,10 @@
                           aria-hidden="true"
                           v-if="item.goods_no == activeGoodNo && audioPlaying"
                         >
-                          <use xlink:href="#icon-pause-line"></use>
+                          <use xlink:href="#icon-pause-line" />
                         </svg>
                         <svg class="icon" aria-hidden="true" v-else>
-                          <use xlink:href="#icon-play-line"></use>
+                          <use xlink:href="#icon-play-line" />
                         </svg>
                       </div>
                     </van-col>
@@ -309,7 +309,7 @@
                   <div class="left">
                     <div class="ratioBox">
                       <div class="box">
-                        <img :src="item.pic[0]">
+                        <img :src="item.pic[0]" />
                       </div>
                     </div>
                   </div>
@@ -336,14 +336,14 @@
                             aria-hidden="true"
                             v-if="simularStatus[key].is_collect == 1"
                           >
-                            <use xlink:href="#icon-collect-block"></use>
+                            <use xlink:href="#icon-collect-block" />
                           </svg>
                           <svg
                             class="icon"
                             aria-hidden="true"
                             v-if="simularStatus[key].is_collect == 0"
                           >
-                            <use xlink:href="#icon-collect-line"></use>
+                            <use xlink:href="#icon-collect-line" />
                           </svg>
                           <span>
                             <template v-if="simularStatus[key].is_collect == 1">已</template>收藏
@@ -357,7 +357,7 @@
                         <van-tag color="#c8c8c8" text-color="#fff">音频</van-tag>
                         <span class="count">
                           <svg class="icon" aria-hidden="true">
-                            <use xlink:href="#icon-audio-line"></use>
+                            <use xlink:href="#icon-audio-line" />
                           </svg>
                           {{ item.play_num }}
                         </span>
@@ -366,14 +366,14 @@
                         <van-tag color="#c8c8c8" text-color="#fff">视频</van-tag>
                         <span class="count">
                           <svg class="icon" aria-hidden="true">
-                            <use xlink:href="#icon-video-line"></use>
+                            <use xlink:href="#icon-video-line" />
                           </svg>
                           {{ item.play_num }}
                         </span>
                       </template>
                       <span class="time">
                         <svg class="icon" aria-hidden="true">
-                          <use xlink:href="#icon-eye-line"></use>
+                          <use xlink:href="#icon-eye-line" />
                         </svg>
                         {{ item.play_num }}
                         共{{ item.item_count }}集
@@ -446,7 +446,7 @@
           <div class="title">
             <div class="action" @click="commentClose">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-fold-line"></use>
+                <use xlink:href="#icon-fold-line" />
               </svg>
             </div>
             <div>发表评论</div>
@@ -466,6 +466,7 @@
       <!-- 快速导航 -->
       <!-- <easyNav :navData="navData"></easyNav> -->
     </div>
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -591,7 +592,7 @@ export default {
       // 存放当前播放器播放状态
       audioPlaying: false,
       // 排序
-      rankType: 0, // 默认0倒序, 1正序
+      rankType: 1, // 默认0倒序, 1正序
       // 记录节目播放进度
       progressList: [],
       /*
@@ -647,35 +648,36 @@ export default {
       });
     },
     // 获取页面分享信息
-    async wxShareData() {
-      var tStamp = this.$getTimeStamp();
-      var data = {
-        page_name: "goods/detail",
-        params: JSON.stringify({ goods_id: this.$route.query.goods_id }),
-        version: "1.0",
-        timestamp: tStamp
-      };
-      data.sign = this.$getSign(data);
-      let res = await WX_SHARE(data);
-      if (res.hasOwnProperty("response_code")) {
-        // console.log(res.response_data)
-        // 微信分享
-        this.$getWxData(
-          res.response_data.share_info.title,
-          res.response_data.share_info.desc,
-          res.response_data.share_info.pic,
-          res.response_data.share_info.url
-        );
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
+    // async wxShareData() {
+    //   var tStamp = this.$getTimeStamp();
+    //   var data = {
+    //     page_name: "goods/detail",
+    //     params: JSON.stringify({ goods_id: this.$route.query.goods_id }),
+    //     version: "1.0",
+    //     timestamp: tStamp
+    //   };
+    //   data.sign = this.$getSign(data);
+    //   let res = await WX_SHARE(data);
+    //   if (res.hasOwnProperty("response_code")) {
+    //     // console.log(res.response_data)
+    //     // 微信分享
+    //     this.$getWxData(
+    //       res.response_data.share_info.title,
+    //       res.response_data.share_info.desc,
+    //       res.response_data.share_info.pic,
+    //       res.response_data.share_info.url
+    //     );
+    //   } else {
+    //     this.$toast(res.error_message);
+    //   }
+    // },
     // --------------------------------专辑信息----------------------------------
     // 获取专辑接口信息
     async albumData() {
       var tStamp = this.$getTimeStamp();
       let data = {
-        timeStamp: tStamp,
+        ad: parseInt(this.$route.query.ad) == 1 ? 1 : 0,
+        timestamp: tStamp,
         goods_id: this.baseData.goods_id,
         version: "1.0"
       };
@@ -693,7 +695,10 @@ export default {
         document.title = "节目详情-" + res.response_data.base.title;
 
         // 获取页面分享信息
-        if (this.isWxLogin) this.wxShareData();
+        // if (this.isWxLogin) this.wxShareData();
+        var _pageName = "goods/detail";
+        var _params = JSON.stringify({ goods_id: this.$route.query.goods_id });
+        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
 
         // 是否显示底部购买按钮
         this.showBuyButton = !(
@@ -997,10 +1002,58 @@ export default {
     // load
     programLoad() {
       // console.log("load");
-      this.programData();
+      this.programData("");
+      // 获取试听节目
+      this.preListenData();
+    },
+    // 排序
+    rankAction() {
+      this.rankType = this.rankType == 1 ? 0 : 1;
+      this.allPlayStatus = "play";
+      // 实时刷新先置空
+      this.programFinished = false;
+      this.programLoading = true;
+      this.programPage = 1;
+      // console.log(666, this.programPage);
+      var _type = "rank";
+      this.programData(_type);
+    },
+    // 获取试听节目
+    async preListenData() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        goods_id: this.baseData.goods_id,
+        goods_no: this.rankType,
+        page: 1,
+        page_size: 10000000,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await ALBUM_DETAIL(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        // 异步更新数据
+        var result = res.response_data.result;
+
+        for (let i = 0; i < res.response_data.result.length; i++) {
+          // 存放试听数据,只取第一条
+          if (
+            result[i].is_free &&
+            result[i].goods_type != 6 &&
+            this.preListen.length == 0
+          ) {
+            this.preListen = [];
+            this.preListen.push(result[i]);
+          }
+        }
+      } else {
+        this.$toast(res.error_message);
+      }
     },
     // 获取节目列表
-    async programData() {
+    async programData(_type) {
+      // console.log(this.programPage);
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
@@ -1014,6 +1067,7 @@ export default {
       let res = await ALBUM_DETAIL(data);
 
       if (res.hasOwnProperty("response_code")) {
+        if (_type == "rank") this.programList = [];
         // 异步更新数据
         var result = res.response_data.result;
 
@@ -1045,7 +1099,6 @@ export default {
           // 数据全部加载完成
           if (this.programPage > res.response_data.total_page) {
             this.programFinished = true;
-            // this.programPage = 1;
           }
         }, 600);
 
@@ -1209,17 +1262,6 @@ export default {
     // 播放记录
     historyAction() {
       this.showHistory = false;
-    },
-    // 排序
-    rankAction() {
-      this.rankType = this.rankType == 1 ? 0 : 1;
-      // 实时刷新先置空
-      this.programList = [];
-      this.programData();
-      // 分页状态重置
-      this.programPage = 1;
-      this.programFinished = false;
-      this.allPlayStatus = "play";
     },
     // 节目列表播放/暂停音频
     audioAction(item) {
