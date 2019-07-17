@@ -17,6 +17,30 @@ export const ORDER_VIRTUAL_ADD_PAY = query => req('post', '/shopping/cashier/bal
 // 新增虚拟订单
 export const ORDER_VIRTUAL_ADDINFO = query => req('post', '/shopping/order/virtual/addinfo', query);
 
+//退款申请
+export const ORDER_REFUND_ADD = query => req('post', '/shopping/order/refund/add', query);
+
+//获取退款申请信息
+export const ORDER_REFUND_ADDINFO = query => req('post', '/shopping/order/refund/addinfo', query);
+
+//退款记录列表
+export const ORDER_REFUND_LOG_GETS = query => req('post', '/shopping/order/refund/log/gets', query);
+
+//撤销退款申请
+export const ORDER_REFUND_CANCLE = query => req('post', '/shopping/order/refund/cancle', query);
+
+//填写退款物流信息
+export const ORDER_REFUND_DISPATCH_EDIT = query => req('post', '/shopping/order/dispatch/edit', query);
+
+//订单物流信息查询
+export const ORDER_EXPRESS_GET = query => req('post', '/shopping/order/express/get', query);
+
+//退货物流公司列表
+export const ORDER_REFUND_DISPATCH_COMPANY = query => req('post', '/shopping/order/refund/dispatch/company', query);
+
+//订单确认收货
+export const ORDER_RECEIVE = query => req('post', '/shopping/order/RECEIVE', query);
+
 // 加入购物车
 export const CART_ADD = query => req('post', '/shopping/cart/add', query);
 
@@ -37,3 +61,4 @@ export const ORDER_PHYSICAL_ADD = query => req('post', '/shopping/order/physical
 
 // 实物支付信息获取
 export const ORDER_PHYSICAL_PAYINFO = query => req('post', '/shopping/order/physical/payinfo', query);
+

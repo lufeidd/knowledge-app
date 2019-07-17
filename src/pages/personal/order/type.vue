@@ -1,6 +1,6 @@
 <template>
   <div id="typePage">
-    <div class="refund">
+    <div class="refund" @click="torefundThree">
       <div class="refundText">
         <svg class="icon red" aria-hidden="true">
           <use xlink:href="#icon-refund-all"></use>
@@ -14,7 +14,7 @@
         <use xlink:href="#icon-next-line"></use>
       </svg>
     </div>
-    <div class="refund">
+    <div class="refund" @click="torefundTwo">
       <div class="refundText">
         <svg class="icon red" aria-hidden="true">
           <use xlink:href="#icon-refund-money"></use>
@@ -37,7 +37,32 @@
 export default {
   data () {
     return {
-
+        order_id:null,
+        detail_id:null,
+    }
+  },
+  mounted(){
+    this.order_id = this.$route.query.order_id;
+    this.detail_id = this.$route.query.detail_id;
+  },
+  methods:{
+    torefundThree(){
+      this.$router.push({
+        name:"refundthree",
+        query:{
+          order_id:this.order_id,
+          detail_id:this.detail_id,
+        }
+      })
+    },
+    torefundTwo(){
+      this.$router.push({
+        name:"refundtwo",
+        query:{
+          order_id:this.order_id,
+          detail_id:this.detail_id,
+        }
+      })
     }
   }
 }
