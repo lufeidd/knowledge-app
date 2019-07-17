@@ -353,6 +353,51 @@ img {
   border-left: 1px #fff solid;
 }
 
+//step步骤条
+.van-steps{
+  .van-hairline::after{
+    border-color: $greyLight;
+  }
+  .van-step{
+    color: $cl6;
+  }
+  .van-step--vertical{
+    font-size: $fontSize - 1;
+  }
+  .van-step--vertical.van-step--process .van-icon,.van-step--vertical .van-step__circle{
+    top:45px;
+    left: -21px;
+  }
+  .van-step--vertical .van-step__line{
+    top: 55px;
+    left: -16px;
+    height: 90%;
+  }
+  .van-step__circle{
+    width: 9px;
+    height: 9px;
+    background-color: transparent;
+    border: 1px solid $cl9;
+  }
+}
+//选择器
+.van-picker{
+  .van-picker__cancel{
+    font-size: 15px;
+    color: #999;
+  }
+  .van-picker__confirm{
+    font-size: 15px;
+    color: #f05654;
+  }
+  .van-picker__title{
+    color: #333;
+    font-size: 15px;
+  }
+  .van-picker-column{
+    font-size: 15px;
+  }
+  
 // 步进器
 .van-stepper__input[disabled] {
   background-color: $white;

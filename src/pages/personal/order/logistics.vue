@@ -12,7 +12,7 @@
     <div class="line"></div>
     <div class="logisticsInfo">
       <div class="text">物流信息</div>
-      <van-steps direction="vertical" :active="2" active-color="#ff504e" active-icon="circle">
+      <van-steps direction="vertical"  active-color="#ff504e" active-icon="circle">
         <van-step>
           <p>您的快递以交由中通快递发出</p>
           <p>2019-03-14 12:12:38</p>
@@ -37,11 +37,36 @@
 <style src="@/style/scss/pages/personal/order/refund.scss" scoped lang="scss"></style>
 
 <script>
+import { ORDER_EXPRESS_GET } from "../../../apis/shopping.js"
 export default {
   data() {
     return {
-      imgUrl: "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85"
+      imgUrl: "https://wdimg3.bookuu.com/goods/13/52/25/1554875545.jpg@!w210q85",
+      order_id:null,
+      logisticsInfo:[]
     };
+  },
+  mounted(){
+    this.order_id = this.$route.query.order_id;
+    this.getInfo()
+  },
+  methods:{
+    async getInfo(){
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+        order_id:this.order_id,
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_EXPRESS_GET(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.logisticsInfo = res.response_data;
+      } else {
+        this.$toast(res.error_message);
+      }
+    }
   }
 };
 </script>

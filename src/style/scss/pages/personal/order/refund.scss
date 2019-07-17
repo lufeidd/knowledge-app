@@ -10,7 +10,7 @@
      background-color: $greyLight;
    }
    .orderExpress{
-     padding: 15px 0 15px 20px;
+     padding: 0 15px;
      @include displayFlex(flex,flex-start,center);
      .ratiobox{
       width: 52px;
@@ -35,50 +35,27 @@
        color: $cl9;
        font-size: $fontSize - 1;
      }
-     .van-step__circle {
-      width: 7px;
-      height: 7px;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      }
-      .van-step--vertical .van-step__circle {
-      top: 16px;
-      left: -19px;
-     }
-    //  .van-icon-checked:before{
-    //     width: 7px;
-    //     height: 7px;
-    //     border: 1px solid $redDark;
-    //     content: "";
-    //     border-radius: 50%;
-    //     // color: $redDark;
-    //     // position: absolute;
-    //     // top: 16px;
-    //     // left: -19px;
-    //  }
-    //  .van-step--finish .van-step__circle, .van-step--finish .van-step__line{
-    //    background-color: $clC;
-    //  }
-    .van-step__circle{
-      background-color: $white;
-    }
-    .van-step--vertical .van-step__line{
-      background-color: $clC;
-    }
    }
  }
 
  #editPage{
-   padding: 20px 15px 0 15px;
+   padding:5px 15px;
+   .van-cell{
+    padding: 10px 0;
+   }
   .company{
     @include displayFlex(flex,null,center);
     border-bottom: 1px solid $greyLight;
-    padding-bottom: 15px;
-    .text{
+    padding-bottom: 5px;
+    .van-cell{
+      padding: 10px 0;
       font-size: $fontSize + 2;
     }
-    #searchHint{
-      flex-grow: 1;
+    .van-cell__title, .van-cell__value{
+      flex: none;
+    }
+    .van-cell__value{
+      padding: 0 10px;
     }
   }
   .freight{
@@ -88,20 +65,21 @@
     .freightText{
       font-size: $fontSize + 2;
     }
-    input{
-      flex-grow: 1;
-      border: none;
-      &::placeholder{
-        color: $cl9;
-        font-size: $fontSize - 1;
-      }
+  }
+  input{
+    flex-grow: 1;
+    border: none;
+    padding: 0 5px;
+    &::placeholder{
+      color: $cl9;
+      font-size: $fontSize - 1;
     }
   }
  }
 
  #typePage{
    .refund{
-     padding: 15px;
+     padding:0 15px;
      @include displayFlex(flex,space-between,center);
      border-bottom: 1px solid $greyLight;
      .refundText{
@@ -129,34 +107,25 @@
  }
 
 #ongoingPage{
-  .content{
+    min-height: 100%;
     background-color: $greyLight;
+  .content{
     padding: 20px 15px 10px 15px;
-    margin-bottom: 50px;
-    .wd{
-      width: 10.5%;
-      text-align: center;
-    }
+
     .date{
       margin: 0px auto 20px auto;
       height: 20px;
       line-height: 20px;
       background-color: $white;
       border-radius: 10px;
-      width: 110px;
+      width: 140px;
       font-size: $fontSize - 2;
       color: $cl9;
       text-align: center;
     }
     .buyer{
       @include displayFlex(flex,flex-end,null);
-      .icon{
-        width: 30px;
-        height: 30px;
-        background-color: $white;
-        border-radius: 30px;
-        align-items: center;
-      }
+
       .message{
         border-radius: 4px;
         box-shadow: 0 0 2px rgba(0,0,0,.3);
@@ -174,6 +143,30 @@
           margin-top: 10px;
         }
       }
+      .wd_left{
+        margin-right: 5px;
+        .ratiobox {
+          min-width: 30px;
+          .bookImg {
+            display: block;
+            border-radius: 50%;
+            @include ratioBox (null, 100%, null, contain, $white, null);
+
+          }
+        }
+      }
+      .wd_right{
+        margin-left: 5px;
+        .ratiobox {
+          min-width: 30px;
+          .bookImg {
+            display: block;
+            border-radius: 50%;
+            @include ratioBox (null, 100%, null, contain, $white, null);
+
+          }
+        }
+      }
     }
     .seller{
       @include displayFlex(flex,flex-start,null);
@@ -188,6 +181,7 @@
       }
       .message{
         border-radius: 4px;
+        box-shadow: 0 0 2px rgba(0,0,0,.3);
         max-width: 73%;
         flex-grow: 1;
         background-color: $white;
@@ -213,6 +207,11 @@
         .mb{
           margin-bottom: 10px;
         }
+      }
+      .wd{
+        // width: 10.5%;
+        // text-align: center;
+        margin-right: 5px;
       }
     }
   }
@@ -329,6 +328,15 @@
           font-size: $fontSize;
         }
       }
+    }
+  }
+  & .count {
+    font-size: $fontSize - 2;
+    color: #999;
+    text-align: right;
+
+    & .active {
+      color: $redDark;
     }
   }
 }
