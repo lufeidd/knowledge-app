@@ -1,17 +1,42 @@
 <template>
   <div id="editPage">
-    <div class="company">
-      <span class="text">物流公司:</span>
-      <search-hint :searchHintData="searchHintData"></search-hint>
+    <!-- <div class="company">
+      <van-cell title="物流公司：" @click="choose" v-model="dispatch_compay" value/>
     </div>
     <div class="freight">
-      <span class="freightText">运费：</span>
-      <input type="text" placeholder="请输入金额,例如5.00">元
-    </div>
+      <span class="freightText">物流单号：</span>
+      <input type="text" placeholder="请输入物流单号" @input="number" v-model="dispatch_number">
+    </div> -->
+    <van-cell-group>
+      <van-field
+        v-model="dispatch_compay"
+        label="物流公司："
+        placeholder="请选择物流公司"
+        readonly
+        @click="choose"
+      />
+
+      <van-field
+        v-model="dispatch_number"
+        label="物流单号："
+        placeholder="请输入物流单号"
+        clearable
+      />
+    </van-cell-group>
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="bottomBox" :class="{iphx:this.isIphx}">
-      <van-button type="danger" size="large">提交</van-button>
+      <van-button type="danger" size="large" @click="submit">提交</van-button>
     </div>
+    <van-popup v-model="show" position="bottom">
+      <van-picker
+        show-toolbar
+        title="请选择物流公司"
+        :columns="companyList"
+        @cancel="onCancel"
+        :default-index="1"
+        @confirm="onConfirm"
+      />
+    </van-popup>
   </div>
 </template>
 
@@ -19,81 +44,75 @@
 
 
 <script>
-import searchHint from "../../../components/searchHint";
+import { ORDER_REFUND_DISPATCH_EDIT,ORDER_REFUND_DISPATCH_COMPANY } from "../../../apis/shopping.js"
 export default {
-  components: {
-    searchHint
-  },
   data() {
     return {
-      searchResult: [],
-      searchHintData: {
-        search: "",
-        list: [
-          { msg: "中通快递" },
-          { msg: "申通快递" },
-          { msg: "天天快递" },
-          { msg: "顺丰快递" },
-          { msg: "圆通快递" },
-          { msg: "韵达快递" }
-        ]
-      }
-      // search:'',
-      // list:[
-      //     {msg:'中通快递'},
-      //     {msg:'申通快递'},
-      //     {msg:'天天快递'},
-      //     {msg:'顺丰快递'},
-      //     {msg:'圆通快递'},
-      //     {msg:'韵达快递'},
-      //   ]
+      apply_id:null,
+      dispatch_compay:"",
+      dispatch_number:"",
+      show: false,
+      companyList:[],
     };
   },
-  computed: {
-    // //过滤方法
-    // items: function() {
-    //     var _search = this.search;
-    //     if (_search) {
-    //         //不区分大小写处理
-    //         var reg = new RegExp(_search, 'ig')
-    //         //es6 filter过滤匹配，有则返回当前，无则返回所有
-    //         return this.list.filter(function(e) {
-    //             //匹配所有字段
-    //             return Object.keys(e).some(function(key) {
-    //                 return e[key].match(reg);
-    //             })
-    //         })
-    //     };
-    //     return this.list;
-    //     // console.log(this.list)
-    // }
+  mounted(){
+    this.apply_id = this.$route.query.apply_id;
+    this.logisticsCompany();
   },
   methods: {
-    // select(item,index){
-    //   // console.log(item,index)
-    //   // var a=item.msg;
-    //   // $('input').val(a);
-    //   this.search=item.msg;
-    //   $('ul').css({'display':'none'});
-    // },
-    // showList(){
-    //   if($('input').val().length>0){
-    //     $('ul').css({'display':'block'});
-    //     $('.clearIcon').css({'display':'block'});
-    //   }else {
-    //     $('ul').css({'display':'none'});
-    //     $('.clearIcon').css({'display':'none'});
-    //   }
-    // },
-    // clear(){
-    //   $('input').val('');
-    //   if($('input').val().length>0){
-    //       $('ul').css({'display':'block'})
-    //   }else {
-    //     $('ul').css({'display':'none'});
-    //     $('.clearIcon').css({'display':'none'});
-    //   }
-    // },
+    choose(){
+      this.show = true;
+    },
+    onConfirm(value, index) {
+      console.log(value)
+      this.dispatch_compay = value;
+      this.show = false;
+    },
+    onCancel() {
+      this.show = false;
+    },
+    submit(){
+      if(this.dispatch_compay.length>0 && this.dispatch_number.length>0){
+        this.logistics();
+      }else{
+        this.$toast('请填写完整信息！')
+      }
+    },
+    async logistics(){
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+        apply_id: this.apply_id,
+        dispatch_compay: this.dispatch_compay,
+        dispatch_number: this.dispatch_number,
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_REFUND_DISPATCH_EDIT(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.$toast('提交成功！')
+        this.$router.go(-1);
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    //获取物流公司
+    async logisticsCompany(){
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_REFUND_DISPATCH_COMPANY(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.companyList = res.response_data.company;
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
   }
 };
 </script>

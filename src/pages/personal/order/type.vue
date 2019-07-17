@@ -39,15 +39,11 @@ export default {
     return {
         order_id:null,
         detail_id:null,
-        refund_money:null,
-        refund_count:null,
     }
   },
   mounted(){
     this.order_id = this.$route.query.order_id;
     this.detail_id = this.$route.query.detail_id;
-    this.refund_money = this.$route.query.refund_money;
-    this.refund_count = this.$route.query.refund_count;
   },
   methods:{
     torefundThree(){
@@ -56,8 +52,6 @@ export default {
         query:{
           order_id:this.order_id,
           detail_id:this.detail_id,
-          refund_money:this.refund_money,
-          refund_count:this.refund_count,
         }
       })
     },
@@ -67,8 +61,6 @@ export default {
         query:{
           order_id:this.order_id,
           detail_id:this.detail_id,
-          refund_money:this.refund_money,
-          refund_count:this.refund_count,
         }
       })
     }

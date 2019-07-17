@@ -78,10 +78,10 @@
        }
        .tip1{
          text-align: right;
-         margin-top: 25px;
+         margin-top: 10px;
        }
        .tip2{
-         margin-top: 25px;
+         margin-top: 10px;
         @include displayFlex(flex,space-between,center);
         .noChange{
           font-size: $fontSize - 2;

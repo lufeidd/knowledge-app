@@ -241,7 +241,7 @@ export default {
     },
     // 列表下拉加载
     programLoad() {
-      // console.log('--load：');
+      console.log('--load：');
       this.columnListData();
       // console.log('page:',this.currentPage,this.column_list_data);
     },

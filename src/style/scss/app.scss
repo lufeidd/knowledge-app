@@ -378,3 +378,21 @@ img {
     border: 1px solid $cl9;
   }
 }
+//选择器
+.van-picker{
+  .van-picker__cancel{
+    font-size: 15px;
+    color: #999;
+  }
+  .van-picker__confirm{
+    font-size: 15px;
+    color: #f05654;
+  }
+  .van-picker__title{
+    color: #333;
+    font-size: 15px;
+  }
+  .van-picker-column{
+    font-size: 15px;
+  }
+}

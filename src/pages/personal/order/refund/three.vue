@@ -196,7 +196,10 @@ export default {
         let res = await ORDER_REFUND_ADD(data);
         if (res.hasOwnProperty("response_code")) {
           this.$toast("申请成功!");
-          this.$route.push("/personal/order/detail")
+          this.$router.push({
+          name:"orderdetail",
+          query:{order_id:this.order_id}
+        });
         } else {
           this.$toast(res.error_message);
         }
@@ -208,7 +211,6 @@ export default {
     async getInfo(){
       var tStamp = this.$getTimeStamp();
       var data = {
-        order_id: this.order_id,
         version: "1.0",
         timestamp: tStamp,
         order_id:this.order_id,

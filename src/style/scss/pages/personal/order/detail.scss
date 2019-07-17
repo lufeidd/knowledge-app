@@ -170,6 +170,10 @@
           right: 5px;
           bottom:0;
         }
+        .applyrefund.text{
+          font-size: $fontSize - 2;
+          color: $cl9;
+        }
       }
     }
   }
@@ -283,10 +287,10 @@
   .button {
     display: inline-block;
     width: 60px;
-    height: 18px;
-    border-radius: 9px;
+    height: 24px;
+    border-radius: 12px;
     text-align: center;
-    line-height: 18px;
+    line-height: 24px;
     font-size: $fontSize - 2;
     margin-left: 15px;
   }

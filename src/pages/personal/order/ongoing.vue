@@ -1,64 +1,35 @@
 <template>
   <div id="ongoingPage">
-    <div class="content">
-      <div class="date">2019.02.11 12:00</div>
-      <div class="buyer">
+    <div class="content" v-for="(item,index) in infoData">
+      <div class="date">{{item.time}}</div>
+      <div
+        class="buyer"
+        :style="{'justify-content': item.from == 'user' ? 'flex-end':'flex-start'}"
+      >
+        <div class="wd_left" v-if="item.from == 'admin'">
+          <div class="ratiobox">
+            <a class="bookImg" v-lazy:background-image="item.header_pic"></a>
+          </div>
+        </div>
         <div class="message">
-          <div class="title">买家发起了申请</div>
+          <div class="title">{{item.title}}</div>
           <div class="stateMessage">
-            <p>买家发起了退款申请，货物状态：待发货</p>
-            <p>原因：不想要了</p>
-            <p>金额：15.8元（包含运费5元）</p>
+            <p>{{item.content}}</p>
           </div>
         </div>
-        <div class="wd">
-          <img v-lazy="iconUrl" class="icon">
-        </div>
-      </div>
-      <div class="seller">
-        <div class="wd">
-          <img v-lazy="iconUrl" class="icon">
-        </div>
-        <div class="message">
-          <div class="title">待卖家处理</div>
-          <div class="stateMessage">
-            <p>客服会在五个工作日内处理。</p>
-            <p>如果拒绝，您可以修改申请后再次发起，客服会重新处理。</p>
-            <p>请勿相信任何人发来的可以退款的链接，以免钱款被骗。</p>
+        <div class="wd_right" v-if="item.from == 'user'">
+          <div class="ratiobox">
+            <a class="bookImg" v-lazy:background-image="item.header_pic"></a>
           </div>
-        </div>
-      </div>
-      <div class="date">2019.02.11 12:00</div>
-      <div class="seller">
-        <div class="wd">
-          <img v-lazy="iconUrl" class="icon">
-        </div>
-        <div class="message">
-          <div class="title">卖家已同意，请尽快填写退货物流信息</div>
-          <div class="stateMessage bb">
-            <p>收件人：沈好看</p>
-            <p>收件地址：浙江省杭州市余杭区金家读南路101</p>
-            <p>联系电话：45612345685</p>
-          </div>
-          <p class="careful">请在五个工作日内填写退货物流信息，过期申请讲关闭。</p>
-        </div>
-      </div>
-      <div class="seller">
-        <div class="wd">
-          <img v-lazy="iconUrl" class="icon">
-        </div>
-        <div class="message">
-          <div class="title">退款失败</div>
-          <div class="stateMessage mb">失败原因：订单已发出，需要退货后申请</div>
         </div>
       </div>
     </div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="foot bottomBox" :class="{iphx:this.isIphx}">
-      <span class="button">修改申请</span>
-      <span class="button">重新申请</span>
-      <span class="button">填写物流信息</span>
-      <span class="button">撤销申请</span>
+      <span class="button" @click="edit_refund" v-if="refund_state == 0 || refund_state == 1">修改申请</span>
+      <span class="button" @click="write_logistics" v-if="refund_state == 1">填写物流信息</span>
+      <span class="button" @click="re_refund" v-if="refund_state == 2">重新申请</span>
+      <span class="button" @click="cancle_refund" v-if="refund_state == 0 || refund_state == 1">撤销申请</span>
     </div>
   </div>
 </template>
@@ -66,11 +37,124 @@
 <style src="@/style/scss/pages/personal/order/refund.scss" scoped lang="scss"></style>
 
 <script>
+import {
+  ORDER_REFUND_LOG_GETS,
+  ORDER_REFUND_CANCLE
+} from "../../../apis/shopping.js";
 export default {
   data() {
     return {
-      iconUrl: "https://bnmpstyle.bookuu.com/wap/images/default_shop.png"
+      iconUrl: "https://bnmpstyle.bookuu.com/wap/images/default_shop.png",
+      order_id: null,
+      detail_id: null,
+      infoData: [],
+      refund_state: null,
+      apply_id:null,
+      refund_type:null,
     };
+  },
+  mounted() {
+    this.order_id = this.$route.query.order_id;
+    this.detail_id = this.$route.query.detail_id;
+    this.getInfo();
+  },
+  methods: {
+    //获取退款记录
+    async getInfo() {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+        order_id: this.order_id,
+        detail_id: this.detail_id
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_REFUND_LOG_GETS(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.infoData = res.response_data;
+        this.refund_state =
+          res.response_data[res.response_data.length - 1].refund_state;
+        this.apply_id = res.response_data[0].apply_id;
+        this.refund_type = res.response_data[0].refund_type;
+        console.log(666, this.refund_state);
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    //撤销退款
+    cancle_refund() {
+      this.$dialog
+        .confirm({
+          message: "您确定要撤销申请吗？"
+        })
+        .then(() => {
+          this.cancle();
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
+    async cancle(){
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+        apply_id:this.apply_id,
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_REFUND_CANCLE(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.$toast('撤销申请成功！');
+        this.$router.push({
+          name:"orderdetail",
+          query:{order_id:this.order_id}
+        });
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    //重新申请
+    re_refund(){
+      if(this.refund_type == 1){
+        this.$router.push({
+          name:"refundone",
+          query:{
+            order_id:this.order_id,
+            detail_id:this.detail_id,
+          }
+        })
+      }else if(this.refund_type == 2){
+        this.$router.push({
+          name:"refundtwo",
+          query:{
+            order_id:this.order_id,
+            detail_id:this.detail_id,
+          }
+        })
+      }else{
+        this.$router.push({
+          name:"refundthree",
+          query:{
+            order_id:this.order_id,
+            detail_id:this.detail_id,
+          }
+        })
+      }
+    },
+    // 修改申请
+    edit_refund(){
+      
+    },
+    //填写物流信息
+    write_logistics(){
+      this.$router.push({
+        name:"refundedit",
+        query:{
+          apply_id:this.apply_id,
+        }
+      })
+    }
   }
 };
 </script>

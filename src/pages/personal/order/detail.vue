@@ -6,7 +6,7 @@
       </svg> 订单已完成
     </div>
     <div v-if="infoData.type == 2">
-      <div class="signfor">
+      <div class="signfor" @click="tologistics" v-if="infoData.state >= 2">
         <svg class="icon car" aria-hidden="true">
           <use xlink:href="#icon-interflow-line"></use>
         </svg>
@@ -57,7 +57,9 @@
             <span class="title">{{item.goods_name}}</span>
             <span class="title red">￥{{item.real_price}}</span>
           </div>
-          <span class="button button3 applyrefund" @click="torefund(item)" v-if="infoData.type == 2">申请售后</span>
+          <span class="button button3 applyrefund" @click="torefund(item)" v-if="infoData.type == 2 && item.if_refund == 1">申请售后</span>
+          <span class="button button3 applyrefund" @click="toOngoing(item)" v-if="infoData.type == 2 && item.if_refund == 2">已申请</span>
+          <span class="applyrefund text" v-if="infoData.type == 2 && item.if_refund == 0">该订单售后已过期，请找卖家协商</span>
         </div>
       </div>
     </div>
@@ -73,7 +75,7 @@
       <!-- <van-cell title="商品优惠" v-model="discount"/> -->
       <!-- <van-cell title="余额" v-model="'-¥'+priceInfo.remain.toFixed(2)"/> -->
       <p class="acturalPay" style="margin-top:10px;">
-        实付款
+        {{(infoData.state == 1||infoData.state ==7) ? '待支付':'实付款'}}
         <span>¥{{infoData.pay_money}}</span>
       </p>
     </div>
@@ -106,7 +108,7 @@
         <span class="text">{{invoice.remarks}}</span>
       </div>
     </div>
-    <div class="fictitious">
+    <div class="fictitious" v-if="infoData.state !==1 || infoData.state !== 7">
       <div class="text">
         <van-cell :title="infoData.type==1?'虚拟商品(不退不换)':'实物商品'"/>
       </div>
@@ -131,16 +133,26 @@
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div v-if="infoData.if_comment == 0 || showInvoice">
       <div style="height: 60px;"></div>
-
-      <div
-        class="foot bottomBox"
-        :class="{iphx:this.isIphx}"
-        :style="{'justify-content': !showInvoice ? 'flex-end':'space-between'}"
-      >
-        <span class="button button3" @click="apply" v-if="showInvoice">申请发票</span>
+      <!-- 虚拟商品 -->
+      <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-if="infoData.type == 1">
         <div>
-          <span class="button button2" @click="toComment" v-if="infoData.if_comment == 0">评价</span>
-          <span class="button button3" @click="repurchase" v-if="infoData.type == 2" style="margin-right:15px;">再次购买</span>
+          <span class="button button3" @click="apply" v-if="showInvoice">申请发票</span>
+        </div>
+        <div style="padding-right:15px;">
+          <span class="button button2" @click="toComment" v-if="infoData.if_comment == 0 ">评价</span>
+        </div>
+      </div>
+      <!-- 实物商品 -->
+      <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-else>
+        <div>
+          <span class="button button3" @click="apply" v-if="showInvoice && infoData.state == 4">申请发票</span>
+        </div>
+        <div style="padding-right:15px;">
+          <span class="button button2" @click="toComment" v-if="infoData.if_comment == 0 && infoData.state == 4">评价</span>
+          <span class="button button3" @click="repurchase" v-if="infoData.state == 4 || infoData.state == 7">再次购买</span>
+          <span class="button button3" @click="confirmReceive" v-if="infoData.state == 3">确认收货</span>
+          <span class="button button3" @click="tologistics" v-if="infoData.state == 2">查看物流</span>
+          <span class="button button1" @click="toPaid" v-if="infoData.state == 1">去支付</span>
         </div>
       </div>
     </div>
@@ -155,6 +167,7 @@
 //调用cilpboard
 import Clipboard from "clipboard";
 import { USER_ORDER_DETAIL_GET } from "../../../apis/user.js";
+import { ORDER_EXPRESS_GET,ORDER_RECEIVE } from "../../../apis/shopping.js";
 import easyNav from "./../../../components/easyNav";
 export default {
   components: {
@@ -162,12 +175,6 @@ export default {
   },
   data() {
     return {
-      // fictitious: {
-      //   orderNumber: 1955655265521222,
-      //   orderTime: "2019.4.17 19:15:22",
-      //   payWay: "支付宝支付",
-      //   payTime: "2019.4.17 19:16:02"
-      // },
       navData: {
         fold: false,
         home: true,
@@ -179,7 +186,7 @@ export default {
         type: "order"
       },
       infoData: {},
-      order_id: "",
+      order_id: null,
       invoice: {},
       showInvoice: false
     };
@@ -189,8 +196,7 @@ export default {
     this.showInvoice =
       parseInt(this.$route.query.invoice_id) == 0 ? true : false;
     this.getData();
-
-    console.log(this.$route.query.invoice_id);
+    this.getLogistics();
   },
   computed: {
     discount: function() {
@@ -229,6 +235,23 @@ export default {
         // if (Object.keys(res.response_data.invoice_info).length > 0)
         // this.showInvoice = true;
         // this.articleInfo = res.response_data.brand_info;
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    //获取物流信息
+    async getLogistics(){
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        order_id: this.order_id,
+        version: "1.0",
+        timestamp: tStamp
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_EXPRESS_GET(data);
+
+      if (res.hasOwnProperty("response_code")) {
+
       } else {
         this.$toast(res.error_message);
       }
@@ -288,7 +311,7 @@ export default {
     },
     //评价
     toComment() {
-      console.log(this.infoData.order_id);
+      // console.log(this.infoData.order_id);
       this.$router.push({
         name: "ordercomment",
         query: {
@@ -305,8 +328,6 @@ export default {
           query:{
             order_id:this.infoData.order_id,
             detail_id:item.id,
-            refund_money:item.real_price,
-            refund_count:item.buy_count,
           }
         })
       }else if(this.infoData.state == 2){
@@ -315,13 +336,57 @@ export default {
           query:{
             order_id:this.infoData.order_id,
             detail_id:item.id,
-            refund_money:item.real_price,
-            refund_count:item.buy_count,
           }
         })
       }
+    },
+    toOngoing(item){
+      this.$router.push({
+        name:"ongoing",
+        query:{
+            order_id:this.infoData.order_id,
+            detail_id:item.id,
+        }
+      })
+    },
+    //查看物流信息
+    tologistics(){
+      this.$router.push({
+        name:"logistics",
+        query:{
+          order_id:this.infoData.order_id
+        }
+      })
+    },
+    //确认收货
+    confirmReceive(item){
+      this.$dialog.confirm({
+          message: "确认收货？"
+        })
+        .then(() => {
+          this.orderReceive();
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
+    async orderReceive(){
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+        order_id:this.infoData.order_id,
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_RECEIVE(data);
 
-    }
+      if (res.hasOwnProperty("response_code")) {
+        this.$toast('确认收货成功！');
+        location.reload();
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
   }
 };
 </script>

@@ -39,17 +39,23 @@
  }
 
  #editPage{
-   padding: 20px 15px 0 15px;
-
+   padding:5px 15px;
+   .van-cell{
+    padding: 10px 0;
+   }
   .company{
     @include displayFlex(flex,null,center);
     border-bottom: 1px solid $greyLight;
-    padding-bottom: 15px;
-    .text{
+    padding-bottom: 5px;
+    .van-cell{
+      padding: 10px 0;
       font-size: $fontSize + 2;
     }
-    #searchHint{
-      flex-grow: 1;
+    .van-cell__title, .van-cell__value{
+      flex: none;
+    }
+    .van-cell__value{
+      padding: 0 10px;
     }
   }
   .freight{
@@ -59,13 +65,14 @@
     .freightText{
       font-size: $fontSize + 2;
     }
-    input{
-      flex-grow: 1;
-      border: none;
-      &::placeholder{
-        color: $cl9;
-        font-size: $fontSize - 1;
-      }
+  }
+  input{
+    flex-grow: 1;
+    border: none;
+    padding: 0 5px;
+    &::placeholder{
+      color: $cl9;
+      font-size: $fontSize - 1;
     }
   }
  }
@@ -100,34 +107,25 @@
  }
 
 #ongoingPage{
-  .content{
+    min-height: 100%;
     background-color: $greyLight;
+  .content{
     padding: 20px 15px 10px 15px;
-    margin-bottom: 50px;
-    .wd{
-      width: 10.5%;
-      text-align: center;
-    }
+
     .date{
       margin: 0px auto 20px auto;
       height: 20px;
       line-height: 20px;
       background-color: $white;
       border-radius: 10px;
-      width: 110px;
+      width: 140px;
       font-size: $fontSize - 2;
       color: $cl9;
       text-align: center;
     }
     .buyer{
       @include displayFlex(flex,flex-end,null);
-      .icon{
-        width: 30px;
-        height: 30px;
-        background-color: $white;
-        border-radius: 30px;
-        align-items: center;
-      }
+
       .message{
         border-radius: 4px;
         box-shadow: 0 0 2px rgba(0,0,0,.3);
@@ -145,6 +143,30 @@
           margin-top: 10px;
         }
       }
+      .wd_left{
+        margin-right: 5px;
+        .ratiobox {
+          min-width: 30px;
+          .bookImg {
+            display: block;
+            border-radius: 50%;
+            @include ratioBox (null, 100%, null, contain, $white, null);
+
+          }
+        }
+      }
+      .wd_right{
+        margin-left: 5px;
+        .ratiobox {
+          min-width: 30px;
+          .bookImg {
+            display: block;
+            border-radius: 50%;
+            @include ratioBox (null, 100%, null, contain, $white, null);
+
+          }
+        }
+      }
     }
     .seller{
       @include displayFlex(flex,flex-start,null);
@@ -159,6 +181,7 @@
       }
       .message{
         border-radius: 4px;
+        box-shadow: 0 0 2px rgba(0,0,0,.3);
         max-width: 73%;
         flex-grow: 1;
         background-color: $white;
@@ -184,6 +207,11 @@
         .mb{
           margin-bottom: 10px;
         }
+      }
+      .wd{
+        // width: 10.5%;
+        // text-align: center;
+        margin-right: 5px;
       }
     }
   }

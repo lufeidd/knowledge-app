@@ -51,7 +51,7 @@ import {
   Area,
   Rate,
   PasswordInput, NumberKeyboard,
-  Pagination, RadioGroup, Radio
+  Pagination, RadioGroup, Radio, Picker
 } from 'vant'
 Vue.use(Field)
 Vue.use(Toast)
@@ -87,6 +87,7 @@ Vue.use(PasswordInput).use(NumberKeyboard)
 Vue.use(Pagination)
 Vue.use(RadioGroup)
 Vue.use(Radio)
+Vue.use(Picker)
 
 Vue.use(plugin)
 

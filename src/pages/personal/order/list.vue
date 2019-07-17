@@ -52,57 +52,7 @@
       </div>
     </div>-->
 
-    <!-- <div class="content">
-      <div class="head">
-        <div class="titleFrom">
-          <img v-lazy="iconUrl" class="icon">
-          <span class="publish">浙江出版传媒集团</span>
-        </div>
-        <span class="order2">已完成</span>
-      </div>
-      <div class="section">
-        <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
-          <swiper-slide>
-            <div class="ratiobox">
-              <a class="bookImg" v-lazy:background-image="imgUrl"></a>
-            </div>
-          </swiper-slide>
-          <swiper-slide>
-            <div class="ratiobox">
-              <a class="bookImg" v-lazy:background-image="imgUrl"></a>
-            </div>
-          </swiper-slide>
-          <swiper-slide>
-            <div class="ratiobox">
-              <a class="bookImg" v-lazy:background-image="imgUrl"></a>
-            </div>
-          </swiper-slide>
-          <swiper-slide>
-            <div class="ratiobox">
-              <a class="bookImg" v-lazy:background-image="imgUrl"></a>
-            </div>
-          </swiper-slide>
-          <swiper-slide>
-            <div class="ratiobox">
-              <a class="bookImg" v-lazy:background-image="imgUrl"></a>
-            </div>
-          </swiper-slide>
-        </swiper>
-        <div class="tip1">
-          <span class="actulPay">
-            实付款：
-            <span class="money">￥ 134.00</span>
-          </span>
-        </div>
-      </div>
-      <div class="footFinish">
-        <span class="more">更多</span>
-        <div>
-          <span class="button1">评价</span>
-          <span class="button1">再次购买</span>
-        </div>
-      </div>
-    </div>-->
+
     <van-list
       v-model="programLoading"
       :finished="programFinished"
@@ -110,10 +60,51 @@
       @load="programLoad"
       v-else
     >
+    <!-- 实物商品-->
+    <div v-if="goodsData.length > 0">
+      <div class="content"  v-for="(item,index) in goodsData" :key="index">
+        <div class="head" @click="toBrandindex(item)">
+          <div class="titleFrom">
+            <div class="ratiobox">
+                <a class="bookImg" v-lazy:background-image="item.brand_header_pic"></a>
+              </div>
+            <span class="publish">{{item.brand_name}}</span>
+          </div>
+          <span class="order2">{{item.state_desc}}</span>
+        </div>
+        <div class="section">
+          <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
+            <swiper-slide v-for="(item1,index) in item.details" :key="'swiper-'+index" >
+              <div class="ratiobox" @click="toDetail(item)">
+                <a class="bookImg" v-lazy:background-image="item1.pic"></a>
+              </div>
+            </swiper-slide>
+          </swiper>
+          <div class="tip1">
+            <span class="actulPay">
+              实付款：
+              <span class="money">￥{{item.order_money}}</span>
+            </span>
+          </div>
+        </div>
+        <div class="footFinish">
+          <div>
+            <span class="button button1" @click="repply(item)" v-if="item.invoice_id == 0 && item.state == 4">申请发票</span>
+          </div>
+          <div>
+            <span class="button button1" v-if="item.state == 1">去支付</span>
+            <span class="button button1" @click="toComment(item,index)" v-if="item.state == 4">评价</span>
+            <span class="button button1" v-if="item.state == 4">再次购买</span>
+            <span class="button button1" @click="confirmReceive(item)" v-if="item.state == 3">确认收货</span>
+            <span class="button button1" @click="tologistics(item)" v-if="item.state == 2">查看物流</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 虚拟商品 -->
       <div class="content" v-for="(item,index) in publishData" :key="index">
         <div class="head" @click="toBrandindex(item)">
           <div class="titleFrom">
-            <!-- <img v-lazy="item.brand_header_pic" alt class="icon"> -->
             <div class="ratiobox">
               <a class="bookImg" v-lazy:background-image="item.brand_header_pic"></a>
             </div>
@@ -136,8 +127,10 @@
             </span>
           </div>
         </div>
-        <div class="foot" :style="{'justify-content': item.invoice_id ? 'flex-end':'space-between'}">
-          <span class="button button1" @click="repply(item)" v-if="item.invoice_id == 0">申请发票</span>
+        <div class="foot">
+          <div>
+            <span class="button button1" @click="repply(item)" v-if="item.invoice_id == 0">申请发票</span>
+          </div>
           <div>
             <span
               class="button button1"
@@ -161,6 +154,7 @@
 <script>
 import easyNav from "./../../../components/easyNav";
 import { USER_ORDER_DETAIL_GETS } from "../../../apis/user.js";
+import { ORDER_RECEIVE } from "../../../apis/shopping.js";
 export default {
   components: {
     easyNav
@@ -178,6 +172,7 @@ export default {
         type: "order"
       },
       publishData: [],
+      goodsData:[],
       state: { evaluate: true, isPay: true, rePurchase: true, confirm: true },
       swiperOption: {
         slidesPerView: 5.3
@@ -219,7 +214,12 @@ export default {
 
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
-            this.publishData.push(result[i]);
+
+            if(result[i].type == 1){
+              this.publishData.push(result[i]);
+            }else{
+              this.goodsData.push(result[i]);
+            }
           }
           this.programLoading = false;
           this.page++;
@@ -280,7 +280,45 @@ export default {
           order_id: item.order_id
         }
       });
-    }
+    },
+    //查看物流信息
+    tologistics(item){
+      this.$router.push({
+        name:"logistics",
+        query:{
+          order_id:item.order_id,
+        }
+      })
+    },
+    //确认收货
+    confirmReceive(item){
+      this.$dialog.confirm({
+          message: "确认收货？"
+        })
+        .then(() => {
+          this.orderReceive(item.order_id);
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
+    async orderReceive(order_id){
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+        order_id:order_id,
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_RECEIVE(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.$toast('确认收货成功！');
+        location.reload();
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
   }
 };
 </script>
