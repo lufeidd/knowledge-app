@@ -16,20 +16,28 @@
       <div class="sell" @click="toMall" v-if="brandData.mall_show == 1">
         <div>
           <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-shop-line"></use>
+            <use xlink:href="#icon-shop-line" />
           </svg> 品牌商城
         </div>
         <div class="link" v-if="brandData.statistic_list">
           {{brandData.statistic_list.goods_num}}件商品在售
           <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-next-line"></use>
+            <use xlink:href="#icon-next-line" />
           </svg>
         </div>
       </div>
     </div>
 
-    <van-tabs sticky animated color="#666" title-active-color="#333" @click="tabChange" v-if="brandData.column_list.length > 0">
-      <van-tab :title="items.name" v-for="items,index in brandData.column_list" :key="index">
+    <van-tabs
+      sticky
+      animated
+      color="#666"
+      title-active-color="#333"
+      @click="tabChange"
+      v-if="brandData.column_list && brandData.column_list.length > 0"
+      v-model="activekey"
+    >
+      <van-tab :title="items.name" v-for="(items,index) in brandData.column_list" :key="index">
         <template v-if="activekey == index">
           <van-list
             v-model="programLoading"
@@ -37,7 +45,12 @@
             finished-text="没有更多了"
             @load="programLoad"
           >
-            <div class="content" v-for="item,index in column_list_data" @click="linktoDetail(item)">
+            <div
+              class="content"
+              v-for="(item,index) in column_list_data"
+              :key="index"
+              @click="linktoDetail(item)"
+            >
               <div class="ratiobox">
                 <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
               </div>
@@ -47,13 +60,13 @@
                 <div class="nice">
                   <span class="good" v-if="item.goods_type == 6">
                     <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-good-line"></use>
+                      <use xlink:href="#icon-good-line" />
                     </svg>
                     <span>{{item.praise_num}}</span>
                   </span>
                   <span class="comment">
                     <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-comment-line"></use>
+                      <use xlink:href="#icon-comment-line" />
                     </svg>
                     <span>{{item.comment_num}}</span>
                   </span>
@@ -68,7 +81,7 @@
     <!-- 点击公号头像显示的弹层 -->
     <van-popup v-model="showPopup">
       <svg class="icon close" aria-hidden="true" @click="close">
-        <use xlink:href="#icon-close-line"></use>
+        <use xlink:href="#icon-close-line" />
       </svg>
       <div class="ratiobox">
         <div class="bookImg" v-lazy:background-image="brandData.header_pic"></div>
@@ -76,7 +89,7 @@
       <div class="name">{{brandData.name}}</div>
       <div class="company">
         <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-zimeitigongsi"></use>
+          <use xlink:href="#icon-zimeitigongsi" />
         </svg>
         （{{brandData.create_time}}入驻）
       </div>
@@ -84,32 +97,20 @@
       <div class="content">{{brandData.summary}}</div>
     </van-popup>
 
-    <easyNav :navData="navData"></easyNav>
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
 <style scoped src="@/style/scss/pages/brand/index.scss" lang="scss"></style>
 
 <script>
+// vue无刷新修改url参数
+import merge from 'webpack-merge';
 import { BRAND_INFO, BRAND_COLUMN_GETS } from "../../apis/brand.js";
 import { FOCUS_ADD, FOCUS_CANCEL, WX_SHARE } from "../../apis/public.js";
-import easyNav from "./../../components/easyNav";
 export default {
-  components: {
-    easyNav
-  },
   data() {
     return {
-      navData: {
-        fold: false,
-        home: false,
-        // homeLink: "/brand/index",
-        search: true,
-        searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type: "brand"
-      },
       focus: null,
       showPopup: false,
       programLoading: false,
@@ -205,8 +206,22 @@ export default {
 
         // title
         document.title = this.brandData.name;
-        if (res.response_data.column_list.length > 0)
-          this.packets_id = res.response_data.column_list[0].packets_id;
+
+        if (res.response_data.column_list.length > 0) {
+          for (let i = 0; i < res.response_data.column_list.length; i++) {
+            if (this.$route.query.packets_id) {
+              if (
+                parseInt(this.$route.query.packets_id) ==
+                res.response_data.column_list[i].packets_id
+              ) {
+                this.activekey = i;
+              }
+            }
+          }
+
+          this.packets_id =
+            res.response_data.column_list[this.activekey].packets_id;
+        }
       } else {
         this.$router.replace({
           name: "personalIndex",
@@ -241,9 +256,7 @@ export default {
     },
     // 列表下拉加载
     programLoad() {
-      // console.log('--load：');
       this.columnListData();
-      // console.log('page:',this.currentPage,this.column_list_data);
     },
     // 点击tab页切换
     tabChange(index) {
@@ -251,8 +264,10 @@ export default {
       this.column_list_data = [];
       this.programFinished = false;
       this.currentPage = 1;
-      // console.log(index,this.brandData.column_list[index].packets_id);
       this.packets_id = this.brandData.column_list[index].packets_id;
+      this.$router.push({
+        query: merge(this.$route.query, { packets_id: this.packets_id })
+      });
     },
     // 获取对应tab页下的列表
     async columnListData() {
@@ -270,8 +285,10 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         var result = res.response_data.result;
         setTimeout(() => {
-          for (let i = 0; i < result.length; i++) {
-            this.column_list_data.push(result[i]);
+          if (result && result.length > 0) {
+            for (let i = 0; i < result.length; i++) {
+              this.column_list_data.push(result[i]);
+            }
           }
           // console.log('column:',this.column_list_data,result)
           // 加载状态结束
@@ -296,7 +313,8 @@ export default {
           name: "albumdetail",
           query: {
             goods_id: item.goods_id,
-            pid: null
+            pid: null,
+            packets_id: this.packets_id
           }
         });
       }

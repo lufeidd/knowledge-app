@@ -387,6 +387,7 @@ export default {
       }
       // 播放
       audio.play();
+      console.log('测试全部播放:', __currentTime);
       this.$emit("setType", false);
       this.audioTimeChange(second, false);
       console.log("播放");

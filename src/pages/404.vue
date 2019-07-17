@@ -14,6 +14,7 @@
         >返回首页</van-tag>
       </router-link> -->
     </div>
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 <style lang="scss">

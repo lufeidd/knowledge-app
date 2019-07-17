@@ -1,10 +1,11 @@
 <template>
   <div id="articlePage">
     <div class="nullBox" v-if="onsale == 0">
-      <img src="./../../../assets/null/product.png" width="100%">
+      <img src="./../../../assets/null/product.png" width="100%" />
       <div>该商品已下架~</div>
     </div>
     <div v-if="onsale == 1">
+      <Download></Download>
       <div class="article">
         <div class="title">{{baseData.title}}</div>
         <div class="from">
@@ -22,17 +23,19 @@
         </div>
         <div class="contentData" v-html="baseData.desc">{{baseData.desc}}</div>
         <div class="message">
-          <span>
+          <div style="margin-right: 15px;">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-eye-line"></use>
+              <use xlink:href="#icon-eye-line" />
             </svg>
-            {{baseData.play_num}}
+            <span>{{baseData.play_num}}</span>
+          </div>
+          <div>
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-good-line"></use>
+              <use xlink:href="#icon-good-line" />
             </svg>
-            {{baseData.praise_num}}
-          </span>
-          <span>{{baseData.create_time}}</span>
+            <span>{{baseData.praise_num}}</span>
+          </div>
+          <div style="flex-grow: 1;text-align: right;">{{baseData.create_time}}</div>
         </div>
       </div>
       <!-- 轮播部分 -->
@@ -54,7 +57,7 @@
           <van-col span="8" v-for="item,index in recommendData" :key="index">
             <div class="ratioBox" @click="gotoLink(item)">
               <div class="box">
-                <img :src="item.pic">
+                <img :src="item.pic" />
               </div>
             </div>
             <div class="title">{{ item.title }}</div>
@@ -105,7 +108,7 @@
       </div>
       <!-- 评论 -->
       <div class="commentBox">
-        <van-cell :title="totalCount" is-link value="我要评论" @click="openAnswer('comment', null)"/>
+        <van-cell :title="totalCount" is-link value="我要评论" @click="openAnswer('comment', null)" />
 
         <van-list
           v-model="commentLoading"
@@ -117,7 +120,7 @@
             <div class="left">
               <div class="ratioBox">
                 <div class="box">
-                  <img :src="item.user_header">
+                  <img :src="item.user_header" />
                 </div>
               </div>
             </div>
@@ -153,7 +156,7 @@
                   <span class="name" @click="pageChange(item.comment_id, key)">
                     共{{ item.reply_num }}条回复
                     <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-fold-line"></use>
+                      <use xlink:href="#icon-fold-line" />
                     </svg>
                     <!-- <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-unfold-line"></use>
@@ -177,7 +180,7 @@
           <div class="title">
             <div class="action" @click="commentClose">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-fold-line"></use>
+                <use xlink:href="#icon-fold-line" />
               </svg>
             </div>
             <div>发表评论</div>
@@ -206,10 +209,10 @@
             v-if="baseData.collect_id > 0"
             @click="collectAction"
           >
-            <use xlink:href="#icon-collect-block"></use>
+            <use xlink:href="#icon-collect-block" />
           </svg>
           <svg class="icon" aria-hidden="true" v-else @click="collectAction">
-            <use xlink:href="#icon-collect-line"></use>
+            <use xlink:href="#icon-collect-line" />
           </svg> &nbsp;|&nbsp;
           <svg
             class="icon"
@@ -217,14 +220,16 @@
             v-if="baseData.is_praised == 0"
             @click="praiseAction"
           >
-            <use xlink:href="#icon-good-line"></use>
+            <use xlink:href="#icon-good-line" />
           </svg>
           <svg class="icon add" aria-hidden="true" v-else @click="praiseAction">
-            <use xlink:href="#icon-good-block"></use>
+            <use xlink:href="#icon-good-block" />
           </svg>
         </div>
       </div>
-      <easyNav :navData="navData"></easyNav>
+      <!-- <easyNav :navData="navData"></easyNav> -->
+
+      <EazyNav type="brand"></EazyNav>
     </div>
   </div>
 </template>
@@ -233,7 +238,7 @@
 
 <script>
 import { ALBUM, ALBUM_DETAIL } from "../../../apis/album.js";
-import easyNav from "./../../../components/easyNav";
+// import easyNav from "./../../../components/easyNav";
 import {
   COLLECT_ADD,
   COLLECT_CANCEL,
@@ -247,22 +252,23 @@ import {
   WX_SHARE
 } from "../../../apis/public.js";
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
+      device: "",
       onsale: null,
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: true,
-        searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type: "brand"
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: true,
+      //   searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type: "brand"
+      // },
       // 评论
       discussData: [],
       commentPage: 1,
@@ -307,37 +313,37 @@ export default {
   },
   methods: {
     // 获取页面分享信息
-    async wxShareData() {
-      var tStamp = this.$getTimeStamp();
-      var tmp = {};
-      tmp.goods_id = this.$route.query.goods_id;
-      if (this.$route.query.pid != null) tmp.album_id = this.$route.query.pid;
+    // async wxShareData() {
+    //   var tStamp = this.$getTimeStamp();
+    //   var tmp = {};
+    //   tmp.goods_id = this.$route.query.goods_id;
+    //   if (this.$route.query.pid != null) tmp.album_id = this.$route.query.pid;
 
-      var data = {
-        page_name: "goods/detail",
-        params: JSON.stringify({
-          goods_id: this.$route.query.goods_id,
-          album_id: this.$route.query.pid
-        }),
-        version: "1.0",
-        timestamp: tStamp
-      };
-      data.sign = this.$getSign(data);
+    //   var data = {
+    //     page_name: "goods/detail",
+    //     params: JSON.stringify({
+    //       goods_id: this.$route.query.goods_id,
+    //       album_id: this.$route.query.pid
+    //     }),
+    //     version: "1.0",
+    //     timestamp: tStamp
+    //   };
+    //   data.sign = this.$getSign(data);
 
-      let res = await WX_SHARE(data);
-      if (res.hasOwnProperty("response_code")) {
-        // console.log(res.response_data)
-        // 微信分享
-        this.$getWxData(
-          res.response_data.share_info.title,
-          res.response_data.share_info.desc,
-          res.response_data.share_info.pic,
-          res.response_data.share_info.url
-        );
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
+    //   let res = await WX_SHARE(data);
+    //   if (res.hasOwnProperty("response_code")) {
+    //     // console.log(res.response_data)
+    //     // 微信分享
+    //     this.$getWxData(
+    //       res.response_data.share_info.title,
+    //       res.response_data.share_info.desc,
+    //       res.response_data.share_info.pic,
+    //       res.response_data.share_info.url
+    //     );
+    //   } else {
+    //     this.$toast(res.error_message);
+    //   }
+    // },
     // 获取关注接口信息
     async focusData(__type) {
       var data = {};
@@ -511,8 +517,7 @@ export default {
     async getData() {
       var tStamp = this.$getTimeStamp();
       var data = {
-        timestamp: tStamp,
-        // goods_id: this.goodsId,
+        ad: parseInt(this.$route.query.ad) == 1 ? 1 : 0,
         goods_id: this.goodsId,
         version: "1.0",
         timestamp: tStamp
@@ -526,7 +531,13 @@ export default {
         document.title = "文章详情-" + res.response_data.base.title;
 
         // 获取页面分享信息
-        if(this.isWxLogin) this.wxShareData();
+        // if(this.isWxLogin) this.wxShareData();
+        var _pageName = "goods/detail";
+        var _params = JSON.stringify({
+          goods_id: this.$route.query.goods_id,
+          album_id: this.$route.query.pid
+        });
+        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
 
         // $(".contentData").append(this.baseData.desc);
         if (this.baseData.desc.length <= 0) {

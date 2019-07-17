@@ -24,7 +24,8 @@
       <van-button type="danger" size="large" replace @click="submitFeedback">提交</van-button>
     </div>
 
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -32,14 +33,14 @@
 
 <script>
 import upload from "../../../components/upload";
-import easyNav from "./../../../components/easyNav";
+// import easyNav from "./../../../components/easyNav";
 import { USER_FEEDBACK_ADD } from "../../../apis/user.js";
 import { COMMON_UPLOAD } from "../../../apis/public.js";
 import { setTimeout } from "timers";
 export default {
   components: {
     upload,
-    easyNav
+    // easyNav
   },
   data() {
     return {
@@ -47,16 +48,16 @@ export default {
       phoneLength: 0,
       textTotal: 500,
       phoneTotal: 50,
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: false,
-        // searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type: "order"
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: false,
+      //   // searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type: "order"
+      // },
       submit: true,
       uploadData: {
         maxlength: 3
@@ -146,6 +147,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
+        localStorage.setItem("loginState", 1);
 
         // console.log(res);
         var arr = [];
@@ -160,6 +162,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
+          localStorage.setItem("loginState", 100);
         }
         this.$toast(res.error_message);
       }

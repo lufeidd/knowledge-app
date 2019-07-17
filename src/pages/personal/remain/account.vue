@@ -24,7 +24,8 @@
     <div class="recharge" style="padding-bottom: 40px;">
       <van-button slot="button" size="large" round type="danger" @click="account()">充值</van-button>
     </div>
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -36,23 +37,23 @@ import {
   USER_WALLET_RECHARGE_ADD
 } from "../../../apis/user.js";
 import { CASHIER_PAY_ADD } from "../../../apis/public.js";
-import easyNav from "./../../../components/easyNav";
+// import easyNav from "./../../../components/easyNav";
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: false,
-        // searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type: "order"
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: false,
+      //   // searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type: "order"
+      // },
       money: null,
       rechargeAmount: [],
       activeClass: 0,
@@ -79,13 +80,13 @@ export default {
       let data = {
         money: _money,
         type: "NORMAL",
-        timeStamp: tStamp,
+        timestamp: tStamp,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
       let res = await USER_WALLET_RECHARGE_ADD(data);
       if (res.hasOwnProperty("response_code")) {
-        console.log(888, res.response_data);
+        // console.log( res.response_data);
         // 交易支付请求发起
         this.cashierPayData(res.response_data.pay_id);
       } else {
@@ -99,7 +100,7 @@ export default {
         pay_id: _payId,
         openid: localStorage.getItem("openid"),
         type: "WXJS",
-        timeStamp: tStamp,
+        timestamp: tStamp,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -110,7 +111,6 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // var _package = "prepay_id=" + res.response_data.pay_arr.prepayid;
         console.log(
-          888,
           res.response_data.pay_arr.timeStamp,
           res.response_data.pay_arr.nonceStr,
           res.response_data.pay_arr.sign
@@ -131,7 +131,7 @@ export default {
     async getRemainData() {
       var tStamp = this.$getTimeStamp();
       var data = {
-        timeStamp: tStamp,
+        timestamp: tStamp,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -139,6 +139,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
+          localStorage.setItem("loginState", 1);
 
         this.rechargeAmount = res.response_data.prices;
         this.money = res.response_data.wallet_info.balance;
@@ -148,6 +149,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
+          localStorage.setItem("loginState", 100);
         }
         this.$toast(res.error_message);
       }

@@ -133,6 +133,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
+        localStorage.setItem("loginState", 1);
         // console.log(res);
         // this.$router.push({ name: "personalIndex", query: "" });
 
@@ -144,6 +145,7 @@ export default {
           fromLink.indexOf("/personal/set/index") != -1 ||
           fromLink.indexOf("/login/password") != -1 ||
           fromLink.indexOf("/login/register") != -1 ||
+          fromLink.indexOf("/personal/set/password") != -1 ||
           fromLink == "/"
         ) {
           this.$router.replace({ name: "personalIndex" });
@@ -155,6 +157,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
+          localStorage.setItem("loginState", 100);
         }
       }
     },
@@ -165,7 +168,7 @@ export default {
       let data = {
         mobile: this.phone
       };
-      sessionStorage.setItem("loginState", 1);
+      localStorage.setItem("loginState", 1);
       this.$router.push({ name: "password", query: data });
     }
   }

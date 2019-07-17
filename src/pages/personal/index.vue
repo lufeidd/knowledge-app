@@ -148,7 +148,7 @@
         <!-- <router-link v-if="infoData.is_login" to="/cart" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-personalCart"></use>
+              <use xlink:href="#icon-personalCart" />
             </svg>
           </div>
           <div class="desc">
@@ -156,14 +156,14 @@
           </div>
           <div class="action">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line"></use>
+              <use xlink:href="#icon-next-line" />
             </svg>
           </div>
         </router-link>
         <router-link v-else to="/login/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-personalCart"></use>
+              <use xlink:href="#icon-personalCart" />
             </svg>
           </div>
           <div class="desc">
@@ -171,10 +171,10 @@
           </div>
           <div class="action">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line"></use>
+              <use xlink:href="#icon-next-line" />
             </svg>
           </div>
-        </router-link>-->
+        </router-link> -->
 
         <!-- 我的评论 -->
         <router-link v-if="infoData.is_login" to="/personal/comment/index" class="cell">
@@ -243,32 +243,33 @@
     </div>
 
     <!-- 快速导航 -->
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
 <style src="@/style/scss/pages/personal/index.scss" scoped lang="scss"></style>
 
 <script>
-import easyNav from "./../../components/easyNav";
+// import easyNav from "./../../components/easyNav";
 import { mapState, mapGetters, mapActions } from "vuex";
 //  引入接口
 import { USER_HOMEPAGE } from "../../apis/user.js";
 
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
       // 快速导航
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: false,
-        personal: false
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: false,
+      //   personal: false
+      // },
       // 信息
       infoData: {}
     };
@@ -297,6 +298,9 @@ export default {
       // console.log( res.response_data, this.$cookies.get("token"));
 
       if (res.hasOwnProperty("response_code")) {
+        this.$store.commit("changeLoginState", 1);
+        localStorage.setItem("loginState", 1);
+
         this.$set(this.infoData, "user_header", res.response_data.user_header);
         this.$set(this.infoData, "user_name", res.response_data.user_name);
         this.$set(this.infoData, "follow_num", res.response_data.follow_num);
@@ -304,9 +308,6 @@ export default {
         this.$set(this.infoData, "history_num", res.response_data.history_num);
         this.$set(this.infoData, "is_login", res.response_data.is_login);
         this.$set(this.infoData, "balance", res.response_data.balance);
-
-        // store 设置登录状态
-        this.$store.commit("changeLoginState", 1);
 
         if (this.infoData.is_login == 1) {
           $(".ratioBox").css(
@@ -318,6 +319,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
+          localStorage.setItem("loginState", 100);
         }
         this.$toast(res.error_message);
       }

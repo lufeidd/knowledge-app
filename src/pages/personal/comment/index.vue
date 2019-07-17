@@ -37,7 +37,8 @@
         </div>
       </div>
     </van-list>
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -46,23 +47,23 @@
 <script>
 //  引入接口
 import { USER_COMMENT } from "../../../apis/user.js";
-import easyNav from "./../../../components/easyNav";
+// import easyNav from "./../../../components/easyNav";
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: false,
-        // searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type: "order"
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: false,
+      //   // searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type: "order"
+      // },
       commentData: [],
       programLoading: false,
       programFinished: false,
@@ -138,11 +139,13 @@ export default {
 
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
+        localStorage.setItem("loginState", 1);
         
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
+          localStorage.setItem("loginState", 100);
           
         }
         this.$toast(res.error_message);

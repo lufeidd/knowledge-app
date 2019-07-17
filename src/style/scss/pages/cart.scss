@@ -6,25 +6,11 @@
 @charset "utf-8";
 
 #cartPage {
-  padding-top: 5px;
   min-height: 100%;
   box-sizing: border-box;
-  background-color: $greyLight;       
-  padding-bottom: env(safe-area-inset-bottom);//为底下圆弧的高度 34px  
+  background-color: $greyLight;
+  padding-bottom: env(safe-area-inset-bottom); //为底下圆弧的高度 34px  
 
-  & .totalBox {
-    @include font(null, $fontSize - 1, #666);
-
-    & .icon {
-      width: 14px;
-      height: 14px;
-      padding: 0 5px 0 15px;
-    }
-
-    & .icon.active {
-      color: $redDark;
-    }
-  }
 
   & .editBox {
     @include displayFlex (flex, center, center);
@@ -42,106 +28,122 @@
       top: 2px;
     }
   }
+  & .cardBox {
+    margin-bottom: 10px;
 
-  & .listBox {
-    @include displayFlex (flex, center, center);
-    border-bottom: 1px $greyLight solid;
-    background-color: $white;
-    padding: 15px;
+    & .listBox {
+      @include displayFlex (flex, center, center);
+      border-bottom: 1px $greyLight solid;
+      background-color: $white;
+      padding: 15px;
 
-    & .right {
-      @include flexBasis(14px);
+      & .right {
+        @include flexBasis(14px);
 
-      & .icon {
-        width: 14px;
-        height: 14px;
-        color: #9b9b9b;
+        & .icon {
+          width: 14px;
+          height: 14px;
+          color: #9b9b9b;
+        }
+
+        & .icon.active {
+          color: $redDark;
+        }
       }
 
-      & .icon.active {
-        color: $redDark;
-      }
-    }
+      & .left {
+        @include flexBasis(80px);
+        margin-left: 10px;
 
-    & .left {
-      @include flexBasis(80px);
-      margin-left: 10px;
+        & .ratioBox {
+          & .box {
+            & .tag {
+              @include position (absolute, 'bl', 0, 0, 100%, 20px, null);
+              background-color: rgba($color: #000000, $alpha: 0.3);
+              font-size: $fontSize - 4;
+              color: $white;
+              text-align: center;
+              line-height: 20px;
 
-      & .ratioBox {
-        & .box {
-          & .tag {
-            @include position (absolute, 'bl', 0, 0, 100%, 20px, null);
-            background-color: rgba($color: #000000, $alpha: 0.3);
-            font-size: $fontSize - 4;
-            color: $white;
-            text-align: center;
-            line-height: 20px;
-
+            }
           }
         }
       }
-    }
 
-    & .center {
-      margin-left: 10px;
+      & .center {
+        margin-left: 10px;
 
-      & .title {
-        @include twoLines;
-        @include font("PingFangBold", $fontSize, #333);
-        position: relative;
-        top: -5px;
-
-        & .text {
+        & .title {
           @include twoLines;
-        }
-      }
+          @include font("PingFangBold", $fontSize, #333);
+          position: relative;
+          top: -5px;
 
-      & .subTitle {
-        @include font(null, $fontSize - 1, #999);
-        line-height: 17px;
-        height: 17px;
-        ;
-      }
-
-      & .info {
-        position: relative;
-
-        & .history {
-          @include font("PingFangBold", $fontSize + 1, $redDark);
+          & .text {
+            @include twoLines;
+          }
         }
 
-        & .action {
-          @include position (absolute, 'br', 0, 0, null, null, null);
+        & .subTitle {
+          @include font(null, $fontSize - 1, #999);
+          line-height: 17px;
+          height: 17px;
+          ;
         }
+
+        & .info {
+          position: relative;
+
+          & .history {
+            @include font("PingFangBold", $fontSize + 1, $redDark);
+          }
+
+          & .action {
+            @include position (absolute, 'br', 0, 0, null, null, null);
+          }
+        }
+
       }
 
     }
 
-  }
+    & .listBox.total {
+      padding: 0 15px;
+      height: 45px;
 
-  & .listBox.total {
-    padding: 0 15px;
-    height: 45px;
-
-    & .center {
-      margin-left: 10px;
-      @include textOverflow;
-
-      & .title {
+      & .center {
+        margin-left: 10px;
         @include textOverflow;
-        @include font("PingFangBold", $fontSize, #333);
-        position: relative;
-        top: 0;
-        display: block;
 
-        & .text {
+        & .title {
           @include textOverflow;
+          @include font("PingFangBold", $fontSize, #333);
+          position: relative;
+          top: 0;
           display: block;
+
+          & .text {
+            @include textOverflow;
+            display: block;
+          }
         }
+
       }
 
     }
-
   }
 
+  & .totalBox {
+    @include font(null, $fontSize - 1, #666);
+
+    & .icon {
+      width: 14px;
+      height: 14px;
+      padding: 0 5px 0 15px;
+    }
+
+    & .icon.active {
+      color: $redDark;
+    }
+  }
 }

@@ -428,10 +428,10 @@ export default new Router({
       component: setpassword,
       //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
       beforeEnter: (to, from, next) => {
-        from.path == '/login/index' ? next('/login/index') : next();
+        from.path == '/login/index' ? next('/personal/index') : next();
       },
       meta: {
-        title: '修改密码',
+        title: '',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
@@ -573,20 +573,28 @@ export default new Router({
       name: 'detail',
       component: detail
     },
-
-    // 我的订单
+    // 订单确认
     {
       path: '/order/confirm',
       name: 'orderconfirm',
-      component: orderconfirm
+      component: orderconfirm,
+      meta: {
+        title: '订单确认',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
+    // 订单商品确认
     {
       path: '/order/detail',
       name: 'orderconfirmdetail',
-      component: orderconfirmdetail
+      component: orderconfirmdetail,
+      meta: {
+        title: '订单商品确认',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
 
-    // 支付
+    // 去支付 实物
     {
       path: '/pay/index',
       name: 'pay',
@@ -602,7 +610,7 @@ export default new Router({
       meta: {
         keepAlive: false,  // false不需要被缓存，true需要缓存
         title: '结算',
-        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+        requireAuth: true, // 需要登录才能进入的页面可以增加一个meta属性
       },
       //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
       beforeEnter: (to, from, next) => {

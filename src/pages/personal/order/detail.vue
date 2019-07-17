@@ -149,7 +149,8 @@
       </div>
     </div>
 
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -159,11 +160,11 @@
 //调用cilpboard
 import Clipboard from "clipboard";
 import { USER_ORDER_DETAIL_GET } from "../../../apis/user.js";
-import easyNav from "./../../../components/easyNav";
+// import easyNav from "./../../../components/easyNav";
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
       // fictitious: {
@@ -172,16 +173,16 @@ export default {
       //   payWay: "支付宝支付",
       //   payTime: "2019.4.17 19:16:02"
       // },
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: true,
-        searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type: "order"
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: true,
+      //   searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type: "order"
+      // },
       infoData: {},
       order_id: "",
       invoice: {},

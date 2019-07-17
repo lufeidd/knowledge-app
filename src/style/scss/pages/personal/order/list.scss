@@ -16,6 +16,7 @@
        margin-top: 0;
      }
      .head{
+       height: 40px;
        line-height: 40px;
        border-bottom: 1px solid $greyLight;
        @include displayFlex(flex,space-between,center);

@@ -9,14 +9,17 @@
       @change-area="changeAction"
       ref="address"
     />
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
 <style lang="scss">
 @import url("./../../../style/scss/components/dateTimePicker.scss");
-@import url("./../../../style/scss/components/button.scss");
 
 #addressPage {
+  .van-button {
+    border-radius: 50px;
+  }
   .van-address-edit__buttons {
     padding: 100px 50px;
   }
@@ -31,6 +34,7 @@
   }
 }
 </style>
+
 <script>
 //  引入接口
 import { ADDRESS } from "../../../apis/public.js";
@@ -95,7 +99,7 @@ export default {
       this.getAddress();
     }
     // 初始化省市区
-    this.getAddressData();
+    this.$getAddressData();
   },
 
   methods: {
@@ -134,6 +138,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
+        localStorage.setItem("loginState", 1);
 
         this.addressInfo.name = res.response_data[0].consignee;
         this.addressInfo.tel = res.response_data[0].mobile;
@@ -143,7 +148,8 @@ export default {
         this.addressInfo.city = res.response_data[0].city;
         this.addressInfo.county = res.response_data[0].county;
 
-        this.addressInfo.isDefault = res.response_data[0].is_default == 1 ? true : false;
+        this.addressInfo.isDefault =
+          res.response_data[0].is_default == 1 ? true : false;
 
         this.provinceId = res.response_data[0].province_id;
         this.cityId = res.response_data[0].city_id;
@@ -155,6 +161,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
+          localStorage.setItem("loginState", 100);
         }
         this.$toast(res.error_message);
       }
@@ -179,7 +186,8 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.$toast("地址保存成功~");
         // this.$router.push({ name: "set" });
-        this.$router.push({ name: "addresslist" });
+        // this.$router.push({ name: "addresslist" });
+        this.$router.go(-1);
       } else {
         this.$toast(res.error_message);
       }
@@ -205,90 +213,8 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.$toast("地址修改成功~");
         // this.$router.push({ name: "set" });
-        this.$router.push({ name: "addresslist" });
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    // 获取省市区数据
-    async getAddressData() {
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        version: "1.0"
-      };
-      data.sign = this.$getSign(data);
-      let res = await ADDRESS(data);
-      if (res.hasOwnProperty("response_code")) {
-        var pstr = new Array();
-        var cstr = new Array();
-        var ctstr = new Array();
-
-        if (res.response_data) {
-          for (let i = 0; i < res.response_data.length; i++) {
-            // console.log('省：', res.response_data[i]);
-            pstr +=
-              '"' +
-              res.response_data[i].id +
-              "0000" +
-              '"' +
-              ":" +
-              '"' +
-              res.response_data[i].name +
-              '"' +
-              ",";
-
-            // console.log('省str：', pstr)
-
-            // 市
-            if (res.response_data[i].city) {
-              for (let j = 0; j < res.response_data[i].city.length; j++) {
-                // console.log("市：", res.response_data[i].city[j]);
-                cstr +=
-                  '"' +
-                  res.response_data[i].city[j].id +
-                  "00" +
-                  '"' +
-                  ":" +
-                  '"' +
-                  res.response_data[i].city[j].name +
-                  '"' +
-                  ",";
-
-                // console.log('市str：', cstr)
-
-                // 区
-                if (res.response_data[i].city[j].county) {
-                  for (
-                    let k = 0;
-                    k < res.response_data[i].city[j].county.length;
-                    k++
-                  ) {
-                    // console.log("区：", res.response_data[i].city[j].county[k]);
-                    ctstr +=
-                      '"' +
-                      res.response_data[i].city[j].county[k].id +
-                      '"' +
-                      ":" +
-                      '"' +
-                      res.response_data[i].city[j].county[k].name +
-                      '"' +
-                      ",";
-                  }
-                  // console.log('区str：', ctstr)
-                }
-              }
-            }
-          }
-
-          // 省
-          this.areaList.province_list = this.stringToJson(pstr);
-          // 市
-          this.areaList.city_list = this.stringToJson(cstr);
-          // 区
-          this.areaList.county_list = this.stringToJson(ctstr);
-          // console.log(this.areaList.city_list)
-        }
+        // this.$router.push({ name: "addresslist" });
+        this.$router.go(-1);
       } else {
         this.$toast(res.error_message);
       }
@@ -310,19 +236,6 @@ export default {
         // 地址编辑
         this.editAddress();
       }
-    },
-    // 字符串转换成json格式
-    stringToJson(str) {
-      var arr1 = new Array();
-      var arr2 = new Array();
-      var __json = new Array();
-
-      arr1 = str.split(",");
-      arr2 = "{" + arr1 + "}";
-      __json = eval("(" + arr2 + ")");
-
-      // console.log('__json:', __json);
-      return __json;
     },
     // 切换
     changeAction(values) {

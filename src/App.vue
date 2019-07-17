@@ -80,6 +80,9 @@ body,
 <script>
 import axios from "axios";
 
+// 下载app
+
+
 // 微信分享，引入sdk
 import wx from "weixin-js-sdk";
 export default {

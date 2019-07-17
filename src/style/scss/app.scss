@@ -36,9 +36,11 @@ img {
 .icon {
   width: 1em;
   height: 1em;
-  vertical-align: -0.15em;
+  vertical-align: center;
   fill: currentColor;
   overflow: hidden;
+  position: relative;
+  top: 3px;
 }
 
 // 遮罩
@@ -349,4 +351,14 @@ img {
 
 .van-popup--bottom {
   border-left: 1px #fff solid;
+}
+
+// 步进器
+.van-stepper__input[disabled] {
+  background-color: $white;
+  color: #333;
+}
+
+.van-stepper__minus--disabled:after, .van-stepper__minus--disabled:before, .van-stepper__plus--disabled:after, .van-stepper__plus--disabled:before {
+  background-color: #666;
 }

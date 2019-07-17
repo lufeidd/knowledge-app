@@ -7,66 +7,74 @@
   min-height: 100%;
   box-sizing: border-box;
 
+  .downloadApp {
+    background-color: $white;
+    padding: 10px;
+    box-shadow: 0px 0 12px rgba(0, 0, 0, 0.25);
+    position: relative;
+    z-index: 1;
+  }
+
+  .from {
+    @include displayFlex(flex, space-between, center);
+    @include textOverflow;
+    margin-top: 10px;
+
+    .articleInfo {
+      @include displayFlex(flex, flex-start, null);
+      @include textOverflow;
+      flex-grow: 1;
+
+      .detail {
+        margin-left: 10px;
+        flex-direction: column;
+        @include displayFlex(flex, center, flex-start);
+        @include textOverflow;
+        .number {
+          font-size: $fontSize - 2;
+          color: $cl9;
+        }
+      }
+
+      .ratiobox {
+        width: 38px;
+        height: 0;
+        padding-bottom: 38px;
+        flex-shrink: 0;
+
+        .bookImg {
+          display: block;
+          border-radius: 4px;
+          box-sizing: border-box;
+          @include ratioBox (null, 100%, 1px solid $greyLight, contain, $white, null);
+        }
+      }
+    }
+
+    .foucsButton {
+      display: inline-block;
+      width: 50px;
+      line-height: 20px;
+      background-color: $redDark;
+      color: $white;
+      text-align: center;
+      border-radius: 10px;
+      font-size: $fontSize - 2;
+      flex-shrink: 0;
+    }
+
+    .cancel {
+      background-color: $greyDark;
+    }
+  }
+
   .article {
     background-color: $white;
     padding: 15px;
 
     .title {
-      @include font("PingFangBlod", $fontSize + 1, null);
+      @include font("PingFangBlod", $fontSize + 7, null);
       @include twoColtextOverflow;
-    }
-
-    .from {
-      @include displayFlex(flex, space-between, flex-start);
-      margin-top: 10px;
-
-      .articleInfo {
-        @include displayFlex(flex, flex-start, null);
-        flex-grow: 1;
-        // .icon {
-        //   width: 38px;
-        //   height: 38px;
-        //   border-radius: 2.5px;
-        //   align-items: center;
-        // }
-
-        .detail {
-          margin-left: 10px;
-          flex-direction: column;
-          @include displayFlex(flex, space-between, space-between);
-          .number {
-            font-size: $fontSize - 2;
-            color: $cl9;
-          }
-        }
-
-        .ratiobox {
-          width: 38px;
-          margin-right: 5px;
-
-          .bookImg {
-            display: block;
-            border-radius: 4px;
-            box-sizing: border-box;
-            @include ratioBox (null, 100%, 1px solid $greyLight, contain, $white, null);
-          }
-        }
-      }
-
-      .foucsButton {
-        display: inline-block;
-        width: 50px;
-        line-height: 20px;
-        background-color: $redDark;
-        color: $white;
-        text-align: center;
-        border-radius: 10px;
-        font-size: $fontSize - 2;
-      }
-
-      .cancel {
-        background-color: $greyDark;
-      }
     }
 
     .contentData {
@@ -78,7 +86,7 @@
       margin-top: 15px;
       font-size: $fontSize - 2;
       color: $cl9;
-      @include displayFlex(flex, space-between, center);
+      @include displayFlex(flex, flex-start, center);
     }
   }
 

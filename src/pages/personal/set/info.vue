@@ -8,20 +8,20 @@
       <div class="left">
         <div class="ratioBox">
           <div class="box">
-            <img :src="infoList.header_pic">
+            <img :src="infoList.header_pic" />
           </div>
         </div>
       </div>
       <div class="right">
         <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-next-line"></use>
+          <use xlink:href="#icon-next-line" />
         </svg>
       </div>
 
-      <input id="files" type="file" accept="image/*" @change="picChange">
+      <input id="files" type="file" accept="image/*" @change="picChange" />
     </div>
 
-    <van-cell title="账号" :value="infoList.mobile"/>
+    <van-cell title="账号" :value="infoList.mobile" />
     <!-- 昵称 -->
     <van-row style="background-color: #fff;padding: 10px 15px;border-bottom: 1px solid #f5f5f5;">
       <van-col span="12">昵称</van-col>
@@ -31,7 +31,7 @@
           placeholder="还是空的，快去写吧~"
           v-model="infoList.nickname"
           style="text-align: right;font-size: 13px;color: #999;height: 100%;width: 100%;border: none;"
-        >
+        />
       </van-col>
     </van-row>
 
@@ -44,7 +44,7 @@
     />
 
     <!-- 性别 -->
-    <van-cell title="性别" is-link v-if="infoList.sex == 0" :value="''" @click="showAction('sex')"/>
+    <van-cell title="性别" is-link v-if="infoList.sex == 0" :value="''" @click="showAction('sex')" />
     <van-cell
       title="性别"
       is-link
@@ -81,6 +81,7 @@
     <div style="margin-top: 5px;">
       <van-button size="large" @click="save">保存</van-button>
     </div>
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -262,7 +263,7 @@ export default {
 
         // 跳转到裁切页面
         self.$router.replace({ name: "cropper" });
-        sessionStorage.setItem('headPic', data);
+        sessionStorage.setItem("headPic", data);
         // console.log( data);
       };
     },
@@ -279,21 +280,22 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        
+        localStorage.setItem("loginState", 1);
+
         this.$set(this.infoList, "header_pic", res.response_data.header_pic);
         this.$set(this.infoList, "mobile", res.response_data.mobile);
         this.$set(this.infoList, "nickname", res.response_data.nickname);
         this.$set(this.infoList, "birthday", res.response_data.birthday);
         this.$set(this.infoList, "sex", res.response_data.sex);
         // 裁切后的图片
-        if (this.$route.query.img) this.$set(this.infoList, "header_pic", this.$route.query.img);
+        if (this.$route.query.img)
+          this.$set(this.infoList, "header_pic", this.$route.query.img);
         // console.log(this.infoList.header_pic);
-
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          
+          localStorage.setItem("loginState", 100);
         }
         this.$toast(res.error_message);
       }

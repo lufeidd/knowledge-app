@@ -23,7 +23,8 @@
     <div class="bottomBox" :class="{iphx:this.isIphx}">
       <van-button type="danger" size="large" replace to="/personal/help/feedback">我要反馈</van-button>
     </div>
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -31,28 +32,28 @@
 
 <script>
 import { USER_HELPER_GETS } from "../../../apis/user.js";
-import easyNav from "./../../../components/easyNav";
+// import easyNav from "./../../../components/easyNav";
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: false,
-        // searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type: "order"
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: false,
+      //   // searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type: "order"
+      // },
       listData: [],
       programLoading: false,
       programFinished: false,
       page: 1,
-      page_size: 10
+      page_size: 20
     };
   },
   mounted() {
@@ -72,6 +73,9 @@ export default {
       let res = await USER_HELPER_GETS(data);
       if (res.hasOwnProperty("response_code")) {
         // this.listData = res.response_data.result;
+        this.$store.commit("changeLoginState", 1);
+        localStorage.setItem("loginState", 1);
+        
         var result = res.response_data.result;
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
@@ -90,6 +94,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
+          localStorage.setItem("loginState", 100);
         }
         this.$toast(res.error_message);
       }

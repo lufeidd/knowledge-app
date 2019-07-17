@@ -44,7 +44,8 @@
         </van-col>
       </van-row>
     </div>
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -53,11 +54,11 @@
 <script>
 import { SEARCH_HOTKEY_GETS } from "../apis/public.js";
 import searchHint from "../components/searchHint";
-import easyNav from "./../components/easyNav";
+// import easyNav from "./../components/easyNav";
 export default {
   components: {
     searchHint,
-    easyNav
+    // easyNav
   },
   data() {
     return {
@@ -67,16 +68,16 @@ export default {
         list: [],
         type: ""
       },
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: false,
-        // searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type: "order"
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: false,
+      //   // searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type: "order"
+      // },
       type: "",
       hotSearch: null,
       state: [

@@ -39,6 +39,17 @@ import VueCookies from 'vue-cookies'
 // 引入 store
 import store from './store'
 
+// 下载app
+import download from './components/index'
+// 快速导航
+import nav from './components/index'
+// 加载中
+import loading from './components/index'
+
+Vue.use(download)
+Vue.use(nav)
+Vue.use(loading)
+
 import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
   Cell, CellGroup,
@@ -110,9 +121,7 @@ Vue.config.productionTip = false
 
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
-
   next();
-
   // 存放页面来源地址
   if (from.path != to.path) {
     localStorage.setItem('fromLink', from.path);
@@ -132,9 +141,8 @@ router.beforeEach((to, from, next) => {
   // 重定向功能，为解决ios微信上复制链接功能不能复制到动态路由问题
   // 获取地址前段部分，不算参数
   var replaceUrl = window.location.href.split('#')[0] + '#' + to.path;
-
   var index = 0; // 索引初始化
-  var token = parseInt(sessionStorage.getItem('loginState'));
+  var token = parseInt(localStorage.getItem('loginState'));
   // const isLogin = store.state.isLogin;
 
   next()
