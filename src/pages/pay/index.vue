@@ -39,7 +39,7 @@ export default {
     };
   },
   mounted() {
-    this.pay_id = this.$route.query.pay_id;
+    this.pay_id = parseInt(this.$route.query.pay_id);
     this.money = this.$route.query.money;
     // 新增订单
     this.addOrderData();

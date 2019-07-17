@@ -65,18 +65,18 @@
     </div>
     <div class="priceInfo">
       <div class="first">
-        <van-cell title="商品总额" v-model="'¥'+infoData.order_money"/>
+        <van-cell v-if="infoData.order_money" title="商品总额" v-model="'¥'+infoData.order_money"/>
       </div>
       <van-cell
+        v-if="infoData.dispatch_price"
         title="运费"
         v-model="'¥'+infoData.dispatch_price"
-        v-if="infoData.dispatch_price !== 0"
       />
       <!-- <van-cell title="商品优惠" v-model="discount"/> -->
       <!-- <van-cell title="余额" v-model="'-¥'+priceInfo.remain.toFixed(2)"/> -->
       <p class="acturalPay" style="margin-top:10px;">
         {{(infoData.state == 1||infoData.state ==7) ? '待支付':'实付款'}}
-        <span>¥{{infoData.pay_money}}</span>
+        <span v-if="infoData.pay_money">¥{{infoData.pay_money}}</span>
       </p>
     </div>
     <!-- 发票 -->
@@ -152,7 +152,7 @@
           <span class="button button3" @click="repurchase" v-if="infoData.state == 4 || infoData.state == 7">再次购买</span>
           <span class="button button3" @click="confirmReceive" v-if="infoData.state == 3">确认收货</span>
           <span class="button button3" @click="tologistics" v-if="infoData.state == 2">查看物流</span>
-          <span class="button button1" @click="toPaid" v-if="infoData.state == 1">去支付</span>
+          <span class="button button2" @click="toPaid" v-if="infoData.state == 1">去支付</span>
         </div>
       </div>
     </div>
@@ -215,6 +215,10 @@ export default {
     }
   },
   methods: {
+    // 去支付
+    toPaid () {
+      this.$router.push({ name: "pay", query: { pay_id: this.infoData.pay_id, money: this.infoData.pay_money } });
+    },
     copy() {
       const clipboard = new Clipboard(".copy");
       clipboard.on("success", e => {
