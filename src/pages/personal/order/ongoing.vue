@@ -14,7 +14,7 @@
         <div class="message">
           <div class="title">{{item.title}}</div>
           <div class="stateMessage">
-            <p>{{item.content}}</p>
+            <p v-html="item.content"></p>
           </div>
         </div>
         <div class="wd_right" v-if="item.from == 'user'">
@@ -66,7 +66,7 @@ export default {
         version: "1.0",
         timestamp: tStamp,
         order_id: this.order_id,
-        detail_id: this.detail_id
+        detail_id: this.detail_id,
       };
       data.sign = this.$getSign(data);
       let res = await ORDER_REFUND_LOG_GETS(data);
@@ -77,7 +77,9 @@ export default {
           res.response_data[res.response_data.length - 1].refund_state;
         this.apply_id = res.response_data[0].apply_id;
         this.refund_type = res.response_data[0].refund_type;
-        console.log(666, this.refund_state);
+        for(let i=0;i<this.infoData.length;i++){
+          this.infoData[i].content = this.infoData[i].content.replace(/\\n/g,"</br>");
+       }
       } else {
         this.$toast(res.error_message);
       }
@@ -144,7 +146,7 @@ export default {
     },
     // 修改申请
     edit_refund(){
-      
+
     },
     //填写物流信息
     write_logistics(){
