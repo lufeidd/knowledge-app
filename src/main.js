@@ -62,7 +62,8 @@ import {
   Area,
   Rate,
   PasswordInput, NumberKeyboard,
-  Pagination
+  Pagination,
+  Loading
 } from 'vant'
 Vue.use(Field)
 Vue.use(Toast)
@@ -96,6 +97,7 @@ Vue.use(Area)
 Vue.use(Rate)
 Vue.use(PasswordInput).use(NumberKeyboard)
 Vue.use(Pagination)
+Vue.use(Loading)
 
 Vue.use(plugin)
 
@@ -221,6 +223,8 @@ router.beforeEach((to, from, next) => {
   localStorage.setItem('routerLink', replaceUrl);
   window.location.replace(replaceUrl); // 重定向跳转
 })
+
+console.log('main');
 
 /* eslint-disable no-new */
 new Vue({

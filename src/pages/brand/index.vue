@@ -98,6 +98,7 @@
     </van-popup>
 
     <EazyNav type="brand"></EazyNav>
+    
   </div>
 </template>
 

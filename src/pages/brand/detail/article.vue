@@ -16,6 +16,7 @@
             <div class="detail">
               <span>{{articleInfo.name}}</span>
               <span class="number">{{articleInfo.fans}}人关注</span>
+              <!-- <span class="number">{{ timeInfo }}</span> -->
             </div>
           </div>
           <span class="foucsButton" v-if="articleInfo.is_followed == 0" @click="focusAction">+关注</span>
@@ -230,6 +231,7 @@
       <!-- <easyNav :navData="navData"></easyNav> -->
 
       <EazyNav type="brand"></EazyNav>
+    
     </div>
   </div>
 </template>
@@ -257,6 +259,7 @@ export default {
   // },
   data() {
     return {
+      timeInfo: '',
       device: "",
       onsale: null,
       // navData: {
@@ -306,12 +309,58 @@ export default {
     this.goodsId = this.$route.query.goods_id;
     this.getData();
     this.getRecommendData();
-    // console.log("ID:", this.recommendData);
+    this.getTimeData();
   },
   beforeDestroy() {
     $(window).off("scroll");
   },
   methods: {
+    // 提示更新时间差
+    getTimeData() {
+      var createTime = this.articleInfo.create_time;
+      var str1 = createTime.substring(0, 10).split("-");
+      var str2 = createTime.substring(11, 19).split(":");
+
+      var myDate = new Date();
+      var year = myDate.getFullYear();
+      var month = myDate.getMonth() + 1;
+      var date = myDate.getDate();
+      var hour = myDate.getHours();
+      var minute = myDate.getMinutes();
+      var second = myDate.getSeconds();
+
+      var y = year - parseInt(str1[0]);
+      var m = month - parseInt(str1[1]);
+      var d = date - parseInt(str1[2]);
+      var h = hour - parseInt(str2[0]);
+      var mn = minute - parseInt(str2[1]);
+      var s = second - parseInt(str2[2]);
+
+      if (y > 0) {
+        this.timeInfo = y + '年前';
+        return;
+      }
+      if (m > 0) {
+        this.timeInfo = m + '月前';
+        return;
+      }
+      if (d > 0) {
+        this.timeInfo = d + '天前';
+        return;
+      }
+      if (h > 0) {
+        this.timeInfo = h + '小时前';
+        return;
+      }
+      if (mn > 0) {
+        this.timeInfo = mn + '分钟前';
+        return;
+      }
+      if (s > 0) {
+        this.timeInfo = s + '秒前';
+        return;
+      }
+    },
     // 获取页面分享信息
     // async wxShareData() {
     //   var tStamp = this.$getTimeStamp();

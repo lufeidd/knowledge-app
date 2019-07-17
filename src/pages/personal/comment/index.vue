@@ -39,6 +39,7 @@
     </van-list>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
+    
   </div>
 </template>
 

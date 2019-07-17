@@ -177,6 +177,7 @@
       </div>
     </div>
     <EazyNav type="brand"></EazyNav>
+    
   </div>
 </template>
 <style src="@/style/scss/pages/cart.scss" scoped lang="scss"></style>

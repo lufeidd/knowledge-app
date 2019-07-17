@@ -467,6 +467,7 @@
       <!-- <easyNav :navData="navData"></easyNav> -->
     </div>
     <EazyNav type="brand"></EazyNav>
+    
   </div>
 </template>
 

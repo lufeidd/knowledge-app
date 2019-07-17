@@ -1,12 +1,12 @@
 <template>
-    <div id="loading" v-if="isLoading">
-        加载中...
+    <div id="loadingPage" v-if="isLoading">
+        <van-loading size="32px" vertical>加载中...</van-loading>
     </div>
 </template>
 
 <style lang="scss">
-#loading {
-    background-color: $white;
+#loadingPage {
+    background-color: transparent;
     position: fixed;
     z-index: 100;
     width: 100%;

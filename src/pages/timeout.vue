@@ -5,6 +5,7 @@
       <div>网络不给力，点击屏幕重试~</div>
     </div>
     <EazyNav type="brand"></EazyNav>
+    
   </div>
 </template>
 <style>
