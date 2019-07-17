@@ -40,3 +40,6 @@ export const ORDER_REFUND_DISPATCH_COMPANY = query => req('post', '/shopping/ord
 
 //订单确认收货
 export const ORDER_RECEIVE = query => req('post', '/shopping/order/RECEIVE', query);
+
+//退款申请修改
+export const ORDER_REFUND_EDIT = query => req('post', '/shopping/order/refund/edit', query);

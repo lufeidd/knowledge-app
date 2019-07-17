@@ -39,7 +39,7 @@
 <script>
 import {
   ORDER_REFUND_LOG_GETS,
-  ORDER_REFUND_CANCLE
+  ORDER_REFUND_CANCLE,ORDER_REFUND_EDIT
 } from "../../../apis/shopping.js";
 export default {
   data() {
@@ -146,7 +146,7 @@ export default {
     },
     // 修改申请
     edit_refund(){
-
+      
     },
     //填写物流信息
     write_logistics(){
