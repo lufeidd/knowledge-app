@@ -15,8 +15,8 @@
             </div>
             <div class="detail">
               <span>{{articleInfo.name}}</span>
-              <span class="number">{{articleInfo.fans}}人关注</span>
-              <!-- <span class="number">{{ timeInfo }}</span> -->
+              <!-- <span class="number">{{articleInfo.fans}}人关注</span> -->
+              <span class="number">{{ timeInfo }}</span>
             </div>
           </div>
           <span class="foucsButton" v-if="articleInfo.is_followed == 0" @click="focusAction">+关注</span>
@@ -231,7 +231,6 @@
       <!-- <easyNav :navData="navData"></easyNav> -->
 
       <EazyNav type="brand"></EazyNav>
-    
     </div>
   </div>
 </template>
@@ -259,7 +258,7 @@ export default {
   // },
   data() {
     return {
-      timeInfo: '',
+      timeInfo: "",
       device: "",
       onsale: null,
       // navData: {
@@ -309,10 +308,9 @@ export default {
     this.goodsId = this.$route.query.goods_id;
     this.getData();
     this.getRecommendData();
-    this.getTimeData();
   },
   beforeDestroy() {
-    $(window).off("scroll");
+    // $(window).scrollTop(0);
   },
   methods: {
     // 提示更新时间差
@@ -337,27 +335,27 @@ export default {
       var s = second - parseInt(str2[2]);
 
       if (y > 0) {
-        this.timeInfo = y + '年前';
+        this.timeInfo = y + "年前";
         return;
       }
       if (m > 0) {
-        this.timeInfo = m + '月前';
+        this.timeInfo = m + "个月前";
         return;
       }
       if (d > 0) {
-        this.timeInfo = d + '天前';
+        this.timeInfo = d + "天前";
         return;
       }
       if (h > 0) {
-        this.timeInfo = h + '小时前';
+        this.timeInfo = h + "小时前";
         return;
       }
       if (mn > 0) {
-        this.timeInfo = mn + '分钟前';
+        this.timeInfo = mn + "分钟前";
         return;
       }
       if (s > 0) {
-        this.timeInfo = s + '秒前';
+        this.timeInfo = s + "秒前";
         return;
       }
     },
@@ -576,6 +574,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.baseData = res.response_data.base;
         this.articleInfo = res.response_data.brand_info;
+        this.getTimeData();
         this.isLogin = res.response_data.user_info.is_login;
         document.title = "文章详情-" + res.response_data.base.title;
 
@@ -801,6 +800,7 @@ export default {
           name: "article",
           query: { goods_id: item.goods_id }
         });
+        $(window).scrollTop(0);
         location.reload();
       }
       // 专辑

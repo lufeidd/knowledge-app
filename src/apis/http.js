@@ -38,7 +38,7 @@ instance.interceptors.request.use(function (config) {
 // 二、响应拦截器 忽略
 instance.interceptors.response.use(function (response) {
     if (response.status === 200) {
-        console.log(200);
+        // console.log(200);
         // $('#loadingPage').remove();
 
         // console.log(localStorage.getItem('routerLink'));
