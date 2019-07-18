@@ -1,18 +1,21 @@
 <template>
   <div id="detailPage">
-    <div class="state">
+    <div class="state" v-if="infoData.state == 6||infoData.state==4">
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-checked-right"></use>
       </svg> 订单已完成
     </div>
+    <div class="state" v-else>
+      {{infoData.state_desc}}
+    </div>
     <div v-if="infoData.type == 2">
-      <div class="signfor" @click="tologistics" v-if="infoData.state >= 2">
+      <div class="signfor" @click="tologistics" v-if="infoData.state > 2 && infoData.state !== 7">
         <svg class="icon car" aria-hidden="true">
           <use xlink:href="#icon-interflow-line"></use>
         </svg>
         <div class="signforFrom">
-          <span class="signforPeople">浙江省杭州市西湖中公司 已签收 签收人：西湖</span>
-          <span class="signDate">2017.04.21 14:00:22</span>
+          <span class="signforPeople">{{infoData.express_info.desc}}</span>
+          <span class="signDate">{{infoData.express_info.time}}</span>
         </div>
         <svg class="icon arrow" aria-hidden="true">
           <use xlink:href="#icon-next-line"></use>
@@ -59,7 +62,7 @@
           </div>
           <span class="button button3 applyrefund" @click="torefund(item)" v-if="infoData.type == 2 && item.if_refund == 1">申请售后</span>
           <span class="button button3 applyrefund" @click="toOngoing(item)" v-if="infoData.type == 2 && item.if_refund == 2">已申请</span>
-          <span class="applyrefund text" v-if="infoData.type == 2 && item.if_refund == 0">该订单售后已过期，请找卖家协商</span>
+          <span class="applyrefund text" v-if="infoData.type == 2 && item.if_refund == 0 && (infoData.state==2||infoData.state==3)">该订单售后已过期，请找卖家协商</span>
         </div>
       </div>
     </div>
@@ -126,7 +129,7 @@
           v-if="infoData.pay_info && infoData.pay_info.length > 0"
           v-model="infoData.pay_info[0].pay_bank"
         />
-        <van-cell title="支付时间" v-model="infoData.pay_time"/>
+        <van-cell v-if="(infoData.state !== 1 || infoData.state !== 7)&&infoData.pay_time" title="支付时间" v-model="infoData.pay_time"/>
       </div>
     </div>
 
@@ -139,7 +142,7 @@
           <span class="button button3" @click="apply" v-if="showInvoice">申请发票</span>
         </div>
         <div style="padding-right:15px;">
-          <span class="button button2" @click="toComment" v-if="infoData.if_comment == 0 ">评价</span>
+          <span class="button button3" @click="toComment" v-if="infoData.if_comment == 0 ">评价</span>
         </div>
       </div>
       <!-- 实物商品 -->
@@ -148,16 +151,17 @@
           <span class="button button3" @click="apply" v-if="showInvoice && infoData.state == 4">申请发票</span>
         </div>
         <div style="padding-right:15px;">
-          <span class="button button2" @click="toComment" v-if="infoData.if_comment == 0 && infoData.state == 4">评价</span>
+          <span class="button button3" @click="toComment" v-if="infoData.if_comment == 0 && infoData.state == 4">评价</span>
           <span class="button button3" @click="repurchase" v-if="infoData.state == 4 || infoData.state == 7">再次购买</span>
-          <span class="button button3" @click="confirmReceive" v-if="infoData.state == 3">确认收货</span>
+          <span class="button button2" @click="confirmReceive" v-if="infoData.state == 3">确认收货</span>
           <span class="button button3" @click="tologistics" v-if="infoData.state == 2">查看物流</span>
-          <span class="button button1" @click="toPaid" v-if="infoData.state == 1">去支付</span>
+          <span class="button button2" @click="toPaid" v-if="infoData.state == 1">去支付</span>
         </div>
       </div>
     </div>
 
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -168,23 +172,31 @@
 import Clipboard from "clipboard";
 import { USER_ORDER_DETAIL_GET } from "../../../apis/user.js";
 import { ORDER_EXPRESS_GET,ORDER_RECEIVE } from "../../../apis/shopping.js";
-import easyNav from "./../../../components/easyNav";
+
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: true,
-        searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type: "order"
-      },
+
+      // fictitious: {
+      //   orderNumber: 1955655265521222,
+      //   orderTime: "2019.4.17 19:15:22",
+      //   payWay: "支付宝支付",
+      //   payTime: "2019.4.17 19:16:02"
+      // },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: true,
+      //   searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type: "order"
+      // },
+
       infoData: {},
       order_id: null,
       invoice: {},
@@ -196,7 +208,6 @@ export default {
     this.showInvoice =
       parseInt(this.$route.query.invoice_id) == 0 ? true : false;
     this.getData();
-    this.getLogistics();
   },
   computed: {
     discount: function() {
@@ -235,23 +246,6 @@ export default {
         // if (Object.keys(res.response_data.invoice_info).length > 0)
         // this.showInvoice = true;
         // this.articleInfo = res.response_data.brand_info;
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    //获取物流信息
-    async getLogistics(){
-      var tStamp = this.$getTimeStamp();
-      var data = {
-        order_id: this.order_id,
-        version: "1.0",
-        timestamp: tStamp
-      };
-      data.sign = this.$getSign(data);
-      let res = await ORDER_EXPRESS_GET(data);
-
-      if (res.hasOwnProperty("response_code")) {
-
       } else {
         this.$toast(res.error_message);
       }

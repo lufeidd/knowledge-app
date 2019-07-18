@@ -13,7 +13,7 @@ const getters = {   //实时监听state值的变化(最新状态)
 const mutations = {
     changeLoginState(state, newState) {
         state.isLogin = newState;
-        sessionStorage.setItem("loginState", newState);
+        localStorage.setItem("loginState", newState);
     }
 }
 const actions = {

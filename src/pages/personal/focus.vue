@@ -3,7 +3,7 @@
     <!-- <div class="msgBox">已有23家自媒体更新了内容</div> -->
 
     <div class="nullBox" v-if="focusFinished && focusList.length == 0">
-      <img src="./../../assets/null/list.png" width="100%">
+      <img src="./../../assets/null/list.png" width="100%" />
       <div>还没有关注的内容，快去看看吧~</div>
     </div>
 
@@ -29,7 +29,7 @@
           <div class="left">
             <div class="ratioBox">
               <div class="box">
-                <img :src="item.header_pic">
+                <img :src="item.header_pic" />
               </div>
             </div>
           </div>
@@ -43,7 +43,7 @@
           </div>
           <div class="left" style="flex-basis: 0;margin-right: 10px;">
             <svg class="icon" aria-hidden="true" style="width: 14px;height: 14px;color: #ccc;">
-              <use xlink:href="#icon-next-line"></use>
+              <use xlink:href="#icon-next-line" />
             </svg>
           </div>
         </div>
@@ -54,33 +54,34 @@
     </van-list>
 
     <!-- 快速导航 -->
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
 <style src="@/style/scss/pages/personal/focus.scss" scoped lang="scss"></style>
 
 <script>
-import easyNav from "./../../components/easyNav";
+// import easyNav from "./../../components/easyNav";
 //  引入接口
 import { FOCUS, FOCUS_CANCEL } from "../../apis/public.js";
 import { truncate } from "fs";
 
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
       // 快速导航
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: false,
-        personal: true,
-        personalLink: "/personal/index"
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: false,
+      //   personal: true,
+      //   personalLink: "/personal/index"
+      // },
       focusList: [],
       // 临时存放关注数据
       focusStatus: [],
@@ -111,6 +112,7 @@ export default {
           };
           data.sign = this.$getSign(data);
           res = await FOCUS(data);
+              console.log("关注列表：", res.response_data);
 
           // 出错提示
           if (
@@ -121,7 +123,8 @@ export default {
               var result = res.response_data.result;
               // store 设置登录状态
               this.$store.commit("changeLoginState", 1);
-              
+              localStorage.setItem("loginState", 1);
+
               for (let i = 0; i < result.length; i++) {
                 this.focusList.push(result[i]);
                 this.focusStatus.push(result[i]);
@@ -133,13 +136,12 @@ export default {
               if (this.focusPage > res.response_data.total_page) {
                 this.focusFinished = true;
               }
-              console.log("关注列表：", res);
             }, 500);
           } else {
             if (res.hasOwnProperty("error_code") && res.error_code == 100) {
               // store 设置登录状态
               this.$store.commit("changeLoginState", 100);
-              
+              localStorage.setItem("loginState", 100);
             }
             this.focusFinished = true;
             // this.$toast(res.error_message);

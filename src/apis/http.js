@@ -5,6 +5,8 @@
 
 import axios from 'axios'
 import qs from "Qs";
+// 加载中
+import loading from './../components/index'
 
 // 创建axios的一个实例
 var instance = axios.create({
@@ -14,7 +16,7 @@ var instance = axios.create({
     // run build
     // baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
 
-    headers: { 'App-version': 'wap' },
+    headers: { 'App-version': sessionStorage.getItem("isWxLogin") == "yes" ? 'weixin' : 'wap', 'unique-code': localStorage.getItem('openid') },
     // responseType: 'blob',    // 测试发票下载
     timeout: 15000,
 })
@@ -22,6 +24,7 @@ var instance = axios.create({
 // 一、请求拦截器 忽略
 instance.interceptors.request.use(function (config) {
     config.credentials = true;
+
     // 网页端跳转 404 页面
     if (sessionStorage.getItem("isWxLogin") == "no" && (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/account') != -1)) {
         window.location.href = window.location.href.split('#')[0] + '#/404';
@@ -35,8 +38,18 @@ instance.interceptors.request.use(function (config) {
 
 // 二、响应拦截器 忽略
 instance.interceptors.response.use(function (response) {
-    // 对响应错误做点什么
-    return response.data;
+    if (response.status === 200) {
+        // console.log(localStorage.getItem('routerLink'));
+        // 处理请求成功的逻辑
+        return response.data; // 必须返回，后面的接口的then，才能获取response
+    } else {
+        if (response.status >= 500) {
+            // 错误处理
+        } else if (response.status === 404) {
+            // ...
+        }
+        return response.data; // 必须返回
+    }
 }, function (error) {
 
     // 网络响应超时，调整到超时页面

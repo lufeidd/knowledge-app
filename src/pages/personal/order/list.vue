@@ -1,57 +1,9 @@
 <template>
   <div id="listPage">
-    <div class="nullBox" v-if="programFinished && publishData.length == 0">
+    <div class="nullBox" v-if="programFinished && publishData.length == 0 && goodsData.length == 0">
       <img src="../../../assets/null/list.png" width="100%">
       <div>您的订单列表为空</div>
     </div>
-    <!-- <div class="content">
-      <div class="head">
-        <div class="titleFrom">
-          <img v-lazy="iconUrl" class="icon">
-          <span class="publish">浙江出版传媒集团</span>
-        </div>
-        <span class="order1">待支付</span>
-      </div>
-      <div class="section">
-        <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
-          <swiper-slide>
-            <div class="ratiobox">
-              <a class="bookImg" v-lazy:background-image="imgUrl"></a>
-            </div>
-          </swiper-slide>
-          <swiper-slide>
-            <div class="ratiobox">
-              <a class="bookImg" v-lazy:background-image="imgUrl"></a>
-            </div>
-          </swiper-slide>
-          <swiper-slide>
-            <div class="ratiobox">
-              <a class="bookImg" v-lazy:background-image="imgUrl"></a>
-            </div>
-          </swiper-slide>
-          <swiper-slide>
-            <div class="ratiobox">
-              <a class="bookImg" v-lazy:background-image="imgUrl"></a>
-            </div>
-          </swiper-slide>
-          <swiper-slide>
-            <div class="ratiobox">
-              <a class="bookImg" v-lazy:background-image="imgUrl"></a>
-            </div>
-          </swiper-slide>
-        </swiper>
-        <div class="tip1">
-          <span class="actulPay">
-            实付款：
-            <span class="money">￥ 134.00</span>
-          </span>
-        </div>
-      </div>
-      <div class="foot">
-        <span class="button2">去支付</span>
-      </div>
-    </div>-->
-
 
     <van-list
       v-model="programLoading"
@@ -70,7 +22,7 @@
               </div>
             <span class="publish">{{item.brand_name}}</span>
           </div>
-          <span class="order2">{{item.state_desc}}</span>
+          <span :class="(item.state == 1 || item.state == 2 ||item.state == 3)? 'order1':'order2'">{{item.state_desc}}</span>
         </div>
         <div class="section">
           <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
@@ -92,10 +44,11 @@
             <span class="button button1" @click="repply(item)" v-if="item.invoice_id == 0 && item.state == 4">申请发票</span>
           </div>
           <div>
-            <span class="button button1" v-if="item.state == 1">去支付</span>
-            <span class="button button1" @click="toComment(item,index)" v-if="item.state == 4">评价</span>
-            <span class="button button1" v-if="item.state == 4">再次购买</span>
-            <span class="button button1" @click="confirmReceive(item)" v-if="item.state == 3">确认收货</span>
+            <span class="button button1" @click="cancel(item)" v-if="item.state == 1">取消订单</span>
+            <span class="button button2" v-if="item.state == 1">去支付</span>
+            <span class="button button1" @click="toComment(item,index)" v-if="item.state == 4&&item.if_comment == 0">评价</span>
+            <span class="button button1" @click="buyAgain" v-if="item.state == 4||item.state==7">再次购买</span>
+            <span class="button button2" @click="confirmReceive(item)" v-if="item.state == 3">确认收货</span>
             <span class="button button1" @click="tologistics(item)" v-if="item.state == 2">查看物流</span>
           </div>
         </div>
@@ -145,32 +98,33 @@
       </div>
     </van-list>
 
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="order"></EazyNav>
   </div>
 </template>
 
 <style scoped  src="@/style/scss/pages/personal/order/list.scss" lang="scss"></style>
 
 <script>
-import easyNav from "./../../../components/easyNav";
+// import easyNav from "./../../../components/easyNav";
 import { USER_ORDER_DETAIL_GETS } from "../../../apis/user.js";
-import { ORDER_RECEIVE } from "../../../apis/shopping.js";
+import { ORDER_RECEIVE,ORDER_REFUN_CANCEL,CART_ADD } from "../../../apis/shopping.js";
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: true,
-        searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type: "order"
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: true,
+      //   searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type: "order"
+      // },
       publishData: [],
       goodsData:[],
       state: { evaluate: true, isPay: true, rePurchase: true, confirm: true },
@@ -211,6 +165,7 @@ export default {
 
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
+        localStorage.setItem("loginState", 1);
 
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
@@ -234,13 +189,13 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
+          localStorage.setItem("loginState", 100);
         }
 
         this.$toast(res.error_message);
       }
     },
     toDetail(item) {
-      // console.log(item);
       this.$router.push({
         name: "orderdetail",
         query: {
@@ -318,6 +273,40 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
+    },
+    //取消订单
+    cancel(item){
+      console.log(item)
+      this.$dialog.confirm({
+          message: "确认取消订单？"
+        })
+        .then(() => {
+          this.cancelOrder(item.order_id);
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
+    async cancelOrder(order_id){
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+        order_id:order_id,
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_REFUN_CANCEL(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.$toast('已取消订单！');
+        location.reload();
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    //再次购买
+    buyAgain(){
+      
     },
   }
 };

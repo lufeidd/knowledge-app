@@ -17,7 +17,8 @@
       </div>
       <span class="button" v-if="item.if_comment == 0" @click="comment(item)">评价</span>
     </div>
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -25,25 +26,25 @@
 
 <script>
 import{USER_ORDER_DETAIL_GET} from "../../../../apis/user.js"
-import easyNav from "./../../../../components/easyNav";
+// import easyNav from "./../../../../components/easyNav";
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
       order_id:null,
       listData:{},
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: false,
-        // searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type:'order',
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: false,
+      //   // searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type:'order',
+      // },
     };
   },
   mounted(){

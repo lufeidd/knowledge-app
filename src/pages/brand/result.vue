@@ -1,7 +1,7 @@
 <template>
   <div id="resultPage">
     <div class="nullBox" v-if="programFinished && brandData.length == 0">
-      <img src="../../assets/null/list.png" width="100%">
+      <img src="../../assets/null/list.png" width="100%" />
       <div>您搜索的内容为空</div>
     </div>
     <van-list
@@ -17,18 +17,18 @@
           <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
         </div>
         <div class="right">
-          <div class="text">{{item.sub_title}}</div>
-          <div class="pinpai">{{item.title}}</div>
+          <div class="text">{{item.title}}</div>
+          <div class="pinpai">{{item.sub_title}}</div>
           <div class="nice">
             <span class="good" v-if="item.goods_type == 6">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-good-line"></use>
+                <use xlink:href="#icon-good-line" />
               </svg>
               <span>{{item.praise_num}}</span>
             </span>
             <span class="comment">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-comment-line"></use>
+                <use xlink:href="#icon-comment-line" />
               </svg>
               <span>{{ item.comment_num }}</span>
             </span>
@@ -36,7 +36,8 @@
         </div>
       </div>
     </van-list>
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -45,24 +46,24 @@
 <script>
 import { BRAND_SEARCH_GOODS_GETS } from "../../apis/brand.js";
 import { WX_SHARE } from "../../apis/public.js";
-import easyNav from "../../components/easyNav";
+// import easyNav from "../../components/easyNav";
 import resultVue from "../personal/order/result.vue";
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/",
-        search: true,
-        searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type: "brand"
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/",
+      //   search: true,
+      //   searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type: "brand"
+      // },
       iconUrl:
         "https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75",
       state: "brand",
@@ -86,53 +87,53 @@ export default {
   },
   methods: {
     // 获取页面分享信息
-    async wxShareData() {
-      var tStamp = this.$getTimeStamp();
-      var data = {};
-      switch (this.$route.query.type) {
-        case "mall":
-          var tmp = {};
-          tmp.supplier_id = this.$route.query.supplier_id;
-          tmp.brand_id = this.$route.query.brand_id;
-          if (this.$route.query.searchContent)
-            tmp.keywords = this.$route.query.searchContent;
-          if (this.$route.query.goods_type)
-            tmp.goods_type = this.$route.query.goods_type;
+    // async wxShareData() {
+    //   var tStamp = this.$getTimeStamp();
+    //   var data = {};
+    //   switch (this.$route.query.type) {
+    //     case "mall":
+    //       var tmp = {};
+    //       tmp.supplier_id = this.$route.query.supplier_id;
+    //       tmp.brand_id = this.$route.query.brand_id;
+    //       if (this.$route.query.searchContent)
+    //         tmp.keywords = this.$route.query.searchContent;
+    //       if (this.$route.query.goods_type)
+    //         tmp.goods_type = this.$route.query.goods_type;
 
-          data = {
-            page_name: "mall/goods/search",
-            params: JSON.stringify(tmp),
-            version: "1.0",
-            timestamp: tStamp
-          };
-          break;
-        case "brand":
-          data = {
-            page_name: "brand/goods/search",
-            params: JSON.stringify({
-              brand_id: this.$route.query.brand_id,
-              keywords: this.$route.query.searchContent
-            }),
-            version: "1.0",
-            timestamp: tStamp
-          };
-          break;
-      }
-      data.sign = this.$getSign(data);
-      let res = await WX_SHARE(data);
-      if (res.hasOwnProperty("response_code")) {
-        // console.log(res.response_data)
-        // 微信分享
-        this.$getWxData(
-          res.response_data.share_info.title,
-          res.response_data.share_info.desc,
-          res.response_data.share_info.pic,
-          res.response_data.share_info.url
-        );
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
+    //       data = {
+    //         page_name: "mall/goods/search",
+    //         params: JSON.stringify(tmp),
+    //         version: "1.0",
+    //         timestamp: tStamp
+    //       };
+    //       break;
+    //     case "brand":
+    //       data = {
+    //         page_name: "brand/goods/search",
+    //         params: JSON.stringify({
+    //           brand_id: this.$route.query.brand_id,
+    //           keywords: this.$route.query.searchContent
+    //         }),
+    //         version: "1.0",
+    //         timestamp: tStamp
+    //       };
+    //       break;
+    //   }
+    //   data.sign = this.$getSign(data);
+    //   let res = await WX_SHARE(data);
+    //   if (res.hasOwnProperty("response_code")) {
+    //     // console.log(res.response_data)
+    //     // 微信分享
+    //     this.$getWxData(
+    //       res.response_data.share_info.title,
+    //       res.response_data.share_info.desc,
+    //       res.response_data.share_info.pic,
+    //       res.response_data.share_info.url
+    //     );
+    //   } else {
+    //     this.$toast(res.error_message);
+    //   }
+    // },
     gotoDetail(item) {
       var goodsType = item.goods_type;
       if (goodsType == 1 || goodsType == 2) {
@@ -191,7 +192,30 @@ export default {
         }, 500);
 
         // 获取页面分享信息
-        if(this.isWxLogin) this.wxShareData();
+        var _pageName = "";
+        var _params = "";
+        switch (this.$route.query.type) {
+          case "mall":
+            var tmp = {};
+            tmp.supplier_id = this.$route.query.supplier_id;
+            tmp.brand_id = this.$route.query.brand_id;
+            if (this.$route.query.searchContent)
+              tmp.keywords = this.$route.query.searchContent;
+            if (this.$route.query.goods_type)
+              tmp.goods_type = this.$route.query.goods_type;
+            _pageName = "mall/goods/search";
+            _params = JSON.stringify(tmp);
+            break;
+          case "brand":
+            _pageName = "brand/goods/search";
+            _params = JSON.stringify({
+              brand_id: this.$route.query.brand_id,
+              keywords: this.$route.query.searchContent
+            });
+            break;
+        }
+        // if (this.isWxLogin) this.wxShareData();
+        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
       } else {
         this.$toast(res.error_message);
       }

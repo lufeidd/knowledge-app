@@ -50,6 +50,9 @@ export const SEARCH_SUGGEST = query => req('post', '/search/goods/suggest', quer
 // 获取页面分享信息
 export const WX_SHARE = query => req('post', '/page/share/info', query);
 
+// 分享成功后通知后台
+export const WX_SHARE_LOG = query => req('post', '/page/share/log', query);
+
 // 交易支付请求发起
 export const CASHIER_PAY_ADD = query => req('post', '/cashier/pay/assist/add', query);
 

@@ -43,3 +43,29 @@ export const ORDER_RECEIVE = query => req('post', '/shopping/order/RECEIVE', que
 
 //退款申请修改
 export const ORDER_REFUND_EDIT = query => req('post', '/shopping/order/refund/edit', query);
+// 加入购物车
+export const CART_ADD = query => req('post', '/shopping/cart/add', query);
+
+// 删除购物车中的商品品种
+export const CART_DELETE = query => req('post', '/shopping/cart/delete', query);
+
+// 更改商品在购物车的数量
+export const CART_EDIT = query => req('post', '/shopping/cart/edit', query);
+
+// 获取购物车信息
+export const CART_INFO = query => req('post', '/shopping/cart/gets', query);
+
+// 新增实物订单
+export const ORDER_PHYSICAL_ADDINFO = query => req('post', '/shopping/order/physical/addinfo', query);
+
+// 新增实物订单 支付
+export const ORDER_PHYSICAL_ADD = query => req('post', '/shopping/order/physical/add', query);
+
+// 实物支付信息获取
+export const ORDER_PHYSICAL_PAYINFO = query => req('post', '/shopping/order/physical/payinfo', query);
+
+//获取退款详情
+export const ORDER_REFUN_GET = query => req('post', '/shopping/order/refund/get', query);
+
+//取消订单
+export const ORDER_REFUN_CANCEL = query => req('post', '/shopping/order/cancel', query);

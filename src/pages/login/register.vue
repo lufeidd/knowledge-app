@@ -48,7 +48,7 @@
 
       <div class="prototype">
         <van-checkbox v-model="checked" @click="checkAction">阅读并同意</van-checkbox>
-        <router-link :to="{name: 'prototype', query: {type: 'prototype'}}">《火把服务用户协议》</router-link>
+        <router-link :to="{name: 'prototype', query: {type: 'prototype'}}">《火把平台用户注册协议》</router-link>
         <router-link :to="{name: 'prototype', query: {type: 'private'}}">《隐私条款》</router-link>
       </div>
 
@@ -166,12 +166,15 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
+        localStorage.setItem("loginState", 1);
+        
         this.$router.push({ name: "personalIndex", query: data });
         console.log(res);
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
+          localStorage.setItem("loginState", 100);
           
         }
         this.$toast(res.error_message);

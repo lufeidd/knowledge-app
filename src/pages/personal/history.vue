@@ -28,7 +28,7 @@
             <div class="left">
               <div class="ratioBox">
                 <div class="box">
-                  <img :src="item.data.pic">
+                  <img :src="item.data.pic[0]">
                 </div>
               </div>
             </div>
@@ -70,7 +70,7 @@
             <div class="left">
               <div class="ratioBox">
                 <div class="box">
-                  <img :src="item.data.pic">
+                  <img :src="item.data.pic[0]">
                 </div>
               </div>
             </div>
@@ -108,7 +108,7 @@
             <div class="left">
               <div class="ratioBox">
                 <div class="box">
-                  <img :src="item.data.pic">
+                  <img :src="item.data.pic[0]">
                 </div>
               </div>
             </div>
@@ -137,6 +137,43 @@
               </svg>
             </div>
           </router-link>
+          <!-- 纸质书 -->
+          <router-link
+            v-if="item.type == 3"
+            :to="{name: 'detail', query: {goods_id: item.target}}"
+            class="listBox">
+            <div class="left">
+              <div class="ratioBox">
+                <div class="box">
+                  <img :src="item.data.pic[0]">
+                </div>
+              </div>
+            </div>
+            <div class="center">
+              <div class="title">{{ item.data.title }}</div>
+              <div class="subTitle">{{ item.data.subTitle }}</div>
+              <div class="info">
+                <span class="type" v-if="item.type == 3">图书</span>
+                <span class="count">
+                  <svg class="icon" aria-hidden="true" v-if="item.type == 3">
+                    <use xlink:href="#icon-eye-line"></use>
+                  </svg>
+                  {{ item.data.play_num }}
+                </span>
+                <span class="time">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-time-line"></use>
+                  </svg>
+                  {{ item.data.update_time }}
+                </span>
+              </div>
+            </div>
+            <div class="right">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-next-line"></use>
+              </svg>
+            </div>
+          </router-link>
         </template>
 
         <span slot="right" @click="historyCancel(item.id, key)">
@@ -145,32 +182,33 @@
       </van-swipe-cell>
     </van-list>
     <!-- 快速导航 -->
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
 <style src="@/style/scss/pages/personal/history.scss" scoped lang="scss"></style>
 
 <script>
-import easyNav from "./../../components/easyNav";
+// import easyNav from "./../../components/easyNav";
 //  引入接口
 import { USER_HISTORY, USER_HISTORY_CANCEL } from "../../apis/user.js";
 
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
       // 快速导航
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: false,
-        personal: true,
-        personalLink: "/personal/index"
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: false,
+      //   personal: true,
+      //   personalLink: "/personal/index"
+      // },
       historyList: [],
       // 临时存放关注数据
       historyStatus: [],
@@ -208,9 +246,11 @@ export default {
             res.response_data.hasOwnProperty("result")
           ) {
             // store 设置登录状态
-            this.$store.commit("changeLoginState", 1);
+              this.$store.commit("changeLoginState", 1);
+              localStorage.setItem("loginState", 1);
             
             setTimeout(() => {
+
               var result = res.response_data.result;
 
               for (let i = 0; i < result.length; i++) {
@@ -230,6 +270,7 @@ export default {
             if (res.hasOwnProperty("error_code") && res.error_code == 100) {
               // store 设置登录状态
               this.$store.commit("changeLoginState", 100);
+              localStorage.setItem("loginState", 100);
               
             }
             this.historyFinished = true;

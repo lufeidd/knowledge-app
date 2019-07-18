@@ -30,7 +30,8 @@
        <span class="button" @click="toComment(item)">评价</span>
     </div>
     </van-list>
-    <easyNav :navData="navData"></easyNav>
+    <!-- <easyNav :navData="navData"></easyNav> -->
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -38,11 +39,11 @@
 
 <script>
 import { USER_ORDER_COMMENT_UNDO_GETS } from "../../../../apis/user.js";
-import easyNav from "./../../../../components/easyNav";
+// import easyNav from "./../../../../components/easyNav";
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
       listData:[],
@@ -50,16 +51,16 @@ export default {
       page_size:5,
       programLoading: false,
       programFinished: false,
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: false,
-        // searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type:'order',
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: false,
+      //   // searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type:'order',
+      // },
     };
   },
   mounted(){
