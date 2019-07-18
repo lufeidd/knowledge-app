@@ -291,6 +291,7 @@
       </div>
     </div>
     <EazyNav type="brand"></EazyNav>
+    
   </div>
 </template>
 

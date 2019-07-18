@@ -98,6 +98,7 @@
     </van-popup>
 
     <EazyNav type="brand"></EazyNav>
+    
   </div>
 </template>
 
@@ -125,7 +126,7 @@ export default {
   },
   mounted() {
     if (this.$route.query.title) document.title = this.$route.query.title;
-    this.brand_id = this.$route.query.brand_id;
+    this.brand_id = parseInt(this.$route.query.brand_id);
     this.brandGetData();
   },
   methods: {

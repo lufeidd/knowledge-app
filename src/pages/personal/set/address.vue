@@ -10,6 +10,7 @@
       ref="address"
     />
     <EazyNav type="brand"></EazyNav>
+    
   </div>
 </template>
 

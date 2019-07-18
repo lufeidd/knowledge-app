@@ -125,6 +125,7 @@
 #easyNav {
   @include position(fixed, "br", 100px, 0, null, 60px, null);
   @include displayFlex(flex, center, center);
+  z-index: 101;
 
   & .button {
     background-color: rgba(0, 0, 0, 0.6);

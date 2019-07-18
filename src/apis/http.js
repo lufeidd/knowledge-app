@@ -5,8 +5,7 @@
 
 import axios from 'axios'
 import qs from "Qs";
-// 加载中
-import loading from './../components/index'
+import Vue from 'vue';
 
 // 创建axios的一个实例
 var instance = axios.create({
@@ -39,6 +38,9 @@ instance.interceptors.request.use(function (config) {
 // 二、响应拦截器 忽略
 instance.interceptors.response.use(function (response) {
     if (response.status === 200) {
+        // console.log(200);
+        // $('#loadingPage').remove();
+
         // console.log(localStorage.getItem('routerLink'));
         // 处理请求成功的逻辑
         return response.data; // 必须返回，后面的接口的then，才能获取response

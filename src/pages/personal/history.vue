@@ -184,6 +184,7 @@
     <!-- 快速导航 -->
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
+    
   </div>
 </template>
 

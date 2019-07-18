@@ -15,6 +15,7 @@
       </router-link> -->
     </div>
     <EazyNav type="brand"></EazyNav>
+    
   </div>
 </template>
 <style lang="scss">

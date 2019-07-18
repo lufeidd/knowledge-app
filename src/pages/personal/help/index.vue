@@ -25,6 +25,7 @@
     </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
+    
   </div>
 </template>
 

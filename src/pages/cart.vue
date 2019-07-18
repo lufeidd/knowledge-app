@@ -118,9 +118,9 @@
             <div class="center">
               <div class="title">
                 <router-link
-                  :to="{name: 'mall', query: {supplier_id: item.supplier_id}}"
+                  :to="{name: 'detail', query: {goods_id: item.goods_id}}"
                   class="text"
-                >{{ item.brand_name }}</router-link>
+                >{{ item.title }}</router-link>
               </div>
               <div class="subTitle"></div>
               <div class="info">
@@ -177,6 +177,7 @@
       </div>
     </div>
     <EazyNav type="brand"></EazyNav>
+    
   </div>
 </template>
 <style src="@/style/scss/pages/cart.scss" scoped lang="scss"></style>

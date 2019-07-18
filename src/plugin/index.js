@@ -135,7 +135,7 @@ export default {
     Vue.prototype.$getWxData = async function (_title, _desc, _imgUrl, _route) {
       let url = window.location.protocol + "//" + window.location.hostname + '/callback/weixin/jssdk?url=' + encodeURIComponent(window.location.href.split('#')[0]); //去掉签名
 
-      var self = this
+      var self = this;
       axios.get(url)
         .then(function (response) {
           // console.log(response)

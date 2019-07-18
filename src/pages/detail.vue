@@ -113,7 +113,7 @@
       </van-popup>
     </div>
     <EazyNav type="brand"></EazyNav>
-    <Loading></Loading>
+    <Loading :isLoading="isLoading"></Loading>
   </div>
 </template>
 
@@ -129,6 +129,7 @@ import { CART_ADD, ORDER_PHYSICAL_ADDINFO } from "../apis/shopping.js";
 export default {
   data() {
     return {
+      isLoading: true,
       detail: {
         goods_id: null,
         sku_id: null,
@@ -241,6 +242,7 @@ export default {
       let res = await ALBUM(data);
 
       if (res.hasOwnProperty("response_code")) {
+        this.isLoading = false;
         //专辑基础信息
         this.baseData = res.response_data.base;
         // 所属媒体信息
@@ -276,13 +278,13 @@ export default {
         this.$toast(res.error_message);
       }
 
-      console.log("商品基础信息:", res.response_data);
+      // console.log("商品基础信息:", res.response_data);
     },
     showArea() {
       this.areaShow = true;
     },
     onChoose(key) {
-      console.log(key);
+      // console.log(key);
       this.activeIndex = key;
     },
     onOpen() {
