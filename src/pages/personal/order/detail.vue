@@ -6,7 +6,7 @@
       </svg> 订单已完成
     </div>
     <div class="state" v-else>
-      {{infoData.state_desc}}
+      {{infoData.state == 7? '交易取消':infoData.state_desc}}
     </div>
     <div v-if="infoData.type == 2">
       <div class="signfor" @click="tologistics" v-if="infoData.state > 2 && infoData.state !== 7">
@@ -152,9 +152,10 @@
         </div>
         <div style="padding-right:15px;">
           <span class="button button3" @click="toComment" v-if="infoData.if_comment == 0 && infoData.state == 4">评价</span>
-          <span class="button button3" @click="repurchase" v-if="infoData.state == 4 || infoData.state == 7">再次购买</span>
-          <span class="button button2" @click="confirmReceive" v-if="infoData.state == 3">确认收货</span>
-          <span class="button button3" @click="tologistics" v-if="infoData.state == 2">查看物流</span>
+          <span class="button button3" @click="repurchase" v-if="infoData.state !== 1 ">再次购买</span>
+          <span class="button button2" @click="confirmReceive" v-if="infoData.state == 3||infoData.state == 4">确认收货</span>
+          <span class="button button3" @click="tologistics" v-if="infoData.state == 5">查看物流</span>
+          <span class="button button3" @click="cancel" v-if="infoData.state == 1">取消订单</span>
           <span class="button button2" @click="toPaid" v-if="infoData.state == 1">去支付</span>
         </div>
       </div>
@@ -162,7 +163,7 @@
 
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    
+
   </div>
 </template>
 
@@ -172,7 +173,7 @@
 //调用cilpboard
 import Clipboard from "clipboard";
 import { USER_ORDER_DETAIL_GET } from "../../../apis/user.js";
-import { ORDER_EXPRESS_GET,ORDER_RECEIVE } from "../../../apis/shopping.js";
+import { ORDER_EXPRESS_GET,ORDER_RECEIVE,ORDER_REFUN_CANCEL } from "../../../apis/shopping.js";
 
 export default {
   // components: {
@@ -381,6 +382,35 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.$toast('确认收货成功！');
+        location.reload();
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    //取消订单
+    cancel(){
+      this.$dialog.confirm({
+          message: "确认取消订单？"
+        })
+        .then(() => {
+          this.cancelOrder(this.infoData.order_id);
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
+    async cancelOrder(order_id){
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+        order_id:order_id,
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_REFUN_CANCEL(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.$toast('已取消订单！');
         location.reload();
       } else {
         this.$toast(res.error_message);

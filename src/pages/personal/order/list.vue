@@ -47,9 +47,9 @@
             <span class="button button1" @click="cancel(item)" v-if="item.state == 1">取消订单</span>
             <span class="button button2" @click="toPay(item)" v-if="item.state == 1">去支付</span>
             <span class="button button1" @click="toComment(item,index)" v-if="item.state == 4&&item.if_comment == 0">评价</span>
-            <span class="button button1" @click="buyAgain" v-if="item.state == 4||item.state==7">再次购买</span>
-            <span class="button button2" @click="confirmReceive(item)" v-if="item.state == 3">确认收货</span>
-            <span class="button button1" @click="tologistics(item)" v-if="item.state == 2">查看物流</span>
+            <span class="button button1" @click="buyAgain" v-if="item.state !== 1">再次购买</span>
+            <span class="button button2" @click="confirmReceive(item)" v-if="item.state == 3||item.state == 5">确认收货</span>
+            <span class="button button1" @click="tologistics(item)" v-if="item.state == 3||item.state == 5">查看物流</span>
           </div>
         </div>
       </div>
