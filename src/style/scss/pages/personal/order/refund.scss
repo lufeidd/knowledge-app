@@ -310,14 +310,16 @@
     height: 40%;
     .title{
       text-align: center;
-      height: 35px;
-      line-height: 35px;
+      height: 45px;
+      line-height: 45px;
       font-size: $fontSize + 1;
       color: $cl9;
       position: relative;
+      box-sizing: border-box;
+      border-bottom: 1px #eee solid;
       .complete{
         display: inline-block;
-        line-height: 35px;
+        line-height: 45px;
         position: absolute;
         right:15px;
         color: $redDark;
@@ -325,7 +327,7 @@
     }
     .van-radio-group{
       position: absolute;
-      top: 35px;
+      top: 45px;
       bottom: 0;
       overflow-y: auto;
       width: 100%;

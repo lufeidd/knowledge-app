@@ -1,7 +1,7 @@
 <template>
   <div id="listPage">
     <div class="nullBox" v-if="programFinished && publishData.length == 0 && goodsData.length == 0">
-      <img src="../../../assets/null/list.png" width="100%">
+      <img src="../../../assets/null/list.png" width="100%" />
       <div>您的订单列表为空</div>
     </div>
 
@@ -12,49 +12,61 @@
       @load="programLoad"
       v-else
     >
-    <!-- 实物商品-->
-    <div v-if="goodsData.length > 0">
-      <div class="content"  v-for="(item,index) in goodsData" :key="index">
-        <div class="head" @click="toBrandindex(item)">
-          <div class="titleFrom">
-            <div class="ratiobox">
+      <!-- 实物商品-->
+      <div v-if="goodsData.length > 0">
+        <div class="content" v-for="(item,index) in goodsData" :key="index">
+          <div class="head" @click="toBrandindex(item)">
+            <div class="titleFrom">
+              <div class="ratiobox">
                 <a class="bookImg" v-lazy:background-image="item.brand_header_pic"></a>
               </div>
-            <span class="publish">{{item.brand_name}}</span>
+              <span class="publish">{{item.brand_name}}</span>
+            </div>
+            <span :class="(item.state == 4 || item.state == 7) ? 'order2':'order1'">{{item.state_desc}}</span>
           </div>
-          <span :class="(item.state == 1 || item.state == 2 ||item.state == 3)? 'order1':'order2'">{{item.state_desc}}</span>
-        </div>
-        <div class="section">
-          <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
-            <swiper-slide v-for="(item1,index) in item.details" :key="'swiper-'+index" >
-              <div class="ratiobox" @click="toDetail(item)">
-                <a class="bookImg" v-lazy:background-image="item1.pic"></a>
-              </div>
-            </swiper-slide>
-          </swiper>
-          <div class="tip1">
-            <span class="actulPay">
-              实付款：
-              <span class="money">￥{{item.order_money}}</span>
-            </span>
+          <div class="section">
+            <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
+              <swiper-slide v-for="(item1,index) in item.details" :key="'swiper-'+index">
+                <div class="ratiobox" @click="toDetail(item)">
+                  <a class="bookImg" v-lazy:background-image="item1.pic"></a>
+                </div>
+              </swiper-slide>
+            </swiper>
+            <div class="tip1">
+              <span class="actulPay">
+                实付款：
+                <span class="money">￥{{item.order_money}}</span>
+              </span>
+            </div>
           </div>
-        </div>
-        <div class="footFinish">
-          <div>
-            <span class="button button1" @click="repply(item)" v-if="item.invoice_id == 0 && item.state == 4">申请发票</span>
-          </div>
-          <div>
-            <span class="button button1" @click="cancel(item)" v-if="item.state == 1">取消订单</span>
-            <span class="button button2" @click="toPay(item)" v-if="item.state == 1">去支付</span>
-            <span class="button button1" @click="toComment(item,index)" v-if="item.state == 4&&item.if_comment == 0">评价</span>
-            <span class="button button1" @click="buyAgain" v-if="item.state == 4||item.state==7">再次购买</span>
-            <span class="button button2" @click="confirmReceive(item)" v-if="item.state == 3">确认收货</span>
-            <span class="button button1" @click="tologistics(item)" v-if="item.state == 2">查看物流</span>
+          <div class="footFinish">
+            <div>
+              <span
+                class="button button1"
+                @click="repply(item)"
+                v-if="item.invoice_id == 0 && item.state == 4"
+              >申请发票</span>
+            </div>
+            <div>
+              <span class="button button1" @click="cancel(item)" v-if="item.state == 1">取消订单</span>
+              <span class="button button2" @click="toPay(item)" v-if="item.state == 1">去支付</span>
+              <span
+                class="button button1"
+                @click="toComment(item,index)"
+                v-if="item.state == 4&&item.if_comment == 0"
+              >评价</span>
+              <span
+                class="button button1"
+                @click="buyAgain"
+                v-if="item.state == 4||item.state==7"
+              >再次购买</span>
+              <span class="button button2" @click="confirmReceive(item)" v-if="item.state == 3">确认收货</span>
+              <span class="button button1" @click="tologistics(item)" v-if="item.state == 2">查看物流</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- 虚拟商品 -->
+      <!-- 虚拟商品 -->
       <div class="content" v-for="(item,index) in publishData" :key="index">
         <div class="head" @click="toBrandindex(item)">
           <div class="titleFrom">
@@ -63,7 +75,7 @@
             </div>
             <span class="publish">{{item.brand_name}}</span>
           </div>
-          <span :class="item.state ==0? 'order1':'order2'">{{item.state_desc}}</span>
+          <span :class="item.state == 0? 'order1':'order2'">{{item.state_desc}}</span>
         </div>
         <div class="section" v-for="item1 in item.details" @click="toDetail(item)">
           <div class="bookDetail">
@@ -108,7 +120,11 @@
 <script>
 // import easyNav from "./../../../components/easyNav";
 import { USER_ORDER_DETAIL_GETS } from "../../../apis/user.js";
-import { ORDER_RECEIVE,ORDER_REFUN_CANCEL,CART_ADD } from "../../../apis/shopping.js";
+import {
+  ORDER_RECEIVE,
+  ORDER_REFUN_CANCEL,
+  CART_ADD
+} from "../../../apis/shopping.js";
 export default {
   // components: {
   //   easyNav
@@ -126,7 +142,7 @@ export default {
       //   type: "order"
       // },
       publishData: [],
-      goodsData:[],
+      goodsData: [],
       state: { evaluate: true, isPay: true, rePurchase: true, confirm: true },
       swiperOption: {
         slidesPerView: 5.3
@@ -169,10 +185,9 @@ export default {
 
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
-
-            if(result[i].type == 1){
+            if (result[i].type == 1) {
               this.publishData.push(result[i]);
-            }else{
+            } else {
               this.goodsData.push(result[i]);
             }
           }
@@ -200,7 +215,7 @@ export default {
         name: "orderdetail",
         query: {
           order_id: item.order_id,
-          invoice_id: item.invoice_id,
+          invoice_id: item.invoice_id
         }
       });
     },
@@ -211,7 +226,7 @@ export default {
         name: "orderinvoice",
         query: {
           order_id: item.order_id,
-          money: item.order_money,
+          money: item.order_money
         }
       });
     },
@@ -237,17 +252,18 @@ export default {
       });
     },
     //查看物流信息
-    tologistics(item){
+    tologistics(item) {
       this.$router.push({
-        name:"logistics",
-        query:{
-          order_id:item.order_id,
+        name: "logistics",
+        query: {
+          order_id: item.order_id
         }
-      })
+      });
     },
     //确认收货
-    confirmReceive(item){
-      this.$dialog.confirm({
+    confirmReceive(item) {
+      this.$dialog
+        .confirm({
           message: "确认收货？"
         })
         .then(() => {
@@ -257,27 +273,28 @@ export default {
           // on cancel
         });
     },
-    async orderReceive(order_id){
+    async orderReceive(order_id) {
       var tStamp = this.$getTimeStamp();
       var data = {
         version: "1.0",
         timestamp: tStamp,
-        order_id:order_id,
+        order_id: order_id
       };
       data.sign = this.$getSign(data);
       let res = await ORDER_RECEIVE(data);
 
       if (res.hasOwnProperty("response_code")) {
-        this.$toast('确认收货成功！');
+        this.$toast("确认收货成功！");
         location.reload();
       } else {
         this.$toast(res.error_message);
       }
     },
     //取消订单
-    cancel(item){
-      console.log(item)
-      this.$dialog.confirm({
+    cancel(item) {
+      console.log(item);
+      this.$dialog
+        .confirm({
           message: "确认取消订单？"
         })
         .then(() => {
@@ -287,31 +304,36 @@ export default {
           // on cancel
         });
     },
-    async cancelOrder(order_id){
+    async cancelOrder(order_id) {
       var tStamp = this.$getTimeStamp();
       var data = {
         version: "1.0",
         timestamp: tStamp,
-        order_id:order_id,
+        order_id: order_id
       };
       data.sign = this.$getSign(data);
       let res = await ORDER_REFUN_CANCEL(data);
 
       if (res.hasOwnProperty("response_code")) {
-        this.$toast('已取消订单！');
+        // this.page = 1;
+        // this.publishData = [];
+        // this.goodsData = [];
+        // this.getData();
+        this.$toast("已取消订单！");
         location.reload();
       } else {
         this.$toast(res.error_message);
       }
     },
     // 去支付
-    toPay (item) {
-      this.$router.push({ name: "pay", query: { pay_id: item.pay_id, money: item.order_money } });
+    toPay(item) {
+      this.$router.push({
+        name: "pay",
+        query: { pay_id: item.pay_id, money: item.order_money }
+      });
     },
     //再次购买
-    buyAgain(){
-
-    },
+    buyAgain() {}
   }
 };
 </script>
