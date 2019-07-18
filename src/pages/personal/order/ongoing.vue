@@ -16,6 +16,9 @@
           <div class="stateMessage">
             <p v-html="item.content"></p>
           </div>
+          <div class="notice" v-if="item.notice">
+            {{item.notice}}
+          </div>
         </div>
         <div class="wd_right" v-if="item.from == 'user'">
           <div class="ratiobox">
@@ -39,7 +42,7 @@
 <script>
 import {
   ORDER_REFUND_LOG_GETS,
-  ORDER_REFUND_CANCLE
+  ORDER_REFUND_CANCLE,ORDER_REFUN_GET
 } from "../../../apis/shopping.js";
 export default {
   data() {
@@ -48,9 +51,13 @@ export default {
       order_id: null,
       detail_id: null,
       infoData: [],
+      detailData:{},
       refund_state: null,
       apply_id:null,
       refund_type:null,
+      refund_reason:null,
+      refund_desc:null,
+      refund_money:null,
     };
   },
   mounted() {
@@ -77,13 +84,16 @@ export default {
           res.response_data[res.response_data.length - 1].refund_state;
         this.apply_id = res.response_data[0].apply_id;
         this.refund_type = res.response_data[0].refund_type;
+
         for(let i=0;i<this.infoData.length;i++){
-          this.infoData[i].content = this.infoData[i].content.replace(/\\n/g,"</br>");
+          this.infoData[i].content = this.infoData[i].content.replace(/。/g,"。</br>");
+          // console.log(this.infoData[i].content)
        }
       } else {
         this.$toast(res.error_message);
       }
     },
+
     //撤销退款
     cancle_refund() {
       this.$dialog
@@ -108,10 +118,7 @@ export default {
       let res = await ORDER_REFUND_CANCLE(data);
       if (res.hasOwnProperty("response_code")) {
         this.$toast('撤销申请成功！');
-        this.$router.push({
-          name:"orderdetail",
-          query:{order_id:this.order_id}
-        });
+        location.reload();
       } else {
         this.$toast(res.error_message);
       }
@@ -146,7 +153,37 @@ export default {
     },
     // 修改申请
     edit_refund(){
-
+      if(this.refund_type == 1){
+        this.$router.push({
+          name:"refundone",
+          query:{
+            order_id:this.order_id,
+            detail_id:this.detail_id,
+            apply_id:this.apply_id,
+            type_of:'edit'
+          }
+        })
+      }else if(this.refund_type == 2){
+        this.$router.push({
+          name:"refundtwo",
+          query:{
+            order_id:this.order_id,
+            detail_id:this.detail_id,
+            apply_id:this.apply_id,
+            type_of:'edit'
+          }
+        })
+      }else{
+        this.$router.push({
+          name:"refundthree",
+          query:{
+            order_id:this.order_id,
+            detail_id:this.detail_id,
+            apply_id:this.apply_id,
+            type_of:'edit'
+          }
+        })
+      }
     },
     //填写物流信息
     write_logistics(){

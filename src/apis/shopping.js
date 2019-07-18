@@ -41,6 +41,8 @@ export const ORDER_REFUND_DISPATCH_COMPANY = query => req('post', '/shopping/ord
 //订单确认收货
 export const ORDER_RECEIVE = query => req('post', '/shopping/order/RECEIVE', query);
 
+//退款申请修改
+export const ORDER_REFUND_EDIT = query => req('post', '/shopping/order/refund/edit', query);
 // 加入购物车
 export const CART_ADD = query => req('post', '/shopping/cart/add', query);
 
@@ -62,3 +64,8 @@ export const ORDER_PHYSICAL_ADD = query => req('post', '/shopping/order/physical
 // 实物支付信息获取
 export const ORDER_PHYSICAL_PAYINFO = query => req('post', '/shopping/order/physical/payinfo', query);
 
+//获取退款详情
+export const ORDER_REFUN_GET = query => req('post', '/shopping/order/refund/get', query);
+
+//取消订单
+export const ORDER_REFUN_CANCEL = query => req('post', '/shopping/order/cancel', query);

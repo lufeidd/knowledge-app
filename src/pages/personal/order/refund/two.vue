@@ -40,7 +40,8 @@
       <upload :uploadData="uploadData"></upload>
     </div>
     <div class="bottomBox" :class="{iphx:this.isIphx}">
-      <van-button type="danger" size="large"  @click="submitRefund">提交申请</van-button>
+      <van-button type="danger" v-if="type_of =='edit'" size="large" @click="editRefund">修改申请</van-button>
+      <van-button type="danger" v-else size="large" @click="submitRefund">提交申请</van-button>
     </div>
     <van-popup v-model="show" position="bottom">
       <div class="title">
@@ -69,7 +70,7 @@
 <script>
 import upload from "../../../../components/upload";
 import { COMMON_UPLOAD } from "../../../../apis/public.js";
-import { ORDER_REFUND_ADD,ORDER_REFUND_ADDINFO } from "../../../../apis/shopping.js"
+import { ORDER_REFUND_ADD,ORDER_REFUND_ADDINFO,ORDER_REFUND_EDIT,ORDER_REFUN_GET } from "../../../../apis/shopping.js"
 export default {
   components: {
     upload
@@ -92,12 +93,19 @@ export default {
       explainTotal:500,
       explainLength:0,
       refundInfo:{},
+      type_of:'refund',
+      apply_id:null,
     };
   },
   mounted(){
     this.order_id = this.$route.query.order_id;
     this.detail_id = this.$route.query.detail_id;
+    this.apply_id = this.$route.query.apply_id;
+    this.type_of = this.$route.query.type_of;
     this.getInfo();
+    if(this.type_of == 'edit'){
+      this.getRefundDetail();
+    }
   },
   methods: {
     choose() {
@@ -218,6 +226,55 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.refundInfo = res.response_data;
         this.reasonList = res.response_data.reason_list.onlyrefund;
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    //修改申请
+    async editRefund(){
+      if ($(".flex-box").length > 1) {
+        this.getImgUrl();
+      }
+      if(this.refund_reason && this.order_id && this.detail_id && this.refundInfo.goods_price && this.refund_desc){
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          version: "1.0",
+          timestamp: tStamp,
+          apply_id:this.apply_id,
+          refund_type: this.refundInfo.refund_type,
+          refund_money: this.refundInfo.goods_price*this.refundInfo.buy_count,
+          refund_count: this.refundInfo.buy_count,
+          refund_reason:this.refund_reason,
+          refund_desc: this.refund_desc,
+          pic:this.pic,
+        };
+        data.sign = this.$getSign(data);
+        let res = await ORDER_REFUND_EDIT(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.$toast("修改成功!");
+          this.$router.go(-1);
+        } else {
+          this.$toast(res.error_message);
+          console.log(this.refund_money);
+        }
+      }else{
+        this.$toast('请填写完整信息！')
+      }
+    },
+    //获取退款详情
+    async getRefundDetail(){
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+        apply_id:this.apply_id,
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_REFUN_GET(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.refund_reason = res.response_data.refund_reason;
+        this.refund_desc = res.response_data.refund_desc;
       } else {
         this.$toast(res.error_message);
       }
