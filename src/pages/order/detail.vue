@@ -10,7 +10,7 @@
           <!-- <span class="type">自营</span> -->
           <span class="count">共{{ citem.goods_nums }}件</span>
         </van-col>
-        <van-col span="12" class="postage" style="text-align: right;">运费5元</van-col>
+        <van-col span="12" class="postage" style="text-align: right;">{{ citem.dispatch_price_str }}</van-col>
       </van-row>
 
       <div v-for="(gitem, gindex) in citem.goodslist" :key="gindex" class="listBox">
@@ -64,6 +64,7 @@ export default {
       data.version = "1.0";
       if(this.$route.query.detail_ids) data.detail_ids = this.$route.query.detail_ids;
       if(this.$route.query.detail) data.detail = this.$route.query.detail;
+      data.location = this.$route.query.location;
       data.sign = this.$getSign(data);
       let res = await CART_INFO(data);
 

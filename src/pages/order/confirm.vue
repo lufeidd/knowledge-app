@@ -46,7 +46,7 @@
       </div>
     </router-link>
     <!-- 商品 -->
-    <div @click="gotoDetail" class="listBox">
+    <div @click="gotoDetail" v-if="goodspic && goodspic.length > 0" class="listBox">
       <div class="center">
         <ul class="addressBox img">
           <li v-for="(img,index) in goodspic" :key="index">
@@ -111,21 +111,24 @@ export default {
       pay_price: 0,
       ticket_price: 0,
       yh_price: 0,
-      address_id: '',
+      address_id: 0,
       remark: "",
-      pay_id: ""
+      pay_id: "",
+      location: 0
     };
   },
   mounted() {
     this.orderAddData();
   },
   methods: {
-    gotoDetail () {
+    gotoDetail() {
       var queryTmp = {};
       queryTmp.address_id = this.address_id;
-      if(this.$route.query.detail_ids) queryTmp.detail_ids = this.$route.query.detail_ids;
-      if(this.$route.query.detail) queryTmp.detail = this.$route.query.detail;
-      this.$router.push({ name: 'orderconfirmdetail', query: queryTmp });
+      if (this.$route.query.detail_ids)
+        queryTmp.detail_ids = this.$route.query.detail_ids;
+      if (this.$route.query.detail) queryTmp.detail = this.$route.query.detail;
+      queryTmp.location = JSON.stringify(this.location);
+      this.$router.push({ name: "orderconfirmdetail", query: queryTmp });
     },
     // 新增实物订单
     async orderAddData() {
@@ -148,7 +151,13 @@ export default {
         this.pay_price = res.response_data.pay_price;
         this.ticket_price = res.response_data.ticket_price;
         this.yh_price = res.response_data.yh_price;
-        if(res.response_data.address.address_id) this.address_id = res.response_data.address.address_id;
+        if (res.response_data.address.address_id) {
+          this.address_id = res.response_data.address.address_id;
+          this.location = {
+            province_id: res.response_data.address.province_id,
+            city_id: res.response_data.address.city_id
+          };
+        }
       } else {
         this.$toast(res.error_message);
       }
@@ -180,8 +189,8 @@ export default {
     },
     // 去支付
     onSubmit() {
-      if(this.address_id == '') {
-        this.$toast('请添加收货地址~');
+      if (this.address_id == "") {
+        this.$toast("请添加收货地址~");
         return;
       }
       this.payIdData();

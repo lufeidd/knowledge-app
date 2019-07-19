@@ -48,28 +48,26 @@
       <!-- 图文 -->
       <div v-if="baseData.desc" class="introduction" v-html="changeHtml(baseData.desc)"></div>
       <!-- 目录及其他 -->
-      <div class="introduction" v-for="(item, index) in baseData.desc_arr" :key="index">
-        <div class="text">
-          <span class="verticleLine"></span>
-          <span class="lh">{{ item.name }}</span>
-        </div>
-        <template v-if="item.showAll">
+
+      <div class="foldBox" v-for="(item, index) in baseData.desc_arr" :key="index">
+        <div class="introduction fold" v-if="!item.showAll">
+          <div class="text">
+            <span class="verticleLine"></span>
+            <span class="lh">{{ item.name }}</span>
+          </div>
+          <!-- <div class="detail">{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}</div> -->
           <div class="detail" v-html="changeHtml(item.val)"></div>
-        </template>
-        <template v-else>
-          <div class="detail" style="height: 35px;overflow: hidden;" v-html="changeHtml(item.val)"></div>
           <div class="action" @click="showAllAction(index)">展开全部</div>
-        </template>
+        </div>
+        <div class="introduction unfold" v-else>
+          <div class="text">
+            <span class="verticleLine"></span>
+            <span class="lh">{{ item.name }}</span>
+          </div>
+          <!-- <div class="detail">{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}</div> -->
+          <div class="detail" style v-html="changeHtml(item.val)"></div>
+        </div>
       </div>
-
-      <div style="height: 60px;"></div>
-      <div v-if="this.isIphx" style="height: 34px;"></div>
-
-      <van-goods-action>
-        <van-goods-action-mini-btn info="5" icon="cart-o" text="购物车" @click="toCart" />
-        <van-goods-action-big-btn text="加入购物车" @click="addToCart" />
-        <van-goods-action-big-btn primary text="立即购买" @click="buyAction" />
-      </van-goods-action>
 
       <van-popup v-model="popupModel" position="bottom" @open="onOpen">
         <div class="audioList">
@@ -118,6 +116,41 @@
           </template>
         </div>
       </van-popup>
+
+      <div style="height: 60px;"></div>
+      <div v-if="this.isIphx" style="height: 34px;"></div>
+
+      <!-- 加入购物车、立即购买 -->
+      <van-goods-action>
+        <van-goods-action-mini-btn
+          v-if="shoppingcart_num > 0"
+          :info="shoppingcart_num"
+          icon="cart-o"
+          text="购物车"
+          @click="toCart"
+        />
+        <van-goods-action-mini-btn v-else icon="cart-o" text="购物车" @click="toCart" />
+        <van-goods-action-big-btn text="加入购物车" @click="addToCart" />
+        <van-goods-action-big-btn primary text="立即购买" @click="buyAction" />
+      </van-goods-action>
+
+      <!-- 暂无库存 -->
+      <div class="disabled" v-if="baseData.stores <= 0">
+        <div style="height: 50px;"></div>
+        <div class="none">库存不足</div>
+        <van-goods-action>
+          <van-goods-action-mini-btn
+            v-if="shoppingcart_num > 0"
+            :info="shoppingcart_num"
+            icon="cart-o"
+            text="购物车"
+            @click="toCart"
+          />
+          <van-goods-action-mini-btn v-else icon="cart-o" text="购物车" @click="toCart" />
+          <van-goods-action-big-btn disabled text="加入购物车" @click="addToCart" />
+          <van-goods-action-big-btn disabled primary text="立即购买" @click="buyAction" />
+        </van-goods-action>
+      </div>
     </div>
     <EazyNav type="brand"></EazyNav>
     <Loading :isLoading="isLoading"></Loading>
@@ -128,7 +161,8 @@
 <style lang="scss">
 @import url("./../style/scss/components/dateTimePicker.scss");
 #detailPage {
-  .van-cell__title, .van-cell__value {
+  .van-cell__title,
+  .van-cell__value {
     @include textOverflow;
     flex: auto;
     -webkit-box-flex: 0;
@@ -144,9 +178,12 @@
 import { ALBUM } from "../apis/album.js";
 import { USER_ADDRESS_LIST } from "../apis/user.js";
 import { CART_ADD, ORDER_PHYSICAL_ADDINFO } from "../apis/shopping.js";
+import { LOCATION_CHANGE } from "../apis/public.js";
 export default {
   data() {
     return {
+      shoppingcart_num: 0,
+      dispatch_str: "",
       addressData: [],
       finished: false,
       isLoading: true,
@@ -198,6 +235,22 @@ export default {
     this.getAddressData();
   },
   methods: {
+    // 定位地址信息手动变更动作
+    async locationChangeData(locations, goods_detail) {
+      var tStamp = this.$getTimeStamp();
+      var data = {};
+      data.timestamp = tStamp;
+      data.version = "1.0";
+      data.locations = JSON.stringify(locations);
+      data.goods_detail = JSON.stringify(goods_detail);
+      data.sign = this.$getSign(data);
+      let res = await LOCATION_CHANGE(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.dispatch_str = res.response_data.dispatch_str;
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
     // 获取我的收货地址信息
     async getAddressData() {
       var tStamp = this.$getTimeStamp();
@@ -270,6 +323,7 @@ export default {
       let res = await ALBUM(data);
 
       if (res.hasOwnProperty("response_code")) {
+        this.shoppingcart_num = res.response_data.shoppingcart_num;
         // 邮费信息
         this.dispatch_str = res.response_data.dispatch_str;
         // 地址
@@ -322,6 +376,19 @@ export default {
       this.location_info.province = item.province;
       this.location_info.city = item.city;
       this.popupModel = false;
+      // 获取邮费
+      var locations = {
+        province: item.province,
+        city: item.city,
+        province_id: item.province_id,
+        city_id: item.city_id
+      };
+      var goods_detail = {
+        goods_id: this.baseData.goods_id,
+        sku_id: this.baseData.goods_id,
+        count: 1
+      };
+      this.locationChangeData(locations, goods_detail);
     },
     onOpen() {
       // alert(999);
@@ -340,6 +407,19 @@ export default {
       console.log(888, values);
       this.location_info.province = values[0].name;
       this.location_info.city = values[1].name;
+      // 获取邮费
+      var locations = {
+        province: values[0].name,
+        city: values[1].name,
+        province_id: values[0].code.substring(0, 2),
+        city_id: values[1].code.substring(0, 4)
+      };
+      var goods_detail = {
+        goods_id: this.baseData.goods_id,
+        sku_id: this.baseData.goods_id,
+        count: 1
+      };
+      this.locationChangeData(locations, goods_detail);
     },
     // 购物车
     toCart() {
