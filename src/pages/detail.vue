@@ -55,7 +55,6 @@
             <span class="verticleLine"></span>
             <span class="lh">{{ item.name }}</span>
           </div>
-          <!-- <div class="detail">{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}</div> -->
           <div class="detail" v-html="changeHtml(item.val)"></div>
           <div class="action" @click="showAllAction(index)">展开全部</div>
         </div>
@@ -64,7 +63,6 @@
             <span class="verticleLine"></span>
             <span class="lh">{{ item.name }}</span>
           </div>
-          <!-- <div class="detail">{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}{{ item.val }}</div> -->
           <div class="detail" style v-html="changeHtml(item.val)"></div>
         </div>
       </div>
