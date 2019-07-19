@@ -28,6 +28,7 @@
         <use xlink:href="#icon-next-line"></use>
       </svg>
     </div>
+    <EazyNav type="order"></EazyNav>
   </div>
 </template>
 

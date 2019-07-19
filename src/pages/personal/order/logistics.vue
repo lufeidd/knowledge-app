@@ -31,6 +31,7 @@
         </van-step> -->
       </van-steps>
     </div>
+    <EazyNav type="order"></EazyNav>
   </div>
 </template>
 

@@ -51,7 +51,7 @@
               <span class="button button1" @click="cancel(item)" v-if="item.state == 1">取消订单</span>
               <span class="button button2" @click="toPay(item)" v-if="item.state == 1">去支付</span>
               <span
-                class="button button1"
+                class="button button2"
                 @click="toComment(item,index)"
                 v-if="item.state == 4&&item.if_comment == 0"
               >评价</span>
@@ -60,8 +60,8 @@
                 @click="buyAgain"
                 v-if="item.state == 4||item.state==7"
               >再次购买</span>
-              <span class="button button2" @click="confirmReceive(item)" v-if="item.state == 3">确认收货</span>
-              <span class="button button1" @click="tologistics(item)" v-if="item.state == 2">查看物流</span>
+              <span class="button button2" @click="confirmReceive(item)" v-if="item.state == 3||item.state == 5">确认收货</span>
+              <span class="button button1" @click="tologistics(item)" v-if="item.state == 2||item.state == 5">查看物流</span>
             </div>
           </div>
         </div>
@@ -98,7 +98,7 @@
           </div>
           <div>
             <span
-              class="button button1"
+              class="button button2"
               @click="toComment(item,index)"
               v-if="item.if_comment == 0"
             >评价</span>
@@ -122,8 +122,8 @@
 import { USER_ORDER_DETAIL_GETS } from "../../../apis/user.js";
 import {
   ORDER_RECEIVE,
-  ORDER_REFUN_CANCEL,
-  CART_ADD
+  ORDER_CANCEL,
+  CART_ADD,ORDER_AGAIN
 } from "../../../apis/shopping.js";
 export default {
   // components: {
@@ -312,7 +312,7 @@ export default {
         order_id: order_id
       };
       data.sign = this.$getSign(data);
-      let res = await ORDER_REFUN_CANCEL(data);
+      let res = await ORDER_CANCEL(data);
 
       if (res.hasOwnProperty("response_code")) {
         // this.page = 1;
@@ -329,7 +329,7 @@ export default {
     toPay(item) {
       this.$router.push({
         name: "pay",
-        query: { pay_id: item.pay_id, money: item.order_money }
+        query: { pay_id: item.pay_id,}
       });
     },
     //再次购买

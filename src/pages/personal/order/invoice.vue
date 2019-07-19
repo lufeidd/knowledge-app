@@ -80,7 +80,7 @@
       <van-button type="danger" size="large" @click="submitAction">提交</van-button>
 
     </div>
-    <easyNav :navData="navData"></easyNav>
+    <EazyNav type="order"></EazyNav>
     <van-actionsheet
       v-model="invoiceModle"
       :actions="invoiceActions"
@@ -105,24 +105,24 @@
 
 
 <script>
-import easyNav from "./../../../components/easyNav";
+// import easyNav from "./../../../components/easyNav";
 import { USER_ORDER_INVOICE_ADD } from "../../../apis/user.js";
 export default {
-  components: {
-    easyNav
-  },
+  // components: {
+  //   easyNav
+  // },
   data() {
     return {
-      navData: {
-        fold: false,
-        home: true,
-        homeLink: "/brand/index",
-        search: false,
-        // searchLink: "/search",
-        personal: true,
-        personalLink: "/personal/index",
-        type: "brand"
-      },
+      // navData: {
+      //   fold: false,
+      //   home: true,
+      //   homeLink: "/brand/index",
+      //   search: false,
+      //   // searchLink: "/search",
+      //   personal: true,
+      //   personalLink: "/personal/index",
+      //   type: "brand"
+      // },
       username: "",
       type: 1,
       invoiceData: {

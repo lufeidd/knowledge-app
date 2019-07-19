@@ -15,7 +15,7 @@
         </svg>微信支付
       </van-button>
     </div>
-    
+
     <EazyNav type="order"></EazyNav>
   </div>
 </template>
@@ -40,7 +40,7 @@ export default {
   },
   mounted() {
     this.pay_id = parseInt(this.$route.query.pay_id);
-    this.money = this.$route.query.money;
+    // this.money = this.$route.query.money;
     // 新增订单
     this.addOrderData();
   },
@@ -61,6 +61,7 @@ export default {
       let res = await ORDER_PHYSICAL_PAYINFO(data);
       if (res.hasOwnProperty("response_code")) {
         this.timeData.time = res.response_data.payinfo.end_paytime;
+        this.money = res.response_data.payinfo.amount;
         // 倒计时
         this.$timeCountDown(this.timeData);
       } else {

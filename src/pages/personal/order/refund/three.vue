@@ -56,15 +56,16 @@
           <van-cell
             :title="item"
             clickable
-            @click="radio = index"
+            @click="radio_check(item,index)"
             v-for="(item,index) in reasonList"
             :key="index"
           >
-            <van-radio :name="index" @click="radio_check(item)" checked-color="#ff504e" />
+            <van-radio :name="index" @click="radio_check(item,index)" checked-color="#ff504e" />
           </van-cell>
         </van-cell-group>
       </van-radio-group>
     </van-popup>
+    <EazyNav type="order"></EazyNav>
   </div>
 </template>
 
@@ -85,10 +86,11 @@ export default {
         text: "上传凭证(最多三张)"
       },
       show: false,
-      radio: "",
+      radio: null,
       reasonList: [],
       order_id:null,
       detail_id: null,
+      refund_type:3,
       refund_reason: "",
       refund_desc: "",
       real_refund_money:null,
@@ -122,11 +124,13 @@ export default {
       }
     },
     refundmoney(){
-      if(Number(this.refundInfo.goods_price*this.refundInfo.buy_count) > Number(this.refundInfo.max_price)){
+      if(Number(this.real_refund_money) > Number(this.refundInfo.max_price)){
+        this.$toast('超出最大退款金额！')
         this.real_refund_money = this.refundInfo.max_price;
       }
     },
-    radio_check(item) {
+    radio_check(item,index) {
+      this.radio = index;
       this.refund_reason = item;
     },
     // 获取上传图片路径
@@ -193,7 +197,7 @@ export default {
           timestamp: tStamp,
           order_id: this.order_id,
           detail_id: this.detail_id,
-          refund_type: this.refundInfo.refund_type,
+          refund_type: this.refund_type,
           refund_money: this.real_refund_money,
           refund_count: this.refundInfo.buy_count,
           refund_reason:this.refund_reason,
@@ -245,7 +249,7 @@ export default {
           version: "1.0",
           timestamp: tStamp,
           apply_id:this.apply_id,
-          refund_type: this.refundInfo.refund_type,
+          refund_type: this.refund_type,
           refund_money: this.refundInfo.goods_price*this.refundInfo.buy_count,
           refund_count: this.refundInfo.buy_count,
           refund_reason:this.refund_reason,

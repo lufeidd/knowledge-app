@@ -37,6 +37,7 @@
         @confirm="onConfirm"
       />
     </van-popup>
+    <EazyNav type="order"></EazyNav>
   </div>
 </template>
 

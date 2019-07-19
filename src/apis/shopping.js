@@ -27,10 +27,10 @@ export const ORDER_REFUND_ADDINFO = query => req('post', '/shopping/order/refund
 export const ORDER_REFUND_LOG_GETS = query => req('post', '/shopping/order/refund/log/gets', query);
 
 //撤销退款申请
-export const ORDER_REFUND_CANCLE = query => req('post', '/shopping/order/refund/cancle', query);
+export const ORDER_REFUND_CANCEL = query => req('post', '/shopping/order/refund/cancel', query);
 
 //填写退款物流信息
-export const ORDER_REFUND_DISPATCH_EDIT = query => req('post', '/shopping/order/dispatch/edit', query);
+export const ORDER_REFUND_DISPATCH_EDIT = query => req('post', '/shopping/order/refund/dispatch/edit', query);
 
 //订单物流信息查询
 export const ORDER_EXPRESS_GET = query => req('post', '/shopping/order/express/get', query);
@@ -68,4 +68,7 @@ export const ORDER_PHYSICAL_PAYINFO = query => req('post', '/shopping/order/phys
 export const ORDER_REFUN_GET = query => req('post', '/shopping/order/refund/get', query);
 
 //取消订单
-export const ORDER_REFUN_CANCEL = query => req('post', '/shopping/order/cancel', query);
+export const ORDER_CANCEL = query => req('post', '/shopping/order/cancel', query);
+
+//订单再次购买
+export const ORDER_AGAIN = query => req('post', '/shopping/order/again', query);

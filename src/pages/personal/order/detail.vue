@@ -5,7 +5,9 @@
         <use xlink:href="#icon-checked-right" />
       </svg> 订单已完成
     </div>
-    <div class="state" v-else>{{infoData.state_desc}}</div>
+    <div class="state" v-else>
+      {{infoData.state == 7? '交易取消':infoData.state_desc}}
+    </div>
     <div v-if="infoData.type == 2">
       <div class="signfor" @click="tologistics" v-if="infoData.state > 2 && infoData.state !== 7">
         <svg class="icon car" aria-hidden="true">
@@ -63,17 +65,17 @@
           </div>
           <span
             class="button button3 applyrefund"
-            @click="torefund(item)"
+            @click.stop="torefund(item)"
             v-if="infoData.type == 2 && item.if_refund == 1"
           >申请售后</span>
           <span
             class="button button3 applyrefund"
-            @click="toOngoing(item)"
+            @click.stop="toOngoing(item)"
             v-if="infoData.type == 2 && item.if_refund == 2"
           >已申请</span>
           <span
             class="applyrefund text"
-            v-if="infoData.type == 2 && item.if_refund == 0 && (infoData.state==2||infoData.state==3)"
+            v-if="infoData.type == 2 && item.if_refund == 0 && infoData.state==4"
           >该订单售后已过期，请找卖家协商</span>
         </div>
       </div>
@@ -162,21 +164,22 @@
       <!-- 实物商品 -->
       <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-else>
         <div>
-          <span class="button button3" @click="apply" v-if="showInvoice && infoData.state == 4">申请发票</span>
+          <span class="button button3" @click="apply" v-if="showInvoice && infoData.state == 4 && if_refund">申请发票</span>
         </div>
         <div style="padding-right:15px;">
           <span
             class="button button2"
             @click="toComment"
-            v-if="infoData.if_comment == 0 && infoData.state == 4"
+            v-if="infoData.if_comment == 0 && infoData.state == 4 "
           >评价</span>
           <span
             class="button button3"
             @click="repurchase"
             v-if="infoData.state == 4 || infoData.state == 7"
           >再次购买</span>
-          <span class="button button2" @click="confirmReceive" v-if="infoData.state == 3">确认收货</span>
-          <span class="button button3" @click="tologistics" v-if="infoData.state == 2">查看物流</span>
+          <span class="button button2" @click="confirmReceive" v-if="infoData.state == 3||infoData.state == 5">确认收货</span>
+          <span class="button button3" @click="tologistics" v-if="infoData.state == 2||infoData.state == 5">查看物流</span>
+          <span class="button button3" @click="cancel" v-if="infoData.state == 1">取消订单</span>
           <span class="button button2" @click="toPaid" v-if="infoData.state == 1">去支付</span>
         </div>
       </div>
@@ -193,7 +196,7 @@
 //调用cilpboard
 import Clipboard from "clipboard";
 import { USER_ORDER_DETAIL_GET } from "../../../apis/user.js";
-import { ORDER_EXPRESS_GET, ORDER_RECEIVE } from "../../../apis/shopping.js";
+import { ORDER_EXPRESS_GET,ORDER_RECEIVE,ORDER_CANCEL,ORDER_AGAIN } from "../../../apis/shopping.js";
 
 export default {
   // components: {
@@ -221,7 +224,9 @@ export default {
       infoData: {},
       order_id: null,
       invoice: {},
-      showInvoice: false
+      showInvoice: false,
+      if_refund:true,
+      detail_ids:null,
     };
   },
   mounted() {
@@ -229,6 +234,7 @@ export default {
     this.showInvoice =
       parseInt(this.$route.query.invoice_id) == 0 ? true : false;
     this.getData();
+    // this.getAgainData();
   },
   computed: {
     discount: function() {
@@ -241,7 +247,7 @@ export default {
     toPaid() {
       this.$router.push({
         name: "pay",
-        query: { pay_id: this.infoData.pay_id, money: this.infoData.pay_money }
+        query: { pay_id: this.infoData.pay_id, }
       });
     },
     copy() {
@@ -270,7 +276,11 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.infoData = res.response_data;
         this.invoice = res.response_data.invoice_info;
-
+        for(let i=0;i<this.infoData.detail.length;i++){
+          if(this.infoData.detail[i].if_refund==2){
+            this.if_refund = false;
+          }
+        }
         // if (Object.keys(res.response_data.invoice_info).length > 0)
         // this.showInvoice = true;
         // this.articleInfo = res.response_data.brand_info;
@@ -278,8 +288,28 @@ export default {
         this.$toast(res.error_message);
       }
     },
+    //获取再次购买信息
+    async getAgainData() {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        order_id: this.order_id,
+        version: "1.0",
+        timestamp: tStamp
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_AGAIN(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.detail_ids = res.response_data.detail_ids;
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
     //再次购买
-    repurchase() {},
+    repurchase() {
+      this.getAgainData();
+      this.$router.push({name:"cart"})
+    },
     //申请发票
     apply() {
       this.$router.push({
@@ -300,6 +330,7 @@ export default {
       });
     },
     goodsDetail(item) {
+      // console.log(item);return
       // 音频/视频
       if (item.goods_type == 1 || item.goods_type == 2) {
         this.$router.push({
@@ -330,6 +361,16 @@ export default {
           }
         });
       }
+      // 实物商品
+      if (item.goods_type == 3) {
+        this.$router.push({
+          name: "detail",
+          query: {
+            goods_id: item.goods_id,
+            pid: null
+          }
+        });
+      }
     },
     //评价
     toComment() {
@@ -344,7 +385,7 @@ export default {
     // 选择退款类型
     torefund(item) {
       console.log(item);
-      if (this.infoData.state == 5) {
+      if (this.infoData.state == 5||this.infoData.state == 4) {
         this.$router.push({
           name: "refundtype",
           query: {
@@ -379,6 +420,37 @@ export default {
           order_id: this.infoData.order_id
         }
       });
+    },
+    //取消订单
+    cancel() {
+      this.$dialog
+        .confirm({
+          message: "确认取消订单？"
+        })
+        .then(() => {
+          this.cancelOrder(this.infoData.order_id);
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
+    async cancelOrder(order_id) {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+        order_id: order_id
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_CANCEL(data);
+
+      if (res.hasOwnProperty("response_code")) {
+
+        this.$toast("已取消订单！");
+        location.reload();
+      } else {
+        this.$toast(res.error_message);
+      }
     },
     //确认收货
     confirmReceive(item) {
