@@ -57,7 +57,7 @@
               >评价</span>
               <span
                 class="button button1"
-                @click="buyAgain"
+                @click="buyAgain(item)"
                 v-if="item.state == 4||item.state==7"
               >再次购买</span>
               <span class="button button2" @click="confirmReceive(item)" v-if="item.state == 3||item.state == 5">确认收货</span>
@@ -332,8 +332,28 @@ export default {
         query: { pay_id: item.pay_id,}
       });
     },
+    //获取再次购买信息
+    async getAgainData(order_id) {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        order_id: order_id,
+        version: "1.0",
+        timestamp: tStamp
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_AGAIN(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.detail_ids = res.response_data.detail_ids;
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
     //再次购买
-    buyAgain() {}
+    buyAgain(item) {
+      this.getAgainData(item.order_id);
+      this.$router.push({name:"cart"})
+    },
   }
 };
 </script>
