@@ -312,37 +312,65 @@ export default new Router({
     {
       path: '/personal/order/edit',
       name: 'refundedit',
-      component: refundedit
+      component: refundedit,
+      meta: {
+        title: '填写物流信息',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/order/logistics',
       name: 'logistics',
-      component: logistics
+      component: logistics,
+      meta: {
+        title: '订单跟踪',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/order/ongoing',
       name: 'ongoing',
-      component: ongoing
+      component: ongoing,
+      meta: {
+        title: '退款',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/order/type',
       name: 'refundtype',
-      component: refundtype
+      component: refundtype,
+      meta: {
+        title: '选择服务类型',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/order/refund/one',
       name: 'refundone',
-      component: refundone
+      component: refundone,
+      meta: {
+        title: '退款',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/order/refund/two',
       name: 'refundtwo',
-      component: refundtwo
+      component: refundtwo,
+      meta: {
+        title: '仅退款',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/order/refund/three',
       name: 'refundthree',
-      component: refundthree
+      component: refundthree,
+      meta: {
+        title: '退款退货',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     // 个人中心 - 设置
     {

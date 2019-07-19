@@ -28,12 +28,14 @@
       </div>
     </div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
-    <div class="foot bottomBox" :class="{iphx:this.isIphx}">
+    <div style="height: 60px;"></div>
+    <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-if="refund_state<3">
       <span class="button" @click="edit_refund" v-if="refund_state == 0 || refund_state == 1">修改申请</span>
       <span class="button" @click="write_logistics" v-if="refund_state == 1">填写物流信息</span>
       <span class="button" @click="re_refund" v-if="refund_state == 2">重新申请</span>
       <span class="button" @click="cancle_refund" v-if="refund_state == 0 || refund_state == 1">撤销申请</span>
     </div>
+    <EazyNav type="order"></EazyNav>
   </div>
 </template>
 
@@ -42,7 +44,7 @@
 <script>
 import {
   ORDER_REFUND_LOG_GETS,
-  ORDER_REFUND_CANCLE,ORDER_REFUN_GET
+  ORDER_REFUND_CANCEL,ORDER_REFUN_GET
 } from "../../../apis/shopping.js";
 export default {
   data() {
@@ -113,9 +115,10 @@ export default {
         version: "1.0",
         timestamp: tStamp,
         apply_id:this.apply_id,
+        // order_id:this.order_id,
       };
       data.sign = this.$getSign(data);
-      let res = await ORDER_REFUND_CANCLE(data);
+      let res = await ORDER_REFUND_CANCEL(data);
       if (res.hasOwnProperty("response_code")) {
         this.$toast('撤销申请成功！');
         location.reload();

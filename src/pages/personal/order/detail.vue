@@ -2,7 +2,7 @@
   <div id="detailPage">
     <div class="state" v-if="infoData.state == 6||infoData.state==4">
       <svg class="icon" aria-hidden="true">
-        <use xlink:href="#icon-checked-right"></use>
+        <use xlink:href="#icon-checked-right" />
       </svg> 订单已完成
     </div>
     <div class="state" v-else>
@@ -11,19 +11,19 @@
     <div v-if="infoData.type == 2">
       <div class="signfor" @click="tologistics" v-if="infoData.state > 2 && infoData.state !== 7">
         <svg class="icon car" aria-hidden="true">
-          <use xlink:href="#icon-interflow-line"></use>
+          <use xlink:href="#icon-interflow-line" />
         </svg>
         <div class="signforFrom">
           <span class="signforPeople">{{infoData.express_info.desc}}</span>
           <span class="signDate">{{infoData.express_info.time}}</span>
         </div>
         <svg class="icon arrow" aria-hidden="true">
-          <use xlink:href="#icon-next-line"></use>
+          <use xlink:href="#icon-next-line" />
         </svg>
       </div>
       <div class="signfor">
         <svg class="icon car" aria-hidden="true">
-          <use xlink:href="#icon-location-line"></use>
+          <use xlink:href="#icon-location-line" />
         </svg>
         <div class="signforFrom">
           <div class="personalInfo">
@@ -58,28 +58,40 @@
           </div>
           <div class="rightInfo">
             <span class="title">{{item.goods_name}}</span>
-            <span class="title red">￥{{item.real_price}}</span>
+            <span class="title red">
+              ￥{{item.real_price}}
+              <span class="count" style="color: #999;margin-left: 5px;">×{{item.buy_count}}</span>
+            </span>
           </div>
-          <span class="button button3 applyrefund" @click="torefund(item)" v-if="infoData.type == 2 && item.if_refund == 1">申请售后</span>
-          <span class="button button3 applyrefund" @click="toOngoing(item)" v-if="infoData.type == 2 && item.if_refund == 2">已申请</span>
-          <span class="applyrefund text" v-if="infoData.type == 2 && item.if_refund == 0 && (infoData.state==2||infoData.state==3)">该订单售后已过期，请找卖家协商</span>
+          <span
+            class="button button3 applyrefund"
+            @click.stop="torefund(item)"
+            v-if="infoData.type == 2 && item.if_refund == 1"
+          >申请售后</span>
+          <span
+            class="button button3 applyrefund"
+            @click.stop="toOngoing(item)"
+            v-if="infoData.type == 2 && item.if_refund == 2"
+          >已申请</span>
+          <span
+            class="applyrefund text"
+            v-if="infoData.type == 2 && item.if_refund == 0 && infoData.state==4"
+          >该订单售后已过期，请找卖家协商</span>
         </div>
       </div>
     </div>
     <div class="priceInfo">
       <div class="first">
-        <van-cell v-if="infoData.order_money" title="商品总额" v-model="'¥'+infoData.order_money"/>
+        <van-cell v-if="infoData.order_money" title="商品总额" v-model="'¥'+infoData.order_money" />
       </div>
-      <van-cell
-        v-if="infoData.dispatch_price"
-        title="运费"
-        v-model="'¥'+infoData.dispatch_price"
-      />
+      <van-cell v-if="infoData.dispatch_price" title="运费" v-model="'¥'+infoData.dispatch_price" />
       <!-- <van-cell title="商品优惠" v-model="discount"/> -->
       <!-- <van-cell title="余额" v-model="'-¥'+priceInfo.remain.toFixed(2)"/> -->
       <p class="acturalPay" style="margin-top:10px;">
         {{(infoData.state == 1||infoData.state ==7) ? '待支付':'实付款'}}
-        <span v-if="infoData.pay_money">¥{{infoData.pay_money}}</span>
+        <span
+          v-if="infoData.pay_money"
+        >¥{{infoData.pay_money}}</span>
       </p>
     </div>
     <!-- 发票 -->
@@ -113,7 +125,7 @@
     </div>
     <div class="fictitious" v-if="infoData.state !==1 || infoData.state !== 7">
       <div class="text">
-        <van-cell :title="infoData.type==1?'虚拟商品(不退不换)':'实物商品'"/>
+        <van-cell :title="infoData.type==1?'虚拟商品(不退不换)':'实物商品'" />
       </div>
       <div class="orderNumber">
         <span class="order">订单编号</span>
@@ -123,13 +135,17 @@
         <span class="number">{{infoData.order_id}}</span>
       </div>
       <div class="orderInfo">
-        <van-cell title="下单时间" v-model="infoData.order_time"/>
+        <van-cell title="下单时间" v-model="infoData.order_time" />
         <van-cell
           title="支付方式"
           v-if="infoData.pay_info && infoData.pay_info.length > 0"
           v-model="infoData.pay_info[0].pay_bank"
         />
-        <van-cell v-if="(infoData.state !== 1 || infoData.state !== 7)&&infoData.pay_time" title="支付时间" v-model="infoData.pay_time"/>
+        <van-cell
+          v-if="(infoData.state !== 1 || infoData.state !== 7)&&infoData.pay_time"
+          title="支付时间"
+          v-model="infoData.pay_time"
+        />
       </div>
     </div>
 
@@ -142,19 +158,27 @@
           <span class="button button3" @click="apply" v-if="showInvoice">申请发票</span>
         </div>
         <div style="padding-right:15px;">
-          <span class="button button3" @click="toComment" v-if="infoData.if_comment == 0 ">评价</span>
+          <span class="button button2" @click="toComment" v-if="infoData.if_comment == 0 ">评价</span>
         </div>
       </div>
       <!-- 实物商品 -->
       <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-else>
         <div>
-          <span class="button button3" @click="apply" v-if="showInvoice && infoData.state == 4">申请发票</span>
+          <span class="button button3" @click="apply" v-if="showInvoice && infoData.state == 4 && if_refund">申请发票</span>
         </div>
         <div style="padding-right:15px;">
-          <span class="button button3" @click="toComment" v-if="infoData.if_comment == 0 && infoData.state == 4">评价</span>
-          <span class="button button3" @click="repurchase" v-if="infoData.state !== 1 ">再次购买</span>
-          <span class="button button2" @click="confirmReceive" v-if="infoData.state == 3||infoData.state == 4">确认收货</span>
-          <span class="button button3" @click="tologistics" v-if="infoData.state == 5">查看物流</span>
+          <span
+            class="button button2"
+            @click="toComment"
+            v-if="infoData.if_comment == 0 && infoData.state == 4 "
+          >评价</span>
+          <span
+            class="button button3"
+            @click="repurchase"
+            v-if="infoData.state == 4 || infoData.state == 7"
+          >再次购买</span>
+          <span class="button button2" @click="confirmReceive" v-if="infoData.state == 3||infoData.state == 5">确认收货</span>
+          <span class="button button3" @click="tologistics" v-if="infoData.state == 2||infoData.state == 5">查看物流</span>
           <span class="button button3" @click="cancel" v-if="infoData.state == 1">取消订单</span>
           <span class="button button2" @click="toPaid" v-if="infoData.state == 1">去支付</span>
         </div>
@@ -163,7 +187,6 @@
 
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-
   </div>
 </template>
 
@@ -173,7 +196,7 @@
 //调用cilpboard
 import Clipboard from "clipboard";
 import { USER_ORDER_DETAIL_GET } from "../../../apis/user.js";
-import { ORDER_EXPRESS_GET,ORDER_RECEIVE,ORDER_REFUN_CANCEL } from "../../../apis/shopping.js";
+import { ORDER_EXPRESS_GET,ORDER_RECEIVE,ORDER_CANCEL,ORDER_AGAIN } from "../../../apis/shopping.js";
 
 export default {
   // components: {
@@ -181,7 +204,6 @@ export default {
   // },
   data() {
     return {
-
       // fictitious: {
       //   orderNumber: 1955655265521222,
       //   orderTime: "2019.4.17 19:15:22",
@@ -202,7 +224,9 @@ export default {
       infoData: {},
       order_id: null,
       invoice: {},
-      showInvoice: false
+      showInvoice: false,
+      if_refund:true,
+      detail_ids:null,
     };
   },
   mounted() {
@@ -210,6 +234,7 @@ export default {
     this.showInvoice =
       parseInt(this.$route.query.invoice_id) == 0 ? true : false;
     this.getData();
+    // this.getAgainData();
   },
   computed: {
     discount: function() {
@@ -219,8 +244,11 @@ export default {
   },
   methods: {
     // 去支付
-    toPaid () {
-      this.$router.push({ name: "pay", query: { pay_id: this.infoData.pay_id, money: this.infoData.pay_money } });
+    toPaid() {
+      this.$router.push({
+        name: "pay",
+        query: { pay_id: this.infoData.pay_id, }
+      });
     },
     copy() {
       const clipboard = new Clipboard(".copy");
@@ -248,7 +276,11 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.infoData = res.response_data;
         this.invoice = res.response_data.invoice_info;
-
+        for(let i=0;i<this.infoData.detail.length;i++){
+          if(this.infoData.detail[i].if_refund==2){
+            this.if_refund = false;
+          }
+        }
         // if (Object.keys(res.response_data.invoice_info).length > 0)
         // this.showInvoice = true;
         // this.articleInfo = res.response_data.brand_info;
@@ -256,8 +288,28 @@ export default {
         this.$toast(res.error_message);
       }
     },
+    //获取再次购买信息
+    async getAgainData() {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        order_id: this.order_id,
+        version: "1.0",
+        timestamp: tStamp
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_AGAIN(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.detail_ids = res.response_data.detail_ids;
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
     //再次购买
-    repurchase() {},
+    repurchase() {
+      this.getAgainData();
+      this.$router.push({name:"cart"})
+    },
     //申请发票
     apply() {
       this.$router.push({
@@ -278,6 +330,7 @@ export default {
       });
     },
     goodsDetail(item) {
+      // console.log(item);return
       // 音频/视频
       if (item.goods_type == 1 || item.goods_type == 2) {
         this.$router.push({
@@ -308,6 +361,16 @@ export default {
           }
         });
       }
+      // 实物商品
+      if (item.goods_type == 3) {
+        this.$router.push({
+          name: "detail",
+          query: {
+            goods_id: item.goods_id,
+            pid: null
+          }
+        });
+      }
     },
     //评价
     toComment() {
@@ -320,76 +383,48 @@ export default {
       });
     },
     // 选择退款类型
-    torefund(item){
+    torefund(item) {
       console.log(item);
-      if(this.infoData.state == 5){
+      if (this.infoData.state == 5||this.infoData.state == 4) {
         this.$router.push({
-          name:"refundtype",
-          query:{
-            order_id:this.infoData.order_id,
-            detail_id:item.id,
+          name: "refundtype",
+          query: {
+            order_id: this.infoData.order_id,
+            detail_id: item.id
           }
-        })
-      }else if(this.infoData.state == 2){
+        });
+      } else if (this.infoData.state == 2) {
         this.$router.push({
-          name:"refundone",
-          query:{
-            order_id:this.infoData.order_id,
-            detail_id:item.id,
+          name: "refundone",
+          query: {
+            order_id: this.infoData.order_id,
+            detail_id: item.id
           }
-        })
+        });
       }
     },
-    toOngoing(item){
+    toOngoing(item) {
       this.$router.push({
-        name:"ongoing",
-        query:{
-            order_id:this.infoData.order_id,
-            detail_id:item.id,
+        name: "ongoing",
+        query: {
+          order_id: this.infoData.order_id,
+          detail_id: item.id
         }
-      })
+      });
     },
     //查看物流信息
-    tologistics(){
+    tologistics() {
       this.$router.push({
-        name:"logistics",
-        query:{
-          order_id:this.infoData.order_id
+        name: "logistics",
+        query: {
+          order_id: this.infoData.order_id
         }
-      })
-    },
-    //确认收货
-    confirmReceive(item){
-      this.$dialog.confirm({
-          message: "确认收货？"
-        })
-        .then(() => {
-          this.orderReceive();
-        })
-        .catch(() => {
-          // on cancel
-        });
-    },
-    async orderReceive(){
-      var tStamp = this.$getTimeStamp();
-      var data = {
-        version: "1.0",
-        timestamp: tStamp,
-        order_id:this.infoData.order_id,
-      };
-      data.sign = this.$getSign(data);
-      let res = await ORDER_RECEIVE(data);
-
-      if (res.hasOwnProperty("response_code")) {
-        this.$toast('确认收货成功！');
-        location.reload();
-      } else {
-        this.$toast(res.error_message);
-      }
+      });
     },
     //取消订单
-    cancel(){
-      this.$dialog.confirm({
+    cancel() {
+      this.$dialog
+        .confirm({
           message: "确认取消订单？"
         })
         .then(() => {
@@ -399,23 +434,54 @@ export default {
           // on cancel
         });
     },
-    async cancelOrder(order_id){
+    async cancelOrder(order_id) {
       var tStamp = this.$getTimeStamp();
       var data = {
         version: "1.0",
         timestamp: tStamp,
-        order_id:order_id,
+        order_id: order_id
       };
       data.sign = this.$getSign(data);
-      let res = await ORDER_REFUN_CANCEL(data);
+      let res = await ORDER_CANCEL(data);
 
       if (res.hasOwnProperty("response_code")) {
-        this.$toast('已取消订单！');
+
+        this.$toast("已取消订单！");
         location.reload();
       } else {
         this.$toast(res.error_message);
       }
     },
+    //确认收货
+    confirmReceive(item) {
+      this.$dialog
+        .confirm({
+          message: "确认收货？"
+        })
+        .then(() => {
+          this.orderReceive();
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
+    async orderReceive() {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+        order_id: this.infoData.order_id
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_RECEIVE(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.$toast("确认收货成功！");
+        location.reload();
+      } else {
+        this.$toast(res.error_message);
+      }
+    }
   }
 };
 </script>

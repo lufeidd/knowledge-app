@@ -25,7 +25,12 @@
         </van-row>
         <div class="title">{{ baseData.title }}</div>
       </div>
-      <van-cell title="配送至 西湖区" is-link value="运费8元，满99包邮" @click="showPopup" />
+      <van-cell
+        :title="'配送至 ' + location_info.province+location_info.city"
+        is-link
+        :value="dispatch_str"
+        @click="showPopup"
+      />
 
       <!-- 出版信息 -->
       <div class="introduction">
@@ -69,7 +74,7 @@
       <van-popup v-model="popupModel" position="bottom" @open="onOpen">
         <div class="audioList">
           <!-- 地址列表 -->
-          <template v-if="!areaShow">
+          <template v-if="!areaShow && isLogin == 1 && addressData.length > 0">
             <div class="title">
               <div class="action" @click="hidePopup">
                 <svg class="icon" aria-hidden="true">
@@ -80,10 +85,10 @@
             </div>
             <ul class="audioListBox">
               <li
-                v-for="(item, key) in audioListData.albums"
+                v-for="(item, key) in addressData"
                 :key="key"
                 :class="{ active: activeIndex == key }"
-                @click="onChoose(key)"
+                @click="onChoose(key, item)"
               >
                 <div class="img">
                   <svg class="icon" aria-hidden="true">
@@ -92,7 +97,9 @@
                 </div>
 
                 <div class="info">
-                  <div class="album">dfgdf</div>
+                  <div
+                    class="album"
+                  >{{ item.province }}{{ item.city }}{{ item.county }}{{ item.address }}</div>
                 </div>
               </li>
             </ul>
@@ -118,17 +125,30 @@
 </template>
 
 <style src="@/style/scss/pages/detail.scss" scoped lang="scss"></style>
-<style>
+<style lang="scss">
 @import url("./../style/scss/components/dateTimePicker.scss");
+#detailPage {
+  .van-cell__title, .van-cell__value {
+    @include textOverflow;
+    flex: auto;
+    -webkit-box-flex: 0;
+  }
+  .van-cell__value {
+    flex-shrink: 0;
+  }
+}
 </style>
 
 <script>
 //  引入接口
 import { ALBUM } from "../apis/album.js";
+import { USER_ADDRESS_LIST } from "../apis/user.js";
 import { CART_ADD, ORDER_PHYSICAL_ADDINFO } from "../apis/shopping.js";
 export default {
   data() {
     return {
+      addressData: [],
+      finished: false,
       isLoading: true,
       detail: {
         goods_id: null,
@@ -165,28 +185,6 @@ export default {
       },
 
       activeIndex: 1,
-      audioListData: {
-        albums: [
-          {
-            album:
-              "试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对",
-            duration: "16：00",
-            percent: "1%"
-          },
-          {
-            album:
-              "试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对",
-            duration: "16：00",
-            percent: "1%"
-          },
-          {
-            album:
-              "试听课 钙铁锌硒怎么吃 ？ 吃什么才对 试听课 钙铁锌硒怎么吃 ？ 吃什么才对",
-            duration: "16：00",
-            percent: "1%"
-          }
-        ]
-      },
       popupModel: false
     };
   },
@@ -197,8 +195,38 @@ export default {
     this.$getAddressData();
     // 当前页接口信息
     this.albumData();
+    this.getAddressData();
   },
   methods: {
+    // 获取我的收货地址信息
+    async getAddressData() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await USER_ADDRESS_LIST(data);
+      if (res.hasOwnProperty("response_code")) {
+        // store 设置登录状态
+        this.$store.commit("changeLoginState", 1);
+        localStorage.setItem("loginState", 1);
+
+        this.addressData = [];
+        for (let i = 0; i < res.response_data.length; i++) {
+          this.addressData.push(res.response_data[i]);
+        }
+        this.finished = true;
+      } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          // store 设置登录状态
+          this.$store.commit("changeLoginState", 100);
+          localStorage.setItem("loginState", 100);
+        }
+        this.$toast(res.error_message);
+      }
+      // console.log(res);
+    },
     // 加入购物车
     async toCartData() {
       var tStamp = this.$getTimeStamp();
@@ -242,6 +270,10 @@ export default {
       let res = await ALBUM(data);
 
       if (res.hasOwnProperty("response_code")) {
+        // 邮费信息
+        this.dispatch_str = res.response_data.dispatch_str;
+        // 地址
+        this.location_info = res.response_data.location_info;
         this.isLoading = false;
         //专辑基础信息
         this.baseData = res.response_data.base;
@@ -283,9 +315,13 @@ export default {
     showArea() {
       this.areaShow = true;
     },
-    onChoose(key) {
-      // console.log(key);
+    // 配送至
+    onChoose(key, item) {
+      console.log(111, item);
       this.activeIndex = key;
+      this.location_info.province = item.province;
+      this.location_info.city = item.city;
+      this.popupModel = false;
     },
     onOpen() {
       // alert(999);
@@ -298,9 +334,12 @@ export default {
       this.areaShow = false;
     },
     // 确认
-    onConfirm() {
+    onConfirm(values) {
       this.popupModel = false;
       this.areaShow = false;
+      console.log(888, values);
+      this.location_info.province = values[0].name;
+      this.location_info.city = values[1].name;
     },
     // 购物车
     toCart() {

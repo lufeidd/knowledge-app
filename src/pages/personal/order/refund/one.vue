@@ -54,15 +54,16 @@
           <van-cell
             :title="item"
             clickable
-            @click="radio = index"
             v-for="(item,index) in reasonList"
             :key="index"
+            @click="radio_check(item,index)"
           >
-            <van-radio :name="index" @click="radio_check(item)" checked-color="#ff504e"/>
+            <van-radio :name="index" @click="radio_check(item,index)" checked-color="#ff504e"/>
           </van-cell>
         </van-cell-group>
       </van-radio-group>
     </van-popup>
+    <EazyNav type="order"></EazyNav>
   </div>
 </template>
 
@@ -83,7 +84,7 @@ export default {
         text: "上传凭证(最多三张)"
       },
       show: false,
-      radio: "",
+      radio:null,
       reasonList: [],
       order_id:null,
       detail_id: null,
@@ -124,7 +125,8 @@ export default {
         this.real_refund_money = this.refund_money;
       }
     },
-    radio_check(item) {
+    radio_check(item,index) {
+      this.radio = index;
       this.refund_reason = item;
     },
     // 获取上传图片路径
