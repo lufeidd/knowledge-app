@@ -10,25 +10,27 @@
         <span class="typeRefund"></span>
       </div>
       <span class="choose">
-        请选择退款原因
+        <span v-if="!refund_reason">请选择退款原因</span>
         <svg class="icon arrow" aria-hidden="true">
           <use xlink:href="#icon-next-line"></use>
         </svg>
       </span>
     </div>
     <div class="cell">
-      <span>商品数量:</span>
+      <span>商品数量：</span>
       <span class="typeRefund">{{refundInfo.buy_count}}</span>
     </div>
     <div class="cell reason">
       <div>
-        <span>退款金额:</span>
-        <span class="money">{{refundInfo.max_price}}元</span>
+
+        <span>退款金额：</span>
+        <span class="money">{{ refundInfo.max_price }}元</span>
+
       </div>
       <span class="choose" v-if="refundInfo.dispatch_price">（包含运费：{{refundInfo.dispatch_price}}元）</span>
     </div>
     <div class="cell explain">
-      <span>退款说明:</span>
+      <span>退款说明：</span>
       <textarea @input="inputChange" v-model="refund_desc" placeholder="字数不得超过500"></textarea>
     </div>
     <!-- 字数限制 -->

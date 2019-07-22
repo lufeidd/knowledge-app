@@ -424,3 +424,28 @@ img {
 .van-stepper__plus--disabled:before {
   background-color: #666;
 }
+
+.disabled {
+  .van-button--disabled {
+    opacity: 1;
+  }
+  .van-button--warning {
+    background-color: #bfbfbf;
+    border-color: #bfbfbf;
+  }
+  .van-button--danger {
+    background-color: #b0b0b0;
+    border-color: #b0b0b0;
+  }
+  .none {
+    font-size: $fontSize;
+    color: $cl6;
+    background-color: rgba(221, 221, 221, .98);
+    position: fixed;
+    width: 100%;
+    line-height: 50px;
+    text-align: center;
+    left: 0;
+    bottom: 50px;
+  }
+}

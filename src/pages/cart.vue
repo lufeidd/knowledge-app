@@ -1,6 +1,6 @@
 <template>
   <div id="cartPage">
-    <div class="nullBox" v-if="!cartlist && !nouse_goods">
+    <div class="nullBox" v-if="!cartlist.length && !nouse_goods.length">
       <img src="./../assets/null/product.png" width="100%" />
       <div>购物车为空~</div>
     </div>

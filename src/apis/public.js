@@ -56,3 +56,5 @@ export const WX_SHARE_LOG = query => req('post', '/page/share/log', query);
 // 交易支付请求发起
 export const CASHIER_PAY_ADD = query => req('post', '/cashier/pay/assist/add', query);
 
+// 定位地址信息手动变更动作
+export const LOCATION_CHANGE = query => req('post', '/common/location/change', query);

@@ -6,11 +6,11 @@
     </div>
     <div class="cell reason" @click="choose()">
       <div>
-        <span>退款原因:{{refund_reason}}</span>
+        <span>退款原因：{{refund_reason}}</span>
         <span class="typeRefund"></span>
       </div>
       <span class="choose">
-        请选择退款原因
+        <span v-if="!refund_reason">请选择退款原因</span>
         <svg class="icon arrow" aria-hidden="true">
           <use xlink:href="#icon-next-line" />
         </svg>
@@ -31,7 +31,7 @@
     <div class="cell">
       <div class="reason">
         <div>
-          <span>退款金额:</span>
+          <span>退款金额：</span>
           <span class="most">
             最多
             <span class="money">{{refundInfo.max_price}}元</span>
@@ -42,7 +42,7 @@
       <input type="text" v-model="real_refund_money" @input="refundmoney" placeholder="请输入退款金额,例如5.00" />元
     </div>
     <div class="cell explain">
-      <span>退款说明:</span>
+      <span>退款说明：</span>
       <textarea @input="inputChange" v-model="refund_desc" placeholder="字数不得超过500"></textarea>
     </div>
     <!-- 字数限制 -->
