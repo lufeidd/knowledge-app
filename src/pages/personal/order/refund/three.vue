@@ -16,6 +16,18 @@
         </svg>
       </span>
     </div>
+    <div class="cell reason">
+      <div>
+        <span>商品数量:</span>
+      </div>
+      <van-stepper
+        v-model="refund_count"
+        disable-input
+        integer
+        :min="1"
+        :max="refundInfo.buy_count"
+      />
+    </div>
     <div class="cell">
       <div class="reason">
         <div>
@@ -93,6 +105,7 @@ export default {
       refund_type:3,
       refund_reason: "",
       refund_desc: "",
+      refund_count:null,
       real_refund_money:null,
       pic: "",
       explainTotal:500,
@@ -199,7 +212,7 @@ export default {
           detail_id: this.detail_id,
           refund_type: this.refund_type,
           refund_money: this.real_refund_money,
-          refund_count: this.refundInfo.buy_count,
+          refund_count: this.refund_count,
           refund_reason:this.refund_reason,
           refund_desc: this.refund_desc,
           pic:this.pic,
@@ -233,6 +246,7 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.refundInfo = res.response_data;
+        this.refund_count = res.response_data.buy_count;
         this.reasonList = res.response_data.reason_list.returngoods;
       } else {
         this.$toast(res.error_message);
@@ -283,6 +297,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.refund_reason = res.response_data.refund_reason;
         this.refund_desc = res.response_data.refund_desc;
+        this.refund_count = res.response_data.refund_count;
       } else {
         this.$toast(res.error_message);
       }
