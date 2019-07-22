@@ -22,8 +22,10 @@
     </div>
     <div class="cell reason">
       <div>
+
         <span>退款金额：</span>
         <span class="money">{{ refundInfo.max_price }}元</span>
+
       </div>
       <span class="choose" v-if="refundInfo.dispatch_price">（包含运费：{{refundInfo.dispatch_price}}元）</span>
     </div>

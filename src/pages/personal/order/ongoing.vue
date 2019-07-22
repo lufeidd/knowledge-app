@@ -84,8 +84,8 @@ export default {
         this.infoData = res.response_data;
         this.refund_state =
           res.response_data[res.response_data.length - 1].refund_state;
-        this.apply_id = res.response_data[0].apply_id;
-        this.refund_type = res.response_data[0].refund_type;
+        this.apply_id = res.response_data[res.response_data.length - 1].apply_id;
+        this.refund_type = res.response_data[res.response_data.length - 1].refund_type;
 
         for(let i=0;i<this.infoData.length;i++){
           this.infoData[i].content = this.infoData[i].content.replace(/。/g,"。</br>");
