@@ -48,7 +48,7 @@
             <!-- 需要支付 但 不含试听 -->
             <div @click="gotoPlayer('external')" class="box layer" v-if="baseData.free_path == ''">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-videoPause-line" />
+                <use xlink:href="#icon-video-play" />
               </svg>
             </div>
             <div class="box">
