@@ -263,6 +263,8 @@
         }
 
         & .name {
+          float: left;
+          margin-right: 5px;
           max-width: 130px;
           position: relative;
           box-sizing: border-box;
@@ -283,6 +285,7 @@
         }
 
         & .count {
+          float: left;
           @include bgDecorate(transparent, $white, 20px, 0, null);
         }
       }

@@ -456,6 +456,9 @@ export default {
           if (dataTmp.params.goods_type == 9) { // 专辑
             __name = 'album';
           }
+          if (dataTmp.params.goods_type == 3) { // 图书
+            __name = 'detail';
+          }
           queryTmp.goods_id = parseInt(dataTmp.params.goods_id);
           if (dataTmp.params.album_id) queryTmp.album_id = parseInt(dataTmp.params.album_id);
 

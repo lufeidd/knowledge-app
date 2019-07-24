@@ -12,6 +12,10 @@
   box-sizing: border-box;
   background-color: $greyLight;
 
+  & .van-button {
+    border-radius: 0;
+  }
+
   & .foldBox {
     & .introduction {
       & .detail {
@@ -26,7 +30,7 @@
         width: 100%;
         height: 35px;
         left: 0;
-        top: 155px;
+        top: 160px;
         background-color: $white;
         border-top: 1px #eee solid;
       }

@@ -89,6 +89,10 @@
 #orderconfirmPage {
   background-color: $greyLight;
 
+  & .van-button {
+    border-radius: 0;
+  }
+
   & .listBox {
   background-color: $white;
     margin-bottom: 5px;

@@ -11,7 +11,7 @@
         <div class="from">
           <div class="articleInfo">
             <div class="ratiobox">
-              <a class="bookImg" v-lazy:background-image="articleInfo.header_pic"></a>
+              <router-link :to="{name: 'brand', query: {brand_id: articleInfo.brand_id}}" class="bookImg" v-lazy:background-image="articleInfo.header_pic"></router-link>
             </div>
             <div class="detail">
               <span>{{articleInfo.name}}</span>

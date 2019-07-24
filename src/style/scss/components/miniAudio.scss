@@ -21,7 +21,7 @@
     animation: rotateAnimate 10s linear infinite;
   }
 
-  @-webkit-keyframes rotateAnimate {
+  @keyframes rotateAnimate {
     0% {
       transform: rotate(0deg);
     }
@@ -35,38 +35,27 @@
     }
   }
 
-  & .audioList {
-    position: relative;
-    height: 94vh;
-    overflow: hidden;
-
-    & .title {
-      height: 44px;
-      line-height: 44px;
-      border-bottom: 1px #eee solid;
-      text-align: center;
-      position: relative;
-      @include displayFlex(flex, center, center);
-      @include font(null, $fontSize + 2, #999);
-
-      & .action {
-        @include position(absolute, "tl", 0, 0, 44px, 44px, null);
-
-        & .icon {
-          width: 20px;
-          height: 20px;
-        }
-      }
+  & .unaction {
+    display: block;
+  }
+  & .active {
+    & .action {
+      display: none;
     }
+    // & .unaction {
+    //   display: none;
+    // }
   }
 
   & .miniAudio {
     // opacity: 0;
-    z-index: 1;
-    @include bgDecorate(rgba(0, 0, 0, 0.6), $white, 50px, 0, none);
-    @include position(fixed, "bl", 60px, 6%, 88%, 50px, 50px);
+    @include bgDecorate(#fff, #000, 50px, 0, none);
+    @include position(fixed, "bl", 65px, 15px, auto, 50px, 50px);
     @include textOverflow;
     @include displayFlex(flex, flex-start, center);
+    text-align: center;
+    z-index: 1;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .15);
 
     & .ratioBox {
       width: 40px;
@@ -83,74 +72,33 @@
       }
     }
 
-    & .info {
-      @include textOverflow;
-      display: block;
-      width: 100%;
-      padding-left: 50px;
-      box-sizing: border-box;
-
-      & .album {
-        color: $white;
-        @include textOverflow;
-      }
-
-      & .program {
-        @include textOverflow;
-        font-size: $fontSize - 2;
-        color: #e6e6e6;
-
-        & .duration {
-          margin-right: 10px;
-        }
-      }
-
-      & .list {
-        @include textOverflow;
-      }
-    }
-
-    & .action {
-      @include displayFlex(flex, flex-end, center);
-      position: relative;
-      color: #e6e6e6;
-
-      & .category {
-        width: 20px;
-        height: 20px;
-        margin-right: 15px;
-      }
-
-      & .play {
-        font-size: 15px;
-        width: 30px;
-        height: 30px;
-        margin-right: 12px;
-        margin-left: 10px;
-        text-align: center;
-        line-height: 34px;
-        z-index: 1;
-      }
-
-      & .circle {
-        @include position(absolute, "br", 0, 12px, 30px, 30px, 0);
-        z-index: 0;
-      }
-    }
-
-    & .action.active::before {
-      content: "";
-      position: absolute;
-      width: 1px;
-      height: 30px;
+    & .icon {
+      width: 20px;
+      height: 20px;
       top: 0;
-      right: 55px;
-      background-color: #e6e6e6;
+    }
+
+    & .van-col {
+      border-left: 1px #bfbfbf solid;
+    }
+
+    & .play {
+      position: absolute;
+      left: 50%;
+      margin-left: -7px;
+      top: 50%;
+      margin-top: -8px;
+      z-index: 1;
+    }
+
+    & .van-circle {
+      display: block;
+      position: unset;
     }
   }
 
   & .miniAudio.patch {
-    bottom: 5px;
+    bottom: 65px;
   }
 
   .miniAudio.iphx {

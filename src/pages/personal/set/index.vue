@@ -179,6 +179,7 @@ export default {
         localStorage.setItem("audioProgress", null);
         localStorage.setItem("cmts", null);
         localStorage.setItem("fromLink", null);
+        localStorage.setItem("closeAudio", null);
         // localStorage.setItem('nickname', null);
         // localStorage.setItem('unionid', null);
 

@@ -426,6 +426,7 @@ export default {
     // 加入购物车
     addToCart() {
       this.toCartData();
+      this.shoppingcart_num++;
     },
     // 立即购买
     buyAction() {

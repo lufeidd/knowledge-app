@@ -93,7 +93,7 @@ export default {
   mounted() {
     this.title = this.$route.query.title ? this.$route.query.title : "";
     this.supplier_id = this.$route.query.supplier_id;
-    this.navData.supplier_id = this.supplier_id;
+    // this.navData.supplier_id = this.supplier_id;
     // title
     document.title = "商城-" + this.title;
     this.getData();

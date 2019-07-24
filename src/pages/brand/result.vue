@@ -12,7 +12,7 @@
       @load="programLoad"
       class="list"
     >
-      <div class="content" v-for="item,index in brandData" @click="gotoDetail(item)">
+      <div class="content" v-for="(item,index) in brandData" @click="gotoDetail(item)" :key="index">
         <div class="ratiobox">
           <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
         </div>
@@ -155,7 +155,14 @@ export default {
           name: "album",
           query: { goods_id: item.goods_id }
         });
+      } else if (goodsType == 3) {
+        // 图书
+        this.$router.push({
+          name: "detail",
+          query: { goods_id: item.goods_id }
+        });
       } else {
+        
       }
     },
     programLoad() {

@@ -22,7 +22,9 @@
               </div>
               <span class="publish">{{item.brand_name}}</span>
             </div>
-            <span :class="(item.state == 4 || item.state == 7) ? 'order2':'order1'">{{item.state_desc}}</span>
+            <span
+              :class="(item.state == 4 || item.state == 7) ? 'order2':'order1'"
+            >{{item.state_desc}}</span>
           </div>
           <div class="section">
             <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
@@ -60,8 +62,16 @@
                 @click="buyAgain(item)"
                 v-if="item.state == 4||item.state==7"
               >再次购买</span>
-              <span class="button button2" @click="confirmReceive(item)" v-if="item.state == 3||item.state == 5">确认收货</span>
-              <span class="button button1" @click="tologistics(item)" v-if="item.state == 2||item.state == 5">查看物流</span>
+              <span
+                class="button button2"
+                @click="confirmReceive(item)"
+                v-if="item.state == 3||item.state == 5"
+              >确认收货</span>
+              <span
+                class="button button1"
+                @click="tologistics(item)"
+                v-if="item.state == 2||item.state == 5"
+              >查看物流</span>
             </div>
           </div>
         </div>
@@ -123,7 +133,8 @@ import { USER_ORDER_DETAIL_GETS } from "../../../apis/user.js";
 import {
   ORDER_RECEIVE,
   ORDER_CANCEL,
-  CART_ADD,ORDER_AGAIN
+  CART_ADD,
+  ORDER_AGAIN
 } from "../../../apis/shopping.js";
 export default {
   // components: {
@@ -329,7 +340,7 @@ export default {
     toPay(item) {
       this.$router.push({
         name: "pay",
-        query: { pay_id: item.pay_id,}
+        query: { pay_id: item.pay_id }
       });
     },
     //获取再次购买信息
@@ -345,6 +356,7 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.detail_ids = res.response_data.detail_ids;
+        this.$router.push({ name: "cart" });
       } else {
         this.$toast(res.error_message);
       }
@@ -352,8 +364,7 @@ export default {
     //再次购买
     buyAgain(item) {
       this.getAgainData(item.order_id);
-      this.$router.push({name:"cart"})
-    },
+    }
   }
 };
 </script>
