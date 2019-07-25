@@ -86,8 +86,9 @@
                     integer
                     @plus="addCount(index, gIndex, gItem.detail_id)"
                     @minus="subCount(index, gIndex, gItem.detail_id)"
-                    @overlimit="onOverlimit(gItem.detail_id)"
+                    @overlimit="onOverlimit(gItem.count, gItem.detail_id)"
                     :min="1"
+                    :max="gItem.stores"
                   />
                 </div>
               </div>
@@ -177,7 +178,6 @@
       </div>
     </div>
     <EazyNav type="brand"></EazyNav>
-    
   </div>
 </template>
 <style src="@/style/scss/pages/cart.scss" scoped lang="scss"></style>
@@ -362,6 +362,10 @@ export default {
     // 结算
     onSubmit() {
       var detail_ids = this.getDetailIdsData();
+      if (detail_ids == "") {
+        this.$toast("请选择商品~");
+        return;
+      }
       this.$router.push({
         name: "orderconfirm",
         query: { detail_ids: detail_ids }
@@ -369,8 +373,12 @@ export default {
     },
     // 删除
     deleteAction() {
-      var detail_id = this.getDetailIdsData();
-      this.onDelete("删除", "是否确认删除？", detail_id);
+      var detail_ids = this.getDetailIdsData();
+      if (detail_ids == "") {
+        this.$toast("请选择商品~");
+        return;
+      }
+      this.onDelete("删除", "是否确认删除？", detail_ids);
     },
     // 获取 detail_ids
     getDetailIdsData() {
@@ -398,8 +406,12 @@ export default {
         });
     },
     // 购物车删除当前商品
-    onOverlimit(detail_id) {
-      this.onDelete("删除", "是否确认删除？", detail_id);
+    onOverlimit(count, detail_id) {
+      if(count == 1) {
+        this.onDelete("删除", "是否确认删除？", detail_id);
+      } else {
+        this.$toast('超出库存~');
+      }
     },
     // 计数 +
     addCount(cIndex, gIndex, detail_id) {

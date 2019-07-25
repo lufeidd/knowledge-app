@@ -84,8 +84,7 @@
     .head {
       line-height: 40px;
       border-bottom: 1px solid $greyLight;
-      padding-left: 15px;
-      padding-right: 15px;
+      padding: 10px 15px;
       @include displayFlex(flex, space-between, center);
 
       .titleFrom {

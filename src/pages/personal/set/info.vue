@@ -82,7 +82,6 @@
       <van-button size="large" @click="save">保存</van-button>
     </div>
     <EazyNav type="brand"></EazyNav>
-    
   </div>
 </template>
 
@@ -335,6 +334,11 @@ export default {
       if (!this.infoList.nickname) {
         this.$toast("请输入昵称~");
         return;
+      } else {
+        if (this.infoList.nickname.trim().length > 16) {
+          this.$toast("昵称最多16位~");
+          return;
+        }
       }
       if (!this.infoList.birthday) {
         this.$toast("请输入生日~");

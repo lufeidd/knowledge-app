@@ -73,10 +73,45 @@
 </template>
 
 <style lang="scss">
-@import url("./../../../style/scss/components/button.scss");
+// @import url("./../../../style/scss/components/button.scss");
 #phonePage {
   background-color: #fff;
   min-height: 100%;
+  .van-button {
+    border-radius: 50px;
+  }
+
+  .van-button::before {
+    display: none;
+  }
+
+  .van-button--plain.van-button--danger {
+    background-color: #fff;
+  }
+
+  .van-button--danger {
+    background-color: #f05654;
+    border-color: #f05654;
+  }
+
+  .van-button--danger.van-button--disabled {
+    background-color: #d6d6d6;
+    border-color: #d6d6d6;
+    opacity: 1;
+  }
+
+  .van-button--small {
+    min-width: 80px;
+  }
+
+  .van-button--large {
+    height: 50px;
+    line-height: 50px;
+  }
+
+  .van-button--default {
+    color: #333;
+  }
 
   .van-cell {
     border-bottom: 1px #d6d6d6 solid;

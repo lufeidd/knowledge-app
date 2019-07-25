@@ -593,6 +593,7 @@ export default new Router({
       component: cart,
       meta: {
         title: '购物车',
+        requireAuth: true,
       }
     },
     // 商品详情
@@ -609,7 +610,10 @@ export default new Router({
       meta: {
         title: '订单确认',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
-      }
+      },
+      beforeEnter: (to, from, next) => {
+        from.path == '/pay/index' ? next('/personal/index') : next();
+      },
     },
     // 订单商品确认
     {
@@ -619,7 +623,7 @@ export default new Router({
       meta: {
         title: '订单商品确认',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
-      }
+      },
     },
 
     // 去支付 实物
@@ -629,7 +633,8 @@ export default new Router({
       component: pay,
       meta: {
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
-      }
+      },
+      //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
     },
     {
       path: '/pay/account',

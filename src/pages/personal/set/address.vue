@@ -1,16 +1,48 @@
 <template>
   <div id="addressPage">
-    <van-address-edit
-      show-set-default
-      :address-info="addressInfo"
-      :area-list="areaList"
-      :validator="validator"
-      @save="saveAddress"
-      @change-area="changeAction"
-      ref="address"
-    />
+    <van-cell-group>
+      <van-field v-model="addressInfo.name" label="收货人" placeholder="请输入收货人姓名" clearable />
+      <van-field
+        v-model="addressInfo.tel"
+        clearable
+        label="手机号码"
+        placeholder="请输入手机号码"
+        type="tel"
+        maxlength="11"
+      />
+
+      <div style="position: relative;">
+        <van-field v-model="addressDefault" label="所在地区" placeholder="省市区" />
+        <div style="position: absolute;width: 100%;height: 100%;left: 0;top: 0;z-index: 1;" @click="showPopup"></div>
+      </div>
+
+      <van-field v-model="addressInfo.addressDetail" label="详细地址" clearable placeholder="详细地址" />
+
+      <van-switch-cell
+        v-model="addressInfo.isDefault"
+        title="设置默认地址"
+        @change="!addressInfo.isDefault"
+      />
+    </van-cell-group>
+
+    <div style="margin: 50px 30px;">
+      <van-button slot="button" size="large" round type="danger" @click="saveAddress">保存</van-button>
+    </div>
+
+    <!-- 选择省市区 -->
+    <van-popup v-model="popupModel" position="bottom">
+      <van-area
+        class="areaBox"
+        :area-list="areaList"
+        :columns-num="3"
+        title="配送至"
+        @cancel="hidePopup"
+        @confirm="onConfirm"
+        :value="defaultArea"
+      />
+    </van-popup>
+
     <EazyNav type="brand"></EazyNav>
-    
   </div>
 </template>
 
@@ -48,6 +80,9 @@ import {
 export default {
   data() {
     return {
+      addressDefault: "",
+      defaultArea: "",
+      popupModel: false,
       // 页面类型
       pageType: null,
       // 地址id，地址编辑用到
@@ -75,22 +110,8 @@ export default {
   },
 
   mounted() {
-    $(".van-cell__title")
-      .eq(0)
-      .html("收货人");
-    $(".van-cell__title")
-      .eq(1)
-      .html("手机号码");
-    $(".van-cell__title")
-      .eq(2)
-      .html("所在地区");
-    $(".van-cell__title")
-      .eq(3)
-      .html("详细地址");
-    $(".van-cell__title")
-      .eq(4)
-      .html("设置默认地址");
-
+    // 初始化省市区
+    this.$getAddressData();
     // 设置类型
     this.pageType = this.$route.query.pageType;
     // 编辑
@@ -104,27 +125,32 @@ export default {
   },
 
   methods: {
-    validator(key, value) {
-      // console.log("validator", key, value);
-      switch (key) {
-        case "name":
-          if (value.trim().length > 20) {
-            return "收货人长度不能大于20个字符~";
-          }
-          break;
-        case "tel":
-          var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
-          if (!regPhone.test(value)) {
-            return "请输入正确格式的手机号码~";
-          }
-          break;
-        case "areaCode":
-          var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
-          if (value.trim().length > 200) {
-            return "详细地址长度不能大于200个字符~";
-          }
-          break;
-      }
+    showPopup() {
+      this.popupModel = true;
+    },
+    hidePopup() {
+      this.popupModel = false;
+    },
+    // 确认
+    onConfirm(values) {
+      this.popupModel = false;
+
+      // 存储省市区
+      this.addressInfo.province = values[0].name;
+      this.addressInfo.city = values[1].name;
+      this.addressInfo.county = values[2].name;
+
+      // 存储省市区id
+      this.provinceId = values[0].code.substring(0, 2);
+      this.cityId = values[1].code.substring(0, 4);
+      this.countyId = values[2].code.substring(0, 6);
+
+      this.addressDefault =
+        this.addressInfo.province +
+        "/" +
+        this.addressInfo.city +
+        "/" +
+        this.addressInfo.county;
     },
     // 根据address_id获取当前用户地址信息
     async getAddress() {
@@ -155,9 +181,15 @@ export default {
         this.provinceId = res.response_data[0].province_id;
         this.cityId = res.response_data[0].city_id;
         this.countyId = res.response_data[0].county_id;
-        // console.log(res, res.response_data[0]);
 
-        // console.log(res.response_data[0], this.addressInfo);
+        this.defaultArea = this.countyId.toString();
+
+        this.addressDefault =
+          this.addressInfo.province +
+          "/" +
+          this.addressInfo.city +
+          "/" +
+          this.addressInfo.county;
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
@@ -213,22 +245,35 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.$toast("地址修改成功~");
-        // this.$router.push({ name: "set" });
-        // this.$router.push({ name: "addresslist" });
+
         this.$router.go(-1);
       } else {
         this.$toast(res.error_message);
       }
     },
     // 保存
-    saveAddress(content) {
-      this.$set(this.addressInfo, "name", content.name);
-      this.$set(this.addressInfo, "tel", content.tel);
-      this.$set(this.addressInfo, "province", content.province);
-      this.$set(this.addressInfo, "city", content.city);
-      this.$set(this.addressInfo, "county", content.county);
-      this.$set(this.addressInfo, "addressDetail", content.addressDetail);
-      this.$set(this.addressInfo, "isDefault", content.isDefault);
+    saveAddress() {
+      var address =
+        this.addressInfo.province +
+        this.addressInfo.city +
+        this.addressInfo.county;
+      if (this.addressInfo.name.trim().length > 20) {
+        this.$toast("收货人长度不能大于20个字符~");
+        return;
+      }
+      var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
+      if (!regPhone.test(this.addressInfo.tel)) {
+        this.$toast("请输入正确格式的手机号码~");
+        return;
+      }
+      if (this.addressInfo.addressDetail.trim().length > 200) {
+        this.$toast("详细地址长度不能大于200个字符~");
+        return;
+      }
+      if (address == "") {
+        this.$toast("请设置省市区~");
+        return;
+      }
 
       if (this.pageType == "add") {
         // 地址新增
@@ -237,18 +282,6 @@ export default {
         // 地址编辑
         this.editAddress();
       }
-    },
-    // 切换
-    changeAction(values) {
-      var province = values[0].code;
-      var city = values[1].code;
-      var county = values[2].code;
-      // 存储省市区id
-      this.provinceId = province.substring(0, 2);
-      this.cityId = city.substring(0, 4);
-      this.countyId = county.substring(0, 6);
-
-      console.log(456, values, this.provinceId, this.cityId, this.countyId);
     }
   }
 };

@@ -4,7 +4,7 @@
       <div class="title">
         <div class="action" @click="closeAudioList">
           <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-fold-line"></use>
+            <use xlink:href="#icon-fold-line" />
           </svg>
         </div>
         <div>播放列表</div>
@@ -21,7 +21,7 @@
             <div class="ratioBox">
               <div class="box">
                 <!-- <img :src="albumInfo.pic"> -->
-                <img :src="albumPic__">
+                <img :src="albumPic__" />
               </div>
             </div>
             <!-- <div class="issue">{{ albumInfo.title }}</div> -->
@@ -42,9 +42,9 @@
                   height="22"
                   alt
                   v-if="goodsNo == item.goods_no && audioStatus"
-                >
+                />
                 <svg class="icon" aria-hidden="true" v-else>
-                  <use xlink:href="#icon-videoPause-line"></use>
+                  <use xlink:href="#icon-videoPause-line" />
                 </svg>
               </div>
 
@@ -59,7 +59,6 @@
                       v-if="item.goods_type != 6 && progressList[key].progressHistory"
                     >已播{{ (progressList[key].progressHistory / progressList[key].ori_duration * 100).toFixed(2) }}%</span>
                   </template>
-
                 </div>
               </div>
             </div>
@@ -71,73 +70,75 @@
 </template>
 
 <style lang="scss">
-#audioListBox {
-  @include position(absolute, "tl", 44px, 0, 100%, null, null);
-  @include textOverflow;
-  bottom: 0;
-  overflow-y: scroll;
-  & .list {
+#audioList {
+  & .audioListBox {
+    @include position(absolute, "tl", 44px, 0, 100%, null, null);
     @include textOverflow;
-    @include displayFlex(flex, flex-start, center);
-    padding: 10px;
-    border-bottom: 1px #eee solid;
-    position: relative;
-
-    & .ratioBox {
-      width: 65px;
-      padding-bottom: 65px;
-      border-radius: 4px;
-      flex-shrink: 0;
-    }
-
-    & .issue {
-      @include font("PingFangBold", $fontSize + 2, #333);
+    bottom: 0;
+    overflow-y: scroll;
+    & .list {
       @include textOverflow;
-      margin-left: 10px;
-    }
+      @include displayFlex(flex, flex-start, center);
+      padding: 10px;
+      border-bottom: 1px #eee solid;
+      position: relative;
 
-    & .img {
-      & .icon {
-        width: 22px;
-        height: 22px;
-        color: #e3e3e3;
-      }
-    }
-
-    & .info {
-      @include textOverflow;
-      width: 100%;
-      padding-left: 8px;
-      box-sizing: border-box;
-
-      & .album {
-        @include textOverflow;
-        @include font(null, $fontSize + 1, #666);
+      & .ratioBox {
+        width: 65px;
+        padding-bottom: 65px;
+        border-radius: 4px;
+        flex-shrink: 0;
       }
 
-      & .program {
+      & .issue {
+        @include font("PingFangBold", $fontSize + 2, #333);
         @include textOverflow;
-        font-size: $fontSize - 1;
-        color: #999;
+        margin-left: 10px;
+      }
 
-        & .duration {
-          margin-right: 10px;
+      & .img {
+        & .icon {
+          width: 22px;
+          height: 22px;
+          color: #e3e3e3;
         }
       }
 
-      & .list {
+      & .info {
         @include textOverflow;
+        width: 100%;
+        padding-left: 8px;
+        box-sizing: border-box;
+
+        & .album {
+          @include textOverflow;
+          @include font(null, $fontSize + 1, #666);
+        }
+
+        & .program {
+          @include textOverflow;
+          font-size: $fontSize - 1;
+          color: #999;
+
+          & .duration {
+            margin-right: 10px;
+          }
+        }
+
+        & .list {
+          @include textOverflow;
+        }
       }
     }
-  }
-  & .list.active {
-    & .info {
-      & .album {
-        @include font(null, $fontSize + 1, $redDark);
-      }
+    & .list.active {
+      & .info {
+        & .album {
+          @include font(null, $fontSize + 1, $redDark);
+        }
 
-      & .program {
-        color: #333;
+        & .program {
+          color: #333;
+        }
       }
     }
   }
@@ -161,13 +162,12 @@ export default {
       // 记录节目播放进度
       progressList: [],
       // 专辑标题
-      title__: '',
+      title__: "",
       // 专辑头像
-      albumPic__: '',
+      albumPic__: ""
     };
   },
-  mounted () {
-  },
+  mounted() {},
   methods: {
     // 打开播放列表
     closeAudioList() {
@@ -179,11 +179,11 @@ export default {
     },
     // 获取节目列表
     async programData() {
-      var info = JSON.parse(localStorage.getItem('miniAudio'));
+      var info = JSON.parse(localStorage.getItem("miniAudio"));
       var __goodsId = null;
 
-      if(info != null && info.length > 0) {
-        if(info[1] != null) {
+      if (info != null && info.length > 0) {
+        if (info[1] != null) {
           // 专辑pid
           __goodsId = parseInt(info[1]);
         }
@@ -208,7 +208,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // 异步更新数据
         var result = res.response_data.result;
-        
+
         setTimeout(() => {
           for (let i = 0; i < res.response_data.result.length; i++) {
             result[i].sale_style = res.response_data.sale_style;
@@ -240,7 +240,6 @@ export default {
     },
     // localStorage存放节目播放进度
     progressListData() {
-      
       /*
        * __goodsId节目id
        * __goodsNo节目编号
@@ -253,15 +252,22 @@ export default {
 
       // 临时存放节目进度
       this.progressList = [];
-      if(result.length > 0) {
-        for(let i = 0; i < this.programList.length; i++) {
+      if (result.length > 0) {
+        for (let i = 0; i < this.programList.length; i++) {
           this.progressList.push(this.programList[i]);
           // console.log(this.programList[i])
-          
-          for(let j = 0; j < result.length; j++) {
+
+          for (let j = 0; j < result.length; j++) {
             // 当节目播放进度存在localStorage时,显示已播放进度
-            if(result[j].pid == this.goodsId && result[j].goods_id == this.programList[i].goods_id) {
-              this.$set(this.progressList[i], 'progressHistory', result[j].progress);
+            if (
+              result[j].pid == this.goodsId &&
+              result[j].goods_id == this.programList[i].goods_id
+            ) {
+              this.$set(
+                this.progressList[i],
+                "progressHistory",
+                result[j].progress
+              );
             }
           }
         }
