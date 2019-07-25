@@ -71,7 +71,7 @@
           <span
             class="button button3 applyrefund"
             @click.stop="toOngoing(item)"
-            v-if="infoData.type == 2 && item.if_refund == 2"
+            v-if="infoData.type == 2 && item.if_refund == 2 && item.if_refund == 3"
           >已申请</span>
           <span
             class="applyrefund text"
@@ -170,7 +170,7 @@
           <span
             class="button button2"
             @click="toComment"
-            v-if="infoData.if_comment == 0 && infoData.state == 4 "
+            v-if="infoData.if_comment == 0 && infoData.state == 4"
           >评价</span>
           <span
             class="button button3"
