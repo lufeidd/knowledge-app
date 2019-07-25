@@ -5,7 +5,7 @@
         <a class="bookImg" v-lazy:background-image="imgUrl"></a>
       </div> -->
       <div class="orderInfo">
-        <p>订单编号：{{logisticsInfo.number}}</p>
+        <p>物流单号：{{logisticsInfo.number}}</p>
         <p>国内承运人：{{logisticsInfo.com}}</p>
       </div>
     </div>
@@ -64,7 +64,6 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.logisticsInfo = res.response_data;
-        this.logisticsInfo.traces = this.logisticsInfo.traces.reverse();
       } else {
         this.$toast(res.error_message);
       }

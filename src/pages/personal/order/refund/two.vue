@@ -246,7 +246,7 @@ export default {
           timestamp: tStamp,
           apply_id:this.apply_id,
           refund_type: this.refund_type,
-          refund_money: this.refundInfo.goods_price*this.refundInfo.buy_count,
+          refund_money: this.real_refund_money,
           refund_count: this.refundInfo.buy_count,
           refund_reason:this.refund_reason,
           refund_desc: this.refund_desc,
@@ -279,6 +279,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.refund_reason = res.response_data.refund_reason;
         this.refund_desc = res.response_data.refund_desc;
+        this.real_refund_money = res.response_data.refund_money_total;
       } else {
         this.$toast(res.error_message);
       }

@@ -81,14 +81,6 @@
          text-align: right;
          margin-top: 10px;
        }
-       .tip2{
-         margin-top: 10px;
-        @include displayFlex(flex,space-between,center);
-        .noChange{
-          font-size: $fontSize - 2;
-          color: $cl9;
-        }
-       }
        .actulPay{
         font-size: $fontSize;
         color: $cl0;
@@ -97,6 +89,15 @@
         }
       }
      }
+     .tip2{
+      padding-top: 10px;
+      padding-bottom: 10px;
+     @include displayFlex(flex,space-between,center);
+     .noChange{
+       font-size: $fontSize - 2;
+       color: $cl9;
+     }
+    }
      .button{
       display: inline-block;
       width: 60px;

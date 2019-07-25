@@ -122,11 +122,6 @@ export default {
         this.explainLength = this.explainTotal;
       }
     },
-    refundmoney(){
-      if(Number(this.real_refund_money) > Number(this.refund_money)){
-        this.real_refund_money = this.refund_money;
-      }
-    },
     radio_check(item,index) {
       this.radio = index;
       this.refund_reason = item;
@@ -197,7 +192,7 @@ export default {
           order_id: this.order_id,
           detail_id: this.detail_id,
           refund_type: this.refundInfo.refund_type,
-          refund_money: this.refundInfo.goods_price*this.refundInfo.buy_count,
+          refund_money: this.refundInfo.max_money,
           refund_count: this.refundInfo.buy_count,
           refund_reason:this.refund_reason,
           refund_desc: this.refund_desc,
@@ -231,7 +226,7 @@ export default {
           timestamp: tStamp,
           apply_id:this.apply_id,
           refund_type: this.refundInfo.refund_type,
-          refund_money: this.refundInfo.goods_price*this.refundInfo.buy_count,
+          refund_money: this.refundInfo.max_money,
           refund_count: this.refundInfo.buy_count,
           refund_reason:this.refund_reason,
           refund_desc: this.refund_desc,

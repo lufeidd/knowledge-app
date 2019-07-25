@@ -1,7 +1,7 @@
 <template>
   <div id="listPage">
     <div class="nullBox" v-if="programFinished && publishData.length == 0">
-      <img src="../../../assets/null/list.png" width="100%">
+      <img src="../../../assets/null/list.png" width="100%" />
       <div>您搜索的内容为空</div>
     </div>
     <!-- <div class="content">
@@ -128,13 +128,15 @@
             </div>
             <span class="title">{{item1.goods_name}}</span>
           </div>
-          <div class="tip2">
-            <span class="noChange">虚拟内容不退不换</span>
-            <span class="actulPay">
-              实付款：
-              <span class="money">￥{{item1.real_price}}</span>
-            </span>
+        </div>
+        <div class="tip2">
+          <div>
+            <span class="noChange" v-if="item.type == 1">虚拟内容不退不换</span>
           </div>
+          <span class="actulPay">
+            实付款：
+            <span class="money">￥{{item.order_money}}</span>
+          </span>
         </div>
         <!-- <div class="foot">
         <span class="button1">评价</span>
@@ -146,7 +148,6 @@
     </van-list>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    
   </div>
 </template>
 
@@ -200,7 +201,7 @@ export default {
         page: this.page,
         page_size: this.page_size,
         goods_name: this.searchContent,
-        // order_state:this.state,
+        order_state: this.state,
         version: "1.0",
         timestamp: tStamp
       };
