@@ -82,12 +82,16 @@ import axios from "axios";
 
 // 下载app
 
-
 // 微信分享，引入sdk
 import wx from "weixin-js-sdk";
 export default {
   name: "App",
+  data () {
+    return {
+    }
+  },
   mounted() {
+
     // this.$router.push('/personal/order/refund/three')
     sessionStorage.setItem("gotoLogin", "no");
     sessionStorage.setItem("isWxLogin", "no");

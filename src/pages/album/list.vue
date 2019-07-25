@@ -1,6 +1,6 @@
 <template>
   <van-popup v-model="popupModel" position="bottom">
-    <div class="audioList">
+    <div id="audioList" class="audioList">
       <div class="title">
         <div class="action" @click="closeAudioList">
           <svg class="icon" aria-hidden="true">
@@ -71,7 +71,7 @@
 </template>
 
 <style lang="scss">
-.audioListBox {
+#audioListBox {
   @include position(absolute, "tl", 44px, 0, 100%, null, null);
   @include textOverflow;
   bottom: 0;

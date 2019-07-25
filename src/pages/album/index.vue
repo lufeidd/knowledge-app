@@ -38,12 +38,15 @@
           </div>
           <div class="subTitle" style="height: auto;">{{ baseData.sub_title }}</div>
           <div class="info">
-            <div class="name">
+            <router-link
+              :to="{name: 'brand', query: {brand_id: brandInfoData.brand_id}}"
+              class="name"
+            >
               <van-tag round color="rgba(0,0,0,.12)" text-color="#fff">
                 <img :src="brandInfoData.header_pic" width="15" height="15" />
                 {{ brandInfoData.name }}
               </van-tag>
-            </div>
+            </router-link>
             <div class="count">
               <van-tag
                 round
@@ -392,7 +395,7 @@
         style="height: 60px;"
         v-if="baseData.is_free == 0 && baseData.is_payed == 0 && baseData.sale_style == 1"
       ></div>
-      <div v-if=" myAudioData.src" style="height: 60px;"></div>
+      <!-- <div v-if=" myAudioData.src" style="height: 60px;"></div> -->
       <div v-if="this.isIphx" style="height: 34px;"></div>
 
       <!-- 试听 - 购买 -->
@@ -467,7 +470,6 @@
       <!-- <easyNav :navData="navData"></easyNav> -->
     </div>
     <EazyNav type="brand"></EazyNav>
-    
   </div>
 </template>
 

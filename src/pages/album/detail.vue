@@ -33,7 +33,7 @@
         <div v-if="baseData.goods_type == 1">
           <div @click="gotoPlayer('external')" class="box layer">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-audio-circle" />
+              <use xlink:href="#icon-play-line" />
             </svg>
           </div>
           <!-- 遮罩 -->
@@ -48,7 +48,7 @@
             <!-- 需要支付 但 不含试听 -->
             <div @click="gotoPlayer('external')" class="box layer" v-if="baseData.free_path == ''">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-videoPause-line" />
+                <use xlink:href="#icon-video-play" />
               </svg>
             </div>
             <div class="box">
@@ -121,7 +121,7 @@
       </div>
 
       <!-- 介绍 - 评论 -->
-      <van-tabs v-model="tabModel" sticky @click="tabChange">
+      <van-tabs v-model="tabModel" @click="tabChange">
         <van-tab v-for="(item, key) in tabData" :title="item.title" :key="key">
           <template v-if="activeKey == 0">
             <div
@@ -221,7 +221,7 @@
       </div>
 
       <div v-if="baseData.is_free == 0 && baseData.is_payed == 0" style="height: 60px;"></div>
-      <div v-if="myAudioData.src" style="height: 60px;"></div>
+      <!-- <div v-if="myAudioData.src" style="height: 60px;"></div> -->
       <div v-if="this.isIphx" style="height: 34px;"></div>
 
       <!-- 试听 - 购买 -->
@@ -418,23 +418,23 @@ export default {
     };
   },
   beforeDestroy() {
-    $(window).off("scroll");
+    // $(window).off("scroll");
   },
   mounted() {
     // 跳转评论锚点
-    $(window).on("scroll", function() {
-      if ($(window).scrollTop() >= $("#comment").offset().top) {
-        $("#commentTitle").css({
-          position: "fixed",
-          "border-bottom-width": "1px"
-        });
-      } else {
-        $("#commentTitle").css({
-          position: "relative",
-          "border-bottom-width": 0
-        });
-      }
-    });
+    // $(window).on("scroll", function() {
+    //   if ($(window).scrollTop() >= $("#comment").offset().top) {
+    //     $("#commentTitle").css({
+    //       position: "fixed",
+    //       "border-bottom-width": "1px"
+    //     });
+    //   } else {
+    //     $("#commentTitle").css({
+    //       position: "relative",
+    //       "border-bottom-width": 0
+    //     });
+    //   }
+    // });
 
     this.pid = parseInt(this.$route.query.pid);
     this.goodsId = parseInt(this.$route.query.goods_id);

@@ -439,6 +439,8 @@ export default {
     },
     // 点击播放
     playAudio(__currentTime) {
+      localStorage.setItem('closeAudio', 'no');
+
       this.count = 1;
       this.clearClock();
       // 切换播放状态

@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 10px 15px;">
     <div v-if="type == 'private'">
-      <div style="text-align: center;padding: 20px 0;font-size: 17px;font-weight: bold;">火把平台用户注册协议</div>
+      <div style="text-align: center;padding: 20px 0;font-size: 17px;font-weight: bold;">火把平台用户隐私条款</div>
       <div style="padding: 10px 0;">
         需要特别说明的是，本政策仅针对于火把的行为，
         <span
@@ -11,7 +11,7 @@
       <div style="padding: 10px 0;">
         <span
           style="font-weight: bold;text-decoration: underline;"
-        >请您在使用杭州火把文化有限公司（以下亦称“火把”）所有平台和/或服务前，完整阅读并透彻理解本政策，并在您充分理解并同意后使用火把的平台及服务。如果您不同意本政策的任何内容，您应立即停止使用火把的平台和/或服务。当您使用火把的任一平台和/或服务时，则表示您同意且完全理解本个人信息保护政策的全部内容。</span>此外，若您在使用知识服务时主动或应他人需求决定提供个人信息的，一切风险、后果及责任由您和主播方自行承担。
+        >请您在使用杭州火把文化创意有限公司（以下亦称“火把”）所有平台和/或服务前，完整阅读并透彻理解本政策，并在您充分理解并同意后使用火把的平台及服务。如果您不同意本政策的任何内容，您应立即停止使用火把的平台和/或服务。当您使用火把的任一平台和/或服务时，则表示您同意且完全理解本个人信息保护政策的全部内容。</span>此外，若您在使用知识服务时主动或应他人需求决定提供个人信息的，一切风险、后果及责任由您和主播方自行承担。
       </div>
       <div
         style="padding: 10px 0;"
@@ -31,13 +31,13 @@
         【审慎提醒】
         <span
           style="font-weight: bold;text-decoration: underline;"
-        >如您使用火把或进行用户注册的，将视为您已同意前述服务使用协议及个人信息保护政策，该等条款将立即生效，并构成您和杭州火把文化有限公司及其经营的平台之间有约束力的法律文件。</span>
+        >如您使用火把或进行用户注册的，将视为您已同意前述服务使用协议及个人信息保护政策，该等条款将立即生效，并构成您和杭州火把文化创意有限公司及其经营的平台之间有约束力的法律文件。</span>
       </div>
       <div style="padding: 10px 0;">请您再次确认您已全部阅读并充分理解上述协议。</div>
     </div>
     <div v-else>
       <div style="text-align: center;padding: 20px 0;font-size: 17px;font-weight: bold;">火把平台用户注册协议</div>
-      <div style="font-weight: bold;padding: 10px 0;">以下包含服务使用协议及个人隐私保护政策两部分：</div>
+      <!-- <div style="font-weight: bold;padding: 10px 0;">以下包含服务使用协议及个人隐私保护政策两部分：</div> -->
 
       <div style="padding: 10px 0;">第一条【重要提示】</div>
       <div style="padding: 10px 0;">请您（以下亦称“用户”）仔细阅读本协议全部条款，并确认您已完全了解本协议之规定。</div>
@@ -46,7 +46,7 @@
         请您审慎阅读并选择接受或不接受本协议。除非您接受本协议所有条款，否则您无权注册、登录或使用本协议所涉服务。
         <span
           style="font-weight: bold;"
-        >您的注册、登录、使用等行为将视为对本协议的接受，并同意接受本协议各项条款的约束，本协议将构成您与杭州火把文化有限公司（以下亦称“火把）之间直接有约束力的法律文件。</span>
+        >您的注册、登录、使用等行为将视为对本协议的接受，并同意接受本协议各项条款的约束，本协议将构成您与杭州火把文化创意有限公司（以下亦称“火把）之间直接有约束力的法律文件。</span>
       </div>
 
       <div style="padding: 10px 0;">第二条【充分授权】</div>

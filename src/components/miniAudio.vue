@@ -1,52 +1,62 @@
 <template>
   <div id="miniAudio" :class="{ iphx: this.isIphx }">
     <!-- 播放器缩略 -->
-    <van-row class="miniAudio" :class="{ patch: showBuyButton }">
-      <van-col span="16">
-        <div class="ratioBox" @click="toPlayer">
-          <div class="box" :class="{rotateAction: !audioData.type}">
-            <span>
-              <img :src="audioData.pic">
-            </span>
+    <div :class="{active: unfold}" v-if="closeAudio == null || closeAudio == 'no'">
+      <van-row class="miniAudio" :class="{ patch: showBuyButton }">
+        <van-col class="unaction" style="width: 50px;">
+          <div class="ratioBox" @click="unfoldAction">
+            <div class="box" :class="{rotateAction: !audioData.type}">
+              <span>
+                <img :src="audioData.pic" />
+              </span>
+            </div>
           </div>
-        </div>
-
-        <span class="info" @click="toPlayer">
-          <div class="album">{{ audioData.program }}</div>
-          <div class="program">
-            <span class="duration">{{ audioData.duration }}</span>
-            {{ audioData.album }}
+        </van-col>
+        <!-- <van-col class="action" style="width: 50px;">
+          <div class="ratioBox" @click="toPlayer">
+            <div class="box" :class="{rotateAction: !audioData.type}">
+              <span>
+                <img :src="audioData.pic" />
+              </span>
+            </div>
           </div>
-        </span>
-      </van-col>
-      <van-col span="8" class="action" :class="{active: isList}">
-        <svg v-if="isList" class="icon category" aria-hidden="true" @click="showList">
-          <use xlink:href="#icon-category-line"></use>
-        </svg>
+        </van-col>-->
 
-        <div class="play" @click="playAudio(null)" v-if="audioData.type || playType">
-          <van-icon name="play"/>
-        </div>
-        <div class="play" @click="pauseAudio" v-else>
-          <van-icon name="pause"/>
-        </div>
-        <!-- 进度条 -->
-        <div class="circle">
+        <van-col v-if="isList" class="action" style="width: 50px;margin-left: 5px;">
+          <svg class="icon" aria-hidden="true" @click="showList">
+            <use xlink:href="#icon-category-line" />
+          </svg>
+        </van-col>
+        <van-col class="action" style="width: 50px;position: relative;">
+          <div class="play" @click="playAudio(null)" v-if="audioData.type || playType">
+            <van-icon name="play" />
+          </div>
+          <div class="play" @click="pauseAudio" v-else>
+            <van-icon name="pause" />
+          </div>
+          <!-- 进度条 -->
           <van-circle
             v-model="audioData.sliderValue"
             color="#f05654"
             fill="transparent"
-            size="30px"
-            layer-color="#e6e6e6"
+            size="20px"
+            layer-color="#000"
             @text="text"
             :rate="0"
             :speed="600"
             :clockwise="false"
             :stroke-width="60"
           />
-        </div>
-      </van-col>
-    </van-row>
+        </van-col>
+        <van-col class="action" style="width: 50px;">
+          <div @click="closeAudioAction">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-close-line" />
+            </svg>
+          </div>
+        </van-col>
+      </van-row>
+    </div>
 
     <!-- 播放器 -->
     <audio id="myMiniAudio" :src="audioData.src" preload="auto" @ended="onEnded"></audio>
@@ -62,13 +72,15 @@ export default {
   props: ["audioData", "rank", "loginStatus", "showBuyButton"],
   data() {
     return {
+      closeAudio: localStorage.getItem("closeAudio"),
+      unfold: true,
       playType: true,
       // 存储是否新增
       isAdd: false,
       // 是否显示播放列表入口
       isList: true,
       // 调用接口计数器防止重复
-      count: 0, // 1表示可调用记录接口
+      count: 0 // 1表示可调用记录接口
     };
   },
   // 解决子组件数据实时刷新问题
@@ -96,6 +108,12 @@ export default {
         // console.log(newValue)
       },
       deep: true
+    },
+    unfold: {
+      handler(newValue, oldValue) {
+        // console.log(newValue)
+      },
+      deep: true
     }
   },
   beforeDestroy() {
@@ -103,6 +121,11 @@ export default {
     this.clearClock();
   },
   mounted() {
+    var self = this;
+    $(window).on("scroll", function() {
+      self.unfold = true;
+    });
+
     // console.log(this.showBuyButton)
     // 播放结束后销毁倒计时
     this.clearClock();
@@ -127,6 +150,16 @@ export default {
     }, 600);
   },
   methods: {
+    closeAudioAction() {
+      this.closeAudio = true;
+      localStorage.setItem("closeAudio", "yes");
+      this.pauseAudio();
+    },
+    unfoldAction() {
+      this.unfold = !this.unfold;
+      // var _type = this.unfold ? "no" : "yes";
+      // localStorage.setItem("closeAudio", _type);
+    },
     // 设置音频播放状态
     setPlayerAudio() {
       var info = JSON.parse(localStorage.getItem("miniAudio"));
@@ -174,15 +207,15 @@ export default {
     // 用户播放进度记录
     async currentTimeData(info) {
       // 已登录账号才存储到数据库
-      if(this.loginStatus == 0) {
+      if (this.loginStatus == 0) {
         return;
       }
-      
+
       // 调用接口计数器防止重复
       // 如果是非专辑，则传入goods_id
       var _pid = info[1];
       var _goodsId = info[8];
-      if(info[1] == null) {
+      if (info[1] == null) {
         _pid = info[8];
         _goodsId = null;
       }
@@ -291,7 +324,7 @@ export default {
 
       // 设置迷你音频播放状态
       this.$emit("setMiniAudio", info);
-      
+
       // console.log(123, "miniAudio:", "info:", info, "currentTime:", __currentTime, "result:", result, this.isAdd);
     },
     // 更新播放进度记录
@@ -363,13 +396,16 @@ export default {
     },
     // 点击播放
     playAudio(__currentTime) {
+      localStorage.setItem('closeAudio', 'no');
+      this.closeAudio = 'no';
+
       this.count = 1;
       this.clearClock();
       // 非专辑节目goods_id，不存在播放列表，隐藏miniAudio.vue列表入口
       var info = JSON.parse(localStorage.getItem("miniAudio"));
 
       // 用户播放进度记录
-      if(info != null && info.length > 0) this.currentTimeData(info);
+      if (info != null && info.length > 0) this.currentTimeData(info);
 
       if (info != null && info.length > 0 && info[1] == null) {
         this.isList = false;
@@ -387,7 +423,7 @@ export default {
       }
       // 播放
       audio.play();
-      console.log('测试全部播放:', __currentTime);
+      console.log("测试全部播放:", __currentTime);
       this.$emit("setType", false);
       this.audioTimeChange(second, false);
       console.log("播放");
@@ -399,7 +435,7 @@ export default {
       this.clearClock();
       var audio = document.getElementById("myMiniAudio");
       // 暂停
-      if(audio) audio.pause();
+      if (audio) audio.pause();
       // 切换播放状态
       this.$emit("setType", true);
       this.playType = true;
@@ -434,7 +470,8 @@ export default {
     audioSliderChange() {
       var audio = document.getElementById("myMiniAudio");
       // 设置当前时间
-      if (audio && this.audioData.sliderValue) audio.currentTime = (this.audioData.sliderValue / 100) * audio.duration;
+      if (audio && this.audioData.sliderValue)
+        audio.currentTime = (this.audioData.sliderValue / 100) * audio.duration;
       // 绑定slider
       this.audiobindtoslider(audio.currentTime);
       // this.audioData.currentTime = this.todate(audio.currentTime);
