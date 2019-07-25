@@ -46,7 +46,7 @@
     </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    
+
   </div>
 </template>
 
@@ -82,9 +82,9 @@ export default {
       type: "",
       hotSearch: null,
       state: [
-        { order_state: 0, order_desc: "待付款" },
-        { order_state: 1, order_desc: "待发货" },
-        { order_state: 2, order_desc: "已发货" },
+        { order_state: 1, order_desc: "待付款" },
+        { order_state: 2, order_desc: "待发货" },
+        { order_state: 5, order_desc: "已发货" },
         { order_state: 4, order_desc: "已完成" }
       ],
       list: []
@@ -209,7 +209,7 @@ export default {
         query: {
           type: "order",
           searchContent: this.searchHintData.search,
-          state: this.state.order_state
+          state: item.order_state
         }
       });
     },

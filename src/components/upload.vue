@@ -177,7 +177,7 @@ export default {
       // 提示最多上传图片张数
       if (length >= maxlength) {
         var msg = "最多上传" + maxlength + "张图片！";
-        this.$toast(msg);
+        // this.$toast(msg);
         van.css("display", "none");
       }
     }
