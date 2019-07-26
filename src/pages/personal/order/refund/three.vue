@@ -38,7 +38,7 @@
             <span class="money">{{real_refund_money}}元</span>
           </span>
         </div>
-        <span class="choose" v-if="refundInfo.dispatch_price&&show_dispatch&&count_show">（包含运费：{{refundInfo.dispatch_price}}元）</span>
+        <span class="choose" v-if="dispatch_price&&show_dispatch&&count_show">（包含运费：{{dispatch_price}}元）</span>
       </div>
     </div>
     <div class="cell explain">
@@ -55,8 +55,15 @@
       <upload :uploadData="uploadData"></upload>
     </div>
     <div class="bottomBox" :class="{iphx:this.isIphx}">
-      <van-button type="danger" v-if="type_of =='edit'" size="large" @click="editRefund">修改申请</van-button>
-      <van-button type="danger" v-else size="large" @click="submitRefund">提交申请</van-button>
+      <div v-if="type_of =='edit'">
+        <van-button type="danger" v-if="submit_state" size="large" @click="editRefund">修改申请</van-button>
+        <van-button type="danger" disabled v-else size="large">提交中</van-button>
+      </div>
+      <div v-else>
+        <van-button type="danger" v-if="submit_state" size="large" @click="submitRefund" >提交申请</van-button>
+        <van-button type="danger" disabled v-else size="large">提交中</van-button>
+      </div>
+
     </div>
     <van-popup v-model="show" position="bottom">
       <div class="title">
@@ -122,6 +129,8 @@ export default {
       show_dispatch:false,
       count_show:true,
       max_price:null,
+      submit_state:true,
+      dispatch_price:null,
     };
   },
   mounted() {
@@ -229,6 +238,7 @@ export default {
       }
     },
     async submitAll() {
+      this.submit_state = false;
       var tStamp = this.$getTimeStamp();
       var data = {
         version: "1.0",
@@ -245,6 +255,7 @@ export default {
       data.sign = this.$getSign(data);
       let res = await ORDER_REFUND_ADD(data);
       if (res.hasOwnProperty("response_code")) {
+        this.submit_state = true;
         this.$toast("申请成功!");
         this.$router.go(-1);
       } else {
@@ -269,6 +280,7 @@ export default {
         this.reasonList = res.response_data.reason_list.returngoods;
         this.real_refund_money = res.response_data.max_price;
         this.max_price = res.response_data.max_price;
+        this.dispatch_price = res.response_data.dispatch_price;
       } else {
         this.$toast(res.error_message);
       }
@@ -288,6 +300,7 @@ export default {
       }
     },
     async editAll() {
+      this.submit_state = false
       var tStamp = this.$getTimeStamp();
       var data = {
         version: "1.0",
@@ -303,6 +316,7 @@ export default {
       data.sign = this.$getSign(data);
       let res = await ORDER_REFUND_EDIT(data);
       if (res.hasOwnProperty("response_code")) {
+        this.submit_state = true;
         this.$toast("修改成功!");
         this.$router.go(-1);
       } else {
@@ -326,6 +340,8 @@ export default {
         this.refund_desc = res.response_data.refund_desc;
         this.refund_count = res.response_data.refund_count;
         this.real_refund_money = res.response_data.refund_money_total;
+        this.max_price = res.response_data.max_money;
+        this.dispatch_price = res.response_data.dispatch_price;
         if(this.refund_reason == this.refund_reason == '七天无理由' || this.refund_reason == '其他'){
           this.show_dispatch = false;
         }else{

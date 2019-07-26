@@ -23,7 +23,7 @@
           最多
           <span class="money">{{refundInfo.max_price}}元</span>
         </span>
-        <span class="choose" v-if="refundInfo.dispatch_price&&show_dispatch">（包含运费：{{refundInfo.dispatch_price}}元）</span>
+        <span class="choose" v-if="dispatch_price&&show_dispatch">（包含运费：{{dispatch_price}}元）</span>
       </div>
       <input
         type="text"
@@ -110,6 +110,7 @@ export default {
       apply_id: null,
       max_price:null,
       show_dispatch:false,
+      dispatch_price:null,
     };
   },
   mounted() {
@@ -261,6 +262,7 @@ export default {
         this.refundInfo = res.response_data;
         this.max_price = res.response_data.max_price;
         this.reasonList = res.response_data.reason_list.onlyrefund;
+        this.dispatch_price = res.response_data.dispatch_price;
       } else {
         this.$toast(res.error_message);
       }
@@ -317,6 +319,8 @@ export default {
         this.refund_reason = res.response_data.refund_reason;
         this.refund_desc = res.response_data.refund_desc;
         this.real_refund_money = res.response_data.refund_money_total;
+        this.max_price = res.response_data.max_money;
+        this.dispatch_price = res.response_data.dispatch_price;
         if(this.refund_reason == '一直未收到货'){
           this.show_dispatch = true;
         }else{
