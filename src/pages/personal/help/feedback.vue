@@ -1,12 +1,18 @@
 <template>
   <div id="feedbackPage">
-    <textarea cols="30" v-model="content" rows="10" placeholder="请输入问题并留下联系方式，我们会尽快联系您" @input="question('text')"></textarea>
+    <textarea
+      cols="30"
+      v-model="content"
+      rows="10"
+      placeholder="请输入问题并留下联系方式，我们会尽快联系您"
+      @input="question('text')"
+    ></textarea>
     <!-- 字数限制 -->
     <div class="count">
       <span :class="{ active: textLength > textTotal }">{{ textLength }}</span>
       /{{ textTotal }}
     </div>
-    <input type="text" v-model="contact" placeholder="您的手机号、QQ或邮箱（三选一）" @input="question('phone')">
+    <input type="text" v-model="contact" placeholder="您的手机号、QQ或邮箱（三选一）" @input="question('phone')" />
     <!-- 字数限制 -->
     <div class="count">
       <span :class="{ active: phoneLength > phoneTotal }">{{ phoneLength }}</span>
@@ -26,7 +32,6 @@
 
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    
   </div>
 </template>
 
@@ -40,7 +45,7 @@ import { COMMON_UPLOAD } from "../../../apis/public.js";
 import { setTimeout } from "timers";
 export default {
   components: {
-    upload,
+    upload
     // easyNav
   },
   data() {
@@ -90,11 +95,11 @@ export default {
       if (_type == "text") this.textLength = textarea.length;
       if (_type == "phone") this.phoneLength = $("input").val().length;
       if (_type == "text" && this.textLength > this.textTotal) {
-        this.content = this.content.trim().substring(0,this.textTotal);
+        this.content = this.content.trim().substring(0, this.textTotal);
         this.textLength = this.textTotal;
       }
       if (_type == "phone" && this.phoneLength > this.phoneTotal) {
-        this.contact = this.contact.trim().substring(0,this.phoneTotal);
+        this.contact = this.contact.trim().substring(0, this.phoneTotal);
         this.phoneLength = this.phoneTotal;
       }
 
@@ -115,64 +120,67 @@ export default {
       this.change(_type);
     }, //获取上传图片路径
     async getImgUrl() {
-      this.feedbackImgs =
-        $(".content.set")
-          .eq(0)
-          .attr("data-src") +
-        "||" +
-        $(".content.set")
-          .eq(1)
-          .attr("data-src") +
-        "||" +
-        $(".content.set")
-          .eq(2)
-          .attr("data-src");
-      this.feedbackImgs = this.feedbackImgs
-        .split("||")
-        .filter(item => item !== "undefined")
-        .join("||");
-      // console.log(this.feedbackImgs)
+      if ($(".flex-box").length > 1) {
+        this.feedbackImgs =
+          $(".content.set")
+            .eq(0)
+            .attr("data-src") +
+          "||" +
+          $(".content.set")
+            .eq(1)
+            .attr("data-src") +
+          "||" +
+          $(".content.set")
+            .eq(2)
+            .attr("data-src");
+        this.feedbackImgs = this.feedbackImgs
+          .split("||")
+          .filter(item => item !== "undefined")
+          .join("||");
+        // console.log(this.feedbackImgs)
 
-      var tStamp = this.$getTimeStamp();
-      var data = {
-        version: "1.0",
-        timestamp: tStamp,
-        file: this.feedbackImgs,
-        opt_type: "feedback",
-        file_type: "Base64",
-        source: 1
-      };
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          version: "1.0",
+          timestamp: tStamp,
+          file: this.feedbackImgs,
+          opt_type: "feedback",
+          file_type: "Base64",
+          source: 1
+        };
 
-      data.sign = this.$getSign(data);
-      let res = await COMMON_UPLOAD(data);
-      if (res.hasOwnProperty("response_code")) {
-        // store 设置登录状态
-        this.$store.commit("changeLoginState", 1);
-        localStorage.setItem("loginState", 1);
-
-        // console.log(res);
-        var arr = [];
-        for (let i = 0; i < res.response_data.length; i++) {
-          arr.push(res.response_data[i].url);
-        }
-        this.url = arr.join("|");
-        // console.log(this.url)
-
-        // console.log(this.content,this.contact)
-      } else {
-        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+        data.sign = this.$getSign(data);
+        let res = await COMMON_UPLOAD(data);
+        if (res.hasOwnProperty("response_code")) {
           // store 设置登录状态
-          this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 100);
+          this.$store.commit("changeLoginState", 1);
+          localStorage.setItem("loginState", 1);
+
+          // console.log(res);
+          var arr = [];
+          for (let i = 0; i < res.response_data.length; i++) {
+            arr.push(res.response_data[i].url);
+          }
+          this.url = arr.join("|");
+          // console.log(this.url)
+
+          // console.log(this.content,this.contact)
+        } else {
+          if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+            // store 设置登录状态
+            this.$store.commit("changeLoginState", 100);
+            localStorage.setItem("loginState", 100);
+          }
+          this.$toast(res.error_message);
         }
-        this.$toast(res.error_message);
       }
+      this.submitAll();
     },
     //提交反馈
     async submitFeedback() {
-      if ($(".flex-box").length > 1) {
-        this.getImgUrl();
-      }
+      this.getImgUrl();
+    },
+    async submitAll() {
       var tStamp = this.$getTimeStamp();
       this.content = $("textarea")
         .val()
@@ -192,8 +200,6 @@ export default {
       let res1 = await USER_FEEDBACK_ADD(data);
       if (res1.hasOwnProperty("response_code")) {
         this.$toast("提交成功!");
-        // setTimeout( location.reload() , 1000);
-        // location.reload();
         this.$router.push("/personal/help/index");
       } else {
         this.$toast(res1.error_message);
