@@ -23,6 +23,7 @@
           最多
           <span class="money">{{refundInfo.max_price}}元</span>
         </span>
+        <span class="choose" v-if="refundInfo.dispatch_price&&show_dispatch">（包含运费：{{refundInfo.dispatch_price}}元）</span>
       </div>
       <input
         type="text"
@@ -106,7 +107,9 @@ export default {
       explainLength: 0,
       refundInfo: {},
       type_of: "refund",
-      apply_id: null
+      apply_id: null,
+      max_price:null,
+      show_dispatch:false,
     };
   },
   mounted() {
@@ -141,6 +144,13 @@ export default {
     radio_check(item, index) {
       this.radio = index;
       this.refund_reason = item;
+      if(this.refund_reason == '一直未收到货'){
+        this.refundInfo.max_price = (this.refundInfo.buy_count*this.refundInfo.goods_price).toFixed(2);
+        this.show_dispatch = false;
+      }else{
+        this.refundInfo.max_price = this.max_price;
+        this.show_dispatch = true;
+      }
     },
     // 获取上传图片路径
     async getImgUrl() {
@@ -249,6 +259,7 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.refundInfo = res.response_data;
+        this.max_price = res.response_data.max_price;
         this.reasonList = res.response_data.reason_list.onlyrefund;
       } else {
         this.$toast(res.error_message);
@@ -306,6 +317,11 @@ export default {
         this.refund_reason = res.response_data.refund_reason;
         this.refund_desc = res.response_data.refund_desc;
         this.real_refund_money = res.response_data.refund_money_total;
+        if(this.refund_reason == '一直未收到货'){
+          this.show_dispatch = true;
+        }else{
+          this.show_dispatch = false;
+        }
       } else {
         this.$toast(res.error_message);
       }

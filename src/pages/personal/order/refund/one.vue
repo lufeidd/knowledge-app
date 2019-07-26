@@ -27,7 +27,7 @@
         <span class="money">{{ refundInfo.max_price }}元</span>
 
       </div>
-      <span class="choose" v-if="refundInfo.dispatch_price">（包含运费：{{refundInfo.dispatch_price}}元）</span>
+      <!-- <span class="choose" v-if="refundInfo.dispatch_price">（包含运费：{{refundInfo.dispatch_price}}元）</span> -->
     </div>
     <div class="cell explain">
       <span>退款说明：</span>
