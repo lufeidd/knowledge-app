@@ -128,6 +128,7 @@ export default {
     },
     // 获取上传图片路径
     async getImgUrl() {
+      if ($(".flex-box").length > 1) {
       var feedbackImgs =
         $(".content.set")
           .eq(0)
@@ -168,9 +169,7 @@ export default {
           arr.push(res.response_data[i].url);
         }
         this.pic = arr.join(",");
-        console.log(this.pic);
 
-        // console.log(this.content,this.contact)
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
@@ -178,13 +177,22 @@ export default {
         }
         this.$toast(res.error_message);
       }
+      }
+        if(this.type_of == 'edit'){
+          this.editAll();
+        }else{
+          this.submitAll();
+        }
     },
     //提交申请
     async submitRefund() {
-      if ($(".flex-box").length > 1) {
-        this.getImgUrl();
-      }
       if(this.refund_reason && this.order_id && this.detail_id && this.refundInfo.goods_price && this.refund_desc){
+          this.getImgUrl();
+      }else{
+        this.$toast('请填写完整信息！')
+      }
+    },
+    async submitAll(){
         var tStamp = this.$getTimeStamp();
         var data = {
           version: "1.0",
@@ -192,7 +200,7 @@ export default {
           order_id: this.order_id,
           detail_id: this.detail_id,
           refund_type: this.refundInfo.refund_type,
-          refund_money: this.refundInfo.max_money,
+          refund_money: this.refundInfo.max_price,
           refund_count: this.refundInfo.buy_count,
           refund_reason:this.refund_reason,
           refund_desc: this.refund_desc,
@@ -208,25 +216,25 @@ export default {
         });
         } else {
           this.$toast(res.error_message);
-          console.log(this.refund_money);
         }
+    },
+    //修改申请
+    async editRefund(){
+
+      if(this.refund_reason && this.order_id && this.detail_id && this.refundInfo.goods_price && this.refund_desc){
+          this.getImgUrl();
       }else{
         this.$toast('请填写完整信息！')
       }
     },
-    //修改申请
-    async editRefund(){
-      if ($(".flex-box").length > 1) {
-        this.getImgUrl();
-      }
-      if(this.refund_reason && this.order_id && this.detail_id && this.refundInfo.goods_price && this.refund_desc){
+    async editAll(){
         var tStamp = this.$getTimeStamp();
         var data = {
           version: "1.0",
           timestamp: tStamp,
           apply_id:this.apply_id,
           refund_type: this.refundInfo.refund_type,
-          refund_money: this.refundInfo.max_money,
+          refund_money: this.refundInfo.max_price,
           refund_count: this.refundInfo.buy_count,
           refund_reason:this.refund_reason,
           refund_desc: this.refund_desc,
@@ -239,11 +247,7 @@ export default {
           this.$router.go(-1);
         } else {
           this.$toast(res.error_message);
-          console.log(this.refund_money);
         }
-      }else{
-        this.$toast('请填写完整信息！')
-      }
     },
     //获取退款信息
     async getInfo(){

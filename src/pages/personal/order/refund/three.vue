@@ -23,7 +23,7 @@
       <van-stepper
         v-model="refund_count"
         disable-input
-        @change="goodCount(item)"
+        @change="goodsCount"
         integer
         :min="1"
         :max="refundInfo.buy_count"
@@ -150,59 +150,62 @@ export default {
     },
     // 获取上传图片路径
     async getImgUrl() {
-      var feedbackImgs =
-        $(".content.set")
-          .eq(0)
-          .attr("data-src") +
-        "||" +
-        $(".content.set")
-          .eq(1)
-          .attr("data-src") +
-        "||" +
-        $(".content.set")
-          .eq(2)
-          .attr("data-src");
-      feedbackImgs = feedbackImgs
-        .split("||")
-        .filter(item => item !== "undefined")
-        .join("||");
-      // console.log(this.feedbackImgs)
+      if ($(".flex-box").length > 1) {
+        var feedbackImgs =
+          $(".content.set")
+            .eq(0)
+            .attr("data-src") +
+          "||" +
+          $(".content.set")
+            .eq(1)
+            .attr("data-src") +
+          "||" +
+          $(".content.set")
+            .eq(2)
+            .attr("data-src");
+        feedbackImgs = feedbackImgs
+          .split("||")
+          .filter(item => item !== "undefined")
+          .join("||");
+        // console.log(this.feedbackImgs)
 
-      var tStamp = this.$getTimeStamp();
-      var data = {
-        version: "1.0",
-        timestamp: tStamp,
-        file: feedbackImgs,
-        opt_type: "refund",
-        file_type: "Base64",
-        source: 1
-      };
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          version: "1.0",
+          timestamp: tStamp,
+          file: feedbackImgs,
+          opt_type: "refund",
+          file_type: "Base64",
+          source: 1
+        };
 
-      data.sign = this.$getSign(data);
-      let res = await COMMON_UPLOAD(data);
-      if (res.hasOwnProperty("response_code")) {
-        // store 设置登录状态
-        this.$store.commit("changeLoginState", 1);
-
-        // console.log(res);
-        var arr = [];
-        for (let i = 0; i < res.response_data.length; i++) {
-          arr.push(res.response_data[i].url);
-        }
-        this.pic = arr.join(",");
-        // console.log(this.pic);
-      } else {
-        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+        data.sign = this.$getSign(data);
+        let res = await COMMON_UPLOAD(data);
+        if (res.hasOwnProperty("response_code")) {
           // store 设置登录状态
-          this.$store.commit("changeLoginState", 100);
+          this.$store.commit("changeLoginState", 1);
+
+          // console.log(res);
+          var arr = [];
+          for (let i = 0; i < res.response_data.length; i++) {
+            arr.push(res.response_data[i].url);
+          }
+          this.pic = arr.join(",");
+        } else {
+          if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+            // store 设置登录状态
+            this.$store.commit("changeLoginState", 100);
+          }
+          this.$toast(res.error_message);
         }
-        this.$toast(res.error_message);
+      }
+      if (this.type_of == "edit") {
+        this.editAll();
+      } else {
+        this.submitAll();
       }
     },
     async submitRefund() {
-      if ($(".flex-box").length > 1) {
-        this.getImgUrl();
-      }
       if (
         this.refund_reason &&
         this.order_id &&
@@ -210,29 +213,32 @@ export default {
         this.real_refund_money &&
         this.refund_desc
       ) {
-        var tStamp = this.$getTimeStamp();
-        var data = {
-          version: "1.0",
-          timestamp: tStamp,
-          order_id: this.order_id,
-          detail_id: this.detail_id,
-          refund_type: this.refund_type,
-          refund_money: this.real_refund_money,
-          refund_count: this.refund_count,
-          refund_reason: this.refund_reason,
-          refund_desc: this.refund_desc,
-          pic: this.pic
-        };
-        data.sign = this.$getSign(data);
-        let res = await ORDER_REFUND_ADD(data);
-        if (res.hasOwnProperty("response_code")) {
-          this.$toast("申请成功!");
-          this.$router.go(-1);
-        } else {
-          this.$toast(res.error_message);
-        }
+        this.getImgUrl();
       } else {
         this.$toast("请填写完整信息！");
+      }
+    },
+    async submitAll() {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+        order_id: this.order_id,
+        detail_id: this.detail_id,
+        refund_type: this.refund_type,
+        refund_money: this.real_refund_money,
+        refund_count: this.refund_count,
+        refund_reason: this.refund_reason,
+        refund_desc: this.refund_desc,
+        pic: this.pic
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_REFUND_ADD(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.$toast("申请成功!");
+        this.$router.go(-1);
+      } else {
+        this.$toast(res.error_message);
       }
     },
     //获取退款信息
@@ -251,16 +257,13 @@ export default {
         this.refundInfo = res.response_data;
         this.refund_count = res.response_data.buy_count;
         this.reasonList = res.response_data.reason_list.returngoods;
-        this.real_refund_money = res.response_data.goods_money;
+        this.real_refund_money = res.response_data.max_price;
       } else {
         this.$toast(res.error_message);
       }
     },
     //修改申请
     async editRefund() {
-      if ($(".flex-box").length > 1) {
-        this.getImgUrl();
-      }
       if (
         this.refund_reason &&
         this.order_id &&
@@ -268,29 +271,32 @@ export default {
         this.refundInfo.goods_price &&
         this.refund_desc
       ) {
-        var tStamp = this.$getTimeStamp();
-        var data = {
-          version: "1.0",
-          timestamp: tStamp,
-          apply_id: this.apply_id,
-          refund_type: this.refund_type,
-          refund_money: this.real_refund_money,
-          refund_count: this.refundInfo.buy_count,
-          refund_reason: this.refund_reason,
-          refund_desc: this.refund_desc,
-          pic: this.pic
-        };
-        data.sign = this.$getSign(data);
-        let res = await ORDER_REFUND_EDIT(data);
-        if (res.hasOwnProperty("response_code")) {
-          this.$toast("修改成功!");
-          this.$router.go(-1);
-        } else {
-          this.$toast(res.error_message);
-          console.log(this.refund_money);
-        }
+        this.getImgUrl();
       } else {
         this.$toast("请填写完整信息！");
+      }
+    },
+    async editAll() {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.0",
+        timestamp: tStamp,
+        apply_id: this.apply_id,
+        refund_type: this.refund_type,
+        refund_money: this.real_refund_money,
+        refund_count: this.refundInfo.buy_count,
+        refund_reason: this.refund_reason,
+        refund_desc: this.refund_desc,
+        pic: this.pic
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_REFUND_EDIT(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.$toast("修改成功!");
+        this.$router.go(-1);
+      } else {
+        this.$toast(res.error_message);
+        console.log(this.refund_money);
       }
     },
     //获取退款详情
@@ -314,8 +320,8 @@ export default {
       }
     },
     //计数改变
-    goodCount(item) {
-      console.log(index, gIndex);
+    goodsCount() {
+      // console.log(item);
       this.real_refund_money = (
         this.refund_count * this.refundInfo.goods_price
       ).toFixed(2);
