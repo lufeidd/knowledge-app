@@ -7,7 +7,7 @@
 
     <ul v-else class="addressBox">
       <li v-for="(item, key) in addressData" :key="key">
-        <div class="info">
+        <div class="info" @click="editAction(item.address_id)">
           <div>
             <span class="name">{{ item.consignee }}</span>
             <span class="phone">{{ item.mobile }}</span>

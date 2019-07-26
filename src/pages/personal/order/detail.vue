@@ -12,9 +12,11 @@
         @click="tologistics"
         v-if="infoData.state == 2 || infoData.state == 5 || infoData.state == 4"
       >
-        <svg class="icon car" aria-hidden="true">
-          <use xlink:href="#icon-interflow-line" />
-        </svg>
+        <div>
+          <svg class="icon car" aria-hidden="true">
+            <use xlink:href="#icon-interflow-line" />
+          </svg>
+        </div>
         <div class="signforFrom">
           <span class="signforPeople">{{infoData.express_info.desc}}</span>
           <span class="signDate">{{infoData.express_info.time}}</span>
@@ -24,9 +26,11 @@
         </svg>
       </div>
       <div class="signfor">
-        <svg class="icon car" aria-hidden="true">
-          <use xlink:href="#icon-location-line" />
-        </svg>
+        <div>
+          <svg class="icon car" aria-hidden="true">
+            <use xlink:href="#icon-location-line" />
+          </svg>
+        </div>
         <div class="signforFrom">
           <div class="personalInfo">
             <span>{{infoData.consignee_name}}</span>
@@ -93,7 +97,11 @@
     </div>
     <div class="priceInfo">
       <div class="first">
-        <van-cell v-if="infoData.order_money" title="商品总额" v-model="'¥'+infoData.order_money" />
+        <van-cell
+          v-if="infoData.order_goods_money"
+          title="商品总额"
+          v-model="'¥'+infoData.order_goods_money"
+        />
       </div>
       <van-cell v-if="infoData.dispatch_price" title="运费" v-model="'¥'+infoData.dispatch_price" />
       <!-- <van-cell title="商品优惠" v-model="discount"/> -->
