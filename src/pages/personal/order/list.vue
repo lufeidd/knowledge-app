@@ -27,16 +27,16 @@
             >{{item.state_desc}}</span>
           </div>
           <div class="section">
-            <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
+            <swiper @click="toDetail(item)" class="swiperTags" :options="swiperOption" ref="mySwiper">
               <swiper-slide v-for="(item1,index) in item.details" :key="'swiper-'+index">
-                <div class="ratiobox" @click="toDetail(item)">
+                <div class="ratiobox" >
                   <a class="bookImg" v-lazy:background-image="item1.pic"></a>
                 </div>
               </swiper-slide>
             </swiper>
             <div class="tip1">
               <span class="actulPay">
-                实付款：
+                {{item.state == 1? '待付款：':'实付款：'}}
                 <span class="money">￥{{item.order_money}}</span>
               </span>
             </div>
