@@ -89,8 +89,9 @@ export default {
 
         for(let i=0;i<this.infoData.length;i++){
           this.infoData[i].content = this.infoData[i].content.replace(/。/g,"。</br>");
-          // console.log(this.infoData[i].content)
+          console.log(this.infoData[i].content)
        }
+
       } else {
         this.$toast(res.error_message);
       }
