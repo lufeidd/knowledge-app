@@ -201,9 +201,9 @@ export default {
       this.refund_reason = item;
       if (this.refund_reason == "一直未收到货") {
         this.refundInfo.max_price = this.max_price;
+        this.real_refund_money = this.max_price;
         this.show_dispatch = true;
         this.if_write = false;
-
       } else {
         this.refundInfo.max_price = (
           this.refundInfo.buy_count * this.refundInfo.goods_price
