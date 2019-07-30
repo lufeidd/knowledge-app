@@ -518,8 +518,8 @@ export default {
               self.$toast('充值成功~');
               window.location.reload();
             }
-            // 商品购买
-            if (localStorage.getItem('routerLink').indexOf('/pay/account') != -1) {
+            // 商品购买  虚拟 / 实物
+            if (localStorage.getItem('routerLink').indexOf('/pay/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/index') != -1) {
               self.$toast('支付成功~');
               self.$router.replace({
                 name: "paysuccess",
