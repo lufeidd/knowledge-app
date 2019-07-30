@@ -1,12 +1,12 @@
 <template>
   <div id="onePage" class="refund">
     <div class="cell">
-      <span>退款类型:</span>
+      <span>退款类型：</span>
       <span class="typeRefund">退款</span>
     </div>
     <div class="cell reason" @click="choose()">
       <div>
-        <span>退款原因:{{refund_reason}}</span>
+        <span>退款原因：{{refund_reason}}</span>
         <span class="typeRefund"></span>
       </div>
       <span class="choose">
@@ -25,7 +25,7 @@
         <span>退款金额：</span>
         <span class="money">{{ refundInfo.max_price }}元</span>
       </div>
-      <!-- <span class="choose" v-if="refundInfo.dispatch_price">（包含运费：{{refundInfo.dispatch_price}}元）</span> -->
+      <span class="choose" v-if="refundInfo.dispatch_price">（包含运费：{{refundInfo.dispatch_price}}元）</span>
     </div>
     <div class="cell explain">
       <span>退款说明：</span>
@@ -361,6 +361,8 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.refund_reason = res.response_data.refund_reason;
         this.refund_desc = res.response_data.refund_desc;
+        this.refundInfo.max_price = res.response_data.max_money;
+        this.refundInfo.dispatch_price = res.response_data.dispatch_price;
 
         if (res.response_data.pic.length > 0) {
           for (let i = 0; i < res.response_data.pic.length; i++) {
