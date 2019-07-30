@@ -103,17 +103,17 @@
       <!-- <van-cell title="商品优惠" v-model="discount"/> -->
       <!-- <van-cell title="余额" v-model="'-¥'+priceInfo.remain.toFixed(2)"/> -->
       <p class="acturalPay" style="margin-top:10px;">
-        <template v-if="infoData.state == 1">待支付</template>
+        <template>{{infoData.state == 1? '待支付':'实付款'}}</template>
         <!-- 待发货 -->
-        <template v-if="infoData.state == 2 || infoData.state == 4 || infoData.state == 5 || (infoData.state == 7 && infoData.pay_money)">实付款</template>
+        <!-- <template v-if="infoData.state == 2 || infoData.state == 4 || infoData.state == 5 || (infoData.state == 7 && infoData.pay_money)">实付款</template> -->
         <!-- 已销售 -->
         <!-- <template v-if="infoData.state == 4">实付款</template> -->
         <!-- 已发货 -->
         <!-- <template v-if="infoData.state == 5">实付款</template> -->
-        <template v-if="infoData.state == 7">已取消</template>
+        <!-- <template v-if="infoData.state == 7 && !infoData.pay_money">已取消</template> -->
         <span
           v-if="infoData.order_money"
-        >¥{{infoData.order_money}}</span>
+        >¥{{infoData.pay_money.toFixed(2)}}</span>
       </p>
     </div>
     <!-- 发票 -->
