@@ -45,9 +45,18 @@
       <span>上传凭证</span>
       <upload :uploadData="uploadData"></upload>
     </div>
+    <div style="height: 60px;"></div>
+    <div v-if="this.isIphx" style="height: 34px;"></div>
+
     <div class="bottomBox" :class="{iphx:this.isIphx}">
-      <van-button type="danger" v-if="type_of =='edit'" size="large" @click="editRefund">修改申请</van-button>
-      <van-button type="danger" v-else size="large" @click="submitRefund">提交申请</van-button>
+      <div v-if="type_of =='edit'">
+        <van-button type="danger" v-if="submit_state" size="large" @click="editRefund">修改申请</van-button>
+        <van-button type="danger" disabled v-else size="large">提交中</van-button>
+      </div>
+      <div v-else>
+        <van-button type="danger" v-if="submit_state" size="large" @click="submitRefund">提交申请</van-button>
+        <van-button type="danger" disabled v-else size="large">提交中</van-button>
+      </div>
     </div>
     <van-popup v-model="show" position="bottom">
       <div class="title">
@@ -74,6 +83,45 @@
 
 <style src="@/style/scss/pages/personal/order/refund.scss" scoped lang="scss"></style>
 
+<style lang="scss">
+#twoPage {
+  .van-button {
+    border-radius: 0;
+  }
+
+  .van-button::before {
+    display: none;
+  }
+
+  .van-button--plain.van-button--danger {
+    background-color: #fff;
+  }
+
+  .van-button--danger {
+    background-color: #f05654;
+    border-color: #f05654;
+  }
+
+  .van-button--danger.van-button--disabled {
+    background-color: #d6d6d6;
+    border-color: #d6d6d6;
+    opacity: 1;
+  }
+
+  .van-button--small {
+    min-width: 80px;
+  }
+
+  .van-button--large {
+    height: 50px;
+    line-height: 50px;
+  }
+
+  .van-button--default {
+    color: #333;
+  }
+}
+</style>
 <script>
 import upload from "../../../../components/upload";
 import { COMMON_UPLOAD } from "../../../../apis/public.js";
@@ -108,9 +156,10 @@ export default {
       refundInfo: {},
       type_of: "refund",
       apply_id: null,
-      max_price:null,
-      show_dispatch:false,
-      dispatch_price:null,
+      max_price: null,
+      show_dispatch: false,
+      dispatch_price: null,
+      submit_state: true
     };
   },
   mounted() {
@@ -119,9 +168,6 @@ export default {
     this.apply_id = this.$route.query.apply_id;
     this.type_of = this.$route.query.type_of;
     this.getInfo();
-    if (this.type_of == "edit") {
-      this.getRefundDetail();
-    }
   },
   methods: {
     choose() {
@@ -145,10 +191,12 @@ export default {
     radio_check(item, index) {
       this.radio = index;
       this.refund_reason = item;
-      if(this.refund_reason == '一直未收到货'){
-        this.refundInfo.max_price = (this.refundInfo.buy_count*this.refundInfo.goods_price).toFixed(2);
+      if (this.refund_reason == "一直未收到货") {
+        this.refundInfo.max_price = (
+          this.refundInfo.buy_count * this.refundInfo.goods_price
+        ).toFixed(2);
         this.show_dispatch = false;
-      }else{
+      } else {
         this.refundInfo.max_price = this.max_price;
         this.show_dispatch = true;
       }
@@ -211,7 +259,7 @@ export default {
         this.submitAll();
       }
     },
-    async submitRefund() {
+    submitRefund() {
       if (
         this.refund_reason &&
         this.order_id &&
@@ -219,12 +267,14 @@ export default {
         this.real_refund_money &&
         this.refund_desc
       ) {
+        this.submit_state = false;
         this.getImgUrl();
       } else {
         this.$toast("请填写完整信息！");
       }
     },
     async submitAll() {
+      this.submit_state = false;
       var tStamp = this.$getTimeStamp();
       var data = {
         version: "1.0",
@@ -240,9 +290,11 @@ export default {
       data.sign = this.$getSign(data);
       let res = await ORDER_REFUND_ADD(data);
       if (res.hasOwnProperty("response_code")) {
+        this.submit_state = true;
         this.$toast("申请成功!");
         this.$router.go(-1);
       } else {
+        this.submit_state = true;
         this.$toast(res.error_message);
       }
     },
@@ -263,12 +315,15 @@ export default {
         this.max_price = res.response_data.max_price;
         this.reasonList = res.response_data.reason_list.onlyrefund;
         this.dispatch_price = res.response_data.dispatch_price;
+        if (this.type_of == "edit") {
+          this.getRefundDetail();
+        }
       } else {
         this.$toast(res.error_message);
       }
     },
     //修改申请
-    async editRefund() {
+    editRefund() {
       if (
         this.refund_reason &&
         this.order_id &&
@@ -276,6 +331,7 @@ export default {
         this.refundInfo.goods_price &&
         this.refund_desc
       ) {
+        this.submit_state = false;
         this.getImgUrl();
       } else {
         this.$toast("请填写完整信息！");
@@ -297,9 +353,11 @@ export default {
       data.sign = this.$getSign(data);
       let res = await ORDER_REFUND_EDIT(data);
       if (res.hasOwnProperty("response_code")) {
+        this.submit_state = true;
         this.$toast("修改成功!");
         this.$router.go(-1);
       } else {
+        this.submit_state = true;
         this.$toast(res.error_message);
         console.log(this.refund_money);
       }
@@ -321,9 +379,9 @@ export default {
         this.real_refund_money = res.response_data.refund_money_total;
         this.max_price = res.response_data.max_money;
         this.dispatch_price = res.response_data.dispatch_price;
-        if(this.refund_reason == '一直未收到货'){
+        if (this.refund_reason == "一直未收到货") {
           this.show_dispatch = true;
-        }else{
+        } else {
           this.show_dispatch = false;
         }
       } else {
