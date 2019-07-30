@@ -210,10 +210,13 @@ export default {
         let res = await ORDER_REFUND_ADD(data);
         if (res.hasOwnProperty("response_code")) {
           this.$toast("申请成功!");
-        this.$router.push({
-          name:"orderdetail",
-          query:{order_id:this.order_id}
-        });
+          this.$router.push({
+            name:"ongoing",
+            query:{
+              order_id:this.order_id,
+              detail_id:this.detail_id,
+            }
+          })
         } else {
           this.$toast(res.error_message);
         }
@@ -244,7 +247,13 @@ export default {
         let res = await ORDER_REFUND_EDIT(data);
         if (res.hasOwnProperty("response_code")) {
           this.$toast("修改成功!");
-          this.$router.go(-1);
+          this.$router.push({
+            name:"ongoing",
+            query:{
+              order_id:this.order_id,
+              detail_id:this.detail_id,
+            }
+          })
         } else {
           this.$toast(res.error_message);
         }
@@ -282,6 +291,38 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.refund_reason = res.response_data.refund_reason;
         this.refund_desc = res.response_data.refund_desc;
+
+        if (res.response_data.pic.length > 0) {
+          for (let i = 0; i < res.response_data.pic.length; i++) {
+            $("#upload").prepend(
+              '<div class="flex-box">' +
+                '<div class="box">' +
+                '<div class="content set" data-src="' +
+                res.response_data.pic[i] +
+                '" style="background-image: url(' +
+                res.response_data.pic[i] +
+                ');">' +
+                '<div class="del">' +
+                '<svg class="icon" aria-hidden="true">' +
+                '<use xlink:href="#icon-close-line"></use>' +
+                "</svg>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>"
+            );
+          }
+        }
+        if(res.response_data.pic.length == 3){$("#van").css("display", "none");}
+        $("#upload .del").on("click", function() {
+          // length = box.length;
+          $(this)
+            .parents(".flex-box")
+            .remove();
+
+          $("#van").css("display", "block");
+        });
+
       } else {
         this.$toast(res.error_message);
       }

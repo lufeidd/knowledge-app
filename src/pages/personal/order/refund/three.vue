@@ -38,7 +38,10 @@
             <span class="money">{{real_refund_money}}元</span>
           </span>
         </div>
-        <span class="choose" v-if="dispatch_price&&show_dispatch&&count_show">（包含运费：{{dispatch_price}}元）</span>
+        <span
+          class="choose"
+          v-if="dispatch_price && show_dispatch && count_show"
+        >（包含运费：{{dispatch_price}}元）</span>
       </div>
     </div>
     <div class="cell explain">
@@ -60,10 +63,9 @@
         <van-button type="danger" disabled v-else size="large">提交中</van-button>
       </div>
       <div v-else>
-        <van-button type="danger" v-if="submit_state" size="large" @click="submitRefund" >提交申请</van-button>
+        <van-button type="danger" v-if="submit_state" size="large" @click="submitRefund">提交申请</van-button>
         <van-button type="danger" disabled v-else size="large">提交中</van-button>
       </div>
-
     </div>
     <van-popup v-model="show" position="bottom">
       <div class="title">
@@ -126,11 +128,11 @@ export default {
       refundInfo: {},
       type_of: "refund",
       apply_id: null,
-      show_dispatch:false,
-      count_show:true,
-      max_price:null,
-      submit_state:true,
-      dispatch_price:null,
+      show_dispatch: false,
+      count_show: true,
+      max_price: null,
+      submit_state: true,
+      dispatch_price: null
     };
   },
   mounted() {
@@ -159,10 +161,12 @@ export default {
     radio_check(item, index) {
       this.radio = index;
       this.refund_reason = item;
-      if(this.refund_reason == '七天无理由' || this.refund_reason == '其他'){
-        this.real_refund_money = (this.refundInfo.buy_count*this.refundInfo.goods_price).toFixed(2);
+      if (this.refund_reason == "七天无理由" || this.refund_reason == "其他") {
+        this.real_refund_money = (
+          this.refundInfo.buy_count * this.refundInfo.goods_price
+        ).toFixed(2);
         this.show_dispatch = false;
-      }else{
+      } else {
         this.real_refund_money = this.max_price;
         this.show_dispatch = true;
       }
@@ -186,7 +190,7 @@ export default {
           .split("||")
           .filter(item => item !== "undefined")
           .join("||");
-        // console.log(this.feedbackImgs)
+
 
         var tStamp = this.$getTimeStamp();
         var data = {
@@ -204,12 +208,12 @@ export default {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 1);
 
-          // console.log(res);
           var arr = [];
           for (let i = 0; i < res.response_data.length; i++) {
             arr.push(res.response_data[i].url);
           }
           this.pic = arr.join(",");
+          // console.log(this.pic);return
         } else {
           if (res.hasOwnProperty("error_code") && res.error_code == 100) {
             // store 设置登录状态
@@ -257,7 +261,13 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.submit_state = true;
         this.$toast("申请成功!");
-        this.$router.go(-1);
+        this.$router.push({
+          name:"ongoing",
+          query:{
+            order_id:this.order_id,
+            detail_id:this.detail_id,
+          }
+        })
       } else {
         this.$toast(res.error_message);
       }
@@ -300,7 +310,7 @@ export default {
       }
     },
     async editAll() {
-      this.submit_state = false
+      this.submit_state = false;
       var tStamp = this.$getTimeStamp();
       var data = {
         version: "1.0",
@@ -308,7 +318,7 @@ export default {
         apply_id: this.apply_id,
         refund_type: this.refund_type,
         refund_money: this.real_refund_money,
-        refund_count: this.refundInfo.buy_count,
+        refund_count: this.refund_count,
         refund_reason: this.refund_reason,
         refund_desc: this.refund_desc,
         pic: this.pic
@@ -318,7 +328,13 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.submit_state = true;
         this.$toast("修改成功!");
-        this.$router.go(-1);
+        this.$router.push({
+          name:"ongoing",
+          query:{
+            order_id:this.order_id,
+            detail_id:this.detail_id,
+          }
+        })
       } else {
         this.$toast(res.error_message);
         console.log(this.refund_money);
@@ -342,14 +358,48 @@ export default {
         this.real_refund_money = res.response_data.refund_money_total;
         this.max_price = res.response_data.max_money;
         this.dispatch_price = res.response_data.dispatch_price;
-        if(this.refund_reason == this.refund_reason == '七天无理由' || this.refund_reason == '其他'){
+
+        if (res.response_data.pic.length > 0) {
+          for (let i = 0; i < res.response_data.pic.length; i++) {
+            $("#upload").prepend(
+              '<div class="flex-box">' +
+                '<div class="box">' +
+                '<div class="content set" data-src="' +
+                res.response_data.pic[i] +
+                '" style="background-image: url(' +
+                res.response_data.pic[i] +
+                ');">' +
+                '<div class="del">' +
+                '<svg class="icon" aria-hidden="true">' +
+                '<use xlink:href="#icon-close-line"></use>' +
+                "</svg>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>"
+            );
+          }
+        }
+        if(res.response_data.pic.length == 3){$("#van").css("display", "none");};
+        $("#upload .del").on("click", function() {
+          // length = box.length;
+          $(this)
+            .parents(".flex-box")
+            .remove();
+
+          $("#van").css("display", "block");
+        });
+        if (
+          (this.refund_reason == this.refund_reason) == "七天无理由" ||
+          this.refund_reason == "其他"
+        ) {
           this.show_dispatch = false;
-        }else{
+        } else {
           this.show_dispatch = true;
         }
-        if(this.refund_count == this.refundInfo.buy_count){
+        if (this.refund_count == this.refundInfo.buy_count) {
           this.count_show = true;
-        }else{
+        } else {
           this.count_show = false;
         }
       } else {
@@ -362,14 +412,16 @@ export default {
       this.real_refund_money = (
         this.refund_count * this.refundInfo.goods_price
       ).toFixed(2);
-      if(this.refund_count == this.refundInfo.buy_count){
+      if (this.refund_count == this.refundInfo.buy_count) {
         this.real_refund_money = this.max_price;
         this.count_show = true;
-      }else{
-        this.real_refund_money = (this.refund_count*this.refundInfo.goods_price).toFixed(2);
+      } else {
+        this.real_refund_money = (
+          this.refund_count * this.refundInfo.goods_price
+        ).toFixed(2);
         this.count_show = false;
       }
-    },
+    }
   }
 };
 </script>
