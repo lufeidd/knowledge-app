@@ -30,8 +30,8 @@
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div style="height: 60px;"></div>
     <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-if="refund_state<3">
-      <span class="button" @click="edit_refund" v-if="refund_state == 0 || refund_state == 1">修改申请</span>
-      <span class="button" @click="write_logistics" v-if="refund_state == 1">填写物流信息</span>
+      <span class="button" @click="edit_refund" v-if="refund_state == 0">修改申请</span>
+      <span class="button" @click="write_logistics" v-if="refund_state == 1 && refund_type==3">填写物流信息</span>
       <span class="button" @click="re_refund" v-if="refund_state == 2">重新申请</span>
       <span class="button" @click="cancle_refund" v-if="refund_state == 0 || refund_state == 1">撤销申请</span>
     </div>

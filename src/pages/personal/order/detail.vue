@@ -97,11 +97,7 @@
     </div>
     <div class="priceInfo">
       <div class="first">
-        <van-cell
-          v-if="infoData.order_goods_money"
-          title="商品总额"
-          v-model="'¥'+infoData.order_goods_money"
-        />
+        <van-cell v-if="infoData.order_goods_money" title="商品总额" v-model="'¥'+infoData.order_goods_money" />
       </div>
       <van-cell v-if="infoData.dispatch_price" title="运费" v-model="'¥'+infoData.dispatch_price" />
       <!-- <van-cell title="商品优惠" v-model="discount"/> -->
@@ -116,8 +112,8 @@
         <template v-if="infoData.state == 5">实付款</template>
         <template v-if="infoData.state == 7">已取消</template>
         <span
-          v-if="infoData.pay_money"
-        >¥{{infoData.pay_money}}</span>
+          v-if="infoData.order_money"
+        >¥{{infoData.order_money}}</span>
       </p>
     </div>
     <!-- 发票 -->

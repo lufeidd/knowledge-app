@@ -25,12 +25,14 @@
         </span>
         <span class="choose" v-if="dispatch_price&&show_dispatch">（包含运费：{{dispatch_price}}元）</span>
       </div>
-      <input
-        type="text"
-        v-model="real_refund_money"
-        @input="refundmoney"
-        placeholder="请输入退款金额,例如5.00"
-      />元
+      <div v-if="if_write">
+        <input
+          type="text"
+          v-model="real_refund_money"
+          @input="refundmoney"
+          placeholder="请输入退款金额,例如5.00"
+        />元
+      </div>
     </div>
     <div class="cell explain">
       <span>退款说明：</span>
@@ -159,7 +161,8 @@ export default {
       max_price: null,
       show_dispatch: false,
       dispatch_price: null,
-      submit_state: true
+      submit_state: true,
+      if_write:true,
     };
   },
   mounted() {
@@ -186,19 +189,27 @@ export default {
       if (Number(this.real_refund_money) > Number(this.refundInfo.max_price)) {
         this.$toast("超出最大退款金额！");
         this.real_refund_money = this.refundInfo.max_price;
+
+      }
+      if(this.refund_reason !== "一直未收到货" && (Number(this.real_refund_money) > Number(this.refundInfo.buy_count * this.refundInfo.goods_price))){
+        this.refundInfo.max_price = (this.refundInfo.buy_count * this.refundInfo.goods_price).toFixed(2)
+        this.real_refund_money = (this.refundInfo.buy_count * this.refundInfo.goods_price).toFixed(2);
       }
     },
     radio_check(item, index) {
       this.radio = index;
       this.refund_reason = item;
       if (this.refund_reason == "一直未收到货") {
+        this.refundInfo.max_price = this.max_price;
+        this.show_dispatch = true;
+        this.if_write = false;
+
+      } else {
         this.refundInfo.max_price = (
           this.refundInfo.buy_count * this.refundInfo.goods_price
         ).toFixed(2);
         this.show_dispatch = false;
-      } else {
-        this.refundInfo.max_price = this.max_price;
-        this.show_dispatch = true;
+        this.if_write = true;
       }
     },
     // 获取上传图片路径
@@ -292,7 +303,13 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.submit_state = true;
         this.$toast("申请成功!");
-        this.$router.go(-1);
+        this.$router.push({
+          name:"ongoing",
+          query:{
+            order_id:this.order_id,
+            detail_id:this.detail_id,
+          }
+        })
       } else {
         this.submit_state = true;
         this.$toast(res.error_message);
@@ -355,7 +372,13 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.submit_state = true;
         this.$toast("修改成功!");
-        this.$router.go(-1);
+        this.$router.push({
+          name:"ongoing",
+          query:{
+            order_id:this.order_id,
+            detail_id:this.detail_id,
+          }
+        })
       } else {
         this.submit_state = true;
         this.$toast(res.error_message);
@@ -379,10 +402,44 @@ export default {
         this.real_refund_money = res.response_data.refund_money_total;
         this.max_price = res.response_data.max_money;
         this.dispatch_price = res.response_data.dispatch_price;
+
+        if (res.response_data.pic.length > 0) {
+          for (let i = 0; i < res.response_data.pic.length; i++) {
+            $("#upload").prepend(
+              '<div class="flex-box">' +
+                '<div class="box">' +
+                '<div class="content set" data-src="' +
+                res.response_data.pic[i] +
+                '" style="background-image: url(' +
+                res.response_data.pic[i] +
+                ');">' +
+                '<div class="del">' +
+                '<svg class="icon" aria-hidden="true">' +
+                '<use xlink:href="#icon-close-line"></use>' +
+                "</svg>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>"
+            );
+          }
+        }
+        if(res.response_data.pic.length == 3){$("#van").css("display", "none");}
+        $("#upload .del").on("click", function() {
+          // length = box.length;
+          $(this)
+            .parents(".flex-box")
+            .remove();
+
+          $("#van").css("display", "block");
+        });
+
         if (this.refund_reason == "一直未收到货") {
           this.show_dispatch = true;
+          this.if_write = false;
         } else {
           this.show_dispatch = false;
+          this.if_write = true;
         }
       } else {
         this.$toast(res.error_message);
