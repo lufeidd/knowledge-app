@@ -364,28 +364,30 @@ export default {
         this.refundInfo.max_price = res.response_data.max_money;
         this.refundInfo.dispatch_price = res.response_data.dispatch_price;
 
-        if (res.response_data.pic.length > 0) {
-          for (let i = 0; i < res.response_data.pic.length; i++) {
-            $("#upload").prepend(
-              '<div class="flex-box">' +
-                '<div class="box">' +
-                '<div class="content set" data-src="' +
-                res.response_data.pic[i] +
-                '" style="background-image: url(' +
-                res.response_data.pic[i] +
-                ');">' +
-                '<div class="del">' +
-                '<svg class="icon" aria-hidden="true">' +
-                '<use xlink:href="#icon-close-line"></use>' +
-                "</svg>" +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "</div>"
-            );
+        if(res.response_data.pic !== null){
+          if (res.response_data.pic.length > 0) {
+            for (let i = 0; i < res.response_data.pic.length; i++) {
+              $("#upload").prepend(
+                '<div class="flex-box">' +
+                  '<div class="box">' +
+                  '<div class="content set" data-src="' +
+                  res.response_data.pic[i] +
+                  '" style="background-image: url(' +
+                  res.response_data.pic[i] +
+                  ');">' +
+                  '<div class="del">' +
+                  '<svg class="icon" aria-hidden="true">' +
+                  '<use xlink:href="#icon-close-line"></use>' +
+                  "</svg>" +
+                  "</div>" +
+                  "</div>" +
+                  "</div>" +
+                  "</div>"
+              );
+            }
           }
+          if(res.response_data.pic.length == 3){$("#van").css("display", "none");}
         }
-        if(res.response_data.pic.length == 3){$("#van").css("display", "none");}
         $("#upload .del").on("click", function() {
           // length = box.length;
           $(this)
