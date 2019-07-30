@@ -1383,6 +1383,8 @@ export default {
       // 关联节目列表播放状态
       this.myAudioData.type = __type;
       this.audioPlaying = !__type;
+      
+      console.log(123, __type, this.allPlayStatus);
     },
     // --------------------------------播放列表----------------------------------
     audioListShow(__type) {
