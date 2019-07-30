@@ -27,9 +27,21 @@
             >{{item.state_desc}}</span>
           </div>
           <div class="section">
-            <swiper @click="toDetail(item)" class="swiperTags" :options="swiperOption" ref="mySwiper">
+            <div class="bookDetail" v-if="item.details.length == 1" @click="toDetail(item)">
+              <div class="ratiobox">
+                <a class="bookImg" v-lazy:background-image="item.details[0].pic"></a>
+              </div>
+              <span class="title">{{item.details[0].goods_name}}</span>
+            </div>
+            <swiper
+              @click="toDetail(item)"
+              class="swiperTags"
+              :options="swiperOption"
+              ref="mySwiper"
+              v-else
+            >
               <swiper-slide v-for="(item1,index) in item.details" :key="'swiper-'+index">
-                <div class="ratiobox" >
+                <div class="ratiobox">
                   <a class="bookImg" v-lazy:background-image="item1.pic"></a>
                 </div>
               </swiper-slide>

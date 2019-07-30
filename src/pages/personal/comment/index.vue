@@ -24,7 +24,7 @@
           </div>
           <p class="comment">{{item.content}}</p>
           <div class="section">
-            <div class="bookDetail">
+            <div class="bookDetail" @click="goodsDetail(item)">
               <div class="ratiobox">
                 <div class="bookImg" v-lazy:background-image="item.goods_image"></div>
               </div>
@@ -39,7 +39,7 @@
     </van-list>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    
+
   </div>
 </template>
 
@@ -141,17 +141,60 @@ export default {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
         localStorage.setItem("loginState", 1);
-        
+
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
           localStorage.setItem("loginState", 100);
-          
+
         }
         this.$toast(res.error_message);
       }
-    }
+    },
+    goodsDetail(item){
+      console.log(item);
+      // 音频/视频
+      if (item.goods_type == 1 || item.goods_type == 2) {
+        this.$router.push({
+          name: "albumdetail",
+          query: {
+            goods_id: item.goods_id,
+            pid: null
+          }
+        });
+      }
+      // 专辑
+      if (item.goods_type == 6) {
+        this.$router.push({
+          name: "article",
+          query: {
+            goods_id: item.goods_id,
+            pid: null
+          }
+        });
+      }
+      // 文章
+      if (item.goods_type == 9) {
+        this.$router.push({
+          name: "album",
+          query: {
+            goods_id: item.goods_id,
+            pid: null
+          }
+        });
+      }
+      // 实物商品
+      if (item.goods_type == 3) {
+        this.$router.push({
+          name: "detail",
+          query: {
+            goods_id: item.goods_id,
+            pid: null
+          }
+        });
+      }
+    },
   }
 };
 </script>

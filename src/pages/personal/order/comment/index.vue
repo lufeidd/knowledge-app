@@ -1,7 +1,7 @@
 <template>
   <div id="indexPage" class="comment">
     <div class="list" v-for="item,index in listData.detail">
-      <div class="bookDetail">
+      <div class="bookDetail" >
         <div class="ratiobox">
           <a class="bookImg" v-lazy:background-image="item.pic"></a>
         </div>
@@ -19,7 +19,7 @@
     </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    
+
   </div>
 </template>
 
@@ -71,7 +71,7 @@ export default {
     },
     //评价
     comment(item){
-      console.log(item);
+      console.log(item);return;
       this.$router.push({
         name:'commentpunish',
         query:{
@@ -80,7 +80,7 @@ export default {
           detail_id:item.id,
         }
       })
-    }
+    },
   },
 };
 </script>
