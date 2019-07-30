@@ -68,16 +68,51 @@
 
 <style lang="scss">
 @import url("./../../style/scss/components/checkbox.scss");
-@import url("./../../style/scss/components/button.scss");
+// @import url("./../../style/scss/components/button.scss");
 #registerPage {
-.phone .van-field__label {
-  border-right: 1px #d6d6d6 solid;
+.van-button {
+  border-radius: 50px;
 }
 
-.van-field__label {
-  max-width: 50px;
-  margin-right: 10px;
+.van-button::before {
+  display: none;
 }
+
+.van-button--plain.van-button--danger {
+  background-color: #fff;
+}
+
+.van-button--danger {
+  background-color: #f05654;
+  border-color: #f05654;
+}
+
+.van-button--danger.van-button--disabled {
+  background-color: #d6d6d6;
+  border-color: #d6d6d6;
+  opacity: 1;
+}
+
+.van-button--small {
+  min-width: 80px;
+}
+
+.van-button--large {
+  height: 50px;
+  line-height: 50px;
+}
+
+.van-button--default {
+  color: #333;
+}
+  .phone .van-field__label {
+    border-right: 1px #d6d6d6 solid;
+  }
+
+  .van-field__label {
+    max-width: 50px;
+    margin-right: 10px;
+  }
 }
 </style>
 
@@ -101,7 +136,7 @@ export default {
       submitData: {
         disabled: true
       },
-      checked: true,
+      checked: true
     };
   },
   mounted() {
@@ -130,8 +165,8 @@ export default {
         this.submitData.disabled = true;
       }
     },
-    checkAction () {
-      this.checkSubmit('submit');
+    checkAction() {
+      this.checkSubmit("submit");
     },
     // 获取验证码
     async sms() {
@@ -167,7 +202,7 @@ export default {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
         localStorage.setItem("loginState", 1);
-        
+
         this.$router.push({ name: "personalIndex", query: data });
         console.log(res);
       } else {
@@ -175,7 +210,6 @@ export default {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
           localStorage.setItem("loginState", 100);
-          
         }
         this.$toast(res.error_message);
       }

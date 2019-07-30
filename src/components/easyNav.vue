@@ -185,7 +185,7 @@ export default {
     };
   },
   mounted() {
-    if(this.type === undefined) {
+    if (this.type === undefined) {
       this.type = this.navData.type;
     }
   },

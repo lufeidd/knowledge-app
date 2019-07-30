@@ -99,10 +99,48 @@
 </template>
 
 <style src="@/style/scss/pages/personal/order/invoice.scss" lang="scss"></style>
-<style scoped>
-@import url("./../../../style/scss/components/button.scss");
-</style>
+<style scoped lang="scss">
+  // @import url("./../../../style/scss/components/button.scss"); 
+#invoicePage {
+  
 
+.van-button {
+  border-radius: 50px;
+}
+
+.van-button::before {
+  display: none;
+}
+
+.van-button--plain.van-button--danger {
+  background-color: #fff;
+}
+
+.van-button--danger {
+  background-color: #f05654;
+  border-color: #f05654;
+}
+
+.van-button--danger.van-button--disabled {
+  background-color: #d6d6d6;
+  border-color: #d6d6d6;
+  opacity: 1;
+}
+
+.van-button--small {
+  min-width: 80px;
+}
+
+.van-button--large {
+  height: 50px;
+  line-height: 50px;
+}
+
+.van-button--default {
+  color: #333;
+}
+}
+</style>
 
 <script>
 // import easyNav from "./../../../components/easyNav";

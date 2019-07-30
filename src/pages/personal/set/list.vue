@@ -7,7 +7,7 @@
 
     <ul v-else class="addressBox">
       <li v-for="(item, key) in addressData" :key="key">
-        <div class="info">
+        <div class="info" @click="editAction(item.address_id)">
           <div>
             <span class="name">{{ item.consignee }}</span>
             <span class="phone">{{ item.mobile }}</span>
@@ -61,12 +61,50 @@
       <div class="count">{{ addressData.length }}/50</div>
     </div>
     <EazyNav type="brand"></EazyNav>
-    
   </div>
 </template>
 
 <style src="@/style/scss/pages/personal/set/list.scss" scoped lang="scss"></style>
-<style src="@/style/scss/components/button.scss" scoped lang="scss"></style>
+<style lang="scss">
+#listPage {
+  .van-button {
+    border-radius: 0;
+  }
+
+  .van-button::before {
+    display: none;
+  }
+
+  .van-button--plain.van-button--danger {
+    background-color: #fff;
+  }
+
+  .van-button--danger {
+    background-color: #f05654;
+    border-color: #f05654;
+  }
+
+  .van-button--danger.van-button--disabled {
+    background-color: #d6d6d6;
+    border-color: #d6d6d6;
+    opacity: 1;
+  }
+
+  .van-button--small {
+    min-width: 80px;
+  }
+
+  .van-button--large {
+    height: 50px;
+    line-height: 50px;
+  }
+
+  .van-button--default {
+    color: #333;
+  }
+}
+</style>
+
 
 <script>
 //  引入接口
@@ -129,6 +167,10 @@ export default {
       let res = await USER_ADDRESS_EDIT(data);
       if (res.hasOwnProperty("response_code")) {
         this.getAddressData();
+        // 从订单确认页面进入的获取地址需要主动回退
+        if(this.$route.query.type && this.$route.query.type == 'confirm') {
+          this.$router.go(-1);
+        }
       } else {
         this.$toast(res.error_message);
       }

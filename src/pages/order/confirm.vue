@@ -2,7 +2,7 @@
   <div id="orderconfirmPage">
     <!-- 地址 -->
     <router-link
-      :to="{name: 'address', query: {pageType: 'add'}}"
+      :to="{name: 'addresslist', query: {type:'confirm'}}"
       class="listBox"
       v-if="Object.keys(address).length == 0"
     >
@@ -15,7 +15,7 @@
     </router-link>
 
     <router-link
-      :to="{name: 'address', query: {pageType: 'edit', addressId: address.address_id}}"
+      :to="{name: 'addresslist', query: {type:'confirm'}}"
       class="listBox"
       v-else
     >
@@ -47,7 +47,7 @@
     </router-link>
     <!-- 商品 -->
     <div @click="gotoDetail" v-if="goodspic && goodspic.length > 0" class="listBox">
-      <div class="center">
+      <div class="center" style="height: 45px;overflow: hidden;">
         <ul class="addressBox img">
           <li v-for="(img,index) in goodspic" :key="index">
             <div class="ratioBox">

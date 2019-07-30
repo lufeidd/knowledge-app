@@ -294,8 +294,12 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         if (res.response_data.success == 1) {
           this.$toast("添加购物车成功~");
+          this.shoppingcart_num++;
         }
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          this.$router.push({name: 'login'})
+        }
         this.$toast(res.error_message);
       }
     },
@@ -426,7 +430,6 @@ export default {
     // 加入购物车
     addToCart() {
       this.toCartData();
-      this.shoppingcart_num++;
     },
     // 立即购买
     buyAction() {

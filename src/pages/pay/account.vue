@@ -5,7 +5,7 @@
       <div class="left" style="margin-right: 10px;">
         <div style="display: flex;justify-content: center;align-items: center;">
           <!-- <router-link to="/detail" class="box"> -->
-          <img :src="goodsInfo.pic[0]">
+          <img :src="goodsInfo.pic[0]" />
           <!-- </router-link> -->
         </div>
       </div>
@@ -37,10 +37,10 @@
         <div class="list" style="display:flex;flex-grow: 1;" @click="payType(key, item)">
           <div class="check">
             <svg class="icon active" aria-hidden="true" v-if="activeIndex == key">
-              <use xlink:href="#icon-checked-right"></use>
+              <use xlink:href="#icon-checked-right" />
             </svg>
             <svg class="icon" aria-hidden="true" v-else>
-              <use xlink:href="#icon-uncheck-line"></use>
+              <use xlink:href="#icon-uncheck-line" />
             </svg>
           </div>
           <!-- 余额支付 -->
@@ -50,7 +50,7 @@
           >
             <div class="text">
               <svg class="icon active" aria-hidden="true">
-                <use xlink:href="#icon-wallet-block"></use>
+                <use xlink:href="#icon-wallet-block" />
               </svg>
             </div>
           </div>
@@ -58,7 +58,7 @@
           <div class="weixin" v-if="item.bank_type == 'wxpay' && item.platform.indexOf('WX') > -1">
             <div class="text">
               <svg class="icon active" aria-hidden="true">
-                <use xlink:href="#icon-weixin-block"></use>
+                <use xlink:href="#icon-weixin-block" />
               </svg>
             </div>
           </div>
@@ -83,7 +83,7 @@
     <!-- tip -->
     <div class="tip" v-if="descInfo">
       <div v-for="(item, key) in descInfo" :key="key">{{ item.content }}</div>
-      <br>
+      <br />
     </div>
 
     <!-- 支付 -->
@@ -126,7 +126,7 @@
           </van-row>
         </div>
         <!-- 密码输入框 -->
-        <van-password-input :value="value" :mask="false" @focus="keyboardShow"/>
+        <van-password-input :value="value" :mask="false" @focus="keyboardShow" />
       </div>
     </van-dialog>
   </div>
@@ -135,10 +135,42 @@
 <style src="@/style/scss/pages/pay.scss" scoped lang="scss"></style>
 
 <style lang="scss">
-@import url("./../../style/scss/components/button.scss");
+// @import url("./../../style/scss/components/button.scss");
 #payaccountPage {
   .van-button {
-    // border-radius: 50px;
+    border-radius: 50px;
+  }
+
+  .van-button::before {
+    display: none;
+  }
+
+  .van-button--plain.van-button--danger {
+    background-color: #fff;
+  }
+
+  .van-button--danger {
+    background-color: #f05654;
+    border-color: #f05654;
+  }
+
+  .van-button--danger.van-button--disabled {
+    background-color: #d6d6d6;
+    border-color: #d6d6d6;
+    opacity: 1;
+  }
+
+  .van-button--small {
+    min-width: 80px;
+  }
+
+  .van-button--large {
+    height: 50px;
+    line-height: 50px;
+  }
+
+  .van-button--default {
+    color: #333;
   }
 
   .van-dialog__confirm,

@@ -11,6 +11,9 @@
   background-color: $greyLight;
   padding-bottom: env(safe-area-inset-bottom); //为底下圆弧的高度 34px  
 
+  // & .van-button {
+  //   border-radius: 0;
+  // }
 
   & .editBox {
     @include displayFlex (flex, center, center);

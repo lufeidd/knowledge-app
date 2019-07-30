@@ -12,9 +12,11 @@
         @click="tologistics"
         v-if="infoData.state == 2 || infoData.state == 5 || infoData.state == 4"
       >
-        <svg class="icon car" aria-hidden="true">
-          <use xlink:href="#icon-interflow-line" />
-        </svg>
+        <div>
+          <svg class="icon car" aria-hidden="true">
+            <use xlink:href="#icon-interflow-line" />
+          </svg>
+        </div>
         <div class="signforFrom">
           <span class="signforPeople">{{infoData.express_info.desc}}</span>
           <span class="signDate">{{infoData.express_info.time}}</span>
@@ -24,9 +26,11 @@
         </svg>
       </div>
       <div class="signfor">
-        <svg class="icon car" aria-hidden="true">
-          <use xlink:href="#icon-location-line" />
-        </svg>
+        <div>
+          <svg class="icon car" aria-hidden="true">
+            <use xlink:href="#icon-location-line" />
+          </svg>
+        </div>
         <div class="signforFrom">
           <div class="personalInfo">
             <span>{{infoData.consignee_name}}</span>

@@ -154,12 +154,12 @@
               <div class="subTitle">{{ item.data.subTitle }}</div>
               <div class="info">
                 <span class="type" v-if="item.type == 3">图书</span>
-                <span class="count">
+                <!-- <span class="count">
                   <svg class="icon" aria-hidden="true" v-if="item.type == 3">
                     <use xlink:href="#icon-eye-line"></use>
                   </svg>
                   {{ item.data.play_num }}
-                </span>
+                </span> -->
                 <span class="time">
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-time-line"></use>

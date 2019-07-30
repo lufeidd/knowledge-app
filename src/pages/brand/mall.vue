@@ -1,53 +1,69 @@
 <template>
-  <div id="mallPage" v-if="goodsInfo != null">
-    <div class="popular">
-      <div class="text">
-        <span class="verticleLine"></span>
-        <span class="lh">{{modleInfo.module_title}}</span>
-      </div>
-      <div class="showContent">
-        <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
-          <swiper-slide v-for="(item,index) in modleInfo.list" :key="index">
-            <div class="slide" @click="linktoDetail(item.contents.link_params)">
-              <div class="ratiobox">
-                <div class="bookImg" v-lazy:background-image="item.contents.pics[0]"></div>
-              </div>
-              <div class="content">
-                <p class="title">{{item.contents.title}}</p>
-                <p class="message">{{item.contents.sub_title}}</p>
-                <p class="money">¥ {{item.contents.price}}</p>
-              </div>
-            </div>
-          </swiper-slide>
-        </swiper>
-      </div>
-    </div>
-    <div class="materialObject" v-for="(item,index) in goodsInfo" :key="index">
-      <div class="materialTitle" @click="linktoDetail(item.module_more)">
+  <div id="mallPage" v-if="module_list != null">
+    <!-- 
+module_temp_id	
+7	横向滑屏
+80	一行两个-纸质图书
+40	一行两个-音频
+60	一行两个-视频
+50	一行两个-专辑
+    30	一行两个-文章-->
+
+    <!-- 横向滑屏 -->
+    <div v-for="(item, index) in module_list" :key="index">
+      <div class="popular" v-if="parseInt(item.module_temp_id) == 7">
         <div class="text">
           <span class="verticleLine"></span>
-          <span class="lh titleOver">{{item.module_title}}</span>
+          <span class="lh" v-if="item.module_title">{{item.module_title}}</span>
         </div>
-        <span class="all">
-          全部
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-next-line" />
-          </svg>
-        </span>
+        <div class="showContent">
+          <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
+            <swiper-slide v-for="(litem,lindex) in item.list" :key="lindex">
+              <div class="slide" @click="linktoDetail(litem.contents.link_params)">
+                <div class="ratiobox">
+                  <div class="bookImg" v-lazy:background-image="litem.contents.pics[0]"></div>
+                </div>
+                <div class="content">
+                  <p class="title" v-if="litem.contents.title">{{litem.contents.title}}</p>
+                  <p class="message" v-if="litem.contents.sub_title">{{litem.contents.sub_title}}</p>
+                  <p class="money" v-if="litem.contents.price">¥ {{litem.contents.price}}</p>
+                </div>
+              </div>
+            </swiper-slide>
+          </swiper>
+        </div>
       </div>
-      <div class="goods">
-        <div
-          class="goodsInfo"
-          v-for="(value,index) in item.list"
-          @click="linktoDetail(value.contents.link_params)"
-          :key="index"
-        >
-          <div class="ratiobox">
-            <div class="bookImg" v-lazy:background-image="value.contents.pics[0]"></div>
+      <!-- 一行两个 -->
+      <div
+        class="materialObject"
+        v-if="parseInt(item.module_temp_id) == 80 || parseInt(item.module_temp_id) == 40 || parseInt(item.module_temp_id) == 60 || parseInt(item.module_temp_id) == 50 || parseInt(item.module_temp_id) == 30"
+      >
+        <div class="materialTitle" @click="linktoDetail(item.module_more)">
+          <div class="text">
+            <span class="verticleLine"></span>
+            <span class="lh titleOver" v-if="item.module_title">{{item.module_title}}</span>
           </div>
-          <p class="name">{{value.contents.title}}</p>
-          <p class="message">{{value.contents.sub_title}}</p>
-          <p class="money">¥ {{value.contents.price}}</p>
+          <span class="all">
+            全部
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-next-line" />
+            </svg>
+          </span>
+        </div>
+        <div class="goods">
+          <div
+            class="goodsInfo"
+            v-for="(gitem, gindex) in item.list"
+            @click="linktoDetail(gitem.contents.link_params)"
+            :key="gindex"
+          >
+            <div class="ratiobox">
+              <div class="bookImg" v-lazy:background-image="gitem.contents.pics[0]"></div>
+            </div>
+            <p class="name" v-if="gitem.contents.title">{{gitem.contents.title}}</p>
+            <p class="message" v-if="gitem.contents.sub_title">{{gitem.contents.sub_title}}</p>
+            <p class="money" v-if="gitem.contents.price">¥ {{gitem.contents.price}}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -86,8 +102,7 @@ export default {
       },
       supplier_id: null,
       title: null,
-      modleInfo: [],
-      goodsInfo: null
+      module_list: []
     };
   },
   mounted() {
@@ -119,8 +134,11 @@ export default {
       let res = await BRAND_PAGE_MALL_INDEX(data);
       if (res.hasOwnProperty("response_code")) {
         console.log(res);
-        this.modleInfo = res.response_data.module_list[0];
-        this.goodsInfo = res.response_data.module_list.slice(1);
+
+        for (let i = 0; i < res.response_data.module_list.length; i++) {}
+
+        this.module_list = res.response_data.module_list;
+
         // 获取页面分享信息
         // if(this.isWxLogin) this.wxShareData();
         var _pageName = "mall/index";
