@@ -88,7 +88,7 @@ export default {
         this.refund_type = res.response_data[res.response_data.length - 1].refund_type;
 
         for(let i=0;i<this.infoData.length;i++){
-          this.infoData[i].content = this.infoData[i].content.replace(/。/g,"。</br>");
+          this.infoData[i].content = this.infoData[i].content.replace(/[\r\n]/g,"</br>");
           console.log(this.infoData[i].content)
        }
 
