@@ -1,12 +1,12 @@
 <template>
   <div id="onePage" class="refund">
     <div class="cell">
-      <span>退款类型:</span>
+      <span>退款类型：</span>
       <span class="typeRefund">退款</span>
     </div>
     <div class="cell reason" @click="choose()">
       <div>
-        <span>退款原因:{{refund_reason}}</span>
+        <span>退款原因：{{refund_reason}}</span>
         <span class="typeRefund"></span>
       </div>
       <span class="choose">

@@ -75,6 +75,7 @@ export default {
       goods_type: null,
       searchContent: "",
       page: 1,
+      title: null,
       page_size: 10
     };
   },
@@ -83,6 +84,9 @@ export default {
       ? this.$route.query.searchContent
       : null;
     this.goods_type = this.$route.query.goods_type;
+    // title
+    this.title = this.$route.query.title ? this.$route.query.title : "";
+    document.title = "搜索结果-" + this.title;
 
     // if(this.goods_type != null) this.getGoods();
   },

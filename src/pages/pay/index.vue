@@ -62,6 +62,8 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.timeData.time = res.response_data.payinfo.end_paytime;
         this.money = res.response_data.payinfo.amount;
+        this.order_id = res.response_data.payinfo.product_id;
+        this.pay_money = res.response_data.payinfo.amount;
         // 倒计时
         this.$timeCountDown(this.timeData);
       } else {

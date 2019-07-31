@@ -10,10 +10,10 @@ import Vue from 'vue';
 // 创建axios的一个实例
 var instance = axios.create({
     // dev
-    baseURL: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis',
+    // baseURL: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis',
 
     // run build
-    // baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
+    baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
 
     headers: { 'App-version': sessionStorage.getItem("isWxLogin") == "yes" ? 'weixin' : 'wap', 'unique-code': localStorage.getItem('openid') },
     // responseType: 'blob',    // 测试发票下载
@@ -25,7 +25,7 @@ instance.interceptors.request.use(function (config) {
     config.credentials = true;
 
     // 网页端跳转 404 页面
-    if (sessionStorage.getItem("isWxLogin") == "no" && (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/account') != -1)) {
+    if (sessionStorage.getItem("isWxLogin") == "no" && (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/index') != -1)) {
         window.location.href = window.location.href.split('#')[0] + '#/404';
     }
     return config;
