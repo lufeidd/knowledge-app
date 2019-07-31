@@ -189,6 +189,7 @@ export default {
   mounted() {
     this.searchContent = this.$route.query.searchContent;
     this.state = this.$route.query.state;
+    document.title = '搜索结果';
   },
   methods: {
     programLoad() {

@@ -156,6 +156,7 @@ export default {
       var data = this.$translate(JSON.parse(link));
       if (data.name == "") return;
       data.query.type = "mall";
+      data.query.title = this.title;
       this.$router.push(data);
     }
     // 获取页面分享信息
