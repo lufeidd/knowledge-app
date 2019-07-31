@@ -1,7 +1,7 @@
 <template>
   <div id="mallPage" v-if="module_list != null">
-    <!-- 
-module_temp_id	
+    <!--
+module_temp_id
 7	横向滑屏
 80	一行两个-纸质图书
 40	一行两个-音频
@@ -152,7 +152,7 @@ export default {
       }
     },
     linktoDetail(link) {
-      // console.log(link);
+      console.log(link);
       var data = this.$translate(JSON.parse(link));
       if (data.name == "") return;
       data.query.type = "mall";

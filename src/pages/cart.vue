@@ -1,6 +1,6 @@
 <template>
   <div id="cartPage">
-    <div class="nullBox" v-if="!cartlist.length && !nouse_goods.length">
+    <div class="nullBox" v-if="show && cartlist.length == 0 && nouse_goods.length == 0">
       <img src="./../assets/null/product.png" width="100%" />
       <div>购物车为空~</div>
     </div>
@@ -199,7 +199,8 @@ export default {
       // 有效的购物车商品列表
       cartlist: [],
       // 无效的购物车商品列表
-      nouse_goods: []
+      nouse_goods: [],
+      show:false,
     };
   },
   mounted() {
@@ -253,6 +254,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.goods_nums = res.response_data.goods_nums;
         this.cartlist = res.response_data.cartlist;
+
         // 公号商品
         if (this.cartlist && this.cartlist.length > 0) {
           for (let i = 0; i < this.cartlist.length; i++) {
@@ -266,6 +268,7 @@ export default {
           res.response_data.money * 100
             ? res.response_data.money * 100
             : this.money;
+        this.show = true;
       } else {
         this.$toast(res.error_message);
       }

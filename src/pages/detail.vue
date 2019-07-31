@@ -26,6 +26,7 @@
         <div class="title">{{ baseData.title }}</div>
       </div>
       <van-cell
+        v-if="location_info"
         :title="'配送至 ' + location_info.province+location_info.city"
         is-link
         :value="dispatch_str"
@@ -33,7 +34,7 @@
       />
 
       <!-- 出版信息 -->
-      <div class="introduction">
+      <div class="introduction" v-if="baseData.attr">
         <div class="text">
           <span class="verticleLine"></span>
           <span class="lh">出版信息</span>
@@ -49,7 +50,7 @@
       <div v-if="baseData.desc" class="introduction" v-html="changeHtml(baseData.desc)"></div>
       <!-- 目录及其他 -->
 
-      <div class="foldBox" v-for="(item, index) in baseData.desc_arr" :key="index">
+      <div class="foldBox" v-for="(item, index) in baseData.desc_arr" :key="index" v-if="baseData.desc_arr">
         <div class="introduction fold" v-if="!item.showAll">
           <div class="text">
             <span class="verticleLine"></span>
@@ -231,6 +232,7 @@ export default {
     // 当前页接口信息
     this.albumData();
     this.getAddressData();
+    // console.log(666,this.baseData.desc_arr)
   },
   methods: {
     // 定位地址信息手动变更动作

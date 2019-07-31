@@ -45,5 +45,15 @@
         }
       }
     }
+    .content.book{
+      .ratiobox {
+        min-width: 129px;
+        .bookImg {
+          display: block;
+          @include ratioBox (100%, 100%, null, contain, $white, null);
+          border-radius: 2.5px;
+        }
+      }
+    }
   }
 }
