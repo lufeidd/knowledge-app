@@ -1,6 +1,6 @@
 <template>
   <div id="resultPage">
-    <div class="nullBox" v-if="programFinished && brandData.length == 0">
+    <div class="nullBox" v-if="programFinished && brandData.length == 0 && bookData.length == 0">
       <img src="../../assets/null/list.png" width="100%" />
       <div>您搜索的内容为空</div>
     </div>
@@ -12,9 +12,33 @@
       @load="programLoad"
       class="list"
     >
-      <div class="content" v-for="(item,index) in brandData" @click="gotoDetail(item)" :key="index">
+      <div class="content" v-for="(item,index) in brandData" @click="gotoDetail(item)" :key="index" v-if="brandData.length > 0">
         <div class="ratiobox">
           <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+        </div>
+        <div class="right">
+          <div class="text">{{item.title}}</div>
+          <div class="pinpai">{{item.sub_title}}</div>
+          <div class="nice">
+            <span class="good" v-if="item.goods_type == 6">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-good-line" />
+              </svg>
+              <span>{{item.praise_num}}</span>
+            </span>
+            <span class="comment">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-comment-line" />
+              </svg>
+              <span>{{ item.comment_num }}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- 图书 -->
+      <div class="content book" v-for="(item,index) in bookData" @click="gotoDetail(item)" :key="index" v-if="bookData.length > 0">
+        <div class="ratiobook">
+          <div class="bookimg" v-lazy:background-image="item.pic[0]"></div>
         </div>
         <div class="right">
           <div class="text">{{item.title}}</div>
@@ -69,6 +93,7 @@ export default {
         "https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75",
       state: "brand",
       brandData: [],
+      bookData:[],
       programLoading: false,
       programFinished: false,
       // 搜索结果参数
@@ -191,7 +216,12 @@ export default {
 
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
-            this.brandData.push(result[i]);
+            
+            if(result[i].goods_type == 3){
+              this.bookData.push(result[i]);
+            }else{
+              this.brandData.push(result[i]);
+            }
           }
           this.programLoading = false;
           this.page++;

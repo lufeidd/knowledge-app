@@ -46,6 +46,7 @@
 
       .slide {
         @include displayFlex(flex, flex-start, null);
+        padding-right: 5px;
 
         .ratiobox {
           min-width: 80px;
