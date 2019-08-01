@@ -1,16 +1,17 @@
 <template>
   <div id="mallPage" v-if="module_list != null">
     <!--
-module_temp_id
-7	横向滑屏
-80	一行两个-纸质图书
-40	一行两个-音频
-60	一行两个-视频
-50	一行两个-专辑
-    30	一行两个-文章-->
+    module_temp_id
+    7	  横向滑屏
+    80	一行两个-纸质图书
+    40	一行两个-音频
+    60	一行两个-视频
+    50	一行两个-专辑
+    30	一行两个-文章
+    -->
 
-    <!-- 横向滑屏 -->
     <div v-for="(item, index) in module_list" :key="index">
+      <!-- 横向滑屏 -->
       <div class="popular" v-if="parseInt(item.module_temp_id) == 7">
         <div class="text">
           <span class="verticleLine"></span>
@@ -102,7 +103,8 @@ export default {
       },
       supplier_id: null,
       title: null,
-      module_list: []
+      module_list: [],
+      page_title:"",
     };
   },
   mounted() {
@@ -110,8 +112,9 @@ export default {
     this.supplier_id = this.$route.query.supplier_id;
     // this.navData.supplier_id = this.supplier_id;
     // title
-    document.title = "商城-" + this.title;
     this.getData();
+    // document.title = "商城-" + this.title;
+    document.title = this.page_title;
   },
   // 进入当前页面
   beforeRouteEnter(to, from, next) {
@@ -134,7 +137,7 @@ export default {
       let res = await BRAND_PAGE_MALL_INDEX(data);
       if (res.hasOwnProperty("response_code")) {
         console.log(res);
-
+        this.page_title = res.response_data.page_title;
         for (let i = 0; i < res.response_data.module_list.length; i++) {}
 
         this.module_list = res.response_data.module_list;

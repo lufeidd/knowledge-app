@@ -7,8 +7,7 @@
   background-color: $greyLight ;
   min-height: 100%;
   box-sizing: border-box;
-  .list{
-    background-color: #fff;
+
     .searhResult{
       position: relative;
       background-color: #fff;
@@ -30,6 +29,7 @@
       .cancel{
         color: $cl6;
         font-size: $fontSize + 2;
+        margin-left: 5px;
       }
       .icon.searchIcon{
         position: absolute;
@@ -41,6 +41,7 @@
     }
     .content{
       @include displayFlex(flex, null, null);
+      background-color: #fff;
       padding: 15px;
       .ratiobox {
         min-width: 129px;
@@ -85,5 +86,7 @@
         }
       }
     }
+  .van-tabs__wrap--scrollable .van-tab{
+      flex:0;
   }
 }

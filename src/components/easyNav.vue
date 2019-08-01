@@ -79,7 +79,7 @@
         </svg>
         <div>首页</div>
       </router-link>
-
+      <!-- 公号首页 -->
       <router-link
         v-if="type == 'brand' && navData.search"
         :to="{path:navData.searchLink,query:{type:type}}"
@@ -90,6 +90,7 @@
         </svg>
         <div>搜索</div>
       </router-link>
+      <!-- 我的订单 -->
       <router-link
         v-if="type == 'order' && navData.search"
         :to="{path:navData.searchLink,query:{type:type}}"
@@ -100,9 +101,10 @@
         </svg>
         <div>搜索</div>
       </router-link>
+      <!-- 商城首页 -->
       <router-link
-        v-if="navData.type == 'mall' && navData.search"
-        :to="{path:navData.searchLink,query:{type:navData.type, supplier_id: navData.supplier_id}}"
+        v-if="type == 'mall' && navData.search"
+        :to="{path:navData.searchLink,query:{type:type, supplier_id: navData.supplier_id}}"
         class="link"
       >
         <svg class="icon" aria-hidden="true">
@@ -110,7 +112,17 @@
         </svg>
         <div>搜索</div>
       </router-link>
-
+      <!-- 首页 -->
+      <router-link
+        v-if="type == 'index' && navData.search"
+        :to="{path:navData.searchLink,query:{type:type}}"
+        class="link"
+      >
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-littleSearch-line" />
+        </svg>
+        <div>搜索</div>
+      </router-link>
       <router-link :to="navData.personalLink" class="link" v-if="navData.personal">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-personal-line" />

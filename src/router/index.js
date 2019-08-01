@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+// 首页
+import index from '@/pages/index'
+
 // 登录/注册
 import login from '@/pages/login/index'
 import password from '@/pages/login/password'
@@ -125,6 +128,15 @@ export default new Router({
     {
       path: '/',
       redirect: '/brand/index',
+    },
+    // 首页
+    {
+      path: '/index',
+      name: 'index',
+      component: index,
+      meta: {
+        title: '',
+      },
     },
     // 登录/注册
     {
