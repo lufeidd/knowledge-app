@@ -1,16 +1,17 @@
 <template>
   <div id="mallPage" v-if="module_list != null">
     <!-- 
-module_temp_id	
-7	横向滑屏
-80	一行两个-纸质图书
-40	一行两个-音频
-60	一行两个-视频
-50	一行两个-专辑
-    30	一行两个-文章-->
+    module_temp_id	
+    7	  横向滑屏
+    80	一行两个-纸质图书
+    40	一行两个-音频
+    60	一行两个-视频
+    50	一行两个-专辑
+    30	一行两个-文章
+    -->
 
-    <!-- 横向滑屏 -->
     <div v-for="(item, index) in module_list" :key="index">
+      <!-- 横向滑屏 -->
       <div class="popular" v-if="parseInt(item.module_temp_id) == 7">
         <div class="text">
           <span class="verticleLine"></span>

@@ -359,6 +359,7 @@ export default {
         if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
 
         this.onsale = 1;
+
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 401) {
           // 上下架状态, 1=> 在架, 0=> 下架
