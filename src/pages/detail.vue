@@ -232,6 +232,7 @@ export default {
     // 当前页接口信息
     this.albumData();
     this.getAddressData();
+    // console.log(666,this.baseData.desc_arr)
   },
   methods: {
     // 定位地址信息手动变更动作

@@ -1,0 +1,128 @@
+/*
+ * author: lufei
+ * date:2019/8/1
+ */
+
+ #indexPage{
+
+  .searhResult{
+    position: relative;
+    background-color: #fff;
+    box-sizing: border-box;
+    padding: 15px;
+    input{
+      width: 100%;
+      height: 33px;
+      box-sizing: border-box;
+      border: none;
+      background-color: $greyLight;
+      border-radius: 16px;
+      text-align: center;
+    }
+    .icon.searchIcon{
+      position: absolute;
+      left: 20px;
+      color: $cl9;
+      top: 50%;
+      margin-top: -7px;
+      left: 30%;
+    }
+  }
+  .sliderImage{
+    .slide{
+      position: relative;
+      .title{
+        position: absolute;
+        bottom: 0;
+        color: #fff;
+        font-size: $fontSize + 4;
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        padding:0 15px;
+        background-color: rgba(0,0,0,0.2);
+      }
+    }
+    .ratiobox {
+      min-width: 100%;
+      .bookImg {
+        display: block;
+        @include ratioBox (100%, 50%, null, contain, $white, null);
+      }
+    }
+    .swiper-container{
+      overflow: visible;
+    }
+    .swiper-pagination-bullet{
+      background: #dcdcdc;
+    }
+    .swiper-pagination-bullet-active{
+      background: $greyLight;
+    }
+    .swiper-container-horizontal>.swiper-pagination-bullets{
+      bottom:-20px;
+    }
+  }
+  .list{
+    margin-top: 25px;
+    .content{
+      @include displayFlex(flex, null, null);
+      padding: 15px;
+      border-bottom: 1px solid $greyLight;
+      .ratiobox {
+        min-width: 129px;
+        position: relative;
+        .bookImg {
+          display: block;
+          @include ratioBox (100%, 62%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 2.5px;
+        }
+        .radio{
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          border-radius: 12px;
+          text-align: center;
+          line-height: 24px;
+          background-color: rgba(0,0,0,0.3);
+          position: absolute;
+          right: 8px;
+          bottom: 8px;
+          .icon{
+            color: #fff;
+          }
+        }
+
+      }
+      .right{
+        flex-grow: 1;
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-content: space-between;
+        .text{
+          @include font("PingFangBold", $fontSize, $cl3);
+          @include twoColtextOverflow;
+        }
+        .pinpai{
+          font-size: $fontSize - 1;
+          color: $cl6;
+        }
+        .nice{
+          @include displayFlex(flex, space-between, flex-end);
+          color: $cl9;
+          font-size: $fontSize - 2;
+          .time{
+
+          }
+          .price{
+            color: $redLight;
+            font-size: $fontSize + 4;
+          }
+        }
+      }
+    }
+  }
+
+ }

@@ -34,7 +34,7 @@
               </svg>
             </div>
             <router-link
-              :to="{name: 'mall', query: {supplier_id: item.supplier_id}}"
+              :to="{name: 'mall', query: {supplier_id: item.supplier_id,title:item.brand_name,}}"
               class="center"
             >
               <div class="title">
@@ -268,6 +268,7 @@ export default {
           res.response_data.money * 100
             ? res.response_data.money * 100
             : this.money;
+        this.show = true;
       } else {
         this.$toast(res.error_message);
       }
