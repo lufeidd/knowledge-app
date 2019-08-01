@@ -141,6 +141,17 @@ export default {
           });
           this.saveItem();
           break;
+        case "index":
+          this.$router.push({
+            name: "brandresult",
+            query: {
+              type: "index",
+              // supplier_id: this.$route.query.supplier_id,
+              searchContent: this.searchHintData.search
+            }
+          });
+          this.saveItem();
+          break;
       }
     },
     onSearch() {
@@ -158,6 +169,8 @@ export default {
         this.searchTo("brand");
       } else if (this.type == "mall") {
         this.searchTo("mall");
+      } else if (this.type == "index") {
+        this.searchTo("index");
       } else {
         this.$toast("请输入您要搜索的内容！");
       }
