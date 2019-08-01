@@ -9,6 +9,36 @@
   box-sizing: border-box;
   .list{
     background-color: #fff;
+    .searhResult{
+      position: relative;
+      background-color: #fff;
+      border-bottom: 5px solid $greyLight;
+      height: 45px;
+      box-sizing: border-box;
+      // line-height: 45px;
+      padding: 8px 15px;
+      input{
+        width: 85%;
+        height: 28px;
+        box-sizing: border-box;
+        border: none;
+        padding-left:25px;
+        padding-right: 15px;
+        background-color: $greyLight;
+        border-radius: 14px;
+      }
+      .cancel{
+        color: $cl6;
+        font-size: $fontSize + 2;
+      }
+      .icon.searchIcon{
+        position: absolute;
+        left: 20px;
+        color: $cl9;
+        top: 50%;
+        margin-top: -5px;
+      }
+    }
     .content{
       @include displayFlex(flex, null, null);
       padding: 15px;
@@ -46,9 +76,9 @@
       }
     }
     .content.book{
-      .ratiobox {
+      .ratiobook {
         min-width: 129px;
-        .bookImg {
+        .bookimg {
           display: block;
           @include ratioBox (100%, 100%, null, contain, $white, null);
           border-radius: 2.5px;

@@ -1,6 +1,6 @@
 <template>
   <div id="resultPage">
-    <div class="nullBox" v-if="programFinished && brandData.length == 0">
+    <div class="nullBox" v-if="programFinished && brandData.length == 0 && bookData.length == 0">
       <img src="../../assets/null/list.png" width="100%" />
       <div>您搜索的内容为空</div>
     </div>
@@ -12,7 +12,14 @@
       @load="programLoad"
       class="list"
     >
-      <div class="content" v-for="(item,index) in brandData" @click="gotoDetail(item)" :key="index" v-if="brandData">
+      <div class="searhResult">
+          <svg class="icon searchIcon" aria-hidden="true">
+            <use xlink:href="#icon-search-line"></use>
+          </svg>
+        <input type="text" v-model="searchContent" @focus="inputText">
+        <span class="cancel" @click="inputText">取消</span>
+      </div>
+      <div class="content" v-for="(item,index) in brandData" @click="gotoDetail(item)" :key="index" v-if="brandData.length > 0">
         <div class="ratiobox">
           <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
         </div>
@@ -36,9 +43,9 @@
         </div>
       </div>
       <!-- 图书 -->
-      <div class="content book" v-for="(item,index) in bookData" @click="gotoDetail(item)" :key="index" v-else>
-        <div class="ratiobox">
-          <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+      <div class="content book" v-for="(item,index) in bookData" @click="gotoDetail(item)" :key="index" v-if="bookData.length > 0">
+        <div class="ratiobook">
+          <div class="bookimg" v-lazy:background-image="item.pic[0]"></div>
         </div>
         <div class="right">
           <div class="text">{{item.title}}</div>
@@ -216,7 +223,6 @@ export default {
 
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
-
             if(result[i].goods_type == 3){
               this.bookData.push(result[i]);
             }else{
@@ -261,6 +267,12 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
+    },
+    inputText(){
+      this.$router.push({
+        name:"search",
+        query:{type:this.$route.query.type}
+      })
     }
   }
 };

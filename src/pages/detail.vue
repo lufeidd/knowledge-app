@@ -50,7 +50,7 @@
       <div v-if="baseData.desc" class="introduction" v-html="changeHtml(baseData.desc)"></div>
       <!-- 目录及其他 -->
 
-      <div class="foldBox" v-for="(item, index) in baseData.desc_arr" :key="index" v-if="baseData.desc_arr">
+      <div class="foldBox" v-for="(item, index) in baseData.desc_arr" :key="index"   v-if="baseData.desc_arr">
         <div class="introduction fold" v-if="!item.showAll">
           <div class="text">
             <span class="verticleLine"></span>

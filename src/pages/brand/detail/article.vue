@@ -22,7 +22,7 @@
           <span class="foucsButton" v-if="articleInfo.is_followed == 0" @click="focusAction">+关注</span>
           <span class="foucsButton cancel" v-else @click="focusAction">已关注</span>
         </div>
-        <div class="contentData" v-html="baseData.desc">{{baseData.desc}}</div>
+        <div class="contentData" v-html="baseData.desc"></div>
         <div class="message">
           <div style="margin-right: 15px;">
             <svg class="icon" aria-hidden="true">

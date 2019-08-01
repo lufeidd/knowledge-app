@@ -48,8 +48,8 @@
             </swiper>
             <div class="tip1">
               <span class="actulPay">
-                共{{item.goods_nums}}件商品
-                {{item.state == 1? '待付款:':'实付款:'}}
+                共件{{item.goods_nums}}商品
+                {{item.state == 1? '待付款：':'实付款：'}}
                 <span class="money">￥{{item.order_money}}</span>
               </span>
             </div>

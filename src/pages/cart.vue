@@ -34,7 +34,7 @@
               </svg>
             </div>
             <router-link
-              :to="{name: 'mall', query: {supplier_id: item.supplier_id}}"
+              :to="{name: 'mall', query: {supplier_id: item.supplier_id,title:item.brand_name,}}"
               class="center"
             >
               <div class="title">
@@ -254,7 +254,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.goods_nums = res.response_data.goods_nums;
         this.cartlist = res.response_data.cartlist;
-
+        this.show = true;
         // 公号商品
         if (this.cartlist && this.cartlist.length > 0) {
           for (let i = 0; i < this.cartlist.length; i++) {
