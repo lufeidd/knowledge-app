@@ -2,12 +2,14 @@
   <div id="mallPage" v-if="module_list != null">
     <!-- 
     module_temp_id	
-    7	  横向滑屏
-    80	一行两个-纸质图书
-    40	一行两个-音频
-    60	一行两个-视频
-    50	一行两个-专辑
-    30	一行两个-文章
+    7	  横向滑屏 - 改成四个固定数量模式
+    80	一行两个带选项卡-纸质图书
+    40	横向商品列表-音频
+    60	横向滑屏-视频
+    50	商品列表-横向-专辑
+
+    
+    
     -->
 
     <div v-for="(item, index) in module_list" :key="index">
@@ -37,7 +39,7 @@
       <!-- 一行两个 -->
       <div
         class="materialObject"
-        v-if="parseInt(item.module_temp_id) == 80 || parseInt(item.module_temp_id) == 40 || parseInt(item.module_temp_id) == 60 || parseInt(item.module_temp_id) == 50 || parseInt(item.module_temp_id) == 30"
+        v-if="parseInt(item.module_temp_id) == 80 || parseInt(item.module_temp_id) == 40 || parseInt(item.module_temp_id) == 60 || parseInt(item.module_temp_id) == 50"
       >
         <div class="materialTitle" @click="linktoDetail(item.module_more)">
           <div class="text">
