@@ -141,6 +141,12 @@
     border-radius: 50px;
   }
 
+  .bottomBox {
+  .van-button {
+    border-radius: 0;
+  }
+  }
+
   .van-button::before {
     display: none;
   }
