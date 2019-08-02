@@ -1,16 +1,16 @@
 <template>
   <div id="mallPage" v-if="module_list != null">
-  
-    <!-- 
-    module_temp_id	
+
+    <!--
+    module_temp_id
     7	  横向滑屏 - 改成四个固定数量模式
     80	一行两个带选项卡-纸质图书
     40	横向商品列表-音频
     60	横向滑屏-视频
     50	商品列表-横向-专辑
 
-    
-    
+
+
     -->
 
     <div v-for="(item, index) in module_list" :key="index">
@@ -117,7 +117,7 @@ export default {
     // title
     this.getData();
     // document.title = "商城-" + this.title;
-    document.title = this.page_title;
+
   },
   // 进入当前页面
   beforeRouteEnter(to, from, next) {
@@ -141,6 +141,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         console.log(res);
         this.page_title = res.response_data.page_title;
+        document.title = this.page_title;
         for (let i = 0; i < res.response_data.module_list.length; i++) {}
 
         this.module_list = res.response_data.module_list;

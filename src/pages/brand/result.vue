@@ -142,6 +142,7 @@ export default {
       ? this.$route.query.searchContent
       : null;
     this.goods_type = this.$route.query.goods_type;
+    this.supplier_id = this.$route.query.supplier_id ? this.$route.query.supplier_id:null;
     // title
     this.title = this.$route.query.title ? this.$route.query.title : "";
     document.title = "搜索结果-" + this.title;
@@ -236,7 +237,7 @@ export default {
       var tStamp = this.$getTimeStamp();
       var data = {
         keywords: this.searchContent,
-        // goods_type: this.goods_type,
+        goods_type: this.goods_type,
         brand_id: this.$route.query.brand_id,
         // page: this.page,
         // page_size: this.page_size,
@@ -292,6 +293,7 @@ export default {
         keywords: this.searchContent,
         goods_type: this.goods_type,
         brand_id: this.$route.query.brand_id,
+        supplier_id:this.supplier_id,
         page: this.page,
         page_size: this.page_size,
         version: "1.0",
