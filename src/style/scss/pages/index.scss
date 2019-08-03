@@ -65,7 +65,7 @@
     }
   }
   .list{
-    margin-top: 25px;
+    margin-top: 15px;
     .content{
       @include displayFlex(flex, null, null);
       padding: 15px;
@@ -103,7 +103,7 @@
         justify-content: space-between;
         align-content: space-between;
         .text{
-          @include font("PingFangBold", $fontSize, $cl3);
+          @include font("PingFangBold", $fontSize + 2, $cl3);
           @include twoColtextOverflow;
         }
         .pinpai{
@@ -120,7 +120,7 @@
           }
           .price{
             color: $redLight;
-            font-size: $fontSize + 4;
+            font-size: $fontSize + 2;
           }
         }
       }

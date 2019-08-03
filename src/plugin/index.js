@@ -226,7 +226,7 @@ export default {
       }
 
     }
-    
+
     // 分享成功后通知后台
     Vue.prototype.$getShareLog = async function (_pageName, _params) {
       var tStamp = this.$getTimeStamp();
@@ -475,8 +475,17 @@ export default {
           queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
           if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
           if (dataTmp.params.goods_type) queryTmp.keywords = dataTmp.params.goods_type;
+          if (dataTmp.params.tagids) queryTmp.tagids = dataTmp.params.tagids;
 
           break;
+          case 'search/result':
+            __name = 'brandresult';
+            queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
+            if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
+            if (dataTmp.params.goods_type) queryTmp.keywords = dataTmp.params.goods_type;
+            if (dataTmp.params.tagids) queryTmp.tagids = dataTmp.params.tagids;
+
+            break;
         // 供应商商城首页
         case 'mall/index':
           __name = 'mall';

@@ -135,6 +135,8 @@ export default {
       title: null,
       page_size: 10,
       contentData:[],
+      supplier_id:null,
+      tagids:null,
     };
   },
   mounted() {
@@ -143,6 +145,8 @@ export default {
       : null;
     this.goods_type = this.$route.query.goods_type;
     this.supplier_id = this.$route.query.supplier_id ? this.$route.query.supplier_id:null;
+    this.tagids = this.$route.query.tagids ? this.$route.query.tagids:null;
+
     // title
     this.title = this.$route.query.title ? this.$route.query.title : "";
     document.title = "搜索结果-" + this.title;
@@ -239,6 +243,8 @@ export default {
         keywords: this.searchContent,
         goods_type: this.goods_type,
         brand_id: this.$route.query.brand_id,
+        supplier_id:this.supplier_id,
+        tagids:this.tagids,
         // page: this.page,
         // page_size: this.page_size,
         version: "1.0",
@@ -294,6 +300,7 @@ export default {
         goods_type: this.goods_type,
         brand_id: this.$route.query.brand_id,
         supplier_id:this.supplier_id,
+        tagids:this.tagids,
         page: this.page,
         page_size: this.page_size,
         version: "1.0",
@@ -361,7 +368,7 @@ export default {
       this.activekey = index;
       this.brandData = [];
       this.programFinished = false;
-      this.currentPage = 1;
+      this.page = 1;
       this.goods_type = Number(this.column_list[index].goods_type);
       // if(this.goods_type == 0){this.goods_type = null}
       console.log(666,this.goods_type)

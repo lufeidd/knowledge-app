@@ -380,7 +380,7 @@ export default {
           }
         });
       }
-      // 专辑
+      // 文章
       if (item.goods_type == 6) {
         this.$router.push({
           name: "article",
@@ -390,7 +390,7 @@ export default {
           }
         });
       }
-      // 文章
+      //专辑
       if (item.goods_type == 9) {
         this.$router.push({
           name: "album",

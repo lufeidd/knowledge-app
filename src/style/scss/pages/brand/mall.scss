@@ -4,102 +4,294 @@
  */
 
 
- * {
+* {
   margin: 0;
   padding: 0;
 }
+
 #mallPage {
   background-color: $greyLight;
   min-height: 100%;
 
-  .verticleLine {
-    display: inline-block;
-    width: 3px;
-    height: 11px;
-    border-radius: 1.5px;
-    background-color: $redDark;
-    margin-right: 4px;
-  }
-
-  .lh {
-    line-height: 1;
-    @include font("PingFangBlod", $fontSize+2, $cl3);
-  }
-
-  .text {
-    @include displayFlex(flex, flex-start, flex-end);
-  }
-
-  .all {
-    @include font("PingFangMedium", $fontSize - 1, $cl9);
-  }
-
+  // 幻灯
   .popular {
     background-color: $white;
-    padding: 15px 0 15px 15px;
+    padding: 15px;
 
     .showContent {
       background-color: $white;
-      margin-top: 5px;
-      padding: 15px 0 0px 0px;
-      margin-bottom: 5px;
+
+      .swiper-container {
+        padding-bottom: 20px;
+      }
+
+      .swiper-container-horizontal>.swiper-pagination-bullets {
+        bottom: -5px;
+      }
 
       .slide {
-        @include displayFlex(flex, flex-start, null);
-        padding-right: 5px;
+        .ratiobox {
+          min-width: 100%;
+
+          .bookImg {
+            @include ratioBox (100%, 43.5%, null, contain, $white, null);
+          }
+        }
+      }
+    }
+  }
+
+  // 标签按钮
+  .tag_button {
+    background-color: $white;
+
+    &::after {
+      display: block;
+      clear: both;
+      content: "";
+      visibility: hidden;
+      height: 0;
+    }
+
+    padding:0 15px 15px 15px;
+
+    .row {
+      float: left;
+      width: 25%;
+      text-align: center;
+    }
+
+    .row:nth-child(4n+1) {
+      text-align: left;
+    }
+
+    .row:nth-child(4n+4) {
+      text-align: right;
+    }
+
+    .button {
+      display: inline-block;
+      border: 1px solid $redLight;
+      box-sizing: border-box;
+      width: 95%;
+      padding: 0 5px;
+      margin-top: 10px;
+      height: 30px;
+      line-height: 30px;
+      color: $redLight;
+      text-align: center;
+      border-radius: 15px;
+      @include textOverflow;
+    }
+  }
+
+  // 固定四个推荐
+  .fourth_tag {
+    background-color: $white;
+    margin-top: 5px;
+    padding: 15px;
+    padding-bottom: 20px;
+
+    .container {
+      margin-top: 10px;
+      @include displayFlex(flex, null, null);
+      flex-wrap: wrap;
+
+      .row {
+        @include displayFlex(flex, null, null);
+        width: 50%;
+        margin-top: 15px;
+      }
+
+      .row:nth-child(2n+2) {
+        @include displayFlex(flex, flex-end, null);
+      }
+
+      .content {
+        box-sizing: border-box;
+        width: 95%;
+        background-color: $greyLight;
+        padding: 10px 5px;
+        border-radius: 3px;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+        @include displayFlex(flex, null, null);
 
         .ratiobox {
-          min-width: 80px;
-          margin-right: 10px;
+          min-width: 60px;
+          background-color: #fff;
+          border-radius: 3px;
+          box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
 
           .bookImg {
             @include ratioBox (100%, 100%, null, contain, $white, null);
+            border-radius: 3px;
           }
         }
 
-        .content {
+        .right {
+          text-align: left;
+          margin-left: 5px;
+          flex-grow: 1;
           display: flex;
           flex-direction: column;
-          align-content: space-between;
           justify-content: space-between;
-          overflow: hidden;
+          align-content: space-between;
 
-          // padding: 10px ;
           .title {
-            line-height: 1.2;
             @include twoColtextOverflow;
-            @include font("PingFangBlod", $fontSize + 1, null);
+            font-size: $fontSize - 2;
           }
 
-          .message {
-            @include textOverflow;
-            @include font("PingFangMedium", $fontSize - 2, $cl6);
-          }
-
-          .money {
-            @include font("PingFangBlod", $fontSize, $redDark);
+          .price {
+            color: $redLight;
           }
         }
+      }
+    }
+  }
+
+  // 图书
+  .book_moudel {
+    background-color: $white;
+    padding: 15px 0;
+    margin-top: 5px;
+    .materialTitle{
+      padding: 0 15px;
+    }
+    .materialObject{
+      padding: 0 15px;
+    }
+  }
+
+  // 专辑
+  .ablum_moudle {
+    background-color: $white;
+    padding: 15px;
+    margin-top: 5px;
+
+
+    .content {
+      @include displayFlex(flex, null, null);
+      margin-top: 20px;
+      .ratiobox {
+        min-width: 129px;
+        position: relative;
+
+        .bookImg {
+          display: block;
+          @include ratioBox (100%,100%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 2.5px;
+          box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .radio {
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          border-radius: 12px;
+          text-align: center;
+          line-height: 24px;
+          background-color: rgba(0, 0, 0, 0.3);
+          position: absolute;
+          right: 8px;
+          bottom: 8px;
+
+          .icon {
+            color: #fff;
+          }
+        }
+
+      }
+
+      .right {
+        flex-grow: 1;
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-content: space-between;
+
+        .text {
+          @include font("PingFangBold", $fontSize + 2, $cl3);
+          width: 100%;
+          @include twoLines;
+        }
+
+        .pinpai {
+          font-size: $fontSize - 1;
+          color: $cl6;
+          @include textOverflow;
+        }
+
+        .nice {
+          @include displayFlex(flex, space-between, flex-end);
+          color: $cl9;
+          font-size: $fontSize - 2;
+
+          .price {
+            color: $redLight;
+            font-size: $fontSize + 2;
+          }
+        }
+      }
+    }
+  }
+  // 视频
+  .video_moudle{
+    background-color: $white;
+    padding: 15px 0 15px 15px;
+    margin-top: 5px;
+    .slide {
+      position: relative;
+      .ratiobox {
+        min-width: 100%;
+        .bookImg {
+          @include ratioBox (100%, 58%, null, contain, $white, null);
+          border-radius: 2px;
+          box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+          box-sizing: border-box;
+        }
+      }
+      .text{
+        font-size: $fontSize + 1;
+        color: #fff;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+      }
+      .vedio_icon{
+        color: #fff;
+        font-size: $fontSize + 16;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -15px;
+        margin-left: -22px;
+      }
+    }
+    .swiper-slide{
+      padding-right: 20px;
+    }
+  }
+
+  // 音频
+  .ablum_moudle.audio{
+    .ratiobox_audio {
+      min-width: 129px;
+      position: relative;
+
+      .bookImg {
+        display: block;
+        @include ratioBox (100%,63%, 1px solid $greyLight, contain, $white, null);
+        border-radius: 2.5px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
       }
     }
   }
 
   .materialObject {
     background-color: $white;
-    margin-top: 5px;
-    padding: 0 15px;
-
-    .materialTitle {
-      @include displayFlex(flex, space-between, null);
-      padding: 10px 0;
-      // width: 100%;
-      .text{
-        max-width: 80%;
-        .titleOver{
-          @include textOverflow;
-        }
-      }
-    }
+    margin-top: 15px;
 
     .goods {
       @include displayFlex(flex, space-between, null);
@@ -109,12 +301,16 @@
       .goodsInfo {
         width: 46%;
         margin-bottom: 5px;
+        padding: 10px 5px;
+        box-sizing: border-box;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
 
         .ratiobox {
-          min-width: 136px;
+          min-width: 120px;
 
           .bookImg {
-            @include ratioBox (100%, 74%, null, contain, $white, null);
+            @include ratioBox (100%, 100%, null, contain, $white, null);
+            // box-shadow: 0 0 3px rgba(0,0,0,0.1);
           }
         }
 
@@ -132,7 +328,56 @@
         .money {
           @include font("PingFangBlod", null, $redDark);
         }
+
+        .bottom {
+          @include displayFlex(flex, space-between, null);
+
+          .buy {
+            padding: 0 5px;
+            color: #fff;
+            background-color: $redLight;
+            border-radius: 11px;
+            text-align: center;
+            height: 23px;
+            line-height: 23px;
+            font-size: $fontSize - 2;
+          }
+        }
       }
+    }
+  }
+  .materialTitle {
+    @include displayFlex(flex, space-between, null);
+    padding-bottom: 10px;
+
+    // width: 100%;
+    .text {
+      max-width: 80%;
+
+      .titleOver {
+        @include textOverflow;
+      }
+    }
+    .verticleLine {
+      display: inline-block;
+      width: 3px;
+      height: 11px;
+      border-radius: 1.5px;
+      background-color: $redDark;
+      margin-right: 4px;
+    }
+
+    .lh {
+      line-height: 1;
+      @include font("PingFangBlod", $fontSize+2, $cl3);
+    }
+
+    .text {
+      @include displayFlex(flex, flex-start, flex-end);
+    }
+
+    .all {
+      @include font("PingFangMedium", $fontSize - 1, $cl9);
     }
   }
 }
