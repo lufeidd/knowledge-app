@@ -1,132 +1,141 @@
 <template>
   <div id="indexPage">
-    <div class="searhResult">
-      <svg class="icon searchIcon" aria-hidden="true">
-        <use xlink:href="#icon-search-line" />
-      </svg>
-      <input type="text" @focus="inputText" placeholder="搜索栏目里的内容" />
-    </div>
-    <div class="sliderImage">
-      <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
-        <swiper-slide v-for="(litem,lindex) in slideData" :key="lindex"  @click="goodsDetail(item)">
-          <div class="slide">
-            <div class="ratiobox">
-              <div class="bookImg" v-lazy:background-image="litem.pic[0]"></div>
+    <div>
+      <div class="searhResult">
+        <svg class="icon searchIcon" aria-hidden="true">
+          <use xlink:href="#icon-search-line" />
+        </svg>
+        <input type="text" @focus="inputText" placeholder="搜索栏目里的内容" />
+      </div>
+      <div class="sliderImage" v-if="slideData.length > 0">
+        <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
+          <swiper-slide
+            v-for="(litem,lindex) in slideData"
+            :key="lindex"
+            @click="goodsDetail(item)"
+          >
+            <div class="slide">
+              <div class="ratiobox">
+                <div class="bookImg" v-lazy:background-image="litem.pic[0]"></div>
+              </div>
+              <div class="title">{{litem.title}}</div>
             </div>
-            <div class="title">{{litem.title}}</div>
-          </div>
-        </swiper-slide>
-        <div class="swiper-pagination" slot="pagination"></div>
-      </swiper>
-    </div>
+          </swiper-slide>
+          <div class="swiper-pagination" slot="pagination"></div>
+        </swiper>
+      </div>
 
-    <div class="list">
-      <!-- 音频 -->
-      <van-list
-        v-model="programLoading"
-        :finished="programFinished"
-        finished-text="没有更多了"
-        @load="programLoad"
-      >
-        <div v-for="(item,index) in listData" :key="index">
-          <!-- 音频 -->
-          <div class="content" v-if="item.goods_type == 1" @click="goodsDetail(item)">
-            <div class="ratiobox">
-              <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
-              <span class="radio">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-video-block" />
-                </svg>
-              </span>
-            </div>
-            <div class="right">
-              <div class="text">{{item.title}}</div>
-              <!-- <div class="pinpai">我飞洒</div> -->
-              <div class="nice">
-                <span>
-                  <span class="time" v-if="item.duration">
-                    <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-time-line" />
-                    </svg>
-                    <span>{{item.duration}}</span>
-                  </span>
+      <div class="list">
+        <!-- 音频 -->
+        <van-list
+          v-model="programLoading"
+          :finished="programFinished"
+          finished-text="没有更多了"
+          @load="programLoad"
+        >
+          <div v-for="(item,index) in listData" :key="index">
+            <!-- 音频 -->
+            <div class="content" v-if="item.goods_type == 1" @click="goodsDetail(item)">
+              <div class="ratiobox">
+                <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+                <span class="radio">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-video-block" />
+                  </svg>
                 </span>
-                <span class="price" v-if="item.price">￥{{item.price}}</span>
+              </div>
+              <div class="right">
+                <div class="text">{{item.title}}</div>
+                <!-- <div class="pinpai">我飞洒</div> -->
+                <div class="nice">
+                  <span>
+                    <span class="time" v-if="item.duration">
+                      <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-time-line" />
+                      </svg>
+                      <span>{{item.duration}}</span>
+                    </span>
+                  </span>
+                  <span class="price" v-if="item.price">￥{{item.price}}</span>
+                </div>
               </div>
             </div>
-          </div>
-          <!-- 视频 -->
-          <div class="content" v-if="item.goods_type == 2" @click="goodsDetail(item)">
-            <div class="ratiobox">
-              <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
-              <span class="radio">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-video-play" />
-                </svg>
-              </span>
-            </div>
-            <div class="right">
-              <div class="text">{{item.title}}</div>
-              <!-- <div class="pinpai">我飞洒</div> -->
-              <div class="nice">
-                <span>
-                  <span class="time" v-if="item.duration">
-                    <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-time-line" />
-                    </svg>
-                    <span>{{item.duration}}</span>
-                  </span>
+            <!-- 视频 -->
+            <div class="content" v-if="item.goods_type == 2" @click="goodsDetail(item)">
+              <div class="ratiobox">
+                <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+                <span class="radio">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-video-play" />
+                  </svg>
                 </span>
-                <span class="price" v-if="item.price">￥{{item.price}}</span>
+              </div>
+              <div class="right">
+                <div class="text">{{item.title}}</div>
+                <!-- <div class="pinpai">我飞洒</div> -->
+                <div class="nice">
+                  <span>
+                    <span class="time" v-if="item.duration">
+                      <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-time-line" />
+                      </svg>
+                      <span>{{item.duration}}</span>
+                    </span>
+                  </span>
+                  <span class="price" v-if="item.price">￥{{item.price}}</span>
+                </div>
               </div>
             </div>
-          </div>
-          <!-- 专辑,图书 -->
-          <div class="content book" v-if="item.goods_type == 9 || item.goods_type == 3" @click="goodsDetail(item)">
-            <div class="ratiobook">
-              <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+            <!-- 专辑,图书 -->
+            <div
+              class="content book"
+              v-if="item.goods_type == 9 || item.goods_type == 3"
+              @click="goodsDetail(item)"
+            >
+              <div class="ratiobook">
+                <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+              </div>
+              <div class="right">
+                <div class="text">{{item.title}}</div>
+                <div class="pinpai">{{item.sub_title}}</div>
+                <div class="nice">
+                  <span>
+                    <span class="time" v-if="item.goods_type == 9">
+                      <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-album-line" />
+                      </svg>
+                      <span>共{{item.item_count}}集</span>
+                    </span>
+                  </span>
+                  <span class="price" v-if="item.price">￥{{item.price}}</span>
+                </div>
+              </div>
             </div>
-            <div class="right">
-              <div class="text">{{item.title}}</div>
-              <div class="pinpai">{{item.sub_title}}</div>
-              <div class="nice">
-                <span>
-                  <span class="time" v-if="item.goods_type == 9">
+            <!-- 文章 -->
+            <div class="content" v-if="item.goods_type == 6" @click="goodsDetail(item)">
+              <div class="ratiobox">
+                <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+              </div>
+              <div class="right">
+                <div class="text">{{item.title}}</div>
+                <!-- <div class="pinpai">我飞洒</div> -->
+                <div class="nice">
+                  <span>
+                    <!-- <span class="time" v-if="item.goods_type == 9">
                     <svg class="icon" aria-hidden="true">
                       <use xlink:href="#icon-album-line" />
                     </svg>
                     <span>共{{item.item_count}}集</span>
+                    </span>-->
                   </span>
-                </span>
-                <span class="price" v-if="item.price">￥{{item.price}}</span>
+                  <span class="price" v-if="item.price">￥{{item.price}}</span>
+                </div>
               </div>
             </div>
           </div>
-          <!-- 文章 -->
-          <div class="content" v-if="item.goods_type == 6" @click="goodsDetail(item)">
-            <div class="ratiobox">
-              <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
-            </div>
-            <div class="right">
-              <div class="text">{{item.title}}</div>
-              <!-- <div class="pinpai">我飞洒</div> -->
-              <div class="nice">
-                <span>
-                  <!-- <span class="time" v-if="item.goods_type == 9">
-                    <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-album-line" />
-                    </svg>
-                    <span>共{{item.item_count}}集</span>
-                  </span>-->
-                </span>
-                <span class="price" v-if="item.price">￥{{item.price}}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </van-list>
+        </van-list>
+      </div>
     </div>
-
     <EazyNav type="index"></EazyNav>
   </div>
 </template>
@@ -157,7 +166,9 @@ export default {
   },
   mounted() {
     this.brand_id = this.$route.query.brand_id;
-    this.packets_id = this.$route.query.packets_id ? this.$route.query.packets_id:null;
+    this.packets_id = this.$route.query.packets_id
+      ? this.$route.query.packets_id
+      : null;
   },
   methods: {
     inputText() {
@@ -186,6 +197,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         var result = res.response_data.result;
         this.slideData = res.response_data.topresult;
+        document.title = res.response_data.title;
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
             this.listData.push(result[i]);
@@ -245,7 +257,7 @@ export default {
           }
         });
       }
-    },
+    }
   }
 };
 </script>

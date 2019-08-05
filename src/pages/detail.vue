@@ -24,6 +24,7 @@
           <van-col span="12" v-if="baseData.stores <= 10" style="text-align: right;">库存紧张</van-col>
         </van-row>
         <div class="title">{{ baseData.title }}</div>
+        <div class="sub_title">{{baseData.sub_title}}</div>
       </div>
       <van-cell
         v-if="location_info"

@@ -71,12 +71,16 @@
         </div>
     </div>-->
     <!-- </div> -->
-    <div v-for="(item,index) in module_list">
+    <div v-for="(item,index) in module_list" :key="index">
       <!-- 顶部幻灯 -->
       <div class="popular" v-if="item.module_temp_id == 1">
         <div class="showContent">
           <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
-            <swiper-slide v-for="(litem,lindex) in item.contents.list" :key="lindex" @click="linktoDetail(litem.contents.link_params)">
+            <swiper-slide
+              v-for="(litem,lindex) in item.contents.list"
+              :key="lindex"
+              @click="linktoDetail(litem.contents.link_params)"
+            >
               <div class="slide">
                 <div class="ratiobox">
                   <div class="bookImg" v-lazy:background-image="litem.contents.pic"></div>
@@ -87,20 +91,56 @@
           </swiper>
         </div>
       </div>
+      <!-- 横向滑屏 -->
+      <div class="popular" v-if="item.module_temp_id == 7">
+        <div class="text">
+          <span class="verticleLine"></span>
+          <span class="lh">{{item.module_name}}</span>
+        </div>
+        <div class="showContent">
+          <swiper class="swiperTags" :options="swiperOption_column" ref="mySwiper">
+            <swiper-slide v-for="(litem,lindex) in item.contents.list" :key="lindex">
+              <div class="slide" @click="linktoDetail(litem.contents.link_params)">
+                <div class="ratiobox">
+                  <div class="bookImg" v-lazy:background-image="litem.contents.pics[0]"></div>
+                </div>
+                <div class="content">
+                  <p class="title" v-if="litem.contents.title">{{litem.contents.title}}</p>
+                  <p class="message" v-if="litem.contents.sub_title">{{litem.contents.sub_title}}</p>
+                  <p class="money" v-if="litem.contents.price">¥ {{litem.contents.price}}</p>
+                </div>
+              </div>
+            </swiper-slide>
+            <div class="swiper-pagination" slot="pagination"></div>
+          </swiper>
+        </div>
+      </div>
       <!-- 文字标签按钮 -->
       <div class="tag_button" v-if="item.module_temp_id == 9 && item.contents.list.length >3">
-        <div class="row" v-for="(litem,lindex) in item.contents.list" :key="lindex" @click="linktoDetail(litem.contents.link_params)">
+        <div
+          class="row"
+          v-for="(litem,lindex) in item.contents.list"
+          :key="lindex"
+          @click="linktoDetail(litem.contents.link_params)"
+        >
           <span class="button">{{litem.contents.name}}</span>
         </div>
       </div>
       <!-- 固定四个标签 -->
       <div class="fourth_tag" v-if="item.module_temp_id == 70">
-        <div class="text">
-          <span class="verticleLine"></span>
-          <span class="lh">{{item.module_name}}</span>
+        <div class="materialTitle">
+          <div class="text">
+            <span class="verticleLine"></span>
+            <span class="lh">{{item.module_name}}</span>
+          </div>
         </div>
         <div class="container">
-          <div class="row" v-for="(litem,lindex) in item.contents.list" :key="lindex" @click="goodsDetail(litem)">
+          <div
+            class="row"
+            v-for="(litem,lindex) in item.contents.list"
+            :key="lindex"
+            @click="goodsDetail(litem)"
+          >
             <div class="content">
               <div class="ratiobox">
                 <div class="bookImg" v-lazy:background-image="litem.contents.pics[0]"></div>
@@ -136,21 +176,26 @@
             v-model="activekey"
           >
             <van-tab title="推荐">
-                <div class="materialObject">
-                  <div class="goods">
-                    <div class="goodsInfo" v-for="(items,indexs) in bookData" :key="indexs" @click="goodsDetail(items)">
-                      <div class="ratiobox">
-                        <div class="bookImg" v-lazy:background-image="items.contents.pics[0]"></div>
-                      </div>
-                      <p class="name">{{items.contents.title}}</p>
-                      <!-- <p class="message">色法</p> -->
-                      <div class="bottom">
-                        <p class="money">¥{{items.contents.price}}</p>
-                        <span class="buy">立即抢购</span>
-                      </div>
+              <div class="materialObject">
+                <div class="goods">
+                  <div
+                    class="goodsInfo"
+                    v-for="(items,indexs) in bookData"
+                    :key="indexs"
+                    @click="goodsDetail(items)"
+                  >
+                    <div class="ratiobox">
+                      <div class="bookImg" v-lazy:background-image="items.contents.pics[0]"></div>
+                    </div>
+                    <p class="name">{{items.contents.title}}</p>
+                    <!-- <p class="message">色法</p> -->
+                    <div class="bottom">
+                      <p class="money">¥{{items.contents.price}}</p>
+                      <span class="buy">立即抢购</span>
                     </div>
                   </div>
                 </div>
+              </div>
             </van-tab>
             <van-tab
               :title="litem.cat_name"
@@ -159,7 +204,12 @@
             >
               <div class="materialObject">
                 <div class="goods">
-                  <div class="goodsInfo" v-for="(item1,index1) in booktagData" :key="index1" @click="goodsDetail(item1)">
+                  <div
+                    class="goodsInfo"
+                    v-for="(item1,index1) in booktagData"
+                    :key="index1"
+                    @click="goodsDetail(item1)"
+                  >
                     <div class="ratiobox">
                       <div class="bookImg" v-lazy:background-image="item1.pic[0]"></div>
                     </div>
@@ -191,7 +241,12 @@
           </span>
         </div>
         <div>
-          <div class="content" v-for="(litem,lindex) in item.contents.list" :key="lindex" @click="goodsDetail(litem)">
+          <div
+            class="content"
+            v-for="(litem,lindex) in item.contents.list"
+            :key="lindex"
+            @click="goodsDetail(litem)"
+          >
             <div class="ratiobox">
               <div class="bookImg" v-lazy:background-image="litem.contents.pics[0]"></div>
             </div>
@@ -229,7 +284,11 @@
         </div>
         <div class="showContent">
           <swiper class="swiperTags" :options="swiperOption_video" ref="mySwiper">
-            <swiper-slide v-for="(litem,lindex) in item.contents.list" :key="lindex" @click="goodsDetail(litem)">
+            <swiper-slide
+              v-for="(litem,lindex) in item.contents.list"
+              :key="lindex"
+              @click="goodsDetail(litem)"
+            >
               <div class="slide">
                 <div class="ratiobox">
                   <div class="bookImg" v-lazy:background-image="litem.contents.pics[0]"></div>
@@ -260,7 +319,12 @@
           </span>
         </div>
         <div>
-          <div class="content" v-for="(litem,lindex) in item.contents.list" :key="lindex" @click="goodsDetail(litem)">
+          <div
+            class="content"
+            v-for="(litem,lindex) in item.contents.list"
+            :key="lindex"
+            @click="goodsDetail(litem)"
+          >
             <div class="ratiobox_audio">
               <div class="bookImg" v-lazy:background-image="litem.contents.pics[0]"></div>
             </div>
@@ -294,7 +358,10 @@
 <script>
 import qs from "Qs";
 // import easyNav from "../../components/easyNav";
-import { BRAND_PAGE_MALL_INDEX , BRAND_SEARCH_GOODS_GETS } from "../../apis/brand.js";
+import {
+  BRAND_PAGE_MALL_INDEX,
+  BRAND_SEARCH_GOODS_GETS
+} from "../../apis/brand.js";
 import { WX_SHARE } from "../../apis/public.js";
 export default {
   // components: {
@@ -320,7 +387,7 @@ export default {
         }
       },
       swiperOption_video: {
-        slidesPerView: 1.1
+        slidesPerView: 1.4
       },
       supplier_id: null,
       title: null,
@@ -328,14 +395,14 @@ export default {
       page_title: "",
       activekey: 0,
       bookData: [],
-      booktagData:[],
-      catlist:[],
-      tagids:null,
+      booktagData: [],
+      catlist: [],
+      tagids: null
     };
   },
   mounted() {
     this.title = this.$route.query.title ? this.$route.query.title : "";
-    // this.supplier_id = this.$route.query.supplier_id;
+    this.supplier_id = this.$route.query.supplier_id;
     // this.navData.supplier_id = this.supplier_id;
     // title
     this.getData();
@@ -383,7 +450,7 @@ export default {
           }
           if (this.module_list[j].module_temp_id == 10) {
             this.bookData = this.module_list[j].contents.list;
-            this.catlist =this.module_list[j].contents.catlist;
+            this.catlist = this.module_list[j].contents.catlist;
           }
         }
 
@@ -451,18 +518,17 @@ export default {
       }
     },
     tabChange(index) {
-      console.log(index)
-      if( index > 0){
+      console.log(index);
+      if (index > 0) {
         this.tagids = this.catlist[index].cat_id;
         this.getTagData();
       }
-
     },
-    async getTagData(){
+    async getTagData() {
       var tStamp = this.$getTimeStamp();
       var data = {
-        supplier_id:this.supplier_id,
-        cids:this.tagids,
+        supplier_id: this.supplier_id,
+        cids: this.tagids,
         page: 1,
         page_size: 6,
         version: "1.0",
@@ -472,12 +538,12 @@ export default {
       let res = await BRAND_SEARCH_GOODS_GETS(data);
 
       if (res.hasOwnProperty("response_code")) {
-        console.log(res,this.tagids)
+        console.log(res, this.tagids);
         this.booktagData = res.response_data.result;
       } else {
         this.$toast(res.error_message);
       }
-    },
+    }
     // 获取页面分享信息
     // async wxShareData() {
     //   var tStamp = this.$getTimeStamp();

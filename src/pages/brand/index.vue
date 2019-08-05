@@ -98,7 +98,7 @@
     </van-popup>
 
     <EazyNav type="brand"></EazyNav>
-    
+
   </div>
 </template>
 
@@ -120,6 +120,7 @@ export default {
       column_list_data: [],
       packets_id: null,
       brand_id: null,
+      supplier_id:null,
       currentPage: 1,
       activekey: 0
     };

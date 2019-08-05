@@ -37,51 +37,56 @@
               finished-text="没有更多了"
               @load="programLoad"
             >
-              <!-- 图书,专辑 -->
-              <div class="content book" v-for="(item,index) in brandData" @click="gotoDetail(item)" :key="index" v-if="item.goods_type == 3 || item.goods_type == 9">
-                <div class="ratiobook">
-                  <div class="bookimg" v-lazy:background-image="item.pic[0]"></div>
-                </div>
-                <div class="right">
-                  <div class="text">{{item.title}}</div>
-                  <div class="pinpai">{{item.sub_title}}</div>
-                  <div class="nice">
-                    <span class="good" v-if="item.goods_type == 6">
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-good-line" />
-                      </svg>
-                      <span>{{item.praise_num}}</span>
-                    </span>
-                    <span class="comment">
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-comment-line" />
-                      </svg>
-                      <span>{{ item.comment_num }}</span>
-                    </span>
+              <div v-for="(item,index) in brandData" :key="index">
+                <!-- 图书,专辑 -->
+                <div class="content book" @click="gotoDetail(item)" v-if="item.goods_type == 3 || item.goods_type == 9">
+                  <div class="ratiobook">
+                    <div class="bookimg" v-lazy:background-image="item.pic[0]"></div>
+                  </div>
+                  <div class="right">
+                    <div class="text">{{item.title}}</div>
+                    <div class="pinpai">{{item.sub_title}}</div>
+                    <div class="nice">
+                      <span class="good" v-if="item.goods_type == 6">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-good-line" />
+                        </svg>
+                        <span>{{item.praise_num}}</span>
+                      </span>
+                      <span class="comment">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-comment-line" />
+                        </svg>
+                        <span>{{ item.comment_num }}</span>
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              <div class="content" v-for="(item,index) in brandData" @click="gotoDetail(item)" :key="index" v-else>
-                <div class="ratiobox">
-                  <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
-                </div>
-                <div class="right">
-                  <div class="text">{{item.title}}</div>
-                  <div class="pinpai">{{item.sub_title}}</div>
-                  <div class="nice">
-                    <span class="good" v-if="item.goods_type == 6">
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-good-line" />
-                      </svg>
-                      <span>{{item.praise_num}}</span>
-                    </span>
-                    <span class="comment">
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-comment-line" />
-                      </svg>
-                      <span>{{ item.comment_num }}</span>
-                    </span>
+                <div
+                  class="content"
+                  @click="gotoDetail(item)"
+                  v-else
+                >
+                  <div class="ratiobox">
+                    <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+                  </div>
+                  <div class="right">
+                    <div class="text">{{item.title}}</div>
+                    <div class="pinpai">{{item.sub_title}}</div>
+                    <div class="nice">
+                      <span class="good" v-if="item.goods_type == 6">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-good-line" />
+                        </svg>
+                        <span>{{item.praise_num}}</span>
+                      </span>
+                      <span class="comment">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-comment-line" />
+                        </svg>
+                        <span>{{ item.comment_num }}</span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -119,8 +124,6 @@ export default {
       //   personalLink: "/personal/index",
       //   type: "brand"
       // },
-      iconUrl:
-        "https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75",
       state: "brand",
       brandData: [],
       bookData: [],
@@ -134,9 +137,9 @@ export default {
       page: 1,
       title: null,
       page_size: 10,
-      contentData:[],
-      supplier_id:null,
-      tagids:null,
+      contentData: [],
+      supplier_id: null,
+      tagids: null
     };
   },
   mounted() {
@@ -144,16 +147,17 @@ export default {
       ? this.$route.query.searchContent
       : null;
     this.goods_type = this.$route.query.goods_type;
-    this.supplier_id = this.$route.query.supplier_id ? this.$route.query.supplier_id:null;
-    this.tagids = this.$route.query.tagids ? this.$route.query.tagids:null;
+    this.supplier_id = this.$route.query.supplier_id
+      ? parseInt(this.$route.query.supplier_id)
+      : 0 ;
+    this.tagids = this.$route.query.tagids ? this.$route.query.tagids : null;
 
     // title
     this.title = this.$route.query.title ? this.$route.query.title : "";
     document.title = "搜索结果-" + this.title;
 
-    // if(this.goods_type != null) this.getGoods();
-
     this.getGoodsColum();
+
   },
   methods: {
     // 获取页面分享信息
@@ -237,14 +241,13 @@ export default {
       this.getGoods();
     },
     async getGoodsColum() {
-
       var tStamp = this.$getTimeStamp();
       var data = {
         keywords: this.searchContent,
         goods_type: this.goods_type,
         brand_id: this.$route.query.brand_id,
-        supplier_id:this.supplier_id,
-        tagids:this.tagids,
+        // supplier_id: this.supplier_id,
+        tagids: this.tagids,
         // page: this.page,
         // page_size: this.page_size,
         version: "1.0",
@@ -299,8 +302,8 @@ export default {
         keywords: this.searchContent,
         goods_type: this.goods_type,
         brand_id: this.$route.query.brand_id,
-        supplier_id:this.supplier_id,
-        tagids:this.tagids,
+        supplier_id: this.supplier_id,
+        tagids: this.tagids,
         page: this.page,
         page_size: this.page_size,
         version: "1.0",
@@ -310,16 +313,17 @@ export default {
       let res = await BRAND_SEARCH_GOODS_GETS(data);
 
       if (res.hasOwnProperty("response_code")) {
+
         var result = res.response_data.result;
-        this.column_list = res.response_data.column;
+        
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
-              this.brandData.push(result[i]);
-              this.contentData.push(result[i])
+            this.brandData.push(result[i]);
+            this.contentData.push(result[i]);
           }
           this.programLoading = false;
           this.page++;
-
+          // console.log('thispage',this.page)
           // 数据全部加载完成
           if (this.page > res.response_data.total_page) {
             this.programFinished = true;
@@ -364,16 +368,13 @@ export default {
       });
     },
     // 点击tab页切换
-    tabChange(index,title) {
+    tabChange(index, title) {
       this.activekey = index;
       this.brandData = [];
       this.programFinished = false;
       this.page = 1;
       this.goods_type = Number(this.column_list[index].goods_type);
-      // if(this.goods_type == 0){this.goods_type = null}
-      console.log(666,this.goods_type)
-    },
-
+    }
   }
 };
 </script>
