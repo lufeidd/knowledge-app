@@ -123,6 +123,14 @@
         </svg>
         <div>搜索</div>
       </router-link>
+      <!-- 购物车 -->
+      <router-link :to="navData.cartLink" class="link" v-if="navData.cart">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-gouwuche" />
+        </svg>
+        <div>购物车</div>
+      </router-link>
+      <!-- 我的 -->
       <router-link :to="navData.personalLink" class="link" v-if="navData.personal">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-personal-line" />
@@ -192,6 +200,8 @@ export default {
         searchLink: "/search",
         personal: true,
         personalLink: "/personal/index",
+        cart:true,
+        cartLink:"/cart",
         type: "brand"
       }
     };

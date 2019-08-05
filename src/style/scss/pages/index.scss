@@ -102,6 +102,7 @@
         flex-direction: column;
         justify-content: space-between;
         align-content: space-between;
+        width: 50%;
         .text{
           @include font("PingFangBold", $fontSize + 2, $cl3);
           @include twoColtextOverflow;

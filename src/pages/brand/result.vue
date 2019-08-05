@@ -139,7 +139,8 @@ export default {
       page_size: 10,
       contentData: [],
       supplier_id: null,
-      tagids: null
+      tagids: null,
+      cids:null,
     };
   },
   mounted() {
@@ -151,6 +152,7 @@ export default {
       ? parseInt(this.$route.query.supplier_id)
       : 0 ;
     this.tagids = this.$route.query.tagids ? this.$route.query.tagids : null;
+    this.cids = this.$route.query.cids ? this.$route.query.cids : null;
 
     // title
     this.title = this.$route.query.title ? this.$route.query.title : "";
@@ -304,6 +306,7 @@ export default {
         brand_id: this.$route.query.brand_id,
         supplier_id: this.supplier_id,
         tagids: this.tagids,
+        cids:this.cids,
         page: this.page,
         page_size: this.page_size,
         version: "1.0",
@@ -315,7 +318,6 @@ export default {
       if (res.hasOwnProperty("response_code")) {
 
         var result = res.response_data.result;
-        
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
             this.brandData.push(result[i]);

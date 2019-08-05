@@ -483,6 +483,7 @@ export default {
             queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
             if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
             if (dataTmp.params.goods_type) queryTmp.goods_type = dataTmp.params.goods_type;
+            if (dataTmp.params.tagids) queryTmp.cids = dataTmp.params.cids;
             if (dataTmp.params.tagids) queryTmp.tagids = dataTmp.params.tagids;
 
             break;

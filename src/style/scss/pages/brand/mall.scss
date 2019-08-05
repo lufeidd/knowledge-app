@@ -21,10 +21,6 @@
     .showContent {
       background-color: $white;
 
-      .swiper-container {
-        padding-bottom: 20px;
-      }
-
       .swiper-container-horizontal>.swiper-pagination-bullets {
         bottom: -5px;
       }
@@ -32,9 +28,10 @@
       .slide {
         .ratiobox {
           min-width: 100%;
-
+          border-radius: 3px;
           .bookImg {
             @include ratioBox (100%, 43.5%, null, contain, $white, null);
+            border-radius: 3px;
           }
         }
       }
@@ -93,7 +90,6 @@
     padding-bottom: 20px;
 
     .container {
-      margin-top: 10px;
       @include displayFlex(flex, null, null);
       flex-wrap: wrap;
 
@@ -349,7 +345,7 @@
   }
   .materialTitle {
     @include displayFlex(flex, space-between, null);
-    padding-bottom: 10px;
+    // padding-bottom: 10px;
 
     // width: 100%;
     .text {

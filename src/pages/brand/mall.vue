@@ -2,75 +2,15 @@
   <div id="mallPage" v-if="module_list != null">
     <!--
     module_temp_id
-    7	  横向滑屏 - 改成四个固定数量模式
-    80	一行两个带选项卡-纸质图书
+    1   幻灯广告
+    7	  横向滑屏
+    9   一排四个，共两排
+    70  固定四个板块
+    10	一行两个带选项卡-纸质图书
     40	横向商品列表-音频
     60	横向滑屏-视频
     50	商品列表-横向-专辑
-
-
-
     -->
-
-    <!-- <div v-for="(item, index) in module_list" :key="index"> -->
-    <!-- 横向滑屏 -->
-    <!-- <div class="popular" v-if="parseInt(item.module_temp_id) == 7">
-        <div class="text">
-          <span class="verticleLine"></span>
-          <span class="lh" v-if="item.module_title">{{item.module_title}}</span>
-        </div>
-        <div class="showContent">
-          <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
-            <swiper-slide v-for="(litem,lindex) in item.list" :key="lindex">
-              <div class="slide" @click="linktoDetail(litem.contents.link_params)">
-                <div class="ratiobox">
-                  <div class="bookImg" v-lazy:background-image="litem.contents.pics[0]"></div>
-                </div>
-                <div class="content">
-                  <p class="title" v-if="litem.contents.title">{{litem.contents.title}}</p>
-                  <p class="message" v-if="litem.contents.sub_title">{{litem.contents.sub_title}}</p>
-                  <p class="money" v-if="litem.contents.price">¥ {{litem.contents.price}}</p>
-                </div>
-              </div>
-            </swiper-slide>
-            <div class="swiper-pagination" slot="pagination"></div>
-          </swiper>
-        </div>
-    </div>-->
-    <!-- 一行两个 -->
-    <!-- <div
-        class="materialObject"
-        v-if="parseInt(item.module_temp_id) == 80 || parseInt(item.module_temp_id) == 40 || parseInt(item.module_temp_id) == 60 || parseInt(item.module_temp_id) == 50"
-      >
-        <div class="materialTitle" @click="linktoDetail(item.module_more)">
-          <div class="text">
-            <span class="verticleLine"></span>
-            <span class="lh titleOver" v-if="item.module_title">{{item.module_title}}</span>
-          </div>
-          <span class="all">
-            全部
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line" />
-            </svg>
-          </span>
-        </div>
-        <div class="goods">
-          <div
-            class="goodsInfo"
-            v-for="(gitem, gindex) in item.list"
-            @click="linktoDetail(gitem.contents.link_params)"
-            :key="gindex"
-          >
-            <div class="ratiobox">
-              <div class="bookImg" v-lazy:background-image="gitem.contents.pics[0]"></div>
-            </div>
-            <p class="name" v-if="gitem.contents.title">{{gitem.contents.title}}</p>
-            <p class="message" v-if="gitem.contents.sub_title">{{gitem.contents.sub_title}}</p>
-            <p class="money" v-if="gitem.contents.price">¥ {{gitem.contents.price}}</p>
-          </div>
-        </div>
-    </div>-->
-    <!-- </div> -->
     <div v-for="(item,index) in module_list" :key="index">
       <!-- 顶部幻灯 -->
       <div class="popular" v-if="item.module_temp_id == 1">
@@ -78,12 +18,11 @@
           <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
             <swiper-slide
               v-for="(litem,lindex) in item.contents.list"
-              :key="lindex"
-              @click="linktoDetail(litem.contents.link_params)"
-            >
-              <div class="slide">
+              :key="lindex">
+              <div class="slide" @click="linktoDetail(litem.contents.link_params)">
                 <div class="ratiobox">
-                  <div class="bookImg" v-lazy:background-image="litem.contents.pic"></div>
+                  <div class="bookImg" :style="{'background-image': 'url('+litem.contents.pic+')'}"></div>
+                  <!-- <div class="bookImg" v-lazy:background-image="litem.contents.pic"></div> -->
                 </div>
               </div>
             </swiper-slide>
@@ -120,10 +59,8 @@
         <div
           class="row"
           v-for="(litem,lindex) in item.contents.list"
-          :key="lindex"
-          @click="linktoDetail(litem.contents.link_params)"
-        >
-          <span class="button">{{litem.contents.name}}</span>
+          :key="lindex">
+          <span class="button" @click="linktoDetail(litem.contents.link_params)">{{litem.contents.name}}</span>
         </div>
       </div>
       <!-- 固定四个标签 -->
@@ -138,10 +75,8 @@
           <div
             class="row"
             v-for="(litem,lindex) in item.contents.list"
-            :key="lindex"
-            @click="goodsDetail(litem)"
-          >
-            <div class="content">
+            :key="lindex">
+            <div class="content" @click="goodsDetail(litem)">
               <div class="ratiobox">
                 <div class="bookImg" v-lazy:background-image="litem.contents.pics[0]"></div>
               </div>
@@ -282,7 +217,7 @@
             </svg>
           </span>
         </div>
-        <div class="showContent">
+        <div class="showContent" style="margin-top:20px;">
           <swiper class="swiperTags" :options="swiperOption_video" ref="mySwiper">
             <swiper-slide
               v-for="(litem,lindex) in item.contents.list"
@@ -381,10 +316,14 @@ export default {
       //   supplier_id: null
       // },
       swiperOption: {
-        autoplay: true,
+        loop: true,
+        autoplay: {
+          disableOnInteraction: false, //手动滑动之后不打断播放
+          delay: 2000
+        },
         pagination: {
           el: ".swiper-pagination"
-        }
+        },
       },
       swiperOption_video: {
         slidesPerView: 1.4
@@ -437,16 +376,20 @@ export default {
 
         for (let j = 0; j < this.module_list.length; j++) {
           if (this.module_list[j].module_temp_id == 9) {
-            if (4 < this.module_list[j].contents.list.length < 8) {
+            console.log(7777,this.module_list[j].contents.list.length)
+
+            if ( 4 < this.module_list[j].contents.list.length && this.module_list[j].contents.list.length < 8 ) {
               this.module_list[j].contents.list = this.module_list[
                 j
-              ].contents.list.slice(0, 4);
+              ].contents.list.slice(0,4);
             }
-            if (this.module_list[j].contents.list.length > 8) {
+            console.log(666,this.module_list[j].contents.list);
+            if (this.module_list[j].contents.list.length >= 8) {
               this.module_list[j].contents.list = this.module_list[
                 j
               ].contents.list.slice(0, 8);
             }
+            console.log(this.module_list[j].contents.list)
           }
           if (this.module_list[j].module_temp_id == 10) {
             this.bookData = this.module_list[j].contents.list;
@@ -520,7 +463,7 @@ export default {
     tabChange(index) {
       console.log(index);
       if (index > 0) {
-        this.tagids = this.catlist[index].cat_id;
+        this.tagids = this.catlist[index-1].cat_id;
         this.getTagData();
       }
     },

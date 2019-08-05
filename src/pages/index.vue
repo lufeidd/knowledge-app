@@ -16,7 +16,8 @@
           >
             <div class="slide">
               <div class="ratiobox">
-                <div class="bookImg" v-lazy:background-image="litem.pic[0]"></div>
+                <!-- <div class="bookImg" v-lazy:background-image="litem.pic[0]"></div> -->
+                <div class="bookImg" :style="{'background-image':'url('+litem.pic[0]+')'}"></div>
               </div>
               <div class="title">{{litem.title}}</div>
             </div>
@@ -149,7 +150,11 @@ export default {
     return {
       type: "index",
       swiperOption: {
-        autoplay: true,
+        loop: true,
+        autoplay: {
+          disableOnInteraction: false, //手动滑动之后不打断播放
+          delay: 2000
+        },
         pagination: {
           el: ".swiper-pagination"
         }

@@ -48,7 +48,7 @@
         </div>
       </div>
       <!-- 图文 -->
-      <div v-if="baseData.desc" class="introduction" v-html="changeHtml(baseData.desc)"></div>
+      <div v-if="baseData.goods_desc" class="introduction" v-html="baseData.goods_desc"></div>
       <!-- 目录及其他 -->
 
       <div class="foldBox" v-for="(item, index) in baseData.desc_arr" :key="index"   v-if="baseData.desc_arr">
