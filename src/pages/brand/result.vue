@@ -39,7 +39,11 @@
             >
               <div v-for="(item,index) in brandData" :key="index">
                 <!-- 图书,专辑 -->
-                <div class="content book" @click="gotoDetail(item)" v-if="item.goods_type == 3 || item.goods_type == 9">
+                <div
+                  class="content book"
+                  @click="gotoDetail(item)"
+                  v-if="item.goods_type == 3 || item.goods_type == 9"
+                >
                   <div class="ratiobook">
                     <div class="bookimg" v-lazy:background-image="item.pic[0]"></div>
                   </div>
@@ -53,7 +57,10 @@
                         </svg>
                         <span>{{item.praise_num}}</span>
                       </span>
-                      <span class="comment">
+                      <span class="price" v-if="item.goods_type == 3">
+                        <span>￥{{ item.price }}</span>
+                      </span>
+                      <span class="comment" v-if="item.goods_type == 9">
                         <svg class="icon" aria-hidden="true">
                           <use xlink:href="#icon-comment-line" />
                         </svg>
@@ -62,11 +69,7 @@
                     </div>
                   </div>
                 </div>
-                <div
-                  class="content"
-                  @click="gotoDetail(item)"
-                  v-else
-                >
+                <div class="content" @click="gotoDetail(item)" v-else>
                   <div class="ratiobox">
                     <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
                   </div>
@@ -140,7 +143,7 @@ export default {
       contentData: [],
       supplier_id: null,
       tagids: null,
-      cids:null,
+      cids: null
     };
   },
   mounted() {
@@ -150,7 +153,7 @@ export default {
     this.goods_type = this.$route.query.goods_type;
     this.supplier_id = this.$route.query.supplier_id
       ? parseInt(this.$route.query.supplier_id)
-      : 0 ;
+      : 0;
     this.tagids = this.$route.query.tagids ? this.$route.query.tagids : null;
     this.cids = this.$route.query.cids ? this.$route.query.cids : null;
 
@@ -159,7 +162,6 @@ export default {
     document.title = "搜索结果-" + this.title;
 
     this.getGoodsColum();
-
   },
   methods: {
     // 获取页面分享信息
@@ -261,6 +263,13 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         var result = res.response_data.result;
         this.column_list = res.response_data.column;
+        var _index ;
+        for(let i=0;i<this.column_list.length;i++){
+          if(this.column_list[i].goods_type == this.goods_type){
+            _index = i;
+          }
+        }
+        this.activekey = _index;
 
         // 获取页面分享信息
         var _pageName = "";
@@ -306,7 +315,7 @@ export default {
         brand_id: this.$route.query.brand_id,
         supplier_id: this.supplier_id,
         tagids: this.tagids,
-        cids:this.cids,
+        cids: this.cids,
         page: this.page,
         page_size: this.page_size,
         version: "1.0",
@@ -316,7 +325,6 @@ export default {
       let res = await BRAND_SEARCH_GOODS_GETS(data);
 
       if (res.hasOwnProperty("response_code")) {
-
         var result = res.response_data.result;
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {

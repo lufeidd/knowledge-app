@@ -33,7 +33,16 @@
         :value="dispatch_str"
         @click="showPopup"
       />
-
+      <!-- 公号信息 -->
+      <div class="brand_info">
+        <div class="left">
+          <div class="ratiobox">
+            <div class="bookImg" v-lazy:background-image="brandInfoData.header_pic"></div>
+          </div>
+          <span class="name">{{brandInfoData.name}}</span>
+        </div>
+        <div class="toMall" @click="toMall">进入商城</div>
+      </div>
       <!-- 出版信息 -->
       <div class="introduction" v-if="baseData.attr">
         <div class="text">
@@ -51,7 +60,12 @@
       <div v-if="baseData.goods_desc" class="introduction" v-html="baseData.goods_desc"></div>
       <!-- 目录及其他 -->
 
-      <div class="foldBox" v-for="(item, index) in baseData.desc_arr" :key="index"   v-if="baseData.desc_arr">
+      <div
+        class="foldBox"
+        v-for="(item, index) in baseData.desc_arr"
+        :key="index"
+        v-if="baseData.desc_arr"
+      >
         <div class="introduction fold" v-if="!item.showAll">
           <div class="text">
             <span class="verticleLine"></span>
@@ -232,8 +246,6 @@ export default {
     this.$getAddressData();
     // 当前页接口信息
     this.albumData();
-    this.getAddressData();
-    // console.log(666,this.baseData.desc_arr)
   },
   methods: {
     // 定位地址信息手动变更动作
@@ -301,7 +313,7 @@ export default {
         }
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-          this.$router.push({name: 'login'})
+          this.$router.push({ name: "login" });
         }
         this.$toast(res.error_message);
       }
@@ -328,6 +340,7 @@ export default {
       let res = await ALBUM(data);
 
       if (res.hasOwnProperty("response_code")) {
+        // console.log(666,this.navData.goods_nums)
         this.shoppingcart_num = res.response_data.shoppingcart_num;
         // 邮费信息
         this.dispatch_str = res.response_data.dispatch_str;
@@ -347,7 +360,9 @@ export default {
         this.detail.goods_id = res.response_data.base.goods_id;
         this.detail.sku_id = res.response_data.base.goods_id;
         this.detail.count = 1;
-
+        if (this.isLogin == 1) {
+          this.getAddressData();
+        }
         // 展开全部状态
         if (this.baseData.desc_arr && this.baseData.desc_arr.length > 0) {
           for (let i = 0; i < this.baseData.desc_arr.length; i++) {
@@ -361,7 +376,6 @@ export default {
         if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
 
         this.onsale = 1;
-
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 401) {
           // 上下架状态, 1=> 在架, 0=> 下架
@@ -461,6 +475,14 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
+    },
+    toMall() {
+      this.$router.push({
+        name:"mall",
+        query:{
+          supplier_id:this.brandInfoData.supplier_id,
+        }
+      })
     }
   }
 };

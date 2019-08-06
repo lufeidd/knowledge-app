@@ -125,10 +125,13 @@
       </router-link>
       <!-- 购物车 -->
       <router-link :to="navData.cartLink" class="link" v-if="navData.cart">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-gouwuche" />
-        </svg>
-        <div>购物车</div>
+        <div class="cart_buy">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-gouwuche" />
+          </svg>
+          <span class="cart_num" v-if="navData.goods_nums">{{navData.goods_nums}}</span>
+          <div>购物车</div>
+        </div>
       </router-link>
       <!-- 我的 -->
       <router-link :to="navData.personalLink" class="link" v-if="navData.personal">
@@ -182,14 +185,34 @@
       }
     }
   }
+  & .cart_buy {
+    position: relative;
+    & .cart_num {
+      display: inline-block;
+      font-size: 12px;
+      padding: 0 3px;
+      color: #fff;
+      background-color: $redLight;
+      position: absolute;
+      right: 0;
+      top: -8px;
+      box-sizing: border-box;
+      border-radius: 16px;
+      line-height: 14px;
+      min-width: 16px;
+      text-align: center;
+    }
+  }
 }
 </style>
 
 <script>
+import { CART_INFO } from "../apis/shopping";
+import { USER_HOMEPAGE } from "../apis/user";
 export default {
   // name: "easyNav",
   // props: ["navData"],
-  props: ["type"],
+  props: ["type","goods_nums"],
   data() {
     return {
       navData: {
@@ -200,20 +223,60 @@ export default {
         searchLink: "/search",
         personal: true,
         personalLink: "/personal/index",
-        cart:true,
-        cartLink:"/cart",
-        type: "brand"
-      }
+        cart: true,
+        cartLink: "/cart",
+        type: "brand",
+        goods_nums: 0
+      },
+      is_Login:null,
     };
   },
   mounted() {
     if (this.type === undefined) {
       this.type = this.navData.type;
     }
+    this.isLogin();
   },
   methods: {
     foldAction() {
       this.navData.fold = !this.navData.fold;
+      if(this.is_Login == 1){
+        this.cartData();
+      }
+    },
+    async isLogin(){
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await USER_HOMEPAGE(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.is_Login = res.response_data.is_login;
+        if(res.response_data.is_login == 1){
+          this.cartData();
+        }
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 获取购物车信息
+    async cartData() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await CART_INFO(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.navData.goods_nums = res.response_data.goods_nums;
+      } else {
+        this.$toast(res.error_message);
+      }
     }
   }
 };

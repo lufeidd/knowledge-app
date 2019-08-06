@@ -22,7 +22,7 @@
       background-color: $white;
 
       .swiper-container-horizontal>.swiper-pagination-bullets {
-        bottom: -5px;
+        bottom: 5px;
       }
 
       .slide {
@@ -139,7 +139,7 @@
           }
 
           .price {
-            color: $redLight;
+            @include font("PingFangBold", null, $redLight);
           }
         }
       }
@@ -176,7 +176,7 @@
         .bookImg {
           display: block;
           @include ratioBox (100%,100%, 1px solid $greyLight, contain, $white, null);
-          border-radius: 2.5px;
+          border-radius: 3px;
           box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
         }
 
@@ -226,8 +226,7 @@
           font-size: $fontSize - 2;
 
           .price {
-            color: $redLight;
-            font-size: $fontSize + 2;
+            @include font("PingFangBold", $fontSize + 1, $redLight);
           }
         }
       }
@@ -244,7 +243,7 @@
         min-width: 100%;
         .bookImg {
           @include ratioBox (100%, 58%, null, contain, $white, null);
-          border-radius: 2px;
+          border-radius: 3px;
           box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
           box-sizing: border-box;
         }
@@ -280,7 +279,7 @@
       .bookImg {
         display: block;
         @include ratioBox (100%,63%, 1px solid $greyLight, contain, $white, null);
-        border-radius: 2.5px;
+        border-radius: 3px;
         box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
       }
     }
@@ -294,53 +293,61 @@
       @include displayFlex(flex, space-between, null);
       margin-top: 5px;
       flex-wrap: wrap;
+      .row{
+        width: 50%;
+        .goodsInfo {
+          width: 95%;
+          margin-bottom: 15px;
+          padding: 10px 5px;
+          box-sizing: border-box;
+          box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+          border-radius: 3px;
 
-      .goodsInfo {
-        width: 46%;
-        margin-bottom: 5px;
-        padding: 10px 5px;
-        box-sizing: border-box;
-        box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+          .ratiobox {
+            min-width: 120px;
 
-        .ratiobox {
-          min-width: 120px;
-
-          .bookImg {
-            @include ratioBox (100%, 100%, null, contain, $white, null);
-            // box-shadow: 0 0 3px rgba(0,0,0,0.1);
+            .bookImg {
+              @include ratioBox (100%, 100%, null, contain, $white, null);
+              // box-shadow: 0 0 3px rgba(0,0,0,0.1);
+            }
           }
-        }
 
-        .name {
-          @include font("PingFangBlod", $fontSize, $cl3);
-          @include twoColtextOverflow;
-          height: 42px;
-        }
+          .name {
+            @include font("PingFangBlod", $fontSize, $cl3);
+            @include twoColtextOverflow;
+            height: 42px;
+            margin: 10px 0;
+          }
 
-        .message {
-          @include font("PingFangMedium", $fontSize - 2, $cl6);
-          @include textOverflow;
-        }
+          .message {
+            @include font("PingFangMedium", $fontSize - 2, $cl6);
+            @include textOverflow;
+          }
 
-        .money {
-          @include font("PingFangBlod", null, $redDark);
-        }
+          .money {
+            @include font("PingFangBold", $fontSize + 3, $redLight);
+          }
 
-        .bottom {
-          @include displayFlex(flex, space-between, null);
+          .bottom {
+            @include displayFlex(flex, space-between, null);
 
-          .buy {
-            padding: 0 5px;
-            color: #fff;
-            background-color: $redLight;
-            border-radius: 11px;
-            text-align: center;
-            height: 23px;
-            line-height: 23px;
-            font-size: $fontSize - 2;
+            .buy {
+              padding: 0 5px;
+              color: #fff;
+              background-color: $redLight;
+              border-radius: 11px;
+              text-align: center;
+              height: 23px;
+              line-height: 23px;
+              font-size: $fontSize - 2;
+            }
           }
         }
       }
+      .row:nth-child(2n+2) {
+        @include displayFlex(flex, flex-end, null);
+      }
+
     }
   }
   .materialTitle {

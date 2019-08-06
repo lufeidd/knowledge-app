@@ -475,7 +475,9 @@ export default {
           queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
           if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
           if (dataTmp.params.goods_type) queryTmp.goods_type = dataTmp.params.goods_type;
+          if (dataTmp.params.brand_id) queryTmp.brand_id = dataTmp.params.brand_id;
           if (dataTmp.params.tagids) queryTmp.tagids = dataTmp.params.tagids;
+          if (dataTmp.params.goods_id) queryTmp.goods_id = dataTmp.params.goods_id;
 
           break;
           case 'search/result':
@@ -483,7 +485,7 @@ export default {
             queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
             if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
             if (dataTmp.params.goods_type) queryTmp.goods_type = dataTmp.params.goods_type;
-            if (dataTmp.params.tagids) queryTmp.cids = dataTmp.params.cids;
+            if (dataTmp.params.cids) queryTmp.cids = dataTmp.params.cids;
             if (dataTmp.params.tagids) queryTmp.tagids = dataTmp.params.tagids;
 
             break;

@@ -100,10 +100,11 @@ export default {
       console.log(this.searchHintData.search.trim() == "");
 
       // setTimeout(()=> {
-        
+
         var tStamp = this.$getTimeStamp();
         var data = {
           k: this.searchHintData.search,
+          brand_id:this.$route.query.brand_id,
           version: "1.0",
           timestamp: tStamp
         };
@@ -116,7 +117,7 @@ export default {
         } else {
           this.$toast(res.error_message);
         }
-      
+
       // }, 600)
     },
     clearText() {

@@ -2,9 +2,9 @@
   <div id="app">
     <!-- 页面缓存, $route.meta.keepAlive默认false -->
     <keep-alive>
-      <router-view v-if="$route.meta.keepAlive"/>
+      <router-view v-if="$route.meta.keepAlive" />
     </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive"/>
+    <router-view v-if="!$route.meta.keepAlive" />
   </div>
 </template>
 
@@ -86,12 +86,10 @@ import axios from "axios";
 import wx from "weixin-js-sdk";
 export default {
   name: "App",
-  data () {
-    return {
-    }
+  data() {
+    return {};
   },
   mounted() {
-
     // this.$router.push('/personal/order/refund/three')
     sessionStorage.setItem("gotoLogin", "no");
     sessionStorage.setItem("isWxLogin", "no");
@@ -110,7 +108,10 @@ export default {
         localStorage.getItem("unionid") == "null" ||
         localStorage.getItem("unionid") == null ||
         localStorage.getItem("headimg") == "null" ||
-        localStorage.getItem("headimg") == null
+        localStorage.getItem("headimg") == null ||
+        this.$route.name == "pay" ||
+        this.$route.name == "payaccount" ||
+        this.$route.name == "account"
       ) {
         // 微信登录 code
         this.$getWxCode();
@@ -138,7 +139,7 @@ export default {
                 localStorage.setItem("openid", response.data.openid);
                 localStorage.setItem("nickname", response.data.nickname);
                 localStorage.setItem("unionid", response.data.unionid);
-                localStorage.setItem('headimg', response.data.headimgurl);
+                localStorage.setItem("headimg", response.data.headimgurl);
                 self.wxCodeStr = "";
                 window.location.href =
                   window.location.protocol +

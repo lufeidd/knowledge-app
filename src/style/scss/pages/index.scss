@@ -29,6 +29,7 @@
     }
   }
   .sliderImage{
+    margin-bottom: 15px;
     .slide{
       position: relative;
       .title{
@@ -65,7 +66,7 @@
     }
   }
   .list{
-    margin-top: 15px;
+
     .content{
       @include displayFlex(flex, null, null);
       padding: 15px;

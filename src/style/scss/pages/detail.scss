@@ -37,6 +37,37 @@
     }
   }
 
+  & .brand_info{
+    background-color: #fff;
+    margin-top: 5px;
+    padding: 5px 15px;
+    @include displayFlex(flex, space-between, center);
+    & .left{
+      @include displayFlex(flex, null, center);
+      & .ratiobox {
+        min-width: 35px;
+        margin-right: 10px;
+        .bookImg {
+          @include ratioBox (100%, 100%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 50%;
+        }
+      }
+      .name{
+        @include font(null, $fontSize + 2, $cl6);
+      }
+    }
+    .toMall{
+      display: inline-block;
+      width: 65px;
+      height: 24px;
+      border:1px solid $redLight;
+      line-height: 24px;
+      text-align: center;
+      @include font(null, $fontSize - 2, $redLight);
+      border-radius: 12px;
+    }
+  }
+
   & .introduction.fold {
     // max-height: 186px;
     max-height: 200px;

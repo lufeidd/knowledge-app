@@ -67,6 +67,9 @@
         .nice{
           color: $cl9;
           font-size: $fontSize - 2;
+          .price{
+            @include font(null, $fontSize, $redLight);
+          }
           .comment,
           .good{
             margin-right: 10px;

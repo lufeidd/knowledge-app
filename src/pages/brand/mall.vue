@@ -16,9 +16,7 @@
       <div class="popular" v-if="item.module_temp_id == 1">
         <div class="showContent">
           <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
-            <swiper-slide
-              v-for="(litem,lindex) in item.contents.list"
-              :key="lindex">
+            <swiper-slide v-for="(litem,lindex) in item.contents.list" :key="lindex">
               <div class="slide" @click="linktoDetail(litem.contents.link_params)">
                 <div class="ratiobox">
                   <div class="bookImg" :style="{'background-image': 'url('+litem.contents.pic+')'}"></div>
@@ -31,7 +29,7 @@
         </div>
       </div>
       <!-- 横向滑屏 -->
-      <div class="popular" v-if="item.module_temp_id == 7">
+      <!-- <div class="popular" v-if="item.module_temp_id == 7">
         <div class="text">
           <span class="verticleLine"></span>
           <span class="lh">{{item.module_name}}</span>
@@ -50,17 +48,16 @@
                 </div>
               </div>
             </swiper-slide>
-            <div class="swiper-pagination" slot="pagination"></div>
           </swiper>
         </div>
-      </div>
+      </div>-->
       <!-- 文字标签按钮 -->
       <div class="tag_button" v-if="item.module_temp_id == 9 && item.contents.list.length >3">
-        <div
-          class="row"
-          v-for="(litem,lindex) in item.contents.list"
-          :key="lindex">
-          <span class="button" @click="linktoDetail(litem.contents.link_params)">{{litem.contents.name}}</span>
+        <div class="row" v-for="(litem,lindex) in item.contents.list" :key="lindex">
+          <span
+            class="button"
+            @click="linktoDetail(litem.contents.link_params)"
+          >{{litem.contents.name}}</span>
         </div>
       </div>
       <!-- 固定四个标签 -->
@@ -72,10 +69,7 @@
           </div>
         </div>
         <div class="container">
-          <div
-            class="row"
-            v-for="(litem,lindex) in item.contents.list"
-            :key="lindex">
+          <div class="row" v-for="(litem,lindex) in item.contents.list" :key="lindex">
             <div class="content" @click="goodsDetail(litem)">
               <div class="ratiobox">
                 <div class="bookImg" v-lazy:background-image="litem.contents.pics[0]"></div>
@@ -96,7 +90,7 @@
             <span class="lh titleOver">{{item.module_name}}</span>
           </div>
           <span class="all">
-            全部
+            更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
             </svg>
@@ -113,20 +107,17 @@
             <van-tab title="推荐">
               <div class="materialObject">
                 <div class="goods">
-                  <div
-                    class="goodsInfo"
-                    v-for="(items,indexs) in bookData"
-                    :key="indexs"
-                    @click="goodsDetail(items)"
-                  >
-                    <div class="ratiobox">
-                      <div class="bookImg" v-lazy:background-image="items.contents.pics[0]"></div>
-                    </div>
-                    <p class="name">{{items.contents.title}}</p>
-                    <!-- <p class="message">色法</p> -->
-                    <div class="bottom">
-                      <p class="money">¥{{items.contents.price}}</p>
-                      <span class="buy">立即抢购</span>
+                  <div class="row" v-for="(items,indexs) in bookData" :key="indexs">
+                    <div class="goodsInfo" @click="goodsDetail(items)">
+                      <div class="ratiobox">
+                        <div class="bookImg" v-lazy:background-image="items.contents.pics[0]"></div>
+                      </div>
+                      <p class="name">{{items.contents.title}}</p>
+                      <!-- <p class="message">色法</p> -->
+                      <div class="bottom">
+                        <p class="money">¥{{items.contents.price}}</p>
+                        <span class="buy">立即抢购</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -139,20 +130,17 @@
             >
               <div class="materialObject">
                 <div class="goods">
-                  <div
-                    class="goodsInfo"
-                    v-for="(item1,index1) in booktagData"
-                    :key="index1"
-                    @click="goodsDetail(item1)"
-                  >
-                    <div class="ratiobox">
-                      <div class="bookImg" v-lazy:background-image="item1.pic[0]"></div>
-                    </div>
-                    <p class="name">{{item1.title}}</p>
-                    <!-- <p class="message">色法</p> -->
-                    <div class="bottom">
-                      <p class="money">¥{{item1.price}}</p>
-                      <span class="buy">立即抢购</span>
+                  <div class="row" v-for="(item1,index1) in booktagData" :key="index1">
+                    <div class="goodsInfo" @click="tabGoodsDetail(item1)">
+                      <div class="ratiobox">
+                        <div class="bookImg" v-lazy:background-image="item1.pic[0]"></div>
+                      </div>
+                      <p class="name">{{item1.title}}</p>
+                      <!-- <p class="message">色法</p> -->
+                      <div class="bottom">
+                        <p class="money">¥{{item1.price}}</p>
+                        <span class="buy">立即抢购</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -169,7 +157,7 @@
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
           <span class="all">
-            全部
+            更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
             </svg>
@@ -211,7 +199,7 @@
             <span class="lh titleOver">{{item.module_name}}</span>
           </div>
           <span class="all">
-            全部
+            更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
             </svg>
@@ -219,12 +207,8 @@
         </div>
         <div class="showContent" style="margin-top:20px;">
           <swiper class="swiperTags" :options="swiperOption_video" ref="mySwiper">
-            <swiper-slide
-              v-for="(litem,lindex) in item.contents.list"
-              :key="lindex"
-              @click="goodsDetail(litem)"
-            >
-              <div class="slide">
+            <swiper-slide v-for="(litem,lindex) in item.contents.list" :key="lindex">
+              <div class="slide" @click="linktoDetail(litem.contents.link_params)">
                 <div class="ratiobox">
                   <div class="bookImg" v-lazy:background-image="litem.contents.pics[0]"></div>
                 </div>
@@ -247,7 +231,7 @@
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
           <span class="all">
-            全部
+            更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
             </svg>
@@ -315,6 +299,10 @@ export default {
       //   type: "mall",
       //   supplier_id: null
       // },
+      imgs: [
+        "https://wdimg3.bookuu.com/goods/10/22/10/1562120530.jpg@!w210",
+        "https://wdimg3.bookuu.com/goods/15/04/03/20190805A110409-1.jpg@!w210"
+      ],
       swiperOption: {
         loop: true,
         autoplay: {
@@ -323,10 +311,13 @@ export default {
         },
         pagination: {
           el: ".swiper-pagination"
-        },
+        }
       },
       swiperOption_video: {
         slidesPerView: 1.4
+      },
+      swiperOption_column: {
+        slidesPerView: 1.3
       },
       supplier_id: null,
       title: null,
@@ -376,20 +367,23 @@ export default {
 
         for (let j = 0; j < this.module_list.length; j++) {
           if (this.module_list[j].module_temp_id == 9) {
-            console.log(7777,this.module_list[j].contents.list.length)
+            // console.log(7777,this.module_list[j].contents.list.length)
 
-            if ( 4 < this.module_list[j].contents.list.length && this.module_list[j].contents.list.length < 8 ) {
+            if (
+              4 < this.module_list[j].contents.list.length &&
+              this.module_list[j].contents.list.length < 8
+            ) {
               this.module_list[j].contents.list = this.module_list[
                 j
-              ].contents.list.slice(0,4);
+              ].contents.list.slice(0, 4);
             }
-            console.log(666,this.module_list[j].contents.list);
+            // console.log(666,this.module_list[j].contents.list);
             if (this.module_list[j].contents.list.length >= 8) {
               this.module_list[j].contents.list = this.module_list[
                 j
               ].contents.list.slice(0, 8);
             }
-            console.log(this.module_list[j].contents.list)
+            // console.log(this.module_list[j].contents.list)
           }
           if (this.module_list[j].module_temp_id == 10) {
             this.bookData = this.module_list[j].contents.list;
@@ -410,7 +404,7 @@ export default {
       }
     },
     linktoDetail(link) {
-      console.log(link);
+      // console.log(link);return
       var data = this.$translate(JSON.parse(link));
       if (data.name == "") return;
       data.query.type = "mall";
@@ -460,10 +454,53 @@ export default {
         });
       }
     },
+    tabGoodsDetail(item) {
+      // console.log(item);return
+      // 音频/视频
+      if (item.goods_type == 1 || item.goods_type == 2) {
+        this.$router.push({
+          name: "albumdetail",
+          query: {
+            goods_id: item.goods_id,
+            pid: null
+          }
+        });
+      }
+      // 文章
+      if (item.goods_type == 6) {
+        this.$router.push({
+          name: "article",
+          query: {
+            goods_id: item.goods_id,
+            pid: null
+          }
+        });
+      }
+      //专辑
+      if (item.goods_type == 9) {
+        this.$router.push({
+          name: "album",
+          query: {
+            goods_id: item.goods_id,
+            pid: null
+          }
+        });
+      }
+      // 实物商品
+      if (item.goods_type == 3) {
+        this.$router.push({
+          name: "detail",
+          query: {
+            goods_id: item.goods_id,
+            pid: null
+          }
+        });
+      }
+    },
     tabChange(index) {
-      console.log(index);
+      // console.log(index);
       if (index > 0) {
-        this.tagids = this.catlist[index-1].cat_id;
+        this.tagids = this.catlist[index - 1].cat_id;
         this.getTagData();
       }
     },
@@ -481,7 +518,7 @@ export default {
       let res = await BRAND_SEARCH_GOODS_GETS(data);
 
       if (res.hasOwnProperty("response_code")) {
-        console.log(res, this.tagids);
+        // console.log(res, this.tagids);
         this.booktagData = res.response_data.result;
       } else {
         this.$toast(res.error_message);
