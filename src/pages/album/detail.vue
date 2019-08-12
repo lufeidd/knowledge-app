@@ -301,7 +301,7 @@
   </div>
 </template>
 
-<style src="@/style/scss/pages/album/detail.scss" lang="scss"></style>
+<style src="@/style/scss/pages/album/detail.scss" scoped lang="scss"></style>
 <style lang="scss">
 #albumdetailPage {
   .van-button {

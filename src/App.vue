@@ -93,6 +93,7 @@ export default {
     // this.$router.push('/personal/order/refund/three')
     sessionStorage.setItem("gotoLogin", "no");
     sessionStorage.setItem("isWxLogin", "no");
+    // console.log(111,Number(localStorage.getItem("get_count")))
 
     // 未授权时微信端访问授权页面
     if (
@@ -101,6 +102,8 @@ export default {
     ) {
       sessionStorage.setItem("isWxLogin", "yes");
       if (
+        localStorage.getItem("openid") == "undefined" ||
+        localStorage.getItem("openid") == undefined ||
         localStorage.getItem("openid") == "null" ||
         localStorage.getItem("openid") == null ||
         localStorage.getItem("nickname") == "null" ||
@@ -116,7 +119,17 @@ export default {
         // 微信登录 code
         this.$getWxCode();
         // 微信授权
-        if (this.wxCodeStr == "") this.$wxLogin();
+
+        if (this.wxCodeStr == "") {
+            var this_count = Number(localStorage.getItem("get_count"));
+            if( this_count < 2 ){
+                this_count ++;
+                localStorage.setItem("get_count",this_count);
+                this.$wxLogin();
+            }else{
+              localStorage.setItem("get_count",0);
+            }
+          };
         if (this.wxCodeStr.length > 6) {
           let url =
             window.location.protocol +

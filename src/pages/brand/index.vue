@@ -316,7 +316,7 @@ export default {
           query: {
             goods_id: item.goods_id,
             pid: null,
-            packets_id: this.packets_id
+            packets_id: this.packets_id,
           }
         });
       }

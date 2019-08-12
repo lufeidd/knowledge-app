@@ -8,14 +8,16 @@ import qs from "Qs";
 import Vue from 'vue';
 
 // 创建axios的一个实例
+var app_version = sessionStorage.getItem("isWxLogin") == "yes" ? 'weixin' : 'wap';
+var open_id = localStorage.getItem('openid');
 var instance = axios.create({
     // dev
-    // baseURL: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis',
+    baseURL: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis',
 
     // run build
-    baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
+    // baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
 
-    headers: { 'App-version': sessionStorage.getItem("isWxLogin") == "yes" ? 'weixin' : 'wap', 'unique-code': localStorage.getItem('openid') },
+    headers: { 'App-version': app_version, 'unique-code': open_id },
     // responseType: 'blob',    // 测试发票下载
     timeout: 15000,
 })
