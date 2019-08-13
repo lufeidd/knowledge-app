@@ -6,7 +6,7 @@
       </div>
       <div class="detail">火把知识</div>
     </div>
-    <span class="foucsButton">打开</span>
+    <span class="foucsButton" @click="download">打开</span>
   </div>
 </template>
 
@@ -68,6 +68,11 @@ export default {
   },
   mounted () {
     this.device = this.$route.query.device;
+  },
+  methods:{
+    download(){
+        window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
+    },
   }
 };
 </script>

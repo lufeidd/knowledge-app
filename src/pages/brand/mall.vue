@@ -389,6 +389,9 @@ export default {
             this.bookData = this.module_list[j].contents.list;
             this.catlist = this.module_list[j].contents.catlist;
           }
+          if (this.module_list[j].module_temp_id == 70) {
+            this.module_list[j].contents.list = this.module_list[j].contents.list.slice(0,4);
+          }
         }
 
         // 获取页面分享信息
@@ -534,7 +537,7 @@ export default {
     //       supplier_id: this.$route.query.supplier_id
     //     }),
     //     version: "1.0",
-    //     timestamp: tStamp
+    //     timestamp: tStamp,
     //   };
     //   data.sign = this.$getSign(data);
     //   let res = await WX_SHARE(data);
