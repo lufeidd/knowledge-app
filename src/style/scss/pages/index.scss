@@ -29,13 +29,14 @@
     }
   }
   .sliderImage{
+    margin-bottom: 15px;
     .slide{
       position: relative;
       .title{
         position: absolute;
         bottom: 0;
         color: #fff;
-        font-size: $fontSize + 4;
+        font-size: $fontSize + 2;
         width: 100%;
         height: 40px;
         line-height: 40px;
@@ -48,23 +49,26 @@
       .bookImg {
         display: block;
         @include ratioBox (100%, 50%, null, contain, $white, null);
+        border-radius: 3px;
+        box-shadow: 0 0 4px rgba(0,0,0,0.1);
       }
     }
-    .swiper-container{
-      overflow: visible;
-    }
+
     .swiper-pagination-bullet{
       background: #dcdcdc;
     }
     .swiper-pagination-bullet-active{
       background: $greyLight;
     }
+    .swiper-container{
+      padding-bottom: 20px;
+    }
     .swiper-container-horizontal>.swiper-pagination-bullets{
-      bottom:-20px;
+      bottom:-5px;
     }
   }
   .list{
-    margin-top: 25px;
+
     .content{
       @include displayFlex(flex, null, null);
       padding: 15px;
@@ -74,8 +78,9 @@
         position: relative;
         .bookImg {
           display: block;
-          @include ratioBox (100%, 62%, 1px solid $greyLight, contain, $white, null);
-          border-radius: 2.5px;
+          @include ratioBox (100%, 61.8%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 3px;
+          box-shadow: 0 0 4px rgba(0,0,0,0.1);
         }
         .radio{
           display: inline-block;
@@ -101,13 +106,16 @@
         flex-direction: column;
         justify-content: space-between;
         align-content: space-between;
+        width: 50%;
         .text{
-          @include font("PingFangBold", $fontSize, $cl3);
+          @include font("PingFangBold", $fontSize + 2, $cl3);
           @include twoColtextOverflow;
         }
         .pinpai{
           font-size: $fontSize - 1;
           color: $cl6;
+          margin-top: 10px;
+          @include twoColtextOverflow;
         }
         .nice{
           @include displayFlex(flex, space-between, flex-end);
@@ -118,8 +126,32 @@
           }
           .price{
             color: $redLight;
-            font-size: $fontSize + 4;
+            font-size: $fontSize + 2;
           }
+        }
+      }
+    }
+    .content.book{
+      .ratiobook {
+        min-width: 129px;
+        position: relative;
+        .bookImg {
+          display: block;
+          @include ratioBox (100%, 100%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 3px;
+          box-shadow: 0 0 4px rgba(0,0,0,0.1);
+        }
+      }
+    }
+    .content.ebook{
+      .ratiobook {
+        min-width: 129px;
+        position: relative;
+        .bookImg {
+          display: block;
+          @include ratioBox (100%, 133.33%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 3px;
+          box-shadow: 0 0 4px rgba(0,0,0,0.1);
         }
       }
     }

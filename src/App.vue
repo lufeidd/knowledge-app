@@ -1,10 +1,11 @@
 <template>
   <div id="app">
+    <Download></Download>
     <!-- 页面缓存, $route.meta.keepAlive默认false -->
     <keep-alive>
-      <router-view v-if="$route.meta.keepAlive"/>
+      <router-view v-if="$route.meta.keepAlive" />
     </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive"/>
+    <router-view v-if="!$route.meta.keepAlive" />
   </div>
 </template>
 
@@ -81,20 +82,21 @@ body,
 import axios from "axios";
 
 // 下载app
-
+// import download from './components/index';
 // 微信分享，引入sdk
 import wx from "weixin-js-sdk";
 export default {
   name: "App",
-  data () {
+  data() {
     return {
-    }
+
+    };
   },
   mounted() {
-
-    // this.$router.push('/personal/order/refund/three')
+    // this.$router.push({name:"ebookshelf"})
     sessionStorage.setItem("gotoLogin", "no");
     sessionStorage.setItem("isWxLogin", "no");
+    // console.log(111,Number(localStorage.getItem("get_count")))
 
     // 未授权时微信端访问授权页面
     if (
@@ -103,6 +105,8 @@ export default {
     ) {
       sessionStorage.setItem("isWxLogin", "yes");
       if (
+        localStorage.getItem("openid") == "undefined" ||
+        localStorage.getItem("openid") == undefined ||
         localStorage.getItem("openid") == "null" ||
         localStorage.getItem("openid") == null ||
         localStorage.getItem("nickname") == "null" ||
@@ -110,12 +114,25 @@ export default {
         localStorage.getItem("unionid") == "null" ||
         localStorage.getItem("unionid") == null ||
         localStorage.getItem("headimg") == "null" ||
-        localStorage.getItem("headimg") == null
+        localStorage.getItem("headimg") == null ||
+        this.$route.name == "pay" ||
+        this.$route.name == "payaccount" ||
+        this.$route.name == "account"
       ) {
         // 微信登录 code
         this.$getWxCode();
         // 微信授权
-        if (this.wxCodeStr == "") this.$wxLogin();
+
+        if (this.wxCodeStr == "") {
+            var this_count = Number(localStorage.getItem("get_count"));
+            if( this_count < 2 ){
+                this_count ++;
+                localStorage.setItem("get_count",this_count);
+                this.$wxLogin();
+            }else{
+              localStorage.setItem("get_count",0);
+            }
+          };
         if (this.wxCodeStr.length > 6) {
           let url =
             window.location.protocol +
@@ -138,7 +155,7 @@ export default {
                 localStorage.setItem("openid", response.data.openid);
                 localStorage.setItem("nickname", response.data.nickname);
                 localStorage.setItem("unionid", response.data.unionid);
-                localStorage.setItem('headimg', response.data.headimgurl);
+                localStorage.setItem("headimg", response.data.headimgurl);
                 self.wxCodeStr = "";
                 window.location.href =
                   window.location.protocol +

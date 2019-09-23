@@ -5,7 +5,7 @@
 
 import req from './http.js'
 
-// 定义接口  
+// 定义接口
 // 在这里定义接口，把接口暴露出去给组件使用
 // 这里使用了箭头函数，转换一下写法：
 // export const XX = function (req) {
@@ -47,3 +47,6 @@ export const LOGIN_BIND_DELETE = query => req('post', '/passport/binding/delete'
 
 // 用户第三方绑定列表接口
 export const LOGIN_BIND_LIST = query => req('post', '/passport/binding/gets', query);
+
+//判断手机号是否已注册
+export const PASSPORT_CHECKPHONE = query => req('post', '/passport/checkphone', query);

@@ -176,6 +176,7 @@
           </div>
         </van-submit-bar>
       </div>
+      <CopyRight></CopyRight>
     </div>
     <EazyNav type="brand"></EazyNav>
   </div>

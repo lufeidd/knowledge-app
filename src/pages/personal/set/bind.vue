@@ -18,6 +18,7 @@
       @select="unbind"
       @cancel="bindModel=false"
     />
+    <CopyRight></CopyRight>
   </div>
 </template>
 

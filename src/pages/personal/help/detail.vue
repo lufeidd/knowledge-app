@@ -4,9 +4,12 @@
     <div class="content">
       <!-- <p>{{contentData.content}}</p> -->
     </div>
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    
+
   </div>
 </template>
 
@@ -55,7 +58,7 @@ export default {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
         localStorage.setItem("loginState", 1);
-        
+
         this.contentData = res.response_data;
         // console.log(res.response_data);
         $('.content').append(this.contentData.content);
@@ -64,7 +67,7 @@ export default {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
           localStorage.setItem("loginState", 100);
-          
+
         }
         this.$toast(res.error_message);
       }

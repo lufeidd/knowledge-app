@@ -45,6 +45,9 @@
           </div>
         </div>
       </li>
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
     </ul>
 
     <div style="height: 60px;"></div>

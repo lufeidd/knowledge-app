@@ -386,7 +386,7 @@
 
         & .desc {
           @include twoLines;
-          @include font(null, $fontSize + 1, #000);
+          @include font(null, $fontSize - 1, #000);
 
           & .tag {
             color: $redDark;

@@ -81,6 +81,7 @@
       padding-top: 25px;
       padding-bottom: 30px;
       font-weight: 100;
+      word-break : normal;
     }
 
     .message {
@@ -188,6 +189,8 @@
           margin-top: 5px;
           white-space: pre-wrap;
           overflow: visible;
+          word-break:break-all;
+          word-wrap:break-word;
           -webkit-line-clamp: 1000;
         }
 

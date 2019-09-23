@@ -95,14 +95,15 @@
       @select="invoiceTypeSelect"
       @cancel="invoiceTypeModle=false"
     /> -->
+    <CopyRight></CopyRight>
   </div>
 </template>
 
 <style src="@/style/scss/pages/personal/order/invoice.scss" lang="scss"></style>
 <style scoped lang="scss">
-  // @import url("./../../../style/scss/components/button.scss"); 
+  // @import url("./../../../style/scss/components/button.scss");
 #invoicePage {
-  
+
 
 .van-button {
   border-radius: 50px;

@@ -10,7 +10,7 @@
   min-height: 100%;
 
   & .prototype {
-    @include displayFlex (flex, flex-start, center);
+    // @include displayFlex (flex, flex-start, center);
   }
 
   & .password {
@@ -73,6 +73,7 @@
   }
 
   & .prototype {
+    position: relative;
     a {
       font-size: $fontSize - 1;
       color: #999;

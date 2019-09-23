@@ -65,7 +65,7 @@
     </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    
+    <CopyRight></CopyRight>
   </div>
 </template>
 
@@ -142,7 +142,7 @@ export default {
         version: "1.0",
         timestamp: tStamp,
         file: this.commentImg,
-        opt_type: "feedback",
+        opt_type: "order_comment",
         file_type: "Base64",
         source: 1
       };

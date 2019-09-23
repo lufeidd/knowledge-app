@@ -82,6 +82,7 @@
       <van-button size="large" @click="save">保存</van-button>
     </div>
     <EazyNav type="brand"></EazyNav>
+    <CopyRight></CopyRight>
   </div>
 </template>
 

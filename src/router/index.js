@@ -71,6 +71,15 @@ import albumdetail from '@/pages/album/detail'
 import player from '@/pages/album/player'
 import albumlist from '@/pages/album/list'
 
+//电子书
+import ebookreader from '@/pages/ebook/reader'
+import ebookcatalog from '@/pages/ebook/catalog'
+import ebookcomment from '@/pages/ebook/comment'
+import ebookdetail from '@/pages/ebook/detail'
+import ebookshelf from '@/pages/ebook/shelf'
+import ebookpay from '@/pages/ebook/pay'
+import ebookrecharge from '@/pages/ebook/recharge'
+
 // 品牌
 import mall from '@/pages/brand/mall'
 import article from '@/pages/brand/detail/article'
@@ -564,6 +573,46 @@ export default new Router({
       path: '/album/list',
       name: 'albumlist',
       component: albumlist
+    },
+    //电子书
+    {
+      path: '/ebook/reader',
+      name: 'ebookreader',
+      component: ebookreader
+    },
+    {
+      path: '/ebook/catalog',
+      name: 'ebookcatalog',
+      component: ebookcatalog
+    },
+    {
+      path: '/ebook/comment',
+      name: 'ebookcomment',
+      component: ebookcomment
+    },
+    {
+      path: '/ebook/detail',
+      name: 'ebookdetail',
+      component: ebookdetail
+    },
+    {
+      path: '/ebook/shelf',
+      name: 'ebookshelf',
+      component: ebookshelf,
+      meta: {
+        title: '我的书架',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      },
+    },
+    {
+      path: '/ebook/pay',
+      name: 'ebookpay',
+      component: ebookpay
+    },
+    {
+      path: '/ebook/recharge',
+      name: 'ebookrecharge',
+      component: ebookrecharge
     },
     // 品牌
     {

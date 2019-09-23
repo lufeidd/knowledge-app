@@ -24,6 +24,7 @@
           <van-col span="12" v-if="baseData.stores <= 10" style="text-align: right;">库存紧张</van-col>
         </van-row>
         <div class="title">{{ baseData.title }}</div>
+        <div class="sub_title">{{baseData.sub_title}}</div>
       </div>
       <van-cell
         v-if="location_info"
@@ -32,7 +33,16 @@
         :value="dispatch_str"
         @click="showPopup"
       />
-
+      <!-- 公号信息 -->
+      <div class="brand_info">
+        <div class="left">
+          <div class="ratiobox">
+            <div class="bookImg" v-lazy:background-image="brandInfoData.header_pic"></div>
+          </div>
+          <span class="name">{{brandInfoData.name}}</span>
+        </div>
+        <div class="toMall" @click="toMall">进入商城</div>
+      </div>
       <!-- 出版信息 -->
       <div class="introduction" v-if="baseData.attr">
         <div class="text">
@@ -47,10 +57,15 @@
         </div>
       </div>
       <!-- 图文 -->
-      <div v-if="baseData.desc" class="introduction" v-html="changeHtml(baseData.desc)"></div>
+      <div v-if="baseData.goods_desc" class="introduction" v-html="baseData.goods_desc"></div>
       <!-- 目录及其他 -->
 
-      <div class="foldBox" v-for="(item, index) in baseData.desc_arr" :key="index"   v-if="baseData.desc_arr">
+      <div
+        class="foldBox"
+        v-for="(item, index) in baseData.desc_arr"
+        :key="index"
+        v-if="baseData.desc_arr"
+      >
         <div class="introduction fold" v-if="!item.showAll">
           <div class="text">
             <span class="verticleLine"></span>
@@ -115,8 +130,9 @@
           </template>
         </div>
       </van-popup>
-
-      <div style="height: 60px;"></div>
+      <div style="height: 90px;position:relative">
+        <CopyRight></CopyRight>
+      </div>
       <div v-if="this.isIphx" style="height: 34px;"></div>
 
       <!-- 加入购物车、立即购买 -->
@@ -151,7 +167,7 @@
         </van-goods-action>
       </div>
     </div>
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" ref="nav"></EazyNav>
     <Loading :isLoading="isLoading"></Loading>
   </div>
 </template>
@@ -231,8 +247,6 @@ export default {
     this.$getAddressData();
     // 当前页接口信息
     this.albumData();
-    this.getAddressData();
-    // console.log(666,this.baseData.desc_arr)
   },
   methods: {
     // 定位地址信息手动变更动作
@@ -297,10 +311,11 @@ export default {
         if (res.response_data.success == 1) {
           this.$toast("添加购物车成功~");
           this.shoppingcart_num++;
+          this.$refs.nav.cartData();
         }
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-          this.$router.push({name: 'login'})
+          this.$router.push({ name: "login" });
         }
         this.$toast(res.error_message);
       }
@@ -327,6 +342,7 @@ export default {
       let res = await ALBUM(data);
 
       if (res.hasOwnProperty("response_code")) {
+        // console.log(666,this.navData.goods_nums)
         this.shoppingcart_num = res.response_data.shoppingcart_num;
         // 邮费信息
         this.dispatch_str = res.response_data.dispatch_str;
@@ -346,7 +362,9 @@ export default {
         this.detail.goods_id = res.response_data.base.goods_id;
         this.detail.sku_id = res.response_data.base.goods_id;
         this.detail.count = 1;
-
+        if (this.isLogin == 1) {
+          this.getAddressData();
+        }
         // 展开全部状态
         if (this.baseData.desc_arr && this.baseData.desc_arr.length > 0) {
           for (let i = 0; i < this.baseData.desc_arr.length; i++) {
@@ -360,7 +378,6 @@ export default {
         if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
 
         this.onsale = 1;
-
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 401) {
           // 上下架状态, 1=> 在架, 0=> 下架
@@ -433,13 +450,18 @@ export default {
     // 加入购物车
     addToCart() {
       this.toCartData();
+      // this.$refs.nav.cartData();
     },
     // 立即购买
     buyAction() {
-      this.$router.push({
-        name: "orderconfirm",
-        query: { detail: JSON.stringify(this.detail) }
-      });
+      if (this.$refs.nav.is_Login) {
+        this.$router.push({
+          name: "orderconfirm",
+          query: { detail: JSON.stringify(this.detail) }
+        });
+      }else{
+        this.$router.push({name:"login"})
+      }
     },
     // 新增实物订单
     async orderAddData() {
@@ -460,6 +482,14 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
+    },
+    toMall() {
+      this.$router.push({
+        name: "mall",
+        query: {
+          supplier_id: this.brandInfoData.supplier_id
+        }
+      });
     }
   }
 };

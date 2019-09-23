@@ -48,6 +48,7 @@
         </template>
       </div>
     </div>
+    <CopyRight></CopyRight>
   </div>
 </template>
 
@@ -57,7 +58,7 @@
   background-color: #fff;
   min-height: 100%;
 
-  
+
 .van-button {
   border-radius: 50px;
 }

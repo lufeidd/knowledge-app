@@ -117,7 +117,7 @@ export default {
       let data = {
         timestamp: tStamp,
         file: img,
-        opt_type: "user",
+        opt_type: "head_pic",
         file_type: "Base64",
         source: 1,
         version: "1.0"

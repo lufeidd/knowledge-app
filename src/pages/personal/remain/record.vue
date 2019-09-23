@@ -5,7 +5,7 @@
         {{timging}}
         <van-icon class="arrow" name="arrow-down"/>
       </div>
-      <div class="num">收入：￥{{totalIncome == null ? 0:totalIncome}}</div>
+      <div class="num">￥{{totalIncome == null ? 0:totalIncome}}</div>
     </div>
     <van-list
       v-model="programLoading"
@@ -29,6 +29,9 @@
         </div>
       </div>
     </van-list>
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
     <van-popup v-model="show" position="bottom">
       <van-datetime-picker
         v-model="currentDate"
@@ -45,7 +48,7 @@
     </van-popup>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    
+
   </div>
 </template>
 

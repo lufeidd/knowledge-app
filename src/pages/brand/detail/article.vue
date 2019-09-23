@@ -5,7 +5,6 @@
       <div>该商品已下架~</div>
     </div>
     <div v-if="onsale == 1">
-      <Download></Download>
       <div class="article">
         <div class="title">{{baseData.title}}</div>
         <div class="from">
@@ -16,7 +15,7 @@
             <div class="detail">
               <span>{{articleInfo.name}}</span>
               <!-- <span class="number">{{articleInfo.fans}}人关注</span> -->
-              <span class="number">{{ timeInfo }}</span>
+              <!-- <span class="number">{{ timeInfo }}</span> -->
             </div>
           </div>
           <span class="foucsButton" v-if="articleInfo.is_followed == 0" @click="focusAction">+关注</span>
@@ -229,7 +228,9 @@
         </div>
       </div>
       <!-- <easyNav :navData="navData"></easyNav> -->
-
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
       <EazyNav type="brand"></EazyNav>
     </div>
   </div>
@@ -278,7 +279,7 @@ export default {
       // 发布评论
       commentModel: false,
       contentModel: "",
-      contentTotal: 30,
+      contentTotal: 500,
       contentLength: 0,
       // 分页
       commentLoading: false,
@@ -785,7 +786,7 @@ export default {
     },
     // 点击相似推荐
     gotoLink(item) {
-      console.log(item);
+      // console.log(item);
       // 音频/视频
       if (item.goods_type == 1 || item.goods_type == 2) {
         this.$router.push({
@@ -796,7 +797,7 @@ export default {
       // 文章
       if (item.goods_type == 6) {
         this.pid = null;
-        this.$router.replace({
+        this.$router.push({
           name: "article",
           query: { goods_id: item.goods_id }
         });
@@ -807,6 +808,13 @@ export default {
       if (item.goods_type == 9) {
         this.$router.push({
           name: "album",
+          query: { goods_id: item.goods_id }
+        });
+      }
+      // 电子书
+      if (item.goods_type == 4) {
+        this.$router.push({
+          name: "ebookdetail",
           query: { goods_id: item.goods_id }
         });
       }
