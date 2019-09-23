@@ -45,7 +45,7 @@
         min-width: 129px;
         .bookImg {
           display: block;
-          @include ratioBox (100%, 71.3%, null, contain, $white, null);
+          @include ratioBox (100%, 71.3%, 1px solid $greyLight, contain, $white, null);
           border-radius: 2.5px;
         }
       }
@@ -82,8 +82,40 @@
         min-width: 129px;
         .bookimg {
           display: block;
-          @include ratioBox (100%, 100%, null, contain, $white, null);
+          @include ratioBox (100%, 100%, 1px solid $greyLight, contain, $white, null);
           border-radius: 2.5px;
+        }
+      }
+    }
+    .content.audio{
+      .ratiobox {
+        min-width: 129px;
+        .bookImg {
+          display: block;
+          @include ratioBox (100%, 61.8%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 2.5px;
+        }
+      }
+      .nice{
+        @include displayFlex(flex, space-between, flex-end);
+        .price{
+          color:$redLight;
+        }
+      }
+    }
+    .content.ebook{
+      .ratiobox {
+        min-width: 129px;
+        .bookImg {
+          display: block;
+          @include ratioBox (100%, 133.33%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 2.5px;
+        }
+      }
+      .nice{
+        @include displayFlex(flex, space-between, flex-end);
+        .price{
+          color:$redLight;
         }
       }
     }

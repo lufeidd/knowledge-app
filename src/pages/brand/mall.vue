@@ -7,6 +7,7 @@
     9   一排四个，共两排
     70  固定四个板块
     10	一行两个带选项卡-纸质图书
+    11  电子书
     40	横向商品列表-音频
     60	横向滑屏-视频
     50	商品列表-横向-专辑
@@ -89,7 +90,7 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_name}}</span>
           </div>
-          <span class="all">
+          <span class="all" v-if="item.is_more">
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -156,7 +157,7 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all">
+          <span class="all" v-if="item.is_more">
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -191,6 +192,45 @@
           </div>
         </div>
       </div>
+      <!-- 电子书 -->
+      <div class="ablum_moudle ebook" v-if="item.module_temp_id == 11">
+        <div class="materialTitle" @click="linktoDetail(item.module_more)">
+          <div class="text">
+            <span class="verticleLine"></span>
+            <span class="lh titleOver">{{item.module_title}}</span>
+          </div>
+          <span class="all" v-if="item.is_more">
+            更多
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-next-line" />
+            </svg>
+          </span>
+        </div>
+        <div>
+          <div
+            class="content"
+            v-for="(litem,lindex) in item.contents.list"
+            :key="lindex"
+            @click="goodsDetail(litem)"
+          >
+            <div class="ratiobox">
+              <div class="bookImg" v-lazy:background-image="litem.contents.pics[0]"></div>
+            </div>
+            <div class="right">
+              <div class="text">{{litem.contents.title}}</div>
+              <!-- <div class="pinpai">{{litem.contents.sub_title}}</div> -->
+              <div class="nice">
+                <span>
+                  <span class="time">
+                    <span>{{litem.contents.book_author}}</span>
+                  </span>
+                </span>
+                <span class="price">￥{{litem.contents.price}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- 视频 -->
       <div class="video_moudle" v-if="item.module_temp_id == 60">
         <div class="materialTitle" @click="linktoDetail(item.module_more)">
@@ -198,7 +238,7 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_name}}</span>
           </div>
-          <span class="all">
+          <span class="all" v-if="item.is_more">
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -230,7 +270,7 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all">
+          <span class="all" v-if="item.is_more">
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -266,7 +306,9 @@
         </div>
       </div>
     </div>
-
+    <div style="position:relative;height:90px;">
+      <CopyRight></CopyRight>
+    </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="mall"></EazyNav>
   </div>
@@ -299,10 +341,6 @@ export default {
       //   type: "mall",
       //   supplier_id: null
       // },
-      imgs: [
-        "https://wdimg3.bookuu.com/goods/10/22/10/1562120530.jpg@!w210",
-        "https://wdimg3.bookuu.com/goods/15/04/03/20190805A110409-1.jpg@!w210"
-      ],
       swiperOption: {
         loop: true,
         autoplay: {
@@ -358,7 +396,7 @@ export default {
       data.sign = this.$getSign(data);
       let res = await BRAND_PAGE_MALL_INDEX(data);
       if (res.hasOwnProperty("response_code")) {
-        // console.log(res);
+        console.log(res);
         this.page_title = res.response_data.page_title;
         document.title = this.page_title;
         for (let i = 0; i < res.response_data.module_list.length; i++) {}
@@ -390,7 +428,9 @@ export default {
             this.catlist = this.module_list[j].contents.catlist;
           }
           if (this.module_list[j].module_temp_id == 70) {
-            this.module_list[j].contents.list = this.module_list[j].contents.list.slice(0,4);
+            this.module_list[j].contents.list = this.module_list[
+              j
+            ].contents.list.slice(0, 4);
           }
         }
 
@@ -456,6 +496,15 @@ export default {
           }
         });
       }
+      //电子书
+      if(item.contents.goods_type == 4) {
+        this.$router.push({
+          name:"ebookdetail",
+          query:{
+            goods_id:item.contents.goods_id,
+          }
+        })
+      }
     },
     tabGoodsDetail(item) {
       // console.log(item);return
@@ -498,6 +547,15 @@ export default {
             pid: null
           }
         });
+      }
+      //电子书
+      if(item.goods_type == 4) {
+        this.$router.push({
+          name:"ebookdetail",
+          query:{
+            goods_id:item.goods_id,
+          }
+        })
       }
     },
     tabChange(index) {

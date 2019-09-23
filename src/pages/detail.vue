@@ -130,8 +130,9 @@
           </template>
         </div>
       </van-popup>
-
-      <div style="height: 60px;"></div>
+      <div style="height: 90px;position:relative">
+        <CopyRight></CopyRight>
+      </div>
       <div v-if="this.isIphx" style="height: 34px;"></div>
 
       <!-- 加入购物车、立即购买 -->
@@ -166,7 +167,7 @@
         </van-goods-action>
       </div>
     </div>
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" ref="nav"></EazyNav>
     <Loading :isLoading="isLoading"></Loading>
   </div>
 </template>
@@ -310,6 +311,7 @@ export default {
         if (res.response_data.success == 1) {
           this.$toast("添加购物车成功~");
           this.shoppingcart_num++;
+          this.$refs.nav.cartData();
         }
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
@@ -448,13 +450,18 @@ export default {
     // 加入购物车
     addToCart() {
       this.toCartData();
+      // this.$refs.nav.cartData();
     },
     // 立即购买
     buyAction() {
-      this.$router.push({
-        name: "orderconfirm",
-        query: { detail: JSON.stringify(this.detail) }
-      });
+      if (this.$refs.nav.is_Login) {
+        this.$router.push({
+          name: "orderconfirm",
+          query: { detail: JSON.stringify(this.detail) }
+        });
+      }else{
+        this.$router.push({name:"login"})
+      }
     },
     // 新增实物订单
     async orderAddData() {
@@ -478,11 +485,11 @@ export default {
     },
     toMall() {
       this.$router.push({
-        name:"mall",
-        query:{
-          supplier_id:this.brandInfoData.supplier_id,
+        name: "mall",
+        query: {
+          supplier_id: this.brandInfoData.supplier_id
         }
-      })
+      });
     }
   }
 };

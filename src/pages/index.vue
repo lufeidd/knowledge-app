@@ -97,8 +97,10 @@
                 <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
               </div>
               <div class="right">
-                <div class="text">{{item.title}}</div>
-                <div class="pinpai">{{item.sub_title}}</div>
+                <div class="text">
+                  {{item.title}}
+                  <div class="pinpai">{{item.sub_title}}</div>
+                </div>
                 <div class="nice">
                   <span>
                     <span class="time" v-if="item.goods_type == 9">
@@ -106,6 +108,29 @@
                         <use xlink:href="#icon-album-line" />
                       </svg>
                       <span>共{{item.item_count}}集</span>
+                    </span>
+                  </span>
+                  <span class="price" v-if="item.price">￥{{item.price}}</span>
+                </div>
+              </div>
+            </div>
+            <!-- 电子书 -->
+            <div
+              class="content ebook"
+              v-if="item.goods_type == 4"
+              @click="goodsDetail(item)"
+            >
+              <div class="ratiobook">
+                <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+              </div>
+              <div class="right">
+                <div class="text">
+                  {{item.title}}
+                </div>
+                <div class="nice">
+                  <span>
+                    <span class="time">
+                      <span>{{item.author}}</span>
                     </span>
                   </span>
                   <span class="price" v-if="item.price">￥{{item.price}}</span>
@@ -135,6 +160,9 @@
             </div>
           </div>
         </van-list>
+        <div style="position:relative;height:90px;">
+          <CopyRight></CopyRight>
+        </div>
       </div>
     </div>
     <EazyNav type="index"></EazyNav>
@@ -179,7 +207,11 @@ export default {
     inputText() {
       this.$router.push({
         name: "search",
-        query: { type: this.type }
+        query: {
+          type: this.type,
+          brand_id: this.brand_id,
+          packets_id: this.packets_id
+        }
       });
     },
     programLoad() {
@@ -261,6 +293,15 @@ export default {
             pid: null
           }
         });
+      }
+      //电子书
+      if(item.goods_type == 4) {
+        this.$router.push({
+          name:"ebookdetail",
+          query:{
+            goods_id:item.goods_id,
+          }
+        })
       }
     }
   }

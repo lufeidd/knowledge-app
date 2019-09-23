@@ -1,12 +1,15 @@
 <template>
-  <div id="downloadApp" v-if="device == 'ANDROID' || device == 'IOS'">
-    <div class="articleInfo">
-      <div class="ratiobox">
-        <img src="./../assets/logo.png" width="100%" />
+  <div v-if="device == 'ANDROID' || device == 'IOS' || device == 'WX'">
+    <div id="downloadApp" >
+      <div class="articleInfo">
+        <div class="ratiobox">
+          <img src="./../assets/logo.png" width="100%" />
+        </div>
+        <div class="detail">火把知识</div>
       </div>
-      <div class="detail">火把知识</div>
+      <span class="foucsButton" @click="download">打开</span>
     </div>
-    <span class="foucsButton" @click="download">打开</span>
+    <div style="height:58px;"></div>
   </div>
 </template>
 
@@ -17,6 +20,11 @@
   box-shadow: 0px 0 12px rgba(0, 0, 0, 0.25);
   position: relative;
   z-index: 1;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 9999;
 
   @include displayFlex(flex, space-between, center);
   @include textOverflow;
@@ -63,16 +71,28 @@
 export default {
   data() {
     return {
-        device: 'ANDROID'
+      device: "ANDROID"
     };
   },
-  mounted () {
+  mounted() {
     this.device = this.$route.query.device;
   },
-  methods:{
-    download(){
-        window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
-    },
+  methods: {
+    download() {
+      // window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
+      var u = navigator.userAgent,
+        app = navigator.appVersion;
+      var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+      console.log(u, app, _ios, _android);
+      if (_ios) {
+        window.location.href =
+          "https://apps.apple.com/cn/app/%E7%81%AB%E6%8A%8A%E7%9F%A5%E8%AF%86/id1473766311";
+      } else if (_android) {
+        window.location.href =
+          "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
+      }
+    }
   }
 };
 </script>

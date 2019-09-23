@@ -1,11 +1,11 @@
 <template>
   <div id="historyPage">
     <div class="nullBox" v-if="historyFinished && historyList.length == 0">
-      <img src="./../../assets/null/list.png" width="100%">
+      <img src="./../../assets/null/list.png" width="100%" />
       <div>还没有历史的内容，快去看看吧~</div>
     </div>
+    <div v-else>
     <van-list
-      v-else
       v-model="historyLoading"
       :finished="historyFinished"
       finished-text="没有更多了"
@@ -26,10 +26,13 @@
             class="listBox"
           >
             <div class="left">
-              <div class="ratioBox">
+              <!-- <div class="ratioBox">
                 <div class="box">
                   <img :src="item.data.pic[0]">
                 </div>
+              </div> -->
+              <div class="ratiobox">
+                <div class="boxImg" v-lazy:background-image="item.data.pic[0]"></div>
               </div>
             </div>
             <div class="center">
@@ -40,16 +43,16 @@
                 <span class="type" v-if="item.type == 2">视频</span>
                 <span class="count">
                   <svg class="icon" aria-hidden="true" v-if="item.type == 1">
-                    <use xlink:href="#icon-audio-line"></use>
+                    <use xlink:href="#icon-audio-line" />
                   </svg>
                   <svg class="icon" aria-hidden="true" v-if="item.type == 2">
-                    <use xlink:href="#icon-video-line"></use>
+                    <use xlink:href="#icon-video-line" />
                   </svg>
                   {{ item.data.play_num }}
                 </span>
                 <span class="time">
                   <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-time-line"></use>
+                    <use xlink:href="#icon-time-line" />
                   </svg>
                   {{ item.data.update_time }}
                 </span>
@@ -57,7 +60,7 @@
             </div>
             <div class="right">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-next-line"></use>
+                <use xlink:href="#icon-next-line" />
               </svg>
             </div>
           </router-link>
@@ -68,10 +71,8 @@
             class="listBox"
           >
             <div class="left">
-              <div class="ratioBox">
-                <div class="box">
-                  <img :src="item.data.pic[0]">
-                </div>
+              <div class="ratiobook">
+                <div class="bookImg" v-lazy:background-image="item.data.pic[0]"></div>
               </div>
             </div>
             <div class="center">
@@ -81,13 +82,13 @@
                 <span class="type">专辑</span>
                 <span class="count">
                   <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-eye-line"></use>
+                    <use xlink:href="#icon-eye-line" />
                   </svg>
                   {{ item.data.play_num }}
                 </span>
                 <span class="time">
                   <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-time-line"></use>
+                    <use xlink:href="#icon-time-line" />
                   </svg>
                   {{ item.data.update_time }}
                 </span>
@@ -95,7 +96,7 @@
             </div>
             <div class="right">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-next-line"></use>
+                <use xlink:href="#icon-next-line" />
               </svg>
             </div>
           </router-link>
@@ -106,10 +107,8 @@
             class="listBox"
           >
             <div class="left">
-              <div class="ratioBox">
-                <div class="box">
-                  <img :src="item.data.pic[0]">
-                </div>
+              <div class="ratiobox">
+                <div class="boxImg" v-lazy:background-image="item.data.pic[0]"></div>
               </div>
             </div>
             <div class="center">
@@ -119,13 +118,13 @@
                 <span class="type" v-if="item.type == 6">文章</span>
                 <span class="count">
                   <svg class="icon" aria-hidden="true" v-if="item.type == 6">
-                    <use xlink:href="#icon-eye-line"></use>
+                    <use xlink:href="#icon-eye-line" />
                   </svg>
                   {{ item.data.play_num }}
                 </span>
                 <span class="time">
                   <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-time-line"></use>
+                    <use xlink:href="#icon-time-line" />
                   </svg>
                   {{ item.data.update_time }}
                 </span>
@@ -133,7 +132,7 @@
             </div>
             <div class="right">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-next-line"></use>
+                <use xlink:href="#icon-next-line" />
               </svg>
             </div>
           </router-link>
@@ -141,12 +140,11 @@
           <router-link
             v-if="item.type == 3"
             :to="{name: 'detail', query: {goods_id: item.target}}"
-            class="listBox">
+            class="listBox"
+          >
             <div class="left">
-              <div class="ratioBox">
-                <div class="box">
-                  <img :src="item.data.pic[0]">
-                </div>
+              <div class="ratiobook">
+                <div class="bookImg" v-lazy:background-image="item.data.pic[0]"></div>
               </div>
             </div>
             <div class="center">
@@ -159,10 +157,10 @@
                     <use xlink:href="#icon-eye-line"></use>
                   </svg>
                   {{ item.data.play_num }}
-                </span> -->
+                </span>-->
                 <span class="time">
                   <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-time-line"></use>
+                    <use xlink:href="#icon-time-line" />
                   </svg>
                   {{ item.data.update_time }}
                 </span>
@@ -170,7 +168,7 @@
             </div>
             <div class="right">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-next-line"></use>
+                <use xlink:href="#icon-next-line" />
               </svg>
             </div>
           </router-link>
@@ -181,10 +179,13 @@
         </span>
       </van-swipe-cell>
     </van-list>
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
+    </div>
     <!-- 快速导航 -->
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    
   </div>
 </template>
 
@@ -247,11 +248,10 @@ export default {
             res.response_data.hasOwnProperty("result")
           ) {
             // store 设置登录状态
-              this.$store.commit("changeLoginState", 1);
-              localStorage.setItem("loginState", 1);
-            
-            setTimeout(() => {
+            this.$store.commit("changeLoginState", 1);
+            localStorage.setItem("loginState", 1);
 
+            setTimeout(() => {
               var result = res.response_data.result;
 
               for (let i = 0; i < result.length; i++) {
@@ -272,7 +272,6 @@ export default {
               // store 设置登录状态
               this.$store.commit("changeLoginState", 100);
               localStorage.setItem("loginState", 100);
-              
             }
             this.historyFinished = true;
             // this.$toast(res.error_message);

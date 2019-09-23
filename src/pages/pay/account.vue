@@ -73,9 +73,9 @@
         </div>
 
         <div class="left two" v-if="item.bank_type == 'balance' && user_balance < goodsInfo.price">
-          <router-link to="../personal/remain/account">
-            <van-button round type="danger">充值</van-button>
-          </router-link>
+          <!-- <router-link to="../personal/remain/account"> -->
+            <van-button round type="danger" @click="recharge">充值</van-button>
+          <!-- </router-link> -->
         </div>
       </div>
     </div>
@@ -428,7 +428,15 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
-    }
+    },
+    // 充值
+    recharge(){
+      // localStorage.setItem('routerLink','/personal/remain/account');
+      this.$router.push({
+        name:"account",
+        query:{goods_id:this.goods_id,endAccountTo:'return'}
+      })
+    },
   }
 };
 </script>

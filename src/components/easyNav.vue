@@ -104,7 +104,7 @@
       <!-- 商城首页 -->
       <router-link
         v-if="type == 'mall' && navData.search"
-        :to="{path:navData.searchLink,query:{type:type, supplier_id: navData.supplier_id}}"
+        :to="{path:navData.searchLink,query:{type:type, supplier_id: $route.query.supplier_id}}"
         class="link"
       >
         <svg class="icon" aria-hidden="true">
@@ -124,7 +124,16 @@
         <div>搜索</div>
       </router-link>
       <!-- 购物车 -->
-      <router-link :to="navData.cartLink" class="link" v-if="navData.cart">
+      <router-link :to="navData.cartLink" class="link" v-if="navData.cart&&is_Login">
+        <div class="cart_buy">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-gouwuche" />
+          </svg>
+          <span class="cart_num" v-if="navData.goods_nums">{{navData.goods_nums}}</span>
+          <div>购物车</div>
+        </div>
+      </router-link>
+      <router-link :to="navData.loginLink" class="link" v-else>
         <div class="cart_buy">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-gouwuche" />
@@ -212,7 +221,7 @@ import { USER_HOMEPAGE } from "../apis/user";
 export default {
   // name: "easyNav",
   // props: ["navData"],
-  props: ["type","goods_nums"],
+  props: ["type", "goods_nums"],
   data() {
     return {
       navData: {
@@ -226,9 +235,10 @@ export default {
         cart: true,
         cartLink: "/cart",
         type: "brand",
+        loginLink:"/login/index",
         goods_nums: 0
       },
-      is_Login:null,
+      is_Login: null
     };
   },
   mounted() {
@@ -240,11 +250,11 @@ export default {
   methods: {
     foldAction() {
       this.navData.fold = !this.navData.fold;
-      if(this.is_Login == 1){
-        this.cartData();
-      }
+      // if (this.is_Login == 1) {
+      //   this.cartData();
+      // }
     },
-    async isLogin(){
+    async isLogin() {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
@@ -255,7 +265,7 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.is_Login = res.response_data.is_login;
-        if(res.response_data.is_login == 1){
+        if (res.response_data.is_login == 1) {
           this.cartData();
         }
       } else {

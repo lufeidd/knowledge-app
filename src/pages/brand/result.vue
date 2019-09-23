@@ -62,14 +62,15 @@
                       </span>
                       <span class="comment" v-if="item.goods_type == 9">
                         <svg class="icon" aria-hidden="true">
-                          <use xlink:href="#icon-comment-line" />
+                          <use xlink:href="#icon-album-line" />
                         </svg>
-                        <span>{{ item.comment_num }}</span>
+                        <span>共{{ item.item_count }}集</span>
                       </span>
                     </div>
                   </div>
                 </div>
-                <div class="content" @click="gotoDetail(item)" v-else>
+                <!-- 文章 -->
+                <div class="content" @click="gotoDetail(item)" v-if="item.goods_type == 6">
                   <div class="ratiobox">
                     <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
                   </div>
@@ -92,11 +93,70 @@
                     </div>
                   </div>
                 </div>
+                <!-- 音视频 -->
+                <div
+                  class="content audio"
+                  @click="gotoDetail(item)"
+                  v-if="item.goods_type == 1 || item.goods_type == 2"
+                >
+                  <div class="ratiobox">
+                    <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+                  </div>
+                  <div class="right">
+                    <div class="text">{{item.title}}</div>
+                    <div class="pinpai">{{item.sub_title}}</div>
+                    <div class="nice">
+                      <span class="good">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-time-line" />
+                        </svg>
+                        <span>{{item.duration}}</span>
+                      </span>
+                      <span class="price">
+                        <!-- <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-comment-line" />
+                        </svg>-->
+                        <span v-if="item.price">￥{{ item.price }}</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- 电子书 -->
+                <div
+                  class="content ebook"
+                  @click="gotoDetail(item)"
+                  v-if="item.goods_type == 4"
+                >
+                  <div class="ratiobox">
+                    <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+                  </div>
+                  <div class="right">
+                    <div class="text">{{item.title}}</div>
+                    <!-- <div class="pinpai">{{item.sub_title}}</div> -->
+                    <div class="nice">
+                      <span class="good">
+                        <!-- <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-time-line" />
+                        </svg> -->
+                        <span>{{item.book_author}}</span>
+                      </span>
+                      <span class="price">
+                        <!-- <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-comment-line" />
+                        </svg>-->
+                        <span v-if="item.price">￥{{ item.price }}</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </van-list>
           </template>
         </van-tab>
       </van-tabs>
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
     </div>
 
     <!-- <easyNav :navData="navData"></easyNav> -->
@@ -238,7 +298,12 @@ export default {
           name: "detail",
           query: { goods_id: item.goods_id }
         });
-      } else {
+      } else if (goodsType == 4) {
+        // 电子书
+        this.$router.push({
+          name: "ebookdetail",
+          query: { goods_id: item.goods_id }
+        });
       }
     },
     programLoad() {
@@ -263,9 +328,9 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         var result = res.response_data.result;
         this.column_list = res.response_data.column;
-        var _index ;
-        for(let i=0;i<this.column_list.length;i++){
-          if(this.column_list[i].goods_type == this.goods_type){
+        var _index;
+        for (let i = 0; i < this.column_list.length; i++) {
+          if (this.column_list[i].goods_type == this.goods_type) {
             _index = i;
           }
         }
@@ -374,7 +439,11 @@ export default {
     inputText() {
       this.$router.push({
         name: "search",
-        query: { type: this.$route.query.type }
+        query: {
+          type: this.$route.query.type,
+          brand_id: this.$route.query.brand_id,
+          supplier_id: this.$route.query.supplier_id
+        }
       });
     },
     // 点击tab页切换

@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Download></Download>
     <!-- 页面缓存, $route.meta.keepAlive默认false -->
     <keep-alive>
       <router-view v-if="$route.meta.keepAlive" />
@@ -81,16 +82,18 @@ body,
 import axios from "axios";
 
 // 下载app
-
+// import download from './components/index';
 // 微信分享，引入sdk
 import wx from "weixin-js-sdk";
 export default {
   name: "App",
   data() {
-    return {};
+    return {
+
+    };
   },
   mounted() {
-    // this.$router.push('/personal/order/refund/three')
+    // this.$router.push({name:"ebookshelf"})
     sessionStorage.setItem("gotoLogin", "no");
     sessionStorage.setItem("isWxLogin", "no");
     // console.log(111,Number(localStorage.getItem("get_count")))

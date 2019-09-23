@@ -1,0 +1,116 @@
+/*
+ * author: lufei
+ * date:2019/9/12
+ */
+ @charset "utf-8";
+
+ #readerPage{
+   position: relative;
+    .charge{
+      padding-top: 140px;
+      font-size: $fontSize + 4;
+      p{
+        text-align: center;
+      }
+      .price{
+        color:$redDark;
+        margin-bottom:30px;
+      }
+    }
+    .headNav{
+      background-color: #F5F5F5;
+      padding:0 15px;
+      height: 40px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      box-sizing: border-box;
+      @include displayFlex(flex, space-between, center);
+      svg.icon{
+        font-size: $fontSize + 11;
+      }
+      .left{
+        @include displayFlex(flex, flex-start, center);
+        svg.icon{
+          margin-right:30px;
+        }
+      }
+      .tags{
+        display:inline-block;
+        padding:0 3px;
+        border-radius: 50%;
+        background-color: $redDark;
+        color:$white;
+        font-size: $fontSize - 4;
+        box-sizing: border-box;
+        line-height: 16px;
+        min-width: 16px;
+        text-align: center;
+        position: absolute;
+        top: -5px;
+        left:20px;
+      }
+    }
+    .ebookDetail{
+      padding:0 15px;
+      padding-top:50px;
+    }
+    .footBtn{
+      padding:20px 15px;
+      @include displayFlex(flex, space-between, center);
+    }
+    .van-popup .set{
+      padding:15px;
+      .head{
+        @include displayFlex(flex, space-between, center);
+        font-size: $fontSize + 1;
+      }
+      .mid{
+        .setColor{
+          padding:0 12px;
+          @include displayFlex(flex, space-between, center);
+        }
+        .circle{
+          display:inline-block;
+          box-sizing: border-box;
+          width:28px;
+          height: 28px;
+          border-radius: 50%;
+          border:1px solid #d2d2d2;
+          margin:20px 0px;
+        }
+        .cl1{background-color:#e6caa3}
+        .cl2{background-color:#b6c793}
+        .cl3{background-color:#f2e0e0}
+        .cl4{background-color:#c8e2f9}
+        .cl5{background-color:#161a26}
+        .cl6{background-color:#ffffff}
+        .checked{
+          border-color:$redDark;
+        }
+        .setWord{
+          padding:0 12px;
+          @include displayFlex(flex, space-between, center);
+          .fontSize{
+            font-size: $fontSize + 2;
+            color:$cl9;
+          }
+        }
+        .sliderWord{
+          margin:25px 12px;
+          position: relative;
+          .rowLine{
+            width: 1px;
+            background-color: #b5b5b5;
+            height: 9px;
+            position: absolute;
+            top: 50%;
+            margin-top:-4.5px;
+          }
+        }
+      }
+    }
+
+
+
+ }

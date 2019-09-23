@@ -170,7 +170,9 @@
         />
       </div>
     </div>
-
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div v-if="infoData.if_comment == 0 || showInvoice">
       <div style="height: 60px;"></div>
@@ -218,7 +220,6 @@
         </div>
       </div>
     </div>
-
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
   </div>

@@ -6,9 +6,8 @@
       <img src="./../../assets/null/list.png" width="100%" />
       <div>还没有关注的内容，快去看看吧~</div>
     </div>
-
+    <div v-else>
     <van-list
-      v-else
       v-model="focusLoading"
       :finished="focusFinished"
       finished-text="没有更多了"
@@ -52,11 +51,15 @@
         </span>
       </van-swipe-cell>
     </van-list>
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
+    </div>
 
     <!-- 快速导航 -->
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    
+
   </div>
 </template>
 

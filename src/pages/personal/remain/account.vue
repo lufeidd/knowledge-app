@@ -24,9 +24,11 @@
     <div class="recharge" style="padding-bottom: 40px;">
       <van-button slot="button" size="large" round type="danger" @click="account()">充值</van-button>
     </div>
+    <div style="height:90px;position:relative;">
+      <CopyRight></CopyRight>
+    </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    
   </div>
 </template>
 
@@ -58,10 +60,12 @@ export default {
       money: null,
       rechargeAmount: [],
       activeClass: 0,
-      rechargeExplain: ""
+      rechargeExplain: "",
+      goods_id:null,
     };
   },
   mounted() {
+    this.goods_id = this.$route.query.goods_id;
     this.getRemainData();
   },
   methods: {
@@ -70,7 +74,7 @@ export default {
     },
     account() {
       if (this.activeClass >= 0) {
-        console.log("money:", this.rechargeAmount[this.activeClass]);
+        // console.log("money:", this.rechargeAmount[this.activeClass]);
         // 用户余额充值申请创建
         this.rechargeAddData(this.rechargeAmount[this.activeClass]);
       }
@@ -92,6 +96,7 @@ export default {
         this.cashierPayData(res.response_data.pay_id);
       } else {
         this.$toast(res.error_message);
+
       }
     },
     // 交易支付请求发起
@@ -107,7 +112,7 @@ export default {
       data.sign = this.$getSign(data);
       let res = await CASHIER_PAY_ADD(data);
 
-      console.log(999, res.response_data);
+      // console.log(999, res.response_data);
 
       if (res.hasOwnProperty("response_code")) {
         // var _package = "prepay_id=" + res.response_data.pay_arr.prepayid;

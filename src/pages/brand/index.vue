@@ -20,7 +20,6 @@
           </svg> 品牌商城
         </div>
         <div class="link" v-if="brandData.statistic_list">
-          {{brandData.statistic_list.goods_num}}件商品在售
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-next-line" />
           </svg>
@@ -75,6 +74,9 @@
             </div>
           </van-list>
         </template>
+        <div style="position:relative;height:90px;">
+          <CopyRight></CopyRight>
+      </div>
       </van-tab>
     </van-tabs>
 
@@ -98,7 +100,6 @@
     </van-popup>
 
     <EazyNav type="brand"></EazyNav>
-
   </div>
 </template>
 
@@ -106,7 +107,7 @@
 
 <script>
 // vue无刷新修改url参数
-import merge from 'webpack-merge';
+import merge from "webpack-merge";
 import { BRAND_INFO, BRAND_COLUMN_GETS } from "../../apis/brand.js";
 import { FOCUS_ADD, FOCUS_CANCEL, WX_SHARE } from "../../apis/public.js";
 export default {
@@ -120,7 +121,7 @@ export default {
       column_list_data: [],
       packets_id: null,
       brand_id: null,
-      supplier_id:null,
+      supplier_id: null,
       currentPage: 1,
       activekey: 0
     };
@@ -128,7 +129,14 @@ export default {
   mounted() {
     if (this.$route.query.title) document.title = this.$route.query.title;
     this.brand_id = parseInt(this.$route.query.brand_id);
-    this.brandGetData();
+    if (this.brand_id) {
+      this.brandGetData();
+    } else {
+      this.$toast("商户信息丢失，请返回重新访问页面!");
+      this.$router.replace({
+        name: "personalIndex",
+      });
+    }
   },
   methods: {
     show() {
@@ -316,7 +324,7 @@ export default {
           query: {
             goods_id: item.goods_id,
             pid: null,
-            packets_id: this.packets_id,
+            packets_id: this.packets_id
           }
         });
       }
@@ -339,6 +347,15 @@ export default {
             pid: null
           }
         });
+      }
+       //电子书
+      if(item.goods_type == 4) {
+        this.$router.push({
+          name:"ebookdetail",
+          query:{
+            goods_id:item.goods_id,
+          }
+        })
       }
     },
     toMall() {

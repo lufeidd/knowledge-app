@@ -45,6 +45,8 @@ import download from './components/index'
 import nav from './components/index'
 // 加载中
 import loading from './components/index'
+//版权
+import copyRight from './components/index'
 
 Vue.use(download)
 Vue.use(nav)

@@ -17,7 +17,9 @@
         @click="todetail(item)"
       />
     </van-list>
-
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
     <div style="height: 60px;"></div>
 
     <div class="bottomBox" :class="{iphx:this.isIphx}">
@@ -25,7 +27,7 @@
     </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    
+
   </div>
 </template>
 
@@ -76,7 +78,7 @@ export default {
         // this.listData = res.response_data.result;
         this.$store.commit("changeLoginState", 1);
         localStorage.setItem("loginState", 1);
-        
+
         var result = res.response_data.result;
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {

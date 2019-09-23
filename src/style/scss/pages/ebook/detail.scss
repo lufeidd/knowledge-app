@@ -1,0 +1,392 @@
+/*
+ * author: lufei
+ * date:2019/9/12
+ */
+ @charset "utf-8";
+
+ #ebookDetailPage{
+   background-color: #f5f5f5;
+   .goodsInfo{
+     background-color: #FFF;
+     padding:15px;
+     .info {
+      @include displayFlex(flex, null, null);
+      .ratiobox {
+        min-width: 112px;
+        .bookImg {
+          box-sizing: border-box;
+          display: block;
+          @include ratioBox(
+            100%,
+            133.33%,
+            1px solid $greyLight,
+            contain,
+            $white,
+            null
+          );
+          border-radius: 3px;
+          box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+        }
+      }
+      .right {
+        flex-grow: 1;
+        width: 60%;
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        align-content: space-between;
+        justify-content: space-between;
+        .title {
+          font-size: $fontSize + 2;
+          @include textOverflow;
+        }
+        .author {
+          color: $cl6;
+          @include textOverflow;
+        }
+        .category{
+          color:$cl9;
+          @include textOverflow;
+        }
+        .price {
+          color: $redLight;
+        }
+      }
+    }
+    .descript{
+      color:$cl6;
+      margin:10px 0;
+      font-size: $fontSize + 1;
+      overflow : hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
+    }
+    .watchCatalog{
+      .van-cell__value{
+        display:none;
+      }
+    }
+   }
+   & .brand_info{
+    background-color: #fff;
+    margin-top: 5px;
+    padding: 10px 15px;
+    @include displayFlex(flex, space-between, center);
+    & .left{
+      @include displayFlex(flex, null, center);
+      & .ratiobox {
+        min-width: 47px;
+        margin-right: 10px;
+        .bookImg {
+          @include ratioBox (100%, 100%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 50%;
+        }
+      }
+      .name{
+        @include font(null, $fontSize + 2, $cl6);
+      }
+    }
+    .toMall{
+      display: inline-block;
+      width: 70px;
+      height: 30px;
+      border:1px solid $cl9;
+      line-height: 30px;
+      text-align: center;
+      @include font(null, $fontSize, $cl9);
+      border-radius: 15px;
+    }
+    .toMall.foucs{
+      border:none;
+      color:$white;
+      background-color: $redLight;
+    }
+  }
+  .recommend {
+    background-color: $white;
+    margin-top: 5px;
+    padding-top: 15px;
+    .text{
+      margin-left:15px;
+      font-size: $fontSize + 3;
+    }
+    .recommendInfo {
+      padding: 15px 0 15px 15px;
+
+      .ratiobox {
+        min-width: 77px;
+
+        .bookImg {
+          display: block;
+          @include ratioBox (100%, 133.3%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 3px;
+          box-sizing: border-box;
+          box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      .recommendName {
+        @include font("PingFangBlod", $fontSize - 1, null);
+        margin-top: 5px;
+        @include twoColtextOverflow;
+      }
+
+      .nickname {
+        font-size: $fontSize - 2;
+        color: $cl9;
+        @include textOverflow;
+        margin-top:5px;
+      }
+    }
+  }
+    // 评论
+    & .commentBox {
+      background-color: $white;
+      margin-top: 5px;
+      & .commentWord{
+        padding:15px;
+        font-size: $fontSize + 2;
+      }
+      &  .foot {
+        height: 50px;
+        box-sizing: border-box;
+        padding: 6px 15px;
+        .comment {
+          padding: 0 15px;
+          background-color: #f5f5f5;
+          border-radius: 16px;
+          height: 37px;
+          line-height: 37px;
+          color:$cl6;
+        }
+      }
+      & .listBox {
+        @include displayFlex (flex, null, flex-start);
+        padding: 15px;
+        background-color: $white;
+        border-bottom: 1px solid $greyLight;
+
+        & .left {
+          @include flexBasis (35px);
+          margin-right: 10px;
+          margin-top: 5px;
+
+          & .ratioBox {
+            border-radius: 35px;
+          }
+        }
+
+        & .center {
+          display: block;
+
+          & .title {
+            @include font("PingFangBold", $fontSize - 1, #666);
+            @include textOverflow;
+            display: block;
+
+            & .text {
+              @include textOverflow;
+              display: block;
+              padding-right: 0;
+            }
+          }
+
+          & .subTitle {
+            @include font("PingFangBold", $fontSize, #333);
+            margin-top: 5px;
+            white-space: pre-wrap;
+            word-break:break-all;
+            word-wrap: break-word;
+            overflow: visible;
+            -webkit-line-clamp: 1000;
+          }
+
+          & .messageBox {
+            background-color: #f7f7f7;
+            padding: 5px;
+            margin-top: 5px;
+            font-size: $fontSize - 1;
+
+            & .message {
+              display: none;
+              margin-top: 2px;
+
+              & .name {
+                color: $orangeLight;
+              }
+
+              & .dialog {
+                color: #666;
+              }
+            }
+
+            & .message.active {
+              display: block;
+            }
+          }
+
+          // 回复
+          & .answerBox {
+            margin-top: 15px;
+
+            & .date {
+              @include font(null, $fontSize - 1, #999);
+              margin-right: 15px;
+            }
+
+            & .action {
+              @include font(null, $fontSize - 1, #333);
+              margin-right: 15px;
+            }
+          }
+        }
+      }
+
+    }
+
+    & .audioList {
+      position: relative;
+      height: 94vh;
+      overflow: hidden;
+
+      & .title {
+        height: 44px;
+        line-height: 44px;
+        border-bottom: 1px #eee solid;
+        text-align: center;
+        position: relative;
+        @include displayFlex(flex, center, center);
+        @include font(null, $fontSize + 2, #999);
+
+        & .action {
+          @include position(absolute, "tl", 0, 0, 44px, 44px, null);
+
+          & .icon {
+            width: 20px;
+            height: 20px;
+          }
+        }
+
+        & .punish {
+          @include position(absolute, "tr", 0, 0, 60px, 44px, null);
+          color: $redDark;
+        }
+      }
+
+      & .content {
+        padding: 10px;
+
+        & textarea {
+          width: 100%;
+          border: 1px #ccc solid;
+          border-radius: 5px;
+          padding: 5px;
+          box-sizing: border-box;
+          min-height: 100px;
+        }
+
+        & .count {
+          font-size: $fontSize - 2;
+          color: #999;
+          text-align: right;
+
+          & .active {
+            color: $redDark;
+          }
+        }
+
+
+      }
+    }
+    .van-popup .detailList{
+      .head{
+        @include displayFlex(flex, flex-end, center);
+        font-size: $fontSize + 1;
+        padding:10px 15px;
+      }
+      .content{
+        position: absolute;
+        bottom:0;
+        top:35px;
+        overflow-y: auto;
+        box-sizing: border-box;
+        width: 100%;
+        padding:0 15px;
+        .word{
+          font-size: $fontSize + 3;
+        }
+        .descript{
+          margin:10px 0;
+          color: $cl6;
+        }
+        .publish{
+          margin:10px 0;
+          color:$cl9;
+        }
+        .list {
+          margin-top: 10px;
+          ul {
+            li {
+              padding: 10px 0;
+              border-bottom: 1px solid #eee;
+              @include displayFlex(flex, space-between, center);
+              .left {
+                // flex-grow: 1;
+                width: 95%;
+                @include displayFlex(flex, null, center);
+              }
+              .left.grey {
+                color: $cl9;
+              }
+              .left.red {
+                color: $redDark;
+              }
+              .title {
+                @include textOverflow;
+                width: 80%;
+                margin-left: 10px;
+              }
+            }
+          }
+        }
+      }
+    }
+    .bottom{
+      position: fixed;
+      bottom: 0;
+      z-index:99;
+      box-sizing: border-box;
+      width: 100%;
+      border-top:1px solid #dcdcdc;
+      height: 45px;
+      background-color: #FFF;
+      font-size: $fontSize + 1;
+      .isbuy{
+        @include displayFlex(flex, space-between, center);
+        div{
+          height: 100%;
+          line-height: 45px;
+          text-align: center;
+          width:33.33%;
+        }
+      }
+      .nobuy{
+        @include displayFlex(flex, space-between, center);
+        div{
+          height: 100%;
+          line-height: 45px;
+          text-align: center;
+          width:50%;
+        }
+      }
+      .shelf{
+        border-right:1px solid #dcdcdc;
+      }
+      .read{
+        background-color: $redLight;
+        color:$white;
+      }
+    }
+ }

@@ -1,28 +1,31 @@
 <template>
   <div id="commentPage">
     <div class="nullBox" v-if="programFinished && commentData.length == 0">
-      <img src="../../../assets/null/list.png" width="100%">
+      <img src="../../../assets/null/list.png" width="100%" />
       <div>您还没有评论过商品</div>
     </div>
+    <div v-else>
     <van-list
       v-model="programLoading"
       :finished="programFinished"
       finished-text="没有更多了"
       @load="programLoad"
-      v-else
     >
-      <div class="content" v-for="item in commentData">
+      <div class="content" v-for="(item,index) in commentData" :key="index">
         <div class="info">
           <div class="head">
             <div class="titleFrom">
               <div class="box">
-                <img v-lazy="item.user_header" class="icon">
+                <img v-lazy="item.user_header" class="icon" />
                 <span class="publish">{{item.nick_name}}</span>
               </div>
               <span class="date">{{item.create_time}}</span>
             </div>
           </div>
-          <p class="comment">{{item.content}}</p>
+          <p class="comment">
+            <span class="commentContent">{{item.content}}</span>
+            <span class="delete" @click="deleteComment(item,index)">删除</span>
+          </p>
           <div class="section">
             <div class="bookDetail" @click="goodsDetail(item)">
               <div class="ratiobox">
@@ -37,9 +40,12 @@
         </div>
       </div>
     </van-list>
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
+    </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-
   </div>
 </template>
 
@@ -47,7 +53,7 @@
 
 <script>
 //  引入接口
-import { USER_COMMENT } from "../../../apis/user.js";
+import { USER_COMMENT, GOODS_COMMENT_DEL } from "../../../apis/user.js";
 // import easyNav from "./../../../components/easyNav";
 export default {
   // components: {
@@ -141,18 +147,16 @@ export default {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
         localStorage.setItem("loginState", 1);
-
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
           localStorage.setItem("loginState", 100);
-
         }
         this.$toast(res.error_message);
       }
     },
-    goodsDetail(item){
+    goodsDetail(item) {
       console.log(item);
       // 音频/视频
       if (item.goods_type == 1 || item.goods_type == 2) {
@@ -195,6 +199,38 @@ export default {
         });
       }
     },
+    //删除评论
+    deleteComment(item, index) {
+      this.$dialog
+        .confirm({
+          message: "您确定要删除此条评论吗？"
+        })
+        .then(() => {
+          this.delete(item.comment_id, index);
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
+    async delete(comment_id, index) {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        comment_id: comment_id,
+        version: "1.0",
+        timestamp: tStamp
+      };
+      data.sign = this.$getSign(data);
+      let res = await GOODS_COMMENT_DEL(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.$toast("删除成功!");
+        $("#commentPage")
+          .find(".content")
+          .eq(index)
+          .remove();
+      } else {
+        this.$toast(res.error_message);
+      }
+    }
   }
 };
 </script>

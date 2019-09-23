@@ -144,6 +144,38 @@
           </div>
         </router-link>
 
+        <!-- 我的书架 -->
+        <router-link v-if="infoData.is_login" to="/ebook/shelf" class="cell">
+          <div class="svg">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-shelf-block" />
+            </svg>
+          </div>
+          <div class="desc">
+            <span class="text">我的书架</span>
+          </div>
+          <div class="action">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-next-line" />
+            </svg>
+          </div>
+        </router-link>
+        <router-link v-else to="/login/index" class="cell">
+          <div class="svg">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-personalAccount" />
+            </svg>
+          </div>
+          <div class="desc">
+            <span class="text">我的书架</span>
+          </div>
+          <div class="action">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-next-line" />
+            </svg>
+          </div>
+        </router-link>
+
         <!-- 我的购物车 -->
         <router-link v-if="infoData.is_login" to="/cart" class="cell">
           <div class="svg">
@@ -241,11 +273,10 @@
         </router-link>
       </template>
     </div>
-
+    <CopyRight></CopyRight>
     <!-- 快速导航 -->
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    
   </div>
 </template>
 

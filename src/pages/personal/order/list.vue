@@ -4,13 +4,12 @@
       <img src="../../../assets/null/list.png" width="100%" />
       <div>您的订单列表为空</div>
     </div>
-
+    <div v-else>
     <van-list
       v-model="programLoading"
       :finished="programFinished"
       finished-text="没有更多了"
       @load="programLoad"
-      v-else
     >
       <!-- 实物商品-->
       <div v-if="goodsData.length > 0">
@@ -132,7 +131,10 @@
         </div>
       </div>
     </van-list>
-
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
+    </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="order"></EazyNav>
   </div>
