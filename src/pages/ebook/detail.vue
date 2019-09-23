@@ -542,7 +542,7 @@ export default {
     },
     read(item, index) {
       console.log(item);
-      this.currenChapterTitle = '第'+(index+1)+'章';
+      this.currenChapterTitle = index + 1;
       this.$router.push({
         name: "ebookreader",
         query: {

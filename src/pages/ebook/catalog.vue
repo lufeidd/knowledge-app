@@ -12,15 +12,15 @@
       <div class="content">
         <div class="info">
           <div class="ratiobox">
-            <div class="bookImg" :style="{'background-image':'url('+ebookInfo.pic+')'}"></div>
+            <div class="bookImg" :style="{'background-image':'url('+info.pic+')'}"></div>
           </div>
           <div class="right">
-            <div class="title">{{ebookInfo.goods_title}}</div>
-            <div class="author">{{ebookInfo.author}}</div>
+            <div class="title">{{info.goods_title}}</div>
+            <div class="author">{{info.author}}</div>
             <div class="detail">
-              <span>共{{ebookInfo.chapter_count}}章</span>
-              <span v-if="ebookInfo.serialize_status">{{ebookInfo.serialize_status == 1?'连载中':'完结'}}</span>
-              <span>已读1.3%</span>
+              <span>共{{info.chapter_count}}章</span>
+              <span v-if="info.serialize_status">{{info.serialize_status == 1?'连载中':'完结'}}</span>
+              <!-- <span>已读1.3%</span> -->
             </div>
           </div>
         </div>
@@ -152,33 +152,35 @@
 import { EBOOK_CATALOG, EBOOK_INFO } from "../../apis/ebook.js";
 export default {
   name: "catalog",
-  props: ["goods_id", "chapter_id","ebookList"],
+  props: ["goods_id","chapter_id","ebookList","info"],
   data() {
     return {
       catalogPopup: false,
-      ebookInfo: {},
+      // info: {},
       // ebookList: [],
-      free: false
+      // free: false
     };
   },
-  mounted() {},
+  mounted() {
+    // console.log(6666,this.currenChapterTitle)
+  },
   methods: {
-    async getInfo() {
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        goods_id: this.goods_id,
-        version: "1.0"
-      };
-      data.sign = this.$getSign(data);
-      let res = await EBOOK_INFO(data);
-      if (res.hasOwnProperty("response_code")) {
-        console.log(res);
-        this.ebookInfo = res.response_data;
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
+    // async getInfo() {
+    //   var tStamp = this.$getTimeStamp();
+    //   let data = {
+    //     timestamp: tStamp,
+    //     goods_id: this.goods_id,
+    //     version: "1.0"
+    //   };
+    //   data.sign = this.$getSign(data);
+    //   let res = await EBOOK_INFO(data);
+    //   if (res.hasOwnProperty("response_code")) {
+    //     // console.log(res);
+    //     this.info = res.response_data;
+    //   } else {
+    //     this.$toast(res.error_message);
+    //   }
+    // },
     // async getList() {
     //   var tStamp = this.$getTimeStamp();
     //   let data = {
@@ -204,16 +206,17 @@ export default {
       this.catalogPopup = false;
     },
     read(item, index) {
-      console.log(item);
+      // console.log(item);
       if (item.chapter_free == 0 && item.chapter_try == 0) {
-        this.free = true;
+        // this.free = true;
         this.$emit("chargeChange",true);
         // this.$emit("ebookChange", item.chapter_id);
       } else {
-        this.free = false;
+        // this.free = false;
         this.$emit("chargeChange",false);
         this.$emit("ebookChange", item.chapter_id);
       }
+      this.$emit("changecurrenChapterTitle",index+1);
       this.catalogPopup = false;
     }
   }

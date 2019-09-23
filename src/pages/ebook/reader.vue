@@ -23,7 +23,7 @@
     </div>
     <div v-if="charge" class="charge">
       <p class="price">￥{{info.price}}</p>
-      <p class="title">{{currenChapterTitle}}</p>
+      <p class="title">第 {{currenChapterTitle}} 章</p>
       <p style="margin-top:80px;">
         <van-button
           round
@@ -108,8 +108,9 @@
       @chargeChange="chargeChange"
       :goods_id="goods_id"
       :chapter_id="chapter_id"
-      :currenChapterTitle="currenChapterTitle"
+      @changecurrenChapterTitle="changecurrenChapterTitle"
       :ebookList="ebookList"
+      :info="info"
       @ebookChange="getChapter"
     ></ebookcatalog>
     <!-- 评论 -->
@@ -157,12 +158,13 @@ export default {
       // tip
       descInfo: [],
       commentNumber: null,
-      currenChapterTitle:"",
-      ebookList:[]
+      currenChapterTitle:null,
+      ebookList:[],
+      test:true,
     };
   },
   mounted() {
-    this.currenChapterTitle = this.$route.query.currenChapterTitle;
+    this.currenChapterTitle = parseInt(this.$route.query.currenChapterTitle);
     this.goods_id = parseInt(
       this.$route.query.goods_id ? this.$route.query.goods_id : null
     );
@@ -195,6 +197,9 @@ export default {
   methods: {
     toShelf() {
       this.$router.push({ name: "ebookshelf" });
+    },
+    changecurrenChapterTitle(_value){
+      this.currenChapterTitle = _value;
     },
     // 获取评论条数
     async commentData() {
@@ -287,6 +292,7 @@ export default {
       if (this.chapter_id > this.minChapter) {
         this.chapter_id = this.chapter_id - 1;
         this.getChapter(this.chapter_id);
+        this.currenChapterTitle = this.currenChapterTitle - 1;
       } else {
         this.$toast("已经是第一章");
       }
@@ -296,6 +302,7 @@ export default {
       if (this.chapter_id < this.maxChapter) {
         this.chapter_id = this.chapter_id + 1;
         this.getChapter(this.chapter_id);
+        this.currenChapterTitle = this.currenChapterTitle + 1;
       } else {
         this.$toast("已经是最后一章");
       }
@@ -389,7 +396,7 @@ export default {
     // 目录
     showcatalog() {
       this.$refs.catalog.catalogPopup = true;
-      this.$refs.catalog.getInfo();
+      // this.$refs.catalog.getInfo();
       // this.$refs.catalog.getList();
     },
     chargeChange(state) {

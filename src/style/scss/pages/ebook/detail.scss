@@ -57,6 +57,8 @@
       color:$cl6;
       margin:10px 0;
       font-size: $fontSize + 1;
+      word-break:break-all;
+      word-wrap:break-word;
       overflow : hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
@@ -320,6 +322,8 @@
         .descript{
           margin:10px 0;
           color: $cl6;
+          word-break:break-all;
+          word-wrap:break-word;
         }
         .publish{
           margin:10px 0;
