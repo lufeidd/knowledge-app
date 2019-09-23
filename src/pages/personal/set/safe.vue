@@ -14,6 +14,7 @@
       :to="{name: 'setpassword', query: {type: 'edit'}}"
     />
     <!-- <van-cell title="注销账户" is-link to="/personal/set/cancel"/> -->
+    <CopyRight></CopyRight>
   </div>
 </template>
 

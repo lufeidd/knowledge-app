@@ -170,7 +170,9 @@
         />
       </div>
     </div>
-
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div v-if="infoData.if_comment == 0 || showInvoice">
       <div style="height: 60px;"></div>
@@ -218,7 +220,6 @@
         </div>
       </div>
     </div>
-
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
   </div>
@@ -380,7 +381,7 @@ export default {
           }
         });
       }
-      // 专辑
+      // 文章
       if (item.goods_type == 6) {
         this.$router.push({
           name: "article",
@@ -390,7 +391,7 @@ export default {
           }
         });
       }
-      // 文章
+      //专辑
       if (item.goods_type == 9) {
         this.$router.push({
           name: "album",

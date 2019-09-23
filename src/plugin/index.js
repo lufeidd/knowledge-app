@@ -43,6 +43,7 @@ export default {
     Vue.prototype.$getWxCode = async function () {
       // 获取微信登录授权code
       var str = window.location.href;
+      console.log('str',str)
       str = str.split("#")[0];
       if (str.indexOf('code=') != -1) {
         var sIndex = str.split("#")[0].indexOf("code=") + 5;
@@ -129,6 +130,7 @@ export default {
         "&scope=" +
         scope +
         "&state=STATE#wechat_redirect";
+
     }
 
     // 微信分享
@@ -226,7 +228,7 @@ export default {
       }
 
     }
-    
+
     // 分享成功后通知后台
     Vue.prototype.$getShareLog = async function (_pageName, _params) {
       var tStamp = this.$getTimeStamp();
@@ -474,9 +476,21 @@ export default {
           __name = 'brandresult';
           queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
           if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
-          if (dataTmp.params.goods_type) queryTmp.keywords = dataTmp.params.goods_type;
+          if (dataTmp.params.goods_type) queryTmp.goods_type = dataTmp.params.goods_type;
+          if (dataTmp.params.brand_id) queryTmp.brand_id = dataTmp.params.brand_id;
+          if (dataTmp.params.tagids) queryTmp.tagids = dataTmp.params.tagids;
+          if (dataTmp.params.goods_id) queryTmp.goods_id = dataTmp.params.goods_id;
 
           break;
+          case 'search/result':
+            __name = 'brandresult';
+            queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
+            if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
+            if (dataTmp.params.goods_type) queryTmp.goods_type = dataTmp.params.goods_type;
+            if (dataTmp.params.cids) queryTmp.cids = dataTmp.params.cids;
+            if (dataTmp.params.tagids) queryTmp.tagids = dataTmp.params.tagids;
+
+            break;
         // 供应商商城首页
         case 'mall/index':
           __name = 'mall';
@@ -501,6 +515,7 @@ export default {
     // 微信支付
     Vue.prototype.$onBridgeReady = function (_timestamp, _nonceStr, _package, _paySign, _orderId, _payMoney) {
       var self = this;
+
       WeixinJSBridge.invoke(
         "getBrandWCPayRequest",
         {
@@ -516,10 +531,18 @@ export default {
             // 余额充值
             if (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1) {
               self.$toast('充值成功~');
-              window.location.reload();
+              // window.location.reload();
+              if(self.$route.query.endAccountTo == 'return'){
+                self.$router.replace({
+                  name:"payaccount",
+                  query:{goods_id:self.goods_id}
+                })
+              }else{
+                self.$router.push({name:"record"});
+              }
             }
             // 商品购买  虚拟 / 实物
-            if (localStorage.getItem('routerLink').indexOf('/pay/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/index') != -1) {
+            else if (localStorage.getItem('routerLink').indexOf('/pay/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/index') != -1) {
               self.$toast('支付成功~');
               self.$router.replace({
                 name: "paysuccess",
@@ -528,11 +551,15 @@ export default {
                   pay_money: _payMoney
                 }
               });
-
             }
-            console.log(res.err_msg);
+            // 电子书支付
+            else if(localStorage.getItem('routerLink').indexOf('/ebook/reader') != -1 || localStorage.getItem('routerLink').indexOf('/ebook/detail') != -1){
+              self.$toast('支付成功~')
+              location.reload();
+            }
+            // console.log(res.err_msg);
             // 使用以上方式判断前端返回,微信团队郑重提示：
-            //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+            // res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
           } else {
             console.log(res);
           }

@@ -6,8 +6,8 @@
 @import './var.scss';
 @import './mixin.scss';
 @import './func.scss';
-@import './../../style/font/PingFangBold.css';
-@import './../font/PingFangMedium.css';
+// @import './../../style/font/PingFangBold.css';
+// @import './../font/PingFangMedium.css';
 
 html {
   margin: 0 auto;
@@ -447,5 +447,17 @@ img {
     text-align: center;
     left: 0;
     bottom: 50px;
+  }
+}
+
+.book_moudel .van-tabs--line .van-tabs__wrap{
+  border-bottom: none !important;
+}
+#readerPage{
+  .van-slider__button{
+    border:2px solid $redDark !important;
+  }
+  .van-slider__button-wrapper{
+    z-index: 99;
   }
 }

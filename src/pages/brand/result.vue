@@ -37,51 +37,116 @@
               finished-text="没有更多了"
               @load="programLoad"
             >
-              <!-- 图书,专辑 -->
-              <div class="content book" v-for="(item,index) in brandData" @click="gotoDetail(item)" :key="index" v-if="item.goods_type == 3 || item.goods_type == 9">
-                <div class="ratiobook">
-                  <div class="bookimg" v-lazy:background-image="item.pic[0]"></div>
-                </div>
-                <div class="right">
-                  <div class="text">{{item.title}}</div>
-                  <div class="pinpai">{{item.sub_title}}</div>
-                  <div class="nice">
-                    <span class="good" v-if="item.goods_type == 6">
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-good-line" />
-                      </svg>
-                      <span>{{item.praise_num}}</span>
-                    </span>
-                    <span class="comment">
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-comment-line" />
-                      </svg>
-                      <span>{{ item.comment_num }}</span>
-                    </span>
+              <div v-for="(item,index) in brandData" :key="index">
+                <!-- 图书,专辑 -->
+                <div
+                  class="content book"
+                  @click="gotoDetail(item)"
+                  v-if="item.goods_type == 3 || item.goods_type == 9"
+                >
+                  <div class="ratiobook">
+                    <div class="bookimg" v-lazy:background-image="item.pic[0]"></div>
+                  </div>
+                  <div class="right">
+                    <div class="text">{{item.title}}</div>
+                    <div class="pinpai">{{item.sub_title}}</div>
+                    <div class="nice">
+                      <span class="good" v-if="item.goods_type == 6">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-good-line" />
+                        </svg>
+                        <span>{{item.praise_num}}</span>
+                      </span>
+                      <span class="price" v-if="item.goods_type == 3">
+                        <span>￥{{ item.price }}</span>
+                      </span>
+                      <span class="comment" v-if="item.goods_type == 9">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-album-line" />
+                        </svg>
+                        <span>共{{ item.item_count }}集</span>
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              <div class="content" v-for="(item,index) in brandData" @click="gotoDetail(item)" :key="index" v-else>
-                <div class="ratiobox">
-                  <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+                <!-- 文章 -->
+                <div class="content" @click="gotoDetail(item)" v-if="item.goods_type == 6">
+                  <div class="ratiobox">
+                    <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+                  </div>
+                  <div class="right">
+                    <div class="text">{{item.title}}</div>
+                    <div class="pinpai">{{item.sub_title}}</div>
+                    <div class="nice">
+                      <span class="good" v-if="item.goods_type == 6">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-good-line" />
+                        </svg>
+                        <span>{{item.praise_num}}</span>
+                      </span>
+                      <span class="comment">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-comment-line" />
+                        </svg>
+                        <span>{{ item.comment_num }}</span>
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <div class="right">
-                  <div class="text">{{item.title}}</div>
-                  <div class="pinpai">{{item.sub_title}}</div>
-                  <div class="nice">
-                    <span class="good" v-if="item.goods_type == 6">
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-good-line" />
-                      </svg>
-                      <span>{{item.praise_num}}</span>
-                    </span>
-                    <span class="comment">
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-comment-line" />
-                      </svg>
-                      <span>{{ item.comment_num }}</span>
-                    </span>
+                <!-- 音视频 -->
+                <div
+                  class="content audio"
+                  @click="gotoDetail(item)"
+                  v-if="item.goods_type == 1 || item.goods_type == 2"
+                >
+                  <div class="ratiobox">
+                    <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+                  </div>
+                  <div class="right">
+                    <div class="text">{{item.title}}</div>
+                    <div class="pinpai">{{item.sub_title}}</div>
+                    <div class="nice">
+                      <span class="good">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-time-line" />
+                        </svg>
+                        <span>{{item.duration}}</span>
+                      </span>
+                      <span class="price">
+                        <!-- <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-comment-line" />
+                        </svg>-->
+                        <span v-if="item.price">￥{{ item.price }}</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- 电子书 -->
+                <div
+                  class="content ebook"
+                  @click="gotoDetail(item)"
+                  v-if="item.goods_type == 4"
+                >
+                  <div class="ratiobox">
+                    <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+                  </div>
+                  <div class="right">
+                    <div class="text">{{item.title}}</div>
+                    <!-- <div class="pinpai">{{item.sub_title}}</div> -->
+                    <div class="nice">
+                      <span class="good">
+                        <!-- <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-time-line" />
+                        </svg> -->
+                        <span>{{item.book_author}}</span>
+                      </span>
+                      <span class="price">
+                        <!-- <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-comment-line" />
+                        </svg>-->
+                        <span v-if="item.price">￥{{ item.price }}</span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -89,6 +154,9 @@
           </template>
         </van-tab>
       </van-tabs>
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
     </div>
 
     <!-- <easyNav :navData="navData"></easyNav> -->
@@ -119,8 +187,6 @@ export default {
       //   personalLink: "/personal/index",
       //   type: "brand"
       // },
-      iconUrl:
-        "https://media2.v.bookuu.com/activity/08/53/20190418085322949.jpg@!q75",
       state: "brand",
       brandData: [],
       bookData: [],
@@ -134,7 +200,10 @@ export default {
       page: 1,
       title: null,
       page_size: 10,
-      contentData:[],
+      contentData: [],
+      supplier_id: null,
+      tagids: null,
+      cids: null
     };
   },
   mounted() {
@@ -142,11 +211,15 @@ export default {
       ? this.$route.query.searchContent
       : null;
     this.goods_type = this.$route.query.goods_type;
+    this.supplier_id = this.$route.query.supplier_id
+      ? parseInt(this.$route.query.supplier_id)
+      : 0;
+    this.tagids = this.$route.query.tagids ? this.$route.query.tagids : null;
+    this.cids = this.$route.query.cids ? this.$route.query.cids : null;
+
     // title
     this.title = this.$route.query.title ? this.$route.query.title : "";
     document.title = "搜索结果-" + this.title;
-
-    // if(this.goods_type != null) this.getGoods();
 
     this.getGoodsColum();
   },
@@ -225,19 +298,25 @@ export default {
           name: "detail",
           query: { goods_id: item.goods_id }
         });
-      } else {
+      } else if (goodsType == 4) {
+        // 电子书
+        this.$router.push({
+          name: "ebookdetail",
+          query: { goods_id: item.goods_id }
+        });
       }
     },
     programLoad() {
       this.getGoods();
     },
     async getGoodsColum() {
-
       var tStamp = this.$getTimeStamp();
       var data = {
         keywords: this.searchContent,
-        // goods_type: this.goods_type,
+        goods_type: this.goods_type,
         brand_id: this.$route.query.brand_id,
+        // supplier_id: this.supplier_id,
+        tagids: this.tagids,
         // page: this.page,
         // page_size: this.page_size,
         version: "1.0",
@@ -249,6 +328,13 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         var result = res.response_data.result;
         this.column_list = res.response_data.column;
+        var _index;
+        for (let i = 0; i < this.column_list.length; i++) {
+          if (this.column_list[i].goods_type == this.goods_type) {
+            _index = i;
+          }
+        }
+        this.activekey = _index;
 
         // 获取页面分享信息
         var _pageName = "";
@@ -292,6 +378,9 @@ export default {
         keywords: this.searchContent,
         goods_type: this.goods_type,
         brand_id: this.$route.query.brand_id,
+        supplier_id: this.supplier_id,
+        tagids: this.tagids,
+        cids: this.cids,
         page: this.page,
         page_size: this.page_size,
         version: "1.0",
@@ -302,15 +391,14 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         var result = res.response_data.result;
-        this.column_list = res.response_data.column;
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
-              this.brandData.push(result[i]);
-              this.contentData.push(result[i])
+            this.brandData.push(result[i]);
+            this.contentData.push(result[i]);
           }
           this.programLoading = false;
           this.page++;
-
+          // console.log('thispage',this.page)
           // 数据全部加载完成
           if (this.page > res.response_data.total_page) {
             this.programFinished = true;
@@ -351,20 +439,21 @@ export default {
     inputText() {
       this.$router.push({
         name: "search",
-        query: { type: this.$route.query.type }
+        query: {
+          type: this.$route.query.type,
+          brand_id: this.$route.query.brand_id,
+          supplier_id: this.$route.query.supplier_id
+        }
       });
     },
     // 点击tab页切换
-    tabChange(index,title) {
+    tabChange(index, title) {
       this.activekey = index;
       this.brandData = [];
       this.programFinished = false;
-      this.currentPage = 1;
+      this.page = 1;
       this.goods_type = Number(this.column_list[index].goods_type);
-      // if(this.goods_type == 0){this.goods_type = null}
-      console.log(666,this.goods_type)
-    },
-
+    }
   }
 };
 </script>

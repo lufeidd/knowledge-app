@@ -1,4 +1,3 @@
-
 <template>
   <div id="albumPage" class="page">
     <div class="nullBox" v-if="onsale == 0">
@@ -465,11 +464,13 @@
           </div>
         </div>
       </van-popup>
-
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
       <!-- 快速导航 -->
       <!-- <easyNav :navData="navData"></easyNav> -->
     </div>
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" ref="nav"></EazyNav>
   </div>
 </template>
 
@@ -1383,7 +1384,7 @@ export default {
       // 关联节目列表播放状态
       this.myAudioData.type = __type;
       this.audioPlaying = !__type;
-      
+
       console.log(123, __type, this.allPlayStatus);
     },
     // --------------------------------播放列表----------------------------------
@@ -1572,11 +1573,15 @@ export default {
     },
     // 购买
     buyAction(goodsId) {
-      if (goodsId != null)
+      if(this.$refs.nav.is_Login){
+        if (goodsId != null)
         this.$router.push({
           name: "payaccount",
           query: { goods_id: goodsId }
         });
+      }else{
+        this.$router.push({name:"login"})
+      }
     },
     // --------------------------------相似----------------------------------
     // load
@@ -1622,7 +1627,7 @@ export default {
     },
     // 相似
     gotoLink(goodsId) {
-      this.$router.replace({
+      this.$router.push({
         name: "album",
         query: { goods_id: goodsId }
       });

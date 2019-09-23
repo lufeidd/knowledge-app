@@ -4,8 +4,8 @@
       <img src="./../../assets/null/list.png" width="100%">
       <div>还没有收藏的内容，快去看看吧~</div>
     </div>
+    <div v-else>
     <van-list
-      v-else
       v-model="collectLoading"
       :finished="collectFinished"
       finished-text="没有更多了"
@@ -104,10 +104,14 @@
         </span>
       </van-swipe-cell>
     </van-list>
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
+    </div>
     <!-- 快速导航 -->
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    
+
   </div>
 </template>
 
@@ -168,7 +172,7 @@ export default {
             // store 设置登录状态
             this.$store.commit("changeLoginState", 1);
             localStorage.setItem("loginState", 1);
-            
+
             setTimeout(() => {
               var result = res.response_data.result;
 
@@ -192,7 +196,7 @@ export default {
               // store 设置登录状态
               this.$store.commit("changeLoginState", 100);
               localStorage.setItem("loginState", 100);
-              
+
             }
             this.collectFinished = true;
             // this.$toast(res.error_message);

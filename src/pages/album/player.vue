@@ -79,6 +79,7 @@
       ref="control"
       @audioChange="audioAction"
     ></audioList>
+    <!-- <CopyRight></CopyRight> -->
   </div>
 </template>
 
@@ -309,6 +310,7 @@ export default {
       this.progressClock = window.setInterval(() => {
         console.log("每5s更新");
         this.updateProgress();
+        this.$refs.control.progressListData();
       }, 5000);
     },
     // 更新音频播放进度
@@ -500,9 +502,21 @@ export default {
     // 拖动滑块
     audioSliderChange() {
       var audio = document.getElementById("musicPlayer");
+      // console.log(66,audio.currentTime);
       // 设置当前时间
-      if (this.audioData.sliderValue)
+      if (this.audioData.sliderValue){
         audio.currentTime = (this.audioData.sliderValue / 100) * audio.duration;
+      }
+      if(this.audioData.sliderValue >= 100) {
+        console.log(9999999);
+        this.nextProgram();
+        // 重置
+        this.currentTime__ = this.todate(0);
+        this.audiobindtoslider(0);
+        // 存储到localStorage
+        var info = JSON.parse(localStorage.getItem("miniAudio"));
+        this.audioTimeChange(0, true);
+      }
       // 绑定slider
       this.audiobindtoslider(audio.currentTime);
       this.currentTime__ = this.todate(audio.currentTime);

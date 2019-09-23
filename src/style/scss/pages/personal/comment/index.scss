@@ -17,7 +17,7 @@
           @include displayFlex(flex,space-between,center);
           .titleFrom{
             width: 100%;
-           @include displayFlex(flex,flex-start,center);
+           @include displayFlex(flex,space-between,center);
            .box{
             @include displayFlex(flex,flex-start,center);
             .icon{
@@ -44,6 +44,13 @@
         .comment{
           margin: 5px 0;
           font-size: $fontSize + 1;
+          .commentContent{
+            margin-right: 10px;
+          }
+          .delete{
+            color: orange;
+            white-space: nowrap;
+          }
         }
         .section{
           padding-top: 5px;

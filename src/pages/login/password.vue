@@ -54,6 +54,7 @@
         </template>
       </div>
     </div>
+    <CopyRight></CopyRight>
   </div>
 </template>
 
@@ -62,7 +63,7 @@
 <style lang="scss">
 // @import url("./../../style/scss/components/button.scss");
 #lpasswordPage {
-  
+
 .van-button {
   border-radius: 50px;
 }
@@ -202,7 +203,7 @@ export default {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
           localStorage.setItem("loginState", 100);
-          
+
         }
         this.$toast(res.error_message);
       }

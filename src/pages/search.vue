@@ -25,7 +25,7 @@
         </van-col>
       </van-row>
     </div>
-    <div class="searchRecommend" v-if="(this.type == 'brand' || this.type == 'mall') && hotSearch ">
+    <div class="searchRecommend" v-if="(this.type == 'brand' || this.type == 'mall') && hotSearch.length > 0">
       <p class="recommend">热门搜索</p>
       <van-row type="flex" gutter="15">
         <van-col span="6" v-for="(item,index) in hotSearch" :key="index">
@@ -46,7 +46,7 @@
     </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-
+    <CopyRight></CopyRight>
   </div>
 </template>
 
@@ -80,7 +80,7 @@ export default {
       //   type: "order"
       // },
       type: "",
-      hotSearch: null,
+      hotSearch: [],
       state: [
         { order_state: 1, order_desc: "待付款" },
         { order_state: 2, order_desc: "待发货" },

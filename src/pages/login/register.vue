@@ -48,8 +48,10 @@
 
       <div class="prototype">
         <van-checkbox v-model="checked" @click="checkAction">阅读并同意</van-checkbox>
+        <span style="position:absolute;top:0px;left:90px;">
         <router-link :to="{name: 'prototype', query: {type: 'prototype'}}">《火把平台用户注册协议》</router-link>
         <router-link :to="{name: 'prototype', query: {type: 'private'}}">《隐私条款》</router-link>
+        </span>
       </div>
 
       <div class="submitBox">
@@ -61,6 +63,7 @@
         </template>
       </div>
     </div>
+    <CopyRight></CopyRight>
   </div>
 </template>
 
@@ -119,7 +122,7 @@
 
 <script>
 //  引入接口
-import { REG, SMS } from "../../apis/passport.js";
+import { REG, SMS,PASSPORT_CHECKPHONE } from "../../apis/passport.js";
 
 export default {
   data() {
@@ -149,7 +152,7 @@ export default {
       var regPassword = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,20}$/;
       if (type === "phone") {
         if (regPhone.test(this.phone)) {
-          this.codeData.disabled = false;
+          this.check_phone();
         } else {
           this.codeData.disabled = true;
         }
@@ -183,6 +186,24 @@ export default {
     getCode() {
       this.$countDown(this.codeData);
       this.sms();
+    },
+    //判断手机号是否已注册
+    async check_phone(){
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        mobile: this.phone,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+
+      let res = await PASSPORT_CHECKPHONE(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.codeData.disabled = false;
+      } else {
+        this.$toast(res.error_message);
+      }
     },
     // 确认并注册
     async regist() {

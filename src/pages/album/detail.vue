@@ -296,12 +296,15 @@
           </div>
         </div>
       </van-popup>
+      <div style="position:relative;height:90px;">
+        <CopyRight></CopyRight>
+      </div>
     </div>
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" ref="nav"></EazyNav>
   </div>
 </template>
 
-<style src="@/style/scss/pages/album/detail.scss" lang="scss"></style>
+<style src="@/style/scss/pages/album/detail.scss" scoped lang="scss"></style>
 <style lang="scss">
 #albumdetailPage {
   .van-button {
@@ -1223,15 +1226,19 @@ export default {
     // 购买
     buyAction(goodsId) {
       var _goodsId = goodsId;
-      // 根据专辑购买
-      if (this.baseData.sale_style == 1) {
-        _goodsId = this.pid;
+      if (this.$refs.nav.is_Login) {
+        // 根据专辑购买
+        if (this.baseData.sale_style == 1) {
+          _goodsId = this.pid;
+        }
+        if (goodsId != null)
+          this.$router.push({
+            name: "payaccount",
+            query: { goods_id: _goodsId }
+          });
+      } else {
+        this.$router.push({name:"login"})
       }
-      if (goodsId != null)
-        this.$router.push({
-          name: "payaccount",
-          query: { goods_id: _goodsId }
-        });
     },
     // --------------------------------相似----------------------------------
     // 推荐
@@ -1286,7 +1293,12 @@ export default {
           name: "album",
           query: { goods_id: item.goods_id }
         });
-      } else {
+      } else if (goodsType == 4){
+        //电子书
+        this.$router.push({
+          name: "ebookdetail",
+          query: { goods_id: item.goods_id }
+        });
       }
     }
   }

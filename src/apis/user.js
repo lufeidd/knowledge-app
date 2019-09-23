@@ -21,6 +21,9 @@ export const USER_WALLET_RECHARGE_ADD = query => req('post', '/user/wallet/recha
 // 定义我的评论接口
 export const USER_COMMENT = query => req('post', '/user/comment/gets', query);
 
+//删除评论接口
+export const GOODS_COMMENT_DEL = query => req('post', '/goods/comment/del', query);
+
 // 历史
 export const USER_HISTORY = query => req('post', '/user/history/gets', query);
 export const USER_HISTORY_CANCEL = query => req('post', '/user/history/delete', query);
