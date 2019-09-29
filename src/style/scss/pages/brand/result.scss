@@ -105,7 +105,7 @@
     }
     .content.ebook{
       .ratiobox {
-        min-width: 129px;
+        min-width: 25%;
         .bookImg {
           display: block;
           @include ratioBox (100%, 133.33%, 1px solid $greyLight, contain, $white, null);

@@ -287,7 +287,7 @@
   // 电子书
   .ablum_moudle.ebook{
     .ratiobox {
-      min-width: 129px;
+      min-width: 25%;
       position: relative;
 
       .bookImg {
@@ -295,6 +295,40 @@
         @include ratioBox (100%,133.33%, 1px solid $greyLight, contain, $white, null);
         border-radius: 3px;
         box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+      }
+    }
+    .subTitle{
+      @include twoColtextOverflow;
+    }
+
+    & .ebooklist {
+      // width: calc(100% + 10px);
+      background-color: $white;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+      .van-col{
+        margin-top:20px;
+      }
+      & .title {
+        @include twoColtextOverflow;
+        // height: 38px;
+        @include font("PingFangBold", $fontSize + 1, null);
+        margin-top: 8px;
+        line-height: 1.2;
+      }
+      .schedule{
+        color:$cl9;
+        margin-top:5px;
+      }
+      .ratioebox {
+        position: relative;
+        .ebookImg {
+          display: block;
+          @include ratioBox (100%, 133.33%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 3px;
+          box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+          box-sizing: border-box;
+        }
       }
     }
   }

@@ -18,7 +18,7 @@ body,
 #app {
   width: 100%;
   height: 100%;
-
+  margin: 0 !important;
   /* padding-top: env(safe-area-inset-top);  */
   /* 为导航栏+状态栏的高度 88px */
   /* padding-left: env(safe-area-inset-left);  */
@@ -93,7 +93,7 @@ export default {
     };
   },
   mounted() {
-    // this.$router.push({name:"ebookshelf"})
+    // this.$router.push({name:"couponmine"});
     sessionStorage.setItem("gotoLogin", "no");
     sessionStorage.setItem("isWxLogin", "no");
     // console.log(111,Number(localStorage.getItem("get_count")))

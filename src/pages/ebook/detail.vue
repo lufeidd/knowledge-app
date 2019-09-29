@@ -11,8 +11,8 @@
             <p class="author">{{baseInfo.author}}</p>
             <p class="category">{{baseInfo.category_path}}</p>
           </div>
-          <div class="price">￥{{baseInfo.price}}</div>
-          <!-- <div class="price">免费阅读</div> -->
+          <div class="price" v-if="baseInfo.price">￥{{baseInfo.price}}</div>
+          <div class="price" v-else>免费阅读</div>
         </div>
       </div>
       <div class="descript" @click="showDetail">{{baseInfo.goods_desc}}</div>
@@ -27,7 +27,7 @@
             <span style="margin-left:10px;">查看目录 · 版权信息</span>
           </template>
         </van-cell>
-        <van-cell value is-link @click="toDetail">
+        <van-cell value is-link @click="toDetail" v-if="baseInfo.book_info">
           <template slot="title">
             <span class="custom-text">
               <svg class="icon" aria-hidden="true">
@@ -41,7 +41,7 @@
     </div>
     <!-- 公号信息 -->
     <div class="brand_info">
-      <div class="left">
+      <div class="left" @click="toBrand">
         <div class="ratiobox">
           <div class="bookImg" v-lazy:background-image="brandInfo.header_pic"></div>
         </div>
@@ -150,7 +150,12 @@
       <CopyRight></CopyRight>
     </div>
     <!-- 评论 -->
-    <van-popup v-model="commentModel" position="bottom" style="max-height:70%;">
+    <van-popup
+      v-model="commentModel"
+
+      position="bottom"
+      style="max-height:70%;"
+    >
       <div class="audioList">
         <div class="title">
           <div class="action" @click="commentClose">
@@ -172,7 +177,12 @@
       </div>
     </van-popup>
     <!-- 详细信息 -->
-    <van-popup v-model="detailShow" position="bottom" style="min-height:70%;max-height:70%;">
+    <van-popup
+      v-model="detailShow"
+      position="bottom"
+
+      style="min-height:70%;max-height:70%;"
+    >
       <div class="detailList">
         <div class="head">
           <svg class="icon" aria-hidden="true" @click="closePopup">
@@ -199,7 +209,7 @@
             <ul>
               <li v-for="(item,index) in ebookList" :key="index" @click="read(item,index)">
                 <div class="left">
-                  <div>第{{index+1}}章</div>
+                  <!-- <div>第{{index+1}}章</div> -->
                   <div class="title">{{item.chapter_name}}</div>
                 </div>
                 <span>
@@ -219,24 +229,66 @@
       </div>
     </van-popup>
     <div class="bottom">
-      <div class="isbuy" v-if="baseInfo.is_payed == 0 && baseInfo.is_free == 0">
+      <div class="isbuy" v-if="baseInfo.is_payed == 0 && baseInfo.is_free == 0 && baseInfo.has_free == 1">
         <div v-if="baseInfo.is_sbookshelf == 0" class="shelf" @click="shelfAction">加入书架</div>
         <div v-else class="shelf" @click="shelfAction">已加入书架</div>
         <div @click="buyNow">立即购买</div>
         <div class="read" @click="toreader">免费阅读</div>
       </div>
-      <div class="nobuy" v-else>
+      <div class="nobuy" v-if="baseInfo.is_free == 1 || baseInfo.is_payed == 1">
         <div v-if="baseInfo.is_sbookshelf == 0" @click="shelfAction">加入书架</div>
         <div class="shelf" v-else @click="shelfAction">已加入书架</div>
-        <div class="read" @click="toreader">免费阅读</div>
+        <div class="read" @click="toreader" v-if="baseInfo.is_payed == 1">立即阅读</div>
+        <div class="read" @click="toreader" v-else>免费阅读</div>
+      </div>
+      <div class="nobuy" v-if="baseInfo.is_free == 0 && baseInfo.is_payed == 0 && baseInfo.has_free == 0">
+        <div v-if="baseInfo.is_sbookshelf == 0" @click="shelfAction">加入书架</div>
+        <div class="shelf" v-else @click="shelfAction">已加入书架</div>
+        <div class="read" @click="buyNow">立即购买</div>
       </div>
     </div>
     <!-- 支付购买弹层 -->
-    <ebookpay :goods_id="goods_id" ref="pay" :info="info" @rechargeBuy="payrecharge" @addshelf="shelfData"></ebookpay>
+    <ebookpay
+      :goods_id="goods_id"
+      ref="pay"
+      :info="info"
+      :isSuccessPay="isSuccessPay"
+      @rechargeBuy="payrecharge"
+      @payMoney="payMoney"
+    ></ebookpay>
     <!-- 充值余额并支付 -->
-    <ebookrecharge ref="recharge" :info="info" @return="returnUp"></ebookrecharge>
+    <ebookrecharge ref="recharge" :info="info" :goods_id="goods_id" @return="returnUp"></ebookrecharge>
     <EazyNav type="brand"></EazyNav>
-
+    <!-- 数字键盘 -->
+    <van-number-keyboard
+      :show="showKeyboard"
+      @input="onInput"
+      @delete="onDelete"
+      @blur="showKeyboard = false"
+    />
+    <van-dialog v-model="showDialog" title="请输入手机验证码" show-cancel-button cancelButtonText="放弃支付">
+      <div class="codeBox">
+        <div class="price">
+          ¥
+          <span class="money">{{ pay_money }}</span>
+        </div>
+        <div class="code">
+          <van-row>
+            <van-col span="14" style="text-align:left;">手机号:{{ pay_mobilephone }}</van-col>
+            <van-col span="10" style="text-align: right;">
+              <template v-if="codeData.disabled">
+                <van-button size="small" round disabled type="danger">{{ codeData.timeMsg }}</van-button>
+              </template>
+              <template v-else>
+                <van-button size="small" round type="danger" @click="getCode">{{ codeData.timeMsg }}</van-button>
+              </template>
+            </van-col>
+          </van-row>
+        </div>
+        <!-- 密码输入框 -->
+        <van-password-input :value="passvalue" :mask="false" @focus="keyboardShow" />
+      </div>
+    </van-dialog>
   </div>
 </template>
 
@@ -246,9 +298,17 @@
   .van-cell {
     padding: 10px 0;
   }
+  .van-dialog__confirm {
+    display: none;
+  }
 }
 </style>
 <script>
+import {
+  ORDER_VIRTUAL_ADD,
+  ORDER_VIRTUAL_ADD_SENDCODE,
+  ORDER_VIRTUAL_ADD_PAY
+} from "../../apis/shopping.js";
 import ebookpay from "../ebook/pay";
 import ebookrecharge from "../ebook/recharge";
 import { ALBUM } from "../../apis/album.js";
@@ -304,11 +364,32 @@ export default {
       detailShow: false,
       ebookList: [],
       minChapter: null,
-      currenChapterTitle:"",
+      currenChapterTitle: "",
+
+      // 密码输入框
+      showDialog: false,
+      passvalue: "",
+      showKeyboard: false,
+      mobile: "",
+      code: "",
+      pay_mobilephone: "",
+      pay_money: "",
+      // 验证码
+      codeData: {
+        disabled: false,
+        timeMsg: "获取验证码",
+        time: 120
+      },
+      // 订单号
+      order_id: "",
+      pay_id: "",
+      timer:null,
+      isSuccessPay:null,
     };
   },
   mounted() {
     this.goods_id = this.$route.query.goods_id;
+    this.isSuccessPay = this.$route.query.isSuccessPay;
     this.getData();
     this.getRecommendData();
     this.getList();
@@ -321,7 +402,16 @@ export default {
     toDetail() {
       this.$router.push({
         name: "detail",
-        query: { goods_id: this.goods_id }
+        query: { goods_id: this.baseInfo.book_info.goods_id }
+      });
+    },
+    //跳转公号主页
+    toBrand() {
+      this.$router.push({
+        name: "brand",
+        query: {
+          brand_id: this.brandInfo.brand_id
+        }
       });
     },
     //获取电子书基本信息
@@ -361,20 +451,12 @@ export default {
 
         // 获取页面分享信息
         // if(this.isWxLogin) this.wxShareData();
-        // var _pageName = "ebook/detail";
-        // var _params = JSON.stringify({
-        //   goods_id: this.$route.query.goods_id
-        //   // album_id: this.$route.query.pid
-        // });
-        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
-
-        // $(".contentData").append(this.baseData.desc);
-        // if (this.baseData.desc.length <= 0) {
-        //   $(".contentData").remove();
-        //   console.log(this.baseData.desc);
-        // }
-
-        // console.log(this.baseData);
+        var _pageName = "goods/detail";
+        var _params = JSON.stringify({
+          goods_id: this.$route.query.goods_id
+          // album_id: this.$route.query.pid
+        });
+        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
 
         this.onsale = 1;
       } else {
@@ -424,11 +506,12 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // console.log(res);
         // this.ebookList = res.response_data;
-        for(var i=0;i<res.response_data.length;i++){
-          if(res.response_data[i].chapter_hidden == 0){
-            this.ebookList.push(res.response_data[i])
+        for (var i = 0; i < res.response_data.length; i++) {
+          if (res.response_data[i].chapter_hidden == 0) {
+            this.ebookList.push(res.response_data[i]);
           }
         }
+        console.log(333,this.ebookList)
         this.minChapter = this.ebookList[0].chapter_id;
       } else {
         this.$toast(res.error_message);
@@ -548,7 +631,7 @@ export default {
         query: {
           goods_id: this.goods_id,
           chapter_id: item.chapter_id,
-          currenChapterTitle:this.currenChapterTitle,
+          currenChapterTitle: this.currenChapterTitle
         }
       });
     },
@@ -574,9 +657,101 @@ export default {
         name: "ebookreader",
         query: {
           goods_id: this.goods_id,
-          chapter_id: this.minChapter
+          chapter_id: this.minChapter,
+          currenChapterTitle: 1
         }
       });
+    },
+    // 数字键盘支付
+    payMoney() {
+      this.passvalue = "";
+      this.showDialog = true;
+      // 重置倒计时
+      clearInterval(this.clock);
+      this.clock = null;
+      this.codeData.disabled = false;
+      this.codeData.timeMsg = "获取验证码";
+      this.addOrderData(this.activeIndex);
+    },
+    // 新增虚拟订单
+    async addOrderData(_index) {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        goods_id: this.goods_id,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_VIRTUAL_ADD(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.pay_mobilephone = res.response_data.pay_mobilephone;
+        this.pay_money = res.response_data.pay_money;
+        this.order_id = res.response_data.order_id;
+        this.pay_id = res.response_data.pay_id;
+
+        // 交易支付请求发起
+        // this.cashierPayData(this.pay_id);
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 订单余额支付手机验证码发送
+    getCode() {
+      this.$countDown(this.codeData);
+      this.sms();
+    },
+    async sms() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        order_id: this.order_id,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_VIRTUAL_ADD_SENDCODE(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(123, res);
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    keyboardShow() {
+      this.showKeyboard = true;
+      $(".van-number-keyboard").css("z-index", 10000);
+    },
+    onInput(key) {
+      this.passvalue = (this.passvalue + key).slice(0, 6);
+      if (this.passvalue.length == 6) {
+        this.payData(this.passvalue);
+      }
+    },
+    onDelete() {
+      this.passvalue = this.passvalue.slice(0, this.passvalue.length - 1);
+    },
+    // 输完验证码获取支付接口
+    async payData(__code) {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        pay_id: this.pay_id,
+        type: "NORMAL",
+        code: __code,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_VIRTUAL_ADD_PAY(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.showDialog = false;
+        this.showKeyboard = false;
+        clearInterval(this.clock);
+        this.clock = null;
+        this.codeData.disabled = false;
+        this.codeData.timeMsg = "获取验证码";
+        location.reload();
+        this.$toast("支付成功");
+      } else {
+        this.$toast(res.error_message);
+      }
     },
     // ----------------------------------评论------------------------------------
     commentLoad() {
@@ -625,6 +800,7 @@ export default {
     },
     // 回复
     async replyData(comment_id, key) {
+      this.timer = 0;
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
@@ -637,6 +813,7 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         // 异步更新数据
+        // var _length = this.answerData[key].length;
         var result = res.response_data.result;
         for (let i = 0; i < result.length; i++) {
           this.answerData[key].push(result[i]);
@@ -652,7 +829,16 @@ export default {
     },
     // 回复展开更多
     pageChange(comment_id, key) {
-      this.replyData(comment_id, key);
+      var _this = this;
+      if(this.timer){
+        // console.log(111,this.timer);
+        this.timer = 0;
+      }else{
+        this.timer = setTimeout(function(){
+          // console.log(222,_this.timer)
+          _this.replyData(comment_id, key);
+        },200)
+      }
       // console.log("当前页数组：", this.replyPage, 'key:', key);
     },
     // 关闭评论弹窗

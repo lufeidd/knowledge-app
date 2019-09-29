@@ -6,9 +6,18 @@
 
  #readerPage{
    position: relative;
+   min-height: 100%;
+
     .charge{
-      padding-top: 140px;
+      position: absolute;
+      top:40px;
+      bottom: 0;
+      padding: 0 15px;
+      padding-top: 100px;
       font-size: $fontSize + 4;
+      background-color: #FFF;
+      box-sizing: border-box;
+      width: 100%;
       p{
         text-align: center;
       }
@@ -23,6 +32,7 @@
       height: 40px;
       position: fixed;
       top: 0;
+      left:0;
       width: 100%;
       box-sizing: border-box;
       @include displayFlex(flex, space-between, center);
@@ -54,6 +64,10 @@
     .ebookDetail{
       padding:0 15px;
       padding-top:50px;
+      box-sizing: border-box;
+      p{
+        color:#b6c793 !important;
+      }
     }
     .footBtn{
       padding:20px 15px;
@@ -110,7 +124,25 @@
         }
       }
     }
+    .van-dialog {
+      & .codeBox {
+        text-align: center;
+        padding: 20px;
 
+        & .price {
+          @include font("PingFangBold", $fontSize + 1, $redDark);
+          line-height: 2;
 
+          & .money {
+            font-size: $fontSize + 4;
+          }
+        }
 
+        & .code {
+          @include font(null, $fontSize - 1, #999);
+          padding: 10px 0;
+          line-height: 30px;
+        }
+      }
+    }
  }
