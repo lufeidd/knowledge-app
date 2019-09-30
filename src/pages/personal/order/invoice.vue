@@ -95,7 +95,6 @@
       @select="invoiceTypeSelect"
       @cancel="invoiceTypeModle=false"
     /> -->
-    <CopyRight></CopyRight>
   </div>
 </template>
 
@@ -105,9 +104,9 @@
 #invoicePage {
 
 
-.van-button {
-  border-radius: 50px;
-}
+// .van-button {
+//   border-radius: 50px;
+// }
 
 .van-button::before {
   display: none;

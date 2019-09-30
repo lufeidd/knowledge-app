@@ -12,7 +12,7 @@
           <svg class="icon" aria-hidden="true" @click="showComment">
             <use xlink:href="#icon-personalNews" />
           </svg>
-          <span class="tags">{{commentNumber}}</span>
+          <span class="tags" v-if="commentNumber">{{commentNumber}}</span>
         </div>
       </div>
       <div>
@@ -34,7 +34,7 @@
       </p>
     </div>
     <div v-else>
-      <div class="ebookDetail" v-html="detail_desc"></div>
+      <div class="ebookDetail" v-html="detail_desc">{{detail_desc}}</div>
       <div class="footBtn">
         <van-button round size="small" type="danger" @click="prev">上一章</van-button>
         <van-button round size="small" type="danger" @click="next">下一章</van-button>
@@ -45,7 +45,7 @@
     </div>-->
 
     <!-- 设置弹层 -->
-    <van-popup v-model="setShow" position="bottom">
+    <van-popup v-model="setShow" position="bottom" >
       <div class="set">
         <div class="head">
           <span>设置</span>
@@ -59,7 +59,7 @@
               :class="'circle'+ ' ' +item"
               v-for="(item,index) in bgColors"
               :key="index"
-              @click="checkBg(item,index)"
+              @click.stop="checkBg(item,index)"
             ></span>
           </div>
           <div class="setWord">
@@ -67,7 +67,7 @@
               round
               size="small"
               type="danger"
-              @click="reduce"
+              @click.stop="reduce"
               style="min-width:85px;font-size:18px;"
             >A-</van-button>
             <span class="fontSize">{{fontsize}}</span>
@@ -75,7 +75,7 @@
               round
               size="small"
               type="danger"
-              @click="add"
+              @click.stop="add"
               style="min-width:85px;font-size:18px;"
             >A+</van-button>
           </div>
@@ -99,9 +99,16 @@
       </div>
     </van-popup>
     <!-- 支付购买弹层 -->
-    <ebookpay :goods_id="goods_id" ref="pay" :info="info" @rechargeBuy="payrecharge"></ebookpay>
+    <ebookpay
+      :goods_id="goods_id"
+      ref="pay"
+      :info="info"
+      :isSuccessPay="isSuccessPay"
+      @rechargeBuy="payrecharge"
+      @payMoney="payMoney"
+    ></ebookpay>
     <!-- 充值余额并支付 -->
-    <ebookrecharge ref="recharge" :info="info" @return="returnUp"></ebookrecharge>
+    <ebookrecharge ref="recharge" :goods_id="goods_id" :info="info" @return="returnUp"></ebookrecharge>
     <!-- 目录 -->
     <ebookcatalog
       ref="catalog"
@@ -114,8 +121,38 @@
       @ebookChange="getChapter"
     ></ebookcatalog>
     <!-- 评论 -->
-    <ebookcomment ref="comment" :goods_id="goods_id"></ebookcomment>
-    <EazyNav type="brand"></EazyNav>
+    <ebookcomment ref="comment" :goods_id="goods_id" :isLogin="isLogin"></ebookcomment>
+    <EazyNav type="brand" ref="nav"></EazyNav>
+    <!-- 数字键盘 -->
+    <van-number-keyboard
+      :show="showKeyboard"
+      @input="onInput"
+      @delete="onDelete"
+      @blur="showKeyboard = false"
+    />
+    <van-dialog v-model="showDialog" title="请输入手机验证码" show-cancel-button cancelButtonText="放弃支付">
+      <div class="codeBox">
+        <div class="price">
+          ¥
+          <span class="money">{{ pay_money }}</span>
+        </div>
+        <div class="code">
+          <van-row>
+            <van-col span="14" style="text-align:left;">手机号:{{ pay_mobilephone }}</van-col>
+            <van-col span="10" style="text-align: right;">
+              <template v-if="codeData.disabled">
+                <van-button size="small" round disabled type="danger">{{ codeData.timeMsg }}</van-button>
+              </template>
+              <template v-else>
+                <van-button size="small" round type="danger" @click="getCode">{{ codeData.timeMsg }}</van-button>
+              </template>
+            </van-col>
+          </van-row>
+        </div>
+        <!-- 密码输入框 -->
+        <van-password-input :value="passvalue" :mask="false" @focus="keyboardShow" />
+      </div>
+    </van-dialog>
   </div>
 </template>
 
@@ -125,6 +162,24 @@
   .van-dialog__confirm {
     display: none;
   }
+  .ebookDetail.cl5 p {
+    color: #646a7a !important;
+  }
+  .ebookDetail.cl5 p span{
+    color: #646a7a !important;
+  }
+  .ebookDetail.cl5 h1 {
+    color: #646a7a !important;
+  }
+  .ebookDetail.cl5 h2 {
+    color: #646a7a !important;
+  }
+  table{
+    width:auto !important;
+  }
+  .ebookDetail.cl5 table{
+    color:#646a7a !important;
+  }
 }
 </style>
 <script>
@@ -132,8 +187,20 @@ import ebookcatalog from "../ebook/catalog";
 import ebookcomment from "../ebook/comment";
 import ebookpay from "../ebook/pay";
 import ebookrecharge from "../ebook/recharge";
+
 //  引入接口
-import { EBOOK_CHAPTER, EBOOK_CATALOG, EBOOK_INFO } from "../../apis/ebook.js";
+import {
+  ORDER_VIRTUAL_ADD,
+  ORDER_VIRTUAL_ADD_SENDCODE,
+  ORDER_VIRTUAL_ADD_PAY
+} from "../../apis/shopping.js";
+import {
+  EBOOK_CHAPTER,
+  EBOOK_CATALOG,
+  EBOOK_INFO,
+  EBOOK_READING,
+  EBOOK_STYLE
+} from "../../apis/ebook.js";
 import { COMMENT } from "../../apis/public.js";
 export default {
   components: { ebookcatalog, ebookcomment, ebookpay, ebookrecharge },
@@ -147,7 +214,7 @@ export default {
       rechargeShow: false,
       detail_desc: "",
       bgColors: ["cl1", "cl2", "cl3", "cl4", "cl5", "cl6"],
-      value: 0,
+      value: 40,
       fontsize: 31,
       bgcolor: "rgb(255, 255, 255)",
       info: {},
@@ -158,12 +225,33 @@ export default {
       // tip
       descInfo: [],
       commentNumber: null,
-      currenChapterTitle:null,
-      ebookList:[],
-      test:true,
+      currenChapterTitle: null,
+      ebookList: [],
+      test: true,
+      ebookSchedule: null,
+      isLogin: null,
+      // 密码输入框
+      showDialog: false,
+      passvalue: "",
+      showKeyboard: false,
+      mobile: "",
+      code: "",
+      pay_mobilephone: "",
+      pay_money: "",
+      // 验证码
+      codeData: {
+        disabled: false,
+        timeMsg: "获取验证码",
+        time: 120
+      },
+      // 订单号
+      order_id: "",
+      pay_id: "",
+      isSuccessPay:null,
     };
   },
   mounted() {
+    this.isSuccessPay = this.$route.query.isSuccessPay;
     this.currenChapterTitle = parseInt(this.$route.query.currenChapterTitle);
     this.goods_id = parseInt(
       this.$route.query.goods_id ? this.$route.query.goods_id : null
@@ -174,7 +262,7 @@ export default {
     this.value = parseInt(
       localStorage.getItem("ebookFontSizeValue")
         ? localStorage.getItem("ebookFontSizeValue")
-        : 0
+        : 40
     );
     this.bgcolor = localStorage.getItem("bgcolor")
       ? localStorage.getItem("bgcolor")
@@ -182,24 +270,64 @@ export default {
     this.fontsize = parseInt(
       localStorage.getItem("ebookFontSize")
         ? localStorage.getItem("ebookFontSize")
-        : 31
+        : 16
     );
+    if (this.bgcolor == "rgb(22, 26, 38)") {
+      $(".ebookDetail").addClass("cl5");
+    } else {
+      $(".ebookDetail").removeClass("cl5");
+    }
     $(".ebookDetail").css("font-size", this.fontsize + "px");
-    // $(".ebookDetail").parent().css("background-color", this.bgcolor);
-    $(".ebookDetail")
-      .parent()
-      .css("background-color", this.bgcolor);
+    $("#readerPage").css("background-color", this.bgcolor);
     this.getebookInfo();
-    this.getChapter(this.chapter_id);
     this.getebookList();
+    // this.getChapter(this.chapter_id);
     this.commentData();
+    this.getEbookStyle()
+    $('body').on('click','.ebookDetail a',function(e){
+      e.preventDefault();
+    })
   },
   methods: {
     toShelf() {
       this.$router.push({ name: "ebookshelf" });
     },
-    changecurrenChapterTitle(_value){
+    changecurrenChapterTitle(_value) {
       this.currenChapterTitle = _value;
+    },
+    async getEbookStyle(){
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.0",
+        goods_id: this.goods_id,
+      };
+      data.sign = this.$getSign(data);
+      let res = await EBOOK_STYLE(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res);
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    //记录电子书阅读时长
+    async ebookReadingRecord() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.0",
+        goods_id: this.goods_id,
+        chapter_id: this.chapter_id,
+        index_value: 0,
+        schedule: this.ebookSchedule
+      };
+      data.sign = this.$getSign(data);
+      let res = await EBOOK_READING(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res);
+      } else {
+        this.$toast(res.error_message);
+      }
     },
     // 获取评论条数
     async commentData() {
@@ -231,9 +359,17 @@ export default {
       data.sign = this.$getSign(data);
       let res = await EBOOK_INFO(data);
       if (res.hasOwnProperty("response_code")) {
-        console.log(res);
+        // console.log(res);
         this.info = res.response_data;
         document.title = res.response_data.goods_title;
+
+        // 获取页面分享信息
+        var _pageName = "goods/detail";
+        var _params = JSON.stringify({
+          goods_id: this.$route.query.goods_id
+          // album_id: this.$route.query.pid
+        });
+        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
       } else {
         this.$toast(res.error_message);
       }
@@ -250,14 +386,23 @@ export default {
       let res = await EBOOK_CATALOG(data);
       if (res.hasOwnProperty("response_code")) {
         console.log(res);
-        for(var i=0;i<res.response_data.length;i++){
-          if(res.response_data[i].chapter_hidden == 0){
-            this.ebookList.push(res.response_data[i])
+        for (var i = 0; i < res.response_data.length; i++) {
+          if (res.response_data[i].chapter_hidden == 0) {
+            this.ebookList.push(res.response_data[i]);
           }
         }
         this.minChapter = this.ebookList[0].chapter_id;
         this.maxChapter = this.ebookList.slice(-1)[0].chapter_id;
-        // console.log(777,this.minChapter,this.maxChapter)
+        this.ebookSchedule = (
+          (this.currenChapterTitle / this.ebookList.length) *
+          100
+        ).toFixed(2);
+        this.ebookSchedule = Number(this.ebookSchedule);
+        this.getChapter(this.chapter_id);
+        // console.log(777,this.currenChapterTitle,this.ebookList.length,this.ebookSchedule)
+        // if(this.charge){
+        //   this.ebookReadingRecord();
+        // }
       } else {
         this.$toast(res.error_message);
       }
@@ -278,8 +423,11 @@ export default {
         this.charge = false;
         // $(".ebookDetail").html(res.response_data.chapter_content);
         this.detail_desc = res.response_data.chapter_content;
-        $("html,body").animate({ scrollTop: 0 }, 800);
+        // $("html,body").animate({ scrollTop: 0 }, 800);
         this.chapter_id = chapter_id;
+        this.ebookReadingRecord();
+        // $('.ebookDetail').find('link').remove();
+        // console.log(777,$('.ebookDetail').find('link'))
       } else {
         this.$toast(res.error_message);
         if (res.error_message == "该章节是收费章节，请先购买") {
@@ -290,9 +438,18 @@ export default {
     // 上一章
     prev() {
       if (this.chapter_id > this.minChapter) {
-        this.chapter_id = this.chapter_id - 1;
-        this.getChapter(this.chapter_id);
         this.currenChapterTitle = this.currenChapterTitle - 1;
+        this.chapter_id = this.ebookList[this.currenChapterTitle-1].chapter_id;
+        // console.log(555,this.chapter_id);return
+        this.$router.push({
+          name: "ebookreader",
+          query: {
+            goods_id: this.goods_id,
+            chapter_id: this.chapter_id,
+            currenChapterTitle: this.currenChapterTitle
+          }
+        });
+        location.reload();
       } else {
         this.$toast("已经是第一章");
       }
@@ -300,9 +457,19 @@ export default {
     // 下一章
     next() {
       if (this.chapter_id < this.maxChapter) {
-        this.chapter_id = this.chapter_id + 1;
-        this.getChapter(this.chapter_id);
+        // this.chapter_id = this.chapter_id + 1;
+        this.chapter_id = this.ebookList[this.currenChapterTitle].chapter_id;
         this.currenChapterTitle = this.currenChapterTitle + 1;
+        // console.log(666,this.chapter_id);return
+        this.$router.push({
+          name: "ebookreader",
+          query: {
+            goods_id: this.goods_id,
+            chapter_id: this.chapter_id,
+            currenChapterTitle: this.currenChapterTitle
+          }
+        });
+        location.reload();
       } else {
         this.$toast("已经是最后一章");
       }
@@ -312,7 +479,7 @@ export default {
       this.setShow = true;
     },
     checkBg(item, index) {
-      console.log(item, index);
+      // console.log(item, index);
       $(".circle")
         .eq(index)
         .addClass("checked");
@@ -324,11 +491,13 @@ export default {
         .eq(index)
         .css("background-color");
       // $(".ebookDetail").parent().css("background-color", _bgc);
-      $(".ebookDetail")
-        .parent()
-        .css("background-color", _bgc);
+      $("#readerPage").css("background-color", _bgc);
       localStorage.setItem("bgcolor", _bgc);
-      console.log(_bgc);
+      if (index == 4) {
+        $(".ebookDetail").addClass("cl5");
+      } else {
+        $(".ebookDetail").removeClass("cl5");
+      }
     },
     closePopup() {
       this.setShow = false;
@@ -338,64 +507,73 @@ export default {
     onChange(value) {
       // this.$toast("当前值：" + value);
       this.changeFont(value);
-      this.value = value;
     },
     // 转换对应值的字体
     changeFont(size) {
-      var _size = size;
+      var _size;
       if (size == 0) {
-        _size = 31 + "px";
-        this.fontsize = 31;
+        _size = 12 + "px";
+        this.fontsize = 12;
       } else if (size <= 20 && size > 0) {
-        _size = 34 + "px";
-        this.fontsize = 34;
+        _size = 14 + "px";
+        this.fontsize = 14;
         this.value = 20;
       } else if (size <= 40 && size > 20) {
-        _size = 37 + "px";
-        this.fontsize = 37;
+        _size = 16 + "px";
+        this.fontsize = 16;
         this.value = 40;
       } else if (size <= 60 && size > 40) {
-        _size = 40 + "px";
-        this.fontsize = 40;
+        _size = 19 + "px";
+        this.fontsize = 19;
         this.value = 60;
       } else if (size <= 80 && size > 60) {
-        _size = 43 + "px";
-        this.fontsize = 43;
+        _size = 22 + "px";
+        this.fontsize = 22;
         this.value = 80;
       } else if (size <= 100 && size > 80) {
-        _size = 46 + "px";
-        this.fontsize = 46;
+        _size = 24 + "px";
+        this.fontsize = 24;
         this.value = 100;
       }
-      console.log(_size);
+      // console.log(_size);
       localStorage.setItem("ebookFontSize", this.fontsize);
       localStorage.setItem("ebookFontSizeValue", size);
       $(".ebookDetail").css("font-size", _size);
     },
     reduce() {
-      if (this.fontsize > 31) {
-        this.fontsize = this.fontsize - 3;
-        var _size = this.fontsize + "px";
-        localStorage.setItem("ebookFontSize", this.fontsize);
-        this.value = this.value - 20;
-        $(".ebookDetail").css("font-size", _size);
-        localStorage.setItem("ebookFontSizeValue", this.value);
+      if (this.fontsize > 12) {
+        if (this.fontsize == 19 || this.fontsize == 22) {
+          this.fontsize = this.fontsize - 3;
+          this.value = this.value - 20;
+        } else {
+          this.fontsize = this.fontsize - 2;
+          this.value = this.value - 20;
+        }
       }
+      var _size = this.fontsize + "px";
+      localStorage.setItem("ebookFontSize", this.fontsize);
+      $(".ebookDetail").css("font-size", _size);
+      localStorage.setItem("ebookFontSizeValue", this.value);
     },
     add() {
-      // console.log(this.fontsize)
-      if (this.fontsize < 46) {
-        this.fontsize = this.fontsize + 3;
-        var _size = this.fontsize + "px";
-        localStorage.setItem("ebookFontSize", this.fontsize);
-        this.value = this.value + 20;
-        $(".ebookDetail").css("font-size", _size);
-        localStorage.setItem("ebookFontSizeValue", this.value);
+      if (this.fontsize < 24) {
+        if (this.fontsize == 16 || this.fontsize == 19) {
+          this.fontsize = this.fontsize + 3;
+          this.value = this.value + 20;
+        } else {
+          this.fontsize = this.fontsize + 2;
+          this.value = this.value + 20;
+        }
       }
+      var _size = this.fontsize + "px";
+      localStorage.setItem("ebookFontSize", this.fontsize);
+      $(".ebookDetail").css("font-size", _size);
+      localStorage.setItem("ebookFontSizeValue", this.value);
     },
     // 目录
     showcatalog() {
       this.$refs.catalog.catalogPopup = true;
+      this.$refs.catalog.getebookReading();
       // this.$refs.catalog.getInfo();
       // this.$refs.catalog.getList();
     },
@@ -405,6 +583,8 @@ export default {
     // 评论
     showComment() {
       this.$refs.comment.commentPopup = true;
+      this.isLogin = this.$refs.nav.is_Login;
+      // console.log(777,this.$refs.nav.is_Login);
     },
     // 支付
     buyebook() {
@@ -413,11 +593,103 @@ export default {
     payrecharge() {
       this.$refs.pay.buyShow = false;
       this.$refs.recharge.rechargeShow = true;
+      // location.reload();
     },
     returnUp() {
       this.$refs.recharge.rechargeShow = false;
       this.$refs.pay.buyShow = true;
-    }
+    },
+        // 数字键盘支付
+    payMoney() {
+      this.passvalue = "";
+      this.showDialog = true;
+      // 重置倒计时
+      clearInterval(this.clock);
+      this.clock = null;
+      this.codeData.disabled = false;
+      this.codeData.timeMsg = "获取验证码";
+      this.addOrderData(this.activeIndex);
+    },
+    // 新增虚拟订单
+    async addOrderData(_index) {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        goods_id: this.goods_id,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_VIRTUAL_ADD(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.pay_mobilephone = res.response_data.pay_mobilephone;
+        this.pay_money = res.response_data.pay_money;
+        this.order_id = res.response_data.order_id;
+        this.pay_id = res.response_data.pay_id;
+
+        // 交易支付请求发起
+        // this.cashierPayData(this.pay_id);
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 订单余额支付手机验证码发送
+    getCode() {
+      this.$countDown(this.codeData);
+      this.sms();
+    },
+    async sms() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        order_id: this.order_id,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_VIRTUAL_ADD_SENDCODE(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(123, res);
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    keyboardShow() {
+      this.showKeyboard = true;
+      $(".van-number-keyboard").css("z-index", 10000);
+    },
+    onInput(key) {
+      this.passvalue = (this.passvalue + key).slice(0, 6);
+      if (this.passvalue.length == 6) {
+        this.payData(this.passvalue);
+      }
+    },
+    onDelete() {
+      this.passvalue = this.passvalue.slice(0, this.passvalue.length - 1);
+    },
+    // 输完验证码获取支付接口
+    async payData(__code) {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        pay_id: this.pay_id,
+        type: "NORMAL",
+        code: __code,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_VIRTUAL_ADD_PAY(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.showDialog = false;
+        this.showKeyboard = false;
+        clearInterval(this.clock);
+        this.clock = null;
+        this.codeData.disabled = false;
+        this.codeData.timeMsg = "获取验证码";
+        location.reload();
+        this.$toast("支付成功");
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
   }
 };
 </script>

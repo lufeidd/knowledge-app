@@ -7,7 +7,7 @@ import wx from 'weixin-js-sdk';
 
 //  引入时间戳接口
 // import req from "./../apis/http.js";
-import { SERVER_TIME, WX_SHARE, WX_SHARE_LOG, ADDRESS } from "./../apis/public.js";
+import { SERVER_TIME, WX_SHARE, WX_SHARE_LOG, ADDRESS, CASHIER_PAY_CHECK } from "./../apis/public.js";
 import { LOGIN_PARTERNER } from "./../apis/passport.js";
 
 // 支持await async
@@ -43,7 +43,7 @@ export default {
     Vue.prototype.$getWxCode = async function () {
       // 获取微信登录授权code
       var str = window.location.href;
-      console.log('str',str)
+      console.log('str', str)
       str = str.split("#")[0];
       if (str.indexOf('code=') != -1) {
         var sIndex = str.split("#")[0].indexOf("code=") + 5;
@@ -103,7 +103,7 @@ export default {
           // brand_id等信息
           var route = window.location.href.split('#')[1];
           var query = '';
-          if(route.indexOf('?') != -1) {
+          if (route.indexOf('?') != -1) {
             query = '?' + route.split('?')[1];
           }
           window.location.href = window.location.protocol + "//" + window.location.hostname + '/#/personal/index' + query;
@@ -275,6 +275,9 @@ export default {
     Vue.prototype.videoDuration = null
     // 音频实时播放进度
     Vue.prototype.progressClock = null
+    //用户支付并购买监测
+    Vue.prototype.checkPayTime = null
+    Vue.prototype.checkPayCount = 0
 
     // 验证码倒计时
     Vue.prototype.$countDown = function (options) {
@@ -440,6 +443,7 @@ export default {
 
     // 不定外链传参翻译
     Vue.prototype.$translate = function (data) {
+      // console.log(222,data);return
       var dataTmp = data;
       var __name = null;
       var dataRes = {};
@@ -477,20 +481,24 @@ export default {
           queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
           if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
           if (dataTmp.params.goods_type) queryTmp.goods_type = dataTmp.params.goods_type;
-          if (dataTmp.params.brand_id) queryTmp.brand_id = dataTmp.params.brand_id;
+          if (dataTmp.params.brand_id){
+            queryTmp.brand_id = dataTmp.params.brand_id
+          }else{
+            queryTmp.isbrand_id = 'no'
+          } ;
           if (dataTmp.params.tagids) queryTmp.tagids = dataTmp.params.tagids;
           if (dataTmp.params.goods_id) queryTmp.goods_id = dataTmp.params.goods_id;
 
           break;
-          case 'search/result':
-            __name = 'brandresult';
-            queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
-            if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
-            if (dataTmp.params.goods_type) queryTmp.goods_type = dataTmp.params.goods_type;
-            if (dataTmp.params.cids) queryTmp.cids = dataTmp.params.cids;
-            if (dataTmp.params.tagids) queryTmp.tagids = dataTmp.params.tagids;
+        case 'search/result':
+          __name = 'brandresult';
+          queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
+          if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
+          if (dataTmp.params.goods_type) queryTmp.goods_type = dataTmp.params.goods_type;
+          if (dataTmp.params.cids) queryTmp.cids = dataTmp.params.cids;
+          if (dataTmp.params.tagids) queryTmp.tagids = dataTmp.params.tagids;
 
-            break;
+          break;
         // 供应商商城首页
         case 'mall/index':
           __name = 'mall';
@@ -533,13 +541,13 @@ export default {
             if (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1) {
               self.$toast('充值成功~');
               // window.location.reload();
-              if(self.$route.query.endAccountTo == 'return'){
+              if (self.$route.query.endAccountTo == 'return') {
                 self.$router.replace({
-                  name:"payaccount",
-                  query:{goods_id:self.goods_id}
+                  name: "payaccount",
+                  query: { goods_id: self.goods_id }
                 })
-              }else{
-                self.$router.push({name:"record"});
+              } else {
+                self.$router.push({ name: "record" });
               }
             }
             // 商品购买  虚拟 / 实物
@@ -553,10 +561,43 @@ export default {
                 }
               });
             }
-            // 电子书支付
-            else if(localStorage.getItem('routerLink').indexOf('/ebook/reader') != -1 || localStorage.getItem('routerLink').indexOf('/ebook/detail') != -1){
-              self.$toast('支付成功~')
-              location.reload();
+            // 电子书余额充值
+            else if (localStorage.getItem('routerLink').indexOf('/ebook/reader') != -1) {
+              // self.$toast('支付成功~');
+              // self.rechargeAddPay();
+              setTimeout(function() {
+                location.reload();
+              },200);
+              // if (this.checkPayCount < 10) {
+              //   self.isLoading = true;
+              //   this.checkPayTime = window.setInterval(() => {
+              //     console.log("每1s更新");
+              //     self.$checkPay(self.payId,self.goods_id,self.chapter_id);
+              //     self.checkPayCount++;
+              //   }, 1000);
+              // } else {
+              //   window.clearInterval(this.checkPayTime);
+              //   self.isLoading = false;
+              // }
+            }
+             else if (localStorage.getItem('routerLink').indexOf('/ebook/detail') != -1) {
+              // self.$toast('支付成功~');
+              // self.rechargeAddPay();
+              setTimeout(function() {
+                location.reload();
+              },200);
+
+              // if (this.checkPayCount < 10) {
+              //   self.isLoading = true;
+              //   this.checkPayTime = window.setInterval(() => {
+              //     console.log("每1s更新");
+              //     self.$checkPay(self.payId,self.goods_id,null);
+              //     self.checkPayCount++;
+              //   }, 1000);
+              // } else {
+              //   window.clearInterval(this.checkPayTime);
+              //   self.isLoading = false;
+              // }
             }
             // console.log(res.err_msg);
             // 使用以上方式判断前端返回,微信团队郑重提示：
@@ -568,7 +609,76 @@ export default {
       );
 
     }
-
+    // Vue.prototype.$checkcheck = function(){
+    //   var self = this
+    //   self.rechargeAddPay()
+    // }
+    //监测购买状态
+    Vue.prototype.$checkPay = async function (_payid,_goods_id,_chapter_id) {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.0",
+        pay_id: _payid,
+      };
+      data.sign = this.$getSign(data);
+      let res = await CASHIER_PAY_CHECK(data);
+      if (res.hasOwnProperty("response_code")) {
+        if (res.response_data.pay_state == 1) {
+          window.clearInterval(this.checkPayTime);
+          this.checkPayCount = 0;
+          location.reload();
+          this.$toast("购买成功");
+        } else {
+          if (this.checkPayCount >= 10) {
+            window.clearInterval(this.checkPayTime);
+            this.$toast("购买失败");
+            if(localStorage.getItem('routerLink').indexOf('/ebook/detail') != -1){
+              this.$router.push({
+                name:"ebookdetail",
+                query:{
+                  goods_id:_goods_id,
+                  isSuccessPay:'flase'
+                }
+              })
+            }else{
+              this.$router.push({
+                name:"ebookreader",
+                query:{
+                  goods_id:_goods_id,
+                  chapter_id:_chapter_id,
+                  isSuccessPay:'flase'
+                }
+              })
+            }
+            location.reload();
+          }
+        }
+      } else {
+        // this.$toast(res.error_message);
+        window.clearInterval(this.checkPayTime);
+        this.$toast("购买失败");
+        if(localStorage.getItem('routerLink').indexOf('/ebook/detail') != -1){
+          this.$router.push({
+            name:"ebookdetail",
+            query:{
+              goods_id:_goods_id,
+              isSuccessPay:'flase'
+            }
+          })
+        }else{
+          this.$router.push({
+            name:"ebookreader",
+            query:{
+              goods_id:_goods_id,
+              chapter_id:_chapter_id,
+              isSuccessPay:'flase'
+            }
+          })
+        }
+        location.reload();
+      }
+    }
     // 省市区
     Vue.prototype.$getAddressData = async function () {
       var tStamp = this.$getTimeStamp();

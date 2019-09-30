@@ -172,6 +172,42 @@
               </svg>
             </div>
           </router-link>
+          <!-- 电子书 -->
+          <router-link
+            v-if="item.type == 4"
+            :to="{name: 'ebookdetail', query: {goods_id: item.target}}"
+            class="listBox"
+          >
+            <div class="left">
+              <div class="ratioebook">
+                <div class="ebookImg" v-lazy:background-image="item.data.pic[0]"></div>
+              </div>
+            </div>
+            <div class="center">
+              <div class="title">{{ item.data.title }}</div>
+              <div class="subTitle">{{ item.data.subTitle }}</div>
+              <div class="info">
+                <span class="type" v-if="item.type == 4">电子书</span>
+                <span class="count">
+                  <svg class="icon" aria-hidden="true" v-if="item.type == 4">
+                    <use xlink:href="#icon-eye-line" />
+                  </svg>
+                  {{ item.data.read_num }}
+                </span>
+                <span class="time">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-time-line" />
+                  </svg>
+                  {{ item.data.update_time }}
+                </span>
+              </div>
+            </div>
+            <div class="right">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-next-line" />
+              </svg>
+            </div>
+          </router-link>
         </template>
 
         <span slot="right" @click="historyCancel(item.id, key)">

@@ -1,5 +1,5 @@
 <template>
-  <van-popup v-model="catalogPopup" position="bottom" style="min-height:100%;max-height:100%;">
+  <van-popup v-model="catalogPopup" position="bottom" :close-on-click-overlay="false" style="min-height:100%;max-height:100%;">
     <div id="catalogList" class="catalogList">
       <div class="head">
         <span class="catalogWord">目录</span>
@@ -20,7 +20,7 @@
             <div class="detail">
               <span>共{{info.chapter_count}}章</span>
               <span v-if="info.serialize_status">{{info.serialize_status == 1?'连载中':'完结'}}</span>
-              <!-- <span>已读1.3%</span> -->
+              <span v-if="readingTime">已读{{readingTime}}%</span>
             </div>
           </div>
         </div>
@@ -29,11 +29,11 @@
           <ul>
             <li v-for="(item,index) in ebookList" :key="index" @click="read(item,index)">
               <div class="left red" v-if="item.chapter_id == chapter_id">
-                <div>第{{index+1}}章</div>
+                <!-- <div>第{{index+1}}章</div> -->
                 <div class="title">{{item.chapter_name}}</div>
               </div>
               <div class="left" v-else>
-                <div>第{{index+1}}章</div>
+                <!-- <div>第{{index+1}}章</div> -->
                 <div class="title">{{item.chapter_name}}</div>
               </div>
               <span>
@@ -105,6 +105,8 @@
         align-content: space-between;
         justify-content: space-between;
         padding: 10px 0;
+        text-align: left;
+        text-indent: 0;
         .title {
           font-size: $fontSize + 2;
           @include textOverflow;
@@ -140,7 +142,7 @@
         .title {
           @include textOverflow;
           width: 80%;
-          margin-left: 10px;
+          // margin-left: 10px;
         }
       }
     }
@@ -149,13 +151,14 @@
 </style>
 
 <script>
-import { EBOOK_CATALOG, EBOOK_INFO } from "../../apis/ebook.js";
+import { EBOOK_CATALOG, EBOOK_INFO,USER_READ_RECORD } from "../../apis/ebook.js";
 export default {
   name: "catalog",
   props: ["goods_id","chapter_id","ebookList","info"],
   data() {
     return {
       catalogPopup: false,
+      readingTime:null,
       // info: {},
       // ebookList: [],
       // free: false
@@ -163,6 +166,7 @@ export default {
   },
   mounted() {
     // console.log(6666,this.currenChapterTitle)
+    // this.getebookReading();
   },
   methods: {
     // async getInfo() {
@@ -202,22 +206,49 @@ export default {
     //     this.$toast(res.error_message);
     //   }
     // },
+     //获取电子书阅读时长
+    async getebookReading() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        goods_id: this.goods_id,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await USER_READ_RECORD(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res);
+        this.readingTime = res.response_data.read_schedule;
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
     closePopup() {
       this.catalogPopup = false;
     },
     read(item, index) {
       // console.log(item);
-      if (item.chapter_free == 0 && item.chapter_try == 0) {
-        // this.free = true;
-        this.$emit("chargeChange",true);
+      // this.catalogPopup = false;
+      // if (item.chapter_free == 0 && item.chapter_try == 0) {
+      //   // this.free = true;
+      //   this.catalogPopup = false;
+      //   this.$emit("chargeChange",true);
+      //   this.$emit("ebookChange", item.chapter_id);
+      // } else {
+      //   // this.free = false;
+      //   this.$emit("chargeChange",false);
         // this.$emit("ebookChange", item.chapter_id);
-      } else {
-        // this.free = false;
-        this.$emit("chargeChange",false);
-        this.$emit("ebookChange", item.chapter_id);
-      }
+        this.$router.push({
+          name:"ebookreader",
+          query:{
+            goods_id:this.goods_id,
+            chapter_id:item.chapter_id,
+            currenChapterTitle:index+1,
+          }
+        })
+        location.reload();
+      // }
       this.$emit("changecurrenChapterTitle",index+1);
-      this.catalogPopup = false;
     }
   }
 };

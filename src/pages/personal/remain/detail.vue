@@ -31,9 +31,6 @@
         </div>
       </div>
     </van-list>
-      <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div>
     <!-- 点击选择时间段的弹层 -->
     <van-popup v-model="show" position="bottom">
       <van-datetime-picker

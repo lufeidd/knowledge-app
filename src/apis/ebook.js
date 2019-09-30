@@ -25,3 +25,12 @@ export const EBOOK_SHELF_ADD = query => req('post', '/user/bookshelf/add', query
 
 //移出书架
 export const EBOOK_SHELF_CANCEL = query => req('post', '/user/bookshelf/cancel', query);
+
+//用户阅读时长
+export const USER_READ_RECORD = query => req('post', '/user/read/record', query);
+
+//电子书阅读时长记录
+export const EBOOK_READING = query => req('post', '/goods/ebook/reading', query);
+
+//电子书样式文件
+export const EBOOK_STYLE = query => req('post', '/goods/ebook/styles', query);

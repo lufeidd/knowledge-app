@@ -85,28 +85,6 @@
             </div>
           </van-list>
         </div>
-        <!-- 评论 -->
-        <van-popup v-model="commentModel" position="bottom" style="min-height:50%;max-height:50%;">
-          <div class="audioList">
-            <div class="title">
-              <div class="action" @click="commentClose">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-fold-line" />
-                </svg>
-              </div>
-              <div>发表评论</div>
-              <div class="punish" @click="punishComment">发布</div>
-            </div>
-            <!-- 音频列表 -->
-            <div class="content">
-              <textarea v-model="contentModel" placeholder="快来写评论吧!" @input="inputChange"></textarea>
-              <div class="count">
-                <span :class="{ active: contentLength > contentTotal }">{{ contentLength }}</span>
-                /{{ contentTotal }}
-              </div>
-            </div>
-          </div>
-        </van-popup>
       </div>
       <div class="foot">
         <div class="comment" @click="openAnswer('comment', null)">
@@ -118,11 +96,33 @@
           <span style="margin-left:10px;">爱发言的人运气不会差！</span>
         </div>
       </div>
+      <!-- 评论 -->
+      <van-popup v-model="commentModel" position="bottom" style="min-height:50%;max-height:50%;">
+        <div class="audioList">
+          <div class="title">
+            <div class="action" @click="commentClose">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-fold-line" />
+              </svg>
+            </div>
+            <div>发表评论</div>
+            <div class="punish" @click="punishComment">发布</div>
+          </div>
+          <!-- 音频列表 -->
+          <div class="content">
+            <textarea v-model="contentModel" placeholder="快来写评论吧!" @input="inputChange"></textarea>
+            <div class="count">
+              <span :class="{ active: contentLength > contentTotal }">{{ contentLength }}</span>
+              /{{ contentTotal }}
+            </div>
+          </div>
+        </div>
+      </van-popup>
     </div>
   </van-popup>
 </template>
 
-<style lang="scss">
+<style lang="scss" >
 #ebookComment {
   .head {
     background-color: #f5f5f5;
@@ -154,7 +154,7 @@
         @include displayFlex(flex, null, flex-start);
         background-color: $white;
         // border-bottom: 1px solid $greyLight;
-        margin-bottom:5px;
+        margin-bottom: 5px;
 
         & .left {
           @include flexBasis(35px);
@@ -168,7 +168,8 @@
 
         & .center {
           display: block;
-
+          text-indent: 0 !important;
+          text-align: left !important;
           & .title {
             @include font("PingFangBold", $fontSize - 1, #666);
             @include textOverflow;
@@ -185,8 +186,8 @@
             @include font("PingFangBold", $fontSize, #333);
             margin-top: 5px;
             white-space: pre-wrap;
-            word-wrap:break-word;
-            word-break:break-all;
+            word-wrap: break-word;
+            word-break: break-all;
             overflow: visible;
             -webkit-line-clamp: 1000;
           }
@@ -232,7 +233,26 @@
         }
       }
     }
-    & .audioList {
+
+  }
+  .foot {
+    height: 50px;
+    box-sizing: border-box;
+    border-top: 1px solid #f5f5f5;
+    padding: 6px 15px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    .comment {
+      padding: 0 15px;
+      background-color: #f5f5f5;
+      border-radius: 16px;
+      height: 37px;
+      line-height: 37px;
+      color: $cl6;
+    }
+  }
+  & .audioList {
       position: relative;
       height: 94vh;
       overflow: hidden;
@@ -284,35 +304,14 @@
         }
       }
     }
-  }
-  .foot {
-    height: 50px;
-    box-sizing: border-box;
-    border-top: 1px solid #f5f5f5;
-    padding: 6px 15px;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    .comment {
-      padding: 0 15px;
-      background-color: #f5f5f5;
-      border-radius: 16px;
-      height: 37px;
-      line-height: 37px;
-      color:$cl6;
-    }
-  }
 }
 </style>
 
 <script>
-import {
-  COMMENT,
-  COMMENT_ADD,
-} from "../../apis/public.js";
+import { COMMENT, COMMENT_ADD } from "../../apis/public.js";
 export default {
   name: "comment",
-  props: ["goods_id"],
+  props: ["goods_id", "isLogin"],
   data() {
     return {
       commentPopup: false,
@@ -335,7 +334,8 @@ export default {
       commentId: null,
       // 存放发布按钮类型，comment为发布评论，reply为发布回复
       punishType: "comment",
-      commentNumber:null,
+      commentNumber: null,
+      timer: null
     };
   },
   mounted() {},
@@ -418,7 +418,16 @@ export default {
     },
     // 回复展开更多
     pageChange(comment_id, key) {
-      this.replyData(comment_id, key);
+      var _this = this;
+      if (this.timer) {
+        // console.log(111,this.timer);
+        this.timer = 0;
+      } else {
+        this.timer = setTimeout(function() {
+          // console.log(222,_this.timer)
+          _this.replyData(comment_id, key);
+        }, 200);
+      }
       // console.log("当前页数组：", this.replyPage, 'key:', key);
     },
     // 关闭评论弹窗
@@ -486,6 +495,7 @@ export default {
      */
     openAnswer(__type, comment_id) {
       // 未登录跳转至登录页
+      console.log(999, this.isLogin);
       if (this.isLogin == 0) {
         this.$router.push({ name: "login", params: {} });
         this.$toast("用户未登录!");

@@ -58,3 +58,6 @@ export const CASHIER_PAY_ADD = query => req('post', '/cashier/pay/assist/add', q
 
 // 定位地址信息手动变更动作
 export const LOCATION_CHANGE = query => req('post', '/common/location/change', query);
+
+//交易支付并购买状态监测
+export const CASHIER_PAY_CHECK = query => req('post', '/cashier/pay/check', query);
