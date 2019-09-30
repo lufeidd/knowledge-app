@@ -14,11 +14,7 @@
       </div>
     </router-link>
 
-    <router-link
-      :to="{name: 'addresslist', query: {type:'confirm'}}"
-      class="listBox"
-      v-else
-    >
+    <router-link :to="{name: 'addresslist', query: {type:'confirm'}}" class="listBox" v-else>
       <div class="right one">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-location-line" />
@@ -65,6 +61,14 @@
         </svg>
       </div>
     </div>
+    <!-- 优惠券 -->
+    <!-- <van-cell title is-link value="优惠￥10.00" @click="showCoupon" style="margin:5px 0;">
+      <template slot="title">
+        <span style="margin-right:10px;">领券</span>
+        <span class="toMall">已选最大优惠</span>
+        <span class="toMall">已选1张</span>
+      </template>
+    </van-cell> -->
     <!-- 备注 -->
     <div class="priceInfo beizhu">
       <div class="first">
@@ -90,12 +94,28 @@
     ></van-submit-bar>
 
     <EazyNav type="order"></EazyNav>
-    <CopyRight></CopyRight>
+    <!-- <CopyRight></CopyRight> -->
   </div>
 </template>
 
 <style src="@/style/scss/pages/order.scss" scoped lang="scss"></style>
-
+<style lang="scss" scoped>
+#orderconfirmPage{
+  .van-cell{
+    padding:10px 15px;
+  }
+  .van-cell__title,
+  .van-cell__value {
+    @include textOverflow;
+    flex: auto;
+    -webkit-box-flex: 0;
+  }
+  .van-cell__value {
+    flex-shrink: 0;
+    color: $redLight !important;
+  }
+}
+</style>
 <script>
 import {
   ORDER_PHYSICAL_ADDINFO,

@@ -48,7 +48,7 @@
         </template>
       </div>
     </div>
-    <CopyRight></CopyRight>
+
   </div>
 </template>
 
