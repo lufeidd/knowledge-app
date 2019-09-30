@@ -528,6 +528,7 @@ export default {
         },
         function (res) {
           if (res.err_msg == "get_brand_wcpay_request:ok") {
+
             // 余额充值
             if (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1) {
               self.$toast('充值成功~');
