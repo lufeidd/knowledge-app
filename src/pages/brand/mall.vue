@@ -78,7 +78,8 @@
               </div>
               <div class="right">
                 <p class="title">{{litem.contents.title}}</p>
-                <p class="price">¥ {{litem.contents.price}}</p>
+                <p class="price" v-if="litem.contents.price">¥ {{litem.contents.price}}</p>
+                <p class="price" v-else>免费</p>
               </div>
             </div>
           </div>
@@ -117,8 +118,9 @@
                       <p class="name">{{items.contents.title}}</p>
                       <!-- <p class="message">色法</p> -->
                       <div class="bottom">
-                        <p class="money">¥{{items.contents.price}}</p>
-                        <span class="buy">立即抢购</span>
+                        <p class="money" v-if="items.contents.price">¥{{items.contents.price}}</p>
+                        <p class="money" v-else>免费</p>
+                        <span class="buy" v-if="items.contents.price">立即抢购</span>
                       </div>
                     </div>
                   </div>
@@ -140,8 +142,9 @@
                       <p class="name">{{item1.title}}</p>
                       <!-- <p class="message">色法</p> -->
                       <div class="bottom">
-                        <p class="money">¥{{item1.price}}</p>
-                        <span class="buy">立即抢购</span>
+                        <p class="money" v-if="item1.price">¥{{item1.price}}</p>
+                        <p class="money" v-else>免费</p>
+                        <span class="buy" v-if="item1.price">立即抢购</span>
                       </div>
                     </div>
                   </div>
@@ -187,7 +190,8 @@
                     <span>共{{litem.contents.item_count}}集</span>
                   </span>
                 </span>
-                <span class="price">￥{{litem.contents.price}}</span>
+                <span class="price" v-if="litem.contents.price">￥{{litem.contents.price}}</span>
+                <span class="price" v-else>免费</span>
               </div>
             </div>
           </div>
@@ -327,7 +331,8 @@
                     <span>{{litem.contents.duration}}</span>
                   </span>
                 </span>
-                <span class="price">￥{{litem.contents.price}}</span>
+                <span class="price" v-if="litem.contents.price">￥{{litem.contents.price}}</span>
+                <span class="price" v-else>免费</span>
               </div>
             </div>
           </div>

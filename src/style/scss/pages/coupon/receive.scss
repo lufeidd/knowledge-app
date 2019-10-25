@@ -6,26 +6,51 @@
 
 #receivePage {
   padding: 15px;
-
+  .coupon.overdue{
+    // background: url("../../../../assets/null/received.png") no-repeat center;
+    // background-size:cover;
+  }
   .coupon {
     position: relative;
-    padding: 15px;
+    // padding: 15px;
     box-sizing: border-box;
-    height: 210px;
+    // height: 200px;
     border-radius: 3px;
     color: $white;
     text-align: center;
-    background: url("../../../../assets/null/coupon.png") no-repeat;
-    background-size:100% 100%;
+    // background: url("../../../../assets/null/coupon.png") no-repeat center;
+    background-size:100% auto;
+    .ratiobox {
+      position: relative;
+      .bookImg {
+        display: block;
+        @include ratioBox (100%, 60%, null, contain, $white, null);
+        border-radius: 3px;
+        // box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+      }
+
+    }
     .shop{
       font-size: $fontSize + 6;
       @include textOverflow;
+      position: absolute;
+      top:10px;
+      width: 100%;
     }
     .time{
       font-size: $fontSize - 2;
+      position: absolute;
+      top:40px;
+      width: 100%;
     }
+    // .couponPrice{
+    //   position: absolute;
+    //   top:35px;
+    //   width: 100%;
+    // }
     .price{
-      @include font("PingFangBlod", $fontSize + 41, null);
+      @include font("PingFangBlod", $fontSize + 28, null);
     }
     .condition{
       display: inline-block;
@@ -34,7 +59,7 @@
       margin-top:5px;
       padding:2px 5px;
       position: absolute;
-      bottom:22px;
+      bottom:13px;
       left: 50%;
       margin-left: -46px;
     }
@@ -52,7 +77,8 @@
 
   .goodsCoupon {
     @include displayFlex(flex, space-between, center);
-    margin: 15px 0;
+    // margin: 15px 0;
+    margin-top: 40px;
     .more{
       color:$cl9;
     }

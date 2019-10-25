@@ -16,30 +16,170 @@
         @click="tabChange"
         v-model="activekey"
       >
-        <van-tab :title="items" v-for="(items,index) in column_list" :key="index">
-          <template v-if="activekey == index">
-            <div style="margin-top:15px;font-size:16px;margin-left:15px;">以下商品可使用149-100的优惠券</div>
+        <van-tab title="综合">
+          <template v-if="activekey == 0">
+            <div style="margin-top:15px;font-size:16px;margin-left:15px;">{{activity_name}}</div>
             <van-list
               v-model="programLoading"
               :finished="programFinished"
               finished-text="已经到底了~"
               @load="programLoad"
             >
-              <div class="content" v-for="(item,index) in column_list_data" :key="index">
+              <div
+                class="content"
+                v-for="(item,index) in couponList"
+                :key="index"
+                @click="toDetail(item,index)"
+              >
                 <div class="ratiobox">
                   <div class="bookImg" v-lazy:background-image="item.pic"></div>
-                  <div class="only">仅剩2件</div>
+                  <div class="only" v-if="item.goods_type == 3 && item.goods_store <= 10">仅剩{{item.goods_store}}件</div>
                 </div>
                 <div class="right">
-                  <div class="text">我是一段商品标题最长商品标题最长商</div>
+                  <div class="text">{{item.title}}</div>
                   <div class="pinpai">
-                    <van-button size="mini" round type="danger">领券满149-100</van-button>
-                    <van-button size="mini" round type="danger">领券满149-100</van-button>
+                    <!-- <van-button size="mini" round type="danger" v-for="(item1,index1) in item.activity_list" :key="index1">{{item1}}
+                    </van-button> -->
+                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 0">{{item.activity_list[0]}}</van-button>
+                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 1">{{item.activity_list[1]}}</van-button>
                   </div>
                   <div class="nice">
-                    <span class="price">￥936</span>
+                    <span class="price" v-if="item.price">￥{{item.price}}</span>
+                    <span class="price" v-else>免费</span>
                     <span class="cart">
-                      <svg class="icon" aria-hidden="true" @click="set">
+                      <svg class="icon" aria-hidden="true" v-if="item.goods_type == 3" @click.stop="addCart(item,index)">
+                        <use xlink:href="#icon-cart-line" />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </van-list>
+          </template>
+        </van-tab>
+        <van-tab title="新品">
+          <template v-if="activekey == 1">
+            <div style="margin-top:15px;font-size:16px;margin-left:15px;">{{activity_name}}</div>
+            <van-list
+              v-model="programLoading"
+              :finished="programFinished"
+              finished-text="已经到底了~"
+              @load="programLoad"
+            >
+              <div
+                class="content"
+                v-for="(item,index) in couponList"
+                :key="index"
+                @click="toDetail(item,index)"
+              >
+                <div class="ratiobox">
+                  <div class="bookImg" v-lazy:background-image="item.pic"></div>
+                  <div class="only" v-if="item.goods_type == 3 && item.goods_store <= 10">仅剩{{item.goods_store}}件</div>
+                </div>
+                <div class="right">
+                  <div class="text">{{item.title}}</div>
+                  <div class="pinpai">
+                    <!-- <van-button size="mini" round type="danger" v-for="(item1,index1) in item.activity_list" :key="index1">{{item1}}</van-button> -->
+                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 0">{{item.activity_list[0]}}</van-button>
+                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 1">{{item.activity_list[1]}}</van-button>
+                  </div>
+                  <div class="nice">
+                    <span class="price" v-if="item.price">￥{{item.price}}</span>
+                    <span class="price" v-else>免费</span>
+                    <span class="cart">
+                      <svg class="icon" aria-hidden="true" v-if="item.goods_type == 3" @click.stop="addCart(item,index)">
+                        <use xlink:href="#icon-cart-line" />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </van-list>
+          </template>
+        </van-tab>
+        <van-tab title="销量">
+          <template v-if="activekey == 2">
+            <div style="margin-top:15px;font-size:16px;margin-left:15px;">{{activity_name}}</div>
+            <van-list
+              v-model="programLoading"
+              :finished="programFinished"
+              finished-text="已经到底了~"
+              @load="programLoad"
+            >
+              <div
+                class="content"
+                v-for="(item,index) in couponList"
+                :key="index"
+                @click="toDetail(item,index)"
+              >
+                <div class="ratiobox">
+                  <div class="bookImg" v-lazy:background-image="item.pic"></div>
+                  <div class="only" v-if="item.goods_type == 3 && item.goods_store <= 10">仅剩{{item.goods_store}}件</div>
+                </div>
+                <div class="right">
+                  <div class="text">{{item.title}}</div>
+                  <div class="pinpai">
+                    <!-- <van-button size="mini" round type="danger" v-for="(item1,index1) in item.activity_list" :key="index1">{{item1}}</van-button> -->
+                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 0">{{item.activity_list[0]}}</van-button>
+                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 1">{{item.activity_list[1]}}</van-button>
+                  </div>
+                  <div class="nice">
+                    <span class="price" v-if="item.price">￥{{item.price}}</span>
+                    <span class="price" v-else>免费</span>
+                    <span class="cart">
+                      <svg class="icon" aria-hidden="true" v-if="item.goods_type == 3" @click.stop="addCart(item,index)">
+                        <use xlink:href="#icon-cart-line" />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </van-list>
+          </template>
+        </van-tab>
+        <van-tab>
+          <div slot="title">
+            价格
+            <svg class="icon" v-if="activekey !== 3" aria-hidden="true">
+              <use xlink:href="#icon-pricesort-block" />
+            </svg>
+            <svg class="icon" v-if="activekey == 3 && priceSort == 1" aria-hidden="true">
+              <use xlink:href="#icon-priceup-block" />
+            </svg>
+            <svg class="icon" v-if="activekey == 3 && priceSort == 0" aria-hidden="true">
+              <use xlink:href="#icon-pricedown-block" />
+            </svg>
+          </div>
+          <template v-if="activekey == 3">
+            <div style="margin-top:15px;font-size:16px;margin-left:15px;">{{activity_name}}</div>
+            <van-list
+              v-model="programLoading"
+              :finished="programFinished"
+              finished-text="已经到底了~"
+              @load="programLoad"
+            >
+              <div
+                class="content"
+                v-for="(item,index) in couponList"
+                :key="index"
+                @click="toDetail(item,index)"
+              >
+                <div class="ratiobox">
+                  <div class="bookImg" v-lazy:background-image="item.pic"></div>
+                  <div class="only" v-if="item.goods_type == 3 && item.goods_store <= 10">仅剩{{item.goods_store}}件</div>
+                </div>
+                <div class="right">
+                  <div class="text">{{item.title}}</div>
+                  <div class="pinpai">
+                    <!-- <van-button size="mini" round type="danger" v-for="(item1,index1) in item.activity_list" :key="index1">{{item1}}</van-button> -->
+                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 0">{{item.activity_list[0]}}</van-button>
+                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 1">{{item.activity_list[1]}}</van-button>
+                  </div>
+                  <div class="nice">
+                    <span class="price" v-if="item.price">￥{{item.price}}</span>
+                    <span class="price" v-else>免费</span>
+                    <span class="cart">
+                      <svg class="icon" aria-hidden="true" v-if="item.goods_type == 3" @click.stop="addCart(item,index)">
                         <use xlink:href="#icon-cart-line" />
                       </svg>
                     </span>
@@ -51,6 +191,7 @@
         </van-tab>
       </van-tabs>
     </div>
+    <EazyNav type="coupon" ref="nav"></EazyNav>
   </div>
 </template>
 
@@ -60,48 +201,184 @@
   .van-list {
     padding: 0 15px;
   }
-  .van-button--danger{
-    font-size:$fontSize - 4;
+  .van-button--danger {
+    font-size: $fontSize - 4;
     background-color: transparent;
     border-color: $redLight;
-    color:$redLight;
-    padding:0 3px;
+    color: $redLight;
+    padding: 0 3px;
   }
-
 }
 </style>
 <script>
+import { TICKET_DETAIL_GETS } from "../../apis/coupon.js";
+import { CART_ADD } from "../../apis/shopping.js";
 export default {
   data() {
     return {
-      currentPage: 1,
+      page: 1,
       programLoading: false,
       programFinished: false,
       activekey: 0,
-      column_list: ["综合", "新品", "销量", "价格"],
       searchContent: "",
-      column_list_data: [
-        {pic:"http://file.huoba.dev.zw/shop/10016/100042/picture/ebook/20190823/13/20190823131440268.jpg"}
-      ]
+      ticket_id: "",
+      priceSort: 0,
+      couponList: [],
+      coupon_sort: "default",
+      activity_name: null,
+      isLogin: null
     };
   },
-  mounted() {},
+  mounted() {
+    console.log(111, this.priceSort);
+    this.ticket_id = this.$route.query.ticket_id;
+    this.searchContent = this.$route.query.searchContent;
+  },
   methods: {
-    programLoad() {},
+    programLoad() {
+      this.getList();
+    },
     // 点击tab页切换
     tabChange(index) {
       this.activekey = index;
-      // this.column_list_data = [];
-      // this.programFinished = false;
-      // this.currentPage = 1;
+
+      if (index == 0) {
+        this.coupon_sort = "default";
+      } else if (index == 1) {
+        this.coupon_sort = "ctime_desc";
+      } else if (index == 2) {
+        this.coupon_sort = "buynum_desc";
+      } else if (index == 3) {
+        if (this.priceSort == 1) {
+          this.priceSort = 0;
+          this.coupon_sort = "price_desc";
+        } else {
+          this.priceSort = 1;
+          this.coupon_sort = "price_asc";
+        }
+      }
+      this.couponList = [];
+      this.programFinished = false;
+      this.page = 1;
+      console.log(222, this.priceSort);
     },
     inputText() {
-      this.$toast({
-        type:'html',
-        message:'<div style="padding:15px;text-align:center;"><p style="font-size:26px;"><svg class="icon" aria-hidden="true" @click="set"><use xlink:href="#icon-failed-line" /></svg></p><p>成功加入购物车</p></div>'
+      this.$router.push({
+        name:"search",
+        query:{
+          type:"coupon",
+          ticket_id:this.$route.query.ticket_id,
+        }
       })
+      // this.$toast({
+      //   type:'html',
+      //   message:'<div style="padding:15px;text-align:center;"><p style="font-size:26px;"><svg class="icon" aria-hidden="true" @click="set"><use xlink:href="#icon-failed-line" /></svg></p><p>成功加入购物车</p></div>'
+      // })
     },
-    set(){}
+    addCart(item, index) {
+      // console.log(222);
+      this.toCartData(item.goods_id);
+    },
+    async getList() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.0",
+        page: this.page,
+        ticket_id: this.ticket_id,
+        sort: this.coupon_sort,
+        keywords: this.searchContent,
+      };
+      data.sign = this.$getSign(data);
+      let res = await TICKET_DETAIL_GETS(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res);
+        this.activity_name = res.response_data.activity_name;
+        // 异步更新数据
+        var result = res.response_data.result;
+        setTimeout(() => {
+          for (let i = 0; i < result.length; i++) {
+            this.couponList.push(result[i]);
+          }
+          // 加载状态结束
+          this.programLoading = false;
+          this.page++;
+
+          // 数据全部加载完成
+          if (this.page > res.response_data.total_page) {
+            this.programFinished = true;
+            this.page = 1;
+          }
+        }, 600);
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 加入购物车
+    async toCartData(goods_id) {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        goods_id: goods_id,
+        sku_id: goods_id,
+        count: 1,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await CART_ADD(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        if (res.response_data.success == 1) {
+          this.$toast("添加购物车成功~");
+          this.shoppingcart_num++;
+          this.$refs.nav.cartData();
+        }
+      } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+          this.$router.push({ name: "login" });
+        }
+        this.$toast(res.error_message);
+      }
+    },
+    toDetail(item, index) {
+      // console.log(3333)
+      // 音频/视频
+      if (item.goods_type == 1 || item.goods_type == 2) {
+        this.$router.push({
+          name: "albumdetail",
+          query: { goods_id: item.goods_id }
+        });
+      }
+      // 文章
+      if (item.goods_type == 6) {
+        this.pid = null;
+        this.$router.push({
+          name: "article",
+          query: { goods_id: item.goods_id }
+        });
+      }
+      // 专辑
+      if (item.goods_type == 9) {
+        this.$router.push({
+          name: "album",
+          query: { goods_id: item.goods_id }
+        });
+      }
+      // 电子书
+      if (item.goods_type == 4) {
+        this.$router.push({
+          name: "ebookdetail",
+          query: { goods_id: item.goods_id }
+        });
+      }
+      // 纸质书
+      if (item.goods_type == 3) {
+        this.$router.push({
+          name: "detail",
+          query: { goods_id: item.goods_id }
+        });
+      }
+    }
   }
 };
 </script>

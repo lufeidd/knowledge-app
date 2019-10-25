@@ -110,7 +110,7 @@
             <span class="noChange">虚拟内容不退不换</span>
             <span class="actulPay">
               实付款：
-              <span class="money">￥{{item1.real_price}}</span>
+              <span class="money">￥{{item.order_money}}</span>
             </span>
           </div>
         </div>

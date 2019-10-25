@@ -106,6 +106,7 @@
       :isSuccessPay="isSuccessPay"
       @rechargeBuy="payrecharge"
       @payMoney="payMoney"
+      @chooseCouponChangePrice="chooseCouponChangePrice"
     ></ebookpay>
     <!-- 充值余额并支付 -->
     <ebookrecharge ref="recharge" :goods_id="goods_id" :info="info" @return="returnUp"></ebookrecharge>
@@ -130,7 +131,7 @@
       @delete="onDelete"
       @blur="showKeyboard = false"
     />
-    <van-dialog v-model="showDialog" title="请输入手机验证码" show-cancel-button cancelButtonText="放弃支付">
+    <van-dialog v-model="showDialog" title="请输入手机验证码" show-cancel-button cancelButtonText="放弃支付" @cancel="reflesh">
       <div class="codeBox">
         <div class="price">
           ¥
@@ -192,7 +193,8 @@ import ebookrecharge from "../ebook/recharge";
 import {
   ORDER_VIRTUAL_ADD,
   ORDER_VIRTUAL_ADD_SENDCODE,
-  ORDER_VIRTUAL_ADD_PAY
+  ORDER_VIRTUAL_ADD_PAY,
+  ORDER_VIRTUAL_ADDINFO
 } from "../../apis/shopping.js";
 import {
   EBOOK_CHAPTER,
@@ -361,6 +363,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // console.log(res);
         this.info = res.response_data;
+        this.$refs.pay.price = this.info.price;
         document.title = res.response_data.goods_title;
 
         // 获取页面分享信息
@@ -588,7 +591,14 @@ export default {
     },
     // 支付
     buyebook() {
-      this.$refs.pay.buyShow = true;
+      this.isLogin = this.$refs.nav.is_Login;
+      if (this.isLogin) {
+        this.$refs.pay.buyShow = true;
+        this.$refs.pay.price = this.info.price;
+        this.ebookCoupon();
+      } else {
+        this.$router.push({ name: "login" });
+      }
     },
     payrecharge() {
       this.$refs.pay.buyShow = false;
@@ -616,6 +626,7 @@ export default {
       let data = {
         timestamp: tStamp,
         goods_id: this.goods_id,
+        ticket_id: this.$refs.pay.order_ticket_id,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -690,6 +701,29 @@ export default {
         this.$toast(res.error_message);
       }
     },
+    // 电子书优惠券
+    async ebookCoupon() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.0",
+        goods_id:this.goods_id,
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_VIRTUAL_ADDINFO(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.$refs.pay.ticketList = res.response_data.ticket_lists;
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    reflesh(){
+      this.ebookCoupon();
+    },
+    // 选择优惠券改变价格
+    chooseCouponChangePrice(price){
+      this.$refs.recharge.price = price;
+    }
   }
 };
 </script>

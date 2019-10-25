@@ -93,7 +93,7 @@ export default {
     };
   },
   mounted() {
-    // this.$router.push({name:"couponmine"});
+    // this.$router.push({name:"couponreceive"});
     sessionStorage.setItem("gotoLogin", "no");
     sessionStorage.setItem("isWxLogin", "no");
     // console.log(111,Number(localStorage.getItem("get_count")))

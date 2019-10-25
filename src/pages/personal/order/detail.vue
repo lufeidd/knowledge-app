@@ -100,7 +100,7 @@
         <van-cell v-if="infoData.order_goods_money" title="商品总额" v-model="'¥'+infoData.order_goods_money" />
       </div>
       <van-cell v-if="infoData.dispatch_price" title="运费" v-model="'¥'+infoData.dispatch_price" />
-      <!-- <van-cell title="商品优惠" v-model="discount"/> -->
+      <van-cell title="商品优惠" v-if="infoData.activity_money" v-model="'¥'+infoData.activity_money"/>
       <!-- <van-cell title="余额" v-model="'-¥'+priceInfo.remain.toFixed(2)"/> -->
       <p class="acturalPay" style="margin-top:10px;">
         <template>{{infoData.state == 1? '待支付':'实付款'}}</template>

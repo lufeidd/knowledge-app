@@ -3,41 +3,70 @@
     <div class="goodsInfo">
       <div class="info">
         <div class="ratiobox">
-          <div class="bookImg" :style="{'background-image':'url('+baseInfo.pic[0]+')'}"></div>
+          <div class="bookImg" :style="{'background-image':'url('+baseData.pic[0]+')'}"></div>
         </div>
         <div class="right">
-          <div class="title">{{baseInfo.title}}</div>
-          <div>
-            <p class="author">{{baseInfo.author}}</p>
-            <p class="category">{{baseInfo.category_path}}</p>
+          <div class="title">{{baseData.title}}</div>
+          <div class="author">{{baseData.author}}</div>
+          <div class="category">{{baseData.category_path}}</div>
+          <!-- 促销活动 -->
+          <div v-if="baseData.single_activity_id">
+            <div class="price">促销价：￥{{baseData.price.toFixed(2)}}<span class="original">原价<del>￥{{baseData.market_price.toFixed(2)}}</del></span></div>
+            <div v-if="showTime">
+              <span class="promotion" v-if="showDay">{{timeDataDesc}}</span>
+              <span v-else><span class="promotion">距活动结束还剩</span> {{timeDataDesc}}</span>
+            </div>
           </div>
-          <div class="price" v-if="baseInfo.price">￥{{baseInfo.price}}</div>
-          <div class="price" v-else>免费阅读</div>
+          <div v-else>
+            <div class="price" v-if="baseData.price">￥{{baseData.price.toFixed(2)}}</div>
+            <div class="price" v-else>免费阅读</div>
+          </div>
+
         </div>
       </div>
-      <div class="descript" @click="showDetail">{{baseInfo.goods_desc}}</div>
-      <div class="watchCatalog">
-        <van-cell value is-link @click="showDetail">
-          <template slot="title">
-            <span class="custom-text">
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-category-line" />
-              </svg>
-            </span>
-            <span style="margin-left:10px;">查看目录 · 版权信息</span>
-          </template>
-        </van-cell>
-        <van-cell value is-link @click="toDetail" v-if="baseInfo.book_info">
-          <template slot="title">
-            <span class="custom-text">
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-paperbook-line" />
-              </svg>
-            </span>
-            <span style="margin-left:10px;">纸书购买</span>
-          </template>
-        </van-cell>
-      </div>
+      <div class="descript" @click="showDetail">{{baseData.goods_desc}}</div>
+    </div>
+
+    <!-- 优惠券 -->
+    <!-- v-if="Object.keys(couponInfo.ticket).length>0" -->
+    <div style="margin:5px 0;padding:0 15px;background-color:#FFF;">
+      <van-cell
+        title
+        is-link
+        value
+        @click="showCoupon"
+        style="margin:5px 0;"
+        v-if="Object.keys(couponInfo.ticket).length>0"
+      >
+        <template slot="title">
+          <span style="margin-right:10px;" v-if="isReceived">已领券</span>
+          <span style="margin-right:10px;" v-else>领券</span>
+          <span class="toMall" v-for="(item,index) in couponInfo.ticket.list" :key="index">{{item}}</span>
+        </template>
+      </van-cell>
+    </div>
+
+    <div class="watchCatalog">
+      <van-cell value is-link @click="showDetail">
+        <template slot="title">
+          <span class="custom-text">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-category-line" />
+            </svg>
+          </span>
+          <span style="margin-left:10px;">查看目录 · 版权信息</span>
+        </template>
+      </van-cell>
+      <van-cell value is-link @click="toDetail" v-if="baseData.book_info">
+        <template slot="title">
+          <span class="custom-text">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-paperbook-line" />
+            </svg>
+          </span>
+          <span style="margin-left:10px;">纸书购买</span>
+        </template>
+      </van-cell>
     </div>
     <!-- 公号信息 -->
     <div class="brand_info">
@@ -68,6 +97,101 @@
         </swiper-slide>
       </swiper>
     </div>
+    <!-- 领取优惠券 -->
+    <van-popup v-model="couponModel" position="bottom" style="max-height:65%;min-height:65%;">
+      <div class="header">
+        <span class="catalogWord">可用优惠券（满足条件后可用于当前商品）</span>
+        <span>
+          <svg class="icon" aria-hidden="true" @click="closePopup">
+            <use xlink:href="#icon-close-line" />
+          </svg>
+        </span>
+      </div>
+      <div class="content">
+        <div
+          style="margin-top:10px;overflow:hidden;border-radius:0 6px 6px 0;box-shadow:0 0 10px rgba(0,0,0,0.06);"
+          v-for="(item,index) in couponList"
+          :key="index"
+        >
+          <!-- 可领取 -->
+          <div class="toUse" v-if="item.state == 1 || item.state == 3">
+            <div class="left"></div>
+            <div class="mid">
+              <div>
+                ￥
+                <span class="price">{{item.money}}</span>
+              </div>
+              <div class="condition">{{item.use_time_desc}}</div>
+              <span class="circle top"></span>
+              <span class="circle bottom"></span>
+            </div>
+            <div class="right">
+              <div>
+                <span class="shopCoupon">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-coupon-block" />
+                  </svg>
+                  <span class="dianpu" v-if="item.brand_id">店铺券</span>
+                  <span class="dianpu" v-else>平台券</span>
+                </span>
+                <span class="shop">{{item.brand_name}}</span>
+              </div>
+              <div class="desc">
+                {{item.use_range_desc}}
+                <span
+                  class="toMall btn red"
+                  v-if="item.state == 1 && requestState"
+                  @click="receive(item,index)"
+                >点击领取</span>
+                <span
+                  class="toMall btn red"
+                  v-if="item.state == 1 && !requestState"
+                >点击领取</span>
+                <span class="toMall btn" v-if="item.state == 3" @click="toResult(item,index)">可用商品</span>
+              </div>
+              <div class="time">{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
+              <span class="used" v-if="item.state == 3">
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-yilingqu" />
+                </svg>
+              </span>
+            </div>
+          </div>
+          <!-- 已领完 -->
+          <div class="toUse overdue" v-if="item.state == 2">
+            <div class="left"></div>
+            <div class="mid">
+              <div>
+                ￥
+                <span class="price">{{item.money}}</span>
+              </div>
+              <div class="condition">{{item.use_time_desc}}</div>
+              <span class="circle top"></span>
+              <span class="circle bottom"></span>
+            </div>
+            <div class="right">
+              <div>
+                <span class="shopCoupon">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-coupon-block" />
+                  </svg>
+                  <span class="dianpu" v-if="item.brand_id">店铺券</span>
+                  <span class="dianpu" v-else>平台券</span>
+                </span>
+                <span class="shop">{{item.brand_name}}</span>
+              </div>
+              <div class="desc">{{item.use_range_desc}}</div>
+              <span class="used">
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-received-line" />
+                </svg>
+              </span>
+              <div class="time">{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </van-popup>
     <!-- 评论 -->
     <div class="commentBox">
       <div class="commentWord">{{totalCount}}</div>
@@ -150,12 +274,7 @@
       <CopyRight></CopyRight>
     </div>
     <!-- 评论 -->
-    <van-popup
-      v-model="commentModel"
-
-      position="bottom"
-      style="max-height:70%;"
-    >
+    <van-popup v-model="commentModel" position="bottom" style="max-height:70%;">
       <div class="audioList">
         <div class="title">
           <div class="action" @click="commentClose">
@@ -177,12 +296,7 @@
       </div>
     </van-popup>
     <!-- 详细信息 -->
-    <van-popup
-      v-model="detailShow"
-      position="bottom"
-
-      style="min-height:70%;max-height:70%;"
-    >
+    <van-popup v-model="detailShow" position="bottom" style="min-height:70%;max-height:70%;">
       <div class="detailList">
         <div class="head">
           <svg class="icon" aria-hidden="true" @click="closePopup">
@@ -191,16 +305,16 @@
         </div>
         <div class="content">
           <div class="word">简介</div>
-          <div class="descript">{{baseInfo.goods_desc}}</div>
+          <div class="descript">{{baseData.goods_desc}}</div>
           <div class="word">出版信息</div>
           <div class="publish">
             <div>
               出版社
-              <span style="margin-left:20px;">{{baseInfo.publisher}}</span>
+              <span style="margin-left:20px;">{{baseData.publisher}}</span>
             </div>
             <div>
               ISBN
-              <span style="margin-left:30px;">{{baseInfo.isbn}}</span>
+              <span style="margin-left:30px;">{{baseData.isbn}}</span>
             </div>
           </div>
           <div class="word">目录</div>
@@ -229,20 +343,26 @@
       </div>
     </van-popup>
     <div class="bottom">
-      <div class="isbuy" v-if="baseInfo.is_payed == 0 && baseInfo.is_free == 0 && baseInfo.has_free == 1">
-        <div v-if="baseInfo.is_sbookshelf == 0" class="shelf" @click="shelfAction">加入书架</div>
+      <div
+        class="isbuy"
+        v-if="baseData.is_payed == 0 && baseData.is_free == 0 && baseData.has_free == 1"
+      >
+        <div v-if="baseData.is_sbookshelf == 0" class="shelf" @click="shelfAction">加入书架</div>
         <div v-else class="shelf" @click="shelfAction">已加入书架</div>
         <div @click="buyNow">立即购买</div>
         <div class="read" @click="toreader">免费阅读</div>
       </div>
-      <div class="nobuy" v-if="baseInfo.is_free == 1 || baseInfo.is_payed == 1">
-        <div v-if="baseInfo.is_sbookshelf == 0" @click="shelfAction">加入书架</div>
+      <div class="nobuy" v-if="baseData.is_free == 1 || baseData.is_payed == 1">
+        <div v-if="baseData.is_sbookshelf == 0" @click="shelfAction">加入书架</div>
         <div class="shelf" v-else @click="shelfAction">已加入书架</div>
-        <div class="read" @click="toreader" v-if="baseInfo.is_payed == 1">立即阅读</div>
+        <div class="read" @click="toreader" v-if="baseData.is_payed == 1">立即阅读</div>
         <div class="read" @click="toreader" v-else>免费阅读</div>
       </div>
-      <div class="nobuy" v-if="baseInfo.is_free == 0 && baseInfo.is_payed == 0 && baseInfo.has_free == 0">
-        <div v-if="baseInfo.is_sbookshelf == 0" @click="shelfAction">加入书架</div>
+      <div
+        class="nobuy"
+        v-if="baseData.is_free == 0 && baseData.is_payed == 0 && baseData.has_free == 0"
+      >
+        <div v-if="baseData.is_sbookshelf == 0" @click="shelfAction">加入书架</div>
         <div class="shelf" v-else @click="shelfAction">已加入书架</div>
         <div class="read" @click="buyNow">立即购买</div>
       </div>
@@ -255,6 +375,7 @@
       :isSuccessPay="isSuccessPay"
       @rechargeBuy="payrecharge"
       @payMoney="payMoney"
+      @chooseCouponChangePrice="chooseCouponChangePrice"
     ></ebookpay>
     <!-- 充值余额并支付 -->
     <ebookrecharge ref="recharge" :info="info" :goods_id="goods_id" @return="returnUp"></ebookrecharge>
@@ -266,7 +387,7 @@
       @delete="onDelete"
       @blur="showKeyboard = false"
     />
-    <van-dialog v-model="showDialog" title="请输入手机验证码" show-cancel-button cancelButtonText="放弃支付">
+    <van-dialog v-model="showDialog" title="请输入手机验证码" show-cancel-button cancelButtonText="放弃支付" @cancel="reflesh">
       <div class="codeBox">
         <div class="price">
           ¥
@@ -297,6 +418,9 @@
 #ebookDetailPage {
   .van-cell {
     padding: 10px 0;
+    .van-cell__value{
+      display: none;
+    }
   }
   .van-dialog__confirm {
     display: none;
@@ -307,7 +431,8 @@
 import {
   ORDER_VIRTUAL_ADD,
   ORDER_VIRTUAL_ADD_SENDCODE,
-  ORDER_VIRTUAL_ADD_PAY
+  ORDER_VIRTUAL_ADD_PAY,
+  ORDER_VIRTUAL_ADDINFO
 } from "../../apis/shopping.js";
 import ebookpay from "../ebook/pay";
 import ebookrecharge from "../ebook/recharge";
@@ -327,6 +452,7 @@ import {
   RECOMMEND,
   WX_SHARE
 } from "../../apis/public.js";
+import { GOODS_TICKET_GETS, TICKET_LINK } from "../../apis/coupon.js";
 export default {
   components: { ebookpay, ebookrecharge },
   data() {
@@ -335,7 +461,9 @@ export default {
       isLogin: null,
       goods_id: null,
       brandInfo: {},
-      baseInfo: {},
+      baseData: {
+        pic:[]
+      },
       info: {},
       bookshelf_id: null,
       swiperOption3: {
@@ -383,8 +511,22 @@ export default {
       // 订单号
       order_id: "",
       pay_id: "",
-      timer:null,
-      isSuccessPay:null,
+      timer: null,
+      isSuccessPay: null,
+      // 优惠券信息
+      couponInfo: {
+        ticket:{},
+        single:{}
+      },
+      couponList: [],
+      couponModel: false,
+      isReceived: false,
+      requestState:true,
+      // 倒计时
+      timeData:'2019-10-16 17:28:00',
+      timeDataDesc:'',
+      showTime:false,
+      showDay:true,
     };
   },
   mounted() {
@@ -394,15 +536,18 @@ export default {
     this.getRecommendData();
     this.getList();
     this.getebookInfo();
+    // this.ebookCoupon();
+    this.getCouponList();
   },
   methods: {
     closePopup() {
       this.detailShow = false;
+      this.couponModel = false;
     },
     toDetail() {
       this.$router.push({
         name: "detail",
-        query: { goods_id: this.baseInfo.book_info.goods_id }
+        query: { goods_id: this.baseData.book_info.goods_id }
       });
     },
     //跳转公号主页
@@ -427,6 +572,8 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // console.log(res);
         this.info = res.response_data;
+        this.$refs.pay.price = this.info.price;
+        this.$refs.recharge.price = this.info.price;
       } else {
         this.$toast(res.error_message);
       }
@@ -443,12 +590,14 @@ export default {
       data.sign = this.$getSign(data);
       let res = await ALBUM(data);
       if (res.hasOwnProperty("response_code")) {
-        this.baseInfo = res.response_data.base;
+        this.baseData = res.response_data.base;
         this.brandInfo = res.response_data.brand_info;
         this.isLogin = res.response_data.user_info.is_login;
         this.bookshelf_id = res.response_data.base.is_sbookshelf;
         document.title = "电子书详情-" + res.response_data.base.title;
-
+        // 优惠券
+        this.couponInfo = res.response_data.activity;
+        if(this.couponInfo.single.remain_time>0){this.$countTime(this.couponInfo.single.remain_time);}
         // 获取页面分享信息
         // if(this.isWxLogin) this.wxShareData();
         var _pageName = "goods/detail";
@@ -466,6 +615,32 @@ export default {
         }
         this.$toast(res.error_message);
       }
+    },
+     // 促销活动结束回复原价
+    async returnPrice() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        ad: parseInt(this.$route.query.ad) == 1 ? 1 : 0,
+        timestamp: tStamp,
+        goods_id: this.baseData.goods_id,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await ALBUM(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.baseData.price = res.response_data.base.price;
+        this.baseData.market_price = res.response_data.base.market_price;
+        this.baseData.single_activity_id = res.response_data.base.single_activity_id;
+      } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 401) {
+          // 上下架状态, 1=> 在架, 0=> 下架
+          this.onsale = 0;
+        }
+        this.$toast(res.error_message);
+      }
+
+      // console.log("商品基础信息:", res.response_data);
     },
     // 获取电子书相关推荐
     async getRecommendData() {
@@ -511,7 +686,7 @@ export default {
             this.ebookList.push(res.response_data[i]);
           }
         }
-        console.log(333,this.ebookList)
+        // console.log(333, this.ebookList);
         this.minChapter = this.ebookList[0].chapter_id;
       } else {
         this.$toast(res.error_message);
@@ -539,7 +714,7 @@ export default {
         this.$toast("用户未登录!");
         return;
       }
-      if (this.baseInfo.is_sbookshelf > 0) {
+      if (this.baseData.is_sbookshelf > 0) {
         this.shelfData("cancel");
       } else {
         this.shelfData("add");
@@ -561,7 +736,7 @@ export default {
           data.sign = this.$getSign(data);
           res = await EBOOK_SHELF_ADD(data);
 
-          this.baseInfo.is_sbookshelf = 1;
+          this.baseData.is_sbookshelf = 1;
           this.$toast("已加入书架~");
           this.bookshelf_id = res.response_data.bookshelf_id;
           break;
@@ -573,7 +748,7 @@ export default {
           };
           data.sign = this.$getSign(data);
           res = await EBOOK_SHELF_CANCEL(data);
-          this.baseInfo.is_sbookshelf = 0;
+          this.baseData.is_sbookshelf = 0;
           this.$toast("已移出书架~");
           break;
       }
@@ -639,6 +814,7 @@ export default {
     buyNow() {
       if (this.isLogin) {
         this.$refs.pay.buyShow = true;
+        this.ebookCoupon();
       } else {
         this.$router.push({ name: "login" });
       }
@@ -679,6 +855,7 @@ export default {
       let data = {
         timestamp: tStamp,
         goods_id: this.goods_id,
+        ticket_id: this.$refs.pay.order_ticket_id,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -752,6 +929,26 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
+    },
+    // 电子书优惠券
+    async ebookCoupon() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.0",
+        goods_id:this.goods_id,
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_VIRTUAL_ADDINFO(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.$refs.pay.ticketList = res.response_data.ticket_lists;
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 选择优惠券改变价格
+    chooseCouponChangePrice(price){
+      this.$refs.recharge.price = price;
     },
     // ----------------------------------评论------------------------------------
     commentLoad() {
@@ -830,14 +1027,14 @@ export default {
     // 回复展开更多
     pageChange(comment_id, key) {
       var _this = this;
-      if(this.timer){
+      if (this.timer) {
         // console.log(111,this.timer);
         this.timer = 0;
-      }else{
-        this.timer = setTimeout(function(){
+      } else {
+        this.timer = setTimeout(function() {
           // console.log(222,_this.timer)
           _this.replyData(comment_id, key);
-        },200)
+        }, 200);
       }
       // console.log("当前页数组：", this.replyPage, 'key:', key);
     },
@@ -918,6 +1115,70 @@ export default {
     // 编辑评论触发
     inputChange() {
       this.contentLength = this.contentModel.length;
+    },
+    showCoupon() {
+      this.couponModel = true;
+
+    },
+    async getCouponList() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        goods_id: this.goods_id,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await GOODS_TICKET_GETS(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res);
+        this.couponList = res.response_data;
+        for(var i=0;i<this.couponList.length;i++){
+          if(this.couponList[i].state == 3){
+            this.isReceived = true;
+          }
+        }
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 领取优惠券
+    receive(item, index) {
+      if (this.isLogin == 0) {
+        this.$router.push({ name: "login", params: {} });
+        this.$toast("用户未登录!");
+      }else{
+        this.ticketLink(item.ticket_id);
+      }
+    },
+    async ticketLink(ticket_id) {
+      this.requestState = false;
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.0",
+        ticket_id: ticket_id
+      };
+      data.sign = this.$getSign(data);
+      let res = await TICKET_LINK(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res);
+        this.$toast("领取成功！");
+        this.requestState = true;
+      } else {
+        this.$toast(res.error_message);
+        this.requestState = true;
+      }
+    },
+    toResult(item, index) {
+      this.$router.push({
+        name: "couponresult",
+        query: {
+          ticket_id: item.ticket_id
+        }
+      });
+    },
+    reflesh(){
+      this.ebookCoupon();
     }
   }
 };

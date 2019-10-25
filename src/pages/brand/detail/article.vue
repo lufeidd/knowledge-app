@@ -818,6 +818,13 @@ export default {
           query: { goods_id: item.goods_id }
         });
       }
+      //纸书
+      if (item.goods_type == 3) {
+        this.$router.push({
+          name: "detail",
+          query: { goods_id: item.goods_id }
+        });
+      }
     }
   }
 };

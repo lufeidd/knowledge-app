@@ -2,32 +2,35 @@
  * author: lufei
  * date:2019/9/12
  */
- @charset "utf-8";
+@charset "utf-8";
 
- #ebookDetailPage{
-   background-color: #f5f5f5;
-   .goodsInfo{
-     background-color: #FFF;
-     padding:15px;
-     .info {
+#ebookDetailPage {
+  background-color: #f5f5f5;
+
+  .goodsInfo {
+    background-color: #FFF;
+    padding: 15px;
+
+    .info {
       @include displayFlex(flex, null, null);
+
       .ratiobox {
         min-width: 112px;
+
         .bookImg {
           box-sizing: border-box;
           display: block;
-          @include ratioBox(
-            100%,
+          @include ratioBox(100%,
             133.33%,
             1px solid $greyLight,
             contain,
             $white,
-            null
-          );
+            null);
           border-radius: 3px;
           box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
         }
       }
+
       .right {
         flex-grow: 1;
         width: 60%;
@@ -36,84 +39,115 @@
         flex-direction: column;
         align-content: space-between;
         justify-content: space-between;
+
         .title {
           font-size: $fontSize + 2;
           @include textOverflow;
         }
+
         .author {
           color: $cl6;
           @include textOverflow;
         }
-        .category{
-          color:$cl9;
+
+        .category {
+          color: $cl9;
           @include textOverflow;
         }
+
         .price {
           color: $redLight;
+          // font-weight: bold;
+          .original{
+            font-size: $fontSize - 1;
+            color:$cl9;
+            margin-left:15px;
+          }
+        }
+        .promotion{
+          color:#F3AE42;
         }
       }
     }
-    .descript{
-      color:$cl6;
-      margin:10px 0;
+
+    .descript {
+      color: $cl6;
+      margin: 10px 0;
       font-size: $fontSize + 1;
-      word-break:break-all;
-      word-wrap:break-word;
-      overflow : hidden;
+      word-break: break-all;
+      word-wrap: break-word;
+      overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
       -webkit-line-clamp: 5;
       -webkit-box-orient: vertical;
     }
-    .watchCatalog{
-      .van-cell__value{
-        display:none;
-      }
+
+  }
+
+  & .watchCatalog {
+    padding: 0 15px;
+    margin: 5px 0;
+    background-color: #FFF;
+
+    .van-cell__value {
+      display: none;
     }
-   }
-   & .brand_info{
+  }
+
+  & .brand_info {
     background-color: #fff;
     margin-top: 5px;
     padding: 10px 15px;
     @include displayFlex(flex, space-between, center);
-    & .left{
+
+    & .left {
       @include displayFlex(flex, null, center);
+
       & .ratiobox {
         min-width: 47px;
         margin-right: 10px;
+
         .bookImg {
           @include ratioBox (100%, 100%, 1px solid $greyLight, contain, $white, null);
           border-radius: 50%;
         }
       }
-      .name{
+
+      .name {
         @include font(null, $fontSize + 2, $cl6);
       }
     }
-    .toMall{
+
+    .toMall {
       display: inline-block;
       width: 70px;
       height: 30px;
-      border:1px solid $cl9;
+      border: 1px solid $cl9;
       line-height: 30px;
       text-align: center;
       @include font(null, $fontSize, $cl9);
       border-radius: 15px;
+      padding:0;
     }
-    .toMall.foucs{
-      border:none;
-      color:$white;
+
+    .toMall.foucs {
+      border: none;
+      color: $white;
       background-color: $redLight;
     }
   }
+
   .recommend {
     background-color: $white;
     margin-top: 5px;
     padding-top: 15px;
-    .text{
-      margin-left:15px;
+
+    .text {
+      margin-left: 15px;
       font-size: $fontSize + 3;
     }
+
     .recommendInfo {
       padding: 15px 0 15px 15px;
 
@@ -139,279 +173,476 @@
         font-size: $fontSize - 2;
         color: $cl9;
         @include textOverflow;
-        margin-top:5px;
+        margin-top: 5px;
       }
     }
   }
-    // 评论
-    & .commentBox {
-      background-color: $white;
-      margin-top: 5px;
-      & .commentWord{
-        padding:15px;
-        font-size: $fontSize + 2;
+
+  // 优惠券
+  & .van-popup {
+    .header {
+      // background-color: #f5f5f5;
+      padding: 0 15px;
+      height: 40px;
+      @include displayFlex(flex, space-between, center);
+
+      .catalogWord {
+        font-size: $fontSize + 1;
       }
-      &  .foot {
-        height: 50px;
-        box-sizing: border-box;
-        padding: 6px 15px;
-        .comment {
-          padding: 0 15px;
-          background-color: #f5f5f5;
-          border-radius: 16px;
-          height: 37px;
-          line-height: 37px;
-          color:$cl6;
-        }
-      }
-      & .listBox {
-        @include displayFlex (flex, null, flex-start);
-        padding: 15px;
-        background-color: $white;
-        border-bottom: 1px solid $greyLight;
-
-        & .left {
-          @include flexBasis (35px);
-          margin-right: 10px;
-          margin-top: 5px;
-
-          & .ratioBox {
-            border-radius: 35px;
-          }
-        }
-
-        & .center {
-          display: block;
-
-          & .title {
-            @include font("PingFangBold", $fontSize - 1, #666);
-            @include textOverflow;
-            display: block;
-
-            & .text {
-              @include textOverflow;
-              display: block;
-              padding-right: 0;
-            }
-          }
-
-          & .subTitle {
-            @include font("PingFangBold", $fontSize, #333);
-            margin-top: 5px;
-            white-space: pre-wrap;
-            word-break:break-all;
-            word-wrap: break-word;
-            overflow: visible;
-            -webkit-line-clamp: 1000;
-          }
-
-          & .messageBox {
-            background-color: #f7f7f7;
-            padding: 5px;
-            margin-top: 5px;
-            font-size: $fontSize - 1;
-
-            & .message {
-              display: none;
-              margin-top: 2px;
-
-              & .name {
-                color: $orangeLight;
-              }
-
-              & .dialog {
-                color: #666;
-              }
-            }
-
-            & .message.active {
-              display: block;
-            }
-          }
-
-          // 回复
-          & .answerBox {
-            margin-top: 15px;
-
-            & .date {
-              @include font(null, $fontSize - 1, #999);
-              margin-right: 15px;
-            }
-
-            & .action {
-              @include font(null, $fontSize - 1, #333);
-              margin-right: 15px;
-            }
-          }
-        }
-      }
-
     }
 
-    & .audioList {
-      position: relative;
-      height: 94vh;
-      overflow: hidden;
+    .content {
+      // padding: 15px;
+      position: absolute;
+      top: 40px;
+      bottom: 0;
+      overflow-y: auto;
+      width: 100%;
+      box-sizing: border-box;
+      // background-color: #f5f5f5;
+      padding: 10px 15px;
 
-      & .title {
-        height: 44px;
-        line-height: 44px;
-        border-bottom: 1px #eee solid;
-        text-align: center;
-        position: relative;
-        @include displayFlex(flex, center, center);
-        @include font(null, $fontSize + 2, #999);
+      .toUse.overdue {
+        .left {
+          background-color: $cl9;
+        }
 
-        & .action {
-          @include position(absolute, "tl", 0, 0, 44px, 44px, null);
+        .mid {
+          color: $cl9;
+        }
 
-          & .icon {
-            width: 20px;
-            height: 20px;
+        .right {
+
+          .shopCoupon,
+          .used {
+            color: $cl9;
+          }
+        }
+      }
+
+      // .toUse.overdue{
+      //   background-color: #A6A6A6;
+      // }
+      .toUse {
+        box-sizing: border-box;
+        background-color: $white;
+        @include displayFlex(flex, null, null);
+        align-items: stretch;
+
+        .left {
+          width: 8px;
+          background-color: $redLight;
+          border-radius: 6px 0 0 6px;
+        }
+
+        .mid {
+          text-align: center;
+          width: 30%;
+          padding: 10px 5px;
+          border-right: 1px dashed #bfbfbf;
+          box-sizing: border-box;
+          color: $redLight;
+          position: relative;
+
+          .price {
+            // font-size: $fontSize + 21;
+            @include font("PingFangBlod", $fontSize + 10, null);
+          }
+
+          .condition {
+            white-space: nowrap;
+            margin-top: 28px;
+          }
+
+          .circle {
+            width: 10px;
+            height: 10px;
+            background-color: #f5f5f5;
+            border-radius: 50%;
+            position: absolute;
+            right: -5px;
+          }
+
+          .circle.top {
+            top: -5px;
+          }
+
+          .circle.bottom {
+            bottom: -5px;
           }
         }
 
-        & .punish {
-          @include position(absolute, "tr", 0, 0, 60px, 44px, null);
+        .right {
+          // width: 70%;
+          flex-grow: 1;
+          padding: 10px;
+          position: relative;
+
+          .shop {
+            margin-left: 70px;
+            font-size: $fontSize + 2;
+          }
+
+          .time {
+            margin-top: 5px;
+            font-size: $fontSize - 2;
+            color: $cl9;
+          }
+
+          .desc {
+            margin-top: 40px;
+          }
+
+          .used {
+            @include font("PingFangBlod", $fontSize + 46, $redLight);
+            position: absolute;
+            right: -15px;
+            bottom: -15px;
+          }
+
+          .shopCoupon {
+            position: absolute;
+            left: 5px;
+            top: -10px;
+            color: $redLight;
+            display: inline-block;
+
+            .icon {
+              font-size: 70px;
+            }
+
+            .dianpu {
+              display: inline-block;
+              width: 36px;
+              color: $white;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              margin-top: -12px;
+              margin-left: -20px;
+              font-size: 12px;
+              @include textOverflow;
+            }
+          }
+        }
+      }
+    }
+  }
+  & .toMall {
+    display: inline-block;
+    // width: 65px;
+    // height: 24px;
+    border: 1px solid $redLight;
+    line-height: normal;
+    padding: 2px 5px;
+    text-align: center;
+    @include font(null, $fontSize - 2, $redLight);
+    border-radius: 12px;
+    margin-right: 5px;
+  }
+
+  & .toMall.btn {
+    position: absolute;
+    top: 45px;
+    right: 5px;
+  }
+
+  & .toMall.red {
+    background-color: $redLight;
+    color: $white;
+  }
+  // 评论
+  & .commentBox {
+    background-color: $white;
+    margin-top: 5px;
+
+    & .commentWord {
+      padding: 15px;
+      font-size: $fontSize + 2;
+    }
+
+    & .foot {
+      height: 50px;
+      box-sizing: border-box;
+      padding: 6px 15px;
+
+      .comment {
+        padding: 0 15px;
+        background-color: #f5f5f5;
+        border-radius: 16px;
+        height: 37px;
+        line-height: 37px;
+        color: $cl6;
+      }
+    }
+
+    & .listBox {
+      @include displayFlex (flex, null, flex-start);
+      padding: 15px;
+      background-color: $white;
+      border-bottom: 1px solid $greyLight;
+
+      & .left {
+        @include flexBasis (35px);
+        margin-right: 10px;
+        margin-top: 5px;
+
+        & .ratioBox {
+          border-radius: 35px;
+        }
+      }
+
+      & .center {
+        display: block;
+
+        & .title {
+          @include font("PingFangBold", $fontSize - 1, #666);
+          @include textOverflow;
+          display: block;
+
+          & .text {
+            @include textOverflow;
+            display: block;
+            padding-right: 0;
+          }
+        }
+
+        & .subTitle {
+          @include font("PingFangBold", $fontSize, #333);
+          margin-top: 5px;
+          white-space: pre-wrap;
+          word-break: break-all;
+          word-wrap: break-word;
+          overflow: visible;
+          -webkit-line-clamp: 1000;
+        }
+
+        & .messageBox {
+          background-color: #f7f7f7;
+          padding: 5px;
+          margin-top: 5px;
+          font-size: $fontSize - 1;
+
+          & .message {
+            display: none;
+            margin-top: 2px;
+
+            & .name {
+              color: $orangeLight;
+            }
+
+            & .dialog {
+              color: #666;
+            }
+          }
+
+          & .message.active {
+            display: block;
+          }
+        }
+
+        // 回复
+        & .answerBox {
+          margin-top: 15px;
+
+          & .date {
+            @include font(null, $fontSize - 1, #999);
+            margin-right: 15px;
+          }
+
+          & .action {
+            @include font(null, $fontSize - 1, #333);
+            margin-right: 15px;
+          }
+        }
+      }
+    }
+
+  }
+
+  & .audioList {
+    position: relative;
+    height: 94vh;
+    overflow: hidden;
+
+    & .title {
+      height: 44px;
+      line-height: 44px;
+      border-bottom: 1px #eee solid;
+      text-align: center;
+      position: relative;
+      @include displayFlex(flex, center, center);
+      @include font(null, $fontSize + 2, #999);
+
+      & .action {
+        @include position(absolute, "tl", 0, 0, 44px, 44px, null);
+
+        & .icon {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      & .punish {
+        @include position(absolute, "tr", 0, 0, 60px, 44px, null);
+        color: $redDark;
+      }
+    }
+
+    & .content {
+      padding: 10px;
+
+      & textarea {
+        width: 100%;
+        border: 1px #ccc solid;
+        border-radius: 5px;
+        padding: 5px;
+        box-sizing: border-box;
+        min-height: 100px;
+      }
+
+      & .count {
+        font-size: $fontSize - 2;
+        color: #999;
+        text-align: right;
+
+        & .active {
           color: $redDark;
         }
       }
 
-      & .content {
-        padding: 10px;
 
-        & textarea {
-          width: 100%;
-          border: 1px #ccc solid;
-          border-radius: 5px;
-          padding: 5px;
-          box-sizing: border-box;
-          min-height: 100px;
-        }
-
-        & .count {
-          font-size: $fontSize - 2;
-          color: #999;
-          text-align: right;
-
-          & .active {
-            color: $redDark;
-          }
-        }
-
-
-      }
     }
-    .van-popup .detailList{
-      .head{
-        @include displayFlex(flex, flex-end, center);
-        font-size: $fontSize + 1;
-        padding:10px 15px;
+  }
+
+  .van-popup .detailList {
+    .head {
+      @include displayFlex(flex, flex-end, center);
+      font-size: $fontSize + 1;
+      padding: 10px 15px;
+    }
+
+    .content {
+      position: absolute;
+      bottom: 0;
+      top: 35px;
+      overflow-y: auto;
+      box-sizing: border-box;
+      width: 100%;
+      padding: 0 15px;
+
+      .word {
+        font-size: $fontSize + 3;
       }
-      .content{
-        position: absolute;
-        bottom:0;
-        top:35px;
-        overflow-y: auto;
-        box-sizing: border-box;
-        width: 100%;
-        padding:0 15px;
-        .word{
-          font-size: $fontSize + 3;
-        }
-        .descript{
-          margin:10px 0;
-          color: $cl6;
-          word-break:break-all;
-          word-wrap:break-word;
-        }
-        .publish{
-          margin:10px 0;
-          color:$cl9;
-        }
-        .list {
-          margin-top: 10px;
-          ul {
-            li {
-              padding: 10px 0;
-              border-bottom: 1px solid #eee;
-              @include displayFlex(flex, space-between, center);
-              .left {
-                // flex-grow: 1;
-                width: 95%;
-                @include displayFlex(flex, null, center);
-              }
-              .left.grey {
-                color: $cl9;
-              }
-              .left.red {
-                color: $redDark;
-              }
-              .title {
-                @include textOverflow;
-                width: 80%;
-                // margin-left: 10px;
-              }
+
+      .descript {
+        margin: 10px 0;
+        color: $cl6;
+        word-break: break-all;
+        word-wrap: break-word;
+      }
+
+      .publish {
+        margin: 10px 0;
+        color: $cl9;
+      }
+
+      .list {
+        margin-top: 10px;
+
+        ul {
+          li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            @include displayFlex(flex, space-between, center);
+
+            .left {
+              // flex-grow: 1;
+              width: 95%;
+              @include displayFlex(flex, null, center);
+            }
+
+            .left.grey {
+              color: $cl9;
+            }
+
+            .left.red {
+              color: $redDark;
+            }
+
+            .title {
+              @include textOverflow;
+              width: 80%;
+              // margin-left: 10px;
             }
           }
         }
       }
     }
-    .bottom{
-      position: fixed;
-      bottom: 0;
-      z-index:99;
-      box-sizing: border-box;
-      width: 100%;
-      border-top:1px solid #dcdcdc;
-      height: 45px;
-      background-color: #FFF;
-      font-size: $fontSize + 1;
-      .isbuy{
-        @include displayFlex(flex, space-between, center);
-        div{
-          height: 100%;
-          line-height: 45px;
-          text-align: center;
-          width:33.33%;
-        }
-      }
-      .nobuy{
-        @include displayFlex(flex, space-between, center);
-        div{
-          height: 100%;
-          line-height: 45px;
-          text-align: center;
-          width:50%;
-        }
-      }
-      .shelf{
-        border-right:1px solid #dcdcdc;
-      }
-      .read{
-        background-color: $redLight;
-        color:$white;
-      }
-    }
-    .van-dialog {
-      & .codeBox {
+  }
+
+  .bottom {
+    position: fixed;
+    bottom: 0;
+    z-index: 99;
+    box-sizing: border-box;
+    width: 100%;
+    border-top: 1px solid #dcdcdc;
+    height: 45px;
+    background-color: #FFF;
+    font-size: $fontSize + 1;
+
+    .isbuy {
+      @include displayFlex(flex, space-between, center);
+
+      div {
+        height: 100%;
+        line-height: 45px;
         text-align: center;
-        padding: 20px;
-
-        & .price {
-          @include font("PingFangBold", $fontSize + 1, $redDark);
-          line-height: 2;
-
-          & .money {
-            font-size: $fontSize + 4;
-          }
-        }
-
-        & .code {
-          @include font(null, $fontSize - 1, #999);
-          padding: 10px 0;
-          line-height: 30px;
-        }
+        width: 33.33%;
       }
     }
- }
+
+    .nobuy {
+      @include displayFlex(flex, space-between, center);
+
+      div {
+        height: 100%;
+        line-height: 45px;
+        text-align: center;
+        width: 50%;
+      }
+    }
+
+    .shelf {
+      border-right: 1px solid #dcdcdc;
+    }
+
+    .read {
+      background-color: $redLight;
+      color: $white;
+    }
+  }
+
+  .van-dialog {
+    & .codeBox {
+      text-align: center;
+      padding: 20px;
+
+      & .price {
+        @include font("PingFangBold", $fontSize + 1, $redDark);
+        line-height: 2;
+
+        & .money {
+          font-size: $fontSize + 4;
+        }
+      }
+
+      & .code {
+        @include font(null, $fontSize - 1, #999);
+        padding: 10px 0;
+        line-height: 30px;
+      }
+    }
+  }
+}

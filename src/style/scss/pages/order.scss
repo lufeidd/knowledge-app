@@ -219,4 +219,188 @@
     @include font(null, $fontSize - 2, $redLight);
     border-radius: 12px;
   }
+  & .van-popup {
+    .van-tabs{
+      .van-tabs__line{
+      background-color: #f05654 !important;
+    }
+    }
+    .sure{
+      position:fixed;
+      bottom:10px;
+      left: 15px;
+      background-color: $redLight;
+      color:$white;
+      width:calc(100% - 30px);
+      height: 35px;
+      line-height: 35px;
+      text-align: center;
+      box-sizing: border-box;
+      border-radius: 18px;
+    }
+    .header {
+      background-color: #eee;
+      padding: 0 15px;
+      height: 40px;
+      text-align: center;
+      box-sizing: border-box;
+      // bottom: 0;
+      width: 100%;
+      @include displayFlex(flex, space-between, center);
+
+      .catalogWord {
+        font-size: $fontSize + 1;
+        flex-grow: 1;
+      }
+    }
+    .checkedText{
+      padding:10px 15px;
+      // padding-top:10px;
+      @include displayFlex(flex, space-between, center);
+    }
+    .content.canuse{
+      bottom:55px;
+      top: 120px;
+    }
+    .content {
+      // padding: 15px;
+      position: fixed;
+      top: 75px;
+      bottom: 0;
+      overflow-y: auto;
+      width: 100%;
+      box-sizing: border-box;
+      // background-color: #f5f5f5;
+      padding: 10px 15px;
+
+      .toUse.overdue {
+        .left {
+          background-color: $cl9;
+        }
+
+        .mid {
+          color: $cl9;
+        }
+
+        .right {
+
+          .shopCoupon,
+          .used {
+            color: $cl9;
+          }
+        }
+      }
+
+      // .toUse.overdue{
+      //   background-color: #A6A6A6;
+      // }
+      .toUse {
+        box-sizing: border-box;
+        background-color: $white;
+        @include displayFlex(flex, null, null);
+        align-items: stretch;
+
+        .left {
+          width: 8px;
+          background-color: $redLight;
+          border-radius: 6px 0 0 6px;
+        }
+
+        .mid {
+          text-align: center;
+          width: 30%;
+          padding: 10px 5px;
+          border-right: 1px dashed #bfbfbf;
+          box-sizing: border-box;
+          color: $redLight;
+          position: relative;
+
+          .price {
+            // font-size: $fontSize + 21;
+            @include font("PingFangBlod", $fontSize + 10, null);
+          }
+
+          .condition {
+            white-space: nowrap;
+            margin-top: 28px;
+          }
+
+          .circle {
+            width: 10px;
+            height: 10px;
+            background-color: #f5f5f5;
+            border-radius: 50%;
+            position: absolute;
+            right: -5px;
+          }
+
+          .circle.top {
+            top: -5px;
+          }
+
+          .circle.bottom {
+            bottom: -5px;
+          }
+        }
+
+        .right {
+          // width: 70%;
+          flex-grow: 1;
+          padding: 10px;
+          position: relative;
+          .shop {
+            margin-left: 70px;
+            font-size: $fontSize + 2;
+          }
+
+          .time {
+            margin-top: 5px;
+            font-size: $fontSize - 2;
+            color: $cl9;
+          }
+
+          .desc {
+            margin-top: 40px;
+          }
+
+          .used {
+            @include font("PingFangBlod", $fontSize , $redLight);
+            position: absolute;
+            right: 15px;
+            top: 35%;
+            margin-top:-7px;
+          }
+          .shopCoupon{
+            position: absolute;
+            left: 5px;
+            top: -10px;
+            color:$redLight;
+            display: inline-block;
+            .icon{
+              font-size: 70px;
+            }
+            .dianpu{
+              display: inline-block;
+              width: 36px;
+              color:$white;
+              position: absolute;
+              top:50%;
+              left: 50%;
+              margin-top: -12px;
+              margin-left: -20px;
+              font-size: 12px;
+              @include textOverflow;
+            }
+          }
+        }
+      }
+    }
+    .whyNoUse{
+      background-color: #cdcdcd;
+      padding:3px 8px;
+      font-size: $fontSize - 2;
+      margin-top: 5px;
+      color:$white;
+    }
+  }
 }
