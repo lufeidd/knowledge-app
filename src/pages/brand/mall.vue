@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../../../../bookuu3.0/application/bkwd/styles/bnmp/wap/css/20191111/myClan/myClan.css">
 <template>
   <div id="mallPage" v-if="module_list != null">
     <!--
