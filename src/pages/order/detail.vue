@@ -49,10 +49,12 @@ export default {
     return {
       money: null,
       goods_nums: null,
-      cartlist: []
+      cartlist: [],
+      order_ticket_ids:'',
     };
   },
   mounted() {
+    this.order_ticket_ids = this.$route.query.order_ticket_ids;
     this.cartData();
   },
   methods: {
@@ -64,6 +66,7 @@ export default {
       data.version = "1.0";
       if(this.$route.query.detail_ids) data.detail_ids = this.$route.query.detail_ids;
       if(this.$route.query.detail) data.detail = this.$route.query.detail;
+      data.ticket_ids = this.order_ticket_ids;
       data.location = this.$route.query.location;
       data.sign = this.$getSign(data);
       let res = await CART_INFO(data);

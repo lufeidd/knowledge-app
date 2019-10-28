@@ -101,6 +101,17 @@
         </svg>
         <div>搜索</div>
       </router-link>
+      <!-- 优惠券 -->
+      <router-link
+        v-if="type == 'coupon' && navData.search"
+        :to="{path:navData.searchLink,query:{type:type,ticket_id:$route.query.ticket_id}}"
+        class="link"
+      >
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-littleSearch-line" />
+        </svg>
+        <div>搜索</div>
+      </router-link>
       <!-- 商城首页 -->
       <router-link
         v-if="type == 'mall' && navData.search"

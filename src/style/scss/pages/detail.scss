@@ -73,11 +73,12 @@
     text-align: center;
     @include font(null, $fontSize - 2, $redLight);
     border-radius: 12px;
+    margin-right: 5px;
   }
 
   & .toMall.btn {
     position: absolute;
-    top: 35px;
+    top: 45px;
     right: 5px;
   }
 
@@ -176,7 +177,7 @@
 
   & .audioList {
     position: relative;
-    height: 94vh;
+    height: 90vh;
     overflow: hidden;
 
     & .title {
@@ -200,13 +201,14 @@
   }
 
   & .infoBox {
-    padding: 0 15px;
+    // padding: 0 15px;
     background-color: $white;
     margin-top: 5px;
 
     & .info {
       @include font(null, $fontSize - 1, #999);
       line-height: 45px;
+      padding: 0 15px;
 
       & .price {
         @include font("PingFangBold", 20px, $redDark);
@@ -217,16 +219,79 @@
         @include font(null, $fontSize + 1, #999);
       }
     }
+    & .discountInfo{
+      padding:10px 15px;
+      & .price{
+        color:$redLight;
+        & .dis_price{
+          @include font(null, $fontSize + 6,$redLight);
+        }
+      }
+      & .discount{
+        @include displayFlex(flex, space-between, center);
+        .original{
+          color:$cl9;
+          & .price{
+            color:$redLight;
+            margin-left:10px;
+          }
+        }
+        .stores{
+          color:$cl6;
+        }
+      }
+    }
 
     & .title {
       @include font("PingFangBold", 17px, #333);
       @include twoLines;
+      padding: 0 15px;
     }
 
     & .sub_title {
       @include font(null, null, #666);
       @include twoLines;
-      padding: 5px 0;
+      padding: 5px 15px;
+    }
+    // 限时促销
+    .promotion{
+      position: relative;
+      color:$white;
+      .promotionLeft{
+        position: absolute;
+        left: 15px;
+        top:10px;
+        .promotionPrice{
+          font-size: $fontSize - 2;
+          .price{font-size: $fontSize + 4;}
+        }
+        .original{
+          .discount{
+            display: inline-block;
+            border:1px solid $white;
+            padding:0 5px;
+            margin-left:10px;
+            font-size: $fontSize - 1;
+          }
+        }
+      }
+      .promotionRight{
+        position: absolute;
+        right:15px;
+        top:5px;
+        text-align:right;
+        font-size: $fontSize - 2;
+        .red{color:$redLight;margin-bottom:15px;}
+        .timeD{color: #333;}
+        .time{
+          display: inline-block;
+          background-color:#333;
+          font-size: $fontSize - 3;
+          color:#FFF;
+          padding:0 2px;
+        }
+        .activity{color:$redLight;}
+      }
     }
   }
 
@@ -269,7 +334,7 @@
 
   & .van-popup {
     .header {
-      background-color: #f5f5f5;
+      // background-color: #f5f5f5;
       padding: 0 15px;
       height: 40px;
       @include displayFlex(flex, space-between, center);
@@ -287,7 +352,7 @@
       overflow-y: auto;
       width: 100%;
       box-sizing: border-box;
-      background-color: #f5f5f5;
+      // background-color: #f5f5f5;
       padding: 10px 15px;
 
       .toUse.overdue {
@@ -333,11 +398,13 @@
           position: relative;
 
           .price {
-            font-size: $fontSize + 21;
+            // font-size: $fontSize + 21;
+            @include font("PingFangBlod", $fontSize + 10, null);
           }
 
           .condition {
             white-space: nowrap;
+            margin-top: 28px;
           }
 
           .circle {
@@ -361,9 +428,8 @@
         .right {
           // width: 70%;
           flex-grow: 1;
-          padding: 10px 5px;
+          padding: 10px;
           position: relative;
-
           .shop {
             margin-left: 70px;
             font-size: $fontSize + 2;
@@ -376,15 +442,14 @@
           }
 
           .desc {
-            margin-top: 20px;
+            margin-top: 40px;
           }
 
           .used {
             @include font("PingFangBlod", $fontSize + 46, $redLight);
             position: absolute;
-            right: -8px;
-            top: 50%;
-            margin-top: -45px;
+            right: -15px;
+            bottom: -15px;
           }
           .shopCoupon{
             position: absolute;
@@ -396,6 +461,8 @@
               font-size: 70px;
             }
             .dianpu{
+              display: inline-block;
+              width: 36px;
               color:$white;
               position: absolute;
               top:50%;
@@ -403,7 +470,7 @@
               margin-top: -12px;
               margin-left: -20px;
               font-size: 12px;
-              white-space: nowrap;
+              @include textOverflow;
             }
           }
         }

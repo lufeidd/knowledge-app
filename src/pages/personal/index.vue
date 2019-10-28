@@ -208,6 +208,38 @@
           </div>
         </router-link>
 
+        <!-- 我的优惠券 -->
+        <router-link v-if="infoData.is_login" to="/coupon/mine" class="cell">
+          <div class="svg">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-personalCoupon" />
+            </svg>
+          </div>
+          <div class="desc">
+            <span class="text">我的优惠券</span>
+          </div>
+          <div class="action">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-next-line" />
+            </svg>
+          </div>
+        </router-link>
+        <router-link v-else to="/login/index" class="cell">
+          <div class="svg">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-personalCoupon" />
+            </svg>
+          </div>
+          <div class="desc">
+            <span class="text">我的优惠券</span>
+          </div>
+          <div class="action">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-next-line" />
+            </svg>
+          </div>
+        </router-link>
+
         <!-- 我的评论 -->
         <router-link v-if="infoData.is_login" to="/personal/comment/index" class="cell">
           <div class="svg">

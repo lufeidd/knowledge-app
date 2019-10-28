@@ -351,6 +351,14 @@ img {
   padding-bottom: 34px;
   background-color: $white;
 }
+.coupon.iphx{
+  @include position (fixed, 'bl', 84px, 0, 100%, 44px, 0);
+  padding-bottom: 0;
+}
+.coupon.bottom.iphx{
+  @include position (fixed, 'bl', 0, 0, 100%, 44px, 0);
+  padding-bottom: 34px;
+}
 
 .van-popup--bottom {
   border-left: 1px #fff solid;

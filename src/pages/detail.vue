@@ -16,26 +16,57 @@
       </van-swipe>
 
       <div class="infoBox">
-        <van-row class="info">
+        <!-- 限时促销 -->
+        <div class="promotion" v-if="baseData.single_activity_id">
+          <img src="../assets/null/promotion.png" width="100%" height="65px">
+          <div class="promotionLeft">
+            <div class="promotionPrice">￥<span class="price">{{couponInfo.single.activity_price.toFixed(2)}}</span></div>
+            <div class="original">原价 <del>￥{{baseData.market_price.toFixed(2)}}</del><span class="discount">{{couponInfo.single.desc}}</span></div>
+          </div>
+          <div class="promotionRight" v-if="showDay">
+            <div class="red">{{timeDataDesc}}</div>
+            <div v-if="baseData.stores > 100 ">库存充足</div>
+            <div v-else>该价格仅剩{{baseData.stores}}件</div>
+          </div>
+          <div class="promotionRight" v-else>
+            <div>
+              <div class="activity">距活动结束还剩</div>
+              <div class="timeD"><span class="time">{{timeH}}</span> ：<span class="time">{{timeM}}</span> ：<span class="time">{{timeS}}</span></div>
+            </div>
+            <div v-if="baseData.stores > 100 ">库存充足</div>
+            <div v-else>该价格仅剩{{baseData.stores}}件</div>
+          </div>
+        </div>
+        <!-- <van-row class="info" v-else>
           <van-col span="12">
             <span class="price">¥{{ baseData.price }}</span>
-            <del>¥{{ baseData.market_price }}</del>
+            <div>原价<del>¥{{ baseData.market_price }}</del></div>
           </van-col>
           <van-col span="12" v-if="baseData.stores <= 10" style="text-align: right;">库存紧张</van-col>
-        </van-row>
+          <van-col span="12" v-else style="text-align: right;">库存充足</van-col>
+        </van-row> -->
+        <div class="discountInfo" v-else>
+          <span class="price">¥ <span class="dis_price">{{ baseData.price.toFixed(2) }}</span></span>
+          <div class="discount">
+            <span class="original">原价<del v-if="baseData.price !== baseData.market_price">¥{{ baseData.market_price.toFixed(2) }}</del><span class="price" v-if="baseData.price !== baseData.market_price">{{((baseData.price/baseData.market_price)*10).toFixed(1)}}折</span></span>
+            <span v-if="baseData.stores <= 10" class="stores">仅剩{{baseData.stores}}</span>
+            <span v-if="baseData.stores > 100" class="stores">库存充足</span>
+          </div>
+        </div>
         <div class="title">{{ baseData.title }}</div>
         <div class="sub_title">{{baseData.sub_title}}</div>
       </div>
-      <!-- <van-cell title is-link value @click="showCoupon" style="margin:5px 0;">
+      <!-- 优惠券 -->
+      <van-cell title is-link value @click="showCoupon" style="margin:5px 0;" v-if="Object.keys(couponInfo.ticket).length>0">
         <template slot="title">
-          <span style="margin-right:10px;">领券</span>
-          <span class="toMall">满149减100</span>
-          <span class="toMall">满15减5</span>
-          <span class="toMall">满99减49</span>
+          <span style="margin-right:10px;" v-if="isReceived">已领券</span>
+          <span style="margin-right:10px;" v-else>领券</span>
+          <span class="toMall" v-for="(item,index) in couponInfo.ticket.list" :key="index">{{item}}</span>
         </template>
-      </van-cell> -->
+      </van-cell>
+
       <van-cell
-        v-if="location_info"
+        v-if="Object.keys(location_info).length>0"
         :title="'配送至 ' + location_info.province+location_info.city"
         is-link
         :value="dispatch_str"
@@ -149,47 +180,16 @@
           </span>
         </div>
         <div class="content">
-          <div style="margin-top:10px;overflow:hidden;" v-for="(item,index) in column_list_data" :key="index">
-            <!-- 可使用 -->
-            <div class="toUse" v-if="item.is_use == 0 && item.is_over == 0" @click>
+          <div style="margin-top:10px;overflow:hidden;border-radius:0 6px 6px 0;box-shadow:0 0 10px rgba(0,0,0,0.06);" v-for="(item,index) in couponList" :key="index">
+            <!-- 可领取 -->
+            <div class="toUse" v-if="item.state == 1 || item.state == 3">
               <div class="left"></div>
               <div class="mid">
                 <div>
                   ￥
-                  <span class="price">5</span>
+                  <span class="price">{{item.money}}</span>
                 </div>
-                <div class="condition">满20元可用</div>
-              </div>
-              <div class="right">
-                <div>
-                  <span class="shopCoupon">
-                    <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-coupon-block" />
-                    </svg>
-                    <span class="dianpu">店铺券</span>
-                  </span>
-                  <span class="shop">博库网专营店</span>
-                </div>
-                <div class="desc">
-                  限部分实体图书
-                  <span class="toMall btn red" v-if="item.is_time">点击领取</span>
-                  <span class="toMall btn" v-else>可用商品</span>
-                </div>
-                <div class="time">2019.09.01- 2019.10.20</div>
-              </div>
-            </div>
-            <!-- 已使用 -->
-            <div
-              :class="item.is_over? 'toUse overdue':'toUse isused'"
-              v-if="item.is_use == 1 || item.is_over == 1"
-            >
-              <div class="left"></div>
-              <div class="mid">
-                <div>
-                  ￥
-                  <span class="price">5</span>
-                </div>
-                <div class="condition">满20元可用</div>
+                <div class="condition">{{item.use_time_desc}}</div>
                 <span class="circle top"></span>
                 <span class="circle bottom"></span>
               </div>
@@ -199,32 +199,67 @@
                     <svg class="icon" aria-hidden="true">
                       <use xlink:href="#icon-coupon-block" />
                     </svg>
-                    <span class="dianpu">店铺券</span>
+                    <span class="dianpu" v-if="item.brand_id">店铺券</span>
+                    <span class="dianpu" v-else>平台券</span>
                   </span>
-                  <span class="shop">博库网专营店</span>
+                  <span class="shop">{{item.brand_name}}</span>
                 </div>
-                <div class="desc">限部分实体图书</div>
-                <span class="used" v-if="item.is_use">
+                <div class="desc">
+                  {{item.use_range_desc}}
+                  <span class="toMall btn red" v-if="item.state == 1 && requestState" @click="receive(item,index)">点击领取</span>
+                  <span class="toMall btn red" v-if="item.state == 1 && !requestState">点击领取</span>
+                  <span class="toMall btn" v-if="item.state == 3" @click="toResult(item,index)">可用商品</span>
+                </div>
+                <div class="time">{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
+                <span class="used" v-if="item.state == 3">
                   <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-yishiyong1" />
+                    <use xlink:href="#icon-yilingqu" />
                   </svg>
                 </span>
-                <span class="used" v-if="item.is_over">
+              </div>
+            </div>
+            <!-- 已领完 -->
+            <div class="toUse overdue"
+              v-if="item.state == 2"
+            >
+              <div class="left"></div>
+              <div class="mid">
+                <div>
+                  ￥
+                  <span class="price">{{item.money}}</span>
+                </div>
+                <div class="condition">{{item.use_time_desc}}</div>
+                <span class="circle top"></span>
+                <span class="circle bottom"></span>
+              </div>
+              <div class="right">
+                <div>
+                  <span class="shopCoupon">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-coupon-block" />
+                    </svg>
+                    <span class="dianpu" v-if="item.brand_id">店铺券</span>
+                    <span class="dianpu" v-else>平台券</span>
+                  </span>
+                  <span class="shop">{{item.brand_name}}</span>
+                </div>
+                <div class="desc">{{item.use_range_desc}}</div>
+                <span class="used">
                   <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-overed-line" />
+                    <use xlink:href="#icon-received-line" />
                   </svg>
                 </span>
-                <div class="time">2019.09.01- 2019.10.20</div>
+                <div class="time">{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
               </div>
             </div>
           </div>
         </div>
       </van-popup>
-      <div style="height: 90px;position:relative">
+      <!-- <div style="height: 90px;position:relative">
         <CopyRight></CopyRight>
-      </div>
-      <div v-if="this.isIphx" style="height: 34px;"></div>
-
+      </div> -->
+      <!-- <div v-if="this.isIphx" style="height: 34px;"></div> -->
+      <div style="height:60px;"></div>
       <!-- 加入购物车、立即购买 -->
       <van-goods-action>
         <van-goods-action-mini-btn
@@ -241,7 +276,7 @@
 
       <!-- 暂无库存 -->
       <div class="disabled" v-if="baseData.stores <= 0">
-        <div style="height: 50px;"></div>
+        <!-- <div style="height: 50px;"></div> -->
         <div class="none">库存不足</div>
         <van-goods-action>
           <van-goods-action-mini-btn
@@ -284,12 +319,14 @@ import { ALBUM } from "../apis/album.js";
 import { USER_ADDRESS_LIST } from "../apis/user.js";
 import { CART_ADD, ORDER_PHYSICAL_ADDINFO } from "../apis/shopping.js";
 import { LOCATION_CHANGE } from "../apis/public.js";
+import { GOODS_TICKET_GETS,TICKET_LINK } from "../apis/coupon.js";
 export default {
   data() {
     return {
       shoppingcart_num: 0,
       dispatch_str: "",
       addressData: [],
+      location_info:null,
       finished: false,
       isLoading: true,
       detail: {
@@ -310,6 +347,10 @@ export default {
         collect_id: null,
         goods_id: null
       },
+      // 优惠券信息
+      couponInfo:null,
+      couponList:[],
+      isReceived: false,
       // 所属媒体信息
       brandInfoData: {
         header_pic: "",
@@ -329,13 +370,14 @@ export default {
       activeIndex: 1,
       popupModel: false,
       couponModel: false,
-      column_list_data: [
-        { is_use: 1, is_over: 0, is_time: 1 },
-        { is_use: 1, is_over: 0, is_time: 0 },
-        { is_use: 0, is_over: 0, is_time: 1 },
-        { is_use: 0, is_over: 0, is_time: 0 },
-        { is_use: 0, is_over: 1, is_time: 1 }
-      ]
+      requestState: true,
+      // 倒计时
+      timeData:'2019-10-17 20:28:00',
+      timeH:null,
+      timeM:null,
+      timeS:null,
+      showDay:true,
+      timeDataDesc:''
     };
   },
   mounted() {
@@ -345,6 +387,8 @@ export default {
     this.$getAddressData();
     // 当前页接口信息
     this.albumData();
+    this.getCouponList();
+    // this.$countTime(this.timeData);
   },
   methods: {
     toBrand() {
@@ -461,9 +505,12 @@ export default {
         this.brandInfoData = res.response_data.brand_info;
         // 登录状态
         this.isLogin = res.response_data.user_info.is_login;
+
         // title
         document.title = "商品详情-" + res.response_data.base.title;
-
+        // 优惠券
+        this.couponInfo = res.response_data.activity;
+        if(this.couponInfo.single.remain_time>0){this.$countTime(this.couponInfo.single.remain_time);}
         // 立即购买信息
         this.detail.goods_id = res.response_data.base.goods_id;
         this.detail.sku_id = res.response_data.base.goods_id;
@@ -484,6 +531,32 @@ export default {
         if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
 
         this.onsale = 1;
+      } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 401) {
+          // 上下架状态, 1=> 在架, 0=> 下架
+          this.onsale = 0;
+        }
+        this.$toast(res.error_message);
+      }
+
+      // console.log("商品基础信息:", res.response_data);
+    },
+    // 促销活动结束回复原价
+    async returnPrice() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        ad: parseInt(this.$route.query.ad) == 1 ? 1 : 0,
+        timestamp: tStamp,
+        goods_id: this.baseData.goods_id,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await ALBUM(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.baseData.price = res.response_data.base.price;
+        this.baseData.market_price = res.response_data.base.market_price;
+        this.baseData.single_activity_id = res.response_data.base.single_activity_id;
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 401) {
           // 上下架状态, 1=> 在架, 0=> 下架
@@ -599,10 +672,68 @@ export default {
     },
     showCoupon() {
       this.couponModel = true;
+
     },
     closePopup() {
       this.couponModel = false;
-    }
+    },
+    async getCouponList(){
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        goods_id: this.baseData.goods_id,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await GOODS_TICKET_GETS(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res);
+        this.couponList = res.response_data;
+        for(var i=0;i<this.couponList.length;i++){
+          if(this.couponList[i].state == 3){
+            this.isReceived = true;
+          }
+        }
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 领取优惠券
+    receive(item,index){
+      if (this.$refs.nav.is_Login == 0) {
+        this.$router.push({ name: "login", params: {} });
+        this.$toast("用户未登录!");
+      }else{
+        this.ticketLink(item.ticket_id);
+      }
+    },
+    async ticketLink(ticket_id){
+      this.requestState = false;
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.0",
+        ticket_id: ticket_id,
+      };
+      data.sign = this.$getSign(data);
+      let res = await TICKET_LINK(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res);
+        this.$toast("领取成功！")
+        this.requestState = true;
+      } else {
+        this.$toast(res.error_message);
+        this.requestState = true;
+      }
+    },
+    toResult(item,index){
+      this.$router.push({
+        name:"couponresult",
+        query:{
+          ticket_id:item.ticket_id,
+        }
+      })
+    },
   }
 };
 </script>

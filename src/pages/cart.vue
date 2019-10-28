@@ -48,7 +48,7 @@
             </router-link>
           </div>
           <!-- 商品列表 -->
-          <div class="listBox" v-for="(gItem, gIndex) in item.goodslist" :key="gIndex">
+          <div class="listBox judge" v-for="(gItem, gIndex) in item.goodslist" :key="gIndex">
             <div class="right" @click="selectAction('click', index, gIndex)">
               <svg class="icon" aria-hidden="true" v-if="gItem.select == 0">
                 <use xlink:href="#icon-uncheck-line" />
@@ -86,7 +86,7 @@
                     integer
                     @plus="addCount(index, gIndex, gItem.detail_id)"
                     @minus="subCount(index, gIndex, gItem.detail_id)"
-                    @overlimit="onOverlimit(gItem.count, gItem.detail_id)"
+                    @overlimit="onOverlimit($event,gItem.count, gItem.detail_id)"
                     :min="1"
                     :max="gItem.stores"
                   />
@@ -176,7 +176,7 @@
           </div>
         </van-submit-bar>
       </div>
-      <CopyRight></CopyRight>
+      <!-- <CopyRight></CopyRight> -->
     </div>
     <EazyNav type="brand"></EazyNav>
   </div>
@@ -193,6 +193,7 @@ import { throws } from "assert";
 export default {
   data() {
     return {
+      countType: "",
       money: null,
       goods_nums: null,
       selectTotal: 0,
@@ -201,7 +202,7 @@ export default {
       cartlist: [],
       // 无效的购物车商品列表
       nouse_goods: [],
-      show:false,
+      show: false
     };
   },
   mounted() {
@@ -410,15 +411,20 @@ export default {
         });
     },
     // 购物车删除当前商品
-    onOverlimit(count, detail_id) {
-      if(count == 1) {
+    onOverlimit(e,count, detail_id) {
+      // console.log(7777,e)
+      // if(count == 1) {
+      //   this.onDelete("删除", "是否确认删除？", detail_id);
+      // }
+      if(e == 'minus'){
         this.onDelete("删除", "是否确认删除？", detail_id);
-      } else {
-        this.$toast('超出库存~');
+      }else if(e == 'plus'){
+        this.$toast('超出库存~')
       }
     },
     // 计数 +
     addCount(cIndex, gIndex, detail_id) {
+      // this.countType = "add";
       var count;
       this.cartlist[cIndex].goodslist = this.cartlist[cIndex].goodslist.map(
         (value, key) => {
@@ -438,6 +444,7 @@ export default {
     },
     // 计数 -
     subCount(cIndex, gIndex, detail_id) {
+      // this.countType = "sub";
       var count;
       this.cartlist[cIndex].goodslist = this.cartlist[cIndex].goodslist.map(
         (value, key) => {
