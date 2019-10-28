@@ -26,6 +26,14 @@
         <div class="title">{{ baseData.title }}</div>
         <div class="sub_title">{{baseData.sub_title}}</div>
       </div>
+      <!-- <van-cell title is-link value @click="showCoupon" style="margin:5px 0;">
+        <template slot="title">
+          <span style="margin-right:10px;">领券</span>
+          <span class="toMall">满149减100</span>
+          <span class="toMall">满15减5</span>
+          <span class="toMall">满99减49</span>
+        </template>
+      </van-cell> -->
       <van-cell
         v-if="location_info"
         :title="'配送至 ' + location_info.province+location_info.city"
@@ -35,7 +43,7 @@
       />
       <!-- 公号信息 -->
       <div class="brand_info">
-        <div class="left">
+        <div class="left" @click="toBrand">
           <div class="ratiobox">
             <div class="bookImg" v-lazy:background-image="brandInfoData.header_pic"></div>
           </div>
@@ -128,6 +136,88 @@
               @confirm="onConfirm"
             />
           </template>
+        </div>
+      </van-popup>
+      <!-- 领取优惠券 -->
+      <van-popup v-model="couponModel" position="bottom" style="max-height:65%;min-height:65%;">
+        <div class="header">
+          <span class="catalogWord">可用优惠券（满足条件后可用于当前商品）</span>
+          <span>
+            <svg class="icon" aria-hidden="true" @click="closePopup">
+              <use xlink:href="#icon-close-line" />
+            </svg>
+          </span>
+        </div>
+        <div class="content">
+          <div style="margin-top:10px;overflow:hidden;" v-for="(item,index) in column_list_data" :key="index">
+            <!-- 可使用 -->
+            <div class="toUse" v-if="item.is_use == 0 && item.is_over == 0" @click>
+              <div class="left"></div>
+              <div class="mid">
+                <div>
+                  ￥
+                  <span class="price">5</span>
+                </div>
+                <div class="condition">满20元可用</div>
+              </div>
+              <div class="right">
+                <div>
+                  <span class="shopCoupon">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-coupon-block" />
+                    </svg>
+                    <span class="dianpu">店铺券</span>
+                  </span>
+                  <span class="shop">博库网专营店</span>
+                </div>
+                <div class="desc">
+                  限部分实体图书
+                  <span class="toMall btn red" v-if="item.is_time">点击领取</span>
+                  <span class="toMall btn" v-else>可用商品</span>
+                </div>
+                <div class="time">2019.09.01- 2019.10.20</div>
+              </div>
+            </div>
+            <!-- 已使用 -->
+            <div
+              :class="item.is_over? 'toUse overdue':'toUse isused'"
+              v-if="item.is_use == 1 || item.is_over == 1"
+            >
+              <div class="left"></div>
+              <div class="mid">
+                <div>
+                  ￥
+                  <span class="price">5</span>
+                </div>
+                <div class="condition">满20元可用</div>
+                <span class="circle top"></span>
+                <span class="circle bottom"></span>
+              </div>
+              <div class="right">
+                <div>
+                  <span class="shopCoupon">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-coupon-block" />
+                    </svg>
+                    <span class="dianpu">店铺券</span>
+                  </span>
+                  <span class="shop">博库网专营店</span>
+                </div>
+                <div class="desc">限部分实体图书</div>
+                <span class="used" v-if="item.is_use">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-yishiyong1" />
+                  </svg>
+                </span>
+                <span class="used" v-if="item.is_over">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-overed-line" />
+                  </svg>
+                </span>
+                <div class="time">2019.09.01- 2019.10.20</div>
+              </div>
+            </div>
+          </div>
         </div>
       </van-popup>
       <div style="height: 90px;position:relative">
@@ -237,7 +327,15 @@ export default {
       },
 
       activeIndex: 1,
-      popupModel: false
+      popupModel: false,
+      couponModel: false,
+      column_list_data: [
+        { is_use: 1, is_over: 0, is_time: 1 },
+        { is_use: 1, is_over: 0, is_time: 0 },
+        { is_use: 0, is_over: 0, is_time: 1 },
+        { is_use: 0, is_over: 0, is_time: 0 },
+        { is_use: 0, is_over: 1, is_time: 1 }
+      ]
     };
   },
   mounted() {
@@ -249,6 +347,14 @@ export default {
     this.albumData();
   },
   methods: {
+    toBrand() {
+      this.$router.push({
+        name: "brand",
+        query: {
+          brand_id: this.brandInfoData.brand_id
+        }
+      });
+    },
     // 定位地址信息手动变更动作
     async locationChangeData(locations, goods_detail) {
       var tStamp = this.$getTimeStamp();
@@ -459,8 +565,8 @@ export default {
           name: "orderconfirm",
           query: { detail: JSON.stringify(this.detail) }
         });
-      }else{
-        this.$router.push({name:"login"})
+      } else {
+        this.$router.push({ name: "login" });
       }
     },
     // 新增实物订单
@@ -490,6 +596,12 @@ export default {
           supplier_id: this.brandInfoData.supplier_id
         }
       });
+    },
+    showCoupon() {
+      this.couponModel = true;
+    },
+    closePopup() {
+      this.couponModel = false;
     }
   }
 };

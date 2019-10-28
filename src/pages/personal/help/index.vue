@@ -17,9 +17,7 @@
         @click="todetail(item)"
       />
     </van-list>
-      <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div>
+
     <div style="height: 60px;"></div>
 
     <div class="bottomBox" :class="{iphx:this.isIphx}">

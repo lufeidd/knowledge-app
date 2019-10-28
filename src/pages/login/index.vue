@@ -57,7 +57,9 @@
         </van-col>-->
       </van-row>
     </div>
-    <CopyRight></CopyRight>
+    <div style="height:150px;position:relative;">
+        <CopyRight></CopyRight>
+    </div>
   </div>
 </template>
 

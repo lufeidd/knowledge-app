@@ -29,9 +29,6 @@
         </div>
       </div>
     </van-list>
-      <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div>
     <van-popup v-model="show" position="bottom">
       <van-datetime-picker
         v-model="currentDate"

@@ -350,7 +350,7 @@
               .title {
                 @include textOverflow;
                 width: 80%;
-                margin-left: 10px;
+                // margin-left: 10px;
               }
             }
           }
@@ -391,6 +391,27 @@
       .read{
         background-color: $redLight;
         color:$white;
+      }
+    }
+    .van-dialog {
+      & .codeBox {
+        text-align: center;
+        padding: 20px;
+
+        & .price {
+          @include font("PingFangBold", $fontSize + 1, $redDark);
+          line-height: 2;
+
+          & .money {
+            font-size: $fontSize + 4;
+          }
+        }
+
+        & .code {
+          @include font(null, $fontSize - 1, #999);
+          padding: 10px 0;
+          line-height: 30px;
+        }
       }
     }
  }

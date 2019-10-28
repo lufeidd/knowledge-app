@@ -87,6 +87,11 @@ import book from '@/pages/brand/detail/book'
 import brandresult from '@/pages/brand/result'
 import brand from '@/pages/brand/index'
 
+//优惠券
+import couponreceive from '@/pages/coupon/receive'
+import couponmine from '@/pages/coupon/mine'
+import couponresult from '@/pages/coupon/result'
+
 // 购物车
 import cart from '@/pages/cart'
 
@@ -645,6 +650,34 @@ export default new Router({
       component: brand,
       meta: {
         keepAlive: false,  // false不需要被缓存，true需要缓存
+      },
+    },
+    //优惠券
+    {
+      path: '/coupon/receive',
+      name: 'couponreceive',
+      component: couponreceive,
+      meta: {
+        keepAlive: false,  // false不需要被缓存，true需要缓存
+        title: '领取优惠券'
+      },
+    },
+    {
+      path: '/coupon/mine',
+      name: 'couponmine',
+      component: couponmine,
+      meta: {
+        keepAlive: false,  // false不需要被缓存，true需要缓存
+        title: '我的优惠券'
+      },
+    },
+    {
+      path: '/coupon/result',
+      name: 'couponresult',
+      component: couponresult,
+      meta: {
+        keepAlive: false,  // false不需要被缓存，true需要缓存
+        title: '搜索结果'
       },
     },
     // 购物车

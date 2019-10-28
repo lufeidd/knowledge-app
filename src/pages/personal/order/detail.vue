@@ -170,9 +170,7 @@
         />
       </div>
     </div>
-      <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div>
+
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div v-if="infoData.if_comment == 0 || showInvoice">
       <div style="height: 60px;"></div>
@@ -405,6 +403,16 @@ export default {
       if (item.goods_type == 3) {
         this.$router.push({
           name: "detail",
+          query: {
+            goods_id: item.goods_id,
+            pid: null
+          }
+        });
+      }
+      // 实物商品
+      if (item.goods_type == 4) {
+        this.$router.push({
+          name: "ebookdetail",
           query: {
             goods_id: item.goods_id,
             pid: null

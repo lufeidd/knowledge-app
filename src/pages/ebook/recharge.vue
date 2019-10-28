@@ -1,6 +1,6 @@
 <template>
   <div id="ebookrechargePage">
-    <van-popup v-model="rechargeShow" position="bottom" :close-on-click-overlay="false">
+    <van-popup v-model="rechargeShow" position="bottom" >
       <div class="recharge">
         <div class="head">
           <div class="left">
@@ -13,7 +13,7 @@
         </div>
         <div style="margin-top:10px;padding-left:3px;">
           还需充值
-          <span class="price">￥{{Math.abs(wallet.balance-info.price)}}</span>
+          <span class="price">￥{{(Math.abs(wallet.balance-info.price)).toFixed(2)}}</span>
         </div>
         <div class="account">
           <ul class="choose">
@@ -33,6 +33,8 @@
           <van-button round type="danger" style="width:100%;font-size:18px;" @click="rechargeBuy">购买</van-button>
         </div>
       </div>
+      <!-- 加载页 -->
+      <loading :isLoading="isLoading"></loading>
     </van-popup>
   </div>
 </template>
@@ -89,6 +91,12 @@
 </style>
 
 <script>
+import loading from "../../components/loading";
+import {
+  ORDER_VIRTUAL_ADD,
+  ORDER_VIRTUAL_ADD_SENDCODE,
+  ORDER_VIRTUAL_ADD_PAY
+} from "../../apis/shopping.js";
 import {
   USER_WALLET_RECHARGE_INFO,
   USER_WALLET_RECHARGE_ADD
@@ -96,7 +104,8 @@ import {
 import {CASHIER_PAY_ADD} from "../../apis/public.js";
 export default {
   name: "recharge",
-  props: ["info"],
+  props: ["info","goods_id"],
+  components:{loading},
   data() {
     return {
       rechargeShow: false,
@@ -104,6 +113,9 @@ export default {
       activeClass: 0,
       rechargeExplain: "",
       wallet:{},
+      isLoading:false,
+      payId:null,
+      order_pay_id:null,
     };
   },
   mounted() {
@@ -134,18 +146,40 @@ export default {
           this.$store.commit("changeLoginState", 100);
           localStorage.setItem("loginState", 100);
         }
-        this.$toast(res.error_message);
+        // this.$toast(res.error_message);
       }
     },
     closePopup() {
       this.rechargeShow = false;
+    },
+    // 新增虚拟订单
+    async addOrderData() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        goods_id: this.goods_id,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_VIRTUAL_ADD(data);
+      if (res.hasOwnProperty("response_code")) {
+        // this.pay_mobilephone = res.response_data.pay_mobilephone;
+        // this.pay_money = res.response_data.pay_money;
+        // this.order_id = res.response_data.order_id;
+        this.order_pay_id = res.response_data.pay_id;
+        this.rechargeAddData(this.rechargeAmount[this.activeClass]);
+        // 交易支付请求发起
+        // this.cashierPayData(this.pay_id);
+      } else {
+        this.$toast(res.error_message);
+      }
     },
     // 余额充值选择
     rechargeBuy() {
       if (this.activeClass >= 0) {
         // console.log("money:", this.rechargeAmount[this.activeClass]);
         // 用户余额充值申请创建
-        this.rechargeAddData(this.rechargeAmount[this.activeClass]);
+        this.addOrderData();
       }
     },
     // 用户余额充值申请创建
@@ -154,6 +188,33 @@ export default {
       let data = {
         money: _money,
         type: "NORMAL",
+        timestamp: tStamp,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await USER_WALLET_RECHARGE_ADD(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log( res.response_data);
+        // 充值同时购买请求发起
+
+        this.payId = res.response_data.pay_id;
+        console.log(6666,this.wallet.balance + _money >= this.info.price);
+        if(this.wallet.balance + _money >= this.info.price){
+          this.rechargeAddPay(_money);
+        }else{
+          this.cashierPayData(res.response_data.pay_id);
+        }
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    //交易支付充值并购买
+     async rechargeAddPay(_money) {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        money: _money,
+        type: "NORMAL",
+        order_pay_id:this.order_pay_id,
         timestamp: tStamp,
         version: "1.0"
       };

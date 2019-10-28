@@ -7,7 +7,7 @@
       @load="commentLoad"
     >
       <div>
-        <van-row gutter="20" type="flex" justify="space-between" class="booklist">
+        <van-row gutter="20" type="flex" class="booklist">
           <van-col span="8" v-for="(item,index) in shelfList" :key="index">
             <div class="ratiobox" @click="toDetail(item,index)">
               <div class="bookImg" v-lazy:background-image="item.pic"></div>
@@ -36,7 +36,7 @@ export default {
       // 分页
       commentLoading: false,
       commentFinished: false,
-      loop: null,
+      loop: null
     };
   },
   mounted() {
@@ -50,7 +50,8 @@ export default {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
-        version: "1.0"
+        version: "1.0",
+        page: this.page
       };
       data.sign = this.$getSign(data);
       let res = await EBOOK_SHELF_GETS(data);
@@ -59,7 +60,7 @@ export default {
         // 异步更新数据
         var result = res.response_data.result;
         setTimeout(() => {
-          for (let i = 0; i < res.response_data.result.length; i++) {
+          for (let i = 0; i < result.length; i++) {
             this.shelfList.push(result[i]);
           }
           // 加载状态结束
@@ -76,13 +77,13 @@ export default {
         this.$toast(res.error_message);
       }
     },
-    toDetail(item,index){
+    toDetail(item, index) {
       this.$router.push({
-        name:"ebookdetail",
-        query:{
-          goods_id:item.goods_id,
+        name: "ebookdetail",
+        query: {
+          goods_id: item.goods_id
         }
-      })
+      });
     }
   }
 };

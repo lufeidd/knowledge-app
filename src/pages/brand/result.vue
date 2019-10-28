@@ -145,6 +145,7 @@
                           <use xlink:href="#icon-comment-line" />
                         </svg>-->
                         <span v-if="item.price">￥{{ item.price }}</span>
+                        <span v-else>免费</span>
                       </span>
                     </div>
                   </div>
@@ -203,10 +204,14 @@ export default {
       contentData: [],
       supplier_id: null,
       tagids: null,
-      cids: null
+      cids: null,
+      isbrand_id:null,
     };
   },
   mounted() {
+    this.isbrand_id = this.$route.query.isbrand_id
+      ? this.$route.query.isbrand_id
+      : null;
     this.searchContent = this.$route.query.searchContent
       ? this.$route.query.searchContent
       : null;
@@ -377,7 +382,7 @@ export default {
       var data = {
         keywords: this.searchContent,
         goods_type: this.goods_type,
-        brand_id: this.$route.query.brand_id,
+        brand_id: (this.isbrand_id == 'no') ? 0 :this.$route.query.brand_id,
         supplier_id: this.supplier_id,
         tagids: this.tagids,
         cids: this.cids,

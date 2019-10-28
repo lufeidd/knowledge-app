@@ -8,7 +8,8 @@
     9   一排四个，共两排
     70  固定四个板块
     10	一行两个带选项卡-纸质图书
-    11  电子书
+    11  电子书一列
+    110 电子书一列三排
     40	横向商品列表-音频
     60	横向滑屏-视频
     50	商品列表-横向-专辑
@@ -219,17 +220,44 @@
             </div>
             <div class="right">
               <div class="text">{{litem.contents.title}}</div>
-              <!-- <div class="pinpai">{{litem.contents.sub_title}}</div> -->
+              <div class="subTitle">{{litem.contents.sub_title}}</div>
               <div class="nice">
                 <span>
                   <span class="time">
                     <span>{{litem.contents.book_author}}</span>
                   </span>
                 </span>
-                <span class="price">￥{{litem.contents.price}}</span>
+                <span class="price" v-if="litem.contents.price">￥{{litem.contents.price}}</span>
+                <span class="price" v-else>免费</span>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <!-- 电子书一列三排 -->
+      <div class="ablum_moudle ebook" v-if="item.module_temp_id == 110">
+        <div class="materialTitle" @click="linktoDetail(item.module_more)">
+          <div class="text">
+            <span class="verticleLine"></span>
+            <span class="lh titleOver">{{item.module_title}}</span>
+          </div>
+          <span class="all" v-if="item.is_more">
+            更多
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-next-line" />
+            </svg>
+          </span>
+        </div>
+        <div>
+          <van-row gutter="20" type="flex" class="ebooklist">
+            <van-col span="8" v-for="(litem,lindex) in item.contents.list" :key="lindex">
+              <div class="ratioebox" @click="goodsDetail(litem)">
+                <div class="ebookImg" v-lazy:background-image="litem.contents.pics[0]"></div>
+              </div>
+              <div class="title">{{ litem.contents.title }}</div>
+              <div class="schedule">{{ litem.contents.book_author }}</div>
+            </van-col>
+          </van-row>
         </div>
       </div>
       <!-- 视频 -->
@@ -448,7 +476,7 @@ export default {
       }
     },
     linktoDetail(link) {
-      // console.log(link);return
+      // console.log(1111,link);return
       var data = this.$translate(JSON.parse(link));
       if (data.name == "") return;
       data.query.type = "mall";
@@ -498,13 +526,13 @@ export default {
         });
       }
       //电子书
-      if(item.contents.goods_type == 4) {
+      if (item.contents.goods_type == 4) {
         this.$router.push({
-          name:"ebookdetail",
-          query:{
-            goods_id:item.contents.goods_id,
+          name: "ebookdetail",
+          query: {
+            goods_id: item.contents.goods_id
           }
-        })
+        });
       }
     },
     tabGoodsDetail(item) {
@@ -550,13 +578,13 @@ export default {
         });
       }
       //电子书
-      if(item.goods_type == 4) {
+      if (item.goods_type == 4) {
         this.$router.push({
-          name:"ebookdetail",
-          query:{
-            goods_id:item.goods_id,
+          name: "ebookdetail",
+          query: {
+            goods_id: item.goods_id
           }
-        })
+        });
       }
     },
     tabChange(index) {
