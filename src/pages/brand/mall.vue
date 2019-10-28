@@ -338,6 +338,7 @@
           </div>
         </div>
       </div>
+
     </div>
     <div style="position:relative;height:90px;">
       <CopyRight></CopyRight>
@@ -378,7 +379,7 @@ export default {
         loop: true,
         autoplay: {
           disableOnInteraction: false, //手动滑动之后不打断播放
-          delay: 2000
+          delay: 4000
         },
         pagination: {
           el: ".swiper-pagination"
