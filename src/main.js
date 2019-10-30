@@ -162,7 +162,7 @@ router.beforeEach((to, from, next) => {
     if (from.name != null || (from.name == null && to.name != 'personalIndex')) {
 
       // 判断是否登录过，如果有登陆过，说明有token,或者token未过期，可以跳过登录（2）
-      // 未登录跳转到登录页面   
+      // 未登录跳转到登录页面
       if (!token || token == 100) {
         replaceUrl = window.location.href.split('#')[0] + '#' + '/login/index';
 
