@@ -306,6 +306,7 @@ export default {
     Vue.prototype.$timeCountDown = function (options) {
       let self = this
       let second = options.time
+      console.log(897,options,second)
       if (typeof second === 'number') {
         this.clock = window.setInterval(() => {
           if (second === 0) {
@@ -329,6 +330,44 @@ export default {
         self.$toast('时间格式不正确')
       }
 
+    }
+    // 限时促销计算时间
+    Vue.prototype.$countTime = function(endtime){
+      var self = this;
+      var time1 = endtime;
+      var d = time1/60/60/24;
+      if(d>=1 && d<=3){
+        self.showDay = true;
+        self.showTime = true;
+        d = Math.ceil(d);
+        self.timeDataDesc = '距活动结束还剩'+d+'天';
+      }else if(d < 1){
+        self.showDay = false;
+        self.showTime = true;
+        this.clock = window.setInterval(() => {
+          if (time1 === 0) {
+            clearInterval(this.clock)
+            self.returnPrice();
+            return false
+          }
+          time1--
+          let h = Math.floor(time1 / 60 / 60)
+          let m = Math.floor((time1 - h * 60 * 60) / 60)
+          let s = time1 - (h * 60 * 60) - (m * 60)
+          if (h < 10) h = '0' + h
+          if (m < 10) m = '0' + m
+          if (s < 10) s = '0' + s
+          let res = h + ":" + m + ":" + s
+          self.timeDataDesc = res;
+          self.timeH = h
+          self.timeM = m
+          self.timeS = s
+        }, 1000)
+      }else if(d > 3){
+        self.showTime = false;
+        self.timeDataDesc = '限时促销'
+      }
+      console.log(d,self.clock)
     }
 
     // ksort

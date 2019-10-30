@@ -13,7 +13,7 @@
         </div>
         <div style="margin-top:10px;padding-left:3px;">
           还需充值
-          <span class="price">￥{{(Math.abs(wallet.balance-info.price)).toFixed(2)}}</span>
+          <span class="price">￥{{(Math.abs(wallet.balance-price)).toFixed(2)}}</span>
         </div>
         <div class="account">
           <ul class="choose">
@@ -116,6 +116,7 @@ export default {
       isLoading:false,
       payId:null,
       order_pay_id:null,
+      price:null,
     };
   },
   mounted() {

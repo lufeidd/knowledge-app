@@ -32,7 +32,7 @@
       </van-steps>
     </div>
     <EazyNav type="order"></EazyNav>
-    <CopyRight></CopyRight>
+    <!-- <CopyRight></CopyRight> -->
   </div>
 </template>
 

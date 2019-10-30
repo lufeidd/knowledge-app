@@ -89,7 +89,7 @@
       </van-radio-group>
     </van-popup>
     <EazyNav type="order"></EazyNav>
-    <CopyRight></CopyRight>
+    <!-- <CopyRight></CopyRight> -->
   </div>
 </template>
 
@@ -202,13 +202,30 @@ export default {
       this.radio = index;
       this.refund_reason = item;
       if (this.refund_reason == "七天无理由" || this.refund_reason == "其他") {
-        this.real_refund_money = (
-          this.refundInfo.buy_count * this.refundInfo.goods_price
-        ).toFixed(2);
+        if (this.refund_count == this.refundInfo.buy_count) {
+          this.real_refund_money = (
+            this.refund_count * this.refundInfo.goods_price
+          ).toFixed(2);
+          this.count_show = true;
+        } else {
+          this.real_refund_money = (
+            this.refund_count * this.refundInfo.goods_price
+          ).toFixed(2);
+          this.count_show = false;
+        }
         this.show_dispatch = false;
       } else {
-        this.real_refund_money = this.max_price;
-        this.show_dispatch = true;
+        if (this.refund_count == this.refundInfo.buy_count) {
+          this.real_refund_money = this.max_price;
+          this.count_show = true;
+          this.show_dispatch = true;
+        } else {
+          this.real_refund_money = (
+            this.refund_count * this.refundInfo.goods_price
+          ).toFixed(2);
+          this.count_show = false;
+          this.show_dispatch = false;
+        }
       }
     },
     // 获取上传图片路径
@@ -230,7 +247,6 @@ export default {
           .split("||")
           .filter(item => item !== "undefined")
           .join("||");
-
 
         var tStamp = this.$getTimeStamp();
         var data = {
@@ -302,12 +318,12 @@ export default {
         this.submit_state = true;
         this.$toast("申请成功!");
         this.$router.push({
-          name:"ongoing",
-          query:{
-            order_id:this.order_id,
-            detail_id:this.detail_id,
+          name: "ongoing",
+          query: {
+            order_id: this.order_id,
+            detail_id: this.detail_id
           }
-        })
+        });
       } else {
         this.submit_state = true;
         this.$toast(res.error_message);
@@ -375,12 +391,12 @@ export default {
         this.submit_state = true;
         this.$toast("修改成功!");
         this.$router.push({
-          name:"ongoing",
-          query:{
-            order_id:this.order_id,
-            detail_id:this.detail_id,
+          name: "ongoing",
+          query: {
+            order_id: this.order_id,
+            detail_id: this.detail_id
           }
-        })
+        });
       } else {
         this.submit_state = true;
         this.$toast(res.error_message);
@@ -402,11 +418,11 @@ export default {
         this.refund_reason = res.response_data.refund_reason;
         this.refund_desc = res.response_data.refund_desc;
         this.refund_count = res.response_data.refund_count;
-        this.real_refund_money = res.response_data.refund_money_total;
+        // this.real_refund_money = res.response_data.refund_money_total;
         this.max_price = res.response_data.max_money;
         this.dispatch_price = res.response_data.dispatch_price;
 
-        if(res.response_data.pic !== null){
+        if (res.response_data.pic !== null) {
           if (res.response_data.pic.length > 0) {
             for (let i = 0; i < res.response_data.pic.length; i++) {
               $("#upload").prepend(
@@ -428,7 +444,9 @@ export default {
               );
             }
           }
-          if(res.response_data.pic.length == 3){$("#van").css("display", "none");}
+          if (res.response_data.pic.length == 3) {
+            $("#van").css("display", "none");
+          }
         }
         $("#upload .del").on("click", function() {
           // length = box.length;
@@ -443,8 +461,18 @@ export default {
           this.refund_reason == "七天无理由" ||
           this.refund_reason == "其他"
         ) {
+          if(this.refund_count == this.refundInfo.buy_count){
+            this.real_refund_money = res.response_data.max_money - res.response_data.dispatch_price;
+          }else{
+            this.real_refund_money = (res.response_data.refund_count)*(res.response_data.goods_money);
+          }
           this.show_dispatch = false;
         } else {
+          if(this.refund_count == this.refundInfo.buy_count){
+            this.real_refund_money = res.response_data.max_money;
+          }else{
+            this.real_refund_money = (res.response_data.refund_count)*(res.response_data.goods_money);
+          }
           this.show_dispatch = true;
         }
         if (this.refund_count == this.refundInfo.buy_count) {
@@ -452,6 +480,7 @@ export default {
         } else {
           this.count_show = false;
         }
+        console.log(55555,this.real_refund_money)
       } else {
         this.$toast(res.error_message);
       }
@@ -459,19 +488,48 @@ export default {
     //计数改变
     goodsCount() {
       // console.log(item);
-      this.real_refund_money = (
-        this.refund_count * this.refundInfo.goods_price
-      ).toFixed(2);
-      if (this.refund_count == this.refundInfo.buy_count) {
-        this.real_refund_money = this.max_price;
-        this.count_show = true;
+      // this.real_refund_money = (
+      //   this.refund_count * this.refundInfo.goods_price
+      // ).toFixed(2);
+      // if (this.refund_count == this.refundInfo.buy_count) {
+      //   this.real_refund_money = this.max_price;
+      //   this.count_show = true;
+      // } else {
+      //   this.real_refund_money = (
+      //     this.refund_count * this.refundInfo.goods_price
+      //   ).toFixed(2);
+      //   this.count_show = false;
+      // }
+      if (this.refund_reason == "七天无理由" || this.refund_reason == "其他") {
+        // this.real_refund_money = (
+        //     this.refund_count * this.refundInfo.goods_price
+        //   ).toFixed(2);
+        if (this.refund_count == this.refundInfo.buy_count) {
+          this.real_refund_money = (
+            this.refund_count * this.refundInfo.goods_price
+          ).toFixed(2);
+          this.count_show = true;
+        } else {
+          this.real_refund_money = (
+            this.refund_count * this.refundInfo.goods_price
+          ).toFixed(2);
+          this.count_show = false;
+        }
+        this.show_dispatch = false;
       } else {
-        this.real_refund_money = (
-          this.refund_count * this.refundInfo.goods_price
-        ).toFixed(2);
-        this.count_show = false;
+        if (this.refund_count == this.refundInfo.buy_count) {
+          this.real_refund_money = this.max_price;
+          this.count_show = true;
+          this.show_dispatch = true;
+        } else {
+          this.real_refund_money = (
+            this.refund_count * this.refundInfo.goods_price
+          ).toFixed(2);
+          this.count_show = false;
+          this.show_dispatch = false;
+        }
       }
-    }
+    },
   }
 };
 </script>

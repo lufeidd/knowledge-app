@@ -11,7 +11,7 @@
     <div class="searchHint">
       <span>
         <svg class="icon searchIcon" aria-hidden="true">
-          <use xlink:href="#icon-search-line"></use>
+          <use xlink:href="#icon-search-line" />
         </svg>
       </span>
       <search-hint :searchHintData="searchHintData"></search-hint>
@@ -25,7 +25,10 @@
         </van-col>
       </van-row>
     </div>
-    <div class="searchRecommend" v-if="(this.type == 'brand' || this.type == 'mall') && hotSearch.length > 0">
+    <div
+      class="searchRecommend"
+      v-if="(this.type == 'brand' || this.type == 'mall') && hotSearch.length > 0"
+    >
       <p class="recommend">热门搜索</p>
       <van-row type="flex" gutter="15">
         <van-col span="6" v-for="(item,index) in hotSearch" :key="index">
@@ -46,7 +49,7 @@
     </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    <CopyRight></CopyRight>
+    <!-- <CopyRight></CopyRight> -->
   </div>
 </template>
 
@@ -58,7 +61,7 @@ import searchHint from "../components/searchHint";
 // import easyNav from "./../components/easyNav";
 export default {
   components: {
-    searchHint,
+    searchHint
     // easyNav
   },
   data() {
@@ -152,6 +155,17 @@ export default {
           });
           this.saveItem();
           break;
+        case "coupon":
+          this.$router.push({
+            name: "couponresult",
+            query: {
+              type: "coupon",
+              ticket_id: this.$route.query.ticket_id,
+              searchContent: this.searchHintData.search
+            }
+          });
+          this.saveItem();
+          break;
       }
     },
     onSearch() {
@@ -171,6 +185,8 @@ export default {
         this.searchTo("mall");
       } else if (this.type == "index") {
         this.searchTo("index");
+      } else if (this.type == "coupon") {
+        this.searchTo("coupon");
       } else {
         this.$toast("请输入您要搜索的内容！");
       }
@@ -265,6 +281,16 @@ export default {
           query: {
             type: "mall",
             supplier_id: this.$route.query.supplier_id,
+            searchContent: item.content
+          }
+        });
+      }
+      if (this.type == "coupon") {
+        this.$router.push({
+          name: "couponresult",
+          query: {
+            type: "mall",
+            supplier_id: this.$route.query.ticket_id,
             searchContent: item.content
           }
         });

@@ -59,6 +59,7 @@
                 controls
                 width="100%"
                 height="100%"
+                :poster="baseData.pic[0]"
               ></video>
             </div>
           </div>
@@ -71,6 +72,7 @@
               controls
               width="100%"
               height="100%"
+              :poster="baseData.pic[0]"
             ></video>
           </div>
         </div>
@@ -132,6 +134,23 @@
           <template v-if="activeKey == 1"></template>
         </van-tab>
       </van-tabs>
+
+      <!-- 优惠券 -->
+      <van-cell
+        title
+        is-link
+        value
+        @click="showCoupon"
+        style="margin:5px 0;"
+        class="couponCell"
+        v-if="Object.keys(couponInfo.ticket).length>0"
+      >
+        <template slot="title">
+          <span style="margin-right:10px;" v-if="isReceived">已领券</span>
+          <span style="margin-right:10px;" v-else>领券</span>
+          <span class="toMall" v-for="(item,index) in couponInfo.ticket.list" :key="index">{{item}}</span>
+        </template>
+      </van-cell>
 
       <!-- 推荐 -->
       <!-- 商品类型, 1=> 音频, 2=> 视频, 3=> 纸书, 4=> 电子书, 5=> 文创用品, 6=> 图文, 9=> 专辑 -->
@@ -243,7 +262,7 @@
         />
         <van-goods-action-big-btn
           primary
-          :text="'¥ '+baseData.price + ' 购买'"
+          :text="'¥ '+baseData.price.toFixed(2) + ' 购买'"
           @click="buyAction(goodsId)"
         />
       </van-goods-action>
@@ -296,6 +315,101 @@
           </div>
         </div>
       </van-popup>
+      <!-- 优惠券 -->
+      <van-popup v-model="couponModel" position="bottom" style="max-height:65%;min-height:65%;">
+        <div class="header">
+          <span class="catalogWord">可用优惠券（满足条件后可用于当前商品）</span>
+          <span>
+            <svg class="icon" aria-hidden="true" @click="closePopup">
+              <use xlink:href="#icon-close-line" />
+            </svg>
+          </span>
+        </div>
+        <div class="content">
+          <div
+            style="margin-top:10px;overflow:hidden;border-radius:0 6px 6px 0;box-shadow:0 0 10px rgba(0,0,0,0.06);"
+            v-for="(item,index) in couponList"
+            :key="index"
+          >
+            <!-- 可领取 -->
+            <div class="toUse" v-if="item.state == 1 || item.state == 3">
+              <div class="left"></div>
+              <div class="mid">
+                <div>
+                  ￥
+                  <span class="price">{{item.money}}</span>
+                </div>
+                <div class="condition">{{item.use_time_desc}}</div>
+                <span class="circle top"></span>
+                <span class="circle bottom"></span>
+              </div>
+              <div class="right">
+                <div>
+                  <span class="shopCoupon">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-coupon-block" />
+                    </svg>
+                    <span class="dianpu" v-if="item.brand_id">店铺券</span>
+                    <span class="dianpu" v-else>平台券</span>
+                  </span>
+                  <span class="shop">{{item.brand_name}}</span>
+                </div>
+                <div class="desc">
+                  {{item.use_range_desc}}
+                  <span
+                    class="toMall btn red"
+                    v-if="item.state == 1 && requestState"
+                    @click="receive(item,index)"
+                  >点击领取</span>
+                  <span
+                    class="toMall btn red"
+                    v-if="item.state == 1 && !requestState"
+                  >点击领取</span>
+                  <span class="toMall btn" v-if="item.state == 3" @click="toResult(item,index)">可用商品</span>
+                </div>
+                <div class="time">{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
+                <span class="used" v-if="item.state == 3">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-yilingqu" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <!-- 已领完 -->
+            <div class="toUse overdue" v-if="item.state == 2">
+              <div class="left"></div>
+              <div class="mid">
+                <div>
+                  ￥
+                  <span class="price">{{item.money}}</span>
+                </div>
+                <div class="condition">{{item.use_time_desc}}</div>
+                <span class="circle top"></span>
+                <span class="circle bottom"></span>
+              </div>
+              <div class="right">
+                <div>
+                  <span class="shopCoupon">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-coupon-block" />
+                    </svg>
+                    <span class="dianpu" v-if="item.brand_id">店铺券</span>
+                    <span class="dianpu" v-else>平台券</span>
+                  </span>
+                  <span class="shop">{{item.brand_name}}</span>
+                </div>
+                <div class="desc">{{item.use_range_desc}}</div>
+                <span class="used">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-received-line" />
+                  </svg>
+                </span>
+                <div class="time">{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </van-popup>
       <div style="position:relative;height:90px;">
         <CopyRight></CopyRight>
       </div>
@@ -310,6 +424,9 @@
   .van-button {
     border-radius: 0;
   }
+  .couponCell .van-cell__value{
+    display:none;
+  }
 }
 </style>
 
@@ -318,6 +435,7 @@
 import miniAudio from "./../../components/miniAudio";
 import audioList from "./../../pages/album/list";
 import { ALBUM, ALBUM_DETAIL } from "../../apis/album.js";
+import { GOODS_TICKET_GETS, TICKET_LINK } from "../../apis/coupon.js";
 import {
   COLLECT_ADD,
   COLLECT_CANCEL,
@@ -417,7 +535,13 @@ export default {
       // 存放发布按钮类型，comment为发布评论，reply为发布回复
       punishType: "comment",
       // 推荐
-      recommendList: []
+      recommendList: [],
+      // 优惠券信息
+      couponInfo: null,
+      couponList: [],
+      couponModel: false,
+      isReceived: false,
+      requestState: true,
     };
   },
   beforeDestroy() {
@@ -447,6 +571,14 @@ export default {
     this.albumData();
     // 推荐
     this.recommendData();
+    this.getCouponList();
+  },
+  updated(){
+    // console.log(7474,$('.van-goods-action-big-btn .van-button__text'))
+    if(this.baseData.single_activity_id){
+      $('.van-goods-action-big-btn .van-button__text').html('<div style="line-height:1;font-size:16px;">限时促销价￥'+this.baseData.price.toFixed(2)+'</div><div style="line-height:1;font-size:12px;margin-top:5px;"><del style="color:#e1e1e1;">原价￥'+this.baseData.market_price.toFixed(2)+'</del> 购买专辑</div>')
+    }
+
   },
   methods: {
     // 获取页面分享信息
@@ -911,6 +1043,10 @@ export default {
         // 账号信息，是否登录
         this.isLogin = res.response_data.user_info.is_login;
         document.title = "节目详情-" + res.response_data.base.title;
+        // 优惠券
+        this.couponInfo = res.response_data.activity;
+
+        // console.log(7474,$('.van-goods-action-big-btn .van-button__text'))
 
         // 所属媒体信息
         // this.brandInfoData = res.response_data.brand_info;
@@ -1237,7 +1373,7 @@ export default {
             query: { goods_id: _goodsId }
           });
       } else {
-        this.$router.push({name:"login"})
+        this.$router.push({ name: "login" });
       }
     },
     // --------------------------------相似----------------------------------
@@ -1293,13 +1429,77 @@ export default {
           name: "album",
           query: { goods_id: item.goods_id }
         });
-      } else if (goodsType == 4){
+      } else if (goodsType == 4) {
         //电子书
         this.$router.push({
           name: "ebookdetail",
           query: { goods_id: item.goods_id }
         });
       }
+    },
+    // 优惠券
+    showCoupon() {
+      this.couponModel = true;
+    },
+    closePopup() {
+      this.couponModel = false;
+    },
+    async getCouponList() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        goods_id: this.pid?this.pid:this.goodsId,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await GOODS_TICKET_GETS(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res);
+        this.couponList = res.response_data;
+        for(var i=0;i<this.couponList.length;i++){
+          if(this.couponList[i].state == 3){
+            this.isReceived = true;
+          }
+        }
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 领取优惠券
+    receive(item, index) {
+      if (this.isLogin == 0) {
+        this.$router.push({ name: "login", params: {} });
+        this.$toast("用户未登录!");
+      }else{
+        this.ticketLink(item.ticket_id);
+      }
+    },
+    async ticketLink(ticket_id) {
+      this.requestState = false;
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.0",
+        ticket_id: ticket_id
+      };
+      data.sign = this.$getSign(data);
+      let res = await TICKET_LINK(data);
+      if (res.hasOwnProperty("response_code")) {
+        // console.log(res);
+        this.$toast("领取成功！");
+        this.requestState = true;
+      } else {
+        this.$toast(res.error_message);
+        this.requestState = true;
+      }
+    },
+    toResult(item, index) {
+      this.$router.push({
+        name: "couponresult",
+        query: {
+          ticket_id: item.ticket_id
+        }
+      });
     }
   }
 };
