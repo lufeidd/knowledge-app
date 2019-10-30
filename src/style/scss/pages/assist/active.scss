@@ -1,0 +1,525 @@
+/*
+ * author: zhuboyu
+ * date:2019/10/28
+ */
+
+@charset "utf-8";
+
+#activePage{
+  background-color: #6e7aff;
+  .active-bg{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    .bg-piture{
+      box-sizing: border-box;
+      text-align: center;
+      background: url("../../../../assets/assist/active_bg.png") no-repeat;
+      background-size: 100% 100%;
+      height: 446px;
+    }
+    .activeRules{
+      position: absolute;
+      top: 17px;
+      right: 0;
+      font-size: 12px;
+    }
+    .prompt{
+      position: absolute;
+      text-align: center;
+      width: 100%;
+      top: 101px;
+      color: #fff;
+      font-size: 14px;
+    }
+    .dn{
+      display: none;
+    }
+    .startHelp{
+      position: absolute;
+      bottom: 8px;
+      width: 100%;
+      text-align: center;
+      font-size: 18px;
+      color: #fff;
+    }
+  }
+  .helpFriend{
+    margin-top: 17px;
+    padding: 13px 25px;
+    .helpAndPic{
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      .helpCount{
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        color: #ffffff;
+        font-size: 16px;
+        .text-color{
+          color: #fff046;
+        }
+      }
+      .helpPicture{
+        flex-basis: 68px;
+        position: relative;
+        .oval{
+          width: 21px;
+          position: absolute;
+          .bookImg{
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 0;
+            position: relative;
+            background-position: 50%;
+            background-repeat: no-repeat;
+            background-size: contain;
+            padding-bottom: 100%;
+            border-radius: 60px;
+            overflow: hidden;
+          }
+        }
+        .picture{
+          background: url("../../../../assets/assist/arrow_icon1.png") no-repeat;
+          background-size: 100% 100%;
+          height: 15px;
+          position: absolute;
+          width: 15px;
+          right: 3px;
+          top: 3px;
+        }
+      }
+    }
+    .concern{
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      margin-top: 15px;
+      .svg{
+        width: 21px;
+        .bookImg{
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 0;
+          position: relative;
+          background-position: 50%;
+          background-repeat: no-repeat;
+          background-size: contain;
+          padding-bottom: 100%;
+          border-radius: 60px;
+          overflow: hidden;
+        }
+      }
+      .text{
+        padding-left: 7px;
+        color: #fffefe;
+        flex-grow: 1;
+      }
+      .href{
+        width: 45px;
+        text-align: center;
+        background-color: #ff6918;
+        border-radius: 12px;
+        color: #ffffff;
+      }
+    }
+  }
+  .rewardTitle{
+    margin: 36px 12px 19px 19px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    .line{
+      flex-grow: 2;
+      border-bottom: 1px solid #ffffff;
+    }
+    .rewardName{
+      color: #ffffff;
+      font-size: 18px;
+      flex-grow: 1;
+    }
+  }
+  .rewardContent{
+    position: relative;
+    margin: 0 12px;
+    .bookImg{
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 0;
+      position: relative;
+      background-position: 50%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      padding-bottom: 30%;
+      overflow: hidden;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      .callBack{
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        padding: 3px 0 0 10px;
+        .grade{
+          color: #ffffff;
+          flex-basis: 25px;
+          padding-right: 6px;
+        }
+        .contentBox{
+          flex-grow: 1;
+          text-align: right;
+          .imgOne{
+            background: url("../../../../assets/assist/oval01.png") no-repeat;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 0;
+            position: relative;
+            background-position: 100%;
+            background-repeat: no-repeat;
+            background-size: contain;
+            padding-bottom: 7%;
+            overflow: hidden;
+          }
+          .imgTwo{
+            background: url("../../../../assets/assist/oval02.png") no-repeat;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 0;
+            position: relative;
+            background-position: 100%;
+            background-repeat: no-repeat;
+            background-size: contain;
+            padding-bottom: 7%;
+            overflow: hidden;
+          }
+          .imgThree{
+            background: url("../../../../assets/assist/oval03.png") no-repeat;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 0;
+            position: relative;
+            background-position: 100%;
+            background-repeat: no-repeat;
+            background-size: contain;
+            padding-bottom: 7%;
+            overflow: hidden;
+          }
+          .imgFour{
+            background: url("../../../../assets/assist/oval04.png") no-repeat;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 0;
+            position: relative;
+            background-position: 100%;
+            background-repeat: no-repeat;
+            background-size: contain;
+            padding-bottom: 7%;
+            overflow: hidden;
+          }
+          .content{
+            color: #fff;
+            padding-right: 5px;
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }
+  .activeMore{
+    position: relative;
+    margin: 23px 0;
+    .moreText{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 180px;
+      height: 45px;
+      background-color: #ff8d18;
+      border-radius: 10px;
+      font-size: 18px;
+      color: #ffffff;
+      margin: 0 auto;
+    }
+  }
+  .ranking{
+    .ranking-tit{
+      margin: 36px 12px 19px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      .line{
+        flex-grow: 2;
+        border-bottom: 1px solid #ffffff;
+      }
+      .rankingTitle{
+        color: #ffffff;
+        font-size: 18px;
+        flex-grow: 1;
+      }
+    }
+    .rankingContet{
+      padding: 15px 12px 0;
+      .rankingMember{
+        display: flex;
+        color: #fff;
+        margin-bottom: 15px;
+        .grade{
+          flex-grow: 1;
+        }
+        .bookImg{
+          left: 0;
+          top: 0;
+          height: 0;
+          position: relative;
+          background-repeat: no-repeat;
+          background-size: contain;
+          padding-bottom: 6%;
+          border-radius: 60px;
+          overflow: hidden;
+          width: 21px;
+        }
+        .title{
+          overflow: hidden;
+          -o-text-overflow: ellipsis;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          flex-basis: 135px;
+          margin-left: 22px;
+        }
+        .count{
+          flex-grow: 1;
+          text-align: right;
+        }
+      }
+    }
+  }
+  .rules{
+    .rules-tit{
+      margin: 36px 12px 19px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      .line{
+        flex-grow: 2;
+        border-bottom: 1px solid #ffffff;
+      }
+      .rulesTitle{
+        color: #ffffff;
+        font-size: 18px;
+        flex-grow: 1;
+      }
+    }
+    .rulesCount{
+      padding: 0 12px 55px 12px;
+      color: #ffffff;
+      line-height: 21px;
+    }
+  }
+  .picturePopup{
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align: center;
+    background: url("../../../../assets/assist/helpListBg.png") no-repeat;
+    background-size: 100% 100%;
+    width: 85.67%;
+    height: 58.56%;
+    overflow: hidden;
+    //padding: 125px 30px 30px;
+    //padding: 31% 9% 6%;
+    padding: 32vw 8vw 6vw;
+    .close{
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 13px;
+      color: #999;
+    }
+    .firendList{
+      height: 100%;
+      .firendList-tit{
+        .firendListTitle{
+          font-size: 16px;
+          color: #fe0000;
+          margin-bottom: 27px;
+        }
+      }
+      .friendContet{
+        height: 75%;
+        overflow-y: auto;
+        .friendMember{
+          display: flex;
+          align-items: center;
+          margin-bottom: 15px;
+          font-size: 12px;
+          .bookImg{
+            left: 0;
+            top: 0;
+            height: 0;
+            position: relative;
+            background-repeat: no-repeat;
+            background-size: contain;
+            padding-bottom: 6%;
+            border-radius: 60px;
+            overflow: hidden;
+            width: 23px;
+          }
+          .title{
+            overflow: hidden;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex-basis: 115px;
+            margin-left: 15px;
+            text-align: left;
+          }
+          .day{
+            flex-grow: 1;
+            margin-left: -5px;
+          }
+          .time{
+
+          }
+        }
+      }
+    }
+  }
+  .hrefPopup{
+    width: 74.67%;
+    height: 66.56%;
+    border-radius: 14px;
+    padding: 25px 10px 0;
+    overflow: hidden;
+    .close{
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 13px;
+      color: #999;
+    }
+    .hrefTitle{
+      text-align: center;
+      font-size: 15px;
+      margin-top: 12px;
+    }
+    .hrefName{
+      text-align: center;
+      font-size: 15px;
+      margin-top: 12px;
+    }
+    .hrefText{
+      text-align: center;
+      font-size: 15px;
+      margin-top: 12px;
+    }
+    .hrefLine{
+      height: 1px;
+      background-color: #ccc;
+      margin-top: 30px;
+      margin-bottom: 50px;
+    }
+    .box{
+      width: 110px;
+      margin: 0 auto;
+      .bookImg{
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 0;
+        position: relative;
+        background-position: 50%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding-bottom: 100%;
+        overflow: hidden;
+        margin-bottom: 60px;
+        border-radius: 8px;
+      }
+    }
+    .imgText{
+      text-align: center;
+      color: #f95958;
+    }
+  }
+  .addressPopup{
+    width: 74.67%;
+    height: 66.56%;
+    border-radius: 14px;
+    padding: 50px 30px 0;
+    overflow: hidden;
+    .close{
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 13px;
+      color: #999;
+    }
+    .addressBox{
+      height: 77%;
+      overflow-y: auto;
+      .addressMember{
+        display: flex;
+        margin-bottom: 30px;
+        align-items: center;
+        .default{
+          flex-basis: 50px;
+        }
+        .active{
+          .icon{
+            color: #f05654;
+          }
+        }
+        .title{
+          flex-grow: 1;
+        }
+      }
+    }
+    .button{
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+      .addButton{
+        flex-grow: 1;
+        text-align: center;
+        padding: 0 20px;
+        .box{
+          border: 1px solid #ec2c2c;
+          border-radius: 12px;
+          color: #ec2c2c;
+          line-height: 25px;
+        }
+      }
+      .define{
+        flex-grow: 1;
+        text-align: center;
+        padding: 0 20px;
+        .box{
+          background-color: #ec2c2c;
+          border-radius: 12px;
+          color: #fff;
+          line-height: 25px;
+        }
+      }
+    }
+  }
+
+
+
+
+
+
+
+
+  @media screen and (min-width: 640px) {
+    .picturePopup {
+      padding: 204px 51px 38px;
+    }
+  }
+}
+

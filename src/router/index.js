@@ -113,6 +113,10 @@ import nullpage from '@/pages/404'
 // 访问超时
 import timeout from '@/pages/timeout'
 
+// 助力活动
+import assistactive from '@/pages/assist/active'
+import assisthelp from '@/pages/assist/help'
+
 Vue.use(Router)
 
 export default new Router({
@@ -753,6 +757,17 @@ export default new Router({
         title: '支付成功',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       },
+    },
+    // 助力活动
+    {
+      path: '/assist/active',
+      name: 'assistactive',
+      component: assistactive
+    },
+    {
+      path: '/assist/help',
+      name: 'assisthelp',
+      component: assisthelp
     }
   ]
 })
