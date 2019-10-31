@@ -14,9 +14,9 @@
           <use xlink:href="#icon-myactive_jiantou" />
         </svg>
       </div>
-      <div class="startHelp" v-else>开启助力</div>
+      <div class="startHelp" v-else @click="startHelp">开启助力</div>
     </div>
-    <div class="helpFriend">
+    <div class="helpFriend" v-if="activityData.base.launch_id">
       <div class="helpAndPic" v-if="activityData.launcher.curr_num > 0">
         <div class="helpCount">
           <span>已获得</span>
@@ -25,13 +25,13 @@
         </div>
         <div class="helpPicture">
           <div class="oval" v-if="activityData.launcher.supporter_list.length > 0">
-            <div class="bookImg" v-lazy:background-image="activityData.launcher.supporter_list[0].url_pic"></div>
+            <div class="bookImg" v-lazy:background-image="activityData.launcher.supporter_list[0].user_pic"></div>
           </div>
           <div class="oval" style="margin-left: 13px;" v-if="activityData.launcher.supporter_list.length > 1">
-            <div class="bookImg" v-lazy:background-image="activityData.launcher.supporter_list[1].url_pic"></div>
+            <div class="bookImg" v-lazy:background-image="activityData.launcher.supporter_list[1].user_pic"></div>
           </div>
           <div class="oval" style="margin-left: 26px;" v-if="activityData.launcher.supporter_list.length > 2">
-            <div class="bookImg" v-lazy:background-image="activityData.launcher.supporter_list[2].url_pic"></div>
+            <div class="bookImg" v-lazy:background-image="activityData.launcher.supporter_list[2].user_pic"></div>
           </div>
           <div class="picture" @click="pictureShow"></div>
         </div>
@@ -57,7 +57,7 @@
       <div v-for="(item,index) in activityData.base.reward_list" :key="index">
         <div class="bookImg" v-lazy:background-image="item.ad_pic">
           <div class="callBack">
-            <div class="grade">LV{{index + 1}}</div>
+            <div class="grade">{{index + 1}}</div>
             <div v-if="item.state == 2" class="contentBox">
               <div class="imgOne">
                 <div class="content">已领取</div>
@@ -65,7 +65,7 @@
             </div>
             <div v-else-if="item.state == 1" class="contentBox">
               <div class="imgFour">
-                <div class="content" @click="addressShow">已获得,点击领取</div>
+                <div class="content" @click="addressShow(index)">已获得,点击领取</div>
               </div>
             </div>
             <div v-else-if="item.state == 0" class="contentBox">
@@ -124,13 +124,13 @@
         <div class="firendList-tit">
           <div class="firendListTitle">助力名单</div>
         </div>
-        <div class="friendContet">
-          <div v-for="(Item,index) in friendHelpList" :key="index">
+        <div class="friendContet" v-if="helpFriendList">
+          <div v-for="(Item,index) in supporterData.response_data.supporter_list" :key="index">
             <div class="friendMember">
-              <div class="bookImg" v-lazy:background-image="Item.pic"></div>
-              <div class="title">{{Item.title}}</div>
-              <div class="day">{{Item.day}}</div>
-              <div class="time">{{Item.time}}</div>
+              <div class="bookImg" v-lazy:background-image="Item.user_header"></div>
+              <div class="title">{{Item.nickname}}</div>
+              <div class="day">{{Item.md}}</div>
+              <div class="time">{{Item.his}}</div>
             </div>
           </div>
         </div>
@@ -160,7 +160,7 @@
         <use xlink:href="#icon-close-line" />
       </svg>
       <div class="box">
-        <div class="bookImg" v-lazy:background-image="activeList[0].pic"></div>
+        <div class="bookImg" v-lazy:background-image="supporterData.pic_url"></div>
       </div>
       <div class="imgText">长按保存海报，分享好友邀请助力</div>
     </van-popup>
@@ -170,7 +170,7 @@
         <use xlink:href="#icon-close-line" />
       </svg>
       <div class="addressBox">
-        <div v-for="(Item,index) in addressList" :key="index">
+        <div v-for="(Item,index) in addressData" :key="index">
           <div class="addressMember">
             <div
               class="default"
@@ -184,7 +184,7 @@
                 <use xlink:href="#icon-uncheck-line" />
               </svg>
             </div>
-            <div class="title">{{Item.title}}</div>
+            <div class="title">{{ Item.consignee }}/{{ Item.mobile }}/{{ Item.province }}{{ Item.city }}{{ Item.county }}{{ Item.address }}</div>
           </div>
         </div>
       </div>
@@ -192,8 +192,8 @@
         <div class="addButton">
           <div class="box" @click="addAddress">新增地址</div>
         </div>
-        <div class="define">
-          <div class="box">确定地址</div>
+        <div class="define" v-if="addressData.length">
+          <div class="box" @click="sureAddress">确定地址</div>
         </div>
       </div>
     </van-popup>
@@ -208,7 +208,9 @@
   }
 </style>
 <script>
-  import { ASSISTANCE_DETAIL , ASSISTANCE_SUPPORTER } from "../../apis/assist";
+  import { ASSISTANCE_DETAIL , ASSISTANCE_POSTER , ASSISTANCE_SUPPORTER , ASSISTANCE_TAKEPRIZE } from "../../apis/assist";
+  import {LOGIN_PARTERNER} from "../../apis/passport.js";
+  import { USER_ADDRESS_EDIT , USER_ADDRESS_LIST } from "../../apis/user.js";
   export default {
     data() {
       return {
@@ -216,42 +218,29 @@
         hrefShowPopup: false,
         addressShowPopup: false,
         billShowPopup: false,
-        activityData: {},
-        activity_id: 1,
+        helpFriendList: false,
+        activityData: {
+          base: {},
+          launcher: {},
+          rank: {}
+        },
+        posterData: {
+
+        },
+        supporterData: {
+        },
+        addressData: [],
+        activity_id: 0,
+        addressId: 0,
         bgcolor: "",
+        awardId: 0,
         activeList: [
           {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg"}
         ],
-        friendHelpList: [
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风疯封峰凤冯",day: "10.29",time:"12:10:10"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风封",day: "10.29",time:"12:10:10"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋",day: "10.29",time:"12:10:10"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风疯封",day: "10.29",time:"12:10:10"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风疯封峰凤冯",day: "10.29",time:"12:10:10"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风疯封峰凤冯",day: "10.29",time:"12:10:10"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风封",day: "10.29",time:"12:10:10"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋",day: "10.29",time:"12:10:10"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风疯封",day: "10.29",time:"12:10:10"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风疯封峰凤冯",day: "10.29",time:"12:10:10"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风疯封峰凤冯",day: "10.29",time:"12:10:10"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风封",day: "10.29",time:"12:10:10"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋",day: "10.29",time:"12:10:10"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风疯封",day: "10.29",time:"12:10:10"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风疯封峰凤冯",day: "10.29",time:"12:10:10"}
-        ],
-        addressList: [
-          {title: "张小北/150884563211/浙江省杭州市西湖区博库网络3号",is_default: "1",address_id:"1"},
-          {title: "张小北/150884563211/浙江省杭州市西湖区博库网络3号",is_default: "0",address_id:"1"},
-          {title: "张小北/150884563211/浙江省杭州市西湖区博库网络3号",is_default: "0",address_id:"1"},
-          {title: "张小北/150884563211/浙江省杭州市西湖区博库网络3号",is_default: "0",address_id:"1"},
-          {title: "张小北/150884563211/浙江省杭州市西湖区博库网络3号",is_default: "0",address_id:"1"},
-          {title: "张小北/150884563211/浙江省杭州市西湖区博库网络3号",is_default: "0",address_id:"1"},
-          {title: "张小北/150884563211/浙江省杭州市西湖区博库网络3号",is_default: "0",address_id:"1"},
-          {title: "张小北/150884563211/浙江省杭州市西湖区博库网络3号",is_default: "0",address_id:"1"}
-        ]
       }
     },
     mounted () {
+      this.activity_id = this.$route.query.activity_id;
       this.activeGetData();
     },
     methods: {
@@ -259,7 +248,7 @@
         document.querySelector("#rules").scrollIntoView(true);
       },
       pictureShow () {
-        this.pictureShowPopup = true;
+        this.supporterGetData();
       },
       pictureClose () {
         this.pictureShowPopup = false;
@@ -270,13 +259,31 @@
       hrefClose () {
         this.hrefShowPopup = false;
       },
-      addressShow () {
-        this.addressShowPopup = true;
+      addressShow (index) {
+        if (this.activityData.base.reward_list[index].traget_type == 1) {
+          this.awardId = index;
+          this.getAddressData();
+        } else {
+          this.takePrize();
+        }
       },
       addressClose () {
         this.addressShowPopup = false;
       },
-      billShow () {
+      async billShow () {
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          launch_id: this.activityData.base.launch_id,
+          version: "1.0",
+          timestamp: tStamp
+        };
+        data.sign = this.$getSign(data);
+        let res = await ASSISTANCE_POSTER(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.posterData = res.response_data;
+        } else {
+          this.$toast(res.error_message);
+        }
         this.billShowPopup = true;
       },
       billClose () {
@@ -284,13 +291,44 @@
       },
       // 新增收货地址
       addAddress () {
-        this.$router.replace({ name: "address", query: { pageType: "add" } });
+        this.$router.push({ name: "address", query: { pageType: "add" } });
       },
       outLink () {
         window.location.href = this.activityData.base.jump_url;
       },
+      // 获取我的收货地址信息
+      async getAddressData () {
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          version: "1.0"
+        };
+        data.sign = this.$getSign(data);
+        let res = await USER_ADDRESS_LIST(data);
+        if (res.hasOwnProperty("response_code")) {
+          // store 设置登录状态
+          this.$store.commit("changeLoginState", 1);
+          localStorage.setItem("loginState", 1);
+
+          this.addressData = [];
+          for (let i = 0; i < res.response_data.length; i++) {
+            if (res.response_data[i].is_default == 1) {
+              this.addressId = res.response_data[i].address_id;
+            }
+            this.addressData.push(res.response_data[i]);
+          }
+          this.addressShowPopup = true;
+        } else {
+          if (res.hasOwnProperty("error_code") && res.error_code == 100) {
+            // store 设置登录状态
+            this.$store.commit("changeLoginState", 100);
+            localStorage.setItem("loginState", 100);
+          }
+          this.$toast(res.error_message);
+        }
+      },
       // 修改当前地址
-      async editAddress(addressId, key) {
+      async editAddress (addressId, key) {
         var tStamp = this.$getTimeStamp();
         let data = {
           timestamp: tStamp,
@@ -299,7 +337,7 @@
           version: "1.0"
         };
         data.sign = this.$getSign(data);
-        /*let res = await USER_ADDRESS_EDIT(data);
+        let res = await USER_ADDRESS_EDIT(data);
         if (res.hasOwnProperty("response_code")) {
           this.getAddressData();
           // 从订单确认页面进入的获取地址需要主动回退
@@ -308,7 +346,7 @@
           }
         } else {
           this.$toast(res.error_message);
-        }*/
+        }
       },
       editAction(address_id, key) {
         this.editAddress(address_id, key);
@@ -318,6 +356,7 @@
         var tStamp = this.$getTimeStamp();
         var data = {
           activity_id: this.activity_id,
+          openid: tStamp,
           version: "1.0",
           timestamp: tStamp
         };
@@ -325,8 +364,90 @@
         let res = await ASSISTANCE_DETAIL(data);
         if (res.hasOwnProperty("response_code")) {
           this.activityData = res.response_data;
+
           this.bgcolor = res.response_data.base.background;
-          console.log(this.activityData.base);
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      //开启助力点击
+      async startHelp () {
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          outer_id: "cccccc",
+          type: 2,
+          outer_name: "测试cc",
+          header_pic: "http://file.huoba.dev.zby/platform/picture/head_pic/20190822/17/201908221700325470.jpg",
+          version: "1.0",
+          timestamp: tStamp
+        };
+        data.sign = this.$getSign(data);
+        let res = await LOGIN_PARTERNER(data);
+        if (res.hasOwnProperty("response_code")) {
+          if (res.response_data.exist == 1) {
+            //登陆成功
+
+          } else {
+            this.$router.push({
+              name: "bindphone",
+              query: {
+                activity_id: this.activity_id
+              }
+            });
+          }
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      //获取助力名单
+      async supporterGetData () {
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          launch_id: this.activityData.base.launch_id,
+          version: "1.0",
+          timestamp: tStamp
+        };
+        data.sign = this.$getSign(data);
+        let res = await ASSISTANCE_SUPPORTER(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.supporterData = res.response_data;
+          this.helpFriendList = true;
+          this.pictureShowPopup = true;
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      //确定地址
+      async sureAddress () {
+        for (let i = 0; i < this.addressData.length; i++) {
+          if (this.addressData[i].is_default == 1) {
+            this.takePrize();
+            return false;
+          }
+        }
+        this.$dialog.alert({
+          message: '请选择地址'
+        });
+      },
+      //领取奖励接口
+      async takePrize () {
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          launch_id: this.activityData.base.launch_id,
+          address_id: this.addressId,
+          award_id: this.activityData.base.reward_list[this.awardId].award_id,
+          version: "1.0",
+          timestamp: tStamp
+        };
+        data.sign = this.$getSign(data);
+        let res = await ASSISTANCE_TAKEPRIZE(data);
+        if (res.hasOwnProperty("response_code")) {
+          if(res.response_data.state == "suc") {
+            this.$toast("领取成功");
+            this.addressClose();
+          } else {
+            this.$toast(res.error_message);
+          }
         } else {
           this.$toast(res.error_message);
         }

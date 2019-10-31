@@ -137,6 +137,7 @@ import { SMS, LOGIN_BIND_PARTERNER } from "../../apis/passport.js";
 export default {
   data() {
     return {
+      activity_id: false,
       outerId: "",
       phone: "",
       code: "",
@@ -153,6 +154,7 @@ export default {
   mounted() {
     this.bindtype = parseInt(this.$route.query.bindtype);
     this.outerId = this.$route.query.outerId;
+    this.activity_id = this.$route.query.activity_id ? this.$route.query.activity_id : false;
   },
   methods: {
     // 获取验证码
@@ -190,7 +192,7 @@ export default {
     async bindphoneData() {
       // console.log(localStorage.getItem('nickname'));
       var tStamp = this.$getTimeStamp();
-      let data = {
+      /*let data = {
         timestamp: tStamp,
         mobile: this.phone,
         header_pic: localStorage.getItem('headimg'),
@@ -198,6 +200,16 @@ export default {
         outer_id: this.outerId,
         type: this.bindtype,
         outer_name: localStorage.getItem('nickname'),
+        version: "1.0"
+      };*/
+      let data = {
+        timestamp: tStamp,
+        mobile: this.phone,
+        header_pic: tStamp,
+        auth_code: this.code,
+        outer_id: tStamp,
+        type: 2,
+        outer_name: tStamp,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -209,6 +221,15 @@ export default {
           "//" +
           window.location.hostname +
           "/#/personal/index";
+        //活动页跳转新增参数
+        if (this.activity_id) {
+          this.$router.push({
+            name: "assistactive",
+            query: {
+              activity_id: this.activity_id
+            }
+          });
+        }
       } else {
         this.$toast(res.error_message);
       }

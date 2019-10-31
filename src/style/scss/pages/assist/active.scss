@@ -91,6 +91,7 @@
             padding-bottom: 100%;
             border-radius: 60px;
             overflow: hidden;
+            background-color: #fffdfd;
           }
         }
         .picture{
@@ -123,6 +124,7 @@
           padding-bottom: 100%;
           border-radius: 60px;
           overflow: hidden;
+          background-color: #fffdfd;
         }
       }
       .text{
@@ -302,6 +304,7 @@
           border-radius: 60px;
           overflow: hidden;
           width: 21px;
+          background-color: #fffdfd;
         }
         .title{
           overflow: hidden;
@@ -383,10 +386,11 @@
             position: relative;
             background-repeat: no-repeat;
             background-size: contain;
-            padding-bottom: 6%;
+            padding-bottom: 8%;
             border-radius: 60px;
             overflow: hidden;
-            width: 23px;
+            width: 21px;
+            background-color: #fffdfd;
           }
           .title{
             overflow: hidden;
@@ -396,6 +400,7 @@
             flex-basis: 115px;
             margin-left: 15px;
             text-align: left;
+            color: #fe0000;
           }
           .day{
             flex-grow: 1;

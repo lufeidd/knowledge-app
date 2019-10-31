@@ -1,12 +1,12 @@
 <template>
   <div id="helpPage" :style="{'background-color':bgcolor}">
     <div class="active-bg">
-      <div class="bg-piture" v-lazy:background-image="activityData.base.activity_cover"></div>
+      <div class="bg-piture" v-lazy:background-image="helpinitData.activity_cover"></div>
       <div class="activeRules" @click="activeRules">活动规则</div>
     </div>
-    <div class="helpBoss" :class="user.state == 0? '':'dn'">你已成功助力星期八！</div>
+    <div class="helpBoss" v-if="supportGet">你已成功助力星期八！</div>
     <div class="couponImg">
-      <div class="text" :class="user.state == 0? '':'dn'">你已获得：</div>
+      <div class="text" v-if="supportGet">你已获得：</div>
       <div class="bookImg" v-lazy:background-image="helpinitData.support_award_pic" v-if="supportSuccess"></div>
     </div>
     <div class="fieldBox" v-if="supportNew">
@@ -26,6 +26,7 @@
         maxlength="4"
         placeholder="请输入短信验证码"
         @input="checkSubmit ('')"
+        class="codestyle"
       >
         <template v-if="codeData.disabled">
           <van-button slot="button" size="small" round disabled type="danger">{{ codeData.timeMsg }}</van-button>
@@ -45,27 +46,37 @@
       只有新用户可以助力哦！
     </div>
     <div class="activeMore">
-      <div class="moreText" v-if="this.newuser" @click="supportCheck">
+      <div class="moreText" v-if="this.initButton" @click="supportCheck">
         帮好友助力，我也领5元
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-myactive_jiantou" />
         </svg>
       </div>
-      <div class="moreText" v-else>
-        我也要领
+      <div class="moreText" v-else-if="this.newuser" @click="supportNewCheck">
+        帮好友助力，我也领5元
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-myactive_jiantou" />
         </svg>
       </div>
+      <router-link :to="{name: 'assistactive'}" v-else>
+        <div class="moreText">
+          我也要领
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-myactive_jiantou" />
+          </svg>
+        </div>
+      </router-link>
     </div>
-    <div class="myText dn" :class="user.state == 0? 'dn':''">我也要领</div>
+    <router-link :to="{name: 'assistactive', query: {activity_id: this.activity_id}}" v-if="this.initButton">
+      <div class="myText">我也要领</div>
+    </router-link>
     <div class="rules" id="rules">
       <div class="rules-tit">
         <div class="line"></div>
         <div class="rulesTitle">活动规则</div>
         <div class="line"></div>
       </div>
-      <div class="rulesCount">{{ activityData.base.rules }}</div>
+      <div class="rulesCount">{{ helpinitData.rules }}</div>
     </div>
   </div>
 </template>
@@ -74,11 +85,14 @@
 
 <style lang="scss" scoped>
   #helpPage{
-
+    .van-field__clear {
+      color: red;
+    }
   }
 </style>
 <script>
-  import { ASSISTANCE_DETAIL , ASSISTANCE_SUPPORTER ,ASSISTANCE_INVITEDETAIL ,ASSISTANCE_SUPPORTCHECK } from "../../apis/assist";
+  import {  ASSISTANCE_SUPPORTER ,ASSISTANCE_INVITEDETAIL ,ASSISTANCE_SUPPORTCHECK } from "../../apis/assist";
+  import { REG, SMS, PASSPORT_CHECKPHONE, LOGIN_BIND_PARTERNER } from "../../apis/passport.js";
   export default {
     data () {
       return {
@@ -88,12 +102,13 @@
         supportNew: false,
         supportOld: false,
         supportSuccess: true,
+        initButton: true,
+        supportGet: false,
+        launch_id:0,
         code: "",
         bgcolor: "",
-        activityData: {},
         helpinitData: {},
-        activity_id: 1,
-        launch_id: 0,
+        activity_id: 0,
         unionid: "",
         supportCheckData: {},
         codeData: {
@@ -104,21 +119,12 @@
         submitData: {
           disabled: true
         },
-        checked: true,
-        helpRule: "我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则",
-        couponImg: [
-          {pic:"http://file.mhuoba.com/picture/book/20190731/11/20190731110131468.jpg"}
-        ],
-        user: {
-          state: 1
-        },
-        newUser: {
-          count: 1
-        }
+        checked: true
       }
     },
     mounted () {
-      this.activeGetData();
+      this.launch_id = this.$route.query.launch_id;
+      this.helpGetData();
     },
     methods: {
       activeRules () {
@@ -144,30 +150,28 @@
           this.submitData.disabled = true;
         }
       },
-      // 获取活动页基本信息
-      async activeGetData () {
+      // 获取验证码
+      async sms () {
         var tStamp = this.$getTimeStamp();
-        var data = {
-          activity_id: this.activity_id,
-          version: "1.0",
-          timestamp: tStamp
+        let data = {
+          timestamp: tStamp,
+          mobile: this.phone,
+          version: "1.0"
         };
         data.sign = this.$getSign(data);
-        let res = await ASSISTANCE_DETAIL(data);
-        if (res.hasOwnProperty("response_code")) {
-          this.activityData = res.response_data;
-          this.bgcolor = res.response_data.base.background;
-          this.helpGetData();
-        } else {
-          this.$toast(res.error_message);
-        }
+        let res = await SMS(data);
+        console.log(res);
+      },
+      getCode () {
+        this.$countDown(this.codeData);
+        this.sms();
       },
       // 获取助力页初始化基本信息
       async helpGetData () {
         var tStamp = this.$getTimeStamp();
         var data = {
-          launch_id: this.activityData.base.launch_id,
-          unionid: "xx",
+          launch_id: this.launch_id,
+          unionid: "111",
           version: "1.0",
           timestamp: tStamp
         };
@@ -175,7 +179,8 @@
         let res = await ASSISTANCE_INVITEDETAIL(data);
         if (res.hasOwnProperty("response_code")) {
           this.helpinitData = res.response_data;
-          this.bgcolor = this.activityData.base.background;
+          this.activity_id = res.response_data.activity_id;
+          this.bgcolor = this.helpinitData.background;
         } else {
           this.$toast(res.error_message);
         }
@@ -184,8 +189,8 @@
       async supportCheck () {
         var tStamp = this.$getTimeStamp();
         var data = {
-          launch_id: this.activityData.base.launch_id,
-          unionid: "xx",
+          launch_id: this.launch_id,
+          unionid: tStamp,
           version: "1.0",
           timestamp: tStamp
         };
@@ -196,10 +201,42 @@
             this.supportNew = true;
             this.supportOld = false;
             this.supportSuccess = false;
+            this.initButton = false;
           } else {
             this.supportNew = false;
             this.supportOld = true;
             this.supportSuccess = false;
+            this.initButton = false;
+          }
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      async supportNewCheck () {
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          launch_id: this.launch_id,
+          activity_id: this.helpinitData.activity_id,
+          type: 2,
+          mobile: this.phone,
+          auth_code: this.code,
+          outer_id: tStamp,
+          outer_name: tStamp,
+          header_pic: "http://file.huoba.dev.zby/platform/picture/head_pic/20190822/17/201908221700325470.jpg",
+          version: "1.0",
+          timestamp: tStamp
+        };
+        data.sign = this.$getSign(data);
+        let res = await LOGIN_BIND_PARTERNER(data);
+        if (res.hasOwnProperty("response_code")) {
+          if(res.response_data.user_id) {
+            this.supportNew = false;
+            this.initButton = false;
+            this.supportSuccess = true;
+            this.supportGet = true;
+            this.newuser = false;
+          } else {
+            this.$toast(res.error_message);
           }
         } else {
           this.$toast(res.error_message);

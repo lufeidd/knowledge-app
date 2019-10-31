@@ -60,16 +60,27 @@
    .fieldBox{
      padding: 0 45px;
      .van-button--danger.van-button--disabled {
-       background-color: transparent;
+       /*background-color: transparent;
        border-color: transparent;
-       color: #161a26;
+       color: #161a26;*/
+       background-color: #d6d6d6;
+       border-color: #d6d6d6;
        opacity: 1;
+     }
+     .codestyle::after {
+       content: " ";
+       position: absolute;
+       pointer-events: none;
+       right: 0;
+       left: 0;
+       bottom: 0;
+       -webkit-transform: scaleY(.5);
+       -ms-transform: scaleY(.5);
+       transform: scaleY(.5);
+       border-bottom: 1px solid #ebedf0;
      }
      .van-cell{
        background-color: transparent;
-     }
-     .van-field__clear {
-       color: red;
      }
    }
    .newPrompt{

@@ -13,7 +13,6 @@ var open_id = localStorage.getItem('openid');
 var instance = axios.create({
     // dev
     baseURL: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis',
-
     // run build
     // baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
 
