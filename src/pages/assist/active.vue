@@ -1,40 +1,44 @@
 <template>
-  <div id="activePage">
+  <div id="activePage" :style="{'background-color':bgcolor}">
     <div class="active-bg">
-      <div class="bg-piture"></div>
+      <div class="bg-piture" v-lazy:background-image="activityData.base.activity_cover"></div>
       <div class="activeRules" @click="activeRules">活动规则</div>
-      <div class="promptTwo">
+      <!--<div class="promptTwo">
         <div class="prompt dn">邀请好友助力即可获得</div>
         <div class="prompt">星期八邀你助力,免费领取</div>
+      </div>-->
+    </div>
+    <div class="startHelpTwo">
+      <div class="startHelp" v-if="activityData.base.launch_id" @click="billShow">邀请好友助力
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-myactive_jiantou" />
+        </svg>
       </div>
-      <div class="startHelpTwo">
-        <div class="startHelp">邀请好友助力</div>
-        <div class="startHelp dn">开启助力</div>
-      </div>
+      <div class="startHelp" v-else>开启助力</div>
     </div>
     <div class="helpFriend">
-      <div class="helpAndPic">
+      <div class="helpAndPic" v-if="activityData.launcher.curr_num > 0">
         <div class="helpCount">
           <span>已获得</span>
-          <span class="text-color">3份</span>
+          <span class="text-color">{{ activityData.launcher.curr_num }}份</span>
           <span>助力</span>
         </div>
         <div class="helpPicture">
-          <div class="oval">
-            <div class="bookImg" v-lazy:background-image="activeList[0].pic"></div>
+          <div class="oval" v-if="activityData.launcher.supporter_list.length > 0">
+            <div class="bookImg" v-lazy:background-image="activityData.launcher.supporter_list[0].url_pic"></div>
           </div>
-          <div class="oval" style="margin-left: 13px;">
-            <div class="bookImg" v-lazy:background-image="activeList[0].pic"></div>
+          <div class="oval" style="margin-left: 13px;" v-if="activityData.launcher.supporter_list.length > 1">
+            <div class="bookImg" v-lazy:background-image="activityData.launcher.supporter_list[1].url_pic"></div>
           </div>
-          <div class="oval" style="margin-left: 26px;">
-            <div class="bookImg" v-lazy:background-image="activeList[0].pic"></div>
+          <div class="oval" style="margin-left: 26px;" v-if="activityData.launcher.supporter_list.length > 2">
+            <div class="bookImg" v-lazy:background-image="activityData.launcher.supporter_list[2].url_pic"></div>
           </div>
           <div class="picture" @click="pictureShow"></div>
         </div>
       </div>
       <div class="concern">
         <div class="svg">
-          <div class="bookImg" v-lazy:background-image="activeList[0].pic"></div>
+          <div class="bookImg" v-lazy:background-image="activityData.base.brand_pic"></div>
         </div>
         <div class="text">
           <span>点击关注，实时查看领奖进度</span>
@@ -50,41 +54,41 @@
       <div class="line"></div>
     </div>
     <div class="rewardContent">
-      <div v-for="(rewardItem,index) in rewardList" :key="index">
-        <div class="bookImg" v-lazy:background-image="rewardItem.pic">
+      <div v-for="(item,index) in activityData.base.reward_list" :key="index">
+        <div class="bookImg" v-lazy:background-image="item.ad_pic">
           <div class="callBack">
             <div class="grade">LV{{index + 1}}</div>
-            <div v-if="rewardItem.type == 1" class="contentBox">
+            <div v-if="item.state == 2" class="contentBox">
               <div class="imgOne">
-                <div class="content">{{rewardItem.title}}</div>
+                <div class="content">已领取</div>
               </div>
             </div>
-            <div v-else-if="rewardItem.type == 2" class="contentBox">
+            <div v-else-if="item.state == 1" class="contentBox">
               <div class="imgFour">
-                <div class="content" @click="addressShow">{{rewardItem.title}}</div>
+                <div class="content" @click="addressShow">已获得,点击领取</div>
               </div>
             </div>
-            <div v-else-if="rewardItem.type == 3" class="contentBox">
+            <div v-else-if="item.state == 0" class="contentBox">
               <div class="imgThree">
-                <div class="content">{{rewardItem.title}}</div>
+                <div class="content">还差{{ item.goal_num - item.curr_num }}份助力</div>
               </div>
             </div>
-            <div v-else="rewardItem.type == 4" class="contentBox">
+            <!--<div v-else="item.state == 0" class="contentBox">
               <div class="imgTwo">
-                <div class="content">{{rewardItem.title}}</div>
+                <div class="content">还差{{ item.goal_num - item.curr_num }}份助力</div>
               </div>
-            </div>
+            </div>-->
           </div>
         </div>
       </div>
     </div>
     <div class="activeMore">
-      <div class="moreText">
-        前往更多活动
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-myactive_jiantou" />
-        </svg>
-      </div>
+        <div class="moreText" @click="outLink">
+          前往更多活动
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-myactive_jiantou" />
+          </svg>
+        </div>
     </div>
     <div class="ranking">
       <div class="ranking-tit">
@@ -93,12 +97,12 @@
         <div class="line"></div>
       </div>
       <div class="rankingContet">
-        <div v-for="(rankingItem,index) in ranking" :key="index">
+        <div v-for="(item,index) in activityData.rank" :key="index">
           <div class="rankingMember">
             <div class="grade">NO&nbsp;{{index + 1}}</div>
-            <div class="bookImg" v-lazy:background-image="rankingItem.pic"></div>
-            <div class="title">{{rankingItem.title}}</div>
-            <div class="count">{{rankingItem.count}}</div>
+            <div class="bookImg" v-lazy:background-image="item.user_pic"></div>
+            <div class="title">{{item.nickname}}</div>
+            <div class="count">{{item.support_nums}}</div>
           </div>
         </div>
       </div>
@@ -109,7 +113,7 @@
         <div class="rulesTitle">活动规则</div>
         <div class="line"></div>
       </div>
-      <div class="rulesCount">{{this.activeRule}}</div>
+      <div class="rulesCount">{{ activityData.base.rules }}</div>
     </div>
     <!-- 点击好友头像显示的弹层 -->
     <van-popup v-model="pictureShowPopup" class="picturePopup">
@@ -138,7 +142,7 @@
       <use xlink:href="#icon-close-line" />
     </svg>
     <div class="hrefTitle">
-      一些诱惑性文字
+      {{ activityData.base.qr_desc }}
     </div>
     <div class="hrefName">一些诱惑性文字一些诱惑性文字</div>
     <div class="hrefText">
@@ -146,10 +150,20 @@
     </div>
     <div class="hrefLine"></div>
     <div class="box">
-      <div class="bookImg" v-lazy:background-image="activeList[0].pic"></div>
+      <div class="bookImg" v-lazy:background-image="activityData.base.qr_url"></div>
     </div>
     <div class="imgText">长按识别二维码，关注公众号</div>
   </van-popup>
+    <!-- 海报显示的弹层 -->
+    <van-popup v-model="billShowPopup" class="billPopup">
+      <svg class="icon close" aria-hidden="true" @click="billClose">
+        <use xlink:href="#icon-close-line" />
+      </svg>
+      <div class="box">
+        <div class="bookImg" v-lazy:background-image="activeList[0].pic"></div>
+      </div>
+      <div class="imgText">长按保存海报，分享好友邀请助力</div>
+    </van-popup>
     <!-- 点击获取地址显示的弹层 -->
     <van-popup v-model="addressShowPopup" class="addressPopup">
       <svg class="icon close" aria-hidden="true" @click="addressClose">
@@ -201,26 +215,13 @@
         pictureShowPopup: false,
         hrefShowPopup: false,
         addressShowPopup: false,
+        billShowPopup: false,
         activityData: {},
         activity_id: 1,
+        bgcolor: "",
         activeList: [
           {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg"}
         ],
-        rewardList: [
-          {pic:"https://mhuoba.oss-cn-hangzhou.aliyuncs.com/shop/5/100041/picture/article/20191019/17/201910191709165658.jpeg!w200h124r",title:"已领取",type:"1"},
-          {pic:"https://mhuoba.oss-cn-hangzhou.aliyuncs.com/shop/5/100041/picture/article/20191019/17/201910191709165658.jpeg!w200h124r",title:"已获得,点击领取",type:"2"},
-          {pic:"https://mhuoba.oss-cn-hangzhou.aliyuncs.com/shop/5/100041/picture/article/20191019/17/201910191709165658.jpeg!w200h124r",title:"还差35份助力",type:"3"},
-          {pic:"https://mhuoba.oss-cn-hangzhou.aliyuncs.com/shop/5/100041/picture/article/20191019/17/201910191709165658.jpeg!w200h124r",title:"还差35份助力",type:"3"},
-          {pic:"https://mhuoba.oss-cn-hangzhou.aliyuncs.com/shop/5/100041/picture/article/20191019/17/201910191709165658.jpeg!w200h124r",title:"需50份助力",type:"4"}
-        ],
-        ranking: [
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风疯封峰凤冯",count: "1111111"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风封",count: "1111111"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋",count: "1111111"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风疯封",count: "1111111"},
-          {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风疯封峰凤冯",count: "1111111"}
-        ],
-        activeRule: "我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则我是规则",
         friendHelpList: [
           {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风疯封峰凤冯",day: "10.29",time:"12:10:10"},
           {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg",title: "我是昵称锋锋风封",day: "10.29",time:"12:10:10"},
@@ -275,9 +276,18 @@
       addressClose () {
         this.addressShowPopup = false;
       },
+      billShow () {
+        this.billShowPopup = true;
+      },
+      billClose () {
+        this.billShowPopup = false;
+      },
       // 新增收货地址
       addAddress () {
         this.$router.replace({ name: "address", query: { pageType: "add" } });
+      },
+      outLink () {
+        window.location.href = this.activityData.base.jump_url;
       },
       // 修改当前地址
       async editAddress(addressId, key) {
@@ -303,7 +313,7 @@
       editAction(address_id, key) {
         this.editAddress(address_id, key);
       },
-      // 获取页面基本信息
+      // 获取活动页基本信息
       async activeGetData () {
         var tStamp = this.$getTimeStamp();
         var data = {
@@ -313,14 +323,11 @@
         };
         data.sign = this.$getSign(data);
         let res = await ASSISTANCE_DETAIL(data);
-        console.log(111, data);
-        console.log(222, res);
         if (res.hasOwnProperty("response_code")) {
-          console.log(222, res);
-          // this.activityData = res.response_data;
-          // console.log(this.activityData);
+          this.activityData = res.response_data;
+          this.bgcolor = res.response_data.base.background;
+          console.log(this.activityData.base);
         } else {
-           console.log(11);
           this.$toast(res.error_message);
         }
       }

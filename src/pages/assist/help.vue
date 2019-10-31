@@ -1,18 +1,15 @@
 <template>
-  <div id="helpPage">
+  <div id="helpPage" :style="{'background-color':bgcolor}">
     <div class="active-bg">
-      <div class="bg-piture"></div>
-      <div class="promptTwo">
-        <div class="prompt dn">邀请好友助力即可获得</div>
-        <div class="prompt">星期八邀你助力,免费领取</div>
-      </div>
+      <div class="bg-piture" v-lazy:background-image="activityData.base.activity_cover"></div>
+      <div class="activeRules" @click="activeRules">活动规则</div>
     </div>
     <div class="helpBoss" :class="user.state == 0? '':'dn'">你已成功助力星期八！</div>
     <div class="couponImg">
       <div class="text" :class="user.state == 0? '':'dn'">你已获得：</div>
-      <div class="bookImg" :class="newUser.count == 0? '':'dn'" v-lazy:background-image="couponImg[0].pic"></div>
+      <div class="bookImg" v-lazy:background-image="helpinitData.support_award_pic" v-if="supportSuccess"></div>
     </div>
-    <div class="fieldBox dn">
+    <div class="fieldBox" v-if="supportNew">
       <van-field
         :class="{ phone: isPhone }"
         v-model="phone"
@@ -44,11 +41,11 @@
         </template>
       </van-field>
     </div>
-    <div class="newPrompt">
+    <div class="newPrompt" v-if="supportOld">
       只有新用户可以助力哦！
     </div>
     <div class="activeMore">
-      <div class="moreText" v-if="this.newuser">
+      <div class="moreText" v-if="this.newuser" @click="supportCheck">
         帮好友助力，我也领5元
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-myactive_jiantou" />
@@ -62,13 +59,13 @@
       </div>
     </div>
     <div class="myText dn" :class="user.state == 0? 'dn':''">我也要领</div>
-    <div class="rules dn" :class="user.state == 0? 'dn':''">
+    <div class="rules" id="rules">
       <div class="rules-tit">
         <div class="line"></div>
         <div class="rulesTitle">活动规则</div>
         <div class="line"></div>
       </div>
-      <div class="rulesCount">{{this.helpRule}}</div>
+      <div class="rulesCount">{{ activityData.base.rules }}</div>
     </div>
   </div>
 </template>
@@ -81,13 +78,24 @@
   }
 </style>
 <script>
+  import { ASSISTANCE_DETAIL , ASSISTANCE_SUPPORTER ,ASSISTANCE_INVITEDETAIL ,ASSISTANCE_SUPPORTCHECK } from "../../apis/assist";
   export default {
     data () {
       return {
         phone: "",
         isPhone: true,
         newuser: true,
+        supportNew: false,
+        supportOld: false,
+        supportSuccess: true,
         code: "",
+        bgcolor: "",
+        activityData: {},
+        helpinitData: {},
+        activity_id: 1,
+        launch_id: 0,
+        unionid: "",
+        supportCheckData: {},
         codeData: {
           disabled: true,
           timeMsg: "获取验证码",
@@ -109,7 +117,13 @@
         }
       }
     },
+    mounted () {
+      this.activeGetData();
+    },
     methods: {
+      activeRules () {
+        document.querySelector("#rules").scrollIntoView(true);
+      },
       // 格式校验
       checkSubmit (type) {
         var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
@@ -128,6 +142,67 @@
           this.submitData.disabled = false;
         } else {
           this.submitData.disabled = true;
+        }
+      },
+      // 获取活动页基本信息
+      async activeGetData () {
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          activity_id: this.activity_id,
+          version: "1.0",
+          timestamp: tStamp
+        };
+        data.sign = this.$getSign(data);
+        let res = await ASSISTANCE_DETAIL(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.activityData = res.response_data;
+          this.bgcolor = res.response_data.base.background;
+          this.helpGetData();
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      // 获取助力页初始化基本信息
+      async helpGetData () {
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          launch_id: this.activityData.base.launch_id,
+          unionid: "xx",
+          version: "1.0",
+          timestamp: tStamp
+        };
+        data.sign = this.$getSign(data);
+        let res = await ASSISTANCE_INVITEDETAIL(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.helpinitData = res.response_data;
+          this.bgcolor = this.activityData.base.background;
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      //验证用户为新用户还是老用户
+      async supportCheck () {
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          launch_id: this.activityData.base.launch_id,
+          unionid: "xx",
+          version: "1.0",
+          timestamp: tStamp
+        };
+        data.sign = this.$getSign(data);
+        let res = await ASSISTANCE_SUPPORTCHECK(data);
+        if (res.hasOwnProperty("response_code")) {
+          if(res.response_data.state == "suc") {
+            this.supportNew = true;
+            this.supportOld = false;
+            this.supportSuccess = false;
+          } else {
+            this.supportNew = false;
+            this.supportOld = true;
+            this.supportSuccess = false;
+          }
+        } else {
+          this.$toast(res.error_message);
         }
       }
     }
