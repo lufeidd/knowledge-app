@@ -192,7 +192,7 @@ export default {
     async bindphoneData() {
       // console.log(localStorage.getItem('nickname'));
       var tStamp = this.$getTimeStamp();
-      /*let data = {
+      let data = {
         timestamp: tStamp,
         mobile: this.phone,
         header_pic: localStorage.getItem('headimg'),
@@ -200,16 +200,6 @@ export default {
         outer_id: this.outerId,
         type: this.bindtype,
         outer_name: localStorage.getItem('nickname'),
-        version: "1.0"
-      };*/
-      let data = {
-        timestamp: tStamp,
-        mobile: this.phone,
-        header_pic: tStamp,
-        auth_code: this.code,
-        outer_id: tStamp,
-        type: 2,
-        outer_name: tStamp,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
