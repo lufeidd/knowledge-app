@@ -369,11 +369,16 @@
     //padding: 31% 9% 6%;
     padding: 32vw 8vw 6vw;
     .close{
+      top: 0;
+      right: 0;
       position: absolute;
-      top: 10px;
-      right: 12px;
-      font-size: 13px;
-      color: #999;
+      background-position: 100%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      border-radius: 60px;
+      overflow: hidden;
+      font-size: 40px;
+      color: #ffffff;
     }
     .firendList{
       height: 100%;
@@ -588,9 +593,65 @@
 
 
 
-  @media screen and (min-width: 640px) {
-    .picturePopup {
-      padding: 204px 51px 38px;
+  @media screen and (min-width: 768px) {
+    .active-bg{
+      .activeRules{
+        .activeText{
+          top: 3px;
+          font-size: 22px;
+        }
+      }
+    }
+    .rewardContent{
+      .bookImg{
+        .callBack{
+          .contentBox{
+            .content{
+              font-size: 28px;
+            }
+          }
+        }
+      }
+    }
+    .ranking{
+      .rankingContet{
+        .rankingMember{
+          .bookImg{
+            padding-bottom: 3%;
+          }
+        }
+      }
+    }
+    .hrefPopup{
+      .box{
+        width: 300px;
+      }
+    }
+    .picturePopup{
+      padding: 200px 60px 40px;
+      .firendList{
+        .friendContet{
+          .friendMember{
+            .bookImg{
+              padding-bottom: 4%;
+            }
+          }
+        }
+      }
+    }
+  }
+  @media screen and (min-height: 812px) and (max-height: 900px){
+    .picturePopup{
+      padding: 150px 30px 50px;
+      .firendList{
+        .friendContet{
+          .friendMember{
+            .bookImg{
+              padding-bottom: 8%;
+            }
+          }
+        }
+      }
     }
   }
 }

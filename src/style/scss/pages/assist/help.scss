@@ -151,4 +151,15 @@
        line-height: 21px;
      }
    }
+
+   @media screen and (min-width: 768px) {
+     .active-bg{
+       .activeRules{
+         .activeText{
+           top: 3px;
+           font-size: 22px;
+         }
+       }
+     }
+   }
  }

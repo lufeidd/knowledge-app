@@ -91,6 +91,7 @@
       color: red;
     }
   }
+
 </style>
 <script>
   import {  ASSISTANCE_SUPPORTER ,ASSISTANCE_INVITEDETAIL ,ASSISTANCE_SUPPORTCHECK } from "../../apis/assist";

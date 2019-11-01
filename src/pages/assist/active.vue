@@ -119,9 +119,9 @@
     </div>
     <!-- 点击好友头像显示的弹层 -->
     <van-popup v-model="pictureShowPopup" class="picturePopup">
-      <!--<svg class="icon close" aria-hidden="true" @click="pictureClose">
-        <use xlink:href="#icon-close-line" />
-      </svg>-->
+      <svg class="icon close" aria-hidden="true" @click="pictureClose">
+        <use xlink:href="#icon-shanchu" />
+      </svg>
       <div class="firendList">
         <div class="firendList-tit">
           <div class="firendListTitle">助力名单</div>
