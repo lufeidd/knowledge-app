@@ -112,10 +112,6 @@
         supportSuccess: true,
         initButton: true,
         supportGet: false,
-        headimg: "",
-        nickname: "",
-        openid: "",
-        unionid: "",
         launch_id:0,
         code: "",
         bgcolor: "",
@@ -136,11 +132,6 @@
     mounted () {
       this.launch_id = this.$route.query.launch_id;
       this.helpGetData();
-      //获取微信信息
-      this.headimg = localStorage.getItem("headimg");
-      this.nickname = localStorage.getItem("nickname");
-      this.openid = localStorage.getItem("openid");
-      this.unionid = localStorage.getItem("unionid");
     },
     methods: {
       activeRules () {
@@ -186,8 +177,9 @@
       async helpGetData () {
         var tStamp = this.$getTimeStamp();
         var data = {
+          //获取微信信息
           launch_id: this.launch_id,
-          unionid: this.unionid,
+          unionid: localStorage.getItem("unionid"),
           version: "1.0",
           timestamp: tStamp
         };
@@ -206,7 +198,7 @@
         var tStamp = this.$getTimeStamp();
         var data = {
           launch_id: this.launch_id,
-          unionid: this.unionid,
+          unionid: localStorage.getItem("unionid"),
           version: "1.0",
           timestamp: tStamp
         };
@@ -236,9 +228,9 @@
           type: 2,
           mobile: this.phone,
           auth_code: this.code,
-          outer_id: this.unionid,
-          outer_name: this.nickname,
-          header_pic: this.headimg,
+          outer_id: localStorage.getItem("unionid"),
+          outer_name: localStorage.getItem("nickname"),
+          header_pic: localStorage.getItem("headimg"),
           version: "1.0",
           timestamp: tStamp
         };

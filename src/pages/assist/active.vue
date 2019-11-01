@@ -221,10 +221,6 @@
         addressShowPopup: false,
         billShowPopup: false,
         helpFriendList: false,
-        headimg: "",
-        nickname: "",
-        openid: "",
-        unionid: "",
         activityData: {
           base: {},
           launcher: {},
@@ -248,11 +244,6 @@
     mounted () {
       this.activity_id = this.$route.query.activity_id;
       this.activeGetData();
-      //获取微信信息
-      this.headimg = localStorage.getItem("headimg");
-      this.nickname = localStorage.getItem("nickname");
-      this.openid = localStorage.getItem("openid");
-      this.unionid = localStorage.getItem("unionid");
     },
     methods: {
       activeRules () {
@@ -364,10 +355,11 @@
       },
       // 获取活动页基本信息
       async activeGetData () {
+        //获取微信信息
         var tStamp = this.$getTimeStamp();
         var data = {
           activity_id: this.activity_id,
-          openid: this.openid,
+          openid: localStorage.getItem("openid"),
           version: "1.0",
           timestamp: tStamp
         };
@@ -385,10 +377,10 @@
       async startHelp () {
         var tStamp = this.$getTimeStamp();
         var data = {
-          outer_id: this.unionid,
+          outer_id: localStorage.getItem("unionid"),
           type: 2,
-          outer_name: this.nickname,
-          header_pic: this.headimg,
+          outer_name: localStorage.getItem("nickname"),
+          header_pic: localStorage.getItem("headimg"),
           version: "1.0",
           timestamp: tStamp
         };
