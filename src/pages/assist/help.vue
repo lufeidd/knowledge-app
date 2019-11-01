@@ -48,7 +48,7 @@
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-diandiandian" />
       </svg>
-      只有新用户可以助力哦！
+      {{ this.oldUserPrompt }}
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-diandiandian-you" /></svg>
     </div>
@@ -115,6 +115,7 @@
         launch_id:0,
         code: "",
         bgcolor: "",
+        oldUserPrompt: "",
         helpinitData: {},
         activity_id: 0,
         supportCheckData: {},
@@ -305,14 +306,13 @@
             this.supportOld = false;
             this.supportSuccess = false;
             this.initButton = false;
-          } else {
-            this.supportNew = false;
-            this.supportOld = true;
-            this.supportSuccess = false;
-            this.initButton = false;
           }
         } else {
-          this.$toast(res.error_message);
+          this.oldUserPrompt = res.error_message
+          this.supportNew = false;
+          this.supportOld = true;
+          this.supportSuccess = false;
+          this.initButton = false;
         }
       },
       async supportNewCheck () {
