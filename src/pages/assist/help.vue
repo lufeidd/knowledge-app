@@ -65,7 +65,7 @@
           <use xlink:href="#icon-myactive_jiantou" />
         </svg>
       </div>
-      <router-link :to="{name: 'assistactive'}" v-else>
+      <router-link :to="{name: 'assistactive', query: {activity_id: this.activity_id}}" v-else>
         <div class="moreText">
           我也要领
           <svg class="icon" aria-hidden="true">
@@ -201,12 +201,9 @@
           localStorage.getItem("unionid") == null ||
           localStorage.getItem("unionid") == ""
         ) {
-          // this.$router.push({name:"couponreceive"});
           sessionStorage.setItem("gotoLogin", "no");
           sessionStorage.setItem("isWxLogin", "no");
-          // console.log(111,Number(localStorage.getItem("get_count")))
 
-          // 未授权时微信端访问授权页面
           if (
             window.navigator.userAgent.toLowerCase().match(/MicroMessenger/i) ==
             "micromessenger"
@@ -227,10 +224,7 @@
               this.$route.name == "payaccount" ||
               this.$route.name == "account"
             ) {
-              // 微信登录 code
               this.$getWxCode();
-              // 微信授权
-
               if (this.wxCodeStr == "") {
                 var this_count = Number(localStorage.getItem("get_count"));
                 if( this_count < 2 ){
@@ -248,7 +242,7 @@
                   window.location.hostname +
                   "/callback/weixin/Userinfo?code=" +
                   this.wxCodeStr;
-                // 获取 openid，nickname
+
                 var self = this;
                 axios
                   .get(url)
@@ -290,7 +284,19 @@
               localStorage.getItem("nickname")
             );
           }
+          if (localStorage.getItem("unionid") != "undefined" ||
+            localStorage.getItem("unionid") != "null" ||
+            localStorage.getItem("unionid") != undefined ||
+            localStorage.getItem("unionid") != null ||
+            localStorage.getItem("unionid") != ""
+          ){
+            this.clickButtonBack();
+          }
+        } else {
+          this.clickButtonBack();
         }
+      },
+      async clickButtonBack () {
         var tStamp = this.$getTimeStamp();
         var data = {
           launch_id: this.launch_id,
@@ -308,7 +314,7 @@
             this.initButton = false;
           }
         } else {
-          this.oldUserPrompt = res.error_message
+          this.oldUserPrompt = res.error_message;
           this.supportNew = false;
           this.supportOld = true;
           this.supportSuccess = false;

@@ -29,10 +29,10 @@
           <div class="oval" v-if="activityData.launcher.supporter_list.length > 0">
             <div class="bookImg" v-lazy:background-image="activityData.launcher.supporter_list[0].user_pic"></div>
           </div>
-          <div class="oval" style="margin-left: 13px;" v-if="activityData.launcher.supporter_list.length > 1">
+          <div class="oval" style="right: 33px;" v-if="activityData.launcher.supporter_list.length > 1">
             <div class="bookImg" v-lazy:background-image="activityData.launcher.supporter_list[1].user_pic"></div>
           </div>
-          <div class="oval" style="margin-left: 26px;" v-if="activityData.launcher.supporter_list.length > 2">
+          <div class="oval" style="right: 46px;" v-if="activityData.launcher.supporter_list.length > 2">
             <div class="bookImg" v-lazy:background-image="activityData.launcher.supporter_list[2].user_pic"></div>
           </div>
           <div class="picture" @click="pictureShow"></div>
