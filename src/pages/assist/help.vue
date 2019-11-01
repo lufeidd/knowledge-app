@@ -2,7 +2,9 @@
   <div id="helpPage" :style="{'background-color':bgcolor}">
     <div class="active-bg">
       <div class="bg-piture" v-lazy:background-image="helpinitData.activity_cover"></div>
-      <div class="activeRules" @click="activeRules">活动规则</div>
+      <div class="activeRules" @click="activeRules">
+        <div class="activeText">活动规则</div>
+      </div>
     </div>
     <div class="helpBoss" v-if="supportGet">你已成功助力星期八！</div>
     <div class="couponImg">
@@ -104,12 +106,15 @@
         supportSuccess: true,
         initButton: true,
         supportGet: false,
+        headimg: "",
+        nickname: "",
+        openid: "",
+        unionid: "",
         launch_id:0,
         code: "",
         bgcolor: "",
         helpinitData: {},
         activity_id: 0,
-        unionid: "",
         supportCheckData: {},
         codeData: {
           disabled: true,
@@ -125,6 +130,11 @@
     mounted () {
       this.launch_id = this.$route.query.launch_id;
       this.helpGetData();
+      //获取微信信息
+      this.headimg = localStorage.getItem("headimg");
+      this.nickname = localStorage.getItem("nickname");
+      this.openid = localStorage.getItem("openid");
+      this.unionid = localStorage.getItem("unionid");
     },
     methods: {
       activeRules () {
@@ -171,7 +181,7 @@
         var tStamp = this.$getTimeStamp();
         var data = {
           launch_id: this.launch_id,
-          unionid: "111",
+          unionid: this.unionid,
           version: "1.0",
           timestamp: tStamp
         };
@@ -190,7 +200,7 @@
         var tStamp = this.$getTimeStamp();
         var data = {
           launch_id: this.launch_id,
-          unionid: tStamp,
+          unionid: this.unionid,
           version: "1.0",
           timestamp: tStamp
         };
@@ -220,9 +230,9 @@
           type: 2,
           mobile: this.phone,
           auth_code: this.code,
-          outer_id: tStamp,
-          outer_name: tStamp,
-          header_pic: "http://file.huoba.dev.zby/platform/picture/head_pic/20190822/17/201908221700325470.jpg",
+          outer_id: this.unionid,
+          outer_name: this.nickname,
+          header_pic: this.headimg,
           version: "1.0",
           timestamp: tStamp
         };

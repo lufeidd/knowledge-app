@@ -2,7 +2,9 @@
   <div id="activePage" :style="{'background-color':bgcolor}">
     <div class="active-bg">
       <div class="bg-piture" v-lazy:background-image="activityData.base.activity_cover"></div>
-      <div class="activeRules" @click="activeRules">活动规则</div>
+      <div class="activeRules" @click="activeRules">
+        <div class="activeText">活动规则</div>
+      </div>
       <!--<div class="promptTwo">
         <div class="prompt dn">邀请好友助力即可获得</div>
         <div class="prompt">星期八邀你助力,免费领取</div>
@@ -219,6 +221,10 @@
         addressShowPopup: false,
         billShowPopup: false,
         helpFriendList: false,
+        headimg: "",
+        nickname: "",
+        openid: "",
+        unionid: "",
         activityData: {
           base: {},
           launcher: {},
@@ -242,6 +248,11 @@
     mounted () {
       this.activity_id = this.$route.query.activity_id;
       this.activeGetData();
+      //获取微信信息
+      this.headimg = localStorage.getItem("headimg");
+      this.nickname = localStorage.getItem("nickname");
+      this.openid = localStorage.getItem("openid");
+      this.unionid = localStorage.getItem("unionid");
     },
     methods: {
       activeRules () {
@@ -356,7 +367,7 @@
         var tStamp = this.$getTimeStamp();
         var data = {
           activity_id: this.activity_id,
-          openid: tStamp,
+          openid: this.openid,
           version: "1.0",
           timestamp: tStamp
         };
@@ -374,10 +385,10 @@
       async startHelp () {
         var tStamp = this.$getTimeStamp();
         var data = {
-          outer_id: "cccccc",
+          outer_id: this.unionid,
           type: 2,
-          outer_name: "测试cc",
-          header_pic: "http://file.huoba.dev.zby/platform/picture/head_pic/20190822/17/201908221700325470.jpg",
+          outer_name: this.nickname,
+          header_pic: this.headimg,
           version: "1.0",
           timestamp: tStamp
         };
