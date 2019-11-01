@@ -152,7 +152,7 @@
     </div>
     <div class="hrefLine"></div>
     <div class="box">
-      <img class="bookImg" v-lazy:background-image="activityData.base.qr_url"></img>
+      <img class="bookImg" v-lazy:background-image="activityData.base.qr_url" />
     </div>
     <div class="imgText">长按识别二维码，关注公众号</div>
   </van-popup>
@@ -162,7 +162,7 @@
         <use xlink:href="#icon-close-line" />
       </svg>
       <div class="box">
-        <img class="bookImg" v-lazy:background-image="posterData.pic_url"></img>
+        <img class="" :src= posterData.pic_url />
       </div>
       <div class="imgText">长按保存海报，分享好友邀请助力</div>
     </van-popup>
@@ -382,6 +382,10 @@
           type: 2,
           outer_name: localStorage.getItem("nickname"),
           header_pic: localStorage.getItem("headimg"),
+          /*outer_id: tStamp,
+          type: 2,
+          outer_name: tStamp,
+          header_pic: tStamp,*/
           version: "1.0",
           timestamp: tStamp
         };
