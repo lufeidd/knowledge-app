@@ -6,7 +6,7 @@
         <div class="activeText">活动规则</div>
       </div>
     </div>
-    <div class="helpBoss" v-if="supportGet">你已成功助力星期八！</div>
+    <div class="helpBoss" v-if="supportGet">你已成功助力{{ helpinitData.launch_nickname }}！</div>
     <div class="couponImg">
       <div class="text" v-if="supportGet">你已获得：</div>
       <div class="bookImg" v-lazy:background-image="helpinitData.support_award_pic" v-if="supportSuccess"></div>
@@ -189,6 +189,13 @@
           this.helpinitData = res.response_data;
           this.activity_id = res.response_data.activity_id;
           this.bgcolor = this.helpinitData.background;
+          if (this.helpinitData.supporter_info.nickname) {
+            this.supportNew = false;
+            this.initButton = false;
+            this.supportSuccess = true;
+            this.supportGet = true;
+            this.newuser = false;
+          }
         } else {
           this.$toast(res.error_message);
         }
@@ -300,7 +307,7 @@
         var tStamp = this.$getTimeStamp();
         var data = {
           launch_id: this.launch_id,
-          unionid: localStorage.getItem("unionid"),
+          unionid: tStamp,
           version: "1.0",
           timestamp: tStamp
         };
@@ -312,13 +319,15 @@
             this.supportOld = false;
             this.supportSuccess = false;
             this.initButton = false;
+          } else {
+            this.oldUserPrompt = res.error_message;
+            this.supportNew = false;
+            this.supportOld = true;
+            this.supportSuccess = false;
+            this.initButton = false;
           }
         } else {
-          this.oldUserPrompt = res.error_message;
-          this.supportNew = false;
-          this.supportOld = true;
-          this.supportSuccess = false;
-          this.initButton = false;
+          this.$toast(res.error_message);
         }
       },
       async supportNewCheck () {
@@ -329,9 +338,12 @@
           type: 2,
           mobile: this.phone,
           auth_code: this.code,
-          outer_id: localStorage.getItem("unionid"),
+          /*outer_id: localStorage.getItem("unionid"),
           outer_name: localStorage.getItem("nickname"),
-          header_pic: localStorage.getItem("headimg"),
+          header_pic: localStorage.getItem("headimg"),*/
+          outer_id: tStamp,
+          outer_name: tStamp,
+          header_pic: tStamp,
           version: "1.0",
           timestamp: tStamp
         };

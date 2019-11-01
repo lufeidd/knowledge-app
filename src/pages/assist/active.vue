@@ -266,6 +266,7 @@
           this.awardId = index;
           this.getAddressData();
         } else {
+          this.awardId = index;
           this.takePrize();
         }
       },
@@ -359,7 +360,8 @@
         var tStamp = this.$getTimeStamp();
         var data = {
           activity_id: this.activity_id,
-          openid: localStorage.getItem("openid"),
+          //openid: localStorage.getItem("openid"),
+          openid: tStamp,
           version: "1.0",
           timestamp: tStamp
         };
@@ -447,6 +449,7 @@
         if (res.hasOwnProperty("response_code")) {
           if(res.response_data.state == "suc") {
             this.$toast("领取成功");
+            this.activityData.base.reward_list[this.awardId].state = 2;
             this.addressClose();
           } else {
             this.$toast(res.error_message);
