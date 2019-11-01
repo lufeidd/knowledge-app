@@ -164,7 +164,7 @@
       <div class="box">
         <div class="bookImg" v-lazy:background-image="posterData.pic_url"></div>
       </div>
-      <div class="imgText">长按保存海报，分享好友邀请助力</div>
+      <!--<div class="imgText">长按保存海报，分享好友邀请助力</div>-->
     </van-popup>
     <!-- 点击获取地址显示的弹层 -->
     <van-popup v-model="addressShowPopup" class="addressPopup">
