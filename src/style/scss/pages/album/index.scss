@@ -667,4 +667,110 @@
   .coupon.bottom{
     @include position (fixed, 'bl', 0px, 0, 100%, 44px, 0);
   }
+  // 拼团
+  .group{
+    padding:15px;
+    .top{
+      @include displayFlex(flex, space-between, null);
+      & .ratiobox {
+        min-width: 100px;
+        margin-right: 10px;
+        .bookImg {
+          @include ratioBox (100%, 100%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 3px;
+        }
+      }
+      .right{
+        flex-grow:1;
+        flex-direction:column;
+        display:flex;
+        width:50%;
+        justify-content: space-between;
+        align-content: space-between;
+        padding:5px 0;
+        .title{
+          @include twoColtextOverflow;
+          font-size:$fontSize + 1;
+        }
+        .desc{color:$redLight;}
+        .sign{
+          display:inline-block;
+          background-color:#FFECEC;
+          border-radius:5px;
+          font-size:$fontSize - 4;
+          color:$redLight;
+          padding:0 3px;
+          width:120px;
+        }
+      }
+    }
+    .list{
+      position: absolute;
+      top:110px;
+      bottom:110px;
+      overflow-y: auto;
+      width: calc(100% - 30px);
+      .content{
+        @include displayFlex(flex, space-between, center);
+        padding:0;
+        padding-bottom:15px;
+        position: relative;
+        .left{
+          // width:70px;
+          img{
+            border-radius: 50%;
+            border:1px solid $white;
+            position: absolute;
+            top:4px;
+          }
+          .over,.add{
+            display:inline-block;
+            width: 30px;
+            height:30px;
+            line-height: 30px;
+            border-radius: 50%;
+            border:1px solid $white;
+            text-align: center;
+            color:$white;
+            background-color: #BFBFBF;
+            position: absolute;
+            top:4px;
+          }
+          .add{
+            background-color: #DCDCDC;
+          }
+        }
+        .mid{
+          margin-left: 55px;
+          .time{
+            color:$cl9;
+            font-size: $fontSize - 2;
+          }
+        }
+        .right{
+          .van-button{
+            border-radius: 15px;
+            min-width: 75px;
+          }
+        }
+      }
+    }
+    .groupbottom{
+      position: absolute;
+      bottom:15px;
+      width: calc(100% - 30px);
+      .text{
+        color:$cl9;
+        font-size: $fontSize - 3;
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      .van-button{
+        width: 100%;
+        height:40px;
+        border-radius: 20px;
+        font-size: $fontSize + 2;
+      }
+    }
+  }
 }

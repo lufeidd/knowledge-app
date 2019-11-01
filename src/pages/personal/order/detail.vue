@@ -112,8 +112,11 @@
         <!-- <template v-if="infoData.state == 5">实付款</template> -->
         <!-- <template v-if="infoData.state == 7 && !infoData.pay_money">已取消</template> -->
         <span
-          v-if="infoData.order_money"
+          v-if="infoData.pay_state"
         >¥{{infoData.pay_money.toFixed(2)}}</span>
+        <span
+          v-else
+        >¥{{infoData.order_money.toFixed(2)}}</span>
       </p>
     </div>
     <!-- 发票 -->

@@ -210,7 +210,7 @@ export default {
         page_name: _pageName,
         params: _params,
         timestamp: tStamp,
-        version: "1.0"
+        version: "1.1"
       };
       data.sign = this.$getSign(data);
       let res = await WX_SHARE(data);
@@ -341,6 +341,7 @@ export default {
         self.showTime = true;
         d = Math.ceil(d);
         self.timeDataDesc = '距活动结束还剩'+d+'天';
+        self.timeData = '距结束还剩'+d+'天';
       }else if(d < 1){
         self.showDay = false;
         self.showTime = true;
@@ -359,6 +360,7 @@ export default {
           if (s < 10) s = '0' + s
           let res = h + ":" + m + ":" + s
           self.timeDataDesc = res;
+          self.timeData = res;
           self.timeH = h
           self.timeM = m
           self.timeS = s
@@ -366,8 +368,9 @@ export default {
       }else if(d > 3){
         self.showTime = false;
         self.timeDataDesc = '限时促销'
+        self.timeData = '火把拼团'
       }
-      console.log(d,self.clock)
+      // console.log(d,self.clock)
     }
 
     // ksort
@@ -504,6 +507,9 @@ export default {
           if (dataTmp.params.goods_type == 3) { // 图书
             __name = 'detail';
           }
+          if (dataTmp.params.goods_type == 4) { // 电子书
+            __name = 'ebookdetail';
+          }
           queryTmp.goods_id = parseInt(dataTmp.params.goods_id);
           if (dataTmp.params.album_id) queryTmp.album_id = parseInt(dataTmp.params.album_id);
 
@@ -549,6 +555,11 @@ export default {
           __name = 'brand';
           queryTmp.brand_id = parseInt(dataTmp.params.brand_id);
 
+          break;
+        //自定义商城页
+        case 'page/get':
+          __name = 'custompage';
+          queryTmp.page_id = parseInt(dataTmp.params.page_id);
           break;
       }
 

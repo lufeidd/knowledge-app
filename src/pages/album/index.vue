@@ -439,6 +439,7 @@
         />
       </van-goods-action>
 
+
       <!-- 音频缩略 -->
       <miniAudio
         :class="{isShow: myAudioData.src}"
@@ -559,6 +560,7 @@
           </div>
         </div>
       </van-popup>
+
       <!-- 评论 -->
       <van-popup v-model="commentModel" position="bottom">
         <div class="audioList">
@@ -603,6 +605,19 @@
   }
   .coupon .van-cell__value{
     display:none;
+  }
+  .van-goods-action{
+    .van-goods-action-mini-btn{
+      border-color:#D2D2D2;
+      border-width:1px 0 0 0;
+      border-style:solid;
+    }
+    .van-button--warning{
+      background-color:#FFF;
+      color:$redLight;
+      border-color:#D2D2D2;
+      border-width:1px 0 0 1px;
+    }
   }
 }
 </style>
@@ -750,6 +765,7 @@ export default {
       couponModel: false,
       isReceived: false,
       requestState: true,
+      groupModel:false,
     };
   },
   destroyed() {},
@@ -981,6 +997,10 @@ export default {
     // tab切换
     tabChange(index, title) {
       this.activeKey = index;
+    },
+    // 拼团
+    openGroup(){
+       this.groupModel = true;
     },
     // ----------------------------------评论------------------------------------
     commentLoad() {

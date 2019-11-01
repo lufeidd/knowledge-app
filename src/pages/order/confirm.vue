@@ -79,14 +79,23 @@
     <van-cell
       title
       is-link
+      value="拼团商品不可用券"
+      style="margin:5px 0;"
+      v-if="ticket_lists.canuse.length == 0 && groupbuy_id"
+    >
+      <template slot="title">
+        <span style="margin-right:10px;color:#333;">优惠券</span>
+      </template>
+    </van-cell>
+    <van-cell
+      title
+      is-link
       value="无可用券"
       style="margin:5px 0;"
       v-else
     >
       <template slot="title">
         <span style="margin-right:10px;color:#333;">优惠券</span>
-        <!-- <span class="toMall" v-if="discount_price == ticket_price">已选最大优惠</span> -->
-        <!-- <span class="toMall" v-if="ticket_num">已选{{ticket_num}}张</span> -->
       </template>
     </van-cell>
     <!-- 备注 -->
@@ -315,9 +324,11 @@ export default {
       chooseMax:false,
       maxDiscount:null,
       discount_price_desc:'',
+      groupbuy_id:null,
     };
   },
   mounted() {
+    this.groupbuy_id = this.$route.query.groupbuy_id;
     this.orderAddData();
   },
   methods: {
@@ -340,6 +351,8 @@ export default {
       if (this.$route.query.detail_ids)
         data.detail_ids = this.$route.query.detail_ids;
       if (this.$route.query.detail) data.detail = this.$route.query.detail;
+      if (this.$route.query.groupbuy_id) data.groupbuy_id = this.$route.query.groupbuy_id;
+      if (this.$route.query.groupbuy_open_id) data.groupbuy_open_id = this.$route.query.groupbuy_open_id;
       // data.ticket_ids = this.order_ticket_ids;
       data.sign = this.$getSign(data);
       let res = await ORDER_PHYSICAL_ADDINFO(data);
@@ -434,7 +447,8 @@ export default {
 
       data.address_id = this.address_id;
       data.remark = this.remark;
-      data.ticket_ids = this.order_ticket_ids;
+      data.ticket_ids = this.order_ticket_ids?this.order_ticket_ids:0;
+      data.groupbuy_id = this.groupbuy_id?this.groupbuy_id:0;
       data.sign = this.$getSign(data);
       let res = await ORDER_PHYSICAL_ADD(data);
 

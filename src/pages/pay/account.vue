@@ -36,11 +36,17 @@
         <span class="toMall" v-if="ticket_num">已选{{ticket_num}}张</span>
       </template>
     </van-cell>
+    <van-cell title is-link value="拼团商品不可用券" style="margin:5px 0;" v-if="ticket_lists.canuse.length == 0 && groupbuy_id">
+      <template slot="title">
+        <span style="margin-right:10px;">优惠券</span>
+      </template>
+    </van-cell>
     <van-cell title is-link value="无可用券" style="margin:5px 0;" v-else>
       <template slot="title">
         <span style="margin-right:10px;">优惠券</span>
       </template>
     </van-cell>
+
     <!-- 选择支付方式 -->
     <van-row class="editBox">
       <van-col span="24">
@@ -431,11 +437,13 @@ export default {
       total_money: 0,
       order_ticket_ids: "",
       single_activity_id:null,
+      groupbuy_id:null,
     };
   },
   mounted() {
     // 上个页面携带必要信息
     this.goods_id = this.$route.query.goods_id;
+    this.groupbuy_id = this.$route.query.groupbuy_id;
     // 获取下单信息
     this.infoData();
   },
@@ -447,6 +455,7 @@ export default {
         timestamp: tStamp,
         goods_id: this.goods_id,
         // album_id: this.album_id,
+        groupbuy_id:this.groupbuy_id?this.groupbuy_id:0,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -604,6 +613,7 @@ export default {
         goods_id: this.goodsInfo.goods_id,
         // album_id: this.album_id,
         ticket_id: this.order_ticket_ids,
+        groupbuy_id:this.groupbuy_id?this.groupbuy_id:0,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
