@@ -162,7 +162,7 @@
         <use xlink:href="#icon-close-line" />
       </svg>
       <div class="box">
-        <div class="bookImg" v-lazy:background-image="supporterData.pic_url"></div>
+        <div class="bookImg" v-lazy:background-image="posterData.pic_url"></div>
       </div>
       <div class="imgText">长按保存海报，分享好友邀请助力</div>
     </van-popup>

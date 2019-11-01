@@ -179,7 +179,6 @@
         var data = {
           //获取微信信息
           launch_id: this.launch_id,
-          unionid: localStorage.getItem("unionid"),
           version: "1.0",
           timestamp: tStamp
         };
@@ -195,6 +194,102 @@
       },
       //验证用户为新用户还是老用户
       async supportCheck () {
+        if (localStorage.getItem("unionid") == "undefined" ||
+          localStorage.getItem("unionid") == "null" ||
+          localStorage.getItem("unionid") == undefined ||
+          localStorage.getItem("unionid") == null ||
+          localStorage.getItem("unionid") == ""
+        ) {
+          // this.$router.push({name:"couponreceive"});
+          sessionStorage.setItem("gotoLogin", "no");
+          sessionStorage.setItem("isWxLogin", "no");
+          // console.log(111,Number(localStorage.getItem("get_count")))
+
+          // 未授权时微信端访问授权页面
+          if (
+            window.navigator.userAgent.toLowerCase().match(/MicroMessenger/i) ==
+            "micromessenger"
+          ) {
+            sessionStorage.setItem("isWxLogin", "yes");
+            if (
+              localStorage.getItem("openid") == "undefined" ||
+              localStorage.getItem("openid") == undefined ||
+              localStorage.getItem("openid") == "null" ||
+              localStorage.getItem("openid") == null ||
+              localStorage.getItem("nickname") == "null" ||
+              localStorage.getItem("nickname") == null ||
+              localStorage.getItem("unionid") == "null" ||
+              localStorage.getItem("unionid") == null ||
+              localStorage.getItem("headimg") == "null" ||
+              localStorage.getItem("headimg") == null ||
+              this.$route.name == "pay" ||
+              this.$route.name == "payaccount" ||
+              this.$route.name == "account"
+            ) {
+              // 微信登录 code
+              this.$getWxCode();
+              // 微信授权
+
+              if (this.wxCodeStr == "") {
+                var this_count = Number(localStorage.getItem("get_count"));
+                if( this_count < 2 ){
+                  this_count ++;
+                  localStorage.setItem("get_count",this_count);
+                  this.$wxLogin();
+                }else{
+                  localStorage.setItem("get_count",0);
+                }
+              };
+              if (this.wxCodeStr.length > 6) {
+                let url =
+                  window.location.protocol +
+                  "//" +
+                  window.location.hostname +
+                  "/callback/weixin/Userinfo?code=" +
+                  this.wxCodeStr;
+                // 获取 openid，nickname
+                var self = this;
+                axios
+                  .get(url)
+                  .then(function(response) {
+                    console.log(666, response);
+                    if (
+                      response.data.hasOwnProperty("code") &&
+                      response.data.code == "1000"
+                    ) {
+                      console.log(response.data.msg);
+                    } else {
+                      localStorage.setItem("openid", response.data.openid);
+                      localStorage.setItem("nickname", response.data.nickname);
+                      localStorage.setItem("unionid", response.data.unionid);
+                      localStorage.setItem("headimg", response.data.headimgurl);
+                      self.wxCodeStr = "";
+                      window.location.href =
+                        window.location.protocol +
+                        "//" +
+                        window.location.hostname +
+                        "/#" +
+                        window.location.href.split("#")[1];
+                    }
+                  })
+                  .catch(function(error) {
+                    self.fetchError = error;
+                    console.log("error:", error);
+                  });
+              } else {
+                this.$toast("未获取到code");
+              }
+            }
+            console.log(
+              "openid:",
+              localStorage.getItem("openid"),
+              "unionid:",
+              localStorage.getItem("unionid"),
+              "nickname:",
+              localStorage.getItem("nickname")
+            );
+          }
+        }
         var tStamp = this.$getTimeStamp();
         var data = {
           launch_id: this.launch_id,
