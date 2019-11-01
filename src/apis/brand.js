@@ -13,3 +13,6 @@ export const BRAND_SEARCH_GOODS_GETS = query => req('post', '/search/goods/gets'
 
 //品牌商城
 export const BRAND_PAGE_MALL_INDEX = query => req('post', '/page/mall/index', query);
+
+//自定义商城
+export const PAGE_GET = query => req('post', '/page/get', query);

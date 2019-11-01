@@ -62,7 +62,75 @@
     }
 
   }
-
+  // 拼团
+  & .group_list{
+    padding:15px 15px 0 15px;
+    background-color: #fff;
+    margin-top:5px;
+    .content{
+      @include displayFlex(flex, space-between, center);
+      padding-bottom:15px;
+      position: relative;
+      .left{
+        // width:70px;
+        img{
+          border-radius: 50%;
+          border:1px solid $white;
+          position: absolute;
+          top:4px;
+        }
+        .over,.add{
+          display:inline-block;
+          width: 30px;
+          height:30px;
+          line-height: 30px;
+          border-radius: 50%;
+          border:1px solid $white;
+          text-align: center;
+          color:$white;
+          background-color: #BFBFBF;
+          position: absolute;
+          top:4px;
+        }
+        .add{
+          background-color: #DCDCDC;
+        }
+      }
+      .mid{
+        .time{
+          color:$cl9;
+          font-size: $fontSize - 2;
+        }
+      }
+      .right{
+        .van-button{
+          border-radius: 15px;
+          min-width: 75px;
+        }
+      }
+    }
+  }
+  .groupFoot{
+    padding:5px 15px;
+    background-color: #fff;
+    position: fixed;
+    bottom:0;
+    z-index: 99;
+    width: 100%;
+    box-sizing: border-box;
+    .van-button{
+      width:100%;
+      border-radius: 30px;
+      height: 40px;
+      line-height: 1;
+      font-size: $fontSize - 1;
+    }
+    .van-button--primary{
+      border: 1px solid $redLight;
+      background-color: transparent;
+      color:$redLight;
+    }
+  }
   & .toMall {
     display: inline-block;
     // width: 65px;
@@ -158,7 +226,6 @@
         width: 100%;
         padding-left: 8px;
         box-sizing: border-box;
-
         & .album {
           @include twoLines;
         }
@@ -264,6 +331,18 @@
         .promotionPrice{
           font-size: $fontSize - 2;
           .price{font-size: $fontSize + 4;}
+          .group{
+            margin-left: 3px;;
+            .icon{
+              font-size: $fontSize + 9;
+            }
+            .group_num{
+              display:inline-block;
+              padding:0 3px;
+              margin-left:-3px;
+              border:1px solid $white;
+            }
+          }
         }
         .original{
           .discount{

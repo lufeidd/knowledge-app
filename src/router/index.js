@@ -98,6 +98,8 @@ import cart from '@/pages/cart'
 // 商品详情
 import detail from '@/pages/detail'
 
+//拼团详情
+import groupdetail from '@/pages/groupDetail'
 // 我的订单
 import orderconfirm from '@/pages/order/confirm'
 import orderconfirmdetail from '@/pages/order/detail'
@@ -106,6 +108,12 @@ import orderconfirmdetail from '@/pages/order/detail'
 import pay from '@/pages/pay/index'
 import payaccount from '@/pages/pay/account'
 import paysuccess from '@/pages/pay/success'
+
+// 自定义装修商城页面
+import custompage from '@/pages/customPage'
+
+//实物商品拼团页面
+import groupgoods from '@/pages/groupGoods'
 
 // 404
 import nullpage from '@/pages/404'
@@ -120,6 +128,12 @@ export default new Router({
   mode: 'hash',  //把Router的mode修改为history模式,VueRouter默认的模式为HASH模式
   // linkActiveClass: 'active',
   routes: [
+    // 自定义装修商城页面
+    {
+      path: '/customPage',
+      name: 'custompage',
+      component: custompage,
+    },
     // 404
     {
       path: '/404',
@@ -695,6 +709,21 @@ export default new Router({
       path: '/detail',
       name: 'detail',
       component: detail
+    },
+    // 实物商品拼团页
+    {
+      path: '/groupGoods',
+      name: 'groupgoods',
+      component: groupgoods
+    },
+    // 拼团详情页
+    {
+      path: '/groupDetail',
+      name: 'groupdetail',
+      component: groupdetail,
+      meta: {
+        title: '拼团详情',
+      }
     },
     // 订单确认
     {
