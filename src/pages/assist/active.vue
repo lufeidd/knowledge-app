@@ -360,8 +360,7 @@
         var tStamp = this.$getTimeStamp();
         var data = {
           activity_id: this.activity_id,
-          //openid: localStorage.getItem("openid"),
-          openid: tStamp,
+          openid: localStorage.getItem("openid"),
           version: "1.0",
           timestamp: tStamp
         };

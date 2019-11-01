@@ -338,12 +338,9 @@
           type: 2,
           mobile: this.phone,
           auth_code: this.code,
-          /*outer_id: localStorage.getItem("unionid"),
+          outer_id: localStorage.getItem("unionid"),
           outer_name: localStorage.getItem("nickname"),
-          header_pic: localStorage.getItem("headimg"),*/
-          outer_id: tStamp,
-          outer_name: tStamp,
-          header_pic: tStamp,
+          header_pic: localStorage.getItem("headimg"),
           version: "1.0",
           timestamp: tStamp
         };
