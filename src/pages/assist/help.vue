@@ -59,13 +59,13 @@
           <use xlink:href="#icon-myactive_jiantou" />
         </svg>
       </div>
-      <div class="moreText" v-else-if="this.newuser" @click="supportNewCheck">
+      <div class="moreText" v-else="this.newuser" @click="supportNewCheck">
         帮好友助力，我也领5元
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-myactive_jiantou" />
         </svg>
       </div>
-      <router-link :to="{name: 'assistactive', query: {activity_id: this.activity_id}}" v-else>
+      <router-link :to="{name: 'assistactive', query: {activity_id: this.activity_id}}" v-if="supportOld">
         <div class="moreText">
           我也要领
           <svg class="icon" aria-hidden="true">

@@ -152,7 +152,7 @@
     </div>
     <div class="hrefLine"></div>
     <div class="box">
-      <div class="bookImg" v-lazy:background-image="activityData.base.qr_url"></div>
+      <img class="bookImg" v-lazy:background-image="activityData.base.qr_url"></img>
     </div>
     <div class="imgText">长按识别二维码，关注公众号</div>
   </van-popup>
@@ -162,9 +162,9 @@
         <use xlink:href="#icon-close-line" />
       </svg>
       <div class="box">
-        <div class="bookImg" v-lazy:background-image="posterData.pic_url"></div>
+        <img class="bookImg" v-lazy:background-image="posterData.pic_url"></img>
       </div>
-      <!--<div class="imgText">长按保存海报，分享好友邀请助力</div>-->
+      <div class="imgText">长按保存海报，分享好友邀请助力</div>
     </van-popup>
     <!-- 点击获取地址显示的弹层 -->
     <van-popup v-model="addressShowPopup" class="addressPopup">
@@ -390,7 +390,12 @@
         if (res.hasOwnProperty("response_code")) {
           if (res.response_data.exist == 1) {
             //登陆成功
-
+            this.$router.push({
+              name: "assistactive",
+              query: {
+                activity_id: this.activity_id
+              }
+            });
           } else {
             this.$router.push({
               name: "bindphone",
