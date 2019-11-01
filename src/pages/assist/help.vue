@@ -45,7 +45,12 @@
       </van-field>
     </div>
     <div class="newPrompt" v-if="supportOld">
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-diandiandian" />
+      </svg>
       只有新用户可以助力哦！
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-diandiandian-you" /></svg>
     </div>
     <div class="activeMore">
       <div class="moreText" v-if="this.initButton" @click="supportCheck">
