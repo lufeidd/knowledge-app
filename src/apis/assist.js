@@ -17,3 +17,5 @@ export const ASSISTANCE_SUPPORTCHECK = query => req('post', '/activity/assistanc
 export const ASSISTANCE_TAKEPRIZE = query => req('post', '/activity/assistance/takeprize', query);
 //生成海报接口【助力】
 export const ASSISTANCE_POSTER = query => req('post', '/activity/assistance/poster', query);
+//页面分享信息获取
+export const PAGE_SHARE_INFO = query => req('post', '/page/share/info', query);

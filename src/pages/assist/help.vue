@@ -99,7 +99,7 @@
 
 </style>
 <script>
-  import {  ASSISTANCE_SUPPORTER ,ASSISTANCE_INVITEDETAIL ,ASSISTANCE_SUPPORTCHECK } from "../../apis/assist";
+  import {  PAGE_SHARE_INFO ,ASSISTANCE_INVITEDETAIL ,ASSISTANCE_SUPPORTCHECK } from "../../apis/assist";
   import { REG, SMS, PASSPORT_CHECKPHONE, LOGIN_BIND_PARTERNER } from "../../apis/passport.js";
   export default {
     data () {
@@ -199,6 +199,35 @@
             this.supportGet = true;
             this.supportOld = true;
           }
+          this.pageShareInfo();
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      //页面分享信息获取方法
+      async pageShareInfo () {
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          params: {
+            launch_id: this.launch_id,
+            activity_id: this.helpinitData.activity_id
+          },
+          page_name: "assist/index",
+          version: "1.0",
+          timestamp: tStamp
+        };
+        data.sign = this.$getSign(data);
+        let res = await PAGE_SHARE_INFO(data);
+        if (res.hasOwnProperty("response_code")) {
+          //获取页面分享信息
+          var _pageName = res.page_name;
+          var _params = JSON.stringify({
+            title: res.share_info.title,
+            desc: res.share_info.desc,
+            pic: res.share_info.pic,
+            url: res.share_info.url
+          });
+          if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
         } else {
           this.$toast(res.error_message);
         }
@@ -337,7 +366,14 @@
             this.initButton = false;
           }
         } else {
-          this.$toast(res.error_message);
+          this.oldUserPrompt = res.error_message;
+          this.supportNew = false;
+          this.supportGet = false;
+          this.supportNewPre = true;
+          this.supportOld = true;
+          this.supportSuccess = false;
+          this.supportNewButton = false;
+          this.initButton = false;
         }
       },
       async supportNewCheck () {
