@@ -1,7 +1,7 @@
 <template>
   <div id="activePage" :style="{'background-color':bgcolor}">
     <div class="active-bg">
-      <div class="bg-piture" v-lazy:background-image="activityData.base.activity_cover"></div>
+      <div class="bg-piture" :style="{backgroundImage:'url('+activityData.base.activity_cover+')'}"></div>
       <div class="activeRules" @click="activeRules">
         <div class="activeText">活动规则</div>
       </div>
@@ -152,7 +152,7 @@
     </div>
     <div class="hrefLine"></div>
     <div class="box">
-      <img class="bookImg" v-lazy:background-image="activityData.base.qr_url" />
+      <img class="bookImg" :src= activityData.base.qr_url />
     </div>
     <div class="imgText">长按识别二维码，关注公众号</div>
   </van-popup>
@@ -394,13 +394,10 @@
         if (res.hasOwnProperty("response_code")) {
           if (res.response_data.exist == 1) {
             //登陆成功
-            this.$router.push({
-              name: "assistactive",
-              query: {
-                activity_id: this.activity_id
-              }
-            });
+            console.log(1111);
+            window.location.reload();
           } else {
+            console.log(2222);
             this.$router.push({
               name: "bindphone",
               query: {

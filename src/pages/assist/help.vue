@@ -1,7 +1,7 @@
 <template>
   <div id="helpPage" :style="{'background-color':bgcolor}">
     <div class="active-bg">
-      <div class="bg-piture" v-lazy:background-image="helpinitData.activity_cover"></div>
+      <div class="bg-piture" :style="{backgroundImage:'url('+helpinitData.activity_cover+')'}"></div>
       <div class="activeRules" @click="activeRules">
         <div class="activeText">活动规则</div>
       </div>
