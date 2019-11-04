@@ -44,7 +44,7 @@
         </template>
       </van-field>
     </div>
-    <div class="newPrompt" v-if="supportOld">
+    <div class="newPrompt" v-if="this.supportNewPre">
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-diandiandian" />
       </svg>
@@ -59,13 +59,13 @@
           <use xlink:href="#icon-myactive_jiantou" />
         </svg>
       </div>
-      <div class="moreText" v-else="this.newuser" @click="supportNewCheck">
+      <div class="moreText" v-if="this.supportNewButton" @click="supportNewCheck">
         帮好友助力，我也领5元
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-myactive_jiantou" />
         </svg>
       </div>
-      <router-link :to="{name: 'assistactive', query: {activity_id: this.activity_id}}" v-if="supportOld">
+      <router-link :to="{name: 'assistactive', query: {activity_id: this.activity_id}}" v-if="this.supportOld">
         <div class="moreText">
           我也要领
           <svg class="icon" aria-hidden="true">
@@ -106,12 +106,13 @@
       return {
         phone: "",
         isPhone: true,
-        newuser: true,
         supportNew: false,
         supportOld: false,
         supportSuccess: true,
         initButton: true,
         supportGet: false,
+        supportNewPre: false,
+        supportNewButton: false,
         launch_id:0,
         code: "",
         bgcolor: "",
@@ -192,9 +193,11 @@
           if (this.helpinitData.supporter_info.nickname) {
             this.supportNew = false;
             this.initButton = false;
+            this.supportNewButton = false;
+            this.supportNewPre = false;
             this.supportSuccess = true;
             this.supportGet = true;
-            this.newuser = false;
+            this.supportOld = true;
           }
         } else {
           this.$toast(res.error_message);
@@ -307,7 +310,8 @@
         var tStamp = this.$getTimeStamp();
         var data = {
           launch_id: this.launch_id,
-          unionid: tStamp,
+          //unionid: tStamp,
+          unionid:localStorage.getItem("unionid"),
           version: "1.0",
           timestamp: tStamp
         };
@@ -316,14 +320,20 @@
         if (res.hasOwnProperty("response_code")) {
           if(res.response_data.state == "suc") {
             this.supportNew = true;
+            this.supportNewButton = true;
+            this.supportGet = false;
             this.supportOld = false;
             this.supportSuccess = false;
+            this.supportNewPre = false;
             this.initButton = false;
           } else {
             this.oldUserPrompt = res.error_message;
             this.supportNew = false;
+            this.supportGet = false;
+            this.supportNewPre = true;
             this.supportOld = true;
             this.supportSuccess = false;
+            this.supportNewButton = false;
             this.initButton = false;
           }
         } else {
@@ -349,10 +359,12 @@
         if (res.hasOwnProperty("response_code")) {
           if(res.response_data.user_id) {
             this.supportNew = false;
-            this.initButton = false;
-            this.supportSuccess = true;
             this.supportGet = true;
-            this.newuser = false;
+            this.supportNewPre = false;
+            this.supportOld = true;
+            this.supportSuccess = true;
+            this.supportNewButton = false;
+            this.initButton = false;
           } else {
             this.$toast(res.error_message);
           }
