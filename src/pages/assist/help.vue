@@ -99,7 +99,7 @@
 
 </style>
 <script>
-  import {  PAGE_SHARE_INFO ,ASSISTANCE_INVITEDETAIL ,ASSISTANCE_SUPPORTCHECK } from "../../apis/assist";
+  import { ASSISTANCE_INVITEDETAIL ,ASSISTANCE_SUPPORTCHECK } from "../../apis/assist";
   import { REG, SMS, PASSPORT_CHECKPHONE, LOGIN_BIND_PARTERNER } from "../../apis/passport.js";
   export default {
     data () {
@@ -120,9 +120,6 @@
         helpinitData: {},
         activity_id: 0,
         supportCheckData: {},
-        shareData: {
-          share_info: {}
-        },
         codeData: {
           disabled: true,
           timeMsg: "获取验证码",
@@ -202,38 +199,8 @@
             this.supportGet = true;
             this.supportOld = true;
           }
-          this.pageShareInfo();
         } else {
           this.$toast(res.error_message);
-        }
-      },
-      //页面分享信息获取方法
-      async pageShareInfo () {
-        var tStamp = this.$getTimeStamp();
-        var data = {
-          params: JSON.stringify({
-            launch_id: this.launch_id,
-            activity_id: this.helpinitData.activity_id
-          }),
-          page_name: "assist/index",
-          version: "1.0",
-          timestamp: tStamp
-        };
-        data.sign = this.$getSign(data);
-        let res = await PAGE_SHARE_INFO(data);
-        if (res.hasOwnProperty("response_code")) {
-          //获取页面分享信息
-          var shareData = res.response_data;
-          var _pageName = shareData.page_name;
-          var _params = JSON.stringify({
-            title: shareData.share_info.title,
-            desc: shareData.share_info.desc,
-            pic: shareData.share_info.pic,
-            url: shareData.share_info.url
-          });
-          if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
-        } else {
-          //错误信息弹窗
         }
       },
       //验证用户为新用户还是老用户
@@ -343,7 +310,6 @@
         var tStamp = this.$getTimeStamp();
         var data = {
           launch_id: this.launch_id,
-          //unionid: tStamp,
           unionid:localStorage.getItem("unionid"),
           version: "1.0",
           timestamp: tStamp

@@ -234,7 +234,7 @@
             position: relative;
             background-position: 100%;
             background-repeat: no-repeat;
-            background-size: contain;
+            background-size: 80px auto;
             padding-bottom: 7%;
             overflow: hidden;
           }
@@ -247,7 +247,7 @@
             position: relative;
             background-position: 100%;
             background-repeat: no-repeat;
-            background-size: contain;
+            background-size: 115px auto;
             padding-bottom: 7%;
             overflow: hidden;
           }
@@ -624,6 +624,28 @@
         }
       }
     }
+    .rewardContent{
+      .bookImg{
+        .callBack{
+          .contentBox{
+            .imgThree{
+              background-size: 60px auto;
+            }
+          }
+        }
+      }
+    }
+    .rewardContent{
+      .bookImg{
+        .callBack{
+          .contentBox{
+            .imgFour{
+              background-size: 85px auto;
+            }
+          }
+        }
+      }
+    }
     .hrefPopup{
       .hrefLine{
         margin-bottom: 25px;
@@ -650,6 +672,28 @@
           .contentBox{
             .content{
               font-size: 28px;
+            }
+          }
+        }
+      }
+    }
+    .rewardContent{
+      .bookImg{
+        .callBack{
+          .contentBox{
+            .imgThree{
+              background-size: 160px auto;
+            }
+          }
+        }
+      }
+    }
+    .rewardContent{
+      .bookImg{
+        .callBack{
+          .contentBox{
+            .imgFour{
+              background-size: 235px auto;
             }
           }
         }

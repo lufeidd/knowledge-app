@@ -67,7 +67,7 @@
             </div>
             <div v-else-if="item.state == 1" class="contentBox">
               <div class="imgFour">
-                <div class="content" @click="addressShow(index)">已获得,点击领取</div>
+                <div class="content" @click="addressShow(index)">已获得，点击领取</div>
               </div>
             </div>
             <div v-else-if="item.state == 0 && activityData.base.launch_id != 0" class="contentBox">
@@ -219,7 +219,7 @@
   }
 </style>
 <script>
-  import { ASSISTANCE_DETAIL , ASSISTANCE_POSTER , ASSISTANCE_SUPPORTER , ASSISTANCE_TAKEPRIZE } from "../../apis/assist";
+  import { PAGE_SHARE_INFO ,ASSISTANCE_DETAIL , ASSISTANCE_POSTER , ASSISTANCE_SUPPORTER , ASSISTANCE_TAKEPRIZE } from "../../apis/assist";
   import {LOGIN_PARTERNER} from "../../apis/passport.js";
   import { USER_ADDRESS_EDIT , USER_ADDRESS_LIST } from "../../apis/user.js";
   export default {
@@ -234,6 +234,9 @@
           base: {},
           launcher: {},
           rank: {}
+        },
+        shareData: {
+          share_info: {}
         },
         posterData: {
 
@@ -378,8 +381,38 @@
         if (res.hasOwnProperty("response_code")) {
           this.activityData = res.response_data;
           this.bgcolor = res.response_data.base.background;
+          this.pageShareInfo();
         } else {
           this.$toast(res.error_message);
+        }
+      },
+      //页面分享信息获取方法
+      async pageShareInfo () {
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          params: JSON.stringify({
+            launch_id: this.activityData.base.launch_id,
+            activity_id: this.activity_id
+          }),
+          page_name: "assist/index",
+          version: "1.0",
+          timestamp: tStamp
+        };
+        data.sign = this.$getSign(data);
+        let res = await PAGE_SHARE_INFO(data);
+        if (res.hasOwnProperty("response_code")) {
+          //获取页面分享信息
+          var shareData = res.response_data;
+          var _pageName = shareData.page_name;
+          var _params = JSON.stringify({
+            title: shareData.share_info.title,
+            desc: shareData.share_info.desc,
+            pic: shareData.share_info.pic,
+            url: shareData.share_info.url
+          });
+          if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+        } else {
+          //错误信息弹窗
         }
       },
       //开启助力点击
@@ -390,11 +423,6 @@
           type: 2,
           outer_name: localStorage.getItem("nickname"),
           header_pic: localStorage.getItem("headimg"),
-          /*outer_id: tStamp,
-          type: 2,
-          outer_name: tStamp,
-          header_pic: tStamp,*/
-          version: "1.0",
           timestamp: tStamp
         };
         data.sign = this.$getSign(data);
