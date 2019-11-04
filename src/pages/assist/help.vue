@@ -120,6 +120,9 @@
         helpinitData: {},
         activity_id: 0,
         supportCheckData: {},
+        shareData: {
+          share_info: {}
+        },
         codeData: {
           disabled: true,
           timeMsg: "获取验证码",
@@ -220,12 +223,13 @@
         let res = await PAGE_SHARE_INFO(data);
         if (res.hasOwnProperty("response_code")) {
           //获取页面分享信息
-          var _pageName = res.page_name;
+          var shareData = res.response_data;
+          var _pageName = shareData.page_name;
           var _params = JSON.stringify({
-            title: res.share_info.title,
-            desc: res.share_info.desc,
-            pic: res.share_info.pic,
-            url: res.share_info.url
+            title: shareData.share_info.title,
+            desc: shareData.share_info.desc,
+            pic: shareData.share_info.pic,
+            url: shareData.share_info.url
           });
           if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
         } else {

@@ -92,7 +92,7 @@
           </svg>
         </div>
     </div>
-    <div class="ranking">
+    <div class="ranking" v-if="this.activityData.rank.length == 0 ? false:true">
       <div class="ranking-tit">
         <div class="line"></div>
         <div class="rankingTitle">排行榜</div>
@@ -372,7 +372,6 @@
         let res = await ASSISTANCE_DETAIL(data);
         if (res.hasOwnProperty("response_code")) {
           this.activityData = res.response_data;
-
           this.bgcolor = res.response_data.base.background;
         } else {
           this.$toast(res.error_message);
@@ -398,14 +397,14 @@
         if (res.hasOwnProperty("response_code")) {
           if (res.response_data.exist == 1) {
             //登陆成功
-            console.log(1111);
             window.location.reload();
           } else {
-            console.log(2222);
             this.$router.push({
               name: "bindphone",
               query: {
-                activity_id: this.activity_id
+                activity_id: this.activity_id,
+                bindtype: 2,
+                outerId: localStorage.getItem("unionid")
               }
             });
           }
