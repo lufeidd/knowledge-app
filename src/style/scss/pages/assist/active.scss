@@ -314,10 +314,11 @@
           position: relative;
           background-repeat: no-repeat;
           background-size: contain;
-          padding-bottom: 6%;
+          background-position: 50%;
+          padding-bottom: 100%;
           border-radius: 60px;
           overflow: hidden;
-          width: 21px;
+          width: 100%;
           background-color: #fffdfd;
         }
         .title{
@@ -405,10 +406,11 @@
             position: relative;
             background-repeat: no-repeat;
             background-size: contain;
-            padding-bottom: 8%;
+            padding-bottom: 100%;
             border-radius: 60px;
+            background-position: 50%;
             overflow: hidden;
-            width: 21px;
+            width: 100%;
             background-color: #fffdfd;
           }
           .title{
@@ -586,7 +588,53 @@
 
 
 
-
+  @media screen and (max-width: 320px){
+    .picturePopup{
+      .firendList{
+        .friendContet{
+          .friendMember{
+            .title{
+              flex-basis: 106px;
+            }
+          }
+        }
+      }
+    }
+    .active-bg{
+      .activeRules{
+        .activeText{
+          top: -1px;
+          font-size: 12px;
+          transform: scale(0.8);
+          right: -3px;
+        }
+      }
+    }
+    .rewardContent{
+      .bookImg{
+        .callBack{
+          .contentBox{
+            .content{
+              font-size: 12px;
+              transform: scale(0.8);
+              padding-right: 0px;
+              margin-right: -24px;
+            }
+          }
+        }
+      }
+    }
+    .hrefPopup{
+      .hrefLine{
+        margin-bottom: 25px;
+      }
+      .box{
+        .bookImg{
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
   @media screen and (min-width: 768px) {
     .active-bg{
       .activeRules{
@@ -607,15 +655,6 @@
         }
       }
     }
-    .ranking{
-      .rankingContet{
-        .rankingMember{
-          .bookImg{
-            padding-bottom: 3%;
-          }
-        }
-      }
-    }
     .hrefPopup{
       .box{
         width: 300px;
@@ -627,7 +666,7 @@
         .friendContet{
           .friendMember{
             .bookImg{
-              padding-bottom: 4%;
+
             }
           }
         }
@@ -636,7 +675,7 @@
     .billPopup{
       .box{
         .bookImg{
-          width: 70%;
+          width: 65%;
         }
       }
     }
@@ -648,7 +687,7 @@
         .friendContet{
           .friendMember{
             .bookImg{
-              padding-bottom: 8%;
+
             }
           }
         }

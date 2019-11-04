@@ -102,7 +102,9 @@
         <div v-for="(item,index) in activityData.rank" :key="index">
           <div class="rankingMember">
             <div class="grade">NO&nbsp;{{index + 1}}</div>
-            <div class="bookImg" v-lazy:background-image="item.user_pic"></div>
+            <div style="width: 20px;">
+              <div class="bookImg" v-lazy:background-image="item.user_pic"></div>
+            </div>
             <div class="title">{{item.nickname}}</div>
             <div class="count">{{item.support_nums}}</div>
           </div>
@@ -129,7 +131,9 @@
         <div class="friendContet" v-if="helpFriendList">
           <div v-for="(Item,index) in supporterData.response_data.supporter_list" :key="index">
             <div class="friendMember">
-              <div class="bookImg" v-lazy:background-image="Item.user_header"></div>
+              <div style="width: 21px;">
+                <div class="bookImg" v-lazy:background-image="Item.user_header"></div>
+              </div>
               <div class="title">{{Item.nickname}}</div>
               <div class="day">{{Item.md}}</div>
               <div class="time">{{Item.his}}</div>

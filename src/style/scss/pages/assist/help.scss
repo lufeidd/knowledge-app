@@ -152,7 +152,18 @@
      }
    }
 
-
+   @media screen and (max-width: 320px){
+     .active-bg{
+       .activeRules{
+         .activeText{
+           top: -1px;
+           font-size: 12px;
+           transform: scale(0.8);
+           right: -3px;
+         }
+       }
+     }
+   }
    @media screen and (min-width: 768px) {
      .active-bg{
        .activeRules{
