@@ -208,10 +208,10 @@
       async pageShareInfo () {
         var tStamp = this.$getTimeStamp();
         var data = {
-          params: {
+          params: JSON.stringify({
             launch_id: this.launch_id,
             activity_id: this.helpinitData.activity_id
-          },
+          }),
           page_name: "assist/index",
           version: "1.0",
           timestamp: tStamp
