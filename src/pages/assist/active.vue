@@ -70,9 +70,14 @@
                 <div class="content" @click="addressShow(index)">已获得,点击领取</div>
               </div>
             </div>
-            <div v-else-if="item.state == 0" class="contentBox">
+            <div v-else-if="item.state == 0 && activityData.base.launch_id != 0" class="contentBox">
               <div class="imgThree">
                 <div class="content">还差{{ item.goal_num - item.curr_num }}份助力</div>
+              </div>
+            </div>
+            <div v-else-if="item.state == 0 && activityData.base.launch_id == 0" class="contentBox">
+              <div class="imgThree">
+                <div class="content">需{{ item.goal_num - item.curr_num }}份助力</div>
               </div>
             </div>
             <!--<div v-else="item.state == 0" class="contentBox">

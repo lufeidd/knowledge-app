@@ -233,7 +233,7 @@
           });
           if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
         } else {
-          this.$toast(res.error_message);
+          //错误信息弹窗
         }
       },
       //验证用户为新用户还是老用户
@@ -315,7 +315,7 @@
                     console.log("error:", error);
                   });
               } else {
-                this.$toast("未获取到code");
+                //this.$toast("未获取到code");
               }
             }
             console.log(
