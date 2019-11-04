@@ -97,7 +97,7 @@
           </svg>
         </div>
     </div>
-    <div class="ranking" v-if="this.activityData.rank.length == 0 ? false:true">
+    <div class="ranking" v-if="this.activityData.rank.length > 0 ? true : false">
       <div class="ranking-tit">
         <div class="line"></div>
         <div class="rankingTitle">排行榜</div>
@@ -423,6 +423,7 @@
           type: 2,
           outer_name: localStorage.getItem("nickname"),
           header_pic: localStorage.getItem("headimg"),
+          version: "1.0",
           timestamp: tStamp
         };
         data.sign = this.$getSign(data);
