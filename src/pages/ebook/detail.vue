@@ -665,7 +665,7 @@
               </div>
               <div class="mid">
                 <div>还差{{item.remain_nums}}人成团</div>
-                <div class="time">剩余06:33:22</div>
+                <div class="time">剩余{{remain_time[index].date}}</div>
               </div>
               <div class="right">
                 <van-button
@@ -835,6 +835,7 @@ export default {
       showDay: true,
       groupModel:false,
       isgroup:false,
+      remain_time: []
     };
   },
   mounted() {
@@ -907,6 +908,13 @@ export default {
         this.couponInfo = res.response_data.activity;
         if (this.couponInfo.single.remain_time > 0) {
           this.$countTime(this.couponInfo.single.remain_time);
+        }
+        for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
+          this.remain_time.push({
+            time: this.couponInfo.groupbuy.open_list[i].remain_time,
+            date: ""
+          });
+          this.$timeCountDown(this.remain_time[i]);
         }
         // 获取页面分享信息
         // if(this.isWxLogin) this.wxShareData();

@@ -669,7 +669,7 @@
               </div>
               <div class="mid">
                 <div>还差{{item.remain_nums}}人成团</div>
-                <div class="time">剩余{{remain_time.date}}</div>
+                <div class="time">剩余{{remain_time[index].date}}</div>
               </div>
               <div class="right">
                 <van-button
