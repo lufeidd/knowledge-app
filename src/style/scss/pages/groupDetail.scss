@@ -2,6 +2,198 @@
  * author: lufei
  * date:2019/10/31
  */
-#groupDetailPage{
+#groupDetailPage {
+  .top {
+    padding: 15px 30px;
+    padding-bottom: 50px;
 
+    .stepIcon {
+
+      // @include displayFlex(flex, space-between, center);
+      .radio {
+        position: relative;
+        width: 44px;
+        height: 44px;
+        line-height: 44px;
+        text-align: center;
+        background-color: $redLight;
+        color: $white;
+        border-radius: 50%;
+        font-size: $fontSize + 10;
+
+        .text {
+          position: absolute;
+          bottom: -40px;
+          left: -10px;
+          font-size: $fontSize - 1;
+          color: $cl3;
+          line-height: 1.4;
+          width: 70px;
+        }
+      }
+
+      .line {
+        display: inline-block;
+        width: 90%;
+        height: 1px;
+        background-color: $redLight;
+        margin: 21px 0;
+      }
+    }
+  }
+
+  .mid {
+    border-top: 10px solid #F5F5F5;
+    border-bottom: 10px solid #F5F5F5;
+    padding: 15px;
+    position: relative;
+    @include displayFlex(flex, space-between, null);
+
+    .left {
+      & .ratiobox {
+        min-width: 100px;
+        margin-right: 10px;
+
+        .bookImg {
+          @include ratioBox (100%, 100%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 3px;
+        }
+      }
+    }
+
+    .right {
+      flex-grow: 1;
+      flex-direction: column;
+      display: flex;
+      width: 50%;
+      justify-content: space-between;
+      align-content: space-between;
+      padding: 5px 0;
+
+      .title {
+        @include twoColtextOverflow;
+        font-size: $fontSize + 2;
+      }
+
+      .desc {
+        color: $cl9;
+        font-size: $fontSize - 1;
+      }
+
+      .sign {
+        font-size: $fontSize + 1;
+        color: $redLight;
+      }
+    }
+    .state{
+      position: absolute;
+      right:15px;
+      bottom: 7px;
+      font-size: $fontSize + 36;
+      color:#ff9291;
+    }
+  }
+
+  .bottom {
+    padding: 15px;
+
+    .red {
+      color: $redLight;
+    }
+
+    .desc{
+      text-align: center;
+      .time {
+        display: inline-block;
+        background-color: $redLight;
+        font-size: $fontSize - 3;
+        color: #FFF;
+        padding: 0 2px;
+        border-radius: 3px;
+      }
+    }
+    .headpic{
+      margin:30px 0;
+      text-align: center;
+      span{
+        display: inline-block;
+        position: relative;
+        margin-right: 30px;
+      }
+      .button{
+        margin-top:30px;
+        .van-button{
+          width: 100%;
+          text-align: center;
+          margin-top:15px;
+        }
+        .van-button--primary{
+          background-color: transparent;
+          border:1px solid $redLight;
+          color:$redLight;
+        }
+      }
+      img{
+        border-radius: 50%;
+        border:1px solid $redLight;
+      }
+      .name{
+        width: 30px;
+        height:15px;
+        line-height: 15px;
+        background-color: $redLight;
+        color:$white;
+        font-size: 10px;
+        border-radius: 7.5px;
+        position: absolute;
+        bottom:0px;
+        padding:0 3px;
+        left: 50%;
+        margin-left:-15px;
+      }
+      .mark{
+        width:40px;
+        height: 40px;
+        line-height: 40px;
+        border:1px dashed #D2D2D2;
+        font-size: $fontSize + 3;
+        color: #C5C5C5;
+        text-align: center;
+        border-radius: 50%;
+        vertical-align: top;
+      }
+      .mark.over{
+        border:none;
+        color:$cl9;
+        margin-right: 0;
+      }
+    }
+    .state{
+      text-align: center;
+      .cry{
+        font-size: $fontSize + 10;
+      }
+      .text{
+        color:$redLight;
+        vertical-align: text-bottom;
+      }
+    }
+  }
+  .van-popup{
+    color:$white;
+    .arrow{
+      position: absolute;
+      top:15px;
+      left:15px;
+    }
+    .cloud{
+      width: calc(100% - 45px);
+      margin-top:45px;
+    }
+    .clip{
+      position: absolute;
+      right:15px;
+      top:15px;
+    }
+  }
 }

@@ -5,7 +5,22 @@
         <use xlink:href="#icon-checked-right" />
       </svg> 订单已完成
     </div>
-    <div class="state" v-else>{{infoData.state == 7? '交易取消':infoData.state_desc}}</div>
+    <div class="state" v-else>
+      <svg class="icon" aria-hidden="true" v-if="infoData.state == 9">
+        <use xlink:href="#icon-daichengtuan" />
+      </svg>
+      <svg class="icon" aria-hidden="true" v-if="infoData.state == 7">
+        <use xlink:href="#icon-quxiaodingdan" />
+      </svg>
+      <svg class="icon" aria-hidden="true" v-if="infoData.state == 2">
+        <use xlink:href="#icon-daifahuo" />
+      </svg>
+      <svg class="icon" aria-hidden="true" v-if="infoData.state == 1">
+        <use xlink:href="#icon-daizhifu" />
+      </svg>
+      {{infoData.state == 7? '交易取消':infoData.state_desc}}
+      <span class="groupTime" v-if="infoData.remain_pay_time">剩余：{{timeH}}小时{{timeM}}分钟{{timeS}}秒</span>
+    </div>
     <div v-if="infoData.type == 2">
       <div
         class="signfor"
@@ -63,7 +78,7 @@
             </div>
           </div>
           <div class="rightInfo">
-            <span class="title">{{item.goods_name}}</span>
+            <div class="title">{{item.goods_name}}</div>
             <span class="title red">
               ￥{{item.real_price}}
               <span
@@ -95,12 +110,55 @@
         </div>
       </div>
     </div>
+    <!-- 拼团 -->
+    <div class="group" v-if="groupData && groupData.join_list.length > 0">
+      <div class="grouphead">
+        <span class="groupstate" v-if="groupData.state == 1">拼团中</span>
+        <span class="groupstate" v-if="groupData.state == 4">拼团失败</span>
+        <span class="groupstate" v-if="groupData.state == 2">拼团成功</span>
+        <span class="groupdesc" @click="toGroupDetail">
+          拼团详情
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-next-line" />
+          </svg>
+        </span>
+      </div>
+      <div class="grouplist">
+        <!-- 两人团 -->
+        <div v-if="groupData.groupbuy_num == 2">
+          <span>
+            <img :src="groupData.join_list[0].head_pic" alt width="40px" height="40px" />
+            <div class="name">团长</div>
+          </span>
+          <span v-if="groupData.join_list.length == 2">
+            <img :src="groupData.join_list[1].head_pic" alt width="40px" height="40px" />
+          </span>
+          <span class="mark" v-if="groupData.join_list.length == 1">?</span>
+        </div>
+        <!-- 多人团 -->
+        <div v-if="groupData.groupbuy_num > 2">
+          <span>
+            <img :src="groupData.join_list[0].head_pic" alt width="40px" height="40px" />
+            <div class="name">团长</div>
+          </span>
+          <span v-if="groupData.join_list.length > 1">
+            <img :src="groupData.join_list[1].head_pic" alt width="40px" height="40px" />
+          </span>
+          <span class="mark">?</span>
+          <span class="mark over">......</span>
+        </div>
+      </div>
+    </div>
     <div class="priceInfo">
       <div class="first">
-        <van-cell v-if="infoData.order_goods_money" title="商品总额" v-model="'¥'+infoData.order_goods_money" />
+        <van-cell
+          v-if="infoData.order_goods_money"
+          title="商品总额"
+          v-model="'¥'+infoData.order_goods_money"
+        />
       </div>
       <van-cell v-if="infoData.dispatch_price" title="运费" v-model="'¥'+infoData.dispatch_price" />
-      <van-cell title="商品优惠" v-if="infoData.activity_money" v-model="'¥'+infoData.activity_money"/>
+      <van-cell title="商品优惠" v-if="infoData.activity_money" v-model="'¥'+infoData.activity_money" />
       <!-- <van-cell title="余额" v-model="'-¥'+priceInfo.remain.toFixed(2)"/> -->
       <p class="acturalPay" style="margin-top:10px;">
         <template>{{infoData.state == 1? '待支付':'实付款'}}</template>
@@ -111,12 +169,8 @@
         <!-- 已发货 -->
         <!-- <template v-if="infoData.state == 5">实付款</template> -->
         <!-- <template v-if="infoData.state == 7 && !infoData.pay_money">已取消</template> -->
-        <span
-          v-if="infoData.pay_state"
-        >¥{{infoData.pay_money.toFixed(2)}}</span>
-        <span
-          v-else
-        >¥{{infoData.order_money.toFixed(2)}}</span>
+        <span v-if="infoData.pay_state">¥{{infoData.pay_money.toFixed(2)}}</span>
+        <span v-else>¥{{infoData.order_money.toFixed(2)}}</span>
       </p>
     </div>
     <!-- 发票 -->
@@ -175,10 +229,10 @@
     </div>
 
     <div v-if="this.isIphx" style="height: 34px;"></div>
-    <div v-if="infoData.if_comment == 0 || showInvoice">
+    <div>
       <div style="height: 60px;"></div>
       <!-- 虚拟商品 -->
-      <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-if="infoData.type == 1">
+      <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-if="infoData.type == 1 && infoData.if_comment == 0 && showInvoice == true">
         <div>
           <span class="button button3" @click="apply" v-if="showInvoice">申请发票</span>
         </div>
@@ -187,7 +241,7 @@
         </div>
       </div>
       <!-- 实物商品 -->
-      <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-else>
+      <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-if="infoData.type == 2">
         <div>
           <span
             class="button button3"
@@ -216,7 +270,11 @@
             @click="tologistics"
             v-if="infoData.state == 2||infoData.state == 5"
           >查看物流</span>
-          <span class="button button3" @click="cancel" v-if="infoData.state == 1">取消订单</span>
+          <span
+            class="button button3"
+            @click="cancel"
+            v-if="infoData.state == 1 || infoData.state == 9"
+          >取消订单</span>
           <span class="button button2" @click="toPaid" v-if="infoData.state == 1">去支付</span>
         </div>
       </div>
@@ -262,12 +320,19 @@ export default {
       //   type: "order"
       // },
 
-      infoData: {},
+      infoData: {
+        order_money:0,
+        pay_money:0
+      },
       order_id: null,
       invoice: {},
       showInvoice: false,
       if_refund: true,
-      detail_ids: null
+      detail_ids: null,
+      groupData:{},
+      timeH: null,
+      timeM: null,
+      timeS: null,
     };
   },
   mounted() {
@@ -317,6 +382,15 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.infoData = res.response_data;
         this.invoice = res.response_data.invoice_info;
+        if(res.response_data.remain_pay_time){
+          this.$countTime(res.response_data.remain_pay_time);
+        }
+        if(Object.keys(this.invoice).length>0){
+          this.showInvoice = false
+        }else{
+          this.showInvoice = true;
+        }
+        this.groupData = res.response_data.groupbuy_info;
         for (let i = 0; i < this.infoData.detail.length; i++) {
           if (this.infoData.detail[i].if_refund == 2) {
             this.if_refund = false;
@@ -533,6 +607,14 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
+    },
+    toGroupDetail(){
+      this.$router.push({
+        name:"groupdetail",
+        query:{
+          open_id:this.groupData.open_id,
+        }
+      })
     }
   }
 };

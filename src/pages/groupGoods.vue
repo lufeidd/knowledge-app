@@ -16,10 +16,9 @@
       </van-swipe>
 
       <div class="infoBox">
-        <!-- 限时促销 -->
         <div class="promotion">
           <img
-            v-if="couponInfo.groupbuy.can_open_nums > 0"
+            v-if="couponInfo.groupbuy.user_remain_nums > 0"
             src="../assets/null/group_bg.png"
             width="100%"
             height="65px"
@@ -67,18 +66,200 @@
         @click="showPopup"
       />
       <!-- 拼团列表 -->
-      <div class="group_list">
-        <div class="content">
-          <div class="left">
+      <div class="group_list" v-if="couponInfo.groupbuy.open_list.length > 0">
+        <div class="content" v-for="(item,index) in couponInfo.groupbuy.open_list" :key="index">
+          <!-- 2人团 -->
+          <div class="left" v-if="item.nums == 2">
             <img
-              src="http://file.huoba.dev.zw/platform/picture/admin/20191030/14/20191030142443343.jpg"
+              :src="item.user_head_list[0]"
+              width="30px"
+              height="30px"
+              alt
+              style="left:0;z-index:1;"
+            />
+            <span class="add" style="left:50px;z-index:4;">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-renshu" />
+              </svg>
+            </span>
+          </div>
+          <!-- 三人团剩2人 -->
+          <div class="left" v-if="item.nums == 3">
+            <img
+              :src="item.user_head_list[0]"
+              width="30px"
+              height="30px"
+              alt
+              style="left:0;z-index:1;"
+            />
+            <span class="add" style="left:30px;z-index:3;">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-renshu" />
+              </svg>
+            </span>
+            <span class="add" style="left:50px;z-index:4;">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-renshu" />
+              </svg>
+            </span>
+          </div>
+          <!-- 三人团剩1人 -->
+          <div class="left" v-if="item.nums == 3">
+            <img
+              :src="item.user_head_list[0]"
               width="30px"
               height="30px"
               alt
               style="left:0;z-index:1;"
             />
             <img
-              src="http://file.huoba.dev.zw/platform/picture/admin/20191030/14/20191030142443343.jpg"
+              :src="item.user_head_list[1]"
+              width="30px"
+              height="30px"
+              alt
+              style="left:25px;z-index:3;"
+            />
+            <span class="add" style="left:50px;z-index:4;">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-renshu" />
+              </svg>
+            </span>
+          </div>
+          <!-- 三人团剩1人 -->
+          <div class="left" v-if="item.nums == 3">
+            <img
+              :src="item.user_head_list[0]"
+              width="30px"
+              height="30px"
+              alt
+              style="left:0;z-index:1;"
+            />
+            <img
+              :src="item.user_head_list[1]"
+              width="30px"
+              height="30px"
+              alt
+              style="left:25px;z-index:3;"
+            />
+            <span class="add" style="left:50px;z-index:4;">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-renshu" />
+              </svg>
+            </span>
+          </div>
+          <!-- 四人团剩3人 -->
+          <div class="left" v-if="item.nums == 4">
+            <img
+              :src="item.user_head_list[0]"
+              width="30px"
+              height="30px"
+              alt
+              style="left:0;z-index:1;"
+            />
+            <span class="add" style="left:15px;z-index:2;">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-renshu" />
+              </svg>
+            </span>
+            <span class="add" style="left:30px;z-index:3;">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-renshu" />
+              </svg>
+            </span>
+            <span class="add" style="left:50px;z-index:4;">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-renshu" />
+              </svg>
+            </span>
+          </div>
+          <!-- 四人团剩2人 -->
+          <div class="left" v-if="item.nums == 4">
+            <img
+              :src="item.user_head_list[0]"
+              width="30px"
+              height="30px"
+              alt
+              style="left:0;z-index:1;"
+            />
+            <img
+              :src="item.user_head_list[1]"
+              width="30px"
+              height="30px"
+              alt
+              style="left:15px;z-index:2;"
+            />
+            <span class="add" style="left:30px;z-index:3;">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-renshu" />
+              </svg>
+            </span>
+            <span class="add" style="left:50px;z-index:4;">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-renshu" />
+              </svg>
+            </span>
+          </div>
+          <!-- 四人团剩1人 -->
+          <div class="left" v-if="item.nums == 4">
+            <img
+              :src="item.user_head_list[0]"
+              width="30px"
+              height="30px"
+              alt
+              style="left:0;z-index:1;"
+            />
+            <img
+              :src="item.user_head_list[1]"
+              width="30px"
+              height="30px"
+              alt
+              style="left:15px;z-index:2;"
+            />
+            <img
+              :src="item.user_head_list[2]"
+              width="30px"
+              height="30px"
+              alt
+              style="left:30px;z-index:3;"
+            />
+            <span class="add" style="left:50px;z-index:4;">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-renshu" />
+              </svg>
+            </span>
+          </div>
+          <!-- 多人团剩n-1人 -->
+          <div class="left" v-if="item.nums > 4 && item.remain_nums == item.nums - 1">
+            <img
+              :src="item.user_head_list[0]"
+              width="30px"
+              height="30px"
+              alt
+              style="left:0;z-index:1;"
+            />
+            <span class="add" style="left:15px;z-index:2;">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-renshu" />
+              </svg>
+            </span>
+            <span class="over" style="left:30px;z-index:3;">...</span>
+            <span class="add" style="left:50px;z-index:4;">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-renshu" />
+              </svg>
+            </span>
+          </div>
+          <!-- 多人团剩小于n-1人 -->
+          <div class="left" v-if="item.nums > 4 && item.remain_nums < item.nums - 1">
+            <img
+              :src="item.user_head_list[0]"
+              width="30px"
+              height="30px"
+              alt
+              style="left:0;z-index:1;"
+            />
+            <img
+              :src="item.user_head_list[1]"
               width="30px"
               height="30px"
               alt
@@ -92,42 +273,18 @@
             </span>
           </div>
           <div class="mid">
-            <div>还差10人成团</div>
-            <div class="time">剩余06:33:22</div>
+            <div>还差{{item.remain_nums}}人成团</div>
+            <div class="time">剩余{{remain_time[index].date}}</div>
           </div>
           <div class="right">
-            <van-button round size="small" type="danger" @click="addGroup(item)">去参团</van-button>
-          </div>
-        </div>
-        <div class="content">
-          <div class="left">
-            <img
-              src="http://file.huoba.dev.zw/platform/picture/admin/20191030/14/20191030142443343.jpg"
-              width="30px"
-              height="30px"
-              alt
-              style="left:0;z-index:1;"
-            />
-            <img
-              src="http://file.huoba.dev.zw/platform/picture/admin/20191030/14/20191030142443343.jpg"
-              width="30px"
-              height="30px"
-              alt
-              style="left:15px;z-index:2;"
-            />
-            <span class="over" style="left:30px;z-index:3;">...</span>
-            <span class="add" style="left:50px;z-index:4;">
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-renshu" />
-              </svg>
-            </span>
-          </div>
-          <div class="mid">
-            <div>还差10人成团</div>
-            <div class="time">剩余06:33:22</div>
-          </div>
-          <div class="right">
-            <van-button round size="small" type="danger" @click="addGroup(item)">去参团</van-button>
+            <van-button
+              round
+              size="small"
+              type="danger"
+              disabled
+              v-if="couponInfo.groupbuy.user_remain_nums == 0"
+            >去参团</van-button>
+            <van-button round size="small" type="danger" @click="addgroup(item)" v-else>去参团</van-button>
           </div>
         </div>
       </div>
@@ -236,7 +393,10 @@
       <div style="height:60px;"></div>
       <div class="groupFoot" :class="{iphx:this.isIphx}">
         <div>
-          <van-row gutter="20" v-if="couponInfo.groupbuy.can_open_nums > 0">
+          <van-row
+            gutter="20"
+            v-if="couponInfo.groupbuy.can_open_nums > 0 && couponInfo.groupbuy.user_remain_nums > 0"
+          >
             <van-col span="10">
               <van-button round type="primary" size="small" @click="buyTo">
                 <div>￥{{baseData.market_price.toFixed(2)}}</div>
@@ -349,7 +509,8 @@ export default {
       timeH: null,
       timeM: null,
       timeS: null,
-      showDay: true
+      showDay: true,
+      remain_time: []
     };
   },
   mounted() {
@@ -358,7 +519,7 @@ export default {
     // 初始化省市区
     this.$getAddressData();
     // 当前页接口信息
-    this.albumData();
+    this.getGroupData();
     // this.$countTime(this.timeData);
   },
   methods: {
@@ -425,7 +586,7 @@ export default {
       return content.replace(/\n/g, "<br>");
     },
     // 获取专辑接口信息
-    async albumData() {
+    async getGroupData() {
       var tStamp = this.$getTimeStamp();
       let data = {
         ad: parseInt(this.$route.query.ad) == 1 ? 1 : 0,
@@ -455,8 +616,15 @@ export default {
         document.title = "商品详情-" + res.response_data.base.title;
         // 优惠券
         this.couponInfo = res.response_data.activity;
-        if (this.couponInfo.groupbuy.remain_time > 0) {
+        if (this.couponInfo.groupbuy.remain_time) {
           this.$countTime(this.couponInfo.groupbuy.remain_time);
+        }
+        for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
+          this.remain_time.push({
+            time: this.couponInfo.groupbuy.open_list[i].remain_time,
+            date: ""
+          });
+          this.$timeCountDown(this.remain_time[i]);
         }
         // 立即购买信息
         this.detail.goods_id = res.response_data.base.goods_id;
@@ -563,49 +731,33 @@ export default {
     // 开团
     openGroup() {
       if (this.$refs.nav.is_Login) {
-        this.orderAddData();
+        if (this.couponInfo.groupbuy.can_open_nums > 0) {
+          this.$router.push({
+            name: "orderconfirm",
+            query: {
+              address_id: this.address_id,
+              detail: JSON.stringify(this.detail),
+              groupbuy_id: this.couponInfo.groupbuy.id
+            }
+          });
+        }else{
+          this.$toast("");
+        }
       } else {
         this.$router.push({ name: "login" });
       }
     },
     // 参团
-    addGroup(item) {
+    addgroup(item) {
       if (this.$refs.nav.is_Login) {
         this.$router.push({
-          name:"groupdetail",
-          query:{
-            open_id:item.open_id
-          }
-        })
-      } else {
-        this.$router.push({ name: "login" });
-      }
-    },
-    // 新增实物订单
-    async orderAddData() {
-      var data = {};
-      var tStamp = this.$getTimeStamp();
-      data.timestamp = tStamp;
-      data.version = "1.0";
-      data.detail = JSON.stringify(this.detail);
-      if (this.address_id != "") data.address_id = this.address_id;
-      data.groupbuy_id = this.couponInfo.groupbuy.id;
-      data.detail = JSON.stringify(this.detail);
-      // data.
-      data.sign = this.$getSign(data);
-      let res = await ORDER_PHYSICAL_ADDINFO(data);
-
-      if (res.hasOwnProperty("response_code")) {
-        this.$router.push({
-          name: "orderconfirm",
+          name: "groupdetail",
           query: {
-            address_id: this.address_id,
-            detail: JSON.stringify(this.detail),
-            groupbuy_id: this.couponInfo.groupbuy.id,
+            open_id: item.open_id
           }
         });
       } else {
-        this.$toast(res.error_message);
+        this.$router.push({ name: "login" });
       }
     },
     // 倒计时
