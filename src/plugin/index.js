@@ -306,26 +306,31 @@ export default {
     Vue.prototype.$timeCountDown = function (options) {
       let self = this
       let second = options.time
+      let minute = second/60/60/24
       console.log(897,options,second)
       if (typeof second === 'number') {
-        this.clock = window.setInterval(() => {
-          if (second === 0) {
-            clearInterval(this.clock)
-            return false
-          }
-          second--
+        if(minute > 1){
+          options.date = Math.ceil(minute)+'天';
+        }else{
+          this.clock = window.setInterval(() => {
+            if (second === 0) {
+              clearInterval(this.clock)
+              return false
+            }
+            second--
 
-          let h = Math.floor(second / 60 / 60)
-          let m = Math.floor((second - h * 60 * 60) / 60)
-          let s = second - (h * 60 * 60) - (m * 60)
-          if (h < 10) h = '0' + h
-          if (m < 10) m = '0' + m
-          if (s < 10) s = '0' + s
-          let res = h + ":" + m + ":" + s
+            let h = Math.floor(second / 60 / 60)
+            let m = Math.floor((second - h * 60 * 60) / 60)
+            let s = second - (h * 60 * 60) - (m * 60)
+            if (h < 10) h = '0' + h
+            if (m < 10) m = '0' + m
+            if (s < 10) s = '0' + s
+            let res = h + ":" + m + ":" + s
 
-          options.date = res;
-          // console.log(res)
-        }, 1000)
+            options.date = res;
+            // console.log(res)
+          }, 1000)
+        }
       } else {
         self.$toast('时间格式不正确')
       }
@@ -339,16 +344,21 @@ export default {
       if(d>=1 && d<=3){
         self.showDay = true;
         self.showTime = true;
+        self.groupshowDay = true;
         d = Math.ceil(d);
         self.timeDataDesc = '距活动结束还剩'+d+'天';
         self.timeData = '距结束还剩'+d+'天';
+        self.grouptimeData = d;
       }else if(d < 1){
         self.showDay = false;
         self.showTime = true;
+        self.groupshowDay = false;
         this.clock = window.setInterval(() => {
           if (time1 === 0) {
             clearInterval(this.clock)
             self.returnPrice();
+            self.getGroupData();
+            self.getData();
             return false
           }
           time1--
@@ -366,9 +376,12 @@ export default {
           self.timeS = s
         }, 1000)
       }else if(d > 3){
+        d = Math.ceil(d);
         self.showTime = false;
+        self.groupshowDay = true;
         self.timeDataDesc = '限时促销'
         self.timeData = '火把拼团'
+        self.grouptimeData = d;
       }
       // console.log(d,self.clock)
     }
