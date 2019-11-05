@@ -427,7 +427,7 @@
       </div>
     </van-dialog>
     <!-- 拼团 -->
-    <div class="groupBuy" @click="toGoodsGroup" v-if="Object.keys(couponInfo.groupbuy).length>0">
+    <div class="groupBuy" @click="toGoodsGroup" v-if="couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length>0">
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-left-arrow" />
       </svg>
@@ -436,7 +436,7 @@
     <!-- 拼团 -->
     <van-popup
       v-model="groupModel"
-      v-if="Object.keys(couponInfo.groupbuy).length > 0"
+      v-if="couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length > 0"
       style="width:95%;height:60%;border-radius:6px;"
     >
       <div class="group">
@@ -457,7 +457,7 @@
             >{{couponInfo.groupbuy.groupbuy_num}}人团：￥{{couponInfo.groupbuy.groupbuy_price.toFixed(2)}}</div>
           </div>
         </div>
-        <div class="list">
+        <div class="list" v-if="couponInfo.groupbuy.open_list.length>0">
           <div class="content" v-for="(item,index) in couponInfo.groupbuy.open_list" :key="index">
             <!-- 2人团 -->
             <div class="left" v-if="item.nums == 2">
@@ -690,7 +690,7 @@
             size="small"
             round
             @click="group"
-            v-if="couponInfo.groupbuy.user_remain_nums == 0 ||couponInfo.groupbuy.can_open_nums == 0"
+            v-if="couponInfo.groupbuy.user_remain_nums > 0 ||couponInfo.groupbuy.can_open_nums > 0"
           >一键开团</van-button>
           <van-button type="danger" size="small" round disabled v-else>一键开团</van-button>
         </div>
