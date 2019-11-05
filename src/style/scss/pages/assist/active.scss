@@ -27,13 +27,13 @@
       position: absolute;
       background-position: 100%;
       background-size: contain;
-      padding-bottom: 5%;
+      padding-bottom: 6%;
       overflow: hidden;
       .activeText{
         position: absolute;
-        top: 1px;
+        top: 2px;
         right: 0;
-        font-size: 12px;
+        font-size: 13px;
       }
     }
     .prompt{
@@ -80,10 +80,9 @@
         -webkit-box-flex: 1;
         -ms-flex-positive: 1;
         flex-grow: 1;
-        color: #ffffff;
         font-size: 16px;
         .text-color{
-          color: #fff046;
+
         }
       }
       .helpPicture{
@@ -124,8 +123,9 @@
       display: -ms-flexbox;
       display: flex;
       margin-top: 15px;
+      align-items: center;
       .svg{
-        width: 20px;
+        width: 36px;
         .bookImg{
           left: 0;
           top: 0;
@@ -136,14 +136,13 @@
           background-repeat: no-repeat;
           background-size: contain;
           padding-bottom: 100%;
-          border-radius: 60px;
+          border-radius: 36px;
           overflow: hidden;
           background-color: #fffdfd;
         }
       }
       .text{
         padding-left: 7px;
-        color: #fffefe;
         flex-grow: 1;
       }
       .href{
@@ -162,10 +161,9 @@
     align-items: center;
     .line{
       flex-grow: 2;
-      border-bottom: 1px solid #ffffff;
+      border-bottom: 1px solid;
     }
     .rewardName{
-      color: #ffffff;
       font-size: 18px;
       flex-grow: 1;
     }
@@ -234,7 +232,7 @@
             position: relative;
             background-position: 100%;
             background-repeat: no-repeat;
-            background-size: 80px auto;
+            background-size: 90px auto;
             padding-bottom: 7%;
             overflow: hidden;
           }
@@ -290,10 +288,9 @@
       align-items: center;
       .line{
         flex-grow: 2;
-        border-bottom: 1px solid #ffffff;
+        border-bottom: 1px solid;
       }
       .rankingTitle{
-        color: #ffffff;
         font-size: 18px;
         flex-grow: 1;
       }
@@ -302,10 +299,9 @@
       padding: 15px 12px 0;
       .rankingMember{
         display: flex;
-        color: #fff;
         margin-bottom: 15px;
         .grade{
-          flex-basis: 75px;
+          flex-basis: 60px;
         }
         .bookImg{
           left: 0;
@@ -344,18 +340,16 @@
       align-items: center;
       .line{
         flex-grow: 2;
-        border-bottom: 1px solid #ffffff;
+        border-bottom: 1px solid;
       }
       .rulesTitle{
-        color: #ffffff;
         font-size: 18px;
         flex-grow: 1;
       }
     }
     .rulesCount{
-      padding: 0 12px 55px 12px;
-      color: #ffffff;
-      line-height: 21px;
+      padding: 0 12px 35px;
+      line-height: 25px;
     }
   }
   .picturePopup{
@@ -434,7 +428,7 @@
       }
     }
   }
-  .hrefPopup{
+  /*.hrefPopup{
     width: 74.67%;
     height: 66.56%;
     border-radius: 14px;
@@ -486,6 +480,34 @@
     .imgText{
       text-align: center;
       color: #f95958;
+    }
+  }*/
+  .hrefPopup{
+    width: 74.67%;
+    height: 66.56%;
+    border-radius: 14px;
+    padding: 25px 10px 0;
+    overflow: hidden;
+    .close{
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 13px;
+      color: #999;
+    }
+    .box{
+      width: 100%;
+      .bookImg{
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        background-repeat: no-repeat;
+        background-size: contain;
+        overflow: hidden;
+        margin-bottom: 60px;
+      }
     }
   }
   .billPopup{
@@ -603,7 +625,7 @@
     .active-bg{
       .activeRules{
         .activeText{
-          top: -1px;
+          top: 1px;
           font-size: 12px;
           transform: scale(0.8);
           right: -3px;
@@ -629,7 +651,7 @@
         .callBack{
           .contentBox{
             .imgThree{
-              background-size: 60px auto;
+              background-size: 70px auto;
             }
           }
         }
@@ -646,7 +668,7 @@
         }
       }
     }
-    .hrefPopup{
+    /*.hrefPopup{
       .hrefLine{
         margin-bottom: 25px;
       }
@@ -655,14 +677,27 @@
           margin-bottom: 15px;
         }
       }
+    }*/
+    .ranking{
+      .rankingContet{
+        .rankingMember{
+          font-size: 12px;
+          .grade{
+            flex-basis: 35px;
+          }
+          .title{
+            margin-left: 5px;
+          }
+        }
+      }
     }
   }
   @media screen and (min-width: 768px) {
     .active-bg{
       .activeRules{
         .activeText{
-          top: 3px;
-          font-size: 22px;
+          top: 5px;
+          font-size: 26px;
         }
       }
     }
@@ -682,7 +717,7 @@
         .callBack{
           .contentBox{
             .imgThree{
-              background-size: 160px auto;
+              background-size: 185px auto;
             }
           }
         }
@@ -699,11 +734,11 @@
         }
       }
     }
-    .hrefPopup{
+    /*.hrefPopup{
       .box{
         width: 300px;
       }
-    }
+    }*/
     .picturePopup{
       padding: 200px 60px 40px;
       .firendList{

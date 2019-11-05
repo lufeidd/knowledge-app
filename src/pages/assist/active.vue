@@ -20,12 +20,12 @@
     </div>
     <div class="helpFriend" v-if="activityData.base.launch_id">
       <div class="helpAndPic" v-if="activityData.launcher.curr_num > 0">
-        <div class="helpCount">
+        <div class="helpCount" :style="{'color':color}">
           <span>已获得</span>
-          <span class="text-color">{{ activityData.launcher.curr_num }}份</span>
+          <span class="text-color" :style="{'color':lightcolor}">{{ activityData.launcher.curr_num }}人</span>
           <span>助力</span>
         </div>
-        <div class="helpPicture">
+        <div class="helpPicture" @click="pictureShow">
           <div class="oval" v-if="activityData.launcher.supporter_list.length > 0">
             <div class="bookImg" v-lazy:background-image="activityData.launcher.supporter_list[0].user_pic"></div>
           </div>
@@ -35,14 +35,14 @@
           <div class="oval" style="right: 46px;" v-if="activityData.launcher.supporter_list.length > 2">
             <div class="bookImg" v-lazy:background-image="activityData.launcher.supporter_list[2].user_pic"></div>
           </div>
-          <div class="picture" @click="pictureShow"></div>
+          <div class="picture"></div>
         </div>
       </div>
       <div class="concern">
         <div class="svg">
           <div class="bookImg" v-lazy:background-image="activityData.base.brand_pic"></div>
         </div>
-        <div class="text">
+        <div class="text" :style="{'color':color}">
           <span>点击关注，实时查看领奖进度</span>
         </div>
         <div class="href" @click="hrefShow">
@@ -50,14 +50,14 @@
         </div>
       </div>
     </div>
-    <div class="rewardTitle">
+    <div class="rewardTitle" :style="{'color':color}">
       <div class="line"></div>
       <div class="rewardName">邀好友，领奖励</div>
       <div class="line"></div>
     </div>
     <div class="rewardContent">
       <div v-for="(item,index) in activityData.base.reward_list" :key="index">
-        <div class="bookImg" v-lazy:background-image="item.ad_pic">
+        <div class="bookImg" v-lazy:background-image="item.ad_pic" @click="receiveAwardes(item,index)">
           <div class="callBack">
             <div class="grade">{{index + 1}}</div>
             <div v-if="item.state == 2" class="contentBox">
@@ -67,17 +67,17 @@
             </div>
             <div v-else-if="item.state == 1" class="contentBox">
               <div class="imgFour">
-                <div class="content" @click="addressShow(index)">已获得，点击领取</div>
+                <div class="content">已获得，点击领取</div>
               </div>
             </div>
             <div v-else-if="item.state == 0 && activityData.base.launch_id != 0" class="contentBox">
               <div class="imgThree">
-                <div class="content">还差{{ item.goal_num - item.curr_num }}份助力</div>
+                <div class="content">还差{{ item.goal_num - item.curr_num }}人助力</div>
               </div>
             </div>
             <div v-else-if="item.state == 0 && activityData.base.launch_id == 0" class="contentBox">
               <div class="imgThree">
-                <div class="content">需{{ item.goal_num - item.curr_num }}份助力</div>
+                <div class="content">需{{ item.goal_num - item.curr_num }}人助力</div>
               </div>
             </div>
             <!--<div v-else="item.state == 0" class="contentBox">
@@ -89,7 +89,7 @@
         </div>
       </div>
     </div>
-    <div class="activeMore">
+    <div class="activeMore" id="activetyMore">
         <div class="moreText" @click="outLink">
           前往更多活动
           <svg class="icon" aria-hidden="true">
@@ -98,31 +98,31 @@
         </div>
     </div>
     <div class="ranking" v-if="this.activityData.rank.length > 0 ? true : false">
-      <div class="ranking-tit">
+      <div class="ranking-tit" :style="{'color':color}">
         <div class="line"></div>
         <div class="rankingTitle">排行榜</div>
         <div class="line"></div>
       </div>
       <div class="rankingContet">
         <div v-for="(item,index) in activityData.rank" :key="index">
-          <div class="rankingMember">
-            <div class="grade">NO&nbsp;{{index + 1}}</div>
+          <div class="rankingMember" :style="{'color':color}">
+            <div class="grade">No.{{index + 1}}</div>
             <div style="width: 20px;">
               <div class="bookImg" v-lazy:background-image="item.user_pic"></div>
             </div>
             <div class="title">{{item.nickname}}</div>
-            <div class="count">{{item.support_nums}}</div>
+            <div class="count">已获得{{item.support_nums}}人助力</div>
           </div>
         </div>
       </div>
     </div>
     <div class="rules" id="rules">
-      <div class="rules-tit">
+      <div class="rules-tit" :style="{'color':color}">
         <div class="line"></div>
         <div class="rulesTitle">活动规则</div>
         <div class="line"></div>
       </div>
-      <div class="rulesCount">{{ activityData.base.rules }}</div>
+      <div class="rulesCount" :style="{'color':color}" v-html="changeHtml(activityData.base.rules)"></div>
     </div>
     <!-- 点击好友头像显示的弹层 -->
     <van-popup v-model="pictureShowPopup" class="picturePopup">
@@ -148,23 +148,31 @@
       </div>
     </van-popup>
     <!-- 点击关注显示的弹层 -->
-    <van-popup v-model="hrefShowPopup" class="hrefPopup">
+    <!--<van-popup v-model="hrefShowPopup" class="hrefPopup">
     <svg class="icon close" aria-hidden="true" @click="hrefClose">
       <use xlink:href="#icon-close-line" />
     </svg>
     <div class="hrefTitle">
       {{ activityData.base.qr_desc }}
     </div>
-    <div class="hrefName">一些诱惑性文字一些诱惑性文字</div>
+    <div class="hrefName">{{ activityData.base.qr_desc_2 }}</div>
     <div class="hrefText">
-      一些诱惑性文字
+      {{ activityData.base.qr_desc_3 }}
     </div>
     <div class="hrefLine"></div>
     <div class="box">
       <img class="bookImg" :src= activityData.base.qr_url />
     </div>
     <div class="imgText">长按识别二维码，关注公众号</div>
-  </van-popup>
+  </van-popup>-->
+    <van-popup v-model="hrefShowPopup" class="hrefPopup">
+      <svg class="icon close" aria-hidden="true" @click="hrefClose">
+        <use xlink:href="#icon-close-line" />
+      </svg>
+      <div class="box">
+        <img class="bookImg" :src= activityData.base.qr_url />
+      </div>
+    </van-popup>
     <!-- 海报显示的弹层 -->
     <van-popup v-model="billShowPopup" class="billPopup">
       <svg class="icon close" aria-hidden="true" @click="billClose">
@@ -219,7 +227,7 @@
   }
 </style>
 <script>
-  import { PAGE_SHARE_INFO ,ASSISTANCE_DETAIL , ASSISTANCE_POSTER , ASSISTANCE_SUPPORTER , ASSISTANCE_TAKEPRIZE } from "../../apis/assist";
+  import { ASSISTANCE_DETAIL , ASSISTANCE_POSTER , ASSISTANCE_SUPPORTER , ASSISTANCE_TAKEPRIZE } from "../../apis/assist";
   import {LOGIN_PARTERNER} from "../../apis/passport.js";
   import { USER_ADDRESS_EDIT , USER_ADDRESS_LIST } from "../../apis/user.js";
   export default {
@@ -247,6 +255,8 @@
         activity_id: 0,
         addressId: 0,
         bgcolor: "",
+        color: "",
+        lightcolor: "",
         awardId: 0,
         activeList: [
           {pic:"http://file.mhuoba.com/picture/shopadmin/20190705/11/20190705111229706.jpg"}
@@ -296,10 +306,11 @@
         let res = await ASSISTANCE_POSTER(data);
         if (res.hasOwnProperty("response_code")) {
           this.posterData = res.response_data;
+          this.billShowPopup = true;
         } else {
           this.$toast(res.error_message);
+          document.querySelector("#activetyMore").scrollIntoView(true);
         }
-        this.billShowPopup = true;
       },
       billClose () {
         this.billShowPopup = false;
@@ -373,6 +384,7 @@
         var data = {
           activity_id: this.activity_id,
           openid: localStorage.getItem("openid"),
+          //openid: tStamp,
           version: "1.0",
           timestamp: tStamp
         };
@@ -381,39 +393,19 @@
         if (res.hasOwnProperty("response_code")) {
           this.activityData = res.response_data;
           this.bgcolor = res.response_data.base.background;
+          this.color = res.response_data.base.textcolor;
+          this.lightcolor = res.response_data.base.lightcolor;
           this.pageShareInfo();
         } else {
           this.$toast(res.error_message);
         }
       },
       //页面分享信息获取方法
-      async pageShareInfo () {
-        var tStamp = this.$getTimeStamp();
-        var data = {
-          params: JSON.stringify({
-            launch_id: this.activityData.base.launch_id,
-            activity_id: this.activity_id
-          }),
-          page_name: "assist/index",
-          version: "1.0",
-          timestamp: tStamp
-        };
-        data.sign = this.$getSign(data);
-        let res = await PAGE_SHARE_INFO(data);
-        if (res.hasOwnProperty("response_code")) {
-          //获取页面分享信息
-          var shareData = res.response_data;
-          var _pageName = shareData.page_name;
-          var _params = JSON.stringify({
-            title: shareData.share_info.title,
-            desc: shareData.share_info.desc,
-            pic: shareData.share_info.pic,
-            url: shareData.share_info.url
-          });
-          if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
-        } else {
-          //错误信息弹窗
-        }
+      pageShareInfo () {
+        if (this.isWxLogin) this.$getWxShareData("assist/index", JSON.stringify({
+          launch_id: this.activityData.base.launch_id,
+          activity_id: this.activity_id
+        }));
       },
       //开启助力点击
       async startHelp () {
@@ -423,6 +415,7 @@
           type: 2,
           outer_name: localStorage.getItem("nickname"),
           header_pic: localStorage.getItem("headimg"),
+          openid: localStorage.getItem("openid"),
           version: "1.0",
           timestamp: tStamp
         };
@@ -499,6 +492,21 @@
         } else {
           this.$toast(res.error_message);
         }
+      },
+      //领取奖励
+      receiveAwardes (item,index) {
+        if (item.state == 2) {
+          this.$toast("已领取");
+        } else if (item.state == 1) {
+          this.addressShow(index);
+        } else if (item.state == 0 && this.activityData.base.launch_id != 0) {
+          this.$toast("还差"+ (item.goal_num - item.curr_num) +"人助力");
+        } else if (item.state == 0 && this.activityData.base.launch_id == 0) {
+          this.$toast("需"+ (item.goal_num - item.curr_num) +"人助力");
+        }
+      },
+      changeHtml (content) {
+        return content.replace(/\n/g, "<br>");
       }
     }
   }

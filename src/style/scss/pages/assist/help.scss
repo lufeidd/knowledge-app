@@ -28,13 +28,13 @@
        position: absolute;
        background-position: 100%;
        background-size: contain;
-       padding-bottom: 5%;
+       padding-bottom: 6%;
        overflow: hidden;
        .activeText{
          position: absolute;
-         top: 1px;
+         top: 2px;
          right: 0;
-         font-size: 12px;
+         font-size: 13px;
        }
      }
      .dn{
@@ -42,7 +42,6 @@
      }
    }
    .helpBoss{
-     color: #e7eb46;
      font-size: 14px;
      text-align: center;
      margin-bottom: 9px;
@@ -51,7 +50,6 @@
      width: 255px;
      margin: 0 auto;
      .text{
-       color: #ffffff;
        font-size: 12px;
        margin-bottom: 2px;
      }
@@ -124,7 +122,6 @@
      }
    }
    .myText{
-     color: #e7eb46;
      font-size: 14px;
      text-align: center;
      text-decoration: underline;
@@ -137,18 +134,16 @@
        align-items: center;
        .line{
          flex-grow: 2;
-         border-bottom: 1px solid #ffffff;
+         border-bottom: 1px solid;
        }
        .rulesTitle{
-         color: #ffffff;
          font-size: 18px;
          flex-grow: 1;
        }
      }
      .rulesCount{
-       padding: 0 12px 55px 12px;
-       color: #ffffff;
-       line-height: 21px;
+       padding: 0 12px 35px;
+       line-height: 25px;
      }
    }
 
@@ -156,7 +151,7 @@
      .active-bg{
        .activeRules{
          .activeText{
-           top: -1px;
+           top: 1px;
            font-size: 12px;
            transform: scale(0.8);
            right: -3px;
@@ -168,8 +163,8 @@
      .active-bg{
        .activeRules{
          .activeText{
-           top: 3px;
-           font-size: 22px;
+           top: 5px;
+           font-size: 26px;
          }
        }
      }

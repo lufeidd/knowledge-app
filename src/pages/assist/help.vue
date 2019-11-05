@@ -6,9 +6,9 @@
         <div class="activeText">活动规则</div>
       </div>
     </div>
-    <div class="helpBoss" v-if="supportGet">你已成功助力{{ helpinitData.launch_nickname }}！</div>
+    <div class="helpBoss" v-if="supportGet" :style="{'color':lightcolor}">你已成功助力{{ helpinitData.launch_nickname }}！</div>
     <div class="couponImg">
-      <div class="text" v-if="supportGet">你已获得：</div>
+      <div class="text" v-if="supportGet" :style="{'color':color}">你已获得：</div>
       <div class="bookImg" v-lazy:background-image="helpinitData.support_award_pic" v-if="supportSuccess"></div>
     </div>
     <div class="fieldBox" v-if="supportNew">
@@ -75,15 +75,15 @@
       </router-link>
     </div>
     <router-link :to="{name: 'assistactive', query: {activity_id: this.activity_id}}" v-if="this.initButton">
-      <div class="myText">我也要领</div>
+      <div class="myText" :style="{'color':lightcolor}">我也要领</div>
     </router-link>
     <div class="rules" id="rules">
-      <div class="rules-tit">
+      <div class="rules-tit" :style="{'color':color}">
         <div class="line"></div>
         <div class="rulesTitle">活动规则</div>
         <div class="line"></div>
       </div>
-      <div class="rulesCount">{{ helpinitData.rules }}</div>
+      <div class="rulesCount" :style="{'color':color}" v-html="changeHtml(helpinitData.rules)"></div>
     </div>
   </div>
 </template>
@@ -116,6 +116,8 @@
         launch_id:0,
         code: "",
         bgcolor: "",
+        color: "",
+        lightcolor: "",
         oldUserPrompt: "",
         helpinitData: {},
         activity_id: 0,
@@ -190,6 +192,8 @@
           this.helpinitData = res.response_data;
           this.activity_id = res.response_data.activity_id;
           this.bgcolor = this.helpinitData.background;
+          this.color = this.helpinitData.textcolor;
+          this.lightcolor = this.helpinitData.lightcolor;
           if (this.helpinitData.supporter_info.nickname) {
             this.supportNew = false;
             this.initButton = false;
@@ -357,6 +361,7 @@
           outer_id: localStorage.getItem("unionid"),
           outer_name: localStorage.getItem("nickname"),
           header_pic: localStorage.getItem("headimg"),
+          openid: localStorage.getItem("openid"),
           version: "1.0",
           timestamp: tStamp
         };
@@ -377,6 +382,9 @@
         } else {
           this.$toast(res.error_message);
         }
+      },
+      changeHtml (content) {
+        return content.replace(/\n/g, "<br>");
       }
     }
   }
