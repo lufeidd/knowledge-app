@@ -736,18 +736,14 @@ export default {
     // 开团
     openGroup() {
       if (this.$refs.nav.is_Login) {
-        if (this.couponInfo.groupbuy.can_open_nums > 0) {
-          this.$router.push({
-            name: "orderconfirm",
-            query: {
-              address_id: this.address_id,
-              detail: JSON.stringify(this.detail),
-              groupbuy_id: this.couponInfo.groupbuy.id
-            }
-          });
-        } else {
-          this.$toast("");
-        }
+        this.$router.push({
+          name: "orderconfirm",
+          query: {
+            address_id: this.address_id,
+            detail: JSON.stringify(this.detail),
+            groupbuy_id: this.couponInfo.groupbuy.id
+          }
+        });
       } else {
         this.$router.push({ name: "login" });
       }
