@@ -677,7 +677,7 @@
                   size="small"
                   type="danger"
                   disabled
-                  v-if="couponInfo.groupbuy.my_open_ids.length>0 || couponInfo.groupbuy.user_remain_nums == 0 ||couponInfo.groupbuy.can_open_nums == 0"
+                  v-if="couponInfo.groupbuy.my_open_ids.length>0 || couponInfo.groupbuy.user_remain_nums == 0"
                 >去参团</van-button>
                 <van-button round size="small" type="danger" @click="addgroup(item)" v-else>去参团</van-button>
               </div>
@@ -694,7 +694,7 @@
               size="small"
               round
               disabled
-              v-if="couponInfo.groupbuy.my_open_ids.length>0 || couponInfo.groupbuy.user_remain_nums == 0"
+              v-if="couponInfo.groupbuy.user_remain_nums == 0 ||couponInfo.groupbuy.can_open_nums == 0"
             >一键开团</van-button>
             <van-button type="danger" size="small" round @click="group" v-else>一键开团</van-button>
           </div>
