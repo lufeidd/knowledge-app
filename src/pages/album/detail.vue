@@ -888,7 +888,7 @@ export default {
           "</del> 购买专辑</div>"
       );
     }
-    if (Object.keys(this.couponInfo.groupbuy).length > 0) {
+    if (this.couponInfo.groupbuy && Object.keys(this.couponInfo.groupbuy).length > 0) {
       $(".van-goods-action-big-btn.van-button--warning .van-button__text").html(
         '<div style="line-height:1;font-size:15px;">￥' +
           this.baseData.market_price.toFixed(2) +
@@ -1368,7 +1368,7 @@ export default {
         document.title = "节目详情-" + res.response_data.base.title;
         // 优惠券
         this.couponInfo = res.response_data.activity;
-        if (
+        if (this.couponInfo.groupbuy &&
           Object.keys(this.couponInfo.groupbuy).length > 0 &&
           this.couponInfo.groupbuy.open_list.length > 0
         ) {

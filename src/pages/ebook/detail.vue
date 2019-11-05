@@ -909,7 +909,7 @@ export default {
         if (this.couponInfo.single.remain_time > 0) {
           this.$countTime(this.couponInfo.single.remain_time);
         }
-        if (
+        if (this.couponInfo.groupbuy &&
           Object.keys(this.couponInfo.groupbuy).length > 0 &&
           this.couponInfo.groupbuy.open_list.length > 0
         ) {

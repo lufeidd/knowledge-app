@@ -465,7 +465,10 @@ export default {
       if (this.$refs.nav.is_Login) {
         this.$router.push({
           name: "groupgoods",
-          query: { goods_id:this.baseData.goods_id }
+          query: {
+             goods_id:this.baseData.goods_id,
+             groupbuy_id:this.couponInfo.groupbuy.id,
+           }
         });
       } else {
         this.$router.push({ name: "login" });

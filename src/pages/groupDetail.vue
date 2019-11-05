@@ -66,9 +66,7 @@
           <span class="red">{{groupData.remain_nums}}人</span> 拼团成功，还剩
           <span class="red" v-if="groupshowDay">{{grouptimeData}} 天</span>
           <span v-else>
-            <span class="time">{{timeH}}</span> ：
-            <span class="time">{{timeM}}</span> ：
-            <span class="time">{{timeS}}</span>
+            <span class="time">{{timeH}}</span> ：<span class="time">{{timeM}}</span> ：<span class="time">{{timeS}}</span>
           </span>
         </div>
         <div class="state" v-if="groupData.state == 2">
@@ -249,7 +247,7 @@ export default {
             name: "orderconfirm",
             query: {
               groupbuy_id: this.groupData.groupbuy_id,
-              detail:{goods_id:this.groupData.goods_id,sku_id:this.groupData.goods_id,count:1}
+              detail:JSON.stringify({goods_id:this.groupData.goods_id,sku_id:this.groupData.goods_id,count:1})
             }
           });
         } else {
@@ -274,7 +272,7 @@ export default {
             name: "orderconfirm",
             query: {
               groupbuy_open_id: this.groupData.open_id,
-              detail:{goods_id:this.groupData.goods_id,sku_id:this.groupData.goods_id,count:1}
+              detail:JSON.stringify({goods_id:this.groupData.goods_id,sku_id:this.groupData.goods_id,count:1})
             }
           });
         } else {
