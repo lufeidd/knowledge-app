@@ -435,7 +435,7 @@
       <!-- 试听 - 购买 -->
       <van-goods-action
         :class="{ iphx: this.isIphx }"
-        v-if="baseData.is_free == 0 && baseData.is_payed == 0 && baseData.sale_style == 1 && Object.keys(couponInfo.groupbuy).length == 0"
+        v-if="baseData.is_free == 0 && baseData.is_payed == 0 && baseData.sale_style == 1 && (couponInfo.groupbuy == undefined || Object.keys(couponInfo.groupbuy).length == 0)"
       >
         <van-goods-action-mini-btn
           icon="play-circle-o"
@@ -451,7 +451,7 @@
       </van-goods-action>
       <van-goods-action
         :class="{ iphx: this.isIphx }"
-        v-if="baseData.is_free == 0 && baseData.is_payed == 0 && baseData.sale_style == 1 && Object.keys(couponInfo.groupbuy).length > 0"
+        v-if="baseData.is_free == 0 && baseData.is_payed == 0 && baseData.sale_style == 1 &&couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length > 0"
       >
         <van-goods-action-mini-btn
           icon="play-circle-o"
@@ -594,7 +594,7 @@
       <!-- 拼团 -->
       <van-popup
         v-model="groupModel"
-        v-if="Object.keys(couponInfo.groupbuy).length > 0"
+        v-if="couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length > 0"
         style="width:95%;height:60%;border-radius:6px;"
       >
         <div class="group">
@@ -615,7 +615,7 @@
               >{{couponInfo.groupbuy.groupbuy_num}}人团：￥{{couponInfo.groupbuy.groupbuy_price.toFixed(2)}}</div>
             </div>
           </div>
-          <div class="list">
+          <div class="list" v-if="couponInfo.groupbuy.open_list.length>0">
             <div class="content" v-for="(item,index) in couponInfo.groupbuy.open_list" :key="index">
               <!-- 2人团 -->
               <div class="left" v-if="item.nums == 2">

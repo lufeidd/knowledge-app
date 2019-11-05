@@ -334,7 +334,7 @@
     </div>
     <EazyNav type="brand" ref="nav"></EazyNav>
     <!-- 拼团 -->
-    <div class="groupBuy" v-if="Object.keys(couponInfo.groupbuy).length>0" @click="toGoodsGroup">
+    <div class="groupBuy" v-if="couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length>0" @click="toGoodsGroup">
       拼团价：￥{{couponInfo.groupbuy.groupbuy_price.toFixed(2)}}
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-next-line" />
