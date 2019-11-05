@@ -438,12 +438,14 @@ export default {
       order_ticket_ids: "",
       single_activity_id:null,
       groupbuy_id:null,
+      open_id:null,
     };
   },
   mounted() {
     // 上个页面携带必要信息
     this.goods_id = this.$route.query.goods_id;
     this.groupbuy_id = this.$route.query.groupbuy_id;
+    this.open_id = this.$route.query.open_id;
     // 获取下单信息
     this.infoData();
   },
@@ -451,13 +453,12 @@ export default {
     // 获取下单信息
     async infoData() {
       var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        goods_id: this.goods_id,
-        // album_id: this.album_id,
-        groupbuy_id:this.groupbuy_id?this.groupbuy_id:0,
-        version: "1.0"
-      };
+      var data = {};
+      data.timestamp = tStamp;
+      data.version = "1.0";
+      data.goods_id = this.goods_id;
+      if(this.$route.query.groupbuy_id) data.groupbuy_id = this.$route.query.groupbuy_id;
+      if(this.$route.query.open_id) data.groupbuy_open_id = this.$route.query.open_id;
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADDINFO(data);
       if (res.hasOwnProperty("response_code")) {

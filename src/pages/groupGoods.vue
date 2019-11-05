@@ -619,12 +619,17 @@ export default {
         if (this.couponInfo.groupbuy.remain_time) {
           this.$countTime(this.couponInfo.groupbuy.remain_time);
         }
-        for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
-          this.remain_time.push({
-            time: this.couponInfo.groupbuy.open_list[i].remain_time,
-            date: ""
-          });
-          this.$timeCountDown(this.remain_time[i]);
+        if (
+          Object.keys(this.couponInfo.groupbuy).length > 0 &&
+          this.couponInfo.groupbuy.open_list.length > 0
+        ) {
+          for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
+            this.remain_time.push({
+              time: this.couponInfo.groupbuy.open_list[i].remain_time,
+              date: ""
+            });
+            this.$timeCountDown(this.remain_time[i]);
+          }
         }
         // 立即购买信息
         this.detail.goods_id = res.response_data.base.goods_id;
@@ -731,18 +736,14 @@ export default {
     // 开团
     openGroup() {
       if (this.$refs.nav.is_Login) {
-        if (this.couponInfo.groupbuy.can_open_nums > 0) {
-          this.$router.push({
-            name: "orderconfirm",
-            query: {
-              address_id: this.address_id,
-              detail: JSON.stringify(this.detail),
-              groupbuy_id: this.couponInfo.groupbuy.id
-            }
-          });
-        }else{
-          this.$toast("");
-        }
+        this.$router.push({
+          name: "orderconfirm",
+          query: {
+            address_id: this.address_id,
+            detail: JSON.stringify(this.detail),
+            groupbuy_id: this.couponInfo.groupbuy.id
+          }
+        });
       } else {
         this.$router.push({ name: "login" });
       }

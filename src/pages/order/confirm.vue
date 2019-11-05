@@ -325,10 +325,12 @@ export default {
       maxDiscount:null,
       discount_price_desc:'',
       groupbuy_id:null,
+      open_id:null,
     };
   },
   mounted() {
     this.groupbuy_id = this.$route.query.groupbuy_id;
+    this.open_id = this.$route.query.open_id;
     this.orderAddData();
   },
   methods: {
@@ -352,7 +354,7 @@ export default {
         data.detail_ids = this.$route.query.detail_ids;
       if (this.$route.query.detail) data.detail = this.$route.query.detail;
       if (this.$route.query.groupbuy_id) data.groupbuy_id = this.$route.query.groupbuy_id;
-      if (this.$route.query.groupbuy_open_id) data.groupbuy_open_id = this.$route.query.groupbuy_open_id;
+      if (this.$route.query.groupbuy_open_id) data.groupbuy_open_id = this.$route.query.open_id;
       // data.ticket_ids = this.order_ticket_ids;
       data.sign = this.$getSign(data);
       let res = await ORDER_PHYSICAL_ADDINFO(data);
