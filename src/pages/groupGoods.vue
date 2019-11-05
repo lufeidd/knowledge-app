@@ -42,10 +42,10 @@
           </div>
           <div class="promotionRight">
             <div
-              style="margin-top:5px;margin-bottom:10px;font-size:15px;"
+              style="margin-top:5px;margin-bottom:5px;font-size:15px;"
               v-if="couponInfo.groupbuy.join_nums<couponInfo.groupbuy.limit_nums"
             >{{timeData}}</div>
-            <div v-else style="margin-top:5px;margin-bottom:10px;font-size:15px;">火把拼团</div>
+            <div v-else style="margin-top:5px;margin-bottom:5px;font-size:15px;">火把拼团</div>
             <div
               v-if="baseData.stores > 10 "
               style="font-size:13px;"
@@ -510,11 +510,13 @@ export default {
       timeM: null,
       timeS: null,
       showDay: true,
-      remain_time: []
+      remain_time: [],
+      groupbuy_id:null,
     };
   },
   mounted() {
     this.baseData.goods_id = parseInt(this.$route.query.goods_id);
+    this.groupbuy_id = parseInt(this.$route.query.groupbuy_id);
     // this.baseData.goods_id = 482;
     // 初始化省市区
     this.$getAddressData();
@@ -592,6 +594,7 @@ export default {
         ad: parseInt(this.$route.query.ad) == 1 ? 1 : 0,
         timestamp: tStamp,
         goods_id: this.baseData.goods_id,
+        groupbuy_id: this.groupbuy_id,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -619,7 +622,7 @@ export default {
         if (this.couponInfo.groupbuy.remain_time) {
           this.$countTime(this.couponInfo.groupbuy.remain_time);
         }
-        if (
+        if (this.couponInfo.groupbuy &&
           Object.keys(this.couponInfo.groupbuy).length > 0 &&
           this.couponInfo.groupbuy.open_list.length > 0
         ) {

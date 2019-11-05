@@ -716,13 +716,13 @@ export default new Router({
     },
     // 实物商品拼团页
     {
-      path: '/groupGoods',
+      path: '/groupgoods',
       name: 'groupgoods',
       component: groupgoods
     },
     // 拼团详情页
     {
-      path: '/groupDetail',
+      path: '/groupdetail',
       name: 'groupdetail',
       component: groupdetail,
       meta: {
