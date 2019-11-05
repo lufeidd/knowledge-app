@@ -427,7 +427,7 @@
       </div>
     </van-dialog>
     <!-- 拼团 -->
-    <div class="groupBuy" @click="toGoodsGroup" v-if="couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length>0">
+    <div class="groupBuy" @click="toGoodsGroup" v-if="couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length>0 && baseData.is_payed == 0">
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-left-arrow" />
       </svg>
@@ -1290,7 +1290,7 @@ export default {
       });
     },
     group() {
-      if (this.$refs.nav.is_Login) {
+      if (this.isLogin) {
         this.isgroup = true;
         this.groupModel = false;
         this.$refs.pay.buyShow = true;

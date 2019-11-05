@@ -272,6 +272,7 @@ export default {
             name: "orderconfirm",
             query: {
               groupbuy_open_id: this.groupData.open_id,
+              groupbuy_id:this.groupData.groupbuy_id,
               detail:JSON.stringify({goods_id:this.groupData.goods_id,sku_id:this.groupData.goods_id,count:1})
             }
           });
@@ -280,6 +281,7 @@ export default {
             name: "payaccount",
             query: {
               goods_id: this.groupData.goods_id,
+              groupbuy_id:this.groupData.groupbuy_id,
               groupbuy_open_id: this.groupData.open_id
             }
           });
