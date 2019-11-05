@@ -36,7 +36,7 @@
         <span class="toMall" v-if="ticket_num">已选{{ticket_num}}张</span>
       </template>
     </van-cell>
-    <van-cell title is-link value="拼团商品不可用券" style="margin:5px 0;" v-if="ticket_lists.canuse.length == 0 && groupbuy_id">
+    <van-cell title is-link value="拼团商品不可用券" style="margin:5px 0;" v-if="ticket_lists.canuse.length == 0 && (groupbuy_id || groupbuy_open_id)">
       <template slot="title">
         <span style="margin-right:10px;">优惠券</span>
       </template>
