@@ -619,12 +619,17 @@ export default {
         if (this.couponInfo.groupbuy.remain_time) {
           this.$countTime(this.couponInfo.groupbuy.remain_time);
         }
-        for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
-          this.remain_time.push({
-            time: this.couponInfo.groupbuy.open_list[i].remain_time,
-            date: ""
-          });
-          this.$timeCountDown(this.remain_time[i]);
+        if (
+          Object.keys(this.couponInfo.groupbuy).length > 0 &&
+          this.couponInfo.groupbuy.open_list.length > 0
+        ) {
+          for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
+            this.remain_time.push({
+              time: this.couponInfo.groupbuy.open_list[i].remain_time,
+              date: ""
+            });
+            this.$timeCountDown(this.remain_time[i]);
+          }
         }
         // 立即购买信息
         this.detail.goods_id = res.response_data.base.goods_id;
@@ -740,7 +745,7 @@ export default {
               groupbuy_id: this.couponInfo.groupbuy.id
             }
           });
-        }else{
+        } else {
           this.$toast("");
         }
       } else {

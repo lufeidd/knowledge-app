@@ -1368,13 +1368,19 @@ export default {
         document.title = "节目详情-" + res.response_data.base.title;
         // 优惠券
         this.couponInfo = res.response_data.activity;
-        for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
-          this.remain_time.push({
-            time: this.couponInfo.groupbuy.open_list[i].remain_time,
-            date: ""
-          });
-          this.$timeCountDown(this.remain_time[i]);
+        if (
+          Object.keys(this.couponInfo.groupbuy).length > 0 &&
+          this.couponInfo.groupbuy.open_list.length > 0
+        ) {
+          for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
+            this.remain_time.push({
+              time: this.couponInfo.groupbuy.open_list[i].remain_time,
+              date: ""
+            });
+            this.$timeCountDown(this.remain_time[i]);
+          }
         }
+
         // console.log(7474,$('.van-goods-action-big-btn .van-button__text'))
 
         // 所属媒体信息
