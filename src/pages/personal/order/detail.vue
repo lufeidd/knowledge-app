@@ -329,7 +329,9 @@ export default {
       showInvoice: false,
       if_refund: true,
       detail_ids: null,
-      groupData:{},
+      groupData:{
+        join_list:[]
+      },
       timeH: null,
       timeM: null,
       timeS: null,

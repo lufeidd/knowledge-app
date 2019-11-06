@@ -179,9 +179,6 @@ export default {
     this.open_id = this.$route.query.open_id;
     this.returnPrice();
     this.getLogin();
-    $("body").on("click", function() {
-      console.log(2222222);
-    });
   },
   methods: {
     async getLogin() {

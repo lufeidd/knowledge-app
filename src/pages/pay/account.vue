@@ -615,6 +615,7 @@ export default {
         // album_id: this.album_id,
         ticket_id: this.order_ticket_ids,
         groupbuy_id:this.groupbuy_id?this.groupbuy_id:0,
+        groupbuy_open_id:this.groupbuy_open_id?this.groupbuy_open_id:0,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
