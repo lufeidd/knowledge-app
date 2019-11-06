@@ -336,6 +336,7 @@ export default {
       }
 
     }
+    
     // 限时促销计算时间
     Vue.prototype.$countTime = function(endtime){
       var self = this;
@@ -357,8 +358,8 @@ export default {
           if (time1 === 0) {
             clearInterval(this.clock)
             self.returnPrice();
-            self.getGroupData();
-            self.getData();
+            // self.getGroupData();
+            // self.getData();
             return false
           }
           time1--

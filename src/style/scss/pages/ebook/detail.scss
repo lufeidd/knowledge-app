@@ -701,8 +701,8 @@
     .list {
       position: absolute;
       top: 110px;
-      bottom: 110px;
-      overflow-y: auto;
+      bottom: 85px;
+      // overflow-y: auto;
       width: calc(100% - 30px);
 
       .content {

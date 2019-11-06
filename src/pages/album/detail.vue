@@ -1372,6 +1372,9 @@ export default {
           Object.keys(this.couponInfo.groupbuy).length > 0 &&
           this.couponInfo.groupbuy.open_list.length > 0
         ) {
+          if(this.couponInfo.groupbuy.open_list.length > 2){
+            this.couponInfo.groupbuy.open_list = this.couponInfo.groupbuy.open_list.slice(0,2)
+          }
           for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
             this.remain_time.push({
               time: this.couponInfo.groupbuy.open_list[i].remain_time,

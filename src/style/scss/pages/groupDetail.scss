@@ -126,6 +126,9 @@
           width: 100%;
           text-align: center;
           margin-top:15px;
+          .van-button__text{
+            margin-right: 0;
+          }
         }
         .van-button--primary{
           background-color: transparent;
