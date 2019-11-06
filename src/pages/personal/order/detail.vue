@@ -19,7 +19,10 @@
         <use xlink:href="#icon-daizhifu" />
       </svg>
       {{infoData.state == 7? '交易取消':infoData.state_desc}}
-      <span class="groupTime" v-if="groupData && infoData.state == 9 && infoData.type == 2 && groupData.remain_time">剩余：<span v-if="timeH">{{timeH}}小时</span>{{timeM}}分钟{{timeS}}秒</span>
+      <span class="groupTime" v-if="groupData && infoData.state == 9 && infoData.type == 1 && groupData.remain_time">
+        剩余：<span v-if="groupshowDay">{{grouptimeData}}天</span>
+        <span v-else><span v-if="timeH">{{timeH}}小时</span>{{timeM}}分钟{{timeS}}秒</span>
+      </span>
     </div>
     <div v-if="infoData.type == 2">
       <div
@@ -335,6 +338,8 @@ export default {
       timeH: null,
       timeM: null,
       timeS: null,
+      grouptimeData:"",
+      groupshowDay:false,
     };
   },
   mounted() {
