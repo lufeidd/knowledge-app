@@ -403,6 +403,9 @@ export default {
         this.$toast(res.error_message);
       }
     },
+    returnPrice(){
+      this.getData();
+    },
     //获取再次购买信息
     async getAgainData() {
       var tStamp = this.$getTimeStamp();
