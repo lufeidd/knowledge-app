@@ -609,15 +609,13 @@ export default {
     // 新增虚拟订单
     async addOrderData(_index) {
       var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        goods_id: this.goodsInfo.goods_id,
-        // album_id: this.album_id,
-        ticket_id: this.order_ticket_ids,
-        groupbuy_id:this.groupbuy_id?this.groupbuy_id:0,
-        groupbuy_open_id:this.groupbuy_open_id?this.groupbuy_open_id:0,
-        version: "1.0"
-      };
+      var data = {};
+      data.timestamp = tStamp;
+      data.version = "1.0";
+      data.goods_id = this.goodsInfo.goods_id;
+      if(this.order_ticket_ids) data.ticket_id = this.order_ticket_ids;
+      if(this.groupbuy_id) data.groupbuy_id = this.groupbuy_id;
+      if(this.groupbuy_open_id) data.groupbuy_open_id = this.groupbuy_open_id;
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADD(data);
       if (res.hasOwnProperty("response_code")) {
