@@ -177,7 +177,7 @@ export default {
   },
   mounted() {
     this.open_id = this.$route.query.open_id;
-    this.getGroupData();
+    this.returnPrice();
     this.getLogin();
     $("body").on("click", function() {
       console.log(2222222);
@@ -199,7 +199,7 @@ export default {
         this.$toast(res.error_message);
       }
     },
-    async getGroupData() {
+    async returnPrice() {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
