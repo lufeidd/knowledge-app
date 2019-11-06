@@ -19,7 +19,7 @@
         <use xlink:href="#icon-daizhifu" />
       </svg>
       {{infoData.state == 7? '交易取消':infoData.state_desc}}
-      <span class="groupTime" v-if="infoData.remain_pay_time">剩余：{{timeH}}小时{{timeM}}分钟{{timeS}}秒</span>
+      <!-- <span class="groupTime" v-if="infoData.remain_pay_time">剩余：{{timeH}}小时{{timeM}}分钟{{timeS}}秒</span> -->
     </div>
     <div v-if="infoData.type == 2">
       <div

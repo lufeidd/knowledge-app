@@ -574,6 +574,11 @@ export default {
           __name = 'custompage';
           queryTmp.page_id = parseInt(dataTmp.params.page_id);
           break;
+        //跳转外链
+        case 'jump/url':
+          __name = 'url'
+          queryTmp.url = dataTmp.params.url;
+          break;
       }
 
       dataRes = {
