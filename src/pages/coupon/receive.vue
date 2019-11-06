@@ -8,7 +8,7 @@
         <div class="bookImg" :style="bgUrl"></div>
       </div>
       <div class="shop">{{couponInfo.brand_name}}&nbsp送您一张优惠券</div>
-      <div class="time">有效期：{{couponInfo.use_stime.replace(/-/g,'.').substring(0,10)}}- {{couponInfo.use_etime.replace(/-/g,'.').substring(0,10)}}<div class="couponPrice">
+      <div class="time">{{couponInfo.use_stime.replace(/-/g,'.').substring(0,10)}}- {{couponInfo.use_etime.replace(/-/g,'.').substring(0,10)}}<div class="couponPrice">
         ￥
         <span class="price">{{couponInfo.money}}</span>
       </div></div>

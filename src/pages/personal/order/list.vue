@@ -116,13 +116,13 @@
             </div>
             <div class="foot">
               <div>
-                <span class="button button1" @click="repply(item)" v-if="item.invoice_id == 0">申请发票</span>
+                <span class="button button1" @click="repply(item)" v-if="item.invoice_id == 0 && item.state !==9 && item.state !== 7 && item.state !== 1">申请发票</span>
               </div>
               <div>
                 <span
                   class="button button2"
                   @click="toComment(item,index)"
-                  v-if="item.if_comment == 0"
+                  v-if="item.if_comment == 0 && item.state !==9 && item.state !== 7 && item.state !== 1"
                 >评价</span>
                 <!-- <span class="button1" v-if="item.state ==1">再次购买</span> -->
                 <!-- <span class="button2" >去支付</span> -->

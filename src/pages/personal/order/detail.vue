@@ -19,7 +19,7 @@
         <use xlink:href="#icon-daizhifu" />
       </svg>
       {{infoData.state == 7? '交易取消':infoData.state_desc}}
-      <!-- <span class="groupTime" v-if="infoData.remain_pay_time">剩余：{{timeH}}小时{{timeM}}分钟{{timeS}}秒</span> -->
+      <span class="groupTime" v-if="groupData && infoData.state == 9 && infoData.type == 2 && groupData.remain_time">剩余：<span v-if="timeH">{{timeH}}小时</span>{{timeM}}分钟{{timeS}}秒</span>
     </div>
     <div v-if="infoData.type == 2">
       <div
@@ -232,7 +232,7 @@
     <div>
       <div style="height: 60px;"></div>
       <!-- 虚拟商品 -->
-      <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-if="infoData.type == 1 && infoData.if_comment == 0 && showInvoice == true">
+      <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-if="infoData.type == 1 && (infoData.if_comment == 0 || showInvoice == true) && infoData.state !== 9 && infoData.state !== 7 && infoData.state !== 1">
         <div>
           <span class="button button3" @click="apply" v-if="showInvoice">申请发票</span>
         </div>
@@ -241,7 +241,7 @@
         </div>
       </div>
       <!-- 实物商品 -->
-      <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-if="infoData.type == 2">
+      <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-if="infoData.type == 2 && infoData.state !== 9">
         <div>
           <span
             class="button button3"
@@ -273,7 +273,7 @@
           <span
             class="button button3"
             @click="cancel"
-            v-if="infoData.state == 1 || infoData.state == 9"
+            v-if="infoData.state == 1"
           >取消订单</span>
           <span class="button button2" @click="toPaid" v-if="infoData.state == 1">去支付</span>
         </div>
@@ -382,9 +382,6 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.infoData = res.response_data;
         this.invoice = res.response_data.invoice_info;
-        if(res.response_data.remain_pay_time){
-          this.$countTime(res.response_data.remain_pay_time);
-        }
         if(Object.keys(this.invoice).length>0){
           this.showInvoice = false
         }else{
@@ -395,6 +392,9 @@ export default {
           if (this.infoData.detail[i].if_refund == 2) {
             this.if_refund = false;
           }
+        }
+        if(this.groupData && this.groupData.remain_time){
+          this.$countTime(this.groupData.remain_time);
         }
         // if (Object.keys(res.response_data.invoice_info).length > 0)
         // this.showInvoice = true;

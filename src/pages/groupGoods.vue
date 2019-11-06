@@ -66,7 +66,7 @@
         @click="showPopup"
       />
       <!-- 拼团列表 -->
-      <div class="group_list" v-if="couponInfo.groupbuy.open_list.length > 0">
+      <div class="group_list" v-if="couponInfo.groupbuy.open_list.length > 0 && couponInfo.groupbuy.user_remain_nums > 0">
         <div class="content" v-for="(item,index) in couponInfo.groupbuy.open_list" :key="index">
           <!-- 2人团 -->
           <div class="left" v-if="item.nums == 2">

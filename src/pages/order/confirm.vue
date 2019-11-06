@@ -340,6 +340,8 @@ export default {
       if (this.$route.query.detail_ids)
         queryTmp.detail_ids = this.$route.query.detail_ids;
       if (this.$route.query.detail) queryTmp.detail = this.$route.query.detail;
+      if (this.$route.query.groupbuy_id) queryTmp.groupbuy_id = this.$route.query.groupbuy_id;
+      if (this.$route.query.groupbuy_open_id) queryTmp.groupbuy_open_id = this.$route.query.groupbuy_open_id;
       queryTmp.order_ticket_ids = this.order_ticket_ids;
       queryTmp.location = JSON.stringify(this.location);
       this.$router.push({ name: "orderconfirmdetail", query: queryTmp });
