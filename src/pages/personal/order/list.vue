@@ -11,7 +11,7 @@
         finished-text="没有更多了"
         @load="programLoad"
       >
-        <div v-for="(item,index) in goodsData" :key="index">
+        <div v-for="(item,index) in goodsData" :key="index" style="margin-bottom:10px;">
             <div class="content" v-if="item.type == 2">
               <div class="head" @click="toBrandindex(item)">
                 <div class="titleFrom">
@@ -89,7 +89,7 @@
               </div>
             </div>
           <!-- 虚拟商品 -->
-          <div class="content" v-if="item.type == 1">
+          <div class="content" v-if="item.type == 1" style="margin-bottom:10px;">
             <div class="head" @click="toBrandindex(item)">
               <div class="titleFrom">
                 <div class="ratiobox">

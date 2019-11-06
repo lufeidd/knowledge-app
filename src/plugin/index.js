@@ -310,7 +310,7 @@ export default {
       console.log(897,options,second)
       if (typeof second === 'number') {
         if(minute > 1){
-          options.date = Math.ceil(minute)+'天';
+          options.date = Math.floor(minute)+'天';
         }else{
           this.clock = window.setInterval(() => {
             if (second === 0) {
@@ -336,7 +336,7 @@ export default {
       }
 
     }
-    
+
     // 限时促销计算时间
     Vue.prototype.$countTime = function(endtime){
       var self = this;
@@ -346,7 +346,7 @@ export default {
         self.showDay = true;
         self.showTime = true;
         self.groupshowDay = true;
-        d = Math.ceil(d);
+        d = Math.floor(d);
         self.timeDataDesc = '距活动结束还剩'+d+'天';
         self.timeData = '距结束还剩'+d+'天';
         self.grouptimeData = d;
@@ -377,7 +377,7 @@ export default {
           self.timeS = s
         }, 1000)
       }else if(d > 3){
-        d = Math.ceil(d);
+        d = Math.floor(d);
         self.showTime = false;
         self.groupshowDay = true;
         self.timeDataDesc = '限时促销'
