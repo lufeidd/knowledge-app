@@ -6,9 +6,10 @@
         <div class="activeText">活动规则</div>
       </div>
     </div>
-    <div class="helpBoss" v-if="supportGet" :style="{'color':lightcolor}">你已成功助力{{ helpinitData.launch_nickname }}！</div>
+    <div class="helpBoss" v-if="supportGetO" :style="{'color':color}">你已成功助力<span :style="{'color':lightcolor}">{{ helpinitData.launch_nickname }}</span>，恭喜获得优惠劵！</div>
+    <div class="helpBoss" v-if="supportGet" :style="{'color':color}">你已为<span :style="{'color':lightcolor}">{{ helpinitData.launch_nickname }}</span>助力，不能重复助力哦！</div>
+    <div class="helpBoss" v-if="supportGetThree" :style="{'color':color}">你已经助力过了<span :style="{'color':lightcolor}">{{ helpinitData.launch_nickname }}</span></div>
     <div class="couponImg">
-      <div class="text" v-if="supportGet" :style="{'color':color}">你已获得：</div>
       <div class="bookImg" v-lazy:background-image="helpinitData.support_award_pic" v-if="supportSuccess"></div>
     </div>
     <div class="fieldBox" v-if="supportNew">
@@ -44,7 +45,7 @@
         </template>
       </van-field>
     </div>
-    <div class="newPrompt" v-if="this.supportNewPre">
+    <div class="newPrompt" v-if="this.supportNewPre" :style="{'color':lightcolor}">
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-diandiandian" />
       </svg>
@@ -65,7 +66,7 @@
           <use xlink:href="#icon-myactive_jiantou" />
         </svg>
       </div>
-      <router-link :to="{name: 'assistactive', query: {activity_id: this.activity_id}}" v-if="this.supportOld">
+      <router-link :to="{name: 'assistactive', query: {activity_id: this.activity_id,source:1}}" v-if="this.supportOld">
         <div class="moreText">
           我也要领
           <svg class="icon" aria-hidden="true">
@@ -74,7 +75,7 @@
         </div>
       </router-link>
     </div>
-    <router-link :to="{name: 'assistactive', query: {activity_id: this.activity_id}}" v-if="this.initButton">
+    <router-link :to="{name: 'assistactive', query: {activity_id: this.activity_id,source:1}}" v-if="this.initButton">
       <div class="myText" :style="{'color':lightcolor}">我也要领</div>
     </router-link>
     <div class="rules" id="rules">
@@ -85,6 +86,16 @@
       </div>
       <div class="rulesCount" :style="{'color':color}" v-html="changeHtml(helpinitData.rules)"></div>
     </div>
+    <div class="HuoBaApp" @click="HuoBaApp">
+      <div class="svg">
+        <div class="bookImg" v-lazy:background-image="helpinitData.brand_pic"></div>
+      </div>
+      <div class="Text">
+        <div class="top">火把知识</div>
+        <div class="bottom">让知识照亮未来!</div>
+      </div>
+      <div class="button">立即打开</div>
+    </div>
   </div>
 </template>
 
@@ -94,6 +105,9 @@
   #helpPage{
     .van-field__clear {
       color: red;
+    }
+    .van-field__control {
+      color: #fff;
     }
   }
 
@@ -113,13 +127,17 @@
         supportGet: false,
         supportNewPre: false,
         supportNewButton: false,
+        supportGetThree: false,
+        supportGetO: false,
         launch_id:0,
         code: "",
         bgcolor: "",
         color: "",
         lightcolor: "",
         oldUserPrompt: "",
-        helpinitData: {},
+        helpinitData: {
+          rules: ""
+        },
         activity_id: 0,
         supportCheckData: {},
         codeData: {
@@ -194,18 +212,55 @@
           this.bgcolor = this.helpinitData.background;
           this.color = this.helpinitData.textcolor;
           this.lightcolor = this.helpinitData.lightcolor;
-          if (this.helpinitData.supporter_info.nickname) {
+          if (this.helpinitData.user_type == 0) {
+
+          } else if (this.helpinitData.user_type == 1){
+            this.$router.push({ name: "assistactive", query: {activity_id: this.activity_id} });
+          } else if (this.helpinitData.user_type == 2) {
             this.supportNew = false;
             this.initButton = false;
             this.supportNewButton = false;
             this.supportNewPre = false;
-            this.supportSuccess = true;
+            this.supportSuccess = false;
+            this.supportGetO = false;
             this.supportGet = true;
             this.supportOld = true;
+            this.supportGetThree = false;
+          } else if (this.helpinitData.user_type == 3) {
+            this.supportNew = false;
+            this.initButton = false;
+            this.supportNewButton = false;
+            this.supportNewPre = false;
+            this.supportGetO = true;
+            this.supportSuccess = true;
+            this.supportGet = false;
+            this.supportOld = true;
+            this.supportGetThree = false;
+          } else if (this.helpinitData.user_type == 4) {
+            var proPer = "只有新用户可以帮好友助力哦";
+            this.oldUserPrompt = proPer;
+            this.supportNew = false;
+            this.supportGet = false;
+            this.supportGetThree = false;
+            this.supportNewPre = true;
+            this.supportOld = true;
+            this.supportGetO = false;
+            this.supportSuccess = false;
+            this.supportNewButton = false;
+            this.initButton = false;
+            this.$toast(proPer);
           }
+		  this.pageShareInfo();
         } else {
           this.$toast(res.error_message);
         }
+      },
+	  //页面分享信息获取方法
+      pageShareInfo () {
+        if (this.isWxLogin) this.$getWxShareData("assist/index", JSON.stringify({
+          launch_id: this.launch_id,
+          activity_id: this.helpinitData.activity_id
+        }));
       },
       //验证用户为新用户还是老用户
       async supportCheck () {
@@ -325,6 +380,8 @@
             this.supportNew = true;
             this.supportNewButton = true;
             this.supportGet = false;
+            this.supportGetThree = false;
+            this.supportGetO = false;
             this.supportOld = false;
             this.supportSuccess = false;
             this.supportNewPre = false;
@@ -333,21 +390,27 @@
             this.oldUserPrompt = res.error_message;
             this.supportNew = false;
             this.supportGet = false;
+            this.supportGetThree = false;
             this.supportNewPre = true;
             this.supportOld = true;
+            this.supportGetO = false;
             this.supportSuccess = false;
             this.supportNewButton = false;
             this.initButton = false;
+            this.$toast(res.error_message);
           }
         } else {
           this.oldUserPrompt = res.error_message;
           this.supportNew = false;
           this.supportGet = false;
+          this.supportGetThree = false;
           this.supportNewPre = true;
           this.supportOld = true;
           this.supportSuccess = false;
           this.supportNewButton = false;
+          this.supportGetO = false;
           this.initButton = false;
+          this.$toast(res.error_message);
         }
       },
       async supportNewCheck () {
@@ -370,7 +433,9 @@
         if (res.hasOwnProperty("response_code")) {
           if(res.response_data.user_id) {
             this.supportNew = false;
-            this.supportGet = true;
+            this.supportGet = false;
+            this.supportGetO = true;
+            this.supportGetThree = false;
             this.supportNewPre = false;
             this.supportOld = true;
             this.supportSuccess = true;
@@ -385,6 +450,9 @@
       },
       changeHtml (content) {
         return content.replace(/\n/g, "<br>");
+      },
+      HuoBaApp () {
+        window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
       }
     }
   }

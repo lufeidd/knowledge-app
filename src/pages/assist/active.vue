@@ -1,3 +1,4 @@
+<script src="../../plugin/index.js"></script>
 <template>
   <div id="activePage" :style="{'background-color':bgcolor}">
     <div class="active-bg">
@@ -19,7 +20,7 @@
       <div class="startHelp" v-else @click="startHelp">开启助力</div>
     </div>
     <div class="helpFriend" v-if="activityData.base.launch_id">
-      <div class="helpAndPic" v-if="activityData.launcher.curr_num > 0">
+      <div class="helpAndPic">
         <div class="helpCount" :style="{'color':color}">
           <span>已获得</span>
           <span class="text-color" :style="{'color':lightcolor}">{{ activityData.launcher.curr_num }}人</span>
@@ -43,7 +44,7 @@
           <div class="bookImg" v-lazy:background-image="activityData.base.brand_pic"></div>
         </div>
         <div class="text" :style="{'color':color}">
-          <span>点击关注，实时查看领奖进度</span>
+          <span>关注"火把知识"公众号,查看领奖提醒</span>
         </div>
         <div class="href" @click="hrefShow">
           <span>关注</span>
@@ -59,7 +60,7 @@
       <div v-for="(item,index) in activityData.base.reward_list" :key="index">
         <div class="bookImg" v-lazy:background-image="item.ad_pic" @click="receiveAwardes(item,index)">
           <div class="callBack">
-            <div class="grade">{{index + 1}}</div>
+            <div class="grade">奖品{{index + 1}}</div>
             <div v-if="item.state == 2" class="contentBox">
               <div class="imgOne">
                 <div class="content">已领取</div>
@@ -124,6 +125,16 @@
       </div>
       <div class="rulesCount" :style="{'color':color}" v-html="changeHtml(activityData.base.rules)"></div>
     </div>
+    <div class="HuoBaApp" @click="HuoBaApp">
+      <div class="svg">
+        <div class="bookImg" v-lazy:background-image="activityData.base.brand_pic"></div>
+      </div>
+      <div class="Text">
+        <div class="top">火把知识</div>
+        <div class="bottom">让知识照亮未来!</div>
+      </div>
+      <div class="button">立即打开</div>
+    </div>
     <!-- 点击好友头像显示的弹层 -->
     <van-popup v-model="pictureShowPopup" class="picturePopup">
       <svg class="icon close" aria-hidden="true" @click="pictureClose">
@@ -166,8 +177,11 @@
     <div class="imgText">长按识别二维码，关注公众号</div>
   </van-popup>-->
     <van-popup v-model="hrefShowPopup" class="hrefPopup">
-      <svg class="icon close" aria-hidden="true" @click="hrefClose">
+      <!--<svg class="icon close" aria-hidden="true" @click="hrefClose">
         <use xlink:href="#icon-close-line" />
+      </svg>-->
+      <svg class="icon close" aria-hidden="true" @click="hrefClose">
+        <use xlink:href="#icon-shanchu" />
       </svg>
       <div class="box">
         <img class="bookImg" :src= activityData.base.qr_url />
@@ -175,8 +189,11 @@
     </van-popup>
     <!-- 海报显示的弹层 -->
     <van-popup v-model="billShowPopup" class="billPopup">
-      <svg class="icon close" aria-hidden="true" @click="billClose">
+      <!--<svg class="icon close" aria-hidden="true" @click="billClose">
         <use xlink:href="#icon-close-line" />
+      </svg>-->
+      <svg class="icon close" aria-hidden="true" @click="billClose">
+        <use xlink:href="#icon-shanchu" />
       </svg>
       <div class="box">
         <img class="bookImg" :src= posterData.pic_url />
@@ -239,10 +256,13 @@
         billShowPopup: false,
         helpFriendList: false,
         activityData: {
-          base: {},
+          base: {
+            rules:""
+          },
           launcher: {},
           rank: {}
         },
+        source: 0,
         shareData: {
           share_info: {}
         },
@@ -265,6 +285,7 @@
     },
     mounted () {
       this.activity_id = this.$route.query.activity_id;
+      this.source = this.$route.query.source;
       this.activeGetData();
     },
     methods: {
@@ -297,7 +318,8 @@
       },
       async billShow () {
         var tStamp = this.$getTimeStamp();
-        var data = {
+		if (this.activityData.base.launch_id > 0) {
+		var data = {
           launch_id: this.activityData.base.launch_id,
           version: "1.0",
           timestamp: tStamp
@@ -311,6 +333,7 @@
           this.$toast(res.error_message);
           document.querySelector("#activetyMore").scrollIntoView(true);
         }
+		}
       },
       billClose () {
         this.billShowPopup = false;
@@ -384,7 +407,6 @@
         var data = {
           activity_id: this.activity_id,
           openid: localStorage.getItem("openid"),
-          //openid: tStamp,
           version: "1.0",
           timestamp: tStamp
         };
@@ -395,12 +417,29 @@
           this.bgcolor = res.response_data.base.background;
           this.color = res.response_data.base.textcolor;
           this.lightcolor = res.response_data.base.lightcolor;
+
+          if (this.source == 1) {
+            this.billShow();
+            this.$router.push({
+              name:"assistactive",
+              query:{
+                activity_id:this.activity_id,
+                source:0,
+              }
+            })
+          }
           this.pageShareInfo();
         } else {
           this.$toast(res.error_message);
         }
       },
       //页面分享信息获取方法
+      pageShareInfo () {
+        if (this.isWxLogin) this.$getWxShareData("assist/index", JSON.stringify({
+          launch_id: this.activityData.base.launch_id,
+          activity_id: this.activity_id
+        }));
+      },//页面分享信息获取方法
       pageShareInfo () {
         if (this.isWxLogin) this.$getWxShareData("assist/index", JSON.stringify({
           launch_id: this.activityData.base.launch_id,
@@ -504,9 +543,15 @@
         } else if (item.state == 0 && this.activityData.base.launch_id == 0) {
           this.$toast("需"+ (item.goal_num - item.curr_num) +"人助力");
         }
+        if (item.traget_url) {
+          window.location.href = item.traget_url;
+        }
       },
       changeHtml (content) {
         return content.replace(/\n/g, "<br>");
+      },
+      HuoBaApp () {
+        window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
       }
     }
   }
