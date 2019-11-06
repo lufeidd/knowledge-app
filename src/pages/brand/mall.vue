@@ -479,6 +479,7 @@ export default {
       // console.log(1111,link);return
       var data = this.$translate(JSON.parse(link));
       if (data.name == "") return;
+      if (data.name == "url") {window.location.href = data.query.url; return};
       data.query.type = "mall";
       data.query.title = this.title;
       this.$router.push(data);
