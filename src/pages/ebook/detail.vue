@@ -835,7 +835,8 @@ export default {
       showDay: true,
       groupModel: false,
       isgroup: false,
-      remain_time: []
+      remain_time: [],
+      groupbuy_id:null,
     };
   },
   mounted() {
@@ -1141,6 +1142,10 @@ export default {
     // 支付
     buyNow() {
       if (this.isLogin) {
+        this.groupbuy_id = 0;
+        this.$refs.pay.price = this.info.price;
+        this.$refs.recharge.price = this.info.price;
+        this.$refs.recharge.groupbuy_id = 0;
         this.$refs.pay.buyShow = true;
         this.isgroup = false;
         this.ebookCoupon();
@@ -1187,7 +1192,7 @@ export default {
       data.goods_id = this.goods_id;
       data.version = "1.0";
       if(this.$refs.pay.order_ticket_id) data.ticket_id = this.$refs.pay.order_ticket_id;
-      if(Object.keys(this.couponInfo.groupbuy).length>0) data.groupbuy_id = this.couponInfo.groupbuy.id;
+      if(this.groupbuy_id) data.groupbuy_id = this.couponInfo.groupbuy.id;
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADD(data);
       if (res.hasOwnProperty("response_code")) {
@@ -1295,6 +1300,7 @@ export default {
     },
     group() {
       if (this.isLogin) {
+        this.groupbuy_id = this.couponInfo.groupbuy.id;
         this.$refs.pay.price = this.couponInfo.groupbuy.groupbuy_price;
         this.$refs.recharge.price = this.couponInfo.groupbuy.groupbuy_price;
         this.$refs.recharge.groupbuy_id = this.couponInfo.groupbuy.id;
