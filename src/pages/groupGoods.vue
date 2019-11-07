@@ -37,7 +37,7 @@
             </div>
             <div class="original">
               直买价
-              <del>￥{{baseData.market_price.toFixed(2)}}</del>
+              <del>￥{{baseData.price.toFixed(2)}}</del>
             </div>
           </div>
           <div class="promotionRight">
@@ -541,6 +541,7 @@ export default {
       data.version = "1.0";
       data.locations = JSON.stringify(locations);
       data.goods_detail = JSON.stringify(goods_detail);
+      data.groupbuy_id = this.groupbuy_id;
       data.sign = this.$getSign(data);
       let res = await LOCATION_CHANGE(data);
       if (res.hasOwnProperty("response_code")) {
@@ -604,7 +605,7 @@ export default {
         // console.log(666,this.navData.goods_nums)
         this.shoppingcart_num = res.response_data.shoppingcart_num;
         // 邮费信息
-        this.dispatch_str = res.response_data.dispatch_str;
+        this.dispatch_str = res.response_data.activity.groupbuy.dispatch_str;
         // 地址
         this.location_info = res.response_data.location_info;
         this.isLoading = false;
