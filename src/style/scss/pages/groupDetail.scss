@@ -8,10 +8,13 @@
     padding-bottom: 50px;
 
     .stepIcon {
-
+      .van-col{
+        text-align: center;
+      }
       // @include displayFlex(flex, space-between, center);
       .radio {
         position: relative;
+        display: inline-block;
         width: 44px;
         height: 44px;
         line-height: 44px;
@@ -33,11 +36,9 @@
       }
 
       .line {
-        display: inline-block;
-        width: 90%;
         height: 1px;
         background-color: $redLight;
-        margin: 21px 0;
+        margin: 21px 10px;
       }
     }
   }

@@ -3,7 +3,7 @@
     <div>
       <div class="top">
         <div class="stepIcon">
-          <van-row gutter="10">
+          <van-row type="flex" justify="space-between">
             <van-col span="4">
               <div class="radio">
                 <svg class="icon" aria-hidden="true">
@@ -12,7 +12,7 @@
                 <div class="text">1. 选择商品开团/参团</div>
               </div>
             </van-col>
-            <van-col span="6" style="text-align:center;">
+            <van-col span="6">
               <div class="line"></div>
             </van-col>
             <van-col span="4">
@@ -23,7 +23,7 @@
                 <div class="text">2.邀请好友参团</div>
               </div>
             </van-col>
-            <van-col span="6" style="text-align:center;">
+            <van-col span="6">
               <div class="line"></div>
             </van-col>
             <van-col span="4">
@@ -97,8 +97,8 @@
             </span>
             <span class="mark" v-if="groupData.join_list.length == 1">?</span>
           </div>
-          <!-- 多人团 -->
-          <div v-if="groupData.groupbuy_num > 2">
+          <!-- 三人团 -->
+          <div v-if="groupData.groupbuy_num == 3">
             <span>
               <img :src="groupData.join_list[0].head_pic" alt width="40px" height="40px" />
               <div class="name">团长</div>
@@ -106,7 +106,25 @@
             <span v-if="groupData.join_list.length > 1">
               <img :src="groupData.join_list[1].head_pic" alt width="40px" height="40px" />
             </span>
-            <span class="mark">?</span>
+            <span v-if="groupData.state == 2">
+              <img :src="groupData.join_list[2].head_pic" alt width="40px" height="40px" />
+            </span>
+            <span class="mark" v-if="groupData.state == 1 || groupData.state == 4">?</span>
+            <span class="mark over" v-if="groupData.state == 1 || groupData.state == 4">......</span>
+          </div>
+          <!-- 多人团 -->
+          <div v-if="groupData.groupbuy_num > 3">
+            <span>
+              <img :src="groupData.join_list[0].head_pic" alt width="40px" height="40px" />
+              <div class="name">团长</div>
+            </span>
+            <span v-if="groupData.join_list.length > 1">
+              <img :src="groupData.join_list[1].head_pic" alt width="40px" height="40px" />
+            </span>
+            <span v-if="groupData.state == 2">
+              <img :src="groupData.join_list[2].head_pic" alt width="40px" height="40px" />
+            </span>
+            <span class="mark" v-if="groupData.state == 1 || groupData.state == 4">?</span>
             <span class="mark over">......</span>
           </div>
           <div class="button" v-if="groupData.my_order_id.length == 0 && groupData.state == 1">

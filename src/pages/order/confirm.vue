@@ -448,11 +448,11 @@ export default {
       if (this.$route.query.detail_ids)
         data.detail_ids = this.$route.query.detail_ids;
       if (this.$route.query.detail) data.detail = this.$route.query.detail;
-
+      if (this.$route.query.groupbuy_id) data.groupbuy_id = this.$route.query.groupbuy_id;
+      if (this.$route.query.groupbuy_open_id) data.groupbuy_open_id = this.$route.query.groupbuy_open_id;
       data.address_id = this.address_id;
       data.remark = this.remark;
       data.ticket_ids = this.order_ticket_ids?this.order_ticket_ids:0;
-      data.groupbuy_id = this.groupbuy_id?this.groupbuy_id:0;
       data.sign = this.$getSign(data);
       let res = await ORDER_PHYSICAL_ADD(data);
 

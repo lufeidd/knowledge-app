@@ -399,7 +399,7 @@
           >
             <van-col span="10">
               <van-button round type="primary" size="small" @click="buyTo">
-                <div>￥{{baseData.market_price.toFixed(2)}}</div>
+                <div>￥{{baseData.price.toFixed(2)}}</div>
                 <div style="margin-top:5px;">直接购买</div>
               </van-button>
             </van-col>
@@ -413,7 +413,7 @@
           <van-row v-else>
             <van-col span="24">
               <van-button round type="primary" size="small" @click="buyTo">
-                <div style="font-size:15px;">直接购买 ￥{{baseData.market_price.toFixed(2)}}</div>
+                <div style="font-size:15px;">直接购买 ￥{{baseData.price.toFixed(2)}}</div>
               </van-button>
             </van-col>
           </van-row>
