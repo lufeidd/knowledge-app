@@ -1151,6 +1151,7 @@ export default {
     payrecharge() {
       this.$refs.pay.buyShow = false;
       this.$refs.recharge.rechargeShow = true;
+      this.$refs.recharge.order_ticket_id = this.$refs.pay.order_ticket_id;
     },
     returnUp() {
       this.$refs.recharge.rechargeShow = false;
@@ -1181,12 +1182,12 @@ export default {
     // 新增虚拟订单
     async addOrderData(_index) {
       var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        goods_id: this.goods_id,
-        ticket_id: this.$refs.pay.order_ticket_id,
-        version: "1.0"
-      };
+      var data = {};
+      data.timestamp = tStamp;
+      data.goods_id = this.goods_id;
+      data.version = "1.0";
+      if(this.$refs.pay.order_ticket_id) data.ticket_id = this.$refs.pay.order_ticket_id;
+      if(Object.keys(this.couponInfo.groupbuy).length>0) data.groupbuy_id = this.couponInfo.groupbuy.id;
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADD(data);
       if (res.hasOwnProperty("response_code")) {
@@ -1266,7 +1267,7 @@ export default {
       data.timestamp = tStamp;
       data.version = "1.0";
       data.goods_id = this.goods_id;
-      if(Object.keys(this.couponInfo.groupbuy).length>0) data.groupbuy_id = this.couponInfo.groupbuy.groupbuy_id;
+      if(Object.keys(this.couponInfo.groupbuy).length>0) data.groupbuy_id = this.couponInfo.groupbuy.id;
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADDINFO(data);
       if (res.hasOwnProperty("response_code")) {
@@ -1294,8 +1295,11 @@ export default {
     },
     group() {
       if (this.isLogin) {
-        this.isgroup = true;
+        this.$refs.pay.price = this.couponInfo.groupbuy.groupbuy_price;
+        this.$refs.recharge.price = this.couponInfo.groupbuy.groupbuy_price;
+        this.$refs.recharge.groupbuy_id = this.couponInfo.groupbuy.id;
         this.groupModel = false;
+        this.isgroup = true;
         this.$refs.pay.buyShow = true;
       } else {
         this.$router.push({ name: "login" });

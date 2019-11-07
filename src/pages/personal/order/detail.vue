@@ -19,9 +19,16 @@
         <use xlink:href="#icon-daizhifu" />
       </svg>
       {{infoData.state == 7? '交易取消':infoData.state_desc}}
-      <span class="groupTime" v-if="groupData && infoData.state == 9 && infoData.type == 1 && groupData.remain_time">
-        剩余：<span v-if="groupshowDay">{{grouptimeData}}天</span>
-        <span v-else><span v-if="timeH">{{timeH}}小时</span>{{timeM}}分钟{{timeS}}秒</span>
+      <span
+        class="groupTime"
+        v-if="groupData && infoData.state == 1 && infoData.type == 2 && infoData.remain_pay_time"
+      >
+        剩余：
+        <span v-if="groupshowDay">{{grouptimeData}}天</span>
+        <span v-else>
+          <span v-if="timeH">{{timeH}}小时</span>
+          {{timeM}}分钟{{timeS}}秒
+        </span>
       </span>
     </div>
     <div v-if="infoData.type == 2">
@@ -138,8 +145,8 @@
           </span>
           <span class="mark" v-if="groupData.join_list.length == 1">?</span>
         </div>
-        <!-- 多人团 -->
-        <div v-if="groupData.groupbuy_num > 2">
+        <!-- 三人团 -->
+        <div v-if="groupData.groupbuy_num == 3">
           <span>
             <img :src="groupData.join_list[0].head_pic" alt width="40px" height="40px" />
             <div class="name">团长</div>
@@ -147,7 +154,25 @@
           <span v-if="groupData.join_list.length > 1">
             <img :src="groupData.join_list[1].head_pic" alt width="40px" height="40px" />
           </span>
-          <span class="mark">?</span>
+          <span v-if="groupData.state == 2">
+            <img :src="groupData.join_list[2].head_pic" alt width="40px" height="40px" />
+          </span>
+          <span class="mark" v-if="groupData.state == 1 || groupData.state == 4">?</span>
+          <span class="mark over" v-if="groupData.state == 1 || groupData.state == 4">......</span>
+        </div>
+        <!-- 多人团 -->
+        <div v-if="groupData.groupbuy_num > 3">
+          <span>
+            <img :src="groupData.join_list[0].head_pic" alt width="40px" height="40px" />
+            <div class="name">团长</div>
+          </span>
+          <span v-if="groupData.join_list.length > 1">
+            <img :src="groupData.join_list[1].head_pic" alt width="40px" height="40px" />
+          </span>
+          <span v-if="groupData.state == 2">
+            <img :src="groupData.join_list[2].head_pic" alt width="40px" height="40px" />
+          </span>
+          <span class="mark" v-if="groupData.state == 1 || groupData.state == 4">?</span>
           <span class="mark over">......</span>
         </div>
       </div>
@@ -235,7 +260,11 @@
     <div>
       <div style="height: 60px;"></div>
       <!-- 虚拟商品 -->
-      <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-if="infoData.type == 1 && (infoData.if_comment == 0 || showInvoice == true) && infoData.state !== 9 && infoData.state !== 7 && infoData.state !== 1">
+      <div
+        class="foot bottomBox"
+        :class="{iphx:this.isIphx}"
+        v-if="infoData.type == 1 && (infoData.if_comment == 0 || showInvoice == true) && infoData.state !== 9 && infoData.state !== 7 && infoData.state !== 1"
+      >
         <div>
           <span class="button button3" @click="apply" v-if="showInvoice">申请发票</span>
         </div>
@@ -244,7 +273,11 @@
         </div>
       </div>
       <!-- 实物商品 -->
-      <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-if="infoData.type == 2 && infoData.state !== 9">
+      <div
+        class="foot bottomBox"
+        :class="{iphx:this.isIphx}"
+        v-if="infoData.type == 2 && infoData.state !== 9"
+      >
         <div>
           <span
             class="button button3"
@@ -273,11 +306,7 @@
             @click="tologistics"
             v-if="infoData.state == 2||infoData.state == 5"
           >查看物流</span>
-          <span
-            class="button button3"
-            @click="cancel"
-            v-if="infoData.state == 1"
-          >取消订单</span>
+          <span class="button button3" @click="cancel" v-if="infoData.state == 1">取消订单</span>
           <span class="button button2" @click="toPaid" v-if="infoData.state == 1">去支付</span>
         </div>
       </div>
@@ -324,22 +353,22 @@ export default {
       // },
 
       infoData: {
-        order_money:0,
-        pay_money:0
+        order_money: 0,
+        pay_money: 0
       },
       order_id: null,
       invoice: {},
       showInvoice: false,
       if_refund: true,
       detail_ids: null,
-      groupData:{
-        join_list:[]
+      groupData: {
+        join_list: []
       },
       timeH: null,
       timeM: null,
       timeS: null,
-      grouptimeData:"",
-      groupshowDay:false,
+      grouptimeData: "",
+      groupshowDay: false
     };
   },
   mounted() {
@@ -389,9 +418,9 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.infoData = res.response_data;
         this.invoice = res.response_data.invoice_info;
-        if(Object.keys(this.invoice).length>0){
-          this.showInvoice = false
-        }else{
+        if (Object.keys(this.invoice).length > 0) {
+          this.showInvoice = false;
+        } else {
           this.showInvoice = true;
         }
         this.groupData = res.response_data.groupbuy_info;
@@ -400,8 +429,8 @@ export default {
             this.if_refund = false;
           }
         }
-        if(this.groupData && this.groupData.remain_time){
-          this.$countTime(this.groupData.remain_time);
+        if (this.infoData && this.infoData.remain_pay_time) {
+          this.$countTime(this.infoData.remain_pay_time);
         }
         // if (Object.keys(res.response_data.invoice_info).length > 0)
         // this.showInvoice = true;
@@ -410,7 +439,7 @@ export default {
         this.$toast(res.error_message);
       }
     },
-    returnPrice(){
+    returnPrice() {
       this.getData();
     },
     //获取再次购买信息
@@ -618,13 +647,13 @@ export default {
         this.$toast(res.error_message);
       }
     },
-    toGroupDetail(){
+    toGroupDetail() {
       this.$router.push({
-        name:"groupdetail",
-        query:{
-          open_id:this.groupData.open_id,
+        name: "groupdetail",
+        query: {
+          open_id: this.groupData.open_id
         }
-      })
+      });
     }
   }
 };
