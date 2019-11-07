@@ -37,7 +37,7 @@
             </div>
             <div class="original">
               直买价
-              <del>￥{{baseData.price.toFixed(2)}}</del>
+              <del>￥{{baseData.market_price.toFixed(2)}}</del>
             </div>
           </div>
           <div class="promotionRight">

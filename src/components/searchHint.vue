@@ -10,6 +10,7 @@
         @focus="inputText"
         data-type="searchHintData.type"
         :placeholder="searchHintData.placeholderText"
+        @blur.prevent="inputLoseFocus"
       >
       <van-icon name="clear" size="16" color="#ccc" class="clearIcon" @click="clearText"/>
     </div>
@@ -87,6 +88,11 @@ export default {
     // }
   },
   methods: {
+    inputLoseFocus() {
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 100);
+    },
     select(item, index) {
       console.log(item);
       this.searchHintData.search = item;
