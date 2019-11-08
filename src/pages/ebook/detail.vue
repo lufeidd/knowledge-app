@@ -720,6 +720,7 @@
     border-radius: 15px 0 0 15px;
     font-size: $fontSize - 2;
     position: fixed;
+    z-index: 99;
     top: 130px;
     right: 0;
     text-align: center;
