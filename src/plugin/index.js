@@ -371,7 +371,7 @@ export default {
           if (s < 10) s = '0' + s
           let res = h + ":" + m + ":" + s
           self.timeDataDesc = res;
-          self.timeData = res;
+          self.timeData = '距结束还剩'+res;
           self.timeH = h
           self.timeM = m
           self.timeS = s
