@@ -847,7 +847,7 @@
               type="danger"
               size="small"
               round
-              v-if="couponInfo.groupbuy.user_remain_nums == 0 || couponInfo.groupbuy.can_open_nums == 0"
+              v-if="couponInfo.groupbuy.can_open_nums == 0"
               disabled
             >一键开团</van-button>
             <van-button type="danger" size="small" round @click="group" v-else>一键开团</van-button>

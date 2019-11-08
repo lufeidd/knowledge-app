@@ -19,6 +19,12 @@ body,
   width: 100%;
   height: 100%;
   margin: 0 !important;
+  position: fixed;
+  top:0;
+  left: 0;
+  right:0;
+  bottom: 0;
+  overflow-y: auto;
   /* padding-top: env(safe-area-inset-top);  */
   /* 为导航栏+状态栏的高度 88px */
   /* padding-left: env(safe-area-inset-left);  */

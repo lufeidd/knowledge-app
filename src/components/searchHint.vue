@@ -120,6 +120,7 @@ export default {
   methods: {
     inputLoseFocus() {
       setTimeout(() => {
+        console.log(333)
         window.scrollTo(0, 0);
       }, 100);
     },
