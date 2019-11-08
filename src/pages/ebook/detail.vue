@@ -1272,7 +1272,7 @@ export default {
       data.timestamp = tStamp;
       data.version = "1.0";
       data.goods_id = this.goods_id;
-      if(Object.keys(this.couponInfo.groupbuy).length>0) data.groupbuy_id = this.couponInfo.groupbuy.id;
+      // if(this.groupbuy_id) data.groupbuy_id = this.couponInfo.groupbuy.id;
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADDINFO(data);
       if (res.hasOwnProperty("response_code")) {

@@ -227,6 +227,9 @@ export default {
     document.title = "搜索结果-" + this.title;
 
     this.getGoodsColum();
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 100);
   },
   methods: {
     // 获取页面分享信息
