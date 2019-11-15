@@ -117,6 +117,8 @@ export default {
       payId:null,
       order_pay_id:null,
       price:null,
+      order_ticket_id:"",
+      groupbuy_id:null,
     };
   },
   mounted() {
@@ -156,11 +158,12 @@ export default {
     // 新增虚拟订单
     async addOrderData() {
       var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        goods_id: this.goods_id,
-        version: "1.0"
-      };
+      var data = {};
+      data.timestamp = tStamp;
+      data.goods_id = this.goods_id;
+      data.version = "1.0";
+      if(this.order_ticket_id) data.order_ticket_id = this.order_ticket_id;
+      if(this.groupbuy_id) data.groupbuy_id = this.groupbuy_id;
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADD(data);
       if (res.hasOwnProperty("response_code")) {

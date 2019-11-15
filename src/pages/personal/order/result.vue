@@ -190,6 +190,9 @@ export default {
     this.searchContent = this.$route.query.searchContent;
     this.state = this.$route.query.state;
     document.title = '搜索结果';
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 100);
   },
   methods: {
     programLoad() {

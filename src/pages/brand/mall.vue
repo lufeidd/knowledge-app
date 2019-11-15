@@ -413,7 +413,6 @@ export default {
   // 进入当前页面
   beforeRouteEnter(to, from, next) {
     // console.log(to, from ,next);
-
     // 外链进入
     // if(from.name != null) {
     // }
@@ -434,13 +433,10 @@ export default {
         this.page_title = res.response_data.page_title;
         document.title = this.page_title;
         for (let i = 0; i < res.response_data.module_list.length; i++) {}
-
         this.module_list = res.response_data.module_list;
-
         for (let j = 0; j < this.module_list.length; j++) {
           if (this.module_list[j].module_temp_id == 9) {
             // console.log(7777,this.module_list[j].contents.list.length)
-
             if (
               4 < this.module_list[j].contents.list.length &&
               this.module_list[j].contents.list.length < 8
@@ -467,7 +463,6 @@ export default {
             ].contents.list.slice(0, 4);
           }
         }
-
         // 获取页面分享信息
         // if(this.isWxLogin) this.wxShareData();
         var _pageName = "mall/index";
@@ -484,6 +479,7 @@ export default {
       // console.log(1111,link);return
       var data = this.$translate(JSON.parse(link));
       if (data.name == "") return;
+      if (data.name == "url") {window.location.href = data.query.url; return};
       data.query.type = "mall";
       data.query.title = this.title;
       this.$router.push(data);
@@ -611,7 +607,6 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await BRAND_SEARCH_GOODS_GETS(data);
-
       if (res.hasOwnProperty("response_code")) {
         // console.log(res, this.tagids);
         this.booktagData = res.response_data.result;
@@ -619,34 +614,7 @@ export default {
         this.$toast(res.error_message);
       }
     }
-    // 获取页面分享信息
-    // async wxShareData() {
-    //   var tStamp = this.$getTimeStamp();
-    //   var data = {
-    //     page_name: "mall/index",
-    //     params: JSON.stringify({
-    //       brand_id: this.$route.query.brand_id,
-    //       supplier_id: this.$route.query.supplier_id
-    //     }),
-    //     version: "1.0",
-    //     timestamp: tStamp,
-    //   };
-    //   data.sign = this.$getSign(data);
-    //   let res = await WX_SHARE(data);
-    //   if (res.hasOwnProperty("response_code")) {
-    //     // console.log(res.response_data)
-    //     document.title = res.response_data.share_info.title;
-    //     // 微信分享
-    //     this.$getWxData(
-    //       res.response_data.share_info.title,
-    //       res.response_data.share_info.desc,
-    //       res.response_data.share_info.pic,
-    //       res.response_data.share_info.url
-    //     );
-    //   } else {
-    //     this.$toast(res.error_message);
-    //   }
-    // }
+
   }
 };
 </script>

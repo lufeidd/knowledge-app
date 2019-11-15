@@ -169,6 +169,7 @@ export default {
       }
     },
     onSearch() {
+      console.log($('#searchHint').find('input').blur());
       if (
         this.searchHintData.search.trim() == "" ||
         this.searchHintData.search.length == 0

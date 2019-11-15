@@ -98,6 +98,8 @@ import cart from '@/pages/cart'
 // 商品详情
 import detail from '@/pages/detail'
 
+//拼团详情
+import groupdetail from '@/pages/groupDetail'
 // 我的订单
 import orderconfirm from '@/pages/order/confirm'
 import orderconfirmdetail from '@/pages/order/detail'
@@ -107,11 +109,21 @@ import pay from '@/pages/pay/index'
 import payaccount from '@/pages/pay/account'
 import paysuccess from '@/pages/pay/success'
 
+// 自定义装修商城页面
+import custompage from '@/pages/customPage'
+
+//实物商品拼团页面
+import groupgoods from '@/pages/groupGoods'
+
 // 404
 import nullpage from '@/pages/404'
 
 // 访问超时
 import timeout from '@/pages/timeout'
+
+// 助力活动
+import assistactive from '@/pages/assist/active'
+import assisthelp from '@/pages/assist/help'
 
 Vue.use(Router)
 
@@ -120,6 +132,12 @@ export default new Router({
   mode: 'hash',  //把Router的mode修改为history模式,VueRouter默认的模式为HASH模式
   // linkActiveClass: 'active',
   routes: [
+    // 自定义装修商城页面
+    {
+      path: '/customPage',
+      name: 'custompage',
+      component: custompage,
+    },
     // 404
     {
       path: '/404',
@@ -696,6 +714,21 @@ export default new Router({
       name: 'detail',
       component: detail
     },
+    // 实物商品拼团页
+    {
+      path: '/groupgoods',
+      name: 'groupgoods',
+      component: groupgoods
+    },
+    // 拼团详情页
+    {
+      path: '/groupdetail',
+      name: 'groupdetail',
+      component: groupdetail,
+      meta: {
+        title: '拼团详情',
+      }
+    },
     // 订单确认
     {
       path: '/order/confirm',
@@ -753,6 +786,17 @@ export default new Router({
         title: '支付成功',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       },
+    },
+    // 助力活动
+    {
+      path: '/assist/active',
+      name: 'assistactive',
+      component: assistactive
+    },
+    {
+      path: '/assist/help',
+      name: 'assisthelp',
+      component: assisthelp
     }
   ]
 })

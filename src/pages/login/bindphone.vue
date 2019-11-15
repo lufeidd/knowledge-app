@@ -137,6 +137,7 @@ import { SMS, LOGIN_BIND_PARTERNER } from "../../apis/passport.js";
 export default {
   data() {
     return {
+      activity_id: false,
       outerId: "",
       phone: "",
       code: "",
@@ -153,6 +154,7 @@ export default {
   mounted() {
     this.bindtype = parseInt(this.$route.query.bindtype);
     this.outerId = this.$route.query.outerId;
+    this.activity_id = this.$route.query.activity_id ? this.$route.query.activity_id : false;
   },
   methods: {
     // 获取验证码
@@ -209,6 +211,15 @@ export default {
           "//" +
           window.location.hostname +
           "/#/personal/index";
+        //活动页跳转新增参数
+        if (this.activity_id) {
+          this.$router.push({
+            name: "assistactive",
+            query: {
+              activity_id: this.activity_id
+            }
+          });
+        }
       } else {
         this.$toast(res.error_message);
       }

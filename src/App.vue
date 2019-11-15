@@ -93,6 +93,8 @@ export default {
     };
   },
   mounted() {
+
+
     // this.$router.push({name:"couponreceive"});
     sessionStorage.setItem("gotoLogin", "no");
     sessionStorage.setItem("isWxLogin", "no");
@@ -182,6 +184,11 @@ export default {
         localStorage.getItem("nickname")
       );
     }
+
+
+
+
+
   }
 };
 </script>

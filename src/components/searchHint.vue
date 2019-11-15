@@ -10,8 +10,8 @@
         @focus="inputText"
         data-type="searchHintData.type"
         :placeholder="searchHintData.placeholderText"
-      >
-      <van-icon name="clear" size="16" color="#ccc" class="clearIcon" @click="clearText"/>
+      />
+      <van-icon name="clear" size="16" color="#ccc" class="clearIcon" @click="clearText" />
     </div>
     <ul>
       <li
@@ -67,6 +67,14 @@ import { setTimeout } from 'timers';
 export default {
   name: "search-hint",
   props: ["searchHintData"],
+  data(){
+    return{
+
+    }
+  },
+  mounted(){
+
+  },
   computed: {
     //过滤方法
     // items: function() {
@@ -87,6 +95,7 @@ export default {
     // }
   },
   methods: {
+
     select(item, index) {
       console.log(item);
       this.searchHintData.search = item;

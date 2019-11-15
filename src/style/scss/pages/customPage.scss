@@ -1,0 +1,441 @@
+/*
+ * author: lufei
+ * date:2019/10/28
+ */
+
+
+ * {
+  margin: 0;
+  padding: 0;
+}
+
+#customPage {
+  // background-color: $greyLight;
+  min-height: 100%;
+
+  // 搜索栏
+  .searhResult {
+    position: relative;
+    // background-color: #fff;
+    box-sizing: border-box;
+    padding: 0 0 15px 0;
+    text-align: center;
+    input {
+      width: calc(100% - 30px);
+      height: 33px;
+      box-sizing: border-box;
+      border: none;
+      background-color: #fff;
+      border-radius: 16px;
+      padding: 0 15px;
+      // text-align: center;
+    }
+
+    .icon.searchIcon {
+      position: absolute;
+      right: 30px;
+      color: $cl9;
+      top: 50%;
+      // margin-top: -7px;
+    }
+  }
+
+  //图文广告
+  .photoadvertising {
+    background-color: #fff;
+
+    .content {
+      .ratiobox {
+        .bookImg {
+          @include ratioBox (100%, 43.5%, null, contain, $white, null);
+
+        }
+      }
+    }
+  }
+
+  // 图文导航
+  .bookNav {
+
+    padding: 0 15px 15px 15px;
+    background-color: #fff;
+
+    .navImg {
+      @include displayFlex(flex, space-between, center);
+
+      .title {
+        @include textOverflow;
+        text-align: center;
+        font-size: $fontSize - 2;
+      }
+    }
+
+  }
+
+  // 滑动图片组,轮播
+  .popular {
+    background-color: $white;
+    padding: 0 0 15px 15px;
+
+    .showContent {
+      background-color: $white;
+
+      .swiper-container-horizontal>.swiper-pagination-bullets {
+        bottom: 5px;
+      }
+
+      .slide {
+        .ratiobox {
+          position: relative;
+          .bookImg {
+            @include ratioBox (100%, 43.5%, null, contain, $white, null);
+            border-radius: 3px;
+          }
+          .desc{
+            position:absolute;
+            bottom:0;
+            width:100%;
+            color:#FFF;
+            font-size:12px;
+            background-color:rgba(0,0,0,0.4);
+            padding:3px 10px;
+            box-sizing:border-box;
+            @include textOverflow;
+          }
+        }
+      }
+    }
+  }
+
+  //文章展示,电子书展示单排
+  .articleShow{
+    padding: 5px 15px 15px 15px;
+    background-color: #fff;
+    .content {
+      @include displayFlex(flex, null, null);
+      margin-bottom: 15px;
+
+      .ratiobox {
+        min-width: 113px;
+        position: relative;
+
+        .bookImg {
+          display: block;
+          @include ratioBox (100%, 62%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 3px;
+
+        }
+
+      }
+
+      .right {
+        flex-grow: 1;
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-content: space-between;
+        width: 50%;
+
+        .text {
+          @include font("PingFangBold", $fontSize + 2, $cl3);
+          width: 100%;
+          @include twoLines;
+        }
+
+        .pinpai {
+          font-size: $fontSize - 1;
+          color: $cl6;
+          @include textOverflow;
+        }
+
+        .nice {
+          @include displayFlex(flex, space-between, flex-end);
+          color: $cl9;
+          font-size: $fontSize - 2;
+
+          .price {
+            @include font("PingFangBold", $fontSize - 1, $redLight);
+          }
+          .author{
+            width:70%;
+            @include textOverflow;
+            font-size: $fontSize;
+          }
+        }
+      }
+    }
+  }
+  // 专辑展示,图书展示一排三个
+  .articleShow.ebook.ablum_moudle{
+    .ratiobox {
+      position: relative;
+
+      .ebookImg {
+        display: block;
+        @include ratioBox (100%, 100%, 1px solid $greyLight, contain, $white, null);
+        border-radius: 3px;
+      }
+
+    }
+  }
+
+  // 电子书展示
+  .articleShow.ebook {
+    .ratiobox {
+      min-width: 25%;
+      position: relative;
+
+      .bookImg {
+        display: block;
+        @include ratioBox (100%, 133.33%, 1px solid $greyLight, contain, $white, null);
+        border-radius: 3px;
+
+      }
+    }
+
+    .subTitle {
+      @include twoColtextOverflow;
+    }
+
+    & .ebooklist {
+      // width: calc(100% + 10px);
+      background-color: $white;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+
+      .van-col {
+        margin-bottom: 20px;
+        .price{
+          color:$redLight;
+          font-size: $fontSize - 1;
+          margin-top:10px;
+        }
+        .album_num{font-size: $fontSize - 2;}
+      }
+
+      & .title {
+        @include twoColtextOverflow;
+        height: 38px;
+        @include font("PingFangBold", $fontSize + 1, null);
+        margin-top: 8px;
+        line-height: 1.2;
+      }
+
+      & .schedule {
+        color: $cl9;
+        margin-top: 5px;
+        @include textOverflow;
+      }
+
+      & .ratioebox {
+        position: relative;
+
+        .ebookImg {
+          display: block;
+          @include ratioBox (100%, 133.33%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 3px;
+          box-sizing: border-box;
+        }
+      }
+    }
+  }
+
+
+  // 图书
+  .book_moudel {
+    background-color: $white;
+    padding: 15px 0;
+    margin-top: 5px;
+
+    .materialTitle {
+      padding: 0 15px;
+    }
+
+    .materialObject {
+      padding: 0 15px;
+    }
+  }
+
+  // 专辑
+  .ablum_moudle {
+    background-color: $white;
+    padding: 15px;
+    margin-top: 5px;
+
+
+    .content {
+      @include displayFlex(flex, null, null);
+      padding-top: 20px;
+
+      .ratiobox {
+        min-width: 129px;
+        position: relative;
+
+        .bookImg {
+          display: block;
+          @include ratioBox (100%, 100%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 3px;
+
+        }
+
+        .radio {
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          border-radius: 12px;
+          text-align: center;
+          line-height: 24px;
+          background-color: rgba(0, 0, 0, 0.3);
+          position: absolute;
+          right: 8px;
+          bottom: 8px;
+
+          .icon {
+            color: #fff;
+          }
+        }
+
+      }
+
+      .right {
+        flex-grow: 1;
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-content: space-between;
+        width: 50%;
+
+        .text {
+          @include font("PingFangBold", $fontSize + 2, $cl3);
+          width: 100%;
+          @include twoLines;
+        }
+
+        .pinpai {
+          font-size: $fontSize - 1;
+          color: $cl6;
+          @include textOverflow;
+        }
+
+        .nice {
+          @include displayFlex(flex, space-between, flex-end);
+          color: $cl9;
+          font-size: $fontSize - 2;
+
+          .price {
+            @include font("PingFangBold", $fontSize + 1, $redLight);
+          }
+        }
+      }
+    }
+  }
+
+  .materialObject {
+    // background-color: $white;
+    // margin-top: 15px;
+
+    .goods {
+      @include displayFlex(flex, space-between, null);
+      margin-top: 5px;
+      flex-wrap: wrap;
+
+      .row {
+        width: 50%;
+
+        .goodsInfo {
+          width: 95%;
+          margin-bottom: 15px;
+          padding: 10px 5px;
+          box-sizing: border-box;
+
+          border-radius: 3px;
+
+          .ratiobox {
+            min-width: 120px;
+
+            .bookImg {
+              @include ratioBox (100%, 100%, null, contain, $white, null);
+              border-radius: 3px;
+            }
+          }
+
+          .name {
+            @include font("PingFangBlod", $fontSize, $cl3);
+            @include twoColtextOverflow;
+            height: 42px;
+            margin: 10px 0;
+          }
+
+          .message {
+            @include font("PingFangMedium", $fontSize - 2, $cl6);
+            @include textOverflow;
+          }
+
+          .money {
+            @include font("PingFangBold", $fontSize + 3, $redLight);
+          }
+
+          .bottom {
+            @include displayFlex(flex, space-between, null);
+
+            .buy {
+              padding: 0 5px;
+              color: #fff;
+              background-color: $redLight;
+              border-radius: 11px;
+              text-align: center;
+              height: 23px;
+              line-height: 23px;
+              font-size: $fontSize - 2;
+            }
+          }
+        }
+      }
+
+      .row:nth-child(2n+2) {
+        @include displayFlex(flex, flex-end, null);
+      }
+
+    }
+  }
+
+  .materialTitle {
+    @include displayFlex(flex, space-between, null);
+    padding: 10px 0;
+    box-sizing: border-box;
+    background-color: #fff;
+
+    // width: 100%;
+    .text {
+      max-width: 80%;
+
+      .titleOver {
+        @include textOverflow;
+      }
+    }
+
+    .verticleLine {
+      display: inline-block;
+      width: 3px;
+      height: 11px;
+      border-radius: 1.5px;
+      background-color: $redDark;
+      margin-right: 4px;
+    }
+
+    .lh {
+      line-height: 1;
+      @include font("PingFangBlod", $fontSize+2, $cl3);
+    }
+
+    .text {
+      @include displayFlex(flex, flex-start, flex-end);
+    }
+
+    .all {
+      @include font("PingFangMedium", $fontSize - 1, $cl9);
+    }
+  }
+}

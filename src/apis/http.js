@@ -59,6 +59,7 @@ instance.interceptors.response.use(function (response) {
     // 网络响应超时，调整到超时页面
     var routerLink = localStorage.getItem('routerLink');
     var replaceUrl = window.location.href.split('#')[0] + '#/timeout';
+
     var brandId;
 
     if (routerLink.match(/brand_id/)) {
