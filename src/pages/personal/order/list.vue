@@ -183,7 +183,7 @@ export default {
   },
   mounted() {
     // this.getData();
-    // console.log(brandId);
+    console.log(window.screen.availHeight);
   },
   methods: {
     programLoad() {

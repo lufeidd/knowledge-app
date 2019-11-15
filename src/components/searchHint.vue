@@ -10,7 +10,6 @@
         @focus="inputText"
         data-type="searchHintData.type"
         :placeholder="searchHintData.placeholderText"
-        @blur.prevent="inputLoseFocus"
       />
       <van-icon name="clear" size="16" color="#ccc" class="clearIcon" @click="clearText" />
     </div>
@@ -70,33 +69,11 @@ export default {
   props: ["searchHintData"],
   data(){
     return{
-      docmHeight: '0',  //默认屏幕高度
-      showHeight:  '0',   //实时屏幕高度
-      hidshow:true  ,//显示或者隐藏footer,
-      isResize:false //默认屏幕高度是否已获取
+
     }
   },
   mounted(){
-    	 window.onresize = ()=>{
-		 return(()=>{
-			 if (!this.isResize) {
-				 // 默认屏幕高度
-				 this.docmHeight = document.documentElement.clientHeight
-				 this.isResize = true
-			 }
-				 // 实时屏幕高度
-				 this.showHeight = document.body.clientHeight
-		 })()
-	 }
-  },
-  watch:{
-    showHeight:function() {
-      if(this.docmHeight > this.showHeight){
-        this.hidshow=false
-      }else{
-        this.hidshow=true
-      }
-    }
+
   },
   computed: {
     //过滤方法
@@ -118,12 +95,7 @@ export default {
     // }
   },
   methods: {
-    inputLoseFocus() {
-      setTimeout(() => {
-        console.log(333)
-        window.scrollTo(0, 0);
-      }, 100);
-    },
+
     select(item, index) {
       console.log(item);
       this.searchHintData.search = item;
