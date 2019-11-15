@@ -1,0 +1,219 @@
+/*
+ * author: zhuboyu
+ * date:2019/10/29
+ */
+ @charset "utf-8";
+
+ #helpPage{
+   min-height: 100%;
+   .dn{
+     display: none;
+   }
+   .active-bg{
+     position: relative;
+     width: 100%;
+     .bg-piture{
+       left: 0;
+       top: 0;
+       height: 0;
+       position: relative;
+       background-repeat: no-repeat;
+       background-size: cover;
+       background-position: 50%;
+       padding-bottom: 100%;
+       overflow: hidden;
+       width: 100%;
+     }
+     .activeRules{
+       background: url("../../../../assets/assist/activeRules01.png") no-repeat;
+       left: 0;
+       top: 10px;
+       width: 100%;
+       height: 0;
+       position: absolute;
+       background-position: 100%;
+       background-size: contain;
+       padding-bottom: 6%;
+       overflow: hidden;
+       .activeText{
+         position: absolute;
+         top: 2px;
+         right: 0;
+         font-size: 13px;
+       }
+     }
+     .dn{
+       display: none;
+     }
+   }
+   .helpBoss{
+     font-size: 14px;
+     text-align: center;
+     margin-bottom: 9px;
+   }
+   .couponImg{
+     width: 255px;
+     margin: 0 auto;
+     .text{
+       font-size: 12px;
+       margin-bottom: 2px;
+     }
+     .bookImg{
+       left: 0;
+       top: 0;
+       width: 100%;
+       height: 0;
+       position: relative;
+       background-position: 100%;
+       background-repeat: no-repeat;
+       background-size: cover;
+       padding-bottom: 35%;
+       border-radius: 3px;
+       margin-bottom: 17px;
+     }
+   }
+   .fieldBox{
+     padding: 0 45px;
+     .van-button--danger.van-button--disabled {
+       /*background-color: transparent;
+       border-color: transparent;
+       color: #161a26;*/
+       background-color: #d6d6d6;
+       border-color: #d6d6d6;
+       opacity: 1;
+     }
+     .codestyle::after {
+       content: " ";
+       position: absolute;
+       pointer-events: none;
+       right: 0;
+       left: 0;
+       bottom: 0;
+       -webkit-transform: scaleY(.5);
+       -ms-transform: scaleY(.5);
+       transform: scaleY(.5);
+       border-bottom: 1px solid #ebedf0;
+     }
+     .van-cell{
+       margin: 5px 0;
+       border-radius: 10px;
+     }
+   }
+   .newPrompt{
+     text-align: center;
+     font-size: 14px;
+     margin-top: 40px;
+   }
+   .activeMore{
+     position: relative;
+     margin: 23px 0;
+     .moreText{
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       width: 245px;
+       height: 45px;
+       background-image: linear-gradient(left, #ff8a18 , #fc5516);
+       background-image: -webkit-linear-gradient(left, #ff8a18 , #fc5516);
+       background-image:-o-linear-gradient(left, #ff8a18 , #fc5516);
+       background-image:-moz-linear-gradient(left, #ff8a18 , #fc5516);
+       border-radius: 22px;
+       font-size: 14px;
+       color: #ffffff;
+       margin: 0 auto;
+       .icon{
+         top: 0px;
+       }
+     }
+   }
+   .myText{
+     font-size: 14px;
+     text-align: center;
+     text-decoration: underline;
+   }
+   .rules{
+     .rules-tit{
+       margin: 36px 12px 19px;
+       text-align: center;
+       display: flex;
+       align-items: center;
+       .line{
+         flex-grow: 2;
+         border-bottom: 1px solid;
+       }
+       .rulesTitle{
+         font-size: 18px;
+         flex-grow: 1;
+       }
+     }
+     .rulesCount{
+       padding: 0 12px 35px;
+       line-height: 25px;
+     }
+   }
+   .HuoBaApp{
+     display: -webkit-box;
+     display: -ms-flexbox;
+     display: flex;
+     align-items: center;
+     padding: 12px;
+     background-color: #fff;
+     .svg{
+       width: 36px;
+       .bookImg{
+         left: 0;
+         top: 0;
+         width: 100%;
+         height: 0;
+         position: relative;
+         background-position: 50%;
+         background-repeat: no-repeat;
+         background-size: contain;
+         padding-bottom: 100%;
+         overflow: hidden;
+         background-color: #fffdfd;
+       }
+     }
+     .Text{
+       flex-grow: 1;
+       padding-left: 5px;
+       .top{
+         font-weight: bold;
+       }
+       .bottom{
+         color: #7e7e7e;
+       }
+     }
+     .button{
+       width: 100px;
+       text-align: center;
+       background-color: #e83e32;
+       color: #fff;
+       line-height: 30px;
+       border-radius: 5px;
+     }
+   }
+
+   @media screen and (max-width: 320px){
+     .active-bg{
+       .activeRules{
+         .activeText{
+           top: 1px;
+           font-size: 12px;
+           transform: scale(0.8);
+           right: -3px;
+         }
+       }
+     }
+   }
+   @media screen and (min-width: 768px) {
+     .active-bg{
+       .activeRules{
+         .activeText{
+           top: 5px;
+           font-size: 26px;
+         }
+       }
+     }
+   }
+ }
