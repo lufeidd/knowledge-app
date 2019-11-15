@@ -132,12 +132,15 @@ router.beforeEach((to, from, next) => {
   // 存放页面来源地址
   if (from.path != to.path) {
     localStorage.setItem('fromLink', from.path);
-
-    // console.log('from path:', from.path, 'to path:', to.path);
     next();
   }
   next();
-
+  // 同类页面跳转执行页面刷新
+  if (from.path.toLocaleLowerCase() == to.path.toLocaleLowerCase()) {
+    window.location.reload();
+    next();
+  }
+  next();
   /* 路由发生变化修改页面 title */
   if (to.meta.title) {
     document.title = to.meta.title;

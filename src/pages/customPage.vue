@@ -278,7 +278,7 @@
         <div class="showContent">
           <swiper class="swiperTags" :options="swiperOption_column" ref="mySwiper">
             <swiper-slide v-for="(litem,lindex) in item.content.list" :key="lindex">
-              <div class="slide" @click="linktoDetail(litem.contents.link_params)">
+              <div class="slide">
                 <div class="ratiobox" @click="linktoDetail(litem.url)">
                   <div
                     class="bookImg"
@@ -357,7 +357,7 @@
         <div
           class="materialTitle"
           v-if="item.is_show_title == 1"
-          @click="linktoDetail(item.module_more)"
+          @click="linktoDetail(item.more_url)"
         >
           <div class="text">
             <span class="verticleLine"></span>
@@ -540,6 +540,7 @@
           </van-tabs>
         </div>
       </div>
+      
     </div>
     <!-- <div style="position:relative;height:90px;">
       <CopyRight></CopyRight>
@@ -688,11 +689,14 @@ export default {
       // console.log(1111,link);return
       var data = this.$translate(JSON.parse(link));
       if (data.name == "") return;
-      if (data.name == "url") {window.location.href = data.query.url; return};
+      // 网页链接
+      if (data.name == "url") {
+        window.location.href = data.query.url;
+        return
+      };
       data.query.type = "mall";
       data.query.title = this.title;
       this.$router.push(data);
-      location.reload();
     },
     goodsDetail(item) {
       // console.log(item);return
