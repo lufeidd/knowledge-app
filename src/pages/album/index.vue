@@ -451,7 +451,7 @@
       </van-goods-action>
       <van-goods-action
         :class="{ iphx: this.isIphx }"
-        v-if="baseData.is_free == 0 && baseData.is_payed == 0 && baseData.sale_style == 1 &&couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length > 0"
+        v-if="baseData.is_free == 0 && baseData.is_payed == 0 && baseData.sale_style == 1 && couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length > 0"
       >
         <van-goods-action-mini-btn
           icon="play-circle-o"
@@ -460,12 +460,12 @@
           v-if="baseData.has_free && preListen"
         />
         <van-goods-action-big-btn
-          :text="'¥ '+baseData.price.toFixed(2) + ' 购买'"
+          :text="'¥ '+baseData.price + ' 购买'"
           @click="buyAction(baseData.goods_id)"
         />
         <van-goods-action-big-btn
           primary
-          :text="'¥ '+baseData.price.toFixed(2) + ' 拼团'"
+          :text="'¥ '+couponInfo.groupbuy.groupbuy_price + ' 拼团'"
           @click="openGroup"
         />
       </van-goods-action>
@@ -847,7 +847,7 @@
               type="danger"
               size="small"
               round
-              v-if="couponInfo.groupbuy.user_remain_nums == 0 || couponInfo.groupbuy.can_open_nums == 0"
+              v-if="couponInfo.groupbuy.can_open_nums == 0"
               disabled
             >一键开团</van-button>
             <van-button type="danger" size="small" round @click="group" v-else>一键开团</van-button>
@@ -1071,28 +1071,28 @@ export default {
     this.getCouponList();
   },
   updated() {
-    // console.log(7474,$('.van-goods-action-big-btn .van-button__text'))
+    console.log(7474,$('.van-goods-action-big-btn .van-button__text'))
     if (this.baseData.single_activity_id) {
-      $(".van-goods-action-big-btn .van-button__text").html(
+      $('.van-goods-action-big-btn .van-button__text').html(
         '<div style="line-height:1;font-size:16px;">限时促销价￥' +
-          this.baseData.price.toFixed(2) +
+          this.baseData.price +
           '</div><div style="line-height:1;font-size:12px;margin-top:5px;"><del style="color:#e1e1e1;">原价￥' +
-          this.baseData.market_price.toFixed(2) +
-          "</del> 购买专辑</div>"
+          this.baseData.market_price +
+          '</del> 购买专辑</div>'
       );
     }
     if (this.couponInfo.groupbuy && Object.keys(this.couponInfo.groupbuy).length > 0) {
-      $(".van-goods-action-big-btn.van-button--warning .van-button__text").html(
+      $('.van-goods-action-big-btn.van-button--warning .van-button__text').html(
         '<div style="line-height:1;font-size:15px;">￥' +
-          this.baseData.market_price.toFixed(2) +
+          this.baseData.price+
           '</div><div style="line-height:1;font-size:15px;margin-top:5px;"> 直接购买</div>'
       );
-      $(".van-goods-action-big-btn.van-button--danger .van-button__text").html(
+      $('.van-goods-action-big-btn.van-button--danger .van-button__text').html(
         '<div style="line-height:1;font-size:15px;">￥' +
-          this.couponInfo.groupbuy.groupbuy_price.toFixed(2) +
+          this.couponInfo.groupbuy.groupbuy_price+
           '</div><div style="line-height:1;font-size:15px;margin-top:5px;"> ' +
           this.couponInfo.groupbuy.groupbuy_num +
-          "人拼团价</div>"
+          '人拼团价</div>'
       );
     }
   },

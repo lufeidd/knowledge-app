@@ -395,7 +395,7 @@
         <div>
           <van-row
             gutter="20"
-            v-if="couponInfo.groupbuy.can_open_nums > 0 && couponInfo.groupbuy.user_remain_nums > 0"
+            v-if="couponInfo.groupbuy.can_open_nums > 0"
           >
             <van-col span="10">
               <van-button round type="primary" size="small" @click="buyTo">

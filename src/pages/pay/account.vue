@@ -15,7 +15,10 @@
         </div>
         <!-- <div class="subTitle">{{ goodsInfo.sub_title }}</div> -->
         <div class="info">
-          <span class="history" v-if="this.single_activity_id">促销价：¥{{ goodsInfo.price.toFixed(2) }} <del class="promotion">原价￥{{goodsInfo.sale_price}}</del></span>
+          <span class="history" v-if="this.single_activity_id">
+            促销价：¥{{ goodsInfo.price.toFixed(2) }}
+            <del class="promotion">原价￥{{goodsInfo.sale_price}}</del>
+          </span>
           <span class="history" v-else>¥{{ goodsInfo.price.toFixed(2) }}</span>
         </div>
       </div>
@@ -24,28 +27,36 @@
     <van-cell
       title
       is-link
-      :value="'优惠￥'+discount_price.toFixed(2)"
-      @click="showCoupon"
+      value="拼团商品不可用券"
       style="margin:5px 0;"
-      v-if="ticket_lists.canuse.length>0"
-      class="couponCell"
+      v-if="groupbuy_id || groupbuy_open_id"
     >
       <template slot="title">
         <span style="margin-right:10px;">优惠券</span>
-        <span class="toMall" v-if="discount_price == ticket_price && ticket_price > 0">已选最大优惠</span>
-        <span class="toMall" v-if="ticket_num">已选{{ticket_num}}张</span>
       </template>
     </van-cell>
-    <van-cell title is-link value="拼团商品不可用券" style="margin:5px 0;" v-if="ticket_lists.canuse.length == 0 && (groupbuy_id || groupbuy_open_id)">
-      <template slot="title">
-        <span style="margin-right:10px;">优惠券</span>
-      </template>
-    </van-cell>
-    <van-cell title is-link value="无可用券" style="margin:5px 0;" v-else>
-      <template slot="title">
-        <span style="margin-right:10px;">优惠券</span>
-      </template>
-    </van-cell>
+    <template v-else>
+      <van-cell
+        title
+        is-link
+        :value="'优惠￥'+discount_price.toFixed(2)"
+        @click="showCoupon"
+        style="margin:5px 0;"
+        v-if="ticket_lists.canuse.length>0"
+        class="couponCell"
+      >
+        <template slot="title">
+          <span style="margin-right:10px;">优惠券</span>
+          <span class="toMall" v-if="discount_price == ticket_price && ticket_price > 0">已选最大优惠</span>
+          <span class="toMall" v-if="ticket_num">已选{{ticket_num}}张</span>
+        </template>
+      </van-cell>
+      <van-cell title is-link value="无可用券" style="margin:5px 0;" v-else>
+        <template slot="title">
+          <span style="margin-right:10px;">优惠券</span>
+        </template>
+      </van-cell>
+    </template>
 
     <!-- 选择支付方式 -->
     <van-row class="editBox">
@@ -261,45 +272,46 @@
         </van-tab>
         <van-tab :title="nouseCoupon">
           <div class="content">
-            <div
-              v-for="(item,index) in ticket_lists.nouse"
-              :key="index"
-            >
-            <div style="margin-top:10px;overflow:hidden;border-radius:0 6px 6px 0;box-shadow:0 0 10px rgba(0,0,0,0.06);">
-              <div class="toUse overdue">
-                <div class="left"></div>
-                <div class="mid">
-                  <div>
-                    ￥
-                    <span class="price">{{item.money}}</span>
+            <div v-for="(item,index) in ticket_lists.nouse" :key="index">
+              <div
+                style="margin-top:10px;overflow:hidden;border-radius:0 6px 6px 0;box-shadow:0 0 10px rgba(0,0,0,0.06);"
+              >
+                <div class="toUse overdue">
+                  <div class="left"></div>
+                  <div class="mid">
+                    <div>
+                      ￥
+                      <span class="price">{{item.money}}</span>
+                    </div>
+                    <div class="condition">{{item.use_money_desc}}</div>
+                    <span class="circle top"></span>
+                    <span class="circle bottom"></span>
                   </div>
-                  <div class="condition">{{item.use_money_desc}}</div>
-                  <span class="circle top"></span>
-                  <span class="circle bottom"></span>
-                </div>
-                <div class="right">
-                  <div>
-                    <span class="shopCoupon">
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-coupon-block" />
-                      </svg>
-                      <span class="dianpu">店铺券</span>
-                    </span>
-                    <span class="shop">{{item.brand_name}}</span>
-                  </div>
-                  <div class="desc">{{item.use_range_desc}}</div>
-                  <!-- <span class="used">
+                  <div class="right">
+                    <div>
+                      <span class="shopCoupon">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-coupon-block" />
+                        </svg>
+                        <span class="dianpu">店铺券</span>
+                      </span>
+                      <span class="shop">{{item.brand_name}}</span>
+                    </div>
+                    <div class="desc">{{item.use_range_desc}}</div>
+                    <!-- <span class="used">
                     <svg class="icon" aria-hidden="true">
                       <use xlink:href="#icon-received-line" />
                     </svg>
-                  </span>-->
-                  <div
-                    class="time"
-                  >{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
+                    </span>-->
+                    <div
+                      class="time"
+                    >{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
+                  </div>
                 </div>
               </div>
-              </div>
-              <div class="whyNoUse">{{item.cart_money>0?'还差'+item.cart_money+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
+              <div
+                class="whyNoUse"
+              >{{item.cart_money>0?'还差'+item.cart_money+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
             </div>
           </div>
         </van-tab>
@@ -436,9 +448,9 @@ export default {
       discount_price: 0,
       total_money: 0,
       order_ticket_ids: "",
-      single_activity_id:null,
-      groupbuy_id:null,
-      groupbuy_open_id:null,
+      single_activity_id: null,
+      groupbuy_id: null,
+      groupbuy_open_id: null
     };
   },
   mounted() {
@@ -457,8 +469,10 @@ export default {
       data.timestamp = tStamp;
       data.version = "1.0";
       data.goods_id = this.goods_id;
-      if(this.$route.query.groupbuy_id) data.groupbuy_id = this.$route.query.groupbuy_id;
-      if(this.$route.query.groupbuy_open_id) data.groupbuy_open_id = this.$route.query.groupbuy_open_id;
+      if (this.$route.query.groupbuy_id)
+        data.groupbuy_id = this.$route.query.groupbuy_id;
+      if (this.$route.query.groupbuy_open_id)
+        data.groupbuy_open_id = this.$route.query.groupbuy_open_id;
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADDINFO(data);
       if (res.hasOwnProperty("response_code")) {
@@ -613,9 +627,9 @@ export default {
       data.timestamp = tStamp;
       data.version = "1.0";
       data.goods_id = this.goodsInfo.goods_id;
-      if(this.order_ticket_ids) data.ticket_id = this.order_ticket_ids;
-      if(this.groupbuy_id) data.groupbuy_id = this.groupbuy_id;
-      if(this.groupbuy_open_id) data.groupbuy_open_id = this.groupbuy_open_id;
+      if (this.order_ticket_ids) data.ticket_id = this.order_ticket_ids;
+      if (this.groupbuy_id) data.groupbuy_id = this.groupbuy_id;
+      if (this.groupbuy_open_id) data.groupbuy_open_id = this.groupbuy_open_id;
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADD(data);
       if (res.hasOwnProperty("response_code")) {

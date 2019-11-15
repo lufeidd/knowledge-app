@@ -690,7 +690,7 @@
             size="small"
             round
             @click="group"
-            v-if="couponInfo.groupbuy.user_remain_nums > 0 ||couponInfo.groupbuy.can_open_nums > 0"
+            v-if="couponInfo.groupbuy.can_open_nums > 0"
           >一键开团</van-button>
           <van-button type="danger" size="small" round disabled v-else>一键开团</van-button>
         </div>
@@ -720,6 +720,7 @@
     border-radius: 15px 0 0 15px;
     font-size: $fontSize - 2;
     position: fixed;
+    z-index: 99;
     top: 130px;
     right: 0;
     text-align: center;
