@@ -18,10 +18,17 @@
       <div class="infoBox">
         <!-- 限时促销 -->
         <div class="promotion" v-if="baseData.single_activity_id">
-          <img src="../assets/null/promotion.png" width="100%" height="65px">
+          <img src="../assets/null/promotion.png" width="100%" height="65px" />
           <div class="promotionLeft">
-            <div class="promotionPrice">￥<span class="price">{{couponInfo.single.activity_price.toFixed(2)}}</span></div>
-            <div class="original">原价 <del>￥{{baseData.market_price.toFixed(2)}}</del><span class="discount">{{couponInfo.single.desc}}</span></div>
+            <div class="promotionPrice">
+              ￥
+              <span class="price">{{couponInfo.single.activity_price.toFixed(2)}}</span>
+            </div>
+            <div class="original">
+              原价
+              <del>￥{{baseData.market_price.toFixed(2)}}</del>
+              <span class="discount">{{couponInfo.single.desc}}</span>
+            </div>
           </div>
           <div class="promotionRight" v-if="showDay">
             <div class="red">{{timeDataDesc}}</div>
@@ -31,7 +38,11 @@
           <div class="promotionRight" v-else>
             <div>
               <div class="activity">距活动结束还剩</div>
-              <div class="timeD"><span class="time">{{timeH}}</span> ：<span class="time">{{timeM}}</span> ：<span class="time">{{timeS}}</span></div>
+              <div class="timeD">
+                <span class="time">{{timeH}}</span> ：
+                <span class="time">{{timeM}}</span> ：
+                <span class="time">{{timeS}}</span>
+              </div>
             </div>
             <div v-if="baseData.stores > 100 ">库存充足</div>
             <div v-else>该价格仅剩{{baseData.stores}}件</div>
@@ -44,11 +55,23 @@
           </van-col>
           <van-col span="12" v-if="baseData.stores <= 10" style="text-align: right;">库存紧张</van-col>
           <van-col span="12" v-else style="text-align: right;">库存充足</van-col>
-        </van-row> -->
+        </van-row>-->
         <div class="discountInfo" v-else>
-          <span class="price">¥ <span class="dis_price">{{ baseData.price.toFixed(2) }}</span></span>
+          <span class="price">
+            ¥
+            <span class="dis_price">{{ baseData.price.toFixed(2) }}</span>
+          </span>
           <div class="discount">
-            <span class="original">原价<del v-if="baseData.price !== baseData.market_price">¥{{ baseData.market_price.toFixed(2) }}</del><span class="price" v-if="baseData.price !== baseData.market_price">{{((baseData.price/baseData.market_price)*10).toFixed(1)}}折</span></span>
+            <span class="original">
+              原价
+              <del
+                v-if="baseData.price !== baseData.market_price"
+              >¥{{ baseData.market_price.toFixed(2) }}</del>
+              <span
+                class="price"
+                v-if="baseData.price !== baseData.market_price"
+              >{{((baseData.price/baseData.market_price)*10).toFixed(1)}}折</span>
+            </span>
             <span v-if="baseData.stores <= 10" class="stores">仅剩{{baseData.stores}}</span>
             <span v-if="baseData.stores > 100" class="stores">库存充足</span>
           </div>
@@ -57,7 +80,14 @@
         <div class="sub_title">{{baseData.sub_title}}</div>
       </div>
       <!-- 优惠券 -->
-      <van-cell title is-link value @click="showCoupon" style="margin:5px 0;" v-if="Object.keys(couponInfo.ticket).length>0">
+      <van-cell
+        title
+        is-link
+        value
+        @click="showCoupon"
+        style="margin:5px 0;"
+        v-if="Object.keys(couponInfo.ticket).length>0"
+      >
         <template slot="title">
           <span style="margin-right:10px;" v-if="isReceived">已领券</span>
           <span style="margin-right:10px;" v-else>领券</span>
@@ -180,7 +210,11 @@
           </span>
         </div>
         <div class="content">
-          <div style="margin-top:10px;overflow:hidden;border-radius:0 6px 6px 0;box-shadow:0 0 10px rgba(0,0,0,0.06);" v-for="(item,index) in couponList" :key="index">
+          <div
+            style="margin-top:10px;overflow:hidden;border-radius:0 6px 6px 0;box-shadow:0 0 10px rgba(0,0,0,0.06);"
+            v-for="(item,index) in couponList"
+            :key="index"
+          >
             <!-- 可领取 -->
             <div class="toUse" v-if="item.state == 1 || item.state == 3">
               <div class="left"></div>
@@ -206,11 +240,17 @@
                 </div>
                 <div class="desc">
                   {{item.use_range_desc}}
-                  <span class="toMall btn red" v-if="item.state == 1 && requestState" @click="receive(item,index)">点击领取</span>
+                  <span
+                    class="toMall btn red"
+                    v-if="item.state == 1 && requestState"
+                    @click="receive(item,index)"
+                  >点击领取</span>
                   <span class="toMall btn red" v-if="item.state == 1 && !requestState">点击领取</span>
                   <span class="toMall btn" v-if="item.state == 3" @click="toResult(item,index)">可用商品</span>
                 </div>
-                <div class="time">{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
+                <div
+                  class="time"
+                >{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
                 <span class="used" v-if="item.state == 3">
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-yilingqu" />
@@ -219,9 +259,7 @@
               </div>
             </div>
             <!-- 已领完 -->
-            <div class="toUse overdue"
-              v-if="item.state == 2"
-            >
+            <div class="toUse overdue" v-if="item.state == 2">
               <div class="left"></div>
               <div class="mid">
                 <div>
@@ -249,7 +287,9 @@
                     <use xlink:href="#icon-received-line" />
                   </svg>
                 </span>
-                <div class="time">{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
+                <div
+                  class="time"
+                >{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
               </div>
             </div>
           </div>
@@ -257,7 +297,7 @@
       </van-popup>
       <!-- <div style="height: 90px;position:relative">
         <CopyRight></CopyRight>
-      </div> -->
+      </div>-->
       <!-- <div v-if="this.isIphx" style="height: 34px;"></div> -->
       <div style="height:60px;"></div>
       <!-- 加入购物车、立即购买 -->
@@ -293,6 +333,13 @@
       </div>
     </div>
     <EazyNav type="brand" ref="nav"></EazyNav>
+    <!-- 拼团 -->
+    <div class="groupBuy" v-if="couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length>0" @click="toGoodsGroup">
+      拼团价：￥{{couponInfo.groupbuy.groupbuy_price.toFixed(2)}}
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-next-line" />
+      </svg>
+    </div>
     <Loading :isLoading="isLoading"></Loading>
   </div>
 </template>
@@ -310,6 +357,25 @@
   .van-cell__value {
     flex-shrink: 0;
   }
+  .groupBuy {
+    width: 126px;
+    height: 30px;
+    line-height: 30px;
+    color: $white;
+    background: linear-gradient(to left, #f72d3e 100%, #f35636 100%);
+    border-radius: 0 15px 15px 0;
+    font-size: $fontSize - 2;
+    position: fixed;
+    top: 40%;
+    left: 0;
+    text-align: center;
+    .icon {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      margin-top: -6px;
+    }
+  }
 }
 </style>
 
@@ -319,14 +385,14 @@ import { ALBUM } from "../apis/album.js";
 import { USER_ADDRESS_LIST } from "../apis/user.js";
 import { CART_ADD, ORDER_PHYSICAL_ADDINFO } from "../apis/shopping.js";
 import { LOCATION_CHANGE } from "../apis/public.js";
-import { GOODS_TICKET_GETS,TICKET_LINK } from "../apis/coupon.js";
+import { GOODS_TICKET_GETS, TICKET_LINK } from "../apis/coupon.js";
 export default {
   data() {
     return {
       shoppingcart_num: 0,
       dispatch_str: "",
       addressData: [],
-      location_info:null,
+      location_info: null,
       finished: false,
       isLoading: true,
       detail: {
@@ -348,8 +414,12 @@ export default {
         goods_id: null
       },
       // 优惠券信息
-      couponInfo:null,
-      couponList:[],
+      couponInfo: {
+        groupbuy: {},
+        single: {},
+        ticket: {}
+      },
+      couponList: [],
       isReceived: false,
       // 所属媒体信息
       brandInfoData: {
@@ -372,12 +442,12 @@ export default {
       couponModel: false,
       requestState: true,
       // 倒计时
-      timeData:'2019-10-17 20:28:00',
-      timeH:null,
-      timeM:null,
-      timeS:null,
-      showDay:true,
-      timeDataDesc:''
+      timeData: "2019-10-17 20:28:00",
+      timeH: null,
+      timeM: null,
+      timeS: null,
+      showDay: true,
+      timeDataDesc: ""
     };
   },
   mounted() {
@@ -391,6 +461,19 @@ export default {
     // this.$countTime(this.timeData);
   },
   methods: {
+    toGoodsGroup() {
+      if (this.$refs.nav.is_Login) {
+        this.$router.push({
+          name: "groupgoods",
+          query: {
+             goods_id:this.baseData.goods_id,
+             groupbuy_id:this.couponInfo.groupbuy.id,
+           }
+        });
+      } else {
+        this.$router.push({ name: "login" });
+      }
+    },
     toBrand() {
       this.$router.push({
         name: "brand",
@@ -510,7 +593,9 @@ export default {
         document.title = "商品详情-" + res.response_data.base.title;
         // 优惠券
         this.couponInfo = res.response_data.activity;
-        if(this.couponInfo.single.remain_time>0){this.$countTime(this.couponInfo.single.remain_time);}
+        if (this.couponInfo.single.remain_time > 0) {
+          this.$countTime(this.couponInfo.single.remain_time);
+        }
         // 立即购买信息
         this.detail.goods_id = res.response_data.base.goods_id;
         this.detail.sku_id = res.response_data.base.goods_id;
@@ -556,7 +641,8 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.baseData.price = res.response_data.base.price;
         this.baseData.market_price = res.response_data.base.market_price;
-        this.baseData.single_activity_id = res.response_data.base.single_activity_id;
+        this.baseData.single_activity_id =
+          res.response_data.base.single_activity_id;
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 401) {
           // 上下架状态, 1=> 在架, 0=> 下架
@@ -672,12 +758,11 @@ export default {
     },
     showCoupon() {
       this.couponModel = true;
-
     },
     closePopup() {
       this.couponModel = false;
     },
-    async getCouponList(){
+    async getCouponList() {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
@@ -689,8 +774,8 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // console.log(res);
         this.couponList = res.response_data;
-        for(var i=0;i<this.couponList.length;i++){
-          if(this.couponList[i].state == 3){
+        for (var i = 0; i < this.couponList.length; i++) {
+          if (this.couponList[i].state == 3) {
             this.isReceived = true;
           }
         }
@@ -699,41 +784,41 @@ export default {
       }
     },
     // 领取优惠券
-    receive(item,index){
+    receive(item, index) {
       if (this.$refs.nav.is_Login == 0) {
         this.$router.push({ name: "login", params: {} });
         this.$toast("用户未登录!");
-      }else{
+      } else {
         this.ticketLink(item.ticket_id);
       }
     },
-    async ticketLink(ticket_id){
+    async ticketLink(ticket_id) {
       this.requestState = false;
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
         version: "1.0",
-        ticket_id: ticket_id,
+        ticket_id: ticket_id
       };
       data.sign = this.$getSign(data);
       let res = await TICKET_LINK(data);
       if (res.hasOwnProperty("response_code")) {
         // console.log(res);
-        this.$toast("领取成功！")
+        this.$toast("领取成功！");
         this.requestState = true;
       } else {
         this.$toast(res.error_message);
         this.requestState = true;
       }
     },
-    toResult(item,index){
+    toResult(item, index) {
       this.$router.push({
-        name:"couponresult",
-        query:{
-          ticket_id:item.ticket_id,
+        name: "couponresult",
+        query: {
+          ticket_id: item.ticket_id
         }
-      })
-    },
+      });
+    }
   }
 };
 </script>

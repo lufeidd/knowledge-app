@@ -65,30 +65,35 @@
     <van-cell
       title
       is-link
-      :value="discount_price_desc"
-      @click="showCoupon"
+      value="拼团商品不可用券"
       style="margin:5px 0;"
-      v-if="ticket_lists.canuse.length>0"
+      v-if="groupbuy_id || groupbuy_open_id"
     >
       <template slot="title">
         <span style="margin-right:10px;color:#333;">优惠券</span>
-        <span class="toMall" v-if="discount_price == ticket_price">已选最大优惠</span>
-        <span class="toMall" v-if="ticket_num">已选{{ticket_num}}张</span>
       </template>
     </van-cell>
-    <van-cell
-      title
-      is-link
-      value="无可用券"
-      style="margin:5px 0;"
-      v-else
-    >
-      <template slot="title">
-        <span style="margin-right:10px;color:#333;">优惠券</span>
-        <!-- <span class="toMall" v-if="discount_price == ticket_price">已选最大优惠</span> -->
-        <!-- <span class="toMall" v-if="ticket_num">已选{{ticket_num}}张</span> -->
-      </template>
-    </van-cell>
+    <template v-else>
+      <van-cell
+        title
+        is-link
+        :value="discount_price_desc"
+        @click="showCoupon"
+        style="margin:5px 0;"
+        v-if="ticket_lists.canuse.length>0"
+      >
+        <template slot="title">
+          <span style="margin-right:10px;color:#333;">优惠券</span>
+          <span class="toMall" v-if="discount_price == ticket_price">已选最大优惠</span>
+          <span class="toMall" v-if="ticket_num">已选{{ticket_num}}张</span>
+        </template>
+      </van-cell>
+      <van-cell title is-link value="无可用券" style="margin:5px 0;" v-else>
+        <template slot="title">
+          <span style="margin-right:10px;color:#333;">优惠券</span>
+        </template>
+      </van-cell>
+    </template>
     <!-- 备注 -->
     <div class="priceInfo beizhu">
       <div class="first">
@@ -110,6 +115,16 @@
       safe-area-inset-bottom
       :price="pay_price * 100"
       button-text="去支付"
+      v-if="payState"
+      @submit="onSubmit"
+    ></van-submit-bar>
+    <van-submit-bar
+      disabled
+      :class="{iphx:this.isIphx}"
+      safe-area-inset-bottom
+      :price="pay_price * 100"
+      button-text="去支付"
+      v-else
       @submit="onSubmit"
     ></van-submit-bar>
     <!-- 领取优惠券 -->
@@ -159,7 +174,9 @@
                     <span class="shop">{{item.brand_name}}</span>
                   </div>
                   <div class="desc">{{item.use_range_desc}}</div>
-                  <div class="time">{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
+                  <div
+                    class="time"
+                  >{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
                   <span class="used" v-if="item.selected == 1">
                     <svg class="icon" aria-hidden="true">
                       <use xlink:href="#icon-checked-line" />
@@ -201,7 +218,9 @@
                       <use xlink:href="#icon-check-line" />
                     </svg>
                   </span>
-                  <div class="time">{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
+                  <div
+                    class="time"
+                  >{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
                 </div>
               </div>
             </div>
@@ -210,44 +229,47 @@
         </van-tab>
         <van-tab :title="nouseCoupon">
           <div class="content">
-            <div
-              v-for="(item,index) in ticket_lists.nouse"
-              :key="index"
-            >
-              <div style="border-radius:0 6px 6px 0;margin-top:10px;overflow:hidden;box-shadow:0 0 10px rgba(0,0,0,0.06);">
-              <div class="toUse overdue">
-                <div class="left"></div>
-                <div class="mid">
-                  <div>
-                    ￥
-                    <span class="price">{{item.money}}</span>
+            <div v-for="(item,index) in ticket_lists.nouse" :key="index">
+              <div
+                style="border-radius:0 6px 6px 0;margin-top:10px;overflow:hidden;box-shadow:0 0 10px rgba(0,0,0,0.06);"
+              >
+                <div class="toUse overdue">
+                  <div class="left"></div>
+                  <div class="mid">
+                    <div>
+                      ￥
+                      <span class="price">{{item.money}}</span>
+                    </div>
+                    <div class="condition">{{item.use_money_desc}}</div>
+                    <span class="circle top"></span>
+                    <span class="circle bottom"></span>
                   </div>
-                  <div class="condition">{{item.use_money_desc}}</div>
-                  <span class="circle top"></span>
-                  <span class="circle bottom"></span>
-                </div>
-                <div class="right">
-                  <div>
-                    <span class="shopCoupon">
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-coupon-block" />
-                      </svg>
-                      <span class="dianpu" v-if="item.brand_id">店铺券</span>
-                      <span class="dianpu" v-else>平台券</span>
-                    </span>
-                    <span class="shop">{{item.brand_name}}</span>
-                  </div>
-                  <div class="desc">{{item.use_range_desc}}</div>
-                  <!-- <span class="used">
+                  <div class="right">
+                    <div>
+                      <span class="shopCoupon">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-coupon-block" />
+                        </svg>
+                        <span class="dianpu" v-if="item.brand_id">店铺券</span>
+                        <span class="dianpu" v-else>平台券</span>
+                      </span>
+                      <span class="shop">{{item.brand_name}}</span>
+                    </div>
+                    <div class="desc">{{item.use_range_desc}}</div>
+                    <!-- <span class="used">
                     <svg class="icon" aria-hidden="true">
                       <use xlink:href="#icon-received-line" />
                     </svg>
-                  </span>-->
-                  <div class="time">{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
+                    </span>-->
+                    <div
+                      class="time"
+                    >{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
+                  </div>
                 </div>
               </div>
-              </div>
-              <div class="whyNoUse">{{item.cart_money>0?'还差'+item.cart_money+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
+              <div
+                class="whyNoUse"
+              >{{item.cart_money>0?'还差'+item.cart_money+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
             </div>
           </div>
         </van-tab>
@@ -305,19 +327,24 @@ export default {
       useCoupon: "",
       ticket_price: null,
       ticket_lists: {
-        canuse:[],
-        nouse:[]
+        canuse: [],
+        nouse: []
       },
       discount_price: 0,
       ticket_num: 0,
       total_money: 0,
       order_ticket_ids: "",
-      chooseMax:false,
-      maxDiscount:null,
-      discount_price_desc:'',
+      chooseMax: false,
+      maxDiscount: null,
+      discount_price_desc: "",
+      groupbuy_id: null,
+      groupbuy_open_id: null,
+      payState:true,
     };
   },
   mounted() {
+    this.groupbuy_id = this.$route.query.groupbuy_id;
+    this.groupbuy_open_id = this.$route.query.groupbuy_open_id;
     this.orderAddData();
   },
   methods: {
@@ -327,6 +354,10 @@ export default {
       if (this.$route.query.detail_ids)
         queryTmp.detail_ids = this.$route.query.detail_ids;
       if (this.$route.query.detail) queryTmp.detail = this.$route.query.detail;
+      if (this.$route.query.groupbuy_id)
+        queryTmp.groupbuy_id = this.$route.query.groupbuy_id;
+      if (this.$route.query.groupbuy_open_id)
+        queryTmp.groupbuy_open_id = this.$route.query.groupbuy_open_id;
       queryTmp.order_ticket_ids = this.order_ticket_ids;
       queryTmp.location = JSON.stringify(this.location);
       this.$router.push({ name: "orderconfirmdetail", query: queryTmp });
@@ -340,6 +371,10 @@ export default {
       if (this.$route.query.detail_ids)
         data.detail_ids = this.$route.query.detail_ids;
       if (this.$route.query.detail) data.detail = this.$route.query.detail;
+      if (this.$route.query.groupbuy_id)
+        data.groupbuy_id = this.$route.query.groupbuy_id;
+      if (this.$route.query.groupbuy_open_id)
+        data.groupbuy_open_id = this.$route.query.groupbuy_open_id;
       // data.ticket_ids = this.order_ticket_ids;
       data.sign = this.$getSign(data);
       let res = await ORDER_PHYSICAL_ADDINFO(data);
@@ -357,26 +392,32 @@ export default {
         // 优惠券
         this.ticket_price = res.response_data.ticket_price;
         this.ticket_lists = res.response_data.ticket_lists;
-        this.maxDiscount = JSON.parse(JSON.stringify(res.response_data.ticket_lists));
+        this.maxDiscount = JSON.parse(
+          JSON.stringify(res.response_data.ticket_lists)
+        );
         for (var i = 0; i < this.ticket_lists.canuse.length; i++) {
           if (this.ticket_lists.canuse[i].selected == 0) {
             this.ticket_lists.canuse[i].state = 0;
           } else {
             this.ticket_num++;
             if (this.order_ticket_ids) {
-              this.order_ticket_ids +=
-                "," + this.ticket_lists.canuse[i].id;
+              this.order_ticket_ids += "," + this.ticket_lists.canuse[i].id;
             } else {
               this.order_ticket_ids += this.ticket_lists.canuse[i].id;
             }
           }
         }
-        if(this.discount_price>0){
-          this.discount_price_desc='优惠￥'+this.discount_price;
-        }else{
-          this.discount_price_desc=this.ticket_lists.canuse.length+'张券可用'
+        if (this.discount_price > 0) {
+          this.discount_price_desc = "优惠￥" + this.discount_price;
+        } else {
+          this.discount_price_desc =
+            this.ticket_lists.canuse.length + "张券可用";
         }
-        if(this.ticket_price){this.chooseMax = false}else{this.chooseMax = true}
+        if (this.ticket_price) {
+          this.chooseMax = false;
+        } else {
+          this.chooseMax = true;
+        }
         // console.log(this.order_ticket_ids);
         this.nouseCoupon =
           "不可用优惠券（" + this.ticket_lists.nouse.length + "）";
@@ -389,12 +430,11 @@ export default {
             city_id: res.response_data.address.city_id
           };
         }
-
       } else {
         this.$toast(res.error_message);
       }
     },
-    async computedFreight(){
+    async computedFreight() {
       var data = {};
       var tStamp = this.$getTimeStamp();
       data.timestamp = tStamp;
@@ -403,7 +443,7 @@ export default {
         data.detail_ids = this.$route.query.detail_ids;
       if (this.$route.query.detail) data.detail = this.$route.query.detail;
       data.ticket_ids = this.order_ticket_ids;
-      data.address_id = this.address_id;
+      if(this.address_id) data.address_id = this.address_id;
       data.sign = this.$getSign(data);
       let res = await ORDER_PHYSICAL_ADDINFO(data);
 
@@ -411,12 +451,13 @@ export default {
         this.dispatch_price = res.response_data.dispatch_price;
         // this.pay_price = res.response_data.pay_price;
         this.pay_price =
-        this.total_money + this.dispatch_price - this.discount_price;
+          this.total_money + this.dispatch_price - this.discount_price;
 
-        if(this.discount_price>0){
-          this.discount_price_desc='优惠￥'+this.discount_price;
-        }else{
-          this.discount_price_desc=this.ticket_lists.canuse.length+'张券可用'
+        if (this.discount_price > 0) {
+          this.discount_price_desc = "优惠￥" + this.discount_price;
+        } else {
+          this.discount_price_desc =
+            this.ticket_lists.canuse.length + "张券可用";
         }
       } else {
         this.$toast(res.error_message);
@@ -424,6 +465,7 @@ export default {
     },
     // 支付 获取pay_id
     async payIdData() {
+      this.payState = false;
       var data = {};
       var tStamp = this.$getTimeStamp();
       data.timestamp = tStamp;
@@ -431,10 +473,13 @@ export default {
       if (this.$route.query.detail_ids)
         data.detail_ids = this.$route.query.detail_ids;
       if (this.$route.query.detail) data.detail = this.$route.query.detail;
-
+      if (this.$route.query.groupbuy_id)
+        data.groupbuy_id = this.$route.query.groupbuy_id;
+      if (this.$route.query.groupbuy_open_id)
+        data.groupbuy_open_id = this.$route.query.groupbuy_open_id;
       data.address_id = this.address_id;
       data.remark = this.remark;
-      data.ticket_ids = this.order_ticket_ids;
+      data.ticket_ids = this.order_ticket_ids ? this.order_ticket_ids : 0;
       data.sign = this.$getSign(data);
       let res = await ORDER_PHYSICAL_ADD(data);
 
@@ -446,6 +491,7 @@ export default {
         });
       } else {
         this.$toast(res.error_message);
+        this.payState = true;
       }
     },
     // 去支付
@@ -476,22 +522,22 @@ export default {
     },
     judge(item, index, _state) {
       // var _goods = item.goods_ids;
-      var _goods = []
+      var _goods = [];
       var _count = 0;
       // if(_state == 1){
-        // _goods = [];
-        for(var a=0;a<this.ticket_lists.canuse.length;a++){
-          if(this.ticket_lists.canuse[a].selected == 1){
-            // _goods.push(this.ticket_lists.canuse[a].goods_ids.join(','))
-            _goods = _goods.concat(this.ticket_lists.canuse[a].goods_ids);
-            _count ++;
-          }
+      // _goods = [];
+      for (var a = 0; a < this.ticket_lists.canuse.length; a++) {
+        if (this.ticket_lists.canuse[a].selected == 1) {
+          // _goods.push(this.ticket_lists.canuse[a].goods_ids.join(','))
+          _goods = _goods.concat(this.ticket_lists.canuse[a].goods_ids);
+          _count++;
         }
-        if(_count > 0){
-          this.chooseMax = false
-        }else{
-          this.chooseMax = true
-        }
+      }
+      if (_count > 0) {
+        this.chooseMax = false;
+      } else {
+        this.chooseMax = true;
+      }
       // }else{
       //   this.chooseMax = false;
       // }
@@ -511,18 +557,18 @@ export default {
         if (_arr[j].selected == 0 && j !== index) {
           var check_goods = _arr[j].goods_ids;
           var tempArray2 = [];
-          var _length
-          if(check_goods.length > tempArray1.length){
-            _length = check_goods.length
-          }else{
-            _length = tempArray1.length
+          var _length;
+          if (check_goods.length > tempArray1.length) {
+            _length = check_goods.length;
+          } else {
+            _length = tempArray1.length;
           }
           // console.log(999,_length)
           for (var k = 0; k < _length; k++) {
             // if (tempArray1[check_goods[k]]) {
             //   tempArray2.push(check_goods[k]);
             // }
-            if(check_goods.includes(tempArray1[k])){
+            if (check_goods.includes(tempArray1[k])) {
               tempArray2.push(check_goods[k]);
             }
           }
@@ -535,7 +581,7 @@ export default {
                 return value;
               }
             );
-          }else{
+          } else {
             this.ticket_lists.canuse = this.ticket_lists.canuse.map(
               (value, key) => {
                 if (index !== key && j == key) value.state = 1;
@@ -554,9 +600,8 @@ export default {
           this.ticket_num++;
           this.discount_price =
             this.ticket_lists.canuse[i].money + this.discount_price;
-            if (this.order_ticket_ids) {
-            this.order_ticket_ids +=
-              "," + this.ticket_lists.canuse[i].id;
+          if (this.order_ticket_ids) {
+            this.order_ticket_ids += "," + this.ticket_lists.canuse[i].id;
           } else {
             this.order_ticket_ids += this.ticket_lists.canuse[i].id;
           }
@@ -579,8 +624,7 @@ export default {
           this.discount_price =
             this.ticket_lists.canuse[i].money + this.discount_price;
           if (this.order_ticket_ids) {
-            this.order_ticket_ids +=
-              "," + this.ticket_lists.canuse[i].id;
+            this.order_ticket_ids += "," + this.ticket_lists.canuse[i].id;
           } else {
             this.order_ticket_ids += this.ticket_lists.canuse[i].id;
           }
@@ -592,25 +636,24 @@ export default {
       this.couponModel = false;
       // console.log(this.order_ticket_ids);
     },
-    chooseMaxPrice(){
+    chooseMaxPrice() {
       this.ticket_lists = this.maxDiscount;
       this.discount_price = this.ticket_price;
       this.chooseMax = false;
       for (var i = 0; i < this.ticket_lists.canuse.length; i++) {
-          if (this.ticket_lists.canuse[i].selected == 0) {
-            this.ticket_lists.canuse[i].state = 0;
+        if (this.ticket_lists.canuse[i].selected == 0) {
+          this.ticket_lists.canuse[i].state = 0;
+        } else {
+          this.ticket_num++;
+          if (this.order_ticket_ids) {
+            this.order_ticket_ids += "," + this.ticket_lists.canuse[i].id;
           } else {
-            this.ticket_num++;
-            if (this.order_ticket_ids) {
-              this.order_ticket_ids +=
-                "," + this.ticket_lists.canuse[i].id;
-            } else {
-              this.order_ticket_ids += this.ticket_lists.canuse[i].id;
-            }
+            this.order_ticket_ids += this.ticket_lists.canuse[i].id;
           }
         }
-        this.computedFreight();
-    },
+      }
+      this.computedFreight();
+    }
   }
 };
 </script>

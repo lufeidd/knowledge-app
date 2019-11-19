@@ -12,12 +12,26 @@
    .active-bg{
      position: relative;
      width: 100%;
+<<<<<<< HEAD
      height: 100%;
      .bg-piture{
        box-sizing: border-box;
        text-align: center;
        background-size: 100% 100%;
        height: 446px;
+=======
+     .bg-piture{
+       left: 0;
+       top: 0;
+       height: 0;
+       position: relative;
+       background-repeat: no-repeat;
+       background-size: cover;
+       background-position: 50%;
+       padding-bottom: 100%;
+       overflow: hidden;
+       width: 100%;
+>>>>>>> acdd5fcdbcd91efa5447481de2ffd30d96b1fc45
      }
      .activeRules{
        background: url("../../../../assets/assist/activeRules01.png") no-repeat;
@@ -28,6 +42,7 @@
        position: absolute;
        background-position: 100%;
        background-size: contain;
+<<<<<<< HEAD
        padding-bottom: 5%;
        overflow: hidden;
        .activeText{
@@ -35,6 +50,15 @@
          top: 1px;
          right: 0;
          font-size: 12px;
+=======
+       padding-bottom: 6%;
+       overflow: hidden;
+       .activeText{
+         position: absolute;
+         top: 2px;
+         right: 0;
+         font-size: 13px;
+>>>>>>> acdd5fcdbcd91efa5447481de2ffd30d96b1fc45
        }
      }
      .dn{
@@ -42,7 +66,10 @@
      }
    }
    .helpBoss{
+<<<<<<< HEAD
      color: #e7eb46;
+=======
+>>>>>>> acdd5fcdbcd91efa5447481de2ffd30d96b1fc45
      font-size: 14px;
      text-align: center;
      margin-bottom: 9px;
@@ -51,7 +78,10 @@
      width: 255px;
      margin: 0 auto;
      .text{
+<<<<<<< HEAD
        color: #ffffff;
+=======
+>>>>>>> acdd5fcdbcd91efa5447481de2ffd30d96b1fc45
        font-size: 12px;
        margin-bottom: 2px;
      }
@@ -63,9 +93,14 @@
        position: relative;
        background-position: 100%;
        background-repeat: no-repeat;
+<<<<<<< HEAD
        background-size: cover;
        padding-bottom: 35%;
        background-color: #fff;
+=======
+       background-size: contain;
+       padding-bottom: 35%;
+>>>>>>> acdd5fcdbcd91efa5447481de2ffd30d96b1fc45
        border-radius: 3px;
        margin-bottom: 17px;
      }
@@ -93,17 +128,25 @@
        border-bottom: 1px solid #ebedf0;
      }
      .van-cell{
+<<<<<<< HEAD
        background-color: transparent;
+=======
+       margin: 5px 0;
+       border-radius: 10px;
+>>>>>>> acdd5fcdbcd91efa5447481de2ffd30d96b1fc45
      }
    }
    .newPrompt{
      text-align: center;
      font-size: 14px;
      margin-top: 40px;
+<<<<<<< HEAD
      .icon{
        width: 70px;
        height: 12px;
      }
+=======
+>>>>>>> acdd5fcdbcd91efa5447481de2ffd30d96b1fc45
    }
    .activeMore{
      position: relative;
@@ -128,7 +171,10 @@
      }
    }
    .myText{
+<<<<<<< HEAD
      color: #e7eb46;
+=======
+>>>>>>> acdd5fcdbcd91efa5447481de2ffd30d96b1fc45
      font-size: 14px;
      text-align: center;
      text-decoration: underline;
@@ -141,27 +187,100 @@
        align-items: center;
        .line{
          flex-grow: 2;
+<<<<<<< HEAD
          border-bottom: 1px solid #ffffff;
        }
        .rulesTitle{
          color: #ffffff;
+=======
+         border-bottom: 1px solid;
+       }
+       .rulesTitle{
+>>>>>>> acdd5fcdbcd91efa5447481de2ffd30d96b1fc45
          font-size: 18px;
          flex-grow: 1;
        }
      }
      .rulesCount{
+<<<<<<< HEAD
        padding: 0 12px 55px 12px;
        color: #ffffff;
        line-height: 21px;
      }
    }
 
+=======
+       padding: 0 12px 35px;
+       line-height: 25px;
+     }
+   }
+   .HuoBaApp{
+     display: -webkit-box;
+     display: -ms-flexbox;
+     display: flex;
+     align-items: center;
+     padding: 12px;
+     background-color: #fff;
+     .svg{
+       width: 36px;
+       .bookImg{
+         left: 0;
+         top: 0;
+         width: 100%;
+         height: 0;
+         position: relative;
+         background-position: 50%;
+         background-repeat: no-repeat;
+         background-size: contain;
+         padding-bottom: 100%;
+         overflow: hidden;
+         background-color: #fffdfd;
+       }
+     }
+     .Text{
+       flex-grow: 1;
+       padding-left: 5px;
+       .top{
+         font-weight: bold;
+       }
+       .bottom{
+         color: #7e7e7e;
+       }
+     }
+     .button{
+       width: 100px;
+       text-align: center;
+       background-color: #e83e32;
+       color: #fff;
+       line-height: 30px;
+       border-radius: 5px;
+     }
+   }
+
+   @media screen and (max-width: 320px){
+     .active-bg{
+       .activeRules{
+         .activeText{
+           top: 1px;
+           font-size: 12px;
+           transform: scale(0.8);
+           right: -3px;
+         }
+       }
+     }
+   }
+>>>>>>> acdd5fcdbcd91efa5447481de2ffd30d96b1fc45
    @media screen and (min-width: 768px) {
      .active-bg{
        .activeRules{
          .activeText{
+<<<<<<< HEAD
            top: 3px;
            font-size: 22px;
+=======
+           top: 5px;
+           font-size: 26px;
+>>>>>>> acdd5fcdbcd91efa5447481de2ffd30d96b1fc45
          }
        }
      }

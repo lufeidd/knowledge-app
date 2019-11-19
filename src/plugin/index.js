@@ -210,7 +210,7 @@ export default {
         page_name: _pageName,
         params: _params,
         timestamp: tStamp,
-        version: "1.0"
+        version: "1.1"
       };
       data.sign = this.$getSign(data);
       let res = await WX_SHARE(data);
@@ -306,31 +306,37 @@ export default {
     Vue.prototype.$timeCountDown = function (options) {
       let self = this
       let second = options.time
+      let minute = second/60/60/24
       console.log(897,options,second)
       if (typeof second === 'number') {
-        this.clock = window.setInterval(() => {
-          if (second === 0) {
-            clearInterval(this.clock)
-            return false
-          }
-          second--
+        if(minute > 1){
+          options.date = Math.floor(minute)+'天';
+        }else{
+          this.clock = window.setInterval(() => {
+            if (second === 0) {
+              clearInterval(this.clock)
+              return false
+            }
+            second--
 
-          let h = Math.floor(second / 60 / 60)
-          let m = Math.floor((second - h * 60 * 60) / 60)
-          let s = second - (h * 60 * 60) - (m * 60)
-          if (h < 10) h = '0' + h
-          if (m < 10) m = '0' + m
-          if (s < 10) s = '0' + s
-          let res = h + ":" + m + ":" + s
+            let h = Math.floor(second / 60 / 60)
+            let m = Math.floor((second - h * 60 * 60) / 60)
+            let s = second - (h * 60 * 60) - (m * 60)
+            if (h < 10) h = '0' + h
+            if (m < 10) m = '0' + m
+            if (s < 10) s = '0' + s
+            let res = h + ":" + m + ":" + s
 
-          options.date = res;
-          // console.log(res)
-        }, 1000)
+            options.date = res;
+            // console.log(res)
+          }, 1000)
+        }
       } else {
         self.$toast('时间格式不正确')
       }
 
     }
+
     // 限时促销计算时间
     Vue.prototype.$countTime = function(endtime){
       var self = this;
@@ -339,15 +345,21 @@ export default {
       if(d>=1 && d<=3){
         self.showDay = true;
         self.showTime = true;
-        d = Math.ceil(d);
+        self.groupshowDay = true;
+        d = Math.floor(d);
         self.timeDataDesc = '距活动结束还剩'+d+'天';
+        self.timeData = '距结束还剩'+d+'天';
+        self.grouptimeData = d;
       }else if(d < 1){
         self.showDay = false;
         self.showTime = true;
+        self.groupshowDay = false;
         this.clock = window.setInterval(() => {
           if (time1 === 0) {
             clearInterval(this.clock)
             self.returnPrice();
+            // self.getGroupData();
+            // self.getData();
             return false
           }
           time1--
@@ -359,15 +371,20 @@ export default {
           if (s < 10) s = '0' + s
           let res = h + ":" + m + ":" + s
           self.timeDataDesc = res;
+          self.timeData = '距结束还剩'+res;
           self.timeH = h
           self.timeM = m
           self.timeS = s
         }, 1000)
       }else if(d > 3){
+        d = Math.floor(d);
         self.showTime = false;
+        self.groupshowDay = true;
         self.timeDataDesc = '限时促销'
+        self.timeData = '火把拼团'
+        self.grouptimeData = d;
       }
-      console.log(d,self.clock)
+      // console.log(d,self.clock)
     }
 
     // ksort
@@ -504,6 +521,9 @@ export default {
           if (dataTmp.params.goods_type == 3) { // 图书
             __name = 'detail';
           }
+          if (dataTmp.params.goods_type == 4) { // 电子书
+            __name = 'ebookdetail';
+          }
           queryTmp.goods_id = parseInt(dataTmp.params.goods_id);
           if (dataTmp.params.album_id) queryTmp.album_id = parseInt(dataTmp.params.album_id);
 
@@ -549,6 +569,16 @@ export default {
           __name = 'brand';
           queryTmp.brand_id = parseInt(dataTmp.params.brand_id);
 
+          break;
+        //自定义商城页
+        case 'page/get':
+          __name = 'custompage';
+          queryTmp.page_id = parseInt(dataTmp.params.page_id);
+          break;
+        //跳转外链
+        case 'jump/url':
+          __name = 'url'
+          queryTmp.url = dataTmp.params.url;
           break;
       }
 

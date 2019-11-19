@@ -12,10 +12,10 @@ var app_version = sessionStorage.getItem("isWxLogin") == "yes" ? 'weixin' : 'wap
 var open_id = localStorage.getItem('openid');
 var instance = axios.create({
     // dev
-    baseURL: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis',
+    // baseURL: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis',
 
     // run build
-    // baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
+    baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
 
     headers: { 'App-version': app_version, 'unique-code': open_id },
     // responseType: 'blob',    // 测试发票下载
@@ -59,6 +59,7 @@ instance.interceptors.response.use(function (response) {
     // 网络响应超时，调整到超时页面
     var routerLink = localStorage.getItem('routerLink');
     var replaceUrl = window.location.href.split('#')[0] + '#/timeout';
+
     var brandId;
 
     if (routerLink.match(/brand_id/)) {

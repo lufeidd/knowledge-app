@@ -66,6 +66,8 @@ export default {
       data.version = "1.0";
       if(this.$route.query.detail_ids) data.detail_ids = this.$route.query.detail_ids;
       if(this.$route.query.detail) data.detail = this.$route.query.detail;
+      if (this.$route.query.groupbuy_id) data.groupbuy_id = this.$route.query.groupbuy_id;
+      if (this.$route.query.groupbuy_open_id) data.groupbuy_open_id = this.$route.query.groupbuy_open_id;
       data.ticket_ids = this.order_ticket_ids;
       data.location = this.$route.query.location;
       data.sign = this.$getSign(data);

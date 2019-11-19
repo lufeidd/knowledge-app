@@ -23,7 +23,10 @@
         <!-- 优惠券 -->
         <div class="coupon" v-if="Object.keys(ticketList).length>0 && ticketList.canuse.length > 0">
           <span class="text">优惠券</span>
-          <div class="chooseCoupon" @click.stop="showChoose">
+          <div class="chooseCoupon" v-if="isgroup">
+            <span class="chooseText">拼团商品不可用券</span>
+          </div>
+          <div class="chooseCoupon" v-else @click.stop="showChoose">
             <span class="chooseText">不使用优惠券</span>
             <span class="arrow" v-if="choose">
               <svg class="icon" aria-hidden="true">
@@ -36,7 +39,11 @@
               </svg>
             </span>
             <ul>
-              <li @click.stop="ticket(item,index)" v-for="(item,index) in ticketList.canuse" :key="index">店铺券￥{{item.money}}</li>
+              <li
+                @click.stop="ticket(item,index)"
+                v-for="(item,index) in ticketList.canuse"
+                :key="index"
+              >店铺券￥{{item.money}}</li>
             </ul>
           </div>
         </div>
@@ -139,9 +146,9 @@
         background-color: #eee;
         color: $cl6;
         font-size: $fontSize - 1;
-        .arrow{
+        .arrow {
           position: absolute;
-          right:10px;
+          right: 10px;
         }
         ul {
           position: absolute;
@@ -177,10 +184,10 @@ export default {
     return {
       buyShow: false,
       wallet: {},
-      choose:true,
-      ticketList:[],
-      price:null,
-      order_ticket_id:'',
+      choose: true,
+      ticketList: [],
+      price: null,
+      order_ticket_id: ""
     };
   },
   mounted() {
@@ -188,11 +195,11 @@ export default {
     if (this.isSuccessPay == "false") {
       this.buyShow = true;
     }
-    $('body').on('click',function(){
+    $("body").on("click", function() {
       this.choose = true;
       // console.log('test',this.choose);
-      $('.chooseCoupon ul').css('display','none');
-    })
+      $(".chooseCoupon ul").css("display", "none");
+    });
     // this.price = this.info.price;
     // console.log(333333456,this.info.price,this.price)
   },
@@ -234,23 +241,23 @@ export default {
     rechargeBuy() {
       this.$emit("rechargeBuy");
     },
-    showChoose(){
-      if(this.choose == true){
+    showChoose() {
+      if (this.choose == true) {
         this.choose = false;
-        $('.chooseCoupon ul').css('display','block');
-      }else{
+        $(".chooseCoupon ul").css("display", "block");
+      } else {
         this.choose = true;
-        $('.chooseCoupon ul').css('display','none');
+        $(".chooseCoupon ul").css("display", "none");
       }
     },
-    ticket(item,index){
+    ticket(item, index) {
       this.choose = true;
       // console.log(item);return
-      $('.chooseCoupon ul').css('display','none');
-      $('.chooseText').text('店铺券'+'￥'+item.money);
-      this.price = this.info.price -item.money;
+      $(".chooseCoupon ul").css("display", "none");
+      $(".chooseText").text("店铺券" + "￥" + item.money);
+      this.price = this.info.price - item.money;
       this.order_ticket_id = item.id;
-      this.$emit("chooseCouponChangePrice",this.price);
+      this.$emit("chooseCouponChangePrice", this.price);
     }
   }
 };
