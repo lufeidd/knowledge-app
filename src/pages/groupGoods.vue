@@ -66,7 +66,10 @@
         @click="showPopup"
       />
       <!-- 拼团列表 -->
-      <div class="group_list" v-if="couponInfo.groupbuy.open_list.length > 0 && couponInfo.groupbuy.user_remain_nums > 0">
+      <div
+        class="group_list"
+        v-if="couponInfo.groupbuy.open_list.length > 0 && couponInfo.groupbuy.user_remain_nums > 0"
+      >
         <div class="content" v-for="(item,index) in couponInfo.groupbuy.open_list" :key="index">
           <!-- 2人团 -->
           <div class="left" v-if="item.nums == 2">
@@ -393,10 +396,7 @@
       <div style="height:60px;"></div>
       <div class="groupFoot" :class="{iphx:this.isIphx}">
         <div>
-          <van-row
-            gutter="20"
-            v-if="couponInfo.groupbuy.can_open_nums > 0"
-          >
+          <van-row gutter="20" v-if="couponInfo.groupbuy.can_open_nums > 0">
             <van-col span="10">
               <van-button round type="primary" size="small" @click="buyTo">
                 <div>￥{{baseData.price.toFixed(2)}}</div>
@@ -511,7 +511,7 @@ export default {
       timeS: null,
       showDay: true,
       remain_time: [],
-      groupbuy_id:null,
+      groupbuy_id: null
     };
   },
   mounted() {
@@ -623,7 +623,8 @@ export default {
         if (this.couponInfo.groupbuy.remain_time) {
           this.$countTime(this.couponInfo.groupbuy.remain_time);
         }
-        if (this.couponInfo.groupbuy &&
+        if (
+          this.couponInfo.groupbuy &&
           Object.keys(this.couponInfo.groupbuy).length > 0 &&
           this.couponInfo.groupbuy.open_list.length > 0
         ) {
@@ -634,6 +635,21 @@ export default {
             });
             this.$timeCountDown(this.remain_time[i]);
           }
+        }
+        if (this.couponInfo.groupbuy.my_open_ids.length > 0) {
+          this.$dialog
+            .confirm({
+              message: "您有一个进行中的拼团"
+            })
+            .then(() => {
+              this.$router.push({
+                name:"groupdetail",
+                query:this.couponInfo.groupbuy.my_open_ids[0]
+              })
+            })
+            .catch(() => {
+              // on cancel
+            });
         }
         // 立即购买信息
         this.detail.goods_id = res.response_data.base.goods_id;
