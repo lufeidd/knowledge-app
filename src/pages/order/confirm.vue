@@ -487,7 +487,7 @@ export default {
         this.pay_id = res.response_data.pay_id;
         this.$router.push({
           name: "pay",
-          query: { pay_id: this.pay_id, money: this.pay_price }
+          query: { pay_id: this.pay_id, money: this.pay_price,open_id:res.response_data.groupbuy_open_id }
         });
       } else {
         this.$toast(res.error_message);

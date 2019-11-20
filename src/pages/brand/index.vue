@@ -63,11 +63,15 @@
                     </svg>
                     <span>{{item.praise_num}}</span>
                   </span>
-                  <span class="comment">
+                  <span class="comment" v-if="item.goods_type == 1 || item.goods_type == 2 || item.goods_type == 6 || item.goods_type == 9">
                     <svg class="icon" aria-hidden="true">
                       <use xlink:href="#icon-comment-line" />
                     </svg>
                     <span>{{item.comment_num}}</span>
+                  </span>
+                  <span class="price" v-if="item.goods_type == 4 || item.goods_type == 3">
+                    <span v-if="item.price">￥{{item.price}}</span>
+                    <span v-else>免费</span>
                   </span>
                 </div>
               </div>

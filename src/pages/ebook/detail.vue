@@ -1301,13 +1301,20 @@ export default {
     },
     group() {
       if (this.isLogin) {
-        this.groupbuy_id = this.couponInfo.groupbuy.id;
-        this.$refs.pay.price = this.couponInfo.groupbuy.groupbuy_price;
-        this.$refs.recharge.price = this.couponInfo.groupbuy.groupbuy_price;
-        this.$refs.recharge.groupbuy_id = this.couponInfo.groupbuy.id;
-        this.groupModel = false;
-        this.isgroup = true;
-        this.$refs.pay.buyShow = true;
+        // this.groupbuy_id = this.couponInfo.groupbuy.id;
+        // this.$refs.pay.price = this.couponInfo.groupbuy.groupbuy_price;
+        // this.$refs.recharge.price = this.couponInfo.groupbuy.groupbuy_price;
+        // this.$refs.recharge.groupbuy_id = this.couponInfo.groupbuy.id;
+        // this.groupModel = false;
+        // this.isgroup = true;
+        // this.$refs.pay.buyShow = true;
+          this.$router.push({
+            name: "payaccount",
+            query: {
+              goods_id: this.goods_id,
+              groupbuy_id: this.couponInfo.groupbuy.id
+            }
+          });
       } else {
         this.$router.push({ name: "login" });
       }

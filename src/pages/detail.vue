@@ -365,7 +365,7 @@
     background: linear-gradient(to left, #f72d3e 100%, #f35636 100%);
     border-radius: 0 15px 15px 0;
     font-size: $fontSize - 2;
-    position: fixed;
+    position: absolute;
     top: 40%;
     left: 0;
     text-align: center;

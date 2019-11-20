@@ -450,7 +450,8 @@ export default {
       order_ticket_ids: "",
       single_activity_id: null,
       groupbuy_id: null,
-      groupbuy_open_id: null
+      groupbuy_open_id: null,
+      open_id:null,
     };
   },
   mounted() {
@@ -637,6 +638,7 @@ export default {
         this.pay_money = res.response_data.pay_money;
         this.order_id = res.response_data.order_id;
         this.pay_id = res.response_data.pay_id;
+        this.open_id = res.response_data.groupbuy_open_id;
 
         // 交易支付请求发起
         if (_index == 1) this.cashierPayData(this.pay_id);
@@ -668,7 +670,8 @@ export default {
           name: "paysuccess",
           query: {
             order_id: res.response_data.order_id,
-            pay_money: res.response_data.pay_money
+            pay_money: res.response_data.pay_money,
+            open_id: this.$route.query.open_id,
           }
         });
       } else {

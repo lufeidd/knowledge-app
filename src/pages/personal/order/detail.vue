@@ -105,18 +105,23 @@
           <span
             class="button button2 applyrefund"
             @click.stop="toOngoing(item)"
-            v-if="infoData.type == 2 && item.if_refund == 2"
+            v-if="(infoData.type == 2 && item.if_refund == 2) "
           >退款中</span>
           <span
             class="button button2 applyrefund"
             @click.stop="toOngoing(item)"
-            v-if="infoData.type == 2 && item.if_refund == 4"
+            v-if="(infoData.type == 2 && item.if_refund == 4) "
           >退款失败</span>
           <span
             class="button button2 applyrefund"
             @click.stop="toOngoing(item)"
-            v-if="infoData.type == 2 && item.if_refund == 3"
+            v-if="(infoData.type == 2 && item.if_refund == 3) "
           >退款成功</span>
+          <span
+            class="button button2 applyrefund"
+            @click.stop="toOngoing(item)"
+            v-if="(infoData.type == 1 && groupData && infoData.state == 7 && infoData.pay_money) "
+          >查看退款</span>
         </div>
       </div>
     </div>

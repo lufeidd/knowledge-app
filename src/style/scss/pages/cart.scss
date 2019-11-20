@@ -9,7 +9,7 @@
   min-height: 100%;
   box-sizing: border-box;
   background-color: $greyLight;
-  padding-bottom: env(safe-area-inset-bottom); //为底下圆弧的高度 34px  
+  padding-bottom: env(safe-area-inset-bottom); //为底下圆弧的高度 34px
 
   // & .van-button {
   //   border-radius: 0;
@@ -87,21 +87,22 @@
         }
 
         & .subTitle {
-          @include font(null, $fontSize - 1, #999);
+          @include font(null, $fontSize - 2, $redDark);
           line-height: 17px;
           height: 17px;
-          ;
+
         }
 
         & .info {
           position: relative;
-
+          @include displayFlex(flex,space-between,flex-end)
           & .history {
             @include font("PingFangBold", $fontSize + 1, $redDark);
           }
 
           & .action {
-            @include position (absolute, 'br', 0, 0, null, null, null);
+            margin-top: 5px;
+            // @include position (absolute, 'br', 0, 0, null, null, null);
           }
         }
 
@@ -132,6 +133,24 @@
 
       }
 
+    }
+    & .capping{
+      padding:5px 15px;
+      background-color: #FFF;
+      .tags{
+        display: inline-block;
+        width:32px;
+        text-align: center;
+        line-height: 17px;
+        font-size: $fontSize - 2;
+        border-radius: 2px;
+        background-color: $redDark;
+        color:#FFF;
+      }
+      .desc{
+        font-size: $fontSize - 1;
+        color:$cl6;
+      }
     }
   }
 
