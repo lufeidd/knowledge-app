@@ -671,7 +671,7 @@ export default {
           query: {
             order_id: res.response_data.order_id,
             pay_money: res.response_data.pay_money,
-            open_id: this.$route.query.open_id,
+            open_id: this.open_id,
           }
         });
       } else {
