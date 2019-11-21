@@ -194,7 +194,7 @@ export default {
     };
   },
   mounted() {
-    this.open_id = this.$route.query.open_id;
+    this.open_id = parseInt(this.$route.query.open_id);
     this.returnPrice();
     this.getLogin();
     $('body').on('click',function(){
