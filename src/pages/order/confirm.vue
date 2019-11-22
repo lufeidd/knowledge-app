@@ -106,8 +106,9 @@
       <div class="first">
         <van-cell title="商品总额" v-model="'¥'+order_money.toFixed(2)" />
       </div>
-      <van-cell title="运费" v-model="'¥'+dispatch_price.toFixed(2)" />
-      <van-cell title="商品优惠" v-model="'¥'+discount_price.toFixed(2)" />
+      <van-cell title="运费" v-model="'+¥'+dispatch_price.toFixed(2)" />
+      <van-cell title="商品优惠" v-model="'-¥'+discount_price.toFixed(2)" />
+      <van-cell title="立减" v-model="'-¥'+yh_price.toFixed(2)" />
     </div>
 
     <van-submit-bar

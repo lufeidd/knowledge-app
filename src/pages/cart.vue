@@ -83,7 +83,7 @@
               </div>
               <div class="subTitle"></div>
               <div class="info">
-                <span class="history">¥{{ gItem.price }}</span>
+                <span class="history">￥{{ gItem.price }}</span>
                 <div class="action">
                   <van-stepper
                     v-model="gItem.count"
@@ -130,7 +130,7 @@
               </div>
               <div class="subTitle"></div>
               <div class="info">
-                <span class="history">¥{{ item.price }}</span>
+                <span class="history">￥{{ item.price }}</span>
               </div>
             </div>
           </div>

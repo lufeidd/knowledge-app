@@ -557,5 +557,12 @@
       }
     }
   }
-
+  .multi_radio{
+    padding:3px;
+    background-color: #FAE4E3;
+    font-size:$fontSize - 2;
+    border-radius: 3px;
+    color: $redDark;
+  }
+  .multi_desc{font-size: $fontSize - 2;}
 }

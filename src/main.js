@@ -130,14 +130,19 @@ Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
   next();
   // 存放页面来源地址
-  if (from.path != to.path) {
-    localStorage.setItem('fromLink', from.path);
+  if (from.path != to.path) { next();
+    if(from.path == '/') {
+      localStorage.setItem('fromLink', to.path); next();
+    } else {
+      localStorage.setItem('fromLink', from.path); next();
+    }
     next();
   }
   next();
   // 同类页面跳转执行页面刷新
   if (from.path.toLocaleLowerCase() == to.path.toLocaleLowerCase()) {
-    window.location.reload();
+    // window.location.reload();
+    // console.log(9999, from.path, to.path)
     next();
   }
   next();
