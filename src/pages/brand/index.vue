@@ -55,7 +55,8 @@
               </div>
               <div class="right">
                 <div class="text">{{item.title}}</div>
-                <div class="pinpai">{{ item.brand_name }}</div>
+                <div class="pinpai" v-if="item.goods_type == 1 || item.goods_type == 2 || item.goods_type == 6 || item.goods_type == 9">{{ item.brand_name }}</div>
+                <div class="pinpai" v-if="item.goods_type == 4 || item.goods_type == 3">{{ item.book_author }}</div>
                 <div class="nice">
                   <span class="good" v-if="item.goods_type == 6">
                     <svg class="icon" aria-hidden="true">
@@ -63,11 +64,15 @@
                     </svg>
                     <span>{{item.praise_num}}</span>
                   </span>
-                  <span class="comment">
+                  <span class="comment" v-if="item.goods_type == 1 || item.goods_type == 2 || item.goods_type == 6 || item.goods_type == 9">
                     <svg class="icon" aria-hidden="true">
                       <use xlink:href="#icon-comment-line" />
                     </svg>
                     <span>{{item.comment_num}}</span>
+                  </span>
+                  <span class="price" v-if="item.goods_type == 4 || item.goods_type == 3">
+                    <span v-if="item.price">￥{{item.price}}</span>
+                    <span v-else>免费</span>
                   </span>
                 </div>
               </div>

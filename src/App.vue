@@ -94,7 +94,6 @@ export default {
   },
   mounted() {
 
-
     // this.$router.push({name:"couponreceive"});
     sessionStorage.setItem("gotoLogin", "no");
     sessionStorage.setItem("isWxLogin", "no");
@@ -116,10 +115,11 @@ export default {
         localStorage.getItem("unionid") == "null" ||
         localStorage.getItem("unionid") == null ||
         localStorage.getItem("headimg") == "null" ||
-        localStorage.getItem("headimg") == null ||
-        this.$route.name == "pay" ||
-        this.$route.name == "payaccount" ||
-        this.$route.name == "account"
+        localStorage.getItem("headimg") == null
+        //  ||
+        // this.$route.name == "pay" ||
+        // this.$route.name == "payaccount" ||
+        // this.$route.name == "account"
       ) {
         // 微信登录 code
         this.$getWxCode();

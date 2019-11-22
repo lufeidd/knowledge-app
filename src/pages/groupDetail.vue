@@ -37,7 +37,7 @@
           </van-row>
         </div>
       </div>
-      <div class="mid">
+      <div class="mid" @click="toDetail">
         <div class="left">
           <div class="ratiobox">
             <div class="bookImg" :style="{'background-image':'url('+groupData.goods_pic+')'}"></div>
@@ -132,21 +132,21 @@
           </div>
           <div class="button" v-if="groupData.my_order_id && groupData.state == 1">
             <van-button type="danger" round @click.stop="share">邀请好友参团</van-button>
-            <van-button type="primary" round @click="order">查看订单</van-button>
+            <van-button type="primary" round @click="order" v-if="groupData.my_order_id">查看订单</van-button>
           </div>
           <div class="button" v-if="groupData.state == 4 && groupData.groupbuy_open_nums == 0">
-            <van-button type="danger" round @click="order">查看订单</van-button>
+            <van-button type="danger" round @click="order" v-if="groupData.my_order_id">查看订单</van-button>
           </div>
           <div class="button" v-if="groupData.state == 4 && groupData.groupbuy_open_nums > 0">
             <van-button type="danger" round @click="opengroup">再开一团</van-button>
-            <van-button type="primary" round @click="order">查看订单</van-button>
+            <van-button type="primary" round @click="order" v-if="groupData.my_order_id">查看订单</van-button>
           </div>
           <div class="button" v-if="groupData.state == 2 && groupData.groupbuy_open_nums == 0">
-            <van-button type="danger" round @click="order">查看订单</van-button>
+            <van-button type="danger" round @click="order" v-if="groupData.my_order_id">查看订单</van-button>
           </div>
           <div class="button" v-if="groupData.state == 2 && groupData.groupbuy_open_nums > 0">
             <van-button type="danger" round @click="opengroup">再开一团</van-button>
-            <van-button type="primary" round @click="order">查看订单</van-button>
+            <van-button type="primary" round @click="order" v-if="groupData.my_order_id">查看订单</van-button>
           </div>
         </div>
       </div>
@@ -155,6 +155,7 @@
     <van-popup
       v-model="show"
       style="width:100%;max-height:100%;height:100%;background-color:rgba(0,0,0,0.4);"
+      @click="close"
     >
       <span class="arrow" @click="close">
         <svg class="icon" aria-hidden="true">
@@ -194,9 +195,10 @@ export default {
     };
   },
   mounted() {
-    this.open_id = this.$route.query.open_id;
+    this.open_id = parseInt(this.$route.query.open_id);
     this.returnPrice();
     this.getLogin();
+
   },
   methods: {
     async getLogin() {
@@ -262,7 +264,7 @@ export default {
             name: "orderconfirm",
             query: {
               groupbuy_id: this.groupData.groupbuy_id,
-              detail:JSON.stringify({goods_id:this.groupData.goods_id,sku_id:this.groupData.goods_id,count:1})
+              detail:JSON.stringify({goods_id:this.groupData.goods_id,sku_id:this.groupData.goods_id,count:1}),
             }
           });
         } else {
@@ -270,7 +272,7 @@ export default {
             name: "payaccount",
             query: {
               goods_id: this.groupData.goods_id,
-              groupbuy_id: this.groupData.groupbuy_id
+              groupbuy_id: this.groupData.groupbuy_id,
             }
           });
         }
@@ -288,7 +290,7 @@ export default {
             query: {
               groupbuy_open_id: this.groupData.open_id,
               groupbuy_id:this.groupData.groupbuy_id,
-              detail:JSON.stringify({goods_id:this.groupData.goods_id,sku_id:this.groupData.goods_id,count:1})
+              detail:JSON.stringify({goods_id:this.groupData.goods_id,sku_id:this.groupData.goods_id,count:1}),
             }
           });
         } else {
@@ -296,14 +298,37 @@ export default {
             name: "payaccount",
             query: {
               goods_id: this.groupData.goods_id,
-              groupbuy_id:this.groupData.groupbuy_id,
-              groupbuy_open_id: this.groupData.open_id
+              groupbuy_id: this.groupData.groupbuy_id,
+              groupbuy_open_id: this.groupData.open_id,
             }
           });
         }
       } else {
         this.$router.push({
           name: "login"
+        });
+      }
+    },
+    toDetail(){
+      if(this.groupData.goods_type == 1 || this.groupData.goods_type == 2){
+        this.$router.push({
+          name: "albumdetail",
+          query: { goods_id: this.groupData.goods_id }
+        });
+      }else if(this.groupData.goods_type == 9){
+        this.$router.push({
+          name: "album",
+          query: { goods_id: this.groupData.goods_id }
+        });
+      }else if(this.groupData.goods_type == 4){
+        this.$router.push({
+          name: "ebookdetail",
+          query: { goods_id: this.groupData.goods_id }
+        });
+      }else if(this.groupData.goods_type == 3){
+        this.$router.push({
+          name: "groupgoods",
+          query: { goods_id: this.groupData.goods_id,groupbuy_id:this.groupData.groupbuy_id }
         });
       }
     }

@@ -171,7 +171,7 @@ export default {
         // this.pay_money = res.response_data.pay_money;
         // this.order_id = res.response_data.order_id;
         this.order_pay_id = res.response_data.pay_id;
-        this.rechargeAddData(this.rechargeAmount[this.activeClass]);
+        this.rechargeAddPay(this.rechargeAmount[this.activeClass]);
         // 交易支付请求发起
         // this.cashierPayData(this.pay_id);
       } else {

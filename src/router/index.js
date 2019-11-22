@@ -125,6 +125,10 @@ import timeout from '@/pages/timeout'
 import assistactive from '@/pages/assist/active'
 import assisthelp from '@/pages/assist/help'
 
+// 资源图书
+import libraryindex from '@/pages/library/index'
+import librarydetail from '@/pages/library/detail'
+
 Vue.use(Router)
 
 export default new Router({
@@ -797,6 +801,17 @@ export default new Router({
       path: '/assist/help',
       name: 'assisthelp',
       component: assisthelp
+    },
+    // 图书资源
+    {
+      path: '/library/index',
+      name: 'libraryindex',
+      component: libraryindex
+    },
+    {
+      path: '/library/detail',
+      name: 'librarydetail',
+      component: librarydetail
     }
   ]
 })
