@@ -47,6 +47,11 @@
               </svg>
             </router-link>
           </div>
+          <!-- 满减 -->
+          <!-- <div class="capping">
+            <span class="tags">满减</span>
+            <span class="desc">满100元立减5元，部分地区包邮</span>
+          </div> -->
           <!-- 商品列表 -->
           <div class="listBox judge" v-for="(gItem, gIndex) in item.goodslist" :key="gIndex">
             <div class="right" @click="selectAction('click', index, gIndex)">
@@ -78,7 +83,7 @@
               </div>
               <div class="subTitle"></div>
               <div class="info">
-                <span class="history">¥{{ gItem.price }}</span>
+                <span class="history">￥{{ gItem.price }}</span>
                 <div class="action">
                   <van-stepper
                     v-model="gItem.count"
@@ -125,7 +130,7 @@
               </div>
               <div class="subTitle"></div>
               <div class="info">
-                <span class="history">¥{{ item.price }}</span>
+                <span class="history">￥{{ item.price }}</span>
               </div>
             </div>
           </div>
@@ -161,7 +166,6 @@
           :class="{iphx:this.isIphx}"
           class="deleteBox"
           safe-area-inset-bottom
-          button-type="plain"
           button-text="删除"
           @submit="deleteAction"
         >
@@ -174,6 +178,9 @@
             </svg>
             <span>全选</span>
           </div>
+          <!-- <template slots="default">
+            <div style="position:absolute;right:120px;">清空失效宝贝</div>
+          </template> -->
         </van-submit-bar>
       </div>
       <!-- <CopyRight></CopyRight> -->

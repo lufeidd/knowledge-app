@@ -35,11 +35,13 @@ export default {
         date: "00:00:00"
       },
       money: null,
-      pay_id: null
+      pay_id: null,
+      open_id:null,
     };
   },
   mounted() {
     this.pay_id = parseInt(this.$route.query.pay_id);
+    this.open_id = parseInt(this.$route.query.open_id);
     // this.money = this.$route.query.money;
     // 新增订单
     this.addOrderData();

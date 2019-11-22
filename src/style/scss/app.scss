@@ -253,16 +253,16 @@ img {
 }
 
 .deleteBox {
-  & .van-button--large {
-    height: 35px;
-    line-height: 35px;
-    color: $redDark;
-    margin-right: 15px;
-    border: none;
-    border: 1px $redDark solid;
-    border-radius: 35px;
-    width: 90px;
-  }
+  // & .van-button--large {
+  //   height: 35px;
+  //   line-height: 35px;
+  //   color: $redDark;
+  //   margin-right: 15px;
+  //   border: none;
+  //   border: 1px $redDark solid;
+  //   border-radius: 35px;
+  //   width: 90px;
+  // }
 }
 
 .van-button--warning {

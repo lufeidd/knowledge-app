@@ -15,7 +15,11 @@ module.exports = {
     proxyTable: {
       '/apis': {
         // 测试环境
+<<<<<<< HEAD
         target: 'http://frontapi.huoba.dev.zby',  //设置你调用的接口域名和端口号 别忘了加http
+=======
+        target: 'http://frontapi.huoba.dev.zw',  //设置你调用的接口域名和端口号 别忘了加http
+>>>>>>> c9fc7c85a7692cf736c58f34d7f8cdcce0eed818
         changeOrigin: true, // 是否跨域
         pathRewrite: {
           '^/apis': '/', // 需要rewrite重写的
@@ -28,7 +32,11 @@ module.exports = {
     // host: '198.210.12.253',
     // host: 'localhost', // can be overwritten by process.env.HOST
 
+<<<<<<< HEAD
     host: 'wap.huoba.dev.zby', // can be overwritten by process.env.HOST
+=======
+    host: 'wap.huoba.dev.zw', // can be overwritten by process.env.HOST
+>>>>>>> c9fc7c85a7692cf736c58f34d7f8cdcce0eed818
     port: 80, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
 
     autoOpenBrowser: true,

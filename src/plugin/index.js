@@ -626,7 +626,8 @@ export default {
                 name: "paysuccess",
                 query: {
                   order_id: _orderId,
-                  pay_money: _payMoney
+                  pay_money: _payMoney,
+                  open_id:self.open_id,
                 }
               });
             }
