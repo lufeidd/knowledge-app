@@ -1,5 +1,4 @@
-# About knowledge-app origin/master
-# test smileboy/xjj
+# About knowledge-app smileboy/xjj
 
 > 博库-知识内容服务平台-移动端，此项目是 vue + vant 构建的移动端项目，解释权归博库网络传媒集团所有。
 
