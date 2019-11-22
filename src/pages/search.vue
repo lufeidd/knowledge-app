@@ -291,7 +291,7 @@ export default {
           name: "couponresult",
           query: {
             type: "mall",
-            supplier_id: this.$route.query.ticket_id,
+            ticket_id: this.$route.query.ticket_id,
             searchContent: item.content
           }
         });
