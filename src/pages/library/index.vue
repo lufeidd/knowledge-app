@@ -59,7 +59,7 @@
         </div>
       </div>
       <div v-for="(item,index) in resourceData.resource_list.filepackage" :key="index">
-        <div class="content">
+        <div class="content" @click="goodsDetail(item)">
           <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
           <div class="text">{{ item.goods_info.title }}</div>
           <div class="price">
@@ -117,26 +117,35 @@
         </div>
       </div>
     </div>
-    <div class="footer" @click="numBrandId">
-      <div class="footer-img">
-        <div class="bookImg" v-lazy:background-image="resourceData.brand_info.header_pic"></div>
-      </div>
-      <div class="text">{{ resourceData.brand_info.name }}</div>
-      <div class="icon-footer">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-next-line" />
-        </svg>
+    <div>
+      <div class="footer" @click="numBrandId">
+        <div class="footer-img">
+          <div class="bookImg" v-lazy:background-image="resourceData.brand_info.header_pic"></div>
+        </div>
+        <div class="text">{{ resourceData.brand_info.name }}</div>
+        <div class="icon-footer">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-next-line" />
+          </svg>
+        </div>
       </div>
     </div>
+    <Loading :isLoading="isLoading"></Loading>
   </div>
 </template>
 
 <style src="@/style/scss/pages/library/index.scss" scoped lang="scss"></style>
+<style lang="scss">
+  #loadingPage{
+    background: #f0f0f0!important;
+  }
+</style>
 <script>
   import { RESOURCE_GET } from "../../apis/bookresource.js";
   export default {
     data () {
       return {
+        isLoading: true,
         fileShow: false,
         bookShow: false,
         classShow: false,
@@ -189,6 +198,7 @@
           if (this.resourceData.ebook_info.length == 0) {
             this.electron = false;
           }
+          this.isLoading = false;
           console.log(this.resourceData);
         } else {
           this.$toast(res.error_message);
@@ -233,6 +243,15 @@
               type: 'mall',
               title: null,
               brand_id: this.brand_id
+            }
+          });
+        }
+        // 文件包
+        if (item.goods_type == 10) {
+          this.$router.push({
+            name: "librarydetail",
+            query: {
+              goods_id: item.goods_id
             }
           });
         }

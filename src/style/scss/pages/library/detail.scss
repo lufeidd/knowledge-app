@@ -6,6 +6,9 @@
 @charset "utf-8";
 
 #libraryDetail{
+  min-height: 100%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   background-color: rgb(240, 240, 240);
   .titleOver{
     overflow: hidden;
@@ -88,11 +91,8 @@
       padding: 0 15px 20px;
       .box:nth-child(3n){margin-right: 0;}
       .box{
-        flex-basis: 31.3%;
         background: rgba(255,255,255,1);
-        box-shadow: 0px 0px 6px 0px rgba(51,51,51,0.05);
         border-radius: 5px;
-        padding: 20px 15px;
         margin-right: 8px;
         margin-top: 20px;
         box-sizing: border-box;
