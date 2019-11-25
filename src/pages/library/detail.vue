@@ -21,13 +21,13 @@
     <div class="content-box">
       <van-tabs v-model="activeName">
         <van-tab title="图片" name="a">
-          <div class="textB">
-            <div v-for="(item,index) in packageData.base.pic" :key="index">
-              <div class="box" @click="getImg()">
-                <div class="bookImg" v-lazy:background-image="item"></div>
-              </div>
-            </div>
-          </div>
+            <van-row class="textB">
+              <van-col span="8" v-for="(item,index) in packageData.base.pic" :key="index">
+                <div class="box" @click="getImg(item)">
+                  <div class="bookImg" v-lazy:background-image="item"></div>
+                </div>
+              </van-col>
+            </van-row>
         </van-tab>
         <van-tab title="文档" name="b">
           <div class="textFile">
@@ -65,11 +65,16 @@
         </div>
       </div>
     </van-popup>
+    <Loading :isLoading="isLoading"></Loading>
   </div>
 </template>
 
 <style src="@/style/scss/pages/library/detail.scss" scoped lang="scss"></style>
-
+<style lang="scss">
+  #loadingPage{
+    background: #f0f0f0!important;
+  }
+</style>
 <script>
   import { ALBUM } from "../../apis/album.js";
   import { FILEPACKAGE_SEND } from "../../apis/bookresource.js";
@@ -77,6 +82,7 @@
 export default {
   data () {
     return {
+      isLoading: true,
       packageData: {
         base: {},
         brand_info: {},
@@ -116,6 +122,7 @@ export default {
         if (this.packageData.base.price != 'undefined' && this.packageData.base.price != null && this.packageData.base.price != 0) {
           this.email = true;
         }
+        this.isLoading = false;
         console.log(this.resourceData);
       } else {
         this.$toast(res.error_message);
@@ -139,8 +146,8 @@ export default {
         this.$toast(res.error_message);
       }
     },
-    getImg () {
-      ImagePreview(this.packageData.base.pic)
+    getImg (item) {
+      ImagePreview([item])
     },
     textPackIcon () {
       if (this.packageData.base.price != 'undefined' && this.packageData.base.price != null && this.packageData.base.price != 0) {
@@ -151,15 +158,12 @@ export default {
     },
     // 购买
     buyAction (goodsId) {
-      if (this.$refs.nav.is_Login) {
-        if (goodsId != null)
+        if (goodsId != null) {
           this.$router.push({
             name: "payaccount",
             query: { goods_id: goodsId }
           });
-      } else {
-        this.$router.push({ name: "login" });
-      }
+        }
     }
   }
 }

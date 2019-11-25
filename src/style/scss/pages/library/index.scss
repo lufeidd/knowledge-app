@@ -6,6 +6,9 @@
 @charset "utf-8";
 
 #libraryIndex{
+  min-height: 100%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   background-color: rgb(240, 240, 240);
   .titleOver{
     overflow: hidden;
