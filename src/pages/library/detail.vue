@@ -164,6 +164,9 @@ export default {
             query: { goods_id: goodsId }
           });
         }
+    },
+    fileCilckUrl(item){
+
     }
   }
 }
