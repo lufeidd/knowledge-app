@@ -155,6 +155,7 @@
     <van-popup
       v-model="show"
       style="width:100%;max-height:100%;height:100%;background-color:rgba(0,0,0,0.4);"
+      @click="close"
     >
       <span class="arrow" @click="close">
         <svg class="icon" aria-hidden="true">
@@ -197,9 +198,7 @@ export default {
     this.open_id = parseInt(this.$route.query.open_id);
     this.returnPrice();
     this.getLogin();
-    $('body').on('click',function(){
-      this.show = false;
-    })
+
   },
   methods: {
     async getLogin() {
