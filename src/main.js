@@ -52,10 +52,15 @@ Vue.use(download)
 Vue.use(nav)
 Vue.use(loading)
 
+// import Vant from 'vant';
+// Vue.use(Vant);
+
 import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
   Cell, CellGroup,
-  Icon, Popup, DatetimePicker, SwipeCell, Dialog, Actionsheet, AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle,
+  Icon, Popup, DatetimePicker, SwipeCell, Dialog,
+  Actionsheet,
+  AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle,
   Tab, Tabs,
   GoodsAction, GoodsActionBigBtn, GoodsActionMiniBtn,
   Step, Steps,
