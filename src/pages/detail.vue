@@ -79,21 +79,40 @@
         <div class="title">{{ baseData.title }}</div>
         <div class="sub_title">{{baseData.sub_title}}</div>
       </div>
-      <!-- 优惠券 -->
-      <van-cell
-        title
-        is-link
-        value
-        @click="showCoupon"
-        style="margin:5px 0;"
-        v-if="Object.keys(couponInfo.ticket).length>0"
-      >
-        <template slot="title">
-          <span style="margin-right:10px;" v-if="isReceived">已领券</span>
-          <span style="margin-right:10px;" v-else>领券</span>
-          <span class="toMall" v-for="(item,index) in couponInfo.ticket.list" :key="index">{{item}}</span>
-        </template>
-      </van-cell>
+      <div style="margin:5px 0;">
+        <!-- 优惠券 -->
+        <van-cell
+          title
+          is-link
+          value
+          @click="showCoupon"
+          v-if="Object.keys(couponInfo.ticket).length>0"
+        >
+          <template slot="title">
+            <span style="margin-right:10px;" v-if="isReceived">已领券</span>
+            <span style="margin-right:10px;" v-else>领券</span>
+            <span
+              class="toMall"
+              v-for="(item,index) in couponInfo.ticket.list"
+              :key="index"
+            >{{item}}</span>
+          </template>
+        </van-cell>
+        <!-- 满减满折 -->
+        <!-- <van-cell
+          title
+          is-link
+          value
+          @click="showMulti"
+          v-if="couponInfo.multi && Object.keys(couponInfo.multi).length>0"
+        >
+          <template slot="title">
+            <span style="margin-right:10px;">活动</span>
+            <span class="multi_radio">{{couponInfo.multi.tag}}</span>
+            <span class="multi_desc">{{couponInfo.multi.summary}}</span>
+          </template>
+        </van-cell> -->
+      </div>
 
       <van-cell
         v-if="Object.keys(location_info).length>0"
@@ -334,7 +353,11 @@
     </div>
     <EazyNav type="brand" ref="nav"></EazyNav>
     <!-- 拼团 -->
-    <div class="groupBuy" v-if="couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length>0" @click="toGoodsGroup">
+    <div
+      class="groupBuy"
+      v-if="couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length>0"
+      @click="toGoodsGroup"
+    >
       拼团价：￥{{couponInfo.groupbuy.groupbuy_price.toFixed(2)}}
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-next-line" />
@@ -466,9 +489,9 @@ export default {
         this.$router.push({
           name: "groupgoods",
           query: {
-             goods_id:this.baseData.goods_id,
-             groupbuy_id:this.couponInfo.groupbuy.id,
-           }
+            goods_id: this.baseData.goods_id,
+            groupbuy_id: this.couponInfo.groupbuy.id
+          }
         });
       } else {
         this.$router.push({ name: "login" });

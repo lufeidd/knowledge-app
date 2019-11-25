@@ -364,8 +364,8 @@
       <div class="nobuy" v-if="baseData.is_free == 1 || baseData.is_payed == 1">
         <div v-if="baseData.is_sbookshelf == 0" @click="shelfAction">加入书架</div>
         <div class="shelf" v-else @click="shelfAction">已加入书架</div>
-        <div class="read" @click="toreader" v-if="baseData.is_payed == 1">立即阅读</div>
-        <div class="read" @click="toreader" v-else>免费阅读</div>
+        <div class="read" @click="toreader">立即阅读</div>
+        <!-- <div class="read" @click="toreader" v-else>免费阅读</div> -->
       </div>
       <div
         class="nobuy"
