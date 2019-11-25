@@ -28,7 +28,6 @@ module.exports = {
     // 本地查看效果
     // host: '198.210.12.253',
     // host: 'localhost', // can be overwritten by process.env.HOST
-
     host: 'wap.huoba.dev.zby', // can be overwritten by process.env.HOST
     port: 80, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
 
