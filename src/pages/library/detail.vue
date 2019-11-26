@@ -122,6 +122,9 @@ export default {
         if (this.packageData.base.price != 'undefined' && this.packageData.base.price != null && this.packageData.base.price != 0) {
           this.email = true;
         }
+        if (this.packageData.base.is_payed != '0') {
+          this.email = false;
+        }
         this.isLoading = false;
         console.log(this.resourceData);
       } else {
@@ -164,6 +167,9 @@ export default {
             query: { goods_id: goodsId }
           });
         }
+    },
+    fileCilckUrl(item){
+
     }
   }
 }
