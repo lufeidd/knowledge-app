@@ -2,10 +2,10 @@
   <div id="musicPage">
     <div class="ratioBox">
       <div class="box bg">
-        <img :src="audioData.pic">
+        <img :src="audioData.pic" />
       </div>
       <div class="box pic" :class="{rotateAction: !audioData.type}">
-        <img :src="audioData.pic">
+        <img :src="audioData.pic" />
       </div>
     </div>
 
@@ -16,14 +16,20 @@
         class="subTitle"
       >
         <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-list-line"></use>
+          <use xlink:href="#icon-list-line" />
         </svg>
         <span>文稿</span>
       </router-link>
     </div>
 
     <!-- 音频播放器 -->
-    <audio id="musicPlayer" :src="audioData.src" preload="auto" @ended="onEnded"></audio>
+    <audio
+      id="musicPlayer"
+      @canplay="audioCanPlay"
+      :src="audioData.src"
+      preload="load"
+      @ended="onEnded"
+    ></audio>
 
     <!-- 进度条 -->
     <div class="sliderBox">
@@ -45,27 +51,27 @@
       <!-- 当前节目属于专辑时展示 -->
       <div class="category" v-if="programGoodsId != null">
         <svg class="icon" aria-hidden="true" @click="showList">
-          <use xlink:href="#icon-category-line"></use>
+          <use xlink:href="#icon-category-line" />
         </svg>
       </div>
       <div class="prev">
         <svg class="icon" aria-hidden="true" @click="prevProgram">
-          <use xlink:href="#icon-prev-block"></use>
+          <use xlink:href="#icon-prev-block" />
         </svg>
       </div>
       <div class="play" v-if="audioData.type">
         <svg class="icon" aria-hidden="true" @click="playAudio(null)">
-          <use xlink:href="#icon-play-line"></use>
+          <use xlink:href="#icon-play-line" />
         </svg>
       </div>
       <div class="pause" v-else>
         <svg class="icon" aria-hidden="true" @click="pauseAudio">
-          <use xlink:href="#icon-pause-line"></use>
+          <use xlink:href="#icon-pause-line" />
         </svg>
       </div>
       <div class="next">
         <svg class="icon" aria-hidden="true" @click="nextProgram">
-          <use xlink:href="#icon-next-block"></use>
+          <use xlink:href="#icon-next-block" />
         </svg>
       </div>
     </div>
@@ -153,6 +159,11 @@ export default {
     }, 600);
   },
   methods: {
+    audioCanPlay() {
+      console.log("can play");
+      var audio = document.getElementById("musicPlayer");
+      this.duration__ = this.todate(audio.duration);
+    },
     // 清除倒计时
     clearClock() {
       // 播放结束后销毁倒计时
@@ -168,8 +179,6 @@ export default {
     // 设置音频播放状态
     setPlayerAudio() {
       var info = JSON.parse(localStorage.getItem("miniAudio"));
-
-      console.log(2222222, info);
 
       if (info != null && info.length != 0) {
         // 当前播放节目
@@ -204,7 +213,12 @@ export default {
         } else {
           _goodsId = item.goods_id;
         }
-        console.log('goodsid:', this.programGoodsId, 'baseData:', this.baseData);
+        console.log(
+          "goodsid:",
+          this.programGoodsId,
+          "baseData:",
+          this.baseData
+        );
         this.$router.push({
           name: "payaccount",
           query: { goods_id: _goodsId }
@@ -265,8 +279,10 @@ export default {
 
       // if(audio.canPlayType('audio/mpeg') == "probably") {
       // }
-
+      
       setTimeout(function() {
+        console.log(456, audio.duration);
+
         self.audioData.duration = audio.duration;
         self.duration__ = self.todate(audio.duration);
         // 设置slider当前播放进度
@@ -441,7 +457,7 @@ export default {
     },
     // 点击播放
     playAudio(__currentTime) {
-      localStorage.setItem('closeAudio', 'no');
+      localStorage.setItem("closeAudio", "no");
 
       this.count = 1;
       this.clearClock();
@@ -504,10 +520,10 @@ export default {
       var audio = document.getElementById("musicPlayer");
       // console.log(66,audio.currentTime);
       // 设置当前时间
-      if (this.audioData.sliderValue){
+      if (this.audioData.sliderValue) {
         audio.currentTime = (this.audioData.sliderValue / 100) * audio.duration;
       }
-      if(this.audioData.sliderValue >= 100) {
+      if (this.audioData.sliderValue >= 100) {
         console.log(9999999);
         this.nextProgram();
         // 重置
@@ -537,6 +553,9 @@ export default {
       if (s < 10) s = "0" + s;
       // var date = h + ":" + m + ":" + s;
       var date = m + ":" + s;
+
+      console.log(789, second, date);
+
       return date;
     },
     // 打开播放列表

@@ -111,8 +111,6 @@ export default {
   },
 
   mounted() {
-    // 初始化省市区
-    this.$getAddressData();
     // 设置类型
     this.pageType = this.$route.query.pageType;
     // 编辑
