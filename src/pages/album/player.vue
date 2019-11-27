@@ -103,8 +103,6 @@ export default {
   },
   data() {
     return {
-      // 标识当前音频可以播放
-      canPlay: false,
       // 获取localStorage音频播放状态
       audioData: {
         pic: null,
@@ -154,7 +152,6 @@ export default {
     // 设置音频播放状态
     this.setPlayerAudio();
     // 延时600ms设置duration
-    // this.setDuration();
     // 暂停音频
     setTimeout(() => {
       this.pauseAudio();
@@ -164,8 +161,7 @@ export default {
     audioCanPlay() {
       var audio = document.getElementById("musicPlayer");
       this.duration__ = this.todate(audio.duration);
-      this.canPlay = true;
-      console.log(123, this.canPlay, audio.duration);
+      console.log(123, audio.duration);
     },
     // 延时600ms设置duration
     setDuration() {
@@ -186,7 +182,7 @@ export default {
       // slider和音频播放同步
       self.audioSliderChange();
 
-      console.log(456, this.canPlay, audio.duration);
+      console.log(456, audio.duration);
 
       // }, 600);
     },
