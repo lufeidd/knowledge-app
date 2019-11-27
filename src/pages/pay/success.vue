@@ -63,6 +63,7 @@ export default {
     this.order_id = this.$route.query.order_id;
     this.pay_money = this.$route.query.pay_money;
     this.open_id = this.$route.query.open_id;
+    console.log('测试open_id',this.open_id)
   },
   methods: {
     async getBrandId() {

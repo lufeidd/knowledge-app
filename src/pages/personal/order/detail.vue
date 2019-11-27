@@ -121,7 +121,7 @@
             class="button button2 applyrefund"
             @click.stop="toOngoing(item)"
             v-if="(infoData.type == 1 && groupData && infoData.state == 7 && infoData.pay_money) "
-          >查看退款</span>
+          >退款成功</span>
         </div>
       </div>
     </div>
@@ -192,6 +192,7 @@
       </div>
       <van-cell v-if="infoData.dispatch_price" title="运费" v-model="'¥'+infoData.dispatch_price" />
       <van-cell title="商品优惠" v-if="infoData.activity_money" v-model="'¥'+infoData.activity_money" />
+      <van-cell title="立减" v-if="infoData.multi_money" v-model="'¥'+infoData.multi_money" />
       <!-- <van-cell title="余额" v-model="'-¥'+priceInfo.remain.toFixed(2)"/> -->
       <p class="acturalPay" style="margin-top:10px;">
         <template>{{infoData.state == 1? '待支付':'实付款'}}</template>

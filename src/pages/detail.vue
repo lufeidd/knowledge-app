@@ -72,7 +72,7 @@
                 v-if="baseData.price !== baseData.market_price"
               >{{((baseData.price/baseData.market_price)*10).toFixed(1)}}折</span>
             </span>
-            <span v-if="baseData.stores <= 10" class="stores">仅剩{{baseData.stores}}</span>
+            <span v-if="baseData.stores <= 10" class="stores">仅剩{{baseData.stores}}件</span>
             <span v-if="baseData.stores > 100" class="stores">库存充足</span>
           </div>
         </div>
@@ -99,7 +99,7 @@
           </template>
         </van-cell>
         <!-- 满减满折 -->
-        <!-- <van-cell
+        <van-cell
           title
           is-link
           value
@@ -111,7 +111,7 @@
             <span class="multi_radio">{{couponInfo.multi.tag}}</span>
             <span class="multi_desc">{{couponInfo.multi.summary}}</span>
           </template>
-        </van-cell> -->
+        </van-cell>
       </div>
 
       <van-cell
@@ -314,6 +314,25 @@
           </div>
         </div>
       </van-popup>
+      <!-- 满减满折 -->
+      <van-popup v-model="multiModel" position="bottom" v-if="couponInfo.multi" style="max-height:50%;min-height:50%;">
+        <div class="header">
+          <span class="catalogWord">活动</span>
+          <span>
+            <svg class="icon" aria-hidden="true" @click="closePopup">
+              <use xlink:href="#icon-close-line" />
+            </svg>
+          </span>
+        </div>
+        <div class="content" style="padding:0">
+          <van-cell is-link  @click="toMultiResult" class="multi">
+            <template slot="title">
+              <span class="multi_radio">{{couponInfo.multi.tag}}</span>
+              <span style="font-size:12px;white-space:wrap;">{{couponInfo.multi.desc}}</span>
+            </template>
+          </van-cell>
+        </div>
+      </van-popup>
       <!-- <div style="height: 90px;position:relative">
         <CopyRight></CopyRight>
       </div>-->
@@ -399,6 +418,9 @@
       margin-top: -6px;
     }
   }
+  .multi .van-cell__title{
+    white-space: pre-wrap;
+  }
 }
 </style>
 
@@ -463,6 +485,7 @@ export default {
       activeIndex: 1,
       popupModel: false,
       couponModel: false,
+      multiModel:false,
       requestState: true,
       // 倒计时
       timeData: "2019-10-17 20:28:00",
@@ -558,7 +581,8 @@ export default {
         goods_id: this.baseData.goods_id,
         sku_id: this.baseData.goods_id,
         count: 1,
-        version: "1.0"
+        price: this.baseData.price,
+        version: "1.1"
       };
       data.sign = this.$getSign(data);
       let res = await CART_ADD(data);
@@ -567,7 +591,7 @@ export default {
         if (res.response_data.success == 1) {
           this.$toast("添加购物车成功~");
           this.shoppingcart_num++;
-          this.$refs.nav.cartData();
+          this.$refs.nav.navData.goods_nums ++;
         }
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
@@ -784,6 +808,7 @@ export default {
     },
     closePopup() {
       this.couponModel = false;
+      this.multiModel = false;
     },
     async getCouponList() {
       var tStamp = this.$getTimeStamp();
@@ -841,6 +866,17 @@ export default {
           ticket_id: item.ticket_id
         }
       });
+    },
+    showMulti(){
+      this.multiModel = true;
+    },
+    toMultiResult(){
+      this.$router.push({
+        name:"multiresult",
+        query:{
+          multi_id:this.couponInfo.multi.activity_id,
+        }
+      })
     }
   }
 };

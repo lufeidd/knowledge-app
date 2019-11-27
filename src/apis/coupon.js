@@ -25,3 +25,6 @@ export const TICKET_GOODS_RECOMMEND = query => req('post', '/ticket/goods/recomm
 
 //开团详情页接口
 export const GROUPBUY_OPEN_DETAIL = query => req('post', '/activity/groupbuy/open/detail', query);
+
+//获取购物车活动内容
+export const SHOPPING_CART_INFO = query => req('post', '/shopping/cart/info', query);

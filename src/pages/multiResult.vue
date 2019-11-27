@@ -18,7 +18,7 @@
       >
         <van-tab title="综合">
           <template>
-            <div style="margin-top:15px;font-size:16px;margin-left:15px;">{{activity_name}}</div>
+            <div class="activityName">{{activity_name}}</div>
             <van-list
               v-model="programLoading"
               :finished="programFinished"
@@ -33,21 +33,39 @@
               >
                 <div class="ratiobox">
                   <div class="bookImg" v-lazy:background-image="item.pic"></div>
-                  <div class="only" v-if="item.goods_type == 3 && item.goods_store <= 10">仅剩{{item.goods_store}}件</div>
+                  <div
+                    class="only"
+                    v-if="item.goods_type == 3 && item.goods_store <= 10"
+                  >仅剩{{item.goods_store}}件</div>
                 </div>
                 <div class="right">
                   <div class="text">{{item.title}}</div>
                   <div class="pinpai">
                     <!-- <van-button size="mini" round type="danger" v-for="(item1,index1) in item.activity_list" :key="index1">{{item1}}
-                    </van-button> -->
-                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 0">{{item.activity_list[0]}}</van-button>
-                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 1">{{item.activity_list[1]}}</van-button>
+                    </van-button>-->
+                    <van-button
+                      size="mini"
+                      round
+                      type="danger"
+                      v-if="item.activity_list.length > 0"
+                    >{{item.activity_list[0]}}</van-button>
+                    <van-button
+                      size="mini"
+                      round
+                      type="danger"
+                      v-if="item.activity_list.length > 1"
+                    >{{item.activity_list[1]}}</van-button>
                   </div>
                   <div class="nice">
                     <span class="price" v-if="item.price">￥{{item.price}}</span>
                     <span class="price" v-else>免费</span>
                     <span class="cart">
-                      <svg class="icon" aria-hidden="true" v-if="item.goods_type == 3" @click.stop="addCart(item,index)">
+                      <svg
+                        class="icon"
+                        aria-hidden="true"
+                        v-if="item.goods_type == 3"
+                        @click.stop="addCart(item,index)"
+                      >
                         <use xlink:href="#icon-cart-line" />
                       </svg>
                     </span>
@@ -59,7 +77,7 @@
         </van-tab>
         <van-tab title="新品">
           <template>
-            <div style="margin-top:15px;font-size:16px;margin-left:15px;">{{activity_name}}</div>
+            <div class="activityName">{{activity_name}}</div>
             <van-list
               v-model="programLoading"
               :finished="programFinished"
@@ -74,20 +92,38 @@
               >
                 <div class="ratiobox">
                   <div class="bookImg" v-lazy:background-image="item.pic"></div>
-                  <div class="only" v-if="item.goods_type == 3 && item.goods_store <= 10">仅剩{{item.goods_store}}件</div>
+                  <div
+                    class="only"
+                    v-if="item.goods_type == 3 && item.goods_store <= 10"
+                  >仅剩{{item.goods_store}}件</div>
                 </div>
                 <div class="right">
                   <div class="text">{{item.title}}</div>
                   <div class="pinpai">
                     <!-- <van-button size="mini" round type="danger" v-for="(item1,index1) in item.activity_list" :key="index1">{{item1}}</van-button> -->
-                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 0">{{item.activity_list[0]}}</van-button>
-                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 1">{{item.activity_list[1]}}</van-button>
+                    <van-button
+                      size="mini"
+                      round
+                      type="danger"
+                      v-if="item.activity_list.length > 0"
+                    >{{item.activity_list[0]}}</van-button>
+                    <van-button
+                      size="mini"
+                      round
+                      type="danger"
+                      v-if="item.activity_list.length > 1"
+                    >{{item.activity_list[1]}}</van-button>
                   </div>
                   <div class="nice">
                     <span class="price" v-if="item.price">￥{{item.price}}</span>
                     <span class="price" v-else>免费</span>
                     <span class="cart">
-                      <svg class="icon" aria-hidden="true" v-if="item.goods_type == 3" @click.stop="addCart(item,index)">
+                      <svg
+                        class="icon"
+                        aria-hidden="true"
+                        v-if="item.goods_type == 3"
+                        @click.stop="addCart(item,index)"
+                      >
                         <use xlink:href="#icon-cart-line" />
                       </svg>
                     </span>
@@ -99,7 +135,7 @@
         </van-tab>
         <van-tab title="销量">
           <template>
-            <div style="margin-top:15px;font-size:16px;margin-left:15px;">{{activity_name}}</div>
+            <div class="activityName">{{activity_name}}</div>
             <van-list
               v-model="programLoading"
               :finished="programFinished"
@@ -114,20 +150,38 @@
               >
                 <div class="ratiobox">
                   <div class="bookImg" v-lazy:background-image="item.pic"></div>
-                  <div class="only" v-if="item.goods_type == 3 && item.goods_store <= 10">仅剩{{item.goods_store}}件</div>
+                  <div
+                    class="only"
+                    v-if="item.goods_type == 3 && item.goods_store <= 10"
+                  >仅剩{{item.goods_store}}件</div>
                 </div>
                 <div class="right">
                   <div class="text">{{item.title}}</div>
                   <div class="pinpai">
                     <!-- <van-button size="mini" round type="danger" v-for="(item1,index1) in item.activity_list" :key="index1">{{item1}}</van-button> -->
-                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 0">{{item.activity_list[0]}}</van-button>
-                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 1">{{item.activity_list[1]}}</van-button>
+                    <van-button
+                      size="mini"
+                      round
+                      type="danger"
+                      v-if="item.activity_list.length > 0"
+                    >{{item.activity_list[0]}}</van-button>
+                    <van-button
+                      size="mini"
+                      round
+                      type="danger"
+                      v-if="item.activity_list.length > 1"
+                    >{{item.activity_list[1]}}</van-button>
                   </div>
                   <div class="nice">
                     <span class="price" v-if="item.price">￥{{item.price}}</span>
                     <span class="price" v-else>免费</span>
                     <span class="cart">
-                      <svg class="icon" aria-hidden="true" v-if="item.goods_type == 3" @click.stop="addCart(item,index)">
+                      <svg
+                        class="icon"
+                        aria-hidden="true"
+                        v-if="item.goods_type == 3"
+                        @click.stop="addCart(item,index)"
+                      >
                         <use xlink:href="#icon-cart-line" />
                       </svg>
                     </span>
@@ -151,7 +205,7 @@
             </svg>
           </div>
           <template>
-            <div style="margin-top:15px;font-size:16px;margin-left:15px;">{{activity_name}}</div>
+            <div class="activityName">{{activity_name}}</div>
             <van-list
               v-model="programLoading"
               :finished="programFinished"
@@ -166,20 +220,38 @@
               >
                 <div class="ratiobox">
                   <div class="bookImg" v-lazy:background-image="item.pic"></div>
-                  <div class="only" v-if="item.goods_type == 3 && item.goods_store <= 10">仅剩{{item.goods_store}}件</div>
+                  <div
+                    class="only"
+                    v-if="item.goods_type == 3 && item.goods_store <= 10"
+                  >仅剩{{item.goods_store}}件</div>
                 </div>
                 <div class="right">
                   <div class="text">{{item.title}}</div>
                   <div class="pinpai">
                     <!-- <van-button size="mini" round type="danger" v-for="(item1,index1) in item.activity_list" :key="index1">{{item1}}</van-button> -->
-                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 0">{{item.activity_list[0]}}</van-button>
-                    <van-button size="mini" round type="danger" v-if="item.activity_list.length > 1">{{item.activity_list[1]}}</van-button>
+                    <van-button
+                      size="mini"
+                      round
+                      type="danger"
+                      v-if="item.activity_list.length > 0"
+                    >{{item.activity_list[0]}}</van-button>
+                    <van-button
+                      size="mini"
+                      round
+                      type="danger"
+                      v-if="item.activity_list.length > 1"
+                    >{{item.activity_list[1]}}</van-button>
                   </div>
                   <div class="nice">
                     <span class="price" v-if="item.price">￥{{item.price}}</span>
                     <span class="price" v-else>免费</span>
                     <span class="cart">
-                      <svg class="icon" aria-hidden="true" v-if="item.goods_type == 3" @click.stop="addCart(item,index)">
+                      <svg
+                        class="icon"
+                        aria-hidden="true"
+                        v-if="item.goods_type == 3"
+                        @click.stop="addCart(item,index)"
+                      >
                         <use xlink:href="#icon-cart-line" />
                       </svg>
                     </span>
@@ -190,6 +262,23 @@
           </template>
         </van-tab>
       </van-tabs>
+      <!-- 底部 -->
+      <div v-if="this.isIphx" style="height: 34px;"></div>
+      <van-submit-bar
+        :class="{iphx:this.isIphx}"
+        safe-area-inset-bottom
+        button-text="去购物车"
+        @submit="onSubmit"
+      >
+        <template>
+          <div class="multi_bottom">
+            <div>
+              合计：<span class="price">￥{{multi_money}}</span>
+            </div>
+            <div class="desc">{{multi_desc}}</div>
+          </div>
+        </template>
+      </van-submit-bar>
     </div>
     <EazyNav type="coupon" ref="nav"></EazyNav>
   </div>
@@ -200,19 +289,36 @@
 #couponResultPage {
   .van-list {
     padding: 0 15px;
+    padding-bottom: 50px;
   }
-  .van-button--danger {
+  .van-list .van-button--danger {
     font-size: $fontSize - 4;
     background-color: transparent;
     border-color: $redLight;
     color: $redLight;
     padding: 0 3px;
   }
+  .activityName {
+    padding: 5px 15px;
+    font-size: $fontSize - 1;
+    background-color: #f5f5f5;
+  }
+  .multi_bottom{
+    font-size:$fontSize + 1;
+    padding:0 15px;
+    .price{
+      font-size: $fontSize - 1;
+      color:$redLight;
+    }
+    .desc{
+      font-size: $fontSize - 2;
+    }
+  }
 }
 </style>
 <script>
-import { TICKET_DETAIL_GETS } from "../../apis/coupon.js";
-import { CART_ADD } from "../../apis/shopping.js";
+import { TICKET_DETAIL_GETS,SHOPPING_CART_INFO } from "../apis/coupon.js";
+import { CART_ADD } from "../apis/shopping.js";
 export default {
   data() {
     return {
@@ -221,18 +327,21 @@ export default {
       programFinished: false,
       activekey: 0,
       searchContent: "",
-      ticket_id: "",
+      multi_id: "",
       priceSort: 0,
       couponList: [],
       coupon_sort: "default",
       activity_name: null,
-      isLogin: null
+      isLogin: null,
+      multi_money:null,
+      multi_desc:null,
     };
   },
   mounted() {
     console.log(111, this.priceSort);
-    this.ticket_id = this.$route.query.ticket_id;
+    this.multi_id = this.$route.query.multi_id;
     this.searchContent = this.$route.query.searchContent;
+    this.getBottomInfo();
   },
   methods: {
     programLoad() {
@@ -258,26 +367,42 @@ export default {
       }
       this.couponList = [];
       this.page = 1;
-      this.programLoading = true;//下拉加载中
-      this.programFinished = false;//下拉结束
-      if(this.programLoading){
+      this.programLoading = true; //下拉加载中
+      this.programFinished = false; //下拉结束
+      if (this.programLoading) {
         this.programLoad();
       }
 
-      console.log(222, this.priceSort,index);
+      console.log(222, this.priceSort, index);
     },
     inputText() {
       this.$router.push({
-        name:"search",
-        query:{
-          type:"coupon",
-          ticket_id:this.$route.query.ticket_id,
+        name: "search",
+        query: {
+          type: "coupon",
+          multi_id: this.$route.query.multi_id
         }
-      })
+      });
     },
     addCart(item, index) {
       // console.log(222);
       this.toCartData(item.goods_id,item.price);
+    },
+    async getBottomInfo(){
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.1",
+        multi_id: this.multi_id,
+      };
+      data.sign = this.$getSign(data);
+      let res = await SHOPPING_CART_INFO(data);
+      if (res.hasOwnProperty("response_code")) {
+        this.multi_money = res.response_data.block_money;
+        this.multi_desc = res.response_data.block_desc;
+      } else {
+        this.$toast(res.error_message);
+      }
     },
     async getList() {
       var tStamp = this.$getTimeStamp();
@@ -285,9 +410,9 @@ export default {
         timestamp: tStamp,
         version: "1.0",
         page: this.page,
-        ticket_id: this.ticket_id,
+        multi_id: this.multi_id,
         sort: this.coupon_sort,
-        keywords: this.searchContent,
+        keywords: this.searchContent
       };
       data.sign = this.$getSign(data);
       let res = await TICKET_DETAIL_GETS(data);
@@ -310,7 +435,6 @@ export default {
           }
           // console.log(this.couponList)
         }, 600);
-
       } else {
         this.$toast(res.error_message);
       }
@@ -332,6 +456,7 @@ export default {
         if (res.response_data.success == 1) {
           this.$toast("添加购物车成功~");
           this.shoppingcart_num++;
+          this.getBottomInfo();
           this.$refs.nav.cartData();
         }
       } else {
@@ -378,6 +503,13 @@ export default {
           name: "detail",
           query: { goods_id: item.goods_id }
         });
+      }
+    },
+    onSubmit() {
+      if (this.$refs.nav.is_Login) {
+        this.$router.push({ name: "cart" });
+      } else {
+        this.$router.push({ name: "login" });
       }
     }
   }
