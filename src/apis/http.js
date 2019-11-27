@@ -27,7 +27,7 @@ instance.interceptors.request.use(function (config) {
     config.credentials = true;
 
     // 网页端跳转 404 页面
-    if (sessionStorage.getItem("isWxLogin") == "no" && (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/index') != -1)) {
+    if (sessionStorage.getItem("isWxLogin") == "no" && (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/index') != -1 || localStorage.getItem('routerLink').indexOf('/library/detail') != -1)) {
         window.location.href = window.location.href.split('#')[0] + '#/404';
     }
     return config;

@@ -164,7 +164,6 @@ router.beforeEach((to, from, next) => {
   var index = 0; // 索引初始化
   var token = parseInt(localStorage.getItem('loginState'));
   // const isLogin = store.state.isLogin;
-
   next()
   // 如果页面需要登录才跳转，未登录跳转到登录页
   if (to.meta.requireAuth) {
