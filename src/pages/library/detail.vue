@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="content-box">
-      <van-tabs v-model="activeName">
+      <van-tabs v-model="activeName" v-if="pictureFile">
         <van-tab title="图片" name="a">
             <van-row class="textB">
               <van-col span="8" v-for="(item,index) in packageData.base.pic" :key="index">
@@ -34,8 +34,7 @@
             <div v-for="(item,index) in packageData.base.details" :key="index">
               <div class="content">
                 <a
-                  :href="item.file_path"
-                  download="item.file_name"
+                  @click="fileClickUrl(item.file_path)"
                 >
                 <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
                 <div class="text">{{ item.file_name }}</div>
@@ -46,6 +45,20 @@
           </div>
         </van-tab>
       </van-tabs>
+      <div class="textFile" v-else>
+        <div class="file">文档</div>
+        <div v-for="(item,index) in packageData.base.details" :key="index">
+          <div class="content">
+            <a
+              @click="fileClickUrl(item.file_path)"
+            >
+              <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
+              <div class="text">{{ item.file_name }}</div>
+            </a>
+            <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" @click="textPackIcon"/>
+          </div>
+        </div>
+      </div>
     </div>
     <!--<div class="bottom">
       <div class="content">
@@ -83,6 +96,7 @@ export default {
   data () {
     return {
       isLoading: true,
+      pictureFile: true,
       packageData: {
         base: {},
         brand_info: {},
@@ -125,6 +139,9 @@ export default {
         if (this.packageData.base.is_payed != '0') {
           this.email = false;
         }
+        if (this.packageData.base.pic.length == 0) {
+          this.pictureFile = false;
+        }
         this.isLoading = false;
         console.log(this.resourceData);
       } else {
@@ -150,7 +167,13 @@ export default {
       }
     },
     getImg (item) {
-      ImagePreview([item])
+      if (this.packageData.base.price != 0 && this.packageData.base.is_payed == '0') {
+        this.buyAction(this.goods_id);
+      } else if (this.packageData.base.is_payed != '0') {
+        ImagePreview([item])
+      } else if (this.packageData.base.price == 0) {
+        ImagePreview([item])
+      }
     },
     textPackIcon () {
       if (this.packageData.base.price != 'undefined' && this.packageData.base.price != null && this.packageData.base.price != 0 && this.packageData.base.is_payed == '0') {
@@ -169,6 +192,16 @@ export default {
             query: { goods_id: goodsId }
           });
         }
+    },
+    // 文档判断是否预览
+    fileClickUrl (url) {
+      if (this.packageData.base.price != 0 && this.packageData.base.is_payed == '0') {
+        this.buyAction(this.goods_id);
+      } else if (this.packageData.base.is_payed != '0') {
+        window.location.href = url;
+      } else if (this.packageData.base.price == 0) {
+        window.location.href = url;
+      }
     }
   }
 }
