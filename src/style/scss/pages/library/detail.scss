@@ -112,6 +112,10 @@
       }
     }
     .textFile{
+      .file{
+        border-bottom: 1px solid #eee;
+        padding-left: 15px;
+      }
       .content{
         display: -webkit-box;
         display: -ms-flexbox;
@@ -161,6 +165,7 @@
     border-radius: 5px;
     padding: 25px 10px 0;
     overflow: hidden;
+    top: 150px;
     .van-cell{
       border-bottom: 1px solid #e6e6e6;
     }
