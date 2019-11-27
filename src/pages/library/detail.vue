@@ -34,7 +34,7 @@
             <div v-for="(item,index) in packageData.base.details" :key="index">
               <div class="content">
                 <a
-                  @click="fileClickUrl(item.file_path)"
+                  @click="fileClickUrl(item.id)"
                 >
                 <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
                 <div class="text">{{ item.file_name }}</div>
@@ -50,7 +50,7 @@
         <div v-for="(item,index) in packageData.base.details" :key="index">
           <div class="content">
             <a
-              @click="fileClickUrl(item.file_path)"
+              @click="fileClickUrl(item.id)"
             >
               <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
               <div class="text">{{ item.file_name }}</div>
@@ -90,7 +90,7 @@
 </style>
 <script>
   import { ALBUM } from "../../apis/album.js";
-  import { FILEPACKAGE_SEND } from "../../apis/bookresource.js";
+  import { FILEPACKAGE_SEND , FILEPACKAGE_GETURL } from "../../apis/bookresource.js";
   import { ImagePreview } from 'vant';
 export default {
   data () {
@@ -163,7 +163,12 @@ export default {
         this.$toast('获取成功');
         this.emailShowPopup = false;
       } else {
-        this.$toast(res.error_message);
+        if (res.error_code === 100) {
+          this.$toast(res.error_message);
+          this.login();
+        } else {
+          this.$toast(res.error_message);
+        }
       }
     },
     getImg (item) {
@@ -194,14 +199,31 @@ export default {
         }
     },
     // 文档判断是否预览
-    fileClickUrl (url) {
-      if (this.packageData.base.price != 0 && this.packageData.base.is_payed == '0') {
-        this.buyAction(this.goods_id);
-      } else if (this.packageData.base.is_payed != '0') {
-        window.location.href = url;
-      } else if (this.packageData.base.price == 0) {
-        window.location.href = url;
+    async fileClickUrl (id) {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        file_package_detail_id : id,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await FILEPACKAGE_GETURL(data);
+      if (res.hasOwnProperty("response_code")) {
+          window.location.href = res.response_data.file_path;
+      } else {
+        if (res.error_code === 100) {
+          this.$toast(res.error_message);
+          this.login();
+        } else {
+          this.$toast(res.error_message);
+        }
       }
+    },
+    // 登陆
+    login () {
+      this.$router.push({
+        name: "login"
+      });
     }
   }
 }
