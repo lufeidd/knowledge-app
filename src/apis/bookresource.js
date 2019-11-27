@@ -10,3 +10,6 @@ export const RESOURCE_GET = query => req('post', '/goods/book/resource/get', que
 
 // 文件包邮件发送接口
 export const FILEPACKAGE_SEND = query => req('post', '/goods/filepackage/send', query);
+
+// 文件包链接隐藏接口
+export const FILEPACKAGE_GETURL = query => req('post', '/goods/filepackage/geturl', query);
