@@ -103,6 +103,8 @@ export default {
   },
   data() {
     return {
+      // 标识当前音频可以播放
+      canPlay: false,
       // 获取localStorage音频播放状态
       audioData: {
         pic: null,
@@ -152,7 +154,7 @@ export default {
     // 设置音频播放状态
     this.setPlayerAudio();
     // 延时600ms设置duration
-    this.setDuration();
+    // this.setDuration();
     // 暂停音频
     setTimeout(() => {
       this.pauseAudio();
@@ -160,9 +162,33 @@ export default {
   },
   methods: {
     audioCanPlay() {
-      console.log("can play");
       var audio = document.getElementById("musicPlayer");
       this.duration__ = this.todate(audio.duration);
+      this.canPlay = true;
+      console.log(123, this.canPlay, audio.duration);
+    },
+    // 延时600ms设置duration
+    setDuration() {
+      var audio = document.getElementById("musicPlayer");
+      var self = this;
+
+      // if(audio.canPlayType('audio/mpeg') == "probably") {
+      // }
+
+      // setTimeout(function() {
+
+      self.audioData.duration = audio.duration;
+      self.duration__ = self.todate(audio.duration);
+
+      // 设置slider当前播放进度
+      self.audioData.sliderValue =
+        (self.audioData.currentTime / audio.duration) * 100;
+      // slider和音频播放同步
+      self.audioSliderChange();
+
+      console.log(456, this.canPlay, audio.duration);
+
+      // }, 600);
     },
     // 清除倒计时
     clearClock() {
@@ -213,12 +239,6 @@ export default {
         } else {
           _goodsId = item.goods_id;
         }
-        console.log(
-          "goodsid:",
-          this.programGoodsId,
-          "baseData:",
-          this.baseData
-        );
         this.$router.push({
           name: "payaccount",
           query: { goods_id: _goodsId }
@@ -271,26 +291,6 @@ export default {
 
       // 如果当前节目有播放记录，跳到当前记录位置继续播放
       return __currentTime;
-    },
-    // 延时600ms设置duration
-    setDuration() {
-      var audio = document.getElementById("musicPlayer");
-      var self = this;
-
-      // if(audio.canPlayType('audio/mpeg') == "probably") {
-      // }
-      
-      setTimeout(function() {
-        console.log(456, audio.duration);
-
-        self.audioData.duration = audio.duration;
-        self.duration__ = self.todate(audio.duration);
-        // 设置slider当前播放进度
-        self.audioData.sliderValue =
-          (self.audioData.currentTime / audio.duration) * 100;
-        // slider和音频播放同步
-        self.audioSliderChange();
-      }, 600);
     },
     // 播放时间戳
     audioTimeChange(second, type) {
@@ -553,8 +553,6 @@ export default {
       if (s < 10) s = "0" + s;
       // var date = h + ":" + m + ":" + s;
       var date = m + ":" + s;
-
-      console.log(789, second, date);
 
       return date;
     },
