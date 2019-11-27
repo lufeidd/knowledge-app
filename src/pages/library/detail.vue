@@ -153,9 +153,11 @@ export default {
       ImagePreview([item])
     },
     textPackIcon () {
-      if (this.packageData.base.price != 'undefined' && this.packageData.base.price != null && this.packageData.base.price != 0) {
+      if (this.packageData.base.price != 'undefined' && this.packageData.base.price != null && this.packageData.base.price != 0 && this.packageData.base.is_payed == '0') {
         this.buyAction(this.goods_id);
       } else if ((this.packageData.base.price == 0)) {
+        this.emailClick();
+      } else if (this.packageData.base.is_payed != '0') {
         this.emailClick();
       }
     },
@@ -167,9 +169,6 @@ export default {
             query: { goods_id: goodsId }
           });
         }
-    },
-    fileCilckUrl(item){
-
     }
   }
 }

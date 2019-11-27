@@ -15,7 +15,6 @@ module.exports = {
     proxyTable: {
       '/apis': {
         // 测试环境
-
         target: 'http://frontapi.huoba.dev.zzy',  //设置你调用的接口域名和端口号 别忘了加http
         changeOrigin: true, // 是否跨域
         pathRewrite: {
