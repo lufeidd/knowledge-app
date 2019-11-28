@@ -147,11 +147,13 @@ export default {
     this.clearClock();
   },
   mounted() {
+
     // 播放结束后销毁倒计时
     this.clearClock();
     this.duration__ = "";
     this.currentTime__ = "";
     this.audioData.type = true;
+    this.canPlayStatus = true;
     // 设置音频播放状态
     this.setPlayerAudio();
   },
@@ -195,14 +197,15 @@ export default {
     setDuration() {
       var audio = document.getElementById("musicPlayer");
       var self = this;
-      
+
       // if(audio.canPlayType('audio/mpeg') == "probably") {
       // }
 
       // setTimeout(function() {
 
       self.audioData.duration = audio.duration;
-      
+      audio.currentTime = self.audioData.currentTime;
+
       // self.duration__ = self.todate(audio.duration);
 
       // 设置slider当前播放进度
@@ -547,7 +550,7 @@ export default {
       this.pauseAudio();
       // 暂停后再次播放
       this.playAudio(audio.currentTime);
-      console.log('55555 audioSliderChange')
+      console.log("55555 audioSliderChange");
     },
     // 日期格式转换
     todate(second) {
@@ -692,7 +695,6 @@ export default {
             // 更新localStorage:miniAudio数据
             this.updateLocalStorage(this.allProgramList[prev]);
             this.setPlayerAudio();
-            // 333333333333333333333333333333
             // 音频切换时，设置下一音频duration显示时间
             this.setDuration();
             this.playAudio(0);
