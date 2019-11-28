@@ -150,8 +150,8 @@ export default {
 
     // 播放结束后销毁倒计时
     this.clearClock();
-    this.duration__ = "";
-    this.currentTime__ = "";
+    // this.duration__ = "";
+    // this.currentTime__ = "";
     this.audioData.type = true;
     this.canPlayStatus = true;
     // 设置音频播放状态
