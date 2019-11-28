@@ -202,6 +202,7 @@ export default {
       // setTimeout(function() {
 
       self.audioData.duration = audio.duration;
+      
       // self.duration__ = self.todate(audio.duration);
 
       // 设置slider当前播放进度
@@ -216,17 +217,18 @@ export default {
     // 清除倒计时
     clearClock() {
       // 播放结束后销毁倒计时
-      if (this.progressClock) {
+      if (this.progressClock != null) {
         window.clearInterval(this.progressClock);
         this.progressClock = null;
       }
-      if (this.clock) {
+      if (this.clock != null) {
         window.clearInterval(this.clock);
         this.clock = null;
       }
     },
     // 点击节目
     audioAction(item) {
+      this.canPlayStatus = true;
       // 未支付
       if (item.goods_id != null && item.is_payed == 0 && item.is_free == 0) {
         var _goodsId = null;
@@ -241,7 +243,6 @@ export default {
         });
         return;
       }
-
       // 更新localStorage:miniAudio数据
       this.updateLocalStorage(item);
       this.setPlayerAudio();
@@ -453,13 +454,13 @@ export default {
     },
     // 点击播放
     playAudio(__currentTime) {
-      console.log("3333 playAudio");
       if (!this.canPlayStatus) {
         this.duration__ = "";
         this.currentTime__ = "";
         this.$toast("当前音频无效!");
         return;
       }
+      console.log("3333 playAudio");
       localStorage.setItem("closeAudio", "no");
 
       this.count = 1;
@@ -546,6 +547,7 @@ export default {
       this.pauseAudio();
       // 暂停后再次播放
       this.playAudio(audio.currentTime);
+      console.log('55555 audioSliderChange')
     },
     // 日期格式转换
     todate(second) {
@@ -612,10 +614,9 @@ export default {
       console.log("2222 allProgramData");
       this.clearClock();
       var audio = document.getElementById("musicPlayer");
-      audio.currentTime = 0;
+      // audio.currentTime = 0;
       this.duration__ = "";
       this.currentTime__ = "";
-      this.canPlayStatus = false;
 
       // 获取localStorage数据
       var info = JSON.parse(localStorage.getItem("miniAudio"));
@@ -691,11 +692,10 @@ export default {
             // 更新localStorage:miniAudio数据
             this.updateLocalStorage(this.allProgramList[prev]);
             this.setPlayerAudio();
-            // 9999
-
+            // 333333333333333333333333333333
             // 音频切换时，设置下一音频duration显示时间
             this.setDuration();
-            // this.playAudio(0);
+            this.playAudio(0);
           } else if (actionType == "next" || this.autoPlay) {
             // 节目已支付
             if (
@@ -712,7 +712,7 @@ export default {
             this.setPlayerAudio();
             // 音频切换时，设置下一音频duration显示时间
             this.setDuration();
-            // this.playAudio(0);
+            this.playAudio(0);
           } else {
             this.pauseAudio();
           }
