@@ -31,8 +31,8 @@
         </van-tab>
         <van-tab title="文档" name="b">
           <div class="textFile">
-            <div v-for="(item,index) in packageData.base.details" :key="index" v-if="isDownload">
-              <div class="content">
+            <div v-for="(item,index) in packageData.base.details" :key="index">
+              <div class="content" v-if="isDownload">
                 <a
                   @click="fileClickUrl(item.id)"
                 >
@@ -41,9 +41,7 @@
                 </a>
                 <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
               </div>
-            </div>
-            <div v-for="(item,index) in packageData.base.details" :key="index" v-else>
-              <div class="content">
+              <div class="content" v-else>
                 <a
                   href="javascript:;"
                 >
@@ -58,8 +56,8 @@
       </van-tabs>
       <div class="textFile" v-else>
         <div class="file">文档</div>
-        <div v-for="(item,index) in packageData.base.details" :key="index" v-if="isDownload">
-          <div class="content">
+        <div v-for="(item,index) in packageData.base.details" :key="index">
+          <div class="content" v-if="isDownload">
             <a
               @click="fileClickUrl(item.id)"
             >
@@ -68,9 +66,7 @@
             </a>
             <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
           </div>
-        </div>
-        <div v-for="(item,index) in packageData.base.details" :key="index" v-else>
-          <div class="content">
+          <div class="content" v-else>
             <a
               href="javascript:;"
             >
@@ -80,7 +76,7 @@
             <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
           </div>
         </div>
-      </div>
+        </div>
     </div>
     <!-- 点击获取邮件弹窗 -->
     <van-popup v-model="emailShowPopup" class="emailPopup">
