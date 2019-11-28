@@ -256,11 +256,11 @@
           });
         }
         //电子书
-        if (item.length > 0) {
+        if (item != null) {
           this.$router.push({
             name: "ebookdetail",
             query: {
-              goods_id: item.ebook_info.goods_id,
+              goods_id: item.goods_id,
               type: 'mall',
               title: null,
               brand_id: this.brand_id
