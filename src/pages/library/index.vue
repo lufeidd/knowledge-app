@@ -34,7 +34,7 @@
           <div class="bottom">￥{{ this.resourceData.base.price }}</div>
         </div>
       </div>
-      <div class="right" @click="goodsDetail(resourceData.ebook_info)">
+      <div class="right" @click="ebookDetail(resourceData.ebook_info)">
         <img src="../../assets/library/icon1.png" alt width="43px" height="40px" />
         <div class="text">
           <div class="top">电子书</div>
@@ -255,7 +255,9 @@
             }
           });
         }
-        //电子书
+      },
+      // 电子书免费跳转
+      ebookDetail (item) {
         if (item != null) {
           this.$router.push({
             name: "ebookdetail",
@@ -267,7 +269,7 @@
             }
           });
         }
-      },
+      }
     }
   }
 </script>
