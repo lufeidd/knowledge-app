@@ -31,7 +31,7 @@
         </van-tab>
         <van-tab title="文档" name="b">
           <div class="textFile">
-            <div v-for="(item,index) in packageData.base.details" :key="index">
+            <div v-for="(item,index) in packageData.base.details" :key="index" v-if="isDownload">
               <div class="content">
                 <a
                   @click="fileClickUrl(item.id)"
@@ -42,12 +42,23 @@
                 <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
               </div>
             </div>
+            <div v-for="(item,index) in packageData.base.details" :key="index" v-else>
+              <div class="content">
+                <a
+                  href="javascript:;"
+                >
+                  <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
+                  <div class="text">{{ item.file_name }}</div>
+                </a>
+                <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
+              </div>
+            </div>
           </div>
         </van-tab>
       </van-tabs>
       <div class="textFile" v-else>
         <div class="file">文档</div>
-        <div v-for="(item,index) in packageData.base.details" :key="index">
+        <div v-for="(item,index) in packageData.base.details" :key="index" v-if="isDownload">
           <div class="content">
             <a
               @click="fileClickUrl(item.id)"
@@ -58,14 +69,19 @@
             <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
           </div>
         </div>
+        <div v-for="(item,index) in packageData.base.details" :key="index" v-else>
+          <div class="content">
+            <a
+              href="javascript:;"
+            >
+              <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
+              <div class="text">{{ item.file_name }}</div>
+            </a>
+            <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
+          </div>
+        </div>
       </div>
     </div>
-    <!--<div class="bottom">
-      <div class="content">
-        <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
-        <div class="text">资源包自定义材质、模型、音乐、音效闪烁标语的显示文本和 字体。</div>
-      </div>
-    </div>-->
     <!-- 点击获取邮件弹窗 -->
     <van-popup v-model="emailShowPopup" class="emailPopup">
       <van-cell-group>
@@ -99,6 +115,7 @@ export default {
       pictureFile: true,
       buyPrice: false,
       fileDownload: true,
+      isDownload: true,
       packageData: {
         base: {},
         brand_info: {},
@@ -135,23 +152,44 @@ export default {
       let res = await ALBUM(data);
       if (res.hasOwnProperty("response_code")) {
         this.packageData = res.response_data;
-        if (this.packageData.base.price != 'undefined' && this.packageData.base.price != null && this.packageData.base.price != 0) {
-          this.buyPrice = true;
-          this.email = false;
-          this.fileDownload = true;
-        }
-        if (this.packageData.base.is_payed != '0') {
-          this.email = true;
-          this.buyPrice = false;
-          this.fileDownload = true;
-        }
-        if (this.packageData.base.pic.length == 0) {
-          this.pictureFile = false;
-        }
-        if (this.packageData.base.is_download == 0) {
+        if (this.packageData.base.is_download == 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price == 0) {
           this.email = false;
           this.buyPrice = false;
           this.fileDownload = false;
+          this.isDownload = false;
+        }
+        if (this.packageData.base.is_download == 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price != 0) {
+          this.email = false;
+          this.buyPrice = true;
+          this.fileDownload = false;
+          this.isDownload = false;
+        }
+        if (this.packageData.base.is_download == 0 && this.packageData.base.is_payed != '0' && this.packageData.base.price != 0) {
+          this.email = false;
+          this.buyPrice = false;
+          this.fileDownload = false;
+          this.isDownload = false;
+        }
+        if (this.packageData.base.is_download != 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price == 0) {
+          this.email = true;
+          this.buyPrice = false;
+          this.fileDownload = true;
+          this.isDownload = true;
+        }
+        if (this.packageData.base.is_download != 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price != 0) {
+          this.email = false;
+          this.buyPrice = true;
+          this.fileDownload = true;
+          this.isDownload = false;
+        }
+        if (this.packageData.base.is_download != 0 && this.packageData.base.is_payed != '0' && this.packageData.base.price != 0) {
+          this.email = true;
+          this.buyPrice = false;
+          this.fileDownload = true;
+          this.isDownload = true;
+        }
+        if (this.packageData.base.pic.length == 0) {
+          this.pictureFile = false;
         }
         this.isLoading = false;
         console.log(this.resourceData);
