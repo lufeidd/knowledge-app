@@ -10,10 +10,10 @@
       <div class="content">
         {{ packageData.base.summary }}
       </div>
-      <div class="radioButton" v-if="email" @click="buyAction(packageData.base.goods_id)">
+      <div class="radioButton" v-if="buyPrice" @click="buyAction(packageData.base.goods_id)">
         <span>￥ {{ packageData.base.price }} 立即购买</span>
       </div>
-      <div class="radioButton" v-else @click="emailClick">
+      <div class="radioButton" v-if="email" @click="emailClick">
         <img src="../../assets/library/icon_email.png" alt width="19px" height="15px"/>
         <span>免费通过邮件获取</span>
       </div>
@@ -39,7 +39,7 @@
                 <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
                 <div class="text">{{ item.file_name }}</div>
                 </a>
-                <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" @click="textPackIcon"/>
+                <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
               </div>
             </div>
           </div>
@@ -55,7 +55,7 @@
               <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
               <div class="text">{{ item.file_name }}</div>
             </a>
-            <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" @click="textPackIcon"/>
+            <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
           </div>
         </div>
       </div>
@@ -97,6 +97,8 @@ export default {
     return {
       isLoading: true,
       pictureFile: true,
+      buyPrice: false,
+      fileDownload: true,
       packageData: {
         base: {},
         brand_info: {},
@@ -134,13 +136,22 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.packageData = res.response_data;
         if (this.packageData.base.price != 'undefined' && this.packageData.base.price != null && this.packageData.base.price != 0) {
-          this.email = true;
+          this.buyPrice = true;
+          this.email = false;
+          this.fileDownload = true;
         }
         if (this.packageData.base.is_payed != '0') {
-          this.email = false;
+          this.email = true;
+          this.buyPrice = false;
+          this.fileDownload = true;
         }
         if (this.packageData.base.pic.length == 0) {
           this.pictureFile = false;
+        }
+        if (this.packageData.base.is_download == 0) {
+          this.email = false;
+          this.buyPrice = false;
+          this.fileDownload = false;
         }
         this.isLoading = false;
         console.log(this.resourceData);
