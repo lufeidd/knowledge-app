@@ -146,7 +146,7 @@ router.beforeEach((to, from, next) => {
   next();
   // 同类页面跳转执行页面刷新
   if (from.path.toLocaleLowerCase() == to.path.toLocaleLowerCase()) {
-    // window.location.reload();
+    window.location.reload();
     // console.log(9999, from.path, to.path)
     next();
   }

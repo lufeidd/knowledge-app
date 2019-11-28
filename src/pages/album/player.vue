@@ -138,7 +138,8 @@ export default {
       // 存储是否新增
       isAdd: false,
       // 调用接口计数器防止重复
-      count: 0 // 1表示可调用记录接口
+      count: 0, // 1表示可调用记录接口
+      canPlayStatus: false
     };
   },
   beforeDestroy() {
@@ -148,56 +149,13 @@ export default {
   mounted() {
     // 播放结束后销毁倒计时
     this.clearClock();
+    this.duration__ = "";
+    this.currentTime__ = "";
     this.audioData.type = true;
     // 设置音频播放状态
     this.setPlayerAudio();
-    // 延时600ms设置duration
-    // 暂停音频
-    setTimeout(() => {
-      this.pauseAudio();
-    }, 600);
   },
   methods: {
-    audioCanPlay() {
-      var audio = document.getElementById("musicPlayer");
-      this.duration__ = this.todate(audio.duration);
-      console.log(123, audio.duration);
-    },
-    // 延时600ms设置duration
-    setDuration() {
-      var audio = document.getElementById("musicPlayer");
-      var self = this;
-
-      // if(audio.canPlayType('audio/mpeg') == "probably") {
-      // }
-
-      // setTimeout(function() {
-
-      self.audioData.duration = audio.duration;
-      self.duration__ = self.todate(audio.duration);
-
-      // 设置slider当前播放进度
-      self.audioData.sliderValue =
-        (self.audioData.currentTime / audio.duration) * 100;
-      // slider和音频播放同步
-      self.audioSliderChange();
-
-      console.log(456, audio.duration);
-
-      // }, 600);
-    },
-    // 清除倒计时
-    clearClock() {
-      // 播放结束后销毁倒计时
-      if (this.progressClock) {
-        window.clearInterval(this.progressClock);
-        this.progressClock = null;
-      }
-      if (this.clock) {
-        window.clearInterval(this.clock);
-        this.clock = null;
-      }
-    },
     // 设置音频播放状态
     setPlayerAudio() {
       var info = JSON.parse(localStorage.getItem("miniAudio"));
@@ -213,7 +171,7 @@ export default {
           // 初始化音频
           this.audioData.src = info[3];
         }
-        if (info[5] != null && info[5] != "") {
+        if (info[5] != null && info[5] != "" && this.canPlayStatus) {
           this.currentSecond = info[5];
           this.audioData.currentTime = info[5];
           // 存储currentTime时间格式
@@ -223,6 +181,48 @@ export default {
         if (info[7] != null && info[7] != "") this.baseData.title = info[7];
         if (info[8] != null && info[8] != "") this.baseData.goods_id = info[8];
         // console.log(this.baseData.goods_id);
+      }
+    },
+    audioCanPlay() {
+      var audio = document.getElementById("musicPlayer");
+      this.duration__ = this.todate(audio.duration);
+      this.currentTime__ = this.todate(audio.currentTime);
+      this.canPlayStatus = true;
+
+      console.log("1111 audioCanPlay");
+    },
+    // 延时600ms设置duration
+    setDuration() {
+      var audio = document.getElementById("musicPlayer");
+      var self = this;
+      
+      // if(audio.canPlayType('audio/mpeg') == "probably") {
+      // }
+
+      // setTimeout(function() {
+
+      self.audioData.duration = audio.duration;
+      // self.duration__ = self.todate(audio.duration);
+
+      // 设置slider当前播放进度
+      self.audioData.sliderValue =
+        (self.audioData.currentTime / audio.duration) * 100;
+
+      // slider和音频播放同步
+      self.audioSliderChange();
+
+      // }, 600);
+    },
+    // 清除倒计时
+    clearClock() {
+      // 播放结束后销毁倒计时
+      if (this.progressClock) {
+        window.clearInterval(this.progressClock);
+        this.progressClock = null;
+      }
+      if (this.clock) {
+        window.clearInterval(this.clock);
+        this.clock = null;
       }
     },
     // 点击节目
@@ -453,6 +453,13 @@ export default {
     },
     // 点击播放
     playAudio(__currentTime) {
+      console.log("3333 playAudio");
+      if (!this.canPlayStatus) {
+        this.duration__ = "";
+        this.currentTime__ = "";
+        this.$toast("当前音频无效!");
+        return;
+      }
       localStorage.setItem("closeAudio", "no");
 
       this.count = 1;
@@ -469,10 +476,11 @@ export default {
       // 播放
       audio.play();
       this.audioTimeChange(second, false);
-      console.log("播放");
+      // console.log("播放");
     },
     // 点击暂停
     pauseAudio() {
+      console.log("4444 pauseAudio");
       this.clearClock();
       var audio = document.getElementById("musicPlayer");
       // 暂停
@@ -481,7 +489,7 @@ export default {
       this.audioData.type = true;
       var second = parseInt(audio.currentTime);
       this.audioTimeChange(second, true);
-      console.log("暂停");
+      // console.log("暂停");
     },
     // 播放结束
     onEnded() {
@@ -513,14 +521,16 @@ export default {
     },
     // 拖动滑块
     audioSliderChange() {
+      if (!this.canPlayStatus) {
+        this.$toast("当前音频无效!");
+        return;
+      }
       var audio = document.getElementById("musicPlayer");
-      // console.log(66,audio.currentTime);
       // 设置当前时间
       if (this.audioData.sliderValue) {
         audio.currentTime = (this.audioData.sliderValue / 100) * audio.duration;
       }
       if (this.audioData.sliderValue >= 100) {
-        console.log(9999999);
         this.nextProgram();
         // 重置
         this.currentTime__ = this.todate(0);
@@ -599,9 +609,16 @@ export default {
       }
     },
     async allProgramData(actionType) {
+      console.log("2222 allProgramData");
+      this.clearClock();
+      var audio = document.getElementById("musicPlayer");
+      audio.currentTime = 0;
+      this.duration__ = "";
+      this.currentTime__ = "";
+      this.canPlayStatus = false;
+
       // 获取localStorage数据
       var info = JSON.parse(localStorage.getItem("miniAudio"));
-
       // 当前节目不为单个商品
       if (info[1] != null) {
         var tStamp = this.$getTimeStamp();
@@ -674,9 +691,11 @@ export default {
             // 更新localStorage:miniAudio数据
             this.updateLocalStorage(this.allProgramList[prev]);
             this.setPlayerAudio();
+            // 9999
+
             // 音频切换时，设置下一音频duration显示时间
             this.setDuration();
-            this.playAudio(0);
+            // this.playAudio(0);
           } else if (actionType == "next" || this.autoPlay) {
             // 节目已支付
             if (
@@ -693,7 +712,7 @@ export default {
             this.setPlayerAudio();
             // 音频切换时，设置下一音频duration显示时间
             this.setDuration();
-            this.playAudio(0);
+            // this.playAudio(0);
           } else {
             this.pauseAudio();
           }
