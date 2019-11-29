@@ -166,6 +166,17 @@ export default {
           });
           this.saveItem();
           break;
+        case "multi":
+          this.$router.push({
+            name: "multiresult",
+            query: {
+              type: "coupon",
+              multi_id: this.$route.query.multi_id,
+              searchContent: this.searchHintData.search
+            }
+          });
+          this.saveItem();
+          break;
       }
     },
     onSearch() {
@@ -188,6 +199,8 @@ export default {
         this.searchTo("index");
       } else if (this.type == "coupon") {
         this.searchTo("coupon");
+      }else if (this.type == "multi") {
+        this.searchTo("multi");
       } else {
         this.$toast("请输入您要搜索的内容！");
       }
@@ -290,8 +303,16 @@ export default {
         this.$router.push({
           name: "couponresult",
           query: {
-            type: "mall",
             ticket_id: this.$route.query.ticket_id,
+            searchContent: item.content
+          }
+        });
+      }
+      if (this.type == "multi") {
+        this.$router.push({
+          name: "multiresult",
+          query: {
+            multi_id: this.$route.query.multi_id,
             searchContent: item.content
           }
         });

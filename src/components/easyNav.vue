@@ -288,7 +288,7 @@ export default {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
-        version: "1.0"
+        version: "1.1"
       };
       data.sign = this.$getSign(data);
       let res = await CART_INFO(data);
