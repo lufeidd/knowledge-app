@@ -6,6 +6,9 @@
 @charset "utf-8";
 
 #libraryDetail{
+  min-height: 100%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   background-color: rgb(240, 240, 240);
   .titleOver{
     overflow: hidden;
@@ -88,11 +91,8 @@
       padding: 0 15px 20px;
       .box:nth-child(3n){margin-right: 0;}
       .box{
-        flex-basis: 31.3%;
         background: rgba(255,255,255,1);
-        box-shadow: 0px 0px 6px 0px rgba(51,51,51,0.05);
         border-radius: 5px;
-        padding: 20px 15px;
         margin-right: 8px;
         margin-top: 20px;
         box-sizing: border-box;
@@ -104,14 +104,18 @@
           position: relative;
           background-position: 50%;
           background-repeat: no-repeat;
-          background-size: contain;
-          padding-bottom: 85%;
+          background-size: cover;
+          padding-bottom: 100%;
           background-color: #fff;
           border-radius: 5px;
         }
       }
     }
     .textFile{
+      .file{
+        border-bottom: 1px solid #eee;
+        padding-left: 15px;
+      }
       .content{
         display: -webkit-box;
         display: -ms-flexbox;
@@ -157,10 +161,11 @@
   //email弹窗事件
   .emailPopup{
     width: 69.67%;
-    height: 14%;
+    height: 18%;
     border-radius: 5px;
     padding: 25px 10px 0;
     overflow: hidden;
+    top: 150px;
     .van-cell{
       border-bottom: 1px solid #e6e6e6;
     }

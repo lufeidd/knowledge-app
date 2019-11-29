@@ -621,7 +621,7 @@ export default {
         // 优惠券
         this.couponInfo = res.response_data.activity;
         if(Object.keys(this.couponInfo.groupbuy).length == 0){
-          this.$router.push({
+          this.$router.replace({
             name:"detail",
             query:{
               goods_id:this.baseData.goods_id,

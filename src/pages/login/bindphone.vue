@@ -200,6 +200,7 @@ export default {
         outer_id: this.outerId,
         type: this.bindtype,
         outer_name: localStorage.getItem('nickname'),
+        openid: localStorage.getItem('openid'),
         version: "1.0"
       };
       data.sign = this.$getSign(data);

@@ -198,7 +198,10 @@ export default {
     this.open_id = parseInt(this.$route.query.open_id);
     this.returnPrice();
     this.getLogin();
-
+    var self = this
+    $('body').on('click',function(){
+      self.show = false;
+    })
   },
   methods: {
     async getLogin() {
@@ -243,6 +246,7 @@ export default {
       this.show = true;
     },
     close() {
+      console.log(2121)
       this.show = false;
     },
     order() {
