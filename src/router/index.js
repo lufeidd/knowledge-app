@@ -128,6 +128,10 @@ import assisthelp from '@/pages/assist/help'
 //满减满折商品列表页
 import multiresult from '@/pages/multiResult'
 
+// 资源图书
+import libraryindex from '@/pages/library/index'
+import librarydetail from '@/pages/library/detail'
+
 Vue.use(Router)
 
 export default new Router({
@@ -807,7 +811,18 @@ export default new Router({
       component: multiresult,
       meta: {
         title: '活动列表'
-      }
+      },
+
+    // 图书资源
+    {
+      path: '/library/index',
+      name: 'libraryindex',
+      component: libraryindex
+    },
+    {
+      path: '/library/detail',
+      name: 'librarydetail',
+      component: librarydetail
     }
   ]
 })
