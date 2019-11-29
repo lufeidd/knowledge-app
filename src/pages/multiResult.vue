@@ -5,7 +5,7 @@
         <svg class="icon searchIcon" aria-hidden="true">
           <use xlink:href="#icon-search-line" />
         </svg>
-        <input type="text" v-model="searchContent" @focus="inputText" />
+        <input type="text" v-model="searchContent" placeholder="在结果中搜索" @focus="inputText" />
         <!-- <span class="cancel" @click="inputText">取消</span> -->
       </div>
       <van-tabs
@@ -273,7 +273,8 @@
         <template>
           <div class="multi_bottom">
             <div>
-              合计：<span class="price">￥{{multi_money}}</span>
+              合计：<span class="price" v-if="multi_money">￥{{multi_money}}</span>
+                    <span class="price" v-else>￥0.00</span>
             </div>
             <div class="desc">{{multi_desc}}</div>
           </div>
@@ -350,6 +351,8 @@ export default {
     // 点击tab页切换
     tabChange(index) {
       this.activekey = index;
+      this.couponList = [];
+      this.page = 1;
       if (index == 0) {
         this.coupon_sort = "default";
       } else if (index == 1) {
@@ -365,8 +368,6 @@ export default {
           this.coupon_sort = "price_asc";
         }
       }
-      this.couponList = [];
-      this.page = 1;
       this.programLoading = true; //下拉加载中
       this.programFinished = false; //下拉结束
       if (this.programLoading) {
@@ -379,7 +380,7 @@ export default {
       this.$router.push({
         name: "search",
         query: {
-          type: "coupon",
+          type: "multi",
           multi_id: this.$route.query.multi_id
         }
       });
@@ -457,7 +458,7 @@ export default {
           this.$toast("添加购物车成功~");
           this.shoppingcart_num++;
           this.getBottomInfo();
-          this.$refs.nav.cartData();
+          this.$refs.nav.navData.goods_nums ++;
         }
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {

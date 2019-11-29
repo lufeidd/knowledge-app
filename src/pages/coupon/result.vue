@@ -5,7 +5,7 @@
         <svg class="icon searchIcon" aria-hidden="true">
           <use xlink:href="#icon-search-line" />
         </svg>
-        <input type="text" v-model="searchContent" @focus="inputText" />
+        <input type="text" v-model="searchContent" placeholder="在结果中搜索" @focus="inputText" />
         <!-- <span class="cancel" @click="inputText">取消</span> -->
       </div>
       <van-tabs
@@ -332,7 +332,7 @@ export default {
         if (res.response_data.success == 1) {
           this.$toast("添加购物车成功~");
           this.shoppingcart_num++;
-          this.$refs.nav.cartData();
+          this.$refs.nav.navData.goods_nums ++;
         }
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {

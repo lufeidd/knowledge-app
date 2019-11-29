@@ -57,20 +57,36 @@
               </svg>
             </router-link>
           </div>
-          <div v-for="(gItem, gIndex) in item.act_list" :key="gIndex">
+          <div
+            class="secondList"
+            style="margin-bottom:5px;"
+            v-for="(gItem, gIndex) in item.act_list"
+            :key="gIndex"
+          >
             <!-- 满减 -->
             <div class="capping" v-if="gItem.multi_id">
               <div class="capping_left">
                 <span class="tags" v-if="gItem.tag">{{gItem.tag}}</span>
                 <span class="desc" v-if="gItem.summary">{{gItem.summary}}</span>
               </div>
-              <span class="capping_right" @click.stop="collectBills(gItem,gIndex)">
+              <span
+                class="capping_right"
+                v-if="gItem.is_reach"
+                @click.stop="collectBills(gItem,gIndex)"
+              >
+                再逛逛
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-next-line" />
+                </svg>
+              </span>
+              <span class="capping_right" v-else @click.stop="collectBills(gItem,gIndex)">
                 去凑单
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-next-line" />
                 </svg>
               </span>
             </div>
+            <div class="capping" v-else></div>
             <!-- 商品列表 -->
             <div
               class="listBox judge"
@@ -125,12 +141,13 @@
                     <van-stepper
                       v-model="litem.count"
                       integer
-                      @plus="addCount(index,gIndex, lindex, litem.detail_id)"
+                      disable-input
+                      @plus="addCount(index,gIndex, lindex, litem.detail_id,litem.count)"
                       @minus="subCount(index,gIndex, lindex, litem.detail_id)"
                       @overlimit="onOverlimit($event,litem.count, litem.detail_id)"
                       :min="1"
                       :max="litem.stores"
-                      @focus="editNumber(index,gIndex,lindex,litem.count,litem.stores,litem.detail_id)"
+                      @click="editNumber(index,gIndex,lindex,litem.count,litem.stores,litem.detail_id)"
                     />
                   </div>
                 </div>
@@ -196,7 +213,11 @@
                 <div class="info">
                   <span class="lost">{{litem.valid_desc}}</span>
                   <div class="action">
-                    <van-stepper disabled v-model="litem.count" disable-input />
+                    <van-stepper
+                      disabled
+                      v-model="litem.count"
+                      @overlimit="onOverlimit($event,litem.count,litem.detail_id)"
+                    />
                   </div>
                 </div>
               </div>
@@ -287,20 +308,25 @@
         </van-submit-bar>
         <van-number-keyboard
           :show="showkeyboard"
-          @blur="showkeyboard = false"
           @input="keyboardonInput"
           @delete="keyboardonDelete"
           :z-index="10000"
         />
-        <van-dialog v-model="showDialog" title="修改购买数量" show-cancel-button @confirm="confirmEdit">
+        <van-dialog
+          v-model="showDialog"
+          title="修改购买数量"
+          show-cancel-button
+          @confirm="confirmEdit"
+          @cancel="cancelEdit"
+        >
           <div style="padding:20px 15px;margin:15px 0;position:relative;">
             <van-stepper
               v-model="editCount"
               integer
+              disable-input
               @plus="editaddCount"
               @minus="editsubCount"
               @overlimit="editonOverlimit($event)"
-              @focus="openKeyboard"
               :min="1"
               :max="editstores"
               style="width:92px;position:absolute;left:50%;margin-left:-46px;top:0;"
@@ -310,7 +336,7 @@
       </div>
       <!-- <CopyRight></CopyRight> -->
     </div>
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" ref="nav"></EazyNav>
   </div>
 </template>
 <style src="@/style/scss/pages/cart.scss" scoped lang="scss"></style>
@@ -319,8 +345,9 @@
   .van-stepper__input {
     color: #333;
   }
-  .van-stepper__input[disabled] {
-    color: $cl9;
+  .van-dialog .van-stepper__input {
+    background-color: rgba(54, 133, 206, 0.16);
+    color: $cl6;
   }
 }
 </style>
@@ -348,63 +375,117 @@ export default {
       show: false,
       cartDatas: {},
       showDialog: false,
+      oldCount: 0,
       editCount: 0,
       editDetail_id: null,
       editstores: 0,
-      showkeyboard:false,
-      editIndex:0,
-      editgIndex:0,
-      editlindex:0,
+      showkeyboard: false,
+      editIndex: 0,
+      editgIndex: 0,
+      editlindex: 0
     };
   },
   mounted() {
     this.cartData();
   },
+  updated() {
+    var self = this;
+    $("body")
+      .find("input")
+      .removeAttr("disabled");
+    $("body")
+      .find("input")
+      .attr("readonly", "readonly");
+    $("body").on("click", ".cardBox .secondList .listBox.judge input", function(
+      e
+    ) {
+      e.stopPropagation();
+      var index =
+        $(this)
+          .parents(".cardBox")
+          .index() - 1;
+      var gIndex =
+        $(this)
+          .parents(".secondList")
+          .index() - 1;
+      var lIndex =
+        $(this)
+          .parents(".listBox.judge")
+          .index() - 1;
+      var count =
+        self.cartlist[index].act_list[gIndex].goods_list[lIndex].count;
+      var stores =
+        self.cartlist[index].act_list[gIndex].goods_list[lIndex].stores;
+      var detail_id =
+        self.cartlist[index].act_list[gIndex].goods_list[lIndex].detail_id;
+      var is_valid =
+        self.cartlist[index].act_list[gIndex].goods_list[lIndex].is_valid;
+      console.log(index, gIndex, lIndex, count, stores, detail_id, is_valid);
+      if (is_valid) {
+        self.editNumber(index, gIndex, lIndex, count, stores, detail_id);
+      }
+    });
+  },
   methods: {
-    confirmEdit(){
-      this.cartlist[this.editIndex].act_list[this.editgIndex].goods_list = this.cartlist[this.editIndex].act_list[this.editgIndex].goods_list.map((value,key)=>{
-        if(this.editlindex == key) value.count = this.editCount;
-        return value
-      })
-      this.productCountData(this.editDetail_id,this.editCount)
+    cancelEdit() {
+      this.showkeyboard = false;
     },
-    keyboardonDelete(){
-      this.editCount = 0
+    confirmEdit() {
+      console.log(this.goods_nums - this.oldCount + this.editCount);
+      if (this.goods_nums - this.oldCount + this.editCount <= 120) {
+        this.productCountData(this.editDetail_id, this.editCount);
+        this.cartlist[this.editIndex].act_list[
+          this.editgIndex
+        ].goods_list = this.cartlist[this.editIndex].act_list[
+          this.editgIndex
+        ].goods_list.map((value, key) => {
+          if (this.editlindex == key) value.count = this.editCount;
+          return value;
+        });
+      } else {
+        this.$toast("购物车商品总数量不能超过120件~");
+      }
+      this.showkeyboard = false;
     },
-    keyboardonInput(value){
+    keyboardonDelete() {
+      this.editCount = 0;
+    },
+    keyboardonInput(value) {
       var _num = this.editCount + value.toString();
-      if(Number(_num) > this.editstores){
-        this.$toast('超出库存~')
-      }else{
-        this.editCount = _num
+      if (Number(_num) > this.editstores) {
+        this.$toast("超出库存~");
+      } else {
+        this.editCount = _num;
       }
     },
-    openKeyboard(){
+    openKeyboard() {
       this.showkeyboard = true;
     },
     // 编辑无效
     editonOverlimit(e) {
-      if(e == 'plus'){
-        this.$toast('超出库存~')
+      if (e == "plus") {
+        this.$toast("超出库存~");
       }
     },
     // 编辑减少
     editsubCount() {
-      this.editCount --;
+      this.editCount--;
     },
     // 编辑增加
     editaddCount() {
-      this.editCount ++;
+      this.editCount++;
     },
     // 编辑打开
     editNumber(index, gIndex, lindex, count, stores, detail_id) {
       this.editIndex = index;
       this.editgIndex = gIndex;
       this.editlindex = lindex;
+      this.oldCount = count;
       this.editCount = count;
       this.editstores = stores;
       this.editDetail_id = detail_id;
       this.showDialog = true;
+      this.openKeyboard();
     },
     // 去凑单
     collectBills(gItem, gIndex) {
@@ -460,8 +541,36 @@ export default {
         this.cartDatas = res.response_data.info;
         // this.cartlist = res.response_data.info.cart_list;
         this.goods_nums = res.response_data.info.goods_nums;
+        this.$refs.nav.navData.goods_nums = res.response_data.info.goods_nums;
         this.money = res.response_data.info.real_money;
         this.total_money = res.response_data.info.cart_money;
+        for (let i = 0; i < res.response_data.info.cart_list.length; i++) {
+          for (
+            let j = 0;
+            j < res.response_data.info.cart_list[i].act_list.length;
+            j++
+          ) {
+            this.cartlist[i].act_list[j].is_reach =
+              res.response_data.info.cart_list[i].act_list[j].is_reach;
+            this.cartlist[i].act_list[j].summary =
+              res.response_data.info.cart_list[i].act_list[j].summary;
+            for (
+              let k = 0;
+              k <
+              res.response_data.info.cart_list[i].act_list[j].goods_list.length;
+              k++
+            ) {
+              this.cartlist[i].act_list[j].goods_list[k].price =
+                res.response_data.info.cart_list[i].act_list[j].goods_list[
+                  k
+                ].price;
+              this.cartlist[i].act_list[j].goods_list[k].goods_desc =
+                res.response_data.info.cart_list[i].act_list[j].goods_list[
+                  k
+                ].goods_desc;
+            }
+          }
+        }
       } else {
         this.$toast(res.error_message);
       }
@@ -482,6 +591,7 @@ export default {
         this.cartDatas = res.response_data.info;
         this.cartlist = res.response_data.info.cart_list;
         this.goods_nums = res.response_data.info.goods_nums;
+        this.$refs.nav.navData.goods_nums = res.response_data.info.goods_nums;
         this.money = res.response_data.info.real_money;
         this.total_money = res.response_data.info.cart_money;
       } else {
@@ -717,25 +827,35 @@ export default {
       }
     },
     // 计数 +
-    addCount(cIndex, gIndex, lindex, detail_id) {
-      console.log(
-        cIndex,
-        gIndex,
-        lindex,
-        this.cartlist[cIndex].act_list[gIndex].goods_list[lindex]
-      );
-      var count;
-      this.cartlist[cIndex].act_list[gIndex].goods_list = this.cartlist[
-        cIndex
-      ].act_list[gIndex].goods_list.map((value, key) => {
-        if (lindex == key) {
-          value.count++;
-          count = value.count;
-        }
-        return value;
-      });
-      // 数量加减
-      this.productCountData(detail_id, count);
+    addCount(cIndex, gIndex, lindex, detail_id, count) {
+      if (this.goods_nums + 1 <= 120) {
+        var _count;
+        this.cartlist[cIndex].act_list[gIndex].goods_list = this.cartlist[
+          cIndex
+        ].act_list[gIndex].goods_list.map((value, key) => {
+          if (lindex == key) {
+            value.count++;
+            _count = value.count;
+          }
+          return value;
+        });
+        // 数量加减
+        this.productCountData(detail_id, _count);
+      }else{
+        setTimeout(() => {
+          this.cartlist[cIndex].act_list[gIndex].goods_list = this.cartlist[
+            cIndex
+          ].act_list[gIndex].goods_list.map((value, key) => {
+            if (lindex == key) {
+              value.count = count;
+            }
+            return value;
+          });
+          this.$toast('购物车商品总数量不能超过120件~')
+        }, 1);
+
+      }
+      // console.log(count,this.cartlist[cIndex].act_list[gIndex].goods_list[lindex].count)
     },
     // 计数 -
     subCount(cIndex, gIndex, lindex, detail_id) {

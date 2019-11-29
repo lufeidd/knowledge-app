@@ -115,9 +115,11 @@
           }
           & .lost{
             @include font("PingFangBold", $fontSize + 2, #B1B1B1);
+            flex-grow: 1;
           }
           & .action {
             margin-top: 5px;
+            min-width: 92px;
             // @include position (absolute, 'br', 0, 0, null, null, null);
           }
         }
@@ -160,7 +162,7 @@
         @include textOverflow;
         .tags{
           display: inline-block;
-          width:32px;
+          padding:0px 5px;
           text-align: center;
           line-height: 17px;
           font-size: $fontSize - 2;
