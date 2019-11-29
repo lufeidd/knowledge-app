@@ -811,9 +811,8 @@ export default new Router({
       component: multiresult,
       meta: {
         title: '活动列表'
-      },
-
-    // 图书资源
+      }
+    },
     {
       path: '/library/index',
       name: 'libraryindex',
