@@ -11,13 +11,32 @@
 
 html {
   max-width: 640px;
-  min-width: 414px;
+  min-width: 320px;
   margin: 0 auto!important;
   margin: 0 auto;
   line-height: 1.5;
   @include font("PingFangMedium", $fontSize, #333);
   height: 100%;
   position: relative;
+}
+
+.van-goods-action,
+.van-submit-bar {
+  max-width: 640px;
+  left: auto;
+  right: auto;
+  width: 100%;
+}
+
+@media screen and (min-width: 640px) {
+  #easyNav {
+    right: 50%;
+    margin-right: -320px;
+  }
+  #miniAudio .miniAudio {
+    right: 50%;
+    margin-right: -320px;
+  }
 }
 
 a {
