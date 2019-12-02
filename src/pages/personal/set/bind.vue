@@ -72,6 +72,7 @@ export default {
         header_pic: localStorage.getItem("headimg"),
         type: 2,
         timestamp: tStamp,
+        openid: localStorage.getItem('openid'),
         version: "1.0"
       };
       data.sign = this.$getSign(data);

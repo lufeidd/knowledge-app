@@ -166,7 +166,7 @@
 
 <style lang="scss">
 #easyNav {
-  @include position(fixed, "br", 60px, 0, null, 60px, null);
+  @include position(fixed, "br", 100px, 0, null, 60px, null);
   @include displayFlex(flex, center, center);
   z-index: 101;
 
@@ -288,7 +288,7 @@ export default {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
-        version: "1.0"
+        version: "1.1"
       };
       data.sign = this.$getSign(data);
       let res = await CART_INFO(data);

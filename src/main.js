@@ -52,10 +52,15 @@ Vue.use(download)
 Vue.use(nav)
 Vue.use(loading)
 
+// import Vant from 'vant';
+// Vue.use(Vant);
+
 import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
   Cell, CellGroup,
-  Icon, Popup, DatetimePicker, SwipeCell, Dialog, Actionsheet, AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle,
+  Icon, Popup, DatetimePicker, SwipeCell, Dialog,
+  Actionsheet,
+  AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle,
   Tab, Tabs,
   GoodsAction, GoodsActionBigBtn, GoodsActionMiniBtn,
   Step, Steps,
@@ -141,7 +146,7 @@ router.beforeEach((to, from, next) => {
   next();
   // 同类页面跳转执行页面刷新
   if (from.path.toLocaleLowerCase() == to.path.toLocaleLowerCase()) {
-    // window.location.reload();
+    window.location.reload();
     // console.log(9999, from.path, to.path)
     next();
   }
@@ -159,7 +164,6 @@ router.beforeEach((to, from, next) => {
   var index = 0; // 索引初始化
   var token = parseInt(localStorage.getItem('loginState'));
   // const isLogin = store.state.isLogin;
-
   next()
   // 如果页面需要登录才跳转，未登录跳转到登录页
   if (to.meta.requireAuth) {

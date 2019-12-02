@@ -125,6 +125,9 @@ import timeout from '@/pages/timeout'
 import assistactive from '@/pages/assist/active'
 import assisthelp from '@/pages/assist/help'
 
+//满减满折商品列表页
+import multiresult from '@/pages/multiResult'
+
 // 资源图书
 import libraryindex from '@/pages/library/index'
 import librarydetail from '@/pages/library/detail'
@@ -802,7 +805,14 @@ export default new Router({
       name: 'assisthelp',
       component: assisthelp
     },
-    // 图书资源
+    {
+      path: '/multiresult',
+      name: 'multiresult',
+      component: multiresult,
+      meta: {
+        title: '活动列表'
+      }
+    },
     {
       path: '/library/index',
       name: 'libraryindex',

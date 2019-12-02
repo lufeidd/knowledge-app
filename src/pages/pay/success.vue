@@ -15,7 +15,7 @@
         size="large"
         round
         type="danger"
-        v-if="open_id"
+        v-if="open_id > 0"
         :to="{name: 'groupdetail', query: {open_id: open_id}}"
       >查看拼团详情</van-button>
       <van-button
@@ -63,6 +63,8 @@ export default {
     this.order_id = this.$route.query.order_id;
     this.pay_money = this.$route.query.pay_money;
     this.open_id = this.$route.query.open_id;
+    this.getBrandId();
+    console.log('测试open_id',this.open_id)
   },
   methods: {
     async getBrandId() {

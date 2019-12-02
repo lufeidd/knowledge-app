@@ -10,10 +10,14 @@
 // @import './../font/PingFangMedium.css';
 
 html {
+  max-width: 640px;
+  min-width: 414px;
+  margin: 0 auto!important;
   margin: 0 auto;
   line-height: 1.5;
   @include font("PingFangMedium", $fontSize, #333);
   height: 100%;
+  position: relative;
 }
 
 a {
