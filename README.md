@@ -10,16 +10,15 @@
 
 ``` bash
 音频
-
 视频
-
 上传图片
-
 迷你音频
-
 快捷导航
-
 词条搜索
+app下载引导
+全局组件js
+加载中
+版权
 ```
 
 # 功能插件
@@ -32,6 +31,8 @@ https://github.com/surmon-china/vue-awesome-swiper
 
 cropper
 https://github.com/xyxiao001/vue-cropper
+
+......
 ```
 
 # 项目模块
