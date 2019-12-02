@@ -301,6 +301,7 @@
     @include displayFlex(flex, space-between, null);
     @include position(fixed, "br", 0, null, 100%, null, null);
     z-index: 999;
+    left: 0;
 
     .write {
       height: 30px;
