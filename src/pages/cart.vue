@@ -319,7 +319,7 @@
           @confirm="confirmEdit"
           @cancel="cancelEdit"
         >
-          <div style="padding:20px 15px;margin:15px 0;position:relative;">
+          <div style="padding:15px;margin:15px 0;position:relative;">
             <van-stepper
               v-model="editCount"
               integer
@@ -345,11 +345,17 @@
   .van-stepper__input {
     color: #333;
   }
+  .van-dialog{
+    top:40%;
+  }
   .van-dialog .van-stepper__input {
     background-color: rgba(54, 133, 206, 0.16);
     color: $cl6;
   }
 }
+.van-dialog .van-button--default{
+    border:1px solid #ebedf0;
+  }
 </style>
 <script>
 import {
@@ -453,7 +459,8 @@ export default {
     keyboardonInput(value) {
       var _num = this.editCount + value.toString();
       if (Number(_num) > this.editstores) {
-        this.$toast("超出库存~");
+        // this.$toast("超出库存~");
+        this.editCount = this.editstores;
       } else {
         this.editCount = _num;
       }
@@ -524,6 +531,35 @@ export default {
         detail_ids
       );
     },
+    changeState(_list){
+        for (let i = 0; i < _list.length; i++) {
+          for (
+            let j = 0;
+            j < _list[i].act_list.length;
+            j++
+          ) {
+            this.cartlist[i].act_list[j].is_reach =
+              _list[i].act_list[j].is_reach;
+            this.cartlist[i].act_list[j].summary =
+              _list[i].act_list[j].summary;
+            for (
+              let k = 0;
+              k <
+              _list[i].act_list[j].goods_list.length;
+              k++
+            ) {
+              this.cartlist[i].act_list[j].goods_list[k].price =
+                _list[i].act_list[j].goods_list[
+                  k
+                ].price;
+              this.cartlist[i].act_list[j].goods_list[k].goods_desc =
+                _list[i].act_list[j].goods_list[
+                  k
+                ].goods_desc;
+            }
+          }
+        }
+    },
     // 改变数量
     async productCountData(detail_id, count) {
       var tStamp = this.$getTimeStamp();
@@ -544,33 +580,7 @@ export default {
         this.$refs.nav.navData.goods_nums = res.response_data.info.goods_nums;
         this.money = res.response_data.info.real_money;
         this.total_money = res.response_data.info.cart_money;
-        for (let i = 0; i < res.response_data.info.cart_list.length; i++) {
-          for (
-            let j = 0;
-            j < res.response_data.info.cart_list[i].act_list.length;
-            j++
-          ) {
-            this.cartlist[i].act_list[j].is_reach =
-              res.response_data.info.cart_list[i].act_list[j].is_reach;
-            this.cartlist[i].act_list[j].summary =
-              res.response_data.info.cart_list[i].act_list[j].summary;
-            for (
-              let k = 0;
-              k <
-              res.response_data.info.cart_list[i].act_list[j].goods_list.length;
-              k++
-            ) {
-              this.cartlist[i].act_list[j].goods_list[k].price =
-                res.response_data.info.cart_list[i].act_list[j].goods_list[
-                  k
-                ].price;
-              this.cartlist[i].act_list[j].goods_list[k].goods_desc =
-                res.response_data.info.cart_list[i].act_list[j].goods_list[
-                  k
-                ].goods_desc;
-            }
-          }
-        }
+        this.changeState(res.response_data.info.cart_list);
       } else {
         this.$toast(res.error_message);
       }
@@ -594,6 +604,7 @@ export default {
         this.$refs.nav.navData.goods_nums = res.response_data.info.goods_nums;
         this.money = res.response_data.info.real_money;
         this.total_money = res.response_data.info.cart_money;
+        // this.changeState(res.response_data.info.cart_list);
       } else {
         this.$toast(res.error_message);
       }
@@ -620,6 +631,7 @@ export default {
         this.goods_nums = res.response_data.info.goods_nums;
         this.money = res.response_data.info.real_money;
         this.total_money = res.response_data.info.cart_money;
+        this.changeState(res.response_data.info.cart_list);
       } else {
         this.$toast(res.error_message);
       }

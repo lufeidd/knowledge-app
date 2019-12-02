@@ -368,7 +368,7 @@ export default {
       var data = {};
       var tStamp = this.$getTimeStamp();
       data.timestamp = tStamp;
-      data.version = "1.0";
+      data.version = "1.1";
       if (this.$route.query.detail_ids)
         data.detail_ids = this.$route.query.detail_ids;
       if (this.$route.query.detail) data.detail = this.$route.query.detail;
@@ -439,7 +439,7 @@ export default {
       var data = {};
       var tStamp = this.$getTimeStamp();
       data.timestamp = tStamp;
-      data.version = "1.0";
+      data.version = "1.1";
       if (this.$route.query.detail_ids)
         data.detail_ids = this.$route.query.detail_ids;
       if (this.$route.query.detail) data.detail = this.$route.query.detail;
@@ -452,7 +452,7 @@ export default {
         this.dispatch_price = res.response_data.dispatch_price;
         // this.pay_price = res.response_data.pay_price;
         this.pay_price =
-          this.total_money + this.dispatch_price - this.discount_price;
+          this.total_money + this.dispatch_price - this.discount_price - this.yh_price;
 
         if (this.discount_price > 0) {
           this.discount_price_desc = "优惠￥" + this.discount_price;
@@ -470,7 +470,7 @@ export default {
       var data = {};
       var tStamp = this.$getTimeStamp();
       data.timestamp = tStamp;
-      data.version = "1.0";
+      data.version = "1.1";
       if (this.$route.query.detail_ids)
         data.detail_ids = this.$route.query.detail_ids;
       if (this.$route.query.detail) data.detail = this.$route.query.detail;
