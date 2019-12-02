@@ -141,7 +141,7 @@ export default new Router({
   routes: [
     // 自定义装修商城页面
     {
-      path: '/customPage',
+      path: '/custompage',
       name: 'custompage',
       component: custompage,
     },
