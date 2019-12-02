@@ -25,6 +25,7 @@
   width: 100%;
   box-sizing: border-box;
   z-index: 9999;
+  left: 0;
 
   @include displayFlex(flex, space-between, center);
   @include textOverflow;
