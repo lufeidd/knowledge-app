@@ -166,7 +166,7 @@
 
 <style lang="scss">
 #easyNav {
-  @include position(fixed, "br", 60px, 0, null, 60px, null);
+  @include position(fixed, "br", 100px, 0, null, 60px, null);
   @include displayFlex(flex, center, center);
   z-index: 101;
 
