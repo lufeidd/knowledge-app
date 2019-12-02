@@ -21,11 +21,26 @@ html {
 }
 
 .van-goods-action,
-.van-submit-bar {
+.van-submit-bar,
+.van-overlay {
   max-width: 640px;
   left: auto;
   right: auto;
   width: 100%;
+}
+.van-popup {
+  max-width: 640px;
+}
+.bottomBox {
+  @include position (fixed, 'bl', 0, auto, 100%, 50px, 0);
+  max-width: 640px;
+}
+.van-dialog {
+  max-width: 320px;
+}
+
+#indexPage .van-popup {
+  max-width: 320px;
 }
 
 @media screen and (min-width: 640px) {
@@ -34,8 +49,8 @@ html {
     margin-right: -320px;
   }
   #miniAudio .miniAudio {
-    right: 50%;
-    margin-right: -320px;
+    left: 50%;
+    margin-left: -305px;
   }
 }
 
@@ -355,7 +370,6 @@ img {
 }
 
 .bottomBox {
-  @include position (fixed, 'bl', 0, 0, 100%, 50px, 0);
 
   & .van-button {
     border-radius: 0;
@@ -477,8 +491,8 @@ img {
     width: 100%;
     line-height: 50px;
     text-align: center;
-    left: 0;
     bottom: 50px;
+    max-width: 640px;
   }
 }
 
