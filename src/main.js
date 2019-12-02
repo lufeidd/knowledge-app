@@ -30,9 +30,6 @@ import regeneratorRuntime from './regenerator-runtime/runtime';
 // md5加密
 import md5 from 'js-md5';
 
-// vant
-// import 'vant/lib/index.css'
-
 // cookies
 import VueCookies from 'vue-cookies'
 
@@ -52,7 +49,10 @@ Vue.use(download)
 Vue.use(nav)
 Vue.use(loading)
 
+// vant
 // import Vant from 'vant';
+// import 'vant/lib/index.css';
+
 // Vue.use(Vant);
 
 import {
