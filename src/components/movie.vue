@@ -110,6 +110,7 @@ export default {
       // 转换为时间格式
       var date = "00:00";
       // var h = Math.floor(second / 60 / 60);
+      // var h = Math.floor(second / 60 / 60);
       var m = Math.floor(second / 60);
       var s = Math.floor(second - m * 60);
       // if (h < 10) h = "0" + h;
