@@ -32,9 +32,9 @@
       height: 40px;
       position: fixed;
       top: 0;
-      left:0;
       width: 100%;
       box-sizing: border-box;
+      max-width: 640px;
       @include displayFlex(flex, space-between, center);
       svg.icon{
         font-size: $fontSize + 11;

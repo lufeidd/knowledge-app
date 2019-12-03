@@ -30,9 +30,6 @@ import regeneratorRuntime from './regenerator-runtime/runtime';
 // md5加密
 import md5 from 'js-md5';
 
-// vant
-// import 'vant/lib/index.css'
-
 // cookies
 import VueCookies from 'vue-cookies'
 
@@ -51,8 +48,12 @@ import copyRight from './components/index'
 Vue.use(download)
 Vue.use(nav)
 Vue.use(loading)
+Vue.use(copyRight)
 
+// vant
 // import Vant from 'vant';
+// import 'vant/lib/index.css';
+
 // Vue.use(Vant);
 
 import {
@@ -147,7 +148,7 @@ router.beforeEach((to, from, next) => {
   }
   next();
   // 同类页面跳转执行页面刷新
-  if (from.path.toLocaleLowerCase() == to.path.toLocaleLowerCase()) {
+  if (from.path.toLocaleLowerCase() == '/custompage' && from.path.toLocaleLowerCase() == to.path.toLocaleLowerCase()) {
     window.location.reload();
     // console.log(9999, from.path, to.path)
     next();
