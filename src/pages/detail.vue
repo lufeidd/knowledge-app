@@ -607,7 +607,12 @@ export default {
       });
     },
     changeHtml(content) {
-      return content.replace(/\n/g, "<br>");
+      console.log(1111, typeof content, content)
+      if(typeof content == 'string') {
+        return content.replace(/\n/g, "<br>");
+      } else {
+        return content;
+      }
     },
     // 获取专辑接口信息
     async albumData() {
