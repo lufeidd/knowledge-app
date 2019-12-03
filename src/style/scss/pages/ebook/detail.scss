@@ -596,6 +596,7 @@
     height: 45px;
     background-color: #FFF;
     font-size: $fontSize + 1;
+    max-width: 640px;
 
     .isbuy {
       @include displayFlex(flex, space-between, center);
