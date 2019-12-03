@@ -23,7 +23,7 @@
         <van-tab title="图片" name="a">
             <van-row class="textB">
               <van-col span="8" v-for="(item,index) in packageData.base.pic" :key="index">
-                <div class="box" @click="getImg(item)">
+                <div class="box" @click="getImg(packageData.base.pic)">
                   <div class="bookImg" v-lazy:background-image="item"></div>
                 </div>
               </van-col>
@@ -78,6 +78,7 @@
         </div>
         </div>
     </div>
+    <a :href="this.fileHideUrl" download="" id="hideDom" style="display: none"></a>
     <!-- 点击获取邮件弹窗 -->
     <van-popup v-model="emailShowPopup" class="emailPopup">
       <van-cell-group>
@@ -112,6 +113,8 @@ export default {
       buyPrice: false,
       fileDownload: true,
       isDownload: true,
+      timeoutId: 0,
+      fileHideUrl: '',
       packageData: {
         base: {},
         brand_info: {},
@@ -152,19 +155,19 @@ export default {
           this.email = false;
           this.buyPrice = false;
           this.fileDownload = false;
-          this.isDownload = false;
+          this.isDownload = true;
         }
         if (this.packageData.base.is_download == 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price != 0) {
           this.email = false;
           this.buyPrice = true;
           this.fileDownload = false;
-          this.isDownload = false;
+          this.isDownload = true;
         }
         if (this.packageData.base.is_download == 0 && this.packageData.base.is_payed != '0' && this.packageData.base.price != 0) {
           this.email = false;
           this.buyPrice = false;
           this.fileDownload = false;
-          this.isDownload = false;
+          this.isDownload = true;
         }
         if (this.packageData.base.is_download != 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price == 0) {
           this.email = true;
@@ -176,7 +179,7 @@ export default {
           this.email = false;
           this.buyPrice = true;
           this.fileDownload = true;
-          this.isDownload = false;
+          this.isDownload = true;
         }
         if (this.packageData.base.is_download != 0 && this.packageData.base.is_payed != '0' && this.packageData.base.price != 0) {
           this.email = true;
@@ -220,9 +223,9 @@ export default {
       if (this.packageData.base.price != 0 && this.packageData.base.is_payed == '0') {
         this.buyAction(this.goods_id);
       } else if (this.packageData.base.is_payed != '0') {
-        ImagePreview([item])
+        ImagePreview(item)
       } else if (this.packageData.base.price == 0) {
-        ImagePreview([item])
+        ImagePreview(item)
       }
     },
     textPackIcon () {
@@ -254,7 +257,16 @@ export default {
       data.sign = this.$getSign(data);
       let res = await FILEPACKAGE_GETURL(data);
       if (res.hasOwnProperty("response_code")) {
-          window.location.href = res.response_data.file_path;
+        if (this.packageData.base.is_download == 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price != 0) {
+          this.buyAction(this.goods_id);
+        } else if (this.packageData.base.is_download != 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price != 0) {
+          this.buyAction(this.goods_id);
+        } else {
+          this.fileHideUrl = res.response_data.file_path;
+          this.timeoutId = setTimeout(() => {
+            document.getElementById('hideDom').click();
+          },100)
+        }
       } else {
         if (res.error_code === 100) {
           this.$toast(res.error_message);
