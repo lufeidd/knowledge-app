@@ -48,6 +48,7 @@ import copyRight from './components/index'
 Vue.use(download)
 Vue.use(nav)
 Vue.use(loading)
+Vue.use(copyRight)
 
 // vant
 // import Vant from 'vant';
@@ -145,7 +146,7 @@ router.beforeEach((to, from, next) => {
   }
   next();
   // 同类页面跳转执行页面刷新
-  if (from.path.toLocaleLowerCase() == to.path.toLocaleLowerCase()) {
+  if (from.path.toLocaleLowerCase() == '/custompage' && from.path.toLocaleLowerCase() == to.path.toLocaleLowerCase()) {
     window.location.reload();
     // console.log(9999, from.path, to.path)
     next();
