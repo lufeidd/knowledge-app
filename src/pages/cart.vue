@@ -349,8 +349,8 @@
     top:40%;
   }
   .van-dialog .van-stepper__input {
-    background-color: rgba(54, 133, 206, 0.16);
-    color: $cl6;
+    // background-color: rgba(54, 133, 206, 0.16);
+    // color: $cl6;
   }
 }
 .van-dialog .van-button--default{
