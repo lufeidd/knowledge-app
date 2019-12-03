@@ -65,6 +65,10 @@ cd knowledge-app
 // vant
 cnpm i vant -S
 
+// 安装sass依赖，sass-loader依赖于node-sass
+cnpm install --save-dev sass-loader
+cnpm install --save-dev node-sass
+
 // swiper
 cnpm install vue-awesome-swiper --save
 
