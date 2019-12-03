@@ -607,7 +607,6 @@ export default {
       });
     },
     changeHtml(content) {
-      console.log(1111, typeof content, content)
       if(typeof content == 'string') {
         return content.replace(/\n/g, "<br>");
       } else {
