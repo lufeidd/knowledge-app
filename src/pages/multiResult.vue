@@ -381,7 +381,7 @@ export default {
       page3: 1,
       programLoading3: false,
       programFinished3: false,
-            page4: 1,
+      page4: 1,
       programLoading4: false,
       programFinished4: false,
       activekey: 0,
@@ -406,8 +406,14 @@ export default {
     this.searchContent = this.$route.query.searchContent;
     this.getBottomInfo();
   },
-  updated(){
-    $('.van-tabs .van-tabs__nav').children('.van-tab').eq(3).children().html('<div>价格<svg class="icon" aria-hidden="true"><use xlink:href="#icon-pricesort-block" /></svg><svg class="icon asc" style="display:none;" aria-hidden="true"><use xlink:href="#icon-priceup-block" /></svg><svg class="icon desc" style="display:none;" aria-hidden="true"><use xlink:href="#icon-pricedown-block" /></svg></div>')
+  updated() {
+    $(".van-tabs .van-tabs__nav")
+      .children(".van-tab")
+      .eq(3)
+      .children()
+      .html(
+        '<div>价格<svg class="icon" aria-hidden="true"><use xlink:href="#icon-pricesort-block" /></svg><svg class="icon asc" style="display:none;" aria-hidden="true"><use xlink:href="#icon-priceup-block" /></svg><svg class="icon desc" style="display:none;" aria-hidden="true"><use xlink:href="#icon-pricedown-block" /></svg></div>'
+      );
   },
   methods: {
     programLoad() {
@@ -422,7 +428,7 @@ export default {
     programLoad3() {
       this.getList3();
     },
-        programLoad4() {
+    programLoad4() {
       this.getList4();
     },
     // 点击tab页切换
