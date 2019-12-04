@@ -33,12 +33,13 @@
           <div class="textFile">
             <div v-for="(item,index) in packageData.base.details" :key="index">
               <div class="content" v-if="isDownload">
-                <a
+                <div
+                  class="fileText"
                   @click="fileClickUrl(item.id)"
                 >
                 <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
                 <div class="text">{{ item.file_name }}</div>
-                </a>
+                </div>
                 <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
               </div>
               <div class="content" v-else>
@@ -59,12 +60,13 @@
           <div class="textFile">
             <div v-for="(item,index) in packageData.base.details" :key="index">
               <div class="content" v-if="isDownload">
-                <a
+                <div
+                  class="fileText"
                   @click="fileClickUrl(item.id)"
                 >
                   <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
                   <div class="text">{{ item.file_name }}</div>
-                </a>
+                </div>
                 <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
               </div>
               <div class="content" v-else>
@@ -81,17 +83,25 @@
         </van-tab>
       </van-tabs>
     </div>
-    <a :href="this.fileHideUrl" download="" id="hideDom" style="display: none"></a>
+    <a :href="this.fileHideUrl" download="file.pdf" id="hideDom" style="display: none"></a>
     <!-- 点击获取邮件弹窗 -->
     <van-popup v-model="emailShowPopup" class="emailPopup">
+      <svg class="icon close" aria-hidden="true" @click="closeEmail">
+        <use xlink:href="#icon-close-line" />
+      </svg>
+      <div class="text">发送下载链接至邮箱</div>
       <van-cell-group>
-        <van-field v-model="emailValue" placeholder="请输入邮箱地址" class="input" />
+        <van-field v-model="emailValue" placeholder="请填写电子邮箱地址" class="input">
+          <van-button slot="button" size="small" round class="send" @click="sendEmail" :style="{'background': emailValue == '' ? '' : '#F45856','color': emailValue == '' ? '' : '#ffffff'}">发送</van-button>
+        </van-field>
       </van-cell-group>
-      <div class="button">
-        <div class="close" @click="closeEmail">取消</div>
-        <div class="send" @click="sendEmail">
-          <span>发送邮件</span>
-        </div>
+      <div class="text" style="margin-top: 20px;">
+        复制下载链接
+        <span>(粘贴至电脑浏览器打开)</span>
+      </div>
+      <div class="filePackageUrl">
+        <div class="urlLink">{{ this.url }}</div>
+        <van-button slot="button" size="small" round class="copyBtn" @click="copyUrl">复制</van-button>
       </div>
     </van-popup>
     <Loading :isLoading="isLoading"></Loading>
@@ -118,6 +128,7 @@ export default {
       isDownload: true,
       timeoutId: 0,
       fileHideUrl: '',
+      url: 'http://file.mhuoba.com123fadfafasfasfasfa',
       packageData: {
         base: {},
         brand_info: {},
@@ -289,7 +300,7 @@ export default {
     copyUrl () {
       const input = document.createElement('input');
       document.body.appendChild(input);
-      input.setAttribute('value', "111");
+      input.setAttribute('value', this.url);
       input.select();
       if (document.execCommand('copy')) {
         document.execCommand('copy')
