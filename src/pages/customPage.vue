@@ -558,6 +558,8 @@
 }
 </style>
 <script>
+// vue无刷新修改url参数
+import merge from "webpack-merge";
 import qs from "Qs";
 // import easyNav from "../../components/easyNav";
 import {
@@ -685,17 +687,27 @@ export default {
       }
     },
     linktoDetail(link) {
-      // console.log(1111,link);return
       var data = this.$translate(JSON.parse(link));
-      if (data.name == "") return;
-      // 网页链接
-      if (data.name == "url") {
-        window.location.href = data.query.url;
-        return;
-      }
       data.query.type = "mall";
       data.query.title = this.title;
-      this.$router.push(data);
+      console.log(1111, this.$route.query, data.query.page_id);
+      // return;
+      if (data.name == "") {
+        return;
+      } else if (data.name == "url") {
+        // 网页链接
+        window.location.href = data.query.url;
+        return;
+      } 
+      // else if (data.name == "custompage") {
+      //   // 自定义页面
+      //   this.$router.push({
+      //     query: merge(this.$route.query, { page_id: data.query.page_id })
+      //   });
+      // } 
+      else {
+        this.$router.push(data);
+      }
     },
     goodsDetail(item) {
       // console.log(item);return

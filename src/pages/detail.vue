@@ -617,8 +617,11 @@ export default {
       });
     },
     changeHtml(content) {
-      console.log(content.toString());
-      return content.toString().replace(/\n/g, "<br>");
+      if(typeof content == 'string') {
+        return content.replace(/\n/g, "<br>");
+      } else {
+        return content;
+      }
     },
     // 获取专辑接口信息
     async albumData() {
