@@ -349,8 +349,8 @@
     top:40%;
   }
   .van-dialog .van-stepper__input {
-    background-color: rgba(54, 133, 206, 0.16);
-    color: $cl6;
+    // background-color: rgba(54, 133, 206, 0.16);
+    // color: $cl6;
   }
 }
 .van-dialog .van-button--default{
@@ -863,7 +863,7 @@ export default {
         });
         // 数量加减
         this.productCountData(detail_id, _count);
-      }else{
+      } else {
         setTimeout(() => {
           this.cartlist[cIndex].act_list[gIndex].goods_list = this.cartlist[
             cIndex
@@ -873,9 +873,8 @@ export default {
             }
             return value;
           });
-          this.$toast('购物车商品总数量不能超过120件~')
+          this.$toast("购物车商品总数量不能超过120件~");
         }, 1);
-
       }
       // console.log(count,this.cartlist[cIndex].act_list[gIndex].goods_list[lindex].count)
     },

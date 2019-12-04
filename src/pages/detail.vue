@@ -219,7 +219,7 @@
         </div>
       </van-popup>
       <!-- 领取优惠券 -->
-      <van-popup v-model="couponModel" position="bottom" style="max-height:65%;min-height:65%;">
+      <van-popup v-model="couponModel" v-if="couponInfo.ticket" position="bottom" style="max-height:65%;min-height:65%;">
         <div class="header">
           <span class="catalogWord">可用优惠券（满足条件后可用于当前商品）</span>
           <span>
@@ -607,7 +607,11 @@ export default {
       });
     },
     changeHtml(content) {
-      return content.replace(/\n/g, "<br>");
+      if(typeof content == 'string') {
+        return content.replace(/\n/g, "<br>");
+      } else {
+        return content;
+      }
     },
     // 获取专辑接口信息
     async albumData() {
