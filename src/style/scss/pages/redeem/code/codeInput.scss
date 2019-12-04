@@ -1,0 +1,74 @@
+/*
+ * author: lrf
+ * date:2019/12/02
+ */
+
+@charset "utf-8";
+
+#codeInputPage {
+  overflow: hidden;
+  .input_num_wrapper {
+    text-align: center;
+    font-size: 0;
+  }
+  .code_num {
+    margin: 0 auto;
+    margin-top: 38px;
+    width: 345px;
+    background: #F5F5F5;
+  }
+  .validate_num {
+    display: inline-block;
+    margin-top: 10px;
+      width: 215px;
+      background: #F5F5F5;
+  }
+  .validate_image {
+    display: inline-block;
+    margin: 10px 0 0 10px;
+    vertical-align: top;
+    width: 120px;
+    height: 44px;
+    font-size: 14px;
+    line-height: 44px;
+  }
+  .top_bg {
+    margin: 0 auto;
+    margin-top: 28px;
+    width: 144px;
+    height: 105px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    @include bgImageOne('./../../../../../assets/redeem/present2');
+  }
+  .button_wrapper {
+    margin: 0 auto;
+    margin-top: 53px;
+    width: 345px;
+    .van-button--primary {
+      width: 345px;
+      height: 40px;
+      border-radius: 3px;
+      .van-button__text {
+        font-size: 15px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #FFFFFF;
+      }
+    }
+  }
+  .notes_one, .notes_two {
+    padding: 0 15px;
+    font-size: 13px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #999999;
+    line-height: 18px;
+  }
+  .notes_one {
+    margin-top: 29px;
+  }
+  .notes_two {
+    margin-top: 18px;
+  }
+}
