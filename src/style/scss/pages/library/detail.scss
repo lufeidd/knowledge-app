@@ -160,8 +160,10 @@
 
   //email弹窗事件
   .emailPopup{
-    width: 86.67%;
-    height: 30%;
+    /*width: 86.67%;
+    height: 30%;*/
+    width: 320px;
+    height: 200px;
     border-radius: 5px;
     padding: 25px 10px 0;
     overflow: hidden;
