@@ -109,9 +109,12 @@
 </template>
 
 <style src="@/style/scss/pages/library/detail.scss" scoped lang="scss"></style>
-<style lang="scss">
+<style lang="scss" scoped>
   #loadingPage{
     background: #f0f0f0!important;
+  }
+  .van-tabs--line{
+    padding-top: 0;
   }
 </style>
 <script>
@@ -128,7 +131,7 @@ export default {
       isDownload: true,
       timeoutId: 0,
       fileHideUrl: '',
-      url: 'http://file.mhuoba.com123fadfafasfasfasfa',
+      url: '',
       packageData: {
         base: {},
         brand_info: {},
@@ -147,8 +150,28 @@ export default {
   },
   methods: {
     // email显示弹窗事件
-    emailClick () {
-      this.emailShowPopup = true
+    async emailClick () {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        file_package_detail_id : this.packageData.base.compress_file_id,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await FILEPACKAGE_GETURL(data);
+      if (res.hasOwnProperty("response_code")) {
+        if (res.response_data.file_path != null) {
+          this.url = res.response_data.file_path;
+          this.emailShowPopup = true
+        }
+      } else {
+        if (res.error_code === 100) {
+          this.$toast(res.error_message);
+          this.login();
+        } else {
+          this.$toast(res.error_message);
+        }
+      }
     },
     closeEmail () {
       this.emailShowPopup = false
