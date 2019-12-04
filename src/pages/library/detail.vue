@@ -54,29 +54,32 @@
           </div>
         </van-tab>
       </van-tabs>
-      <div class="textFile" v-else>
-        <div class="file">文档</div>
-        <div v-for="(item,index) in packageData.base.details" :key="index">
-          <div class="content" v-if="isDownload">
-            <a
-              @click="fileClickUrl(item.id)"
-            >
-              <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
-              <div class="text">{{ item.file_name }}</div>
-            </a>
-            <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
+      <van-tabs v-else>
+        <van-tab title="文档">
+          <div class="textFile">
+            <div v-for="(item,index) in packageData.base.details" :key="index">
+              <div class="content" v-if="isDownload">
+                <a
+                  @click="fileClickUrl(item.id)"
+                >
+                  <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
+                  <div class="text">{{ item.file_name }}</div>
+                </a>
+                <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
+              </div>
+              <div class="content" v-else>
+                <a
+                  href="javascript:;"
+                >
+                  <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
+                  <div class="text">{{ item.file_name }}</div>
+                </a>
+                <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
+              </div>
+            </div>
           </div>
-          <div class="content" v-else>
-            <a
-              href="javascript:;"
-            >
-              <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
-              <div class="text">{{ item.file_name }}</div>
-            </a>
-            <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
-          </div>
-        </div>
-        </div>
+        </van-tab>
+      </van-tabs>
     </div>
     <a :href="this.fileHideUrl" download="" id="hideDom" style="display: none"></a>
     <!-- 点击获取邮件弹窗 -->
@@ -281,6 +284,18 @@ export default {
       this.$router.push({
         name: "login"
       });
+    },
+    // 点击自动复制内容
+    copyUrl () {
+      const input = document.createElement('input');
+      document.body.appendChild(input);
+      input.setAttribute('value', "111");
+      input.select();
+      if (document.execCommand('copy')) {
+        document.execCommand('copy')
+      }
+      document.body.removeChild(input);
+      this.$toast("链接复制成功");
     }
   }
 }
