@@ -50,6 +50,7 @@ Vue.use(nav)
 Vue.use(loading)
 Vue.use(copyRight)
 
+
 // vant
 // import Vant from 'vant';
 // import 'vant/lib/index.css';
@@ -60,11 +61,11 @@ import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
   Cell, CellGroup,
   Icon, Popup, DatetimePicker, SwipeCell, Dialog,
-  Actionsheet,
+  ActionSheet,
   AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle,
   Tab, Tabs,
-  GoodsAction, 
-  GoodsActionBigBtn, GoodsActionMiniBtn,
+  GoodsAction,
+  // GoodsActionBigBtn, GoodsActionMiniBtn,
   Step, Steps,
   List, Stepper, SubmitBar,
   Swipe, SwipeItem,
@@ -88,7 +89,7 @@ Vue.use(Popup)
 Vue.use(DatetimePicker)
 Vue.use(SwipeCell)
 Vue.use(Dialog)
-Vue.use(Actionsheet)
+Vue.use(ActionSheet)
 Vue.use(AddressEdit)
 Vue.use(Lazyload)
 Vue.use(SwitchCell)
@@ -96,7 +97,7 @@ Vue.use(Search)
 Vue.use(Tag)
 Vue.use(Tab).use(Tabs)
 Vue.use(Circle)
-Vue.use(GoodsAction) 
+Vue.use(GoodsAction)
 Vue.use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
 Vue.use(Step).use(Steps)
 Vue.use(List)
@@ -112,6 +113,7 @@ Vue.use(RadioGroup)
 Vue.use(Radio)
 Vue.use(Picker)
 
+//
 Vue.use(plugin)
 
 // swiper

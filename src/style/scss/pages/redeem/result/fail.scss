@@ -1,0 +1,56 @@
+/*
+ * author: lrf
+ * date:2019/12/02
+ */
+
+@charset "utf-8";
+
+#failPage {
+  overflow: hidden;
+  .top_bg {
+    margin: 0 auto;
+    margin-top: 89px;
+    width: 55px;
+    height: 55px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    @include bgImageOne('./../../../../../assets/redeem/fail');
+  }
+  .title {
+    text-align: center;
+    font-size: 17px;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #333333;
+    line-height: 20px;
+  }
+  .content {
+    margin: 0 auto;
+    width: 318px;
+    text-align: center;
+    font-size: 14px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #999999;
+    line-height: 19px;
+    .content_title {
+      color: #F05654;
+    }
+  }
+  .button_wrapper {
+    margin: 0 auto;
+    margin-top: 53px;
+    width: 345px;
+    .van-button--primary {
+      width: 345px;
+      height: 40px;
+      border-radius: 3px;
+      .van-button__text {
+        font-size: 15px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #FFFFFF;
+      }
+    }
+  }
+}
