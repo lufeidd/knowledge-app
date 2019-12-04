@@ -112,6 +112,7 @@
     }
   }
   .groupFoot{
+    max-width: 640px;
     padding:5px 15px;
     background-color: #fff;
     position: fixed;
@@ -418,7 +419,8 @@
       padding: 0 15px;
       height: 40px;
       @include displayFlex(flex, space-between, center);
-
+      box-sizing: border-box;
+      border-bottom: 1px solid #ebedf0;
       .catalogWord {
         font-size: $fontSize + 1;
       }

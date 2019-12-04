@@ -30,9 +30,6 @@ import regeneratorRuntime from './regenerator-runtime/runtime';
 // md5加密
 import md5 from 'js-md5';
 
-// vant
-// import 'vant/lib/index.css'
-
 // cookies
 import VueCookies from 'vue-cookies'
 
@@ -51,7 +48,14 @@ import copyRight from './components/index'
 Vue.use(download)
 Vue.use(nav)
 Vue.use(loading)
+Vue.use(copyRight)
 
+
+// vant
+// import Vant from 'vant';
+// import 'vant/lib/index.css';
+
+// Vue.use(Vant);
 
 import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
@@ -93,8 +97,8 @@ Vue.use(Search)
 Vue.use(Tag)
 Vue.use(Tab).use(Tabs)
 Vue.use(Circle)
-// Vue.use(GoodsAction).use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
 Vue.use(GoodsAction)
+Vue.use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
 Vue.use(Step).use(Steps)
 Vue.use(List)
 Vue.use(Stepper)
@@ -146,8 +150,8 @@ router.beforeEach((to, from, next) => {
   }
   next();
   // 同类页面跳转执行页面刷新
-  if (from.path.toLocaleLowerCase() == to.path.toLocaleLowerCase()) {
-    // window.location.reload();
+  if (from.path.toLocaleLowerCase() == '/custompage' && from.path.toLocaleLowerCase() == to.path.toLocaleLowerCase()) {
+    window.location.reload();
     // console.log(9999, from.path, to.path)
     next();
   }
@@ -165,7 +169,6 @@ router.beforeEach((to, from, next) => {
   var index = 0; // 索引初始化
   var token = parseInt(localStorage.getItem('loginState'));
   // const isLogin = store.state.isLogin;
-
   next()
   // 如果页面需要登录才跳转，未登录跳转到登录页
   if (to.meta.requireAuth) {

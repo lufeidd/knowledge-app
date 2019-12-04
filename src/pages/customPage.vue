@@ -263,7 +263,7 @@
         v-if="item.module_type == 22 && item.content.list.length>0"
         :style="'margin-bottom:'+item.top_px+'px;'"
       >
-        <div class="materialTitle" style="padding-right:15px;">
+        <div class="materialTitle" v-if="item.is_show_title == 1" style="padding-right:15px;">
           <div class="text">
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
@@ -540,11 +540,10 @@
           </van-tabs>
         </div>
       </div>
-      
     </div>
     <!-- <div style="position:relative;height:90px;">
       <CopyRight></CopyRight>
-    </div> -->
+    </div>-->
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="mall"></EazyNav>
   </div>
@@ -559,6 +558,8 @@
 }
 </style>
 <script>
+// vue无刷新修改url参数
+import merge from "webpack-merge";
 import qs from "Qs";
 // import easyNav from "../../components/easyNav";
 import {
@@ -611,7 +612,7 @@ export default {
       bgColor: "",
       brand_id: null,
       bookRecommend: {},
-      bookRecommendTmp: {},
+      bookRecommendTmp: {}
     };
   },
   mounted() {
@@ -686,17 +687,27 @@ export default {
       }
     },
     linktoDetail(link) {
-      // console.log(1111,link);return
       var data = this.$translate(JSON.parse(link));
-      if (data.name == "") return;
-      // 网页链接
-      if (data.name == "url") {
-        window.location.href = data.query.url;
-        return
-      };
       data.query.type = "mall";
       data.query.title = this.title;
-      this.$router.push(data);
+      console.log(1111, this.$route.query, data.query.page_id);
+      // return;
+      if (data.name == "") {
+        return;
+      } else if (data.name == "url") {
+        // 网页链接
+        window.location.href = data.query.url;
+        return;
+      } 
+      // else if (data.name == "custompage") {
+      //   // 自定义页面
+      //   this.$router.push({
+      //     query: merge(this.$route.query, { page_id: data.query.page_id })
+      //   });
+      // } 
+      else {
+        this.$router.push(data);
+      }
     },
     goodsDetail(item) {
       // console.log(item);return

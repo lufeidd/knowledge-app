@@ -82,6 +82,7 @@ export default {
         header_pic: _headimg,
         timestamp: tStamp,
         type: _type,
+        openid: localStorage.getItem('openid'),
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -306,12 +307,12 @@ export default {
     Vue.prototype.$timeCountDown = function (options) {
       let self = this
       let second = options.time
-      let minute = second/60/60/24
-      console.log(897,options,second)
+      let minute = second / 60 / 60 / 24
+      console.log(897, options, second)
       if (typeof second === 'number') {
-        if(minute > 1){
-          options.date = Math.floor(minute)+'天';
-        }else{
+        if (minute > 1) {
+          options.date = Math.floor(minute) + '天';
+        } else {
           this.clock = window.setInterval(() => {
             if (second === 0) {
               clearInterval(this.clock)
@@ -338,19 +339,19 @@ export default {
     }
 
     // 限时促销计算时间
-    Vue.prototype.$countTime = function(endtime){
+    Vue.prototype.$countTime = function (endtime) {
       var self = this;
       var time1 = endtime;
-      var d = time1/60/60/24;
-      if(d>=1 && d<=3){
+      var d = time1 / 60 / 60 / 24;
+      if (d >= 1 && d <= 3) {
         self.showDay = true;
         self.showTime = true;
         self.groupshowDay = true;
         d = Math.floor(d);
-        self.timeDataDesc = '距活动结束还剩'+d+'天';
-        self.timeData = '距结束还剩'+d+'天';
+        self.timeDataDesc = '距活动结束还剩' + d + '天';
+        self.timeData = '距结束还剩' + d + '天';
         self.grouptimeData = d;
-      }else if(d < 1){
+      } else if (d < 1) {
         self.showDay = false;
         self.showTime = true;
         self.groupshowDay = false;
@@ -371,12 +372,12 @@ export default {
           if (s < 10) s = '0' + s
           let res = h + ":" + m + ":" + s
           self.timeDataDesc = res;
-          self.timeData = '距结束还剩'+res;
+          self.timeData = '距结束还剩' + res;
           self.timeH = h
           self.timeM = m
           self.timeS = s
         }, 1000)
-      }else if(d > 3){
+      } else if (d > 3) {
         d = Math.floor(d);
         self.showTime = false;
         self.groupshowDay = true;
@@ -540,11 +541,11 @@ export default {
           queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
           if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
           if (dataTmp.params.goods_type) queryTmp.goods_type = dataTmp.params.goods_type;
-          if (dataTmp.params.brand_id){
+          if (dataTmp.params.brand_id) {
             queryTmp.brand_id = dataTmp.params.brand_id
-          }else{
+          } else {
             queryTmp.isbrand_id = 'no'
-          } ;
+          };
           if (dataTmp.params.tagids) queryTmp.tagids = dataTmp.params.tagids;
           if (dataTmp.params.goods_id) queryTmp.goods_id = dataTmp.params.goods_id;
 
@@ -627,7 +628,7 @@ export default {
                 query: {
                   order_id: _orderId,
                   pay_money: _payMoney,
-                  open_id:self.open_id,
+                  open_id: self.open_id,
                 }
               });
             }
@@ -635,9 +636,9 @@ export default {
             else if (localStorage.getItem('routerLink').indexOf('/ebook/reader') != -1) {
               // self.$toast('支付成功~');
               // self.rechargeAddPay();
-              setTimeout(function() {
+              setTimeout(function () {
                 location.reload();
-              },200);
+              }, 200);
               // if (this.checkPayCount < 10) {
               //   self.isLoading = true;
               //   this.checkPayTime = window.setInterval(() => {
@@ -650,12 +651,12 @@ export default {
               //   self.isLoading = false;
               // }
             }
-             else if (localStorage.getItem('routerLink').indexOf('/ebook/detail') != -1) {
+            else if (localStorage.getItem('routerLink').indexOf('/ebook/detail') != -1) {
               // self.$toast('支付成功~');
               // self.rechargeAddPay();
-              setTimeout(function() {
+              setTimeout(function () {
                 location.reload();
-              },200);
+              }, 200);
 
               // if (this.checkPayCount < 10) {
               //   self.isLoading = true;
@@ -684,7 +685,7 @@ export default {
     //   self.rechargeAddPay()
     // }
     //监测购买状态
-    Vue.prototype.$checkPay = async function (_payid,_goods_id,_chapter_id) {
+    Vue.prototype.$checkPay = async function (_payid, _goods_id, _chapter_id) {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
@@ -703,21 +704,21 @@ export default {
           if (this.checkPayCount >= 10) {
             window.clearInterval(this.checkPayTime);
             this.$toast("购买失败");
-            if(localStorage.getItem('routerLink').indexOf('/ebook/detail') != -1){
+            if (localStorage.getItem('routerLink').indexOf('/ebook/detail') != -1) {
               this.$router.push({
-                name:"ebookdetail",
-                query:{
-                  goods_id:_goods_id,
-                  isSuccessPay:'flase'
+                name: "ebookdetail",
+                query: {
+                  goods_id: _goods_id,
+                  isSuccessPay: 'flase'
                 }
               })
-            }else{
+            } else {
               this.$router.push({
-                name:"ebookreader",
-                query:{
-                  goods_id:_goods_id,
-                  chapter_id:_chapter_id,
-                  isSuccessPay:'flase'
+                name: "ebookreader",
+                query: {
+                  goods_id: _goods_id,
+                  chapter_id: _chapter_id,
+                  isSuccessPay: 'flase'
                 }
               })
             }
@@ -728,21 +729,21 @@ export default {
         // this.$toast(res.error_message);
         window.clearInterval(this.checkPayTime);
         this.$toast("购买失败");
-        if(localStorage.getItem('routerLink').indexOf('/ebook/detail') != -1){
+        if (localStorage.getItem('routerLink').indexOf('/ebook/detail') != -1) {
           this.$router.push({
-            name:"ebookdetail",
-            query:{
-              goods_id:_goods_id,
-              isSuccessPay:'flase'
+            name: "ebookdetail",
+            query: {
+              goods_id: _goods_id,
+              isSuccessPay: 'flase'
             }
           })
-        }else{
+        } else {
           this.$router.push({
-            name:"ebookreader",
-            query:{
-              goods_id:_goods_id,
-              chapter_id:_chapter_id,
-              isSuccessPay:'flase'
+            name: "ebookreader",
+            query: {
+              goods_id: _goods_id,
+              chapter_id: _chapter_id,
+              isSuccessPay: 'flase'
             }
           })
         }
@@ -803,7 +804,6 @@ export default {
                     k < res.response_data[i].city[j].county.length;
                     k++
                   ) {
-                    // console.log("区：", res.response_data[i].city[j].county[k]);
                     ctstr +=
                       '"' +
                       res.response_data[i].city[j].county[k].id +
@@ -814,11 +814,11 @@ export default {
                       '"' +
                       ",";
                   }
-                  // console.log('区str：', ctstr)
                 }
               }
             }
           }
+          // console.log('区str：', ctstr)
 
           // 省
           this.provinceList = this.$strToJson(pstr);
@@ -830,7 +830,8 @@ export default {
           this.areaList.province_list = this.provinceList;
           this.areaList.city_list = this.cityList;
           this.areaList.county_list = this.countyList;
-          console.log("省市区：", this.provinceList, this.cityList, this.countyList);
+
+          console.log("省市区：", this.areaList.county_list);
         }
       } else {
         this.$toast(res.error_message);

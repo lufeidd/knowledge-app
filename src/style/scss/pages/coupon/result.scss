@@ -12,11 +12,11 @@
     box-sizing: border-box;
     padding: 8px 15px;
     input{
-      width: 85%;
+      width: 100%;
       height: 28px;
       box-sizing: border-box;
       border: none;
-      padding-left:25px;
+      padding-left:15px;
       padding-right: 15px;
       background-color: $greyLight;
       border-radius: 14px;
@@ -28,7 +28,7 @@
     }
     .icon.searchIcon{
       position: absolute;
-      left: 20px;
+      right: 30px;
       color: $cl9;
       top: 50%;
       margin-top: -5px;
