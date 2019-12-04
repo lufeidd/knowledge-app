@@ -1,0 +1,64 @@
+/*
+ * author: lrf
+ * date:2019/12/02
+ */
+
+@charset "utf-8";
+
+#appSuccessPage {
+  overflow: hidden;
+  .top_bg {
+    margin: 0 auto;
+    margin-top: 89px;
+    width: 55px;
+    height: 55px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    @include bgImageOne('./../../../../../assets/redeem/success');
+  }
+  .title {
+    text-align: center;
+    font-size: 17px;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #333333;
+    line-height: 20px;
+  }
+  .content {
+    margin: 0 auto;
+    width: 193px;
+    text-align: center;
+    font-size: 14px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #999999;
+    line-height: 19px;
+  }
+  .button_wrapper {
+    @include displayFlex (flex, center, center);
+    .van-button {
+      width: 160px;
+      height: 40px;
+      border-radius: 5px;
+    }
+    .van-button--primary {
+      margin: 35px 0 0 0;
+      .van-button__text {
+        font-size: 15px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #FFFFFF;
+      }
+    }
+    .van-button--default {
+      margin: 35px 25px 0 0;
+      border: 0.5px solid #F05654;
+      .van-button__text {
+        font-size: 15px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #F05654;
+      }
+    }
+  }
+}

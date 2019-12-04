@@ -1,0 +1,86 @@
+/*
+ * author: lrf
+ * date:2019/12/03
+ */
+
+@charset "utf-8";
+
+#redeemGoodsPage {
+  overflow: hidden;
+  min-height: 100%;
+  background: #F5F5F5;
+  h3, p {
+    margin: 0;
+  }
+  .goods_wrapper {
+    margin: 10px 15px 0 15px;
+    padding: 10px 10px 12px 10px;
+    border-radius: 5px;
+    background: #FFFFFF;
+    .goods_intro {
+      position: relative;
+      .content {
+        display: inline-block;
+        margin-left: 12px;
+        .title {
+          font-size: 16px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #000000;
+          line-height: 34px;
+        }
+        .sub_title {
+          font-size: 14px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #999999;
+          line-height: 34px;
+        }
+        .price {
+          font-size: 12px;
+          font-family: PingFang SC;
+          font-weight: bold;
+          color: #F05654;
+          line-height: 34px;
+        }
+        .redeem_btn {
+          position: absolute;
+          right: 10px;
+          bottom: 10px;
+          border-radius: 3px;
+          width: 80px;
+          height: 27px;
+        }
+        .van-button {
+          line-height: 27px;
+        }
+        .van-button--normal {
+          padding: 0;
+        }
+        .van-button__text {
+          width: 55px;
+          height: 13px;
+          font-size: 14px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #FFFFFF;
+        }
+      }
+    }
+    .goods_detail {
+      font-size: 14px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #666666;
+      line-height: 19px;
+    }
+  }
+  .rule {
+    margin: 28px 15px 64px 15px;
+    font-size: 14px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    line-height: 19px;
+  }
+}

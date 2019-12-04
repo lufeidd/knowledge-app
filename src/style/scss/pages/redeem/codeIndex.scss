@@ -1,0 +1,175 @@
+/*
+ * author: lrf
+ * date:2019/11/29
+ */
+
+@charset "utf-8";
+
+#codePage {
+  overflow: hidden;
+  p, h4 {
+    margin: 0;
+  }
+  .top_bg {
+    position: relative;
+    @include displayFlex (flex, center, center);
+    height: 156px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    @include bgImageTwo('./../../../../assets/redeem/bg');
+    .inner_bg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 122px;
+      height: 96px;
+      background-size: 122px 96px;
+      background-repeat: no-repeat;
+      @include bgImageTwo('./../../../../assets/redeem/present');
+    }
+  }
+  .main_wrapper {
+    position: absolute;
+    z-index: 10;
+    margin-top: -25px;
+    width: 100%;
+    //height: 472px;
+    background: #FFFFFF;
+    border-radius: 10px 10px 5px 5px;
+    .button_wrapper {
+      @include displayFlex (flex, center, center);
+      .van-button {
+        width: 160px;
+        height: 40px;
+        border-radius: 5px;
+      }
+      .van-button--primary {
+        margin: 35px 25px 0 0;
+        .van-button__text {
+          font-size: 15px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #FFFFFF;
+        }
+      }
+      .van-button--default {
+        margin: 35px 0 0 0;
+        border: 0.5px solid #F05654;
+        .van-button__text {
+          font-size: 15px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #F05654;
+        }
+      }
+    }
+    .code_wrapper {
+      overflow: hidden;
+      margin: 0 auto;
+      margin-top: 25px;
+      width: 345px;
+      height: 135px;
+      @media screen and (device-width: 320px) {
+        width: 315px;
+        height: 125px;
+      }
+      background: #FFFFFF;
+      box-shadow: 0px 0px 16px 0px rgba(221, 221, 221, 0.38);
+      border-radius: 10px;
+      .code_detail {
+        margin: 5px;
+        width: 335px;
+        height: 125px;
+        @media screen and (device-width: 320px) {
+          width: 305px;
+        }
+        background-size: contain;
+        background-repeat: no-repeat;
+        @include bgImageTwo('./../../../../assets/redeem/frame');
+        .code_title {
+          text-align: center;
+          font-size: 16px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #333333;
+          line-height: 32px;
+        }
+        .code {
+          margin-top: 15px;
+          text-align: center;
+          font-size: 22px;
+          font-family: PingFang SC;
+          font-weight: bold;
+          color: #FFB54D;
+          line-height: 34px;
+        }
+        .validity {
+          marign-top: 35px;
+          text-align: center;
+          font-size: 12px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #999999;
+          line-height: 34px;
+        }
+      }
+    }
+    .notes_one, .notes_two {
+      padding: 0 15px;
+      font-size: 13px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #999999;
+      line-height: 18px;
+    }
+    .notes_one {
+      margin-top: 29px;
+      .title {
+        color: #F05654;
+      }
+    }
+    .notes_two {
+      margin-top: 18px;
+    }
+  }
+  .outdated_info {
+    overflow: hidden;
+    width: 214px;
+    height: 214px;
+    border-radius: 5px;
+    .outdated_title {
+      margin: 0 auto;
+      text-align: center;
+      margin-top: 18px;
+      width: 115px;
+      height: 17px;
+      font-size: 18px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #333333;
+      line-height: 34px;
+      background-size: 115px 17px;
+      background-repeat: no-repeat;
+      @include bgImageOne('./../../../../assets/redeem/title');
+    }
+    .outdated_img {
+      margin: 0 auto;
+      margin-top: 27px;
+      width: 113px;
+      height: 88px;
+      background-size: 113px 88px;
+      background-repeat: no-repeat;
+      @include bgImageOne('./../../../../assets/redeem/outdated');
+    }
+    .outdated_remind {
+      margin-top: 33px;
+      text-align: center;
+      font-size: 15px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #999999;
+      line-height: 34px;
+    }
+  }
+}
