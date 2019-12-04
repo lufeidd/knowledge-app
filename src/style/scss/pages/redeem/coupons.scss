@@ -1,0 +1,112 @@
+/*
+ * author: lrf
+ * date:2019/12/04
+ */
+
+@charset "utf-8";
+
+#redeemCouponsPage {
+  p {
+    margin: 0;
+  }
+  overflow: hidden;
+  min-height: 100%;
+  background: #F5F5F5;
+  .coupons_wrapper {
+    position: relative;
+    margin: 0 auto;
+    margin-top: 10px;
+    width: 345px;
+    height: 230px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    @include bgImageOne('./../../../../assets/redeem/frame2');
+    .content {
+      padding-left: 10px;
+      div {
+        display: inline-block;
+      }
+      .denomination {
+        margin-right: 10px;
+        vertical-align: top;
+        font-size: 0;
+        .currency {
+          font-size: 14px;
+          font-family: PingFang SC;
+          font-weight: bold;
+          color: #F05654;
+        }
+        .amount {
+          font-size: 44px;
+          font-family: PingFang SC;
+          font-weight: bold;
+          color: #F05654;
+        }
+      }
+      .requirement {
+        margin-top: 18px;
+        vertical-align: top;
+        .state {
+          margin-left: 4px;
+          font-size: 14px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #333333;
+        }
+        .price {
+          font-size: 14px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #F05654;
+        }
+      }
+      .nothing_left {
+        margin-top: 17px;
+        width: 49px;
+        height: 49px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        @include bgImageOne('./../../../../assets/redeem/nothing_left');
+      }
+      .redeem_btn {
+        position: absolute;
+        top: 24px;
+        right: 10px;
+      }
+      .van-button--default {
+        padding: 0;
+        width: 48px;
+        height: 17px;
+        line-height: 17px;
+        background: #FFB54D;
+        border-radius: 8px;
+        .van-button__text {
+          font-size: 12px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #FFFFFF;
+        }
+      }
+      .van-button--primary {
+        padding: 0;
+        width: 65px;
+        height: 24px;
+        line-height: 24px;
+        background: #F05654;
+        //opacity: 0.6;
+        border-radius: 12px;
+      }
+    }
+    .goods_list {
+      .goods_item {
+        display: inline-block;
+        margin: 15px 0 15px 10px;
+        width: 100px;
+        height: 128px;
+        background: #FFFFFF;
+        border: 0.5px solid #EEEEEE;
+        border-radius: 3px;
+      }
+    }
+  }
+}

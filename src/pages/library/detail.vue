@@ -23,7 +23,7 @@
         <van-tab title="图片" name="a">
             <van-row class="textB">
               <van-col span="8" v-for="(item,index) in packageData.base.pic" :key="index">
-                <div class="box" @click="getImg(item)">
+                <div class="box" @click="getImg(packageData.base.pic)">
                   <div class="bookImg" v-lazy:background-image="item"></div>
                 </div>
               </van-col>
@@ -33,12 +33,13 @@
           <div class="textFile">
             <div v-for="(item,index) in packageData.base.details" :key="index">
               <div class="content" v-if="isDownload">
-                <a
+                <div
+                  class="fileText"
                   @click="fileClickUrl(item.id)"
                 >
                 <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
                 <div class="text">{{ item.file_name }}</div>
-                </a>
+                </div>
                 <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
               </div>
               <div class="content" v-else>
@@ -54,40 +55,53 @@
           </div>
         </van-tab>
       </van-tabs>
-      <div class="textFile" v-else>
-        <div class="file">文档</div>
-        <div v-for="(item,index) in packageData.base.details" :key="index">
-          <div class="content" v-if="isDownload">
-            <a
-              @click="fileClickUrl(item.id)"
-            >
-              <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
-              <div class="text">{{ item.file_name }}</div>
-            </a>
-            <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
+      <van-tabs v-else>
+        <van-tab title="文档">
+          <div class="textFile">
+            <div v-for="(item,index) in packageData.base.details" :key="index">
+              <div class="content" v-if="isDownload">
+                <div
+                  class="fileText"
+                  @click="fileClickUrl(item.id)"
+                >
+                  <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
+                  <div class="text">{{ item.file_name }}</div>
+                </div>
+                <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
+              </div>
+              <div class="content" v-else>
+                <a
+                  href="javascript:;"
+                >
+                  <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
+                  <div class="text">{{ item.file_name }}</div>
+                </a>
+                <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
+              </div>
+            </div>
           </div>
-          <div class="content" v-else>
-            <a
-              href="javascript:;"
-            >
-              <img src="../../assets/library/img_big2.png" alt width="30px" height="25px"/>
-              <div class="text">{{ item.file_name }}</div>
-            </a>
-            <img src="../../assets/library/icon_dowenload.png" alt width="25px" height="25px" v-if="fileDownload" @click="textPackIcon"/>
-          </div>
-        </div>
-        </div>
+        </van-tab>
+      </van-tabs>
     </div>
+    <a :href="this.fileHideUrl" download="file.pdf" id="hideDom" style="display: none"></a>
     <!-- 点击获取邮件弹窗 -->
     <van-popup v-model="emailShowPopup" class="emailPopup">
+      <svg class="icon close" aria-hidden="true" @click="closeEmail">
+        <use xlink:href="#icon-close-line" />
+      </svg>
+      <div class="text">发送下载链接至邮箱</div>
       <van-cell-group>
-        <van-field v-model="emailValue" placeholder="请输入邮箱地址" class="input" />
+        <van-field v-model="emailValue" placeholder="请填写电子邮箱地址" class="input">
+          <van-button slot="button" size="small" round class="send" @click="sendEmail" :style="{'background': emailValue == '' ? '' : '#F45856','color': emailValue == '' ? '' : '#ffffff'}">发送</van-button>
+        </van-field>
       </van-cell-group>
-      <div class="button">
-        <div class="close" @click="closeEmail">取消</div>
-        <div class="send" @click="sendEmail">
-          <span>发送邮件</span>
-        </div>
+      <div class="text" style="margin-top: 20px;">
+        复制下载链接
+        <span>(粘贴至电脑浏览器打开)</span>
+      </div>
+      <div class="filePackageUrl">
+        <div class="urlLink">{{ this.url }}</div>
+        <van-button slot="button" size="small" round class="copyBtn" @click="copyUrl">复制</van-button>
       </div>
     </van-popup>
     <Loading :isLoading="isLoading"></Loading>
@@ -112,6 +126,9 @@ export default {
       buyPrice: false,
       fileDownload: true,
       isDownload: true,
+      timeoutId: 0,
+      fileHideUrl: '',
+      url: 'http://file.mhuoba.com123fadfafasfasfasfa',
       packageData: {
         base: {},
         brand_info: {},
@@ -152,19 +169,19 @@ export default {
           this.email = false;
           this.buyPrice = false;
           this.fileDownload = false;
-          this.isDownload = false;
+          this.isDownload = true;
         }
         if (this.packageData.base.is_download == 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price != 0) {
           this.email = false;
           this.buyPrice = true;
           this.fileDownload = false;
-          this.isDownload = false;
+          this.isDownload = true;
         }
         if (this.packageData.base.is_download == 0 && this.packageData.base.is_payed != '0' && this.packageData.base.price != 0) {
           this.email = false;
           this.buyPrice = false;
           this.fileDownload = false;
-          this.isDownload = false;
+          this.isDownload = true;
         }
         if (this.packageData.base.is_download != 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price == 0) {
           this.email = true;
@@ -176,7 +193,7 @@ export default {
           this.email = false;
           this.buyPrice = true;
           this.fileDownload = true;
-          this.isDownload = false;
+          this.isDownload = true;
         }
         if (this.packageData.base.is_download != 0 && this.packageData.base.is_payed != '0' && this.packageData.base.price != 0) {
           this.email = true;
@@ -220,9 +237,9 @@ export default {
       if (this.packageData.base.price != 0 && this.packageData.base.is_payed == '0') {
         this.buyAction(this.goods_id);
       } else if (this.packageData.base.is_payed != '0') {
-        ImagePreview([item])
+        ImagePreview(item)
       } else if (this.packageData.base.price == 0) {
-        ImagePreview([item])
+        ImagePreview(item)
       }
     },
     textPackIcon () {
@@ -254,7 +271,16 @@ export default {
       data.sign = this.$getSign(data);
       let res = await FILEPACKAGE_GETURL(data);
       if (res.hasOwnProperty("response_code")) {
-          window.location.href = res.response_data.file_path;
+        if (this.packageData.base.is_download == 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price != 0) {
+          this.buyAction(this.goods_id);
+        } else if (this.packageData.base.is_download != 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price != 0) {
+          this.buyAction(this.goods_id);
+        } else {
+          this.fileHideUrl = res.response_data.file_path;
+          this.timeoutId = setTimeout(() => {
+            document.getElementById('hideDom').click();
+          },100)
+        }
       } else {
         if (res.error_code === 100) {
           this.$toast(res.error_message);
@@ -269,6 +295,18 @@ export default {
       this.$router.push({
         name: "login"
       });
+    },
+    // 点击自动复制内容
+    copyUrl () {
+      const input = document.createElement('input');
+      document.body.appendChild(input);
+      input.setAttribute('value', this.url);
+      input.select();
+      if (document.execCommand('copy')) {
+        document.execCommand('copy')
+      }
+      document.body.removeChild(input);
+      this.$toast("链接复制成功");
     }
   }
 }

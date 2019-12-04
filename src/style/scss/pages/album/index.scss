@@ -662,10 +662,12 @@
     }
   }
   .coupon{
-    @include position (fixed, 'bl', 50px, 0, 100%, 44px, 0);
+    max-width: 640px;
+    @include position (fixed, 'bl', 50px, auto, 100%, 44px, 0);
   }
   .coupon.bottom{
-    @include position (fixed, 'bl', 0px, 0, 100%, 44px, 0);
+    max-width: 640px;
+    @include position (fixed, 'bl', 0px, auto, 100%, 44px, 0);
   }
   // 拼团
   .group{

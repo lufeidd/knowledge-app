@@ -349,8 +349,8 @@
     top:40%;
   }
   .van-dialog .van-stepper__input {
-    background-color: rgba(54, 133, 206, 0.16);
-    color: $cl6;
+    // background-color: rgba(54, 133, 206, 0.16);
+    // color: $cl6;
   }
 }
 .van-dialog .van-button--default{
@@ -388,7 +388,8 @@ export default {
       showkeyboard: false,
       editIndex: 0,
       editgIndex: 0,
-      editlindex: 0
+      editlindex: 0,
+      showCount:0,
     };
   },
   mounted() {
@@ -435,10 +436,11 @@ export default {
   methods: {
     cancelEdit() {
       this.showkeyboard = false;
+      this.showCount = 0;
     },
     confirmEdit() {
       console.log(this.goods_nums - this.oldCount + this.editCount);
-      if (this.goods_nums - this.oldCount + this.editCount <= 120) {
+      if (this.goods_nums - this.oldCount + this.editCount <= 120 && this.editCount > 0) {
         this.productCountData(this.editDetail_id, this.editCount);
         this.cartlist[this.editIndex].act_list[
           this.editgIndex
@@ -449,15 +451,23 @@ export default {
           return value;
         });
       } else {
-        this.$toast("购物车商品总数量不能超过120件~");
+        if(this.editCount <= 0){
+          this.$toast('商品件数不能小于1件~')
+        }else{
+          this.$toast("购物车商品总数量不能超过120件~");
+        }
       }
       this.showkeyboard = false;
+      this.showCount = 0;
     },
     keyboardonDelete() {
       this.editCount = 0;
+      this.showCount = 0;
     },
     keyboardonInput(value) {
-      var _num = this.editCount + value.toString();
+      // this.editCount = 0;
+      var _num = this.showCount + value.toString();
+      this.showCount = Number(_num);
       if (Number(_num) > this.editstores) {
         // this.$toast("超出库存~");
         this.editCount = this.editstores;
@@ -853,7 +863,7 @@ export default {
         });
         // 数量加减
         this.productCountData(detail_id, _count);
-      }else{
+      } else {
         setTimeout(() => {
           this.cartlist[cIndex].act_list[gIndex].goods_list = this.cartlist[
             cIndex
@@ -863,9 +873,8 @@ export default {
             }
             return value;
           });
-          this.$toast('购物车商品总数量不能超过120件~')
+          this.$toast("购物车商品总数量不能超过120件~");
         }, 1);
-
       }
       // console.log(count,this.cartlist[cIndex].act_list[gIndex].goods_list[lindex].count)
     },

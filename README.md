@@ -1,4 +1,4 @@
-# About knowledge-app   
+# About knowledge-app 
 
 > 博库-知识内容服务平台-移动端，此项目是 vue + vant 构建的移动端项目，解释权归博库网络传媒集团所有。
 
@@ -10,16 +10,15 @@
 
 ``` bash
 音频
-
 视频
-
 上传图片
-
 迷你音频
-
 快捷导航
-
 词条搜索
+app下载引导
+全局组件js
+加载中
+版权
 ```
 
 # 功能插件
@@ -32,20 +31,28 @@ https://github.com/surmon-china/vue-awesome-swiper
 
 cropper
 https://github.com/xyxiao001/vue-cropper
+
+......
 ```
 
 # 项目模块
 
 ``` bash
 1、登录/注册
-
 2、个人中心
-
 3、专辑
-
 4、品牌商城
-
 5、下单
+6、首页
+7、搜索
+8、404/timeout
+9、电子书
+10、优惠券
+11、自定义装修
+12、拼团
+13、活动助力
+14、满折满减
+15、图书资源/文件包
 ```
 
 # 项目运行
@@ -57,6 +64,10 @@ cd knowledge-app
 
 // vant
 cnpm i vant -S
+
+// 安装sass依赖，sass-loader依赖于node-sass
+cnpm install --save-dev sass-loader
+cnpm install --save-dev node-sass
 
 // swiper
 cnpm install vue-awesome-swiper --save

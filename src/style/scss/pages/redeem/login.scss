@@ -1,0 +1,96 @@
+/*
+ * author: lrf
+ * date:2019/12/03
+ */
+
+@charset "utf-8";
+
+#redeemLoginPage {
+  h3, p {
+    margin: 0;
+  }
+  .header_wrapper {
+    padding: 15px;
+    .content {
+      display: inline-block;
+      margin-left: 12px;
+      .author {
+        font-size: 16px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #000000;
+        line-height: 34px;
+      }
+      .title {
+        font-size: 14px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #999999;
+        line-height: 34px;
+      }
+      .price {
+        font-size: 12px;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #F05654;
+        line-height: 34px;
+      }
+    }
+  }
+  .spacing_bar {
+    height: 10px;
+    background: #F5F5F5;
+  }
+  .main_wrapper {
+    .van-cell:not(:last-child):after {
+      border: none;
+    }
+    .van-cell-group {
+      width: 317px;
+      margin: 0 auto;
+    }
+    .van-field__control {
+      padding: 10px;
+      border-bottom: 0.5px solid #DCDCDC;
+      width: 285px;
+      font-size: 14px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #A7A7A7;
+      line-height: 20px;
+    }
+    .van-field:last-child .van-field__control {
+      width: 185px;
+    }
+    .phone_num {
+
+    }
+
+    .van-button--default {
+      border: none;
+      .van-button__text {
+        font-size: 14px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #F05654;
+        line-height: 20px;
+      }
+    }
+    .button_wrapper {
+      margin: 0 auto;
+      margin-top: 38px;
+      width: 285px;
+      .van-button--primary {
+        width: 285px;
+        height: 40px;
+        border-radius: 3px;
+        .van-button__text {
+          font-size: 15px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #FFFFFF;
+        }
+      }
+    }
+  }
+}
