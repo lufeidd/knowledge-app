@@ -36,8 +36,7 @@
               </span>
             </div>
             <div class="original">
-              直买价
-              <del>￥{{baseData.market_price.toFixed(2)}}</del>
+              直买价：￥{{baseData.price.toFixed(2)}}
             </div>
           </div>
           <div class="promotionRight">
@@ -759,7 +758,8 @@ export default {
       this.$router.push({
         name: "detail",
         query: {
-          goods_id: this.baseData.goods_id
+          goods_id: this.baseData.goods_id,
+          isactivity: 1,
         }
       });
     },
