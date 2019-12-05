@@ -113,9 +113,6 @@
   #loadingPage{
     background: #f0f0f0!important;
   }
-  .van-tabs--line{
-    padding-top: 0;
-  }
 </style>
 <script>
   import { ALBUM } from "../../apis/album.js";
@@ -299,10 +296,18 @@ export default {
         } else if (this.packageData.base.is_download != 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price != 0) {
           this.buyAction(this.goods_id);
         } else {
-          this.fileHideUrl = res.response_data.file_path;
-          this.timeoutId = setTimeout(() => {
-            document.getElementById('hideDom').click();
-          },100)
+          const u = navigator.userAgent;
+          const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+          if (isiOS) {
+            // ios
+            this.fileHideUrl = res.response_data.file_path;
+            this.timeoutId = setTimeout(() => {
+              document.getElementById('hideDom').click();
+            },100)
+          } else {
+            // andriod
+            this.$toast('Android暂不支持预览，请下载文件后查看');
+          }
         }
       } else {
         if (res.error_code === 100) {
