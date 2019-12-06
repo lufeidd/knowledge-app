@@ -15,6 +15,9 @@ import 'swiper/dist/css/swiper.css'
 // cropper
 import VueCropper from 'vue-cropper'
 
+//clipboard
+import VueClipboard from 'vue-clipboard2'
+
 // 加密方式
 import JsEncrypt from 'jsencrypt'
 
@@ -98,7 +101,7 @@ Vue.use(Tag)
 Vue.use(Tab).use(Tabs)
 Vue.use(Circle)
 Vue.use(GoodsAction)
-Vue.use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
+// Vue.use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
 Vue.use(Step).use(Steps)
 Vue.use(List)
 Vue.use(Stepper)
@@ -121,6 +124,9 @@ Vue.use(VueAwesomeSwiper)
 
 // cropper
 Vue.use(VueCropper)
+
+// clipboard
+Vue.use(VueClipboard)
 
 // JSEncrypt
 // Vue.prototype.$jsEncrypt = JsEncrypt

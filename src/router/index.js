@@ -866,17 +866,17 @@ export default new Router({
       component: fail
     },
     {
-      path: '/redeem/login',
+      path: '/redeem/login/:goodsItem',
       name: 'redeemLogin',
       component: redeemLogin
     },
     {
-      path: '/redeem/goods',
+      path: '/redeem/goods/:goodsDetail',
       name: 'redeemGoods',
       component: redeemGoods
     },
     {
-      path: '/redeem/coupons',
+      path: '/redeem/coupons/:couponsDetail',
       name: 'redeemCoupons',
       component: redeemCoupons
     }

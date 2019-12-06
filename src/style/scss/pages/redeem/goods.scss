@@ -19,6 +19,13 @@
     background: #FFFFFF;
     .goods_intro {
       position: relative;
+      .picture {
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
       .content {
         display: inline-block;
         margin-left: 12px;

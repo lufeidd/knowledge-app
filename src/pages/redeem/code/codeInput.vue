@@ -2,17 +2,16 @@
   <div id="codeInputPage">
     <div class="top_bg"></div>
     <van-cell-group class="input_num_wrapper">
-      <van-field class="code_num" clearable v-model="codeNum" placeholder="请输入8位兑换码,不区分大小写,长按可粘贴。" />
+      <van-field class="code_num" clearable v-model="codeNum" placeholder="请输入8位兑换码,不区分大小写,长按可粘贴。"/>
       <div v-show="validateFlag">
-        <van-field class="validate_num" v-model="validateNum" placeholder="请输入右侧验证码。" />
-        <div class="validate_image">
-          12324
-          <img src="" alt="">
+        <van-field class="validate_num" clearable v-model="validateNum" placeholder="请输入右侧验证码。"/>
+        <div class="validate_image" @click="refreshImage">
+          <img :src="validateImage" width="120" height="44" alt="">
         </div>
       </div>
     </van-cell-group>
     <div class="button_wrapper">
-      <van-button type="primary" color="#F05654" @click="">兑换</van-button>
+      <van-button type="primary" color="#F05654" @click="toRedeem">兑换</van-button>
     </div>
     <p class="notes_one">
       1.参与活动有机会获得兑换码,使用兑换码可兑换超值优惠券以及虚拟商品。
@@ -26,24 +25,68 @@
 </template>
 
 <script>
+  import {REDEEM_ITEM_GET} from '@/apis/redeem.js';
+
   export default {
     name: "code-input",
     data() {
       return {
         codeNum: '',
         validateNum: '',
-        validateFlag: false
+        validateImage: '',
+        validateFlag: false,
+        userId: ''
       };
     },
-    watch: {
-      codeNum: function(val) {
-        if (val !== '') {
+    methods: {
+      // 刷新验证码图片
+      refreshImage() {
+        let num = Math.ceil(Math.random() * 10);
+        this.validateImage += `&${num}`;
+      },
+      async toRedeem() {
+        // console.log(this.validateNum);
+        let data = {
+          code: this.codeNum,
+          captcha: this.validateNum,
+          version: "1.0"
+        };
+        let res = await REDEEM_ITEM_GET(data);
+        if (res.error_code == 100) {  // 需要输入验证码
+          let msg = res.error_message.split('|')[0];
+          this.userId = res.error_message.split('|')[1];
+          let id = this.userId.replace('+', '%2B');
+          // console.log('user', id);
+          this.validateImage = 'http://wap.huoba.dev.lsk/callback/captcha?user_id=' + id;
           this.validateFlag = true;
-        } else {
-          this.validateNum = '';
-          this.validateFlag = false;
+          this.$toast(msg);
+        } else if (res.error_code == 99) {  // 未登录  res.error_code == 99
+          // 跳转到登录页
+          this.$router.push({name: 'login'});
+        } else if (res.hasOwnProperty("error_message")) {
+          this.$toast(res.error_message);
+        } else if (res.hasOwnProperty("response_code")) {
+          let detail = JSON.stringify(res.response_data);
+          // console.log('detail',detail);
+          // 判断是商品还是优惠券
+          if (detail.goods_type == 2) {
+            this.$router.push({name: 'redeemCoupons', params: {couponsDetail: detail}});
+          } else {
+            this.$router.push({name: 'redeemGoods', params: {goodsDetail: detail}});
+          }
         }
+        console.log(res);
       }
+    },
+    watch: {
+      // codeNum: function(val) {
+      //   if (val !== '') {
+      //     this.validateFlag = true;
+      //   } else {
+      //     this.validateNum = '';
+      //     this.validateFlag = false;
+      //   }
+      // }
     }
   }
 </script>
