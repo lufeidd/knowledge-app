@@ -515,6 +515,7 @@ export default {
     this.albumData();
     this.getCouponList();
     // this.$countTime(this.timeData);
+
   },
   methods: {
     toGoodsGroup() {

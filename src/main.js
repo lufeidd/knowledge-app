@@ -63,7 +63,7 @@ import {
   Actionsheet,
   AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle,
   Tab, Tabs,
-  GoodsAction, 
+  GoodsAction,
   GoodsActionBigBtn, GoodsActionMiniBtn,
   Step, Steps,
   List, Stepper, SubmitBar,
@@ -96,7 +96,7 @@ Vue.use(Search)
 Vue.use(Tag)
 Vue.use(Tab).use(Tabs)
 Vue.use(Circle)
-Vue.use(GoodsAction) 
+Vue.use(GoodsAction)
 Vue.use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
 Vue.use(Step).use(Steps)
 Vue.use(List)

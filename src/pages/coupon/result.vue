@@ -309,7 +309,7 @@ export default {
             this.page = 1;
           }
           // console.log(this.couponList)
-        }, 600);
+        }, 1);
 
       } else {
         this.$toast(res.error_message);
