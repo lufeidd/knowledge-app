@@ -852,5 +852,20 @@ export default {
       return __json;
     }
 
+    //跳转App链接
+    Vue.prototype.$linkToApp = function () {
+      var u = navigator.userAgent,
+        app = navigator.appVersion;
+      var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+      console.log(u, app, _ios, _android);
+      if (_ios) {
+        window.location.href =
+          "https://apps.apple.com/cn/app/%E7%81%AB%E6%8A%8A%E7%9F%A5%E8%AF%86/id1473766311";
+      } else if (_android) {
+        window.location.href =
+          "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
+      }
+    }
   }
 }
