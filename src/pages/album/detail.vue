@@ -878,7 +878,7 @@ export default {
     this.getCouponList();
   },
   updated() {
-    console.log(7474,$('.van-goods-action-big-btn .van-button__text'))
+    // console.log(7474,$('.van-goods-action-big-btn .van-button__text'))
     if (this.baseData.single_activity_id) {
       $('.van-goods-action-big-btn .van-button__text').html(
         '<div style="line-height:1;font-size:16px;">限时促销价￥' +
@@ -1165,7 +1165,10 @@ export default {
     // 跳转到音乐播放器
     gotoPlayer(__type) {
       var queryTmp = {};
-      queryTmp.isLogin = this.isLogin;
+      if(this.pid != NaN) queryTmp.pid = this.pid;
+      queryTmp.goods_id = this.goodsId;
+      queryTmp.ad = parseInt(this.$route.query.ad) == 1 ? 1 : 0;
+      if(this.$route.query.goods_no != 'undefined') queryTmp.goods_no = this.$route.query.goods_no;
 
       // 点击迷你播放音频
       if (__type == "mini") {
