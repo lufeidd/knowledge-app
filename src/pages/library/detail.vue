@@ -298,14 +298,17 @@ export default {
         } else {
           const u = navigator.userAgent;
           const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+          console.log('判断');
           if (isiOS) {
             // ios
+            console.log('ios');
             this.fileHideUrl = res.response_data.file_path;
             this.timeoutId = setTimeout(() => {
               document.getElementById('hideDom').click();
             },100)
           } else {
             // andriod
+            console.log('andriod');
             this.$toast('Android暂不支持预览，请下载文件后查看');
           }
         }
