@@ -14,3 +14,7 @@ export const REDEEM_CODE_GET = query => req('post', '/activity/redeem/code/get',
 // 兑换物品（实物/虚拟/优惠券）详情
 
 export const REDEEM_ITEM_GET = query => req('post', '/activity/redeem/get', query)
+
+// 商品兑换动作
+
+export const REDEEM_GOODS = query => req('post', '/activity/redeem/link', query)

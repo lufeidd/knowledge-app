@@ -240,6 +240,24 @@
           </div>
         </router-link>
 
+        <!-- 兑换码 -->
+        <router-link to="/redeem/codeInput" class="cell">
+          <div class="svg">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-personalRedeem" />
+            </svg>
+          </div>
+          <div class="desc">
+            <span class="text">兑换码</span>
+          </div>
+          <div class="action">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-next-line" />
+            </svg>
+          </div>
+        </router-link>
+
+
         <!-- 我的评论 -->
         <router-link v-if="infoData.is_login" to="/personal/comment/index" class="cell">
           <div class="svg">

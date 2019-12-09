@@ -28,7 +28,7 @@
     <van-popup class="outdated_info" v-model="isOutdated">
       <h4 class="outdated_title">活动已结束</h4>
       <div class="outdated_img"></div>
-      <p class="outdated_remind"><span>3</span>秒后回到火把号首页</p>
+      <p class="outdated_remind"><span>{{time}}</span>秒后回到火把号首页</p>
     </van-popup>
   </div>
 </template>
@@ -42,7 +42,8 @@
       return {
         encryptedCode: '',
         isOutdated: false,
-        redeemDetail: {}
+        redeemDetail: {},
+        time: 3
       };
     },
     methods: {
@@ -70,6 +71,13 @@
         let nowTime = new Date().getTime();
         if (endTime < nowTime) {
           this.isOutdated = true;
+          const timer = setInterval(() => {
+            this.time--;
+            if (this.time == 0) {
+              this.isOutdated = false;
+              clearInterval(timer);
+            }
+          }, 1000);
         }else {
           // this.$router.push('./codeInput');
           this.download();

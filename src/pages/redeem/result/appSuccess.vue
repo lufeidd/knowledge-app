@@ -3,7 +3,7 @@
     <div class="top_bg"></div>
     <h3 class="title">兑换成功</h3>
     <p class="content">
-      恭喜您获得商品名“玩具总动员”
+      恭喜您获得商品名“{{goodsName}}”
       快去看看吧！
     </p>
     <div class="button_wrapper">
@@ -16,6 +16,11 @@
 <script>
   export default {
     name: "app-success",
+    data() {
+      return {
+        goodsName: ''
+      };
+    },
     methods: {
      toRedeem() {
 
@@ -23,6 +28,9 @@
      toCheck() {
 
      }
+    },
+    created() {
+      this.goodsName = this.$route.query.goodsName;
     }
   }
 </script>

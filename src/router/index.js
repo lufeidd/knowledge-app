@@ -871,12 +871,12 @@ export default new Router({
       component: redeemLogin
     },
     {
-      path: '/redeem/goods/:goodsDetail',
+      path: '/redeem/goods/:goodsDetail/:code',
       name: 'redeemGoods',
       component: redeemGoods
     },
     {
-      path: '/redeem/coupons/:couponsDetail',
+      path: '/redeem/coupons/:couponsDetail/:code',
       name: 'redeemCoupons',
       component: redeemCoupons
     }

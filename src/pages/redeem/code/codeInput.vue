@@ -69,10 +69,10 @@
           let detail = JSON.stringify(res.response_data);
           // console.log('detail',detail);
           // 判断是商品还是优惠券
-          if (detail.goods_type == 2) {
-            this.$router.push({name: 'redeemCoupons', params: {couponsDetail: detail}});
+          if (res.response_data.goods_type == 2) {
+            this.$router.push({name: 'redeemCoupons', params: {couponsDetail: detail, code: this.codeNum}});
           } else {
-            this.$router.push({name: 'redeemGoods', params: {goodsDetail: detail}});
+            this.$router.push({name: 'redeemGoods', params: {goodsDetail: detail, code: this.codeNum}});
           }
         }
         console.log(res);

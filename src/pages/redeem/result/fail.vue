@@ -3,7 +3,7 @@
     <div class="top_bg"></div>
     <h3 class="title">兑换失败</h3>
     <p class="content">
-      活动已经结束！
+      {{this.errorMsg}}
     </p>
     <div class="button_wrapper">
       <van-button type="primary" color="#F05654" @click="">重新兑换</van-button>
@@ -17,16 +17,13 @@
     name: "fail",
     data() {
       return {
-
+        errorMsg: ''
       };
     },
     methods: {
     },
     created() {
-      this.$toast({
-        icon: './../../../assets/redeem/failed-line.png',
-        message: '兑换失败'
-      });
+      this.errorMsg = this.$route.query.error_message;
     }
   }
 </script>
