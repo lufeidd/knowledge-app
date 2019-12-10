@@ -16,7 +16,7 @@
     <p class="notes_one">
       1.参与活动有机会获得兑换码,使用兑换码可兑换超值优惠券以及虚拟商品。
       <br/>
-      2.请在兑换码有效期内完成兑换,过期自动失效;具体兑换结果以页面显示为准。 提示：请使用英文输入法。
+      2.请在兑换码有效期内完成兑换,过期自动失效;具体兑换结果以页面显示为准。
     </p>
     <p class="notes_two">
       提示：请使用英文输入法。
@@ -66,27 +66,16 @@
         } else if (res.hasOwnProperty("error_message")) {
           this.$toast(res.error_message);
         } else if (res.hasOwnProperty("response_code")) {
-          let detail = JSON.stringify(res.response_data);
-          // console.log('detail',detail);
           // 判断是商品还是优惠券
           if (res.response_data.goods_type == 2) {
-            this.$router.push({name: 'redeemCoupons', params: {couponsDetail: detail, code: this.codeNum}});
+            this.$router.push({name: 'redeemCoupons', params: {code: this.codeNum}});
           } else {
-            this.$router.push({name: 'redeemGoods', params: {goodsDetail: detail, code: this.codeNum}});
+            this.$router.push({name: 'redeemGoods', params: {code: this.codeNum}});
+            // console.log(this.$route);
           }
         }
         console.log(res);
       }
-    },
-    watch: {
-      // codeNum: function(val) {
-      //   if (val !== '') {
-      //     this.validateFlag = true;
-      //   } else {
-      //     this.validateNum = '';
-      //     this.validateFlag = false;
-      //   }
-      // }
     }
   }
 </script>

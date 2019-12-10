@@ -20,7 +20,7 @@
           </div>
           <!--兑换条件-->
           <div class="requirement">
-            <van-button type="default" color="#FFB54D" @click="">{{item.brand}}</van-button>
+            <van-button type="default" color="#FFB54D">{{item.brand}}</van-button>
             <span class="state">{{item.range}}</span>
             <p class="price">满{{item.min_money}}元可用</p>
           </div>
@@ -32,7 +32,8 @@
         </div>
         <div class="goods_list">
           <!--<div class="goods_item"></div>-->
-          <div class="goods_item" v-for="(subItem, index) in item.goods" :key="index" v-lazy:background-image="subItem.pic"></div>
+          <div class="goods_item" v-for="(subItem, index) in item.goods" :key="index"
+               v-lazy:background-image="subItem.pic"></div>
         </div>
       </div>
     </van-list>
@@ -40,13 +41,14 @@
 </template>
 
 <script>
-  import {REDEEM_GOODS} from "@/apis/redeem";
+  import {REDEEM_ITEM_GET, REDEEM_GOODS} from "@/apis/redeem";
 
   export default {
     name: "coupons",
     data() {
       return {
         code: '0',
+        redeem: '0',
         couponsDetail: {},
         couponsLoading: false,
         couponsFinished: false,
@@ -55,25 +57,40 @@
       };
     },
     methods: {
-      couponsLoad() {
-        setTimeout(() => {
-          let list = this.couponsDetail.goods_list;
-          list.forEach((item) => {
-            if (item.goods_num == item.used_num) {
-              item.state = 0; // 已领完
-            }
-          });
-          for (let i = 0; i < list.length; i++) {
-            this.couponsList.push(list[i]);
-          }
-          // 加载状态结束
-          this.couponsLoading = false;
+      async getCouponsDetail() {
+        let data = {
+          code: this.code,
+          redeem_id: this.redeem,
+          is_captcha: 1,
+          version: "1.0"
+        };
+        // console.log(data);
+        let res = await REDEEM_ITEM_GET(data);
+        // console.log(res);
+        if (res.hasOwnProperty("response_code")) {
+          this.couponsDetail = res.response_data;
+        }
 
-          // 数据全部加载完成
-          if (this.couponsList.length >= list.length) {
-            this.couponsFinished = true;
+        let list = this.couponsDetail.goods_list;
+        list.forEach((item) => {
+          if (item.goods_num == item.used_num) {
+            item.state = 0; // 已领完
           }
-        }, 500);
+        });
+        //  加载
+        for (let i = 0; i < list.length; i++) {
+          this.couponsList.push(list[i]);
+        }
+        // 加载状态结束
+        this.couponsLoading = false;
+
+        // 数据全部加载完成
+        if (this.couponsList.length >= list.length) {
+          this.couponsFinished = true;
+        }
+      },
+      couponsLoad() {
+        this.getCouponsDetail();
       },
       couponsRedeem(item) {
         if (item != undefined) {
@@ -81,13 +98,9 @@
         }
         // console.log(this.percentGoods);
         // console.log(this.goodsDetail);
-        if (false) { // 测试 未登录
-          this.$router.push({name: 'redeemLogin', params: {goodsItem: JSON.stringify(item)}});
-        } else {
-          this.submitRedeem();
-        }
+        this.submitRedeem(item);
       },
-      async submitRedeem() {
+      async submitRedeem(item) {
         let data = {
           redeem_id: this.couponsDetail.redeem_id,
           ticket_id: this.percentCoupons.ticket_id,
@@ -95,23 +108,46 @@
           version: "1.0"
         };
         let res = await REDEEM_GOODS(data);
-        if (res.hasOwnProperty("response_code")) {
+        // console.log(res);
+        if (res.error_code == 99) { // 未登录
+          this.$router.push({name: 'redeemLogin', params: {goodsItem: JSON.stringify(item)}});
+        } else if (res.hasOwnProperty("response_code")) {
           // console.log(res);
-          if (true) { // APP
-            this.$router.push({name: 'appSuccess', query: {goodsName: this.percentCoupons.title}});
-          } else {
+          if (this.isApp()) { // APP
+            this.$router.push({name: 'appSuccess', query: {goodsName: this.percentCoupons.title, goodsType: this.couponsDetail.goods_type}});
+          } else {  // WAP
             this.$router.push({name: 'wapSuccess', query: {goodsName: this.percentCoupons.title}});
           }
         } else {
-          this.$router.push({name: 'fail', query: {errorMsg: res.error_message}});
+          if (this.isApp()) { // APP
+            this.$router.push({name: 'appFail', query: {errorMsg: res.error_message}});
+          } else {  // WAP
+            this.$router.push({name: 'wapFail', query: {errorMsg: res.error_message}});
+          }
+        }
+      },
+      // 是否是APP
+      isApp() {
+        var u = navigator.userAgent,
+          app = navigator.appVersion;
+        var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+        console.log(u, app, _ios, _android);
+        if (_ios || _android) {
+          return true;
+        } else {
+          return false;
         }
       }
     },
     created() {
-      this.couponsDetail = JSON.parse(this.$route.params.couponsDetail);
       this.code = this.$route.params.code;
-      console.log(this.couponsDetail);
-      console.log('code',this.code);
+      this.redeem = this.$route.params.redeem;
+      // console.log(this.couponsDetail);
+      // console.log('code',this.code);
+    },
+    mounted() {
+      this.couponsLoad();
     }
   }
 </script>

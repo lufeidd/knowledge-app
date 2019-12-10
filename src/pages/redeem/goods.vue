@@ -14,12 +14,19 @@
       >
         <div class="goods_intro">
           <!--<img src="" alt="" width="80" height="80">-->
-          <!--<div class="picture" v-lazy:background-image="item.pic[0]"></div>-->
+          <div class="picture" v-lazy:background-image="item.pic">
+            <div class="nothing_left" v-if="item.state == 0">
+              <p class="text">已领完</p>
+            </div>
+          </div>
           <div class="content">
             <h3 class="title">{{item.title}}</h3>
             <p class="sub_title">{{item.sub_title}}</p>
             <p class="price">￥{{item.price}}</p>
-            <van-button class="redeem_btn" type="primary" color="#F05654" @click="goodsRedeem(item)">免费兑换</van-button>
+            <van-button class="redeem_btn" type="primary" disabled color="#F05654" v-if="item.state == 0">免费兑换
+            </van-button>
+            <van-button class="redeem_btn" type="primary" color="#F05654" @click="goodsRedeem(item)" v-else>免费兑换
+            </van-button>
           </div>
         </div>
         <div class="goods_detail">{{item.content}}</div>
@@ -31,7 +38,7 @@
     <!-- 点击获取地址显示的弹层 -->
     <van-popup v-model="addressShowPopup" class="addressPopup">
       <svg class="icon close" aria-hidden="true" @click="addressClose">
-        <use xlink:href="#icon-close-line" />
+        <use xlink:href="#icon-close-line"/>
       </svg>
       <div class="addressBox">
         <div v-for="(Item,index) in addressData" :key="index">
@@ -42,13 +49,15 @@
               :class="{ active: Item.is_default == 1 }"
             >
               <svg class="icon" aria-hidden="true" v-if="Item.is_default == 1">
-                <use xlink:href="#icon-checked-block" />
+                <use xlink:href="#icon-checked-block"/>
               </svg>
               <svg class="icon" aria-hidden="true" v-else>
-                <use xlink:href="#icon-uncheck-line" />
+                <use xlink:href="#icon-uncheck-line"/>
               </svg>
             </div>
-            <div class="title">{{ Item.consignee }}/{{ Item.mobile }}/{{ Item.province }}{{ Item.city }}{{ Item.county }}{{ Item.address }}</div>
+            <div class="title">{{ Item.consignee }}/{{ Item.mobile }}/{{ Item.province }}{{ Item.city }}{{ Item.county
+              }}{{ Item.address }}
+            </div>
           </div>
         </div>
       </div>
@@ -65,59 +74,17 @@
 </template>
 
 <script>
-  import { USER_ADDRESS_EDIT , USER_ADDRESS_LIST } from "@/apis/user.js";
-  import {REDEEM_GOODS} from "@/apis/redeem";
+  import {USER_ADDRESS_EDIT, USER_ADDRESS_LIST} from "@/apis/user.js";
+  import {REDEEM_ITEM_GET, REDEEM_GOODS} from "@/apis/redeem.js";
 
   export default {
     name: "goods",
     data() {
       return {
-        code: '',
+        code: '0',
+        redeem: '',
         goodsDetail: {},
-        goodsList: [
-          // {
-          //   id: '1',
-          //   title: '标题文字',
-          //   subTitle: '副标题',
-          //   price: '￥123.00',
-          //   detail: '这是一段描述这是一段描述这是这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述一段描述'
-          // },
-          // {
-          //   id: '2',
-          //   title: '标题文字',
-          //   subTitle: '副标题',
-          //   price: '￥123.00',
-          //   detail: '这是一段描述这是一段描述这是这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述一段描述'
-          // },
-          // {
-          //   id: '3',
-          //   title: '标题文字',
-          //   subTitle: '副标题',
-          //   price: '￥123.00',
-          //   detail: '这是一段描述这是一段描述这是这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述一段描述'
-          // },
-          // {
-          //   id: '4',
-          //   title: '标题文字',
-          //   subTitle: '副标题',
-          //   price: '￥123.00',
-          //   detail: '这是一段描述这是一段描述这是这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述一段描述'
-          // },
-          // {
-          //   id: '5',
-          //   title: '标题文字',
-          //   subTitle: '副标题',
-          //   price: '￥123.00',
-          //   detail: '这是一段描述这是一段描述这是这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述一段描述'
-          // },
-          // {
-          //   id: '6',
-          //   title: '标题文字',
-          //   subTitle: '副标题',
-          //   price: '￥123.00',
-          //   detail: '这是一段描述这是一段描述这是这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述一段描述'
-          // }
-        ],
+        goodsList: [],
         goodsLoading: false,
         goodsFinished: false,
         addressShowPopup: false,
@@ -127,20 +94,41 @@
       };
     },
     methods: {
-      goodsLoad() {
-        setTimeout(() => {
-          let list = this.goodsDetail.goods_list;
-          for (let i = 0; i < list.length; i++) {
-            this.goodsList.push(list[i]);
-          }
-          // 加载状态结束
-          this.goodsLoading = false;
+      async getGoodsDetail() {
+        let data = {
+          code: this.code,
+          redeem_id: this.redeem,
+          is_captcha: 1,
+          version: "1.0"
+        };
+        // console.log(data);
+        let res = await REDEEM_ITEM_GET(data);
+        // console.log(res);
+        if (res.hasOwnProperty("response_code")) {
+          this.goodsDetail = res.response_data;
+        }
 
-          // 数据全部加载完成
-          if (this.goodsList.length >= list.length) {
-            this.goodsFinished = true;
+        let list = this.goodsDetail.goods_list;
+        console.log(list);
+        list.forEach((item) => {
+          if (item.goods_num == item.used_num) {
+            item.state = 0; // 已领完
           }
-        }, 500);
+        });
+        //  加载
+        for (let i = 0; i < list.length; i++) {
+          this.goodsList.push(list[i]);
+        }
+        // 加载状态结束
+        this.goodsLoading = false;
+
+        // 数据全部加载完成
+        if (this.goodsList.length >= list.length) {
+          this.goodsFinished = true;
+        }
+      },
+      goodsLoad() {
+        this.getGoodsDetail();
       },
       goodsRedeem(item) {
         if (item != undefined) {
@@ -148,26 +136,19 @@
         }
         // console.log(this.percentGoods);
         // console.log(this.goodsDetail);
-        if (false) { // 测试 未登录
-          this.$router.push({name: 'redeemLogin', params: {goodsItem: JSON.stringify(item)}});
-        } else if (this.goodsDetail.goods_type == 3) {  // 商品类型是实物
-          this.getAddressData();
-          this.addressShowPopup = true;
-        } else {
-          this.submitRedeem();
-        }
+        this.submitRedeem(item);
       },
 
 
-      addressClose () {
+      addressClose() {
         this.addressShowPopup = false;
       },
       // 新增收货地址
-      addAddress () {
-        this.$router.push({ name: "address", query: { pageType: "add" } });
+      addAddress() {
+        this.$router.push({name: "address", query: {pageType: "add"}});
       },
       // 获取我的收货地址信息
-      async getAddressData () {
+      async getAddressData() {
         var tStamp = this.$getTimeStamp();
         let data = {
           timestamp: tStamp,
@@ -198,7 +179,7 @@
         }
       },
       //确认兑换
-      async sureRedeem () {
+      async sureRedeem() {
         for (let i = 0; i < this.addressData.length; i++) {
           if (this.addressData[i].is_default == 1) {
             this.submitRedeem();
@@ -210,7 +191,7 @@
         });
       },
       // 修改当前地址
-      async editAddress (addressId, key) {
+      async editAddress(addressId, key) {
         var tStamp = this.$getTimeStamp();
         let data = {
           timestamp: tStamp,
@@ -242,21 +223,46 @@
           version: "1.0"
         };
         let res = await REDEEM_GOODS(data);
-        if (res.hasOwnProperty("response_code")) {
+        if (res.error_code == 99) { // 未登录
+          this.$router.push({name: 'redeemLogin', params: {goodsItem: JSON.stringify(item)}});
+        } else if (this.goodsDetail.goods_type == 3 && this.addressId == 0) {  // 商品类型是实物
+          this.getAddressData();
+          this.addressShowPopup = true;
+        }else if (res.hasOwnProperty("response_code")) {
           // console.log(res);
-          if (false) { // APP
-            this.$router.push({name: 'appSuccess', query: {goodsName: this.percentGoods.title}});
-          } else {
+          if (this.isApp()) { // APP
+            this.$router.push({name: 'appSuccess', query: {goodsName: this.percentGoods.title, goodsType: this.goodsDetail.goods_type}});
+          } else {  //  WAP
             this.$router.push({name: 'wapSuccess', query: {goodsName: this.percentGoods.title}});
           }
         } else {
-          this.$router.push({name: 'fail', query: {errorMsg: res.error_message}});
+          if (this.isApp()) { // APP
+            this.$router.push({name: 'appFail', query: {errorMsg: res.error_message}});
+          } else {  //  WAP
+            this.$router.push({name: 'wapFail', query: {errorMsg: res.error_message}});
+          }
+        }
+      },
+      // 是否是APP
+      isApp() {
+        var u = navigator.userAgent,
+          app = navigator.appVersion;
+        var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+        console.log(u, app, _ios, _android);
+        if (_ios || _android) {
+          return true;
+        } else {
+          return false;
         }
       }
     },
     created() {
-      this.goodsDetail = JSON.parse(this.$route.params.goodsDetail);
       this.code = this.$route.params.code;
+      this.redeem = this.$route.params.redeem;
+    },
+    mounted() {
+      this.goodsLoad();
     }
   }
 </script>

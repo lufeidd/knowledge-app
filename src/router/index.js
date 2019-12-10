@@ -137,7 +137,8 @@ import codeIndex from '@/pages/redeem/codeIndex'
 import codeInput from '@/pages/redeem/code/codeInput'
 import appSuccess from '@/pages/redeem/result/appSuccess'
 import wapSuccess from '@/pages/redeem/result/wapSuccess'
-import fail from '@/pages/redeem/result/fail'
+import appFail from '@/pages/redeem/result/appFail'
+import wapFail from '@/pages/redeem/result/wapFail'
 import redeemLogin from '@/pages/redeem/login'
 import redeemGoods from '@/pages/redeem/goods'
 import redeemCoupons from '@/pages/redeem/coupons'
@@ -861,9 +862,14 @@ export default new Router({
       component: wapSuccess
     },
     {
-      path: '/redeem/fail',
-      name: 'fail',
-      component: fail
+      path: '/redeem/appFail',
+      name: 'appFail',
+      component: appFail
+    },
+    {
+      path: '/redeem/wapFail',
+      name: 'wapFail',
+      component: wapFail
     },
     {
       path: '/redeem/login/:goodsItem',
@@ -871,12 +877,12 @@ export default new Router({
       component: redeemLogin
     },
     {
-      path: '/redeem/goods/:goodsDetail/:code',
+      path: '/redeem/goods/:code',
       name: 'redeemGoods',
       component: redeemGoods
     },
     {
-      path: '/redeem/coupons/:couponsDetail/:code',
+      path: '/redeem/coupons/:code',
       name: 'redeemCoupons',
       component: redeemCoupons
     }

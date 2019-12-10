@@ -22,13 +22,11 @@
         };
         let res = await REDEEM_ITEM_GET(data);
         if (res.hasOwnProperty("response_code")) {
-          let detail = JSON.stringify(res.response_data);
-          console.log('detail',detail);
           // 判断是商品还是优惠券
           if (res.response_data.goods_type == 2) {
-            this.$router.push({name: 'redeemCoupons', params: {couponsDetail: detail, code: '0'}});
+            this.$router.push({name: 'redeemCoupons', params: {code: '0', redeem: this.redeem}});
           } else {
-            this.$router.push({name: 'redeemGoods', params: {goodsDetail: detail, code: '0'}});
+            this.$router.push({name: 'redeemGoods', params: {code: '0', redeem: this.redeem}});
           }
         } else {
           this.$router.push({name: 'fail', query: {errorMsg: res.error_message}});

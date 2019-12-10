@@ -21,10 +21,32 @@
       position: relative;
       .picture {
         display: inline-block;
+        position: relative;
         width: 80px;
         height: 80px;
         background-size: cover;
         background-repeat: no-repeat;
+        .nothing_left {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 50px;
+          height: 50px;
+          background: #000000;
+          opacity: 0.5;
+          border-radius: 50%;
+          .text {
+            text-align: center;
+            width: 50px;
+            height: 50px;
+            font-size: 12px;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: #FFFFFF;
+            line-height: 50px;
+          }
+        }
       }
       .content {
         display: inline-block;
@@ -90,48 +112,48 @@
     color: #333333;
     line-height: 19px;
   }
-  .addressPopup{
+  .addressPopup {
     width: 74.67%;
     height: 66.56%;
     border-radius: 14px;
     padding: 50px 30px 0;
     overflow: hidden;
-    .close{
+    .close {
       position: absolute;
       top: 10px;
       right: 12px;
       font-size: 13px;
       color: #999;
     }
-    .addressBox{
+    .addressBox {
       height: 77%;
       overflow-y: auto;
-      .addressMember{
+      .addressMember {
         display: flex;
         margin-bottom: 30px;
         align-items: center;
-        .default{
+        .default {
           flex-basis: 50px;
         }
-        .active{
-          .icon{
+        .active {
+          .icon {
             color: #f05654;
           }
         }
-        .title{
+        .title {
           flex-grow: 1;
         }
       }
     }
-    .button{
+    .button {
       display: flex;
       justify-content: space-between;
       margin-top: 25px;
-      .addButton{
+      .addButton {
         flex-grow: 1;
         text-align: center;
       }
-      .define{
+      .define {
         flex-grow: 1;
         text-align: center;
       }

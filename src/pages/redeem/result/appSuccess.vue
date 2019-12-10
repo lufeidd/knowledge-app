@@ -7,7 +7,6 @@
       快去看看吧！
     </p>
     <div class="button_wrapper">
-      <van-button type="default" @click="toRedeem">继续兑换</van-button>
       <van-button type="primary" color="#F05654" @click="toCheck">去看看</van-button>
     </div>
   </div>
@@ -18,19 +17,26 @@
     name: "app-success",
     data() {
       return {
-        goodsName: ''
+        goodsName: '',
+        goodsType: ''
       };
     },
     methods: {
-     toRedeem() {
-
-     },
      toCheck() {
-
+       switch(this.goodsType) {
+         case 1 :
+           this.$router.push({name: 'ebookshelf'});
+         case 2 :
+           this.$router.push({name: 'couponmine'});
+         case 3 :
+           this.$router.push({name: 'orderlist'});
+       }
      }
     },
     created() {
       this.goodsName = this.$route.query.goodsName;
+      this.goodsType = this.$route.query.goodsType;
+      // console.log(this.goodsType);
     }
   }
 </script>

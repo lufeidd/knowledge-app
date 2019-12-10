@@ -1,11 +1,11 @@
 /*
  * author: lrf
- * date:2019/12/02
+ * date:2019/12/10
  */
 
 @charset "utf-8";
 
-#appSuccessPage {
+#failPage {
   overflow: hidden;
   .top_bg {
     margin: 0 auto;
@@ -14,7 +14,7 @@
     height: 55px;
     background-size: contain;
     background-repeat: no-repeat;
-    @include bgImageOne('./../../../../../assets/redeem/success');
+    @include bgImageOne('./../../../../../assets/redeem/fail');
   }
   .title {
     text-align: center;
@@ -26,13 +26,16 @@
   }
   .content {
     margin: 0 auto;
-    width: 193px;
+    width: 318px;
     text-align: center;
     font-size: 14px;
     font-family: PingFang SC;
     font-weight: 500;
     color: #999999;
     line-height: 19px;
+    .content_title {
+      color: #F05654;
+    }
   }
   .button_wrapper {
     margin: 0 auto;
