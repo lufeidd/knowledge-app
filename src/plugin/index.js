@@ -102,14 +102,17 @@ export default {
         }
         if (res.response_data.exist == 1) {
           // brand_id等信息
-          var route = window.location.href.split('#')[1];
-          var query = '';
-          if (route.indexOf('?') != -1) {
-            query = '?' + route.split('?')[1];
-          }
-          window.location.href = window.location.protocol + "//" + window.location.hostname + '/#/personal/index' + query;
+          // var route = window.location.href.split('#')[1];
+          // var query = '';
+          // if (route.indexOf('?') != -1) {
+          //   query = '?' + route.split('?')[1];
+          // }
+          // window.location.href = window.location.protocol + "//" + window.location.hostname + '/#/personal/index' + query;
+
+          // 微信第三方登录回退到指定页面defaultLink
+          window.location.href = localStorage.getItem("defaultLink");
+
           this.wxCodeStr = '';
-          // console.log('from:', replaceUrl);
         }
       } else {
         this.$toast(res.error_message);
@@ -852,5 +855,20 @@ export default {
       return __json;
     }
 
+    //跳转App链接
+    Vue.prototype.$linkToApp = function () {
+      var u = navigator.userAgent,
+        app = navigator.appVersion;
+      var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+      console.log(u, app, _ios, _android);
+      if (_ios) {
+        window.location.href =
+          "https://apps.apple.com/cn/app/%E7%81%AB%E6%8A%8A%E7%9F%A5%E8%AF%86/id1473766311";
+      } else if (_android) {
+        window.location.href =
+          "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
+      }
+    }
   }
 }

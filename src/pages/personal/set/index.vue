@@ -141,7 +141,7 @@ export default {
         this.$set(this.infoData, "is_login", res.response_data.is_login);
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        localStorage.setItem("loginState", 1);
+        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
 
         if (this.infoData.is_login == 1) {
           $(".ratioBox").css(
@@ -153,7 +153,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 100);
+          localStorage.setItem("loginState", 0);
         }
         this.$toast(res.error_message);
       }
@@ -173,7 +173,7 @@ export default {
       console.log(res.response_data);
       if (res.hasOwnProperty("response_code")) {
         this.$store.commit("changeLoginState", 1);
-        localStorage.setItem("loginState", 1);
+        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
         // 退出登录将localstorage中进度数据清空
         localStorage.setItem("miniAudio", null);
         localStorage.setItem("audioProgress", null);
@@ -190,7 +190,7 @@ export default {
         sessionStorage.setItem("headPic", null);
 
         this.$store.commit("changeLoginState", 100);
-        localStorage.setItem("loginState", 100);
+        localStorage.setItem("loginState", 0);
         this.$router.push("/login/index");
       } else {
         this.$toast(res.error_message);

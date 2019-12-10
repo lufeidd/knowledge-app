@@ -137,7 +137,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        localStorage.setItem("loginState", 1);
+        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
 
         this.rechargeAmount = res.response_data.prices;
         this.wallet = res.response_data.wallet_info;
@@ -147,7 +147,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 100);
+          localStorage.setItem("loginState", 0);
         }
         // this.$toast(res.error_message);
       }
@@ -244,8 +244,6 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await CASHIER_PAY_ADD(data);
-
-      console.log(999, res.response_data);
 
       if (res.hasOwnProperty("response_code")) {
         // var _package = "prepay_id=" + res.response_data.pay_arr.prepayid;

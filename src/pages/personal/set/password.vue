@@ -154,14 +154,14 @@ export default {
           if (res.hasOwnProperty("response_code")) {
             // store 设置登录状态
             this.$store.commit("changeLoginState", 1);
-            localStorage.setItem("loginState", 1);
+            if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
             this.$toast("密码设置成功~");
             this.$router.push("/login/index");
           } else {
             if (res.hasOwnProperty("error_code") && res.error_code == 100) {
               // store 设置登录状态
               this.$store.commit("changeLoginState", 100);
-              localStorage.setItem("loginState", 100);
+              localStorage.setItem("loginState", 0);
             }
             this.$toast(res.error_message);
           }
@@ -176,14 +176,14 @@ export default {
           if (res.hasOwnProperty("response_code")) {
             // store 设置登录状态
             this.$store.commit("changeLoginState", 1);
-            localStorage.setItem("loginState", 1);
+            if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
             this.$toast("密码修改成功~");
             this.$router.push("/login/index");
           } else {
             if (res.hasOwnProperty("error_code") && res.error_code == 100) {
               // store 设置登录状态
               this.$store.commit("changeLoginState", 100);
-              localStorage.setItem("loginState", 100);
+              localStorage.setItem("loginState", 0);
             }
             this.$toast(res.error_message);
           }

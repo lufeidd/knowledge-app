@@ -564,7 +564,6 @@ export default {
           } else {
             _length = tempArray1.length;
           }
-          // console.log(999,_length)
           for (var k = 0; k < _length; k++) {
             // if (tempArray1[check_goods[k]]) {
             //   tempArray2.push(check_goods[k]);

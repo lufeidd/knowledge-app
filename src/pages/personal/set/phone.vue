@@ -59,6 +59,7 @@
           <van-button slot="button" size="large" round type="danger" @click="submitAction">提交</van-button>
         </template>
       </div>
+    </div>
 
       <div class="bottomBox" v-if="pageType == 'old'" :class="{ iphx: this.isIphx }">
         <template v-if="submitData.disabled">
@@ -68,7 +69,6 @@
           <van-button size="large" type="danger" @click="newPhone">下一步</van-button>
         </template>
       </div>
-    </div>
     <CopyRight></CopyRight>
   </div>
 </template>
@@ -211,7 +211,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        localStorage.setItem("loginState", 1);
+        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
 
         this.$toast("手机号更改成功~");
         this.$router.push("/personal/set/index");
@@ -219,7 +219,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 100);
+          localStorage.setItem("loginState", 0);
         }
         this.$toast(res.error_message);
       }

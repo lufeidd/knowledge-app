@@ -440,10 +440,10 @@ export default new Router({
       name: 'set',
       component: set,
       //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
-      beforeEnter: (to, from, next) => {
-        from.path == '/personal/set/info' ? next('/personal/index') : next();
-        from.path == '/personal/set/phone' ? next('/personal/index') : next();
-      },
+      // beforeEnter: (to, from, next) => {
+      //   from.path == '/personal/set/info' ? next('/personal/index') : next();
+      //   from.path == '/personal/set/phone' ? next('/personal/index') : next();
+      // },
       meta: {
         title: '设置',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
@@ -454,9 +454,9 @@ export default new Router({
       name: 'address',
       component: address,
       //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
-      beforeEnter: (to, from, next) => {
-        from.path == '/personal/set/index' ? next('/personal/index') : next();
-      },
+      // beforeEnter: (to, from, next) => {
+      //   from.path == '/personal/set/index' ? next('/personal/index') : next();
+      // },
       meta: {
         title: '我的收货地址',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
@@ -517,9 +517,9 @@ export default new Router({
       name: 'setpassword',
       component: setpassword,
       //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
-      beforeEnter: (to, from, next) => {
-        from.path == '/login/index' ? next('/personal/index') : next();
-      },
+      // beforeEnter: (to, from, next) => {
+      //   from.path == '/login/index' ? next('/personal/index') : next();
+      // },
       meta: {
         title: '',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
@@ -756,9 +756,9 @@ export default new Router({
         title: '订单确认',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       },
-      beforeEnter: (to, from, next) => {
-        from.path == '/pay/index' ? next('/personal/index') : next();
-      },
+      // beforeEnter: (to, from, next) => {
+      //   from.path == '/pay/index' ? next('/personal/index') : next();
+      // },
     },
     // 订单商品确认
     {
@@ -791,9 +791,9 @@ export default new Router({
         requireAuth: true, // 需要登录才能进入的页面可以增加一个meta属性
       },
       //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
-      beforeEnter: (to, from, next) => {
-        from.path == '/pay/success' ? next('/personal/index') : next();
-      },
+      // beforeEnter: (to, from, next) => {
+      //   from.path == '/pay/success' ? next('/personal/index') : next();
+      // },
     },
     {
       path: '/pay/success',
@@ -832,7 +832,10 @@ export default new Router({
     {
       path: '/library/detail',
       name: 'librarydetail',
-      component: librarydetail
+      component: librarydetail,
+      // meta: {
+      //   requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      // },
     },
     // 兑换活动
     {

@@ -140,8 +140,9 @@ Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
   next();
   // 存放页面来源地址
-  if (from.path != to.path) { next();
-    if(from.path == '/') {
+  if (from.path != to.path) {
+    next();
+    if (from.path == '/') {
       localStorage.setItem('fromLink', to.path); next();
     } else {
       localStorage.setItem('fromLink', from.path); next();
@@ -152,7 +153,6 @@ router.beforeEach((to, from, next) => {
   // 同类页面跳转执行页面刷新
   if (from.path.toLocaleLowerCase() == '/custompage' && from.path.toLocaleLowerCase() == to.path.toLocaleLowerCase()) {
     window.location.reload();
-    // console.log(9999, from.path, to.path)
     next();
   }
   next();
@@ -166,33 +166,32 @@ router.beforeEach((to, from, next) => {
   // 重定向功能，为解决ios微信上复制链接功能不能复制到动态路由问题
   // 获取地址前段部分，不算参数
   var replaceUrl = window.location.href.split('#')[0] + '#' + to.path;
+  // 存放来源地址，如果未登录，进入登录页或者第三方绑定页不修改fromLink，回退到指定页面
   var index = 0; // 索引初始化
+  // loginState 1: 已登录，0：未登录
+  if(!localStorage.getItem('loginState')) localStorage.setItem('loginState', 0)
   var token = parseInt(localStorage.getItem('loginState'));
   // const isLogin = store.state.isLogin;
   next()
-  // 如果页面需要登录才跳转，未登录跳转到登录页
+  // 判断页面是否需要登录，未登录则引导跳转到登录页
   if (to.meta.requireAuth) {
-    console.log('token:', token)
     next();
     // 非当前页面刷新，判断是否登录，未登录跳转到登录页面
     // 个人中心页面除个人中心首页其他页面当前刷新未登录都需要跳转到登录页面
     if (from.name != null || (from.name == null && to.name != 'personalIndex')) {
-
       // 判断是否登录过，如果有登陆过，说明有token,或者token未过期，可以跳过登录（2）
       // 未登录跳转到登录页面
-      if (!token || token == 100) {
+      if (token != 1) {
         replaceUrl = window.location.href.split('#')[0] + '#' + '/login/index';
-
         next();
       } else {
-        //如果该路由不需要验证，那么直接往后走          
+        //如果该路由已登录，那么直接往后走     
         next();
       }
       next();
     }
     next();
   }
-
   next()
   // 给replaceUrl拼接参数
   for (var i in to.query) {
@@ -234,7 +233,6 @@ router.beforeEach((to, from, next) => {
           next()
         }
       }
-
       next()
     }
   } else {
@@ -243,10 +241,22 @@ router.beforeEach((to, from, next) => {
   next()
 
   localStorage.setItem('routerLink', replaceUrl);
+  next()
+
+  // 不需要登录的页面，如果未登录，进入登录页或者第三方绑定页不修改defaultLink，回退到指定页面
+  if(!localStorage.getItem('defaultLink')) {
+    localStorage.setItem('defaultLink', window.location.href.split('#')[0] + '#' + '/personal/index');
+    next();
+  }
+  if (!to.meta.requireAuth && token != 1 && to.name != 'login' && to.name != 'register' && to.name != 'password' && to.name != 'prototype' && to.name != 'setphone' && to.name != 'bindphone') {
+    // 记录未登录跳转到登录页原页面，用来登录后回退
+    localStorage.setItem('defaultLink', localStorage.getItem('routerLink'));
+    next();
+  }
+
+  next()
   window.location.replace(replaceUrl); // 重定向跳转
 })
-
-console.log('main');
 
 /* eslint-disable no-new */
 new Vue({

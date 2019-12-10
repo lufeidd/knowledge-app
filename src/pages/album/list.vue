@@ -167,7 +167,8 @@ export default {
       albumPic__: ""
     };
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
     // 打开播放列表
     closeAudioList() {
@@ -252,7 +253,7 @@ export default {
 
       // 临时存放节目进度
       this.progressList = [];
-      if (result.length > 0) {
+      if (result != null && result.length > 0) {
         for (let i = 0; i < this.programList.length; i++) {
           this.progressList.push(this.programList[i]);
           // console.log(this.programList[i])
