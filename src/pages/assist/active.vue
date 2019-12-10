@@ -1,4 +1,3 @@
-<script src="../../plugin/index.js"></script>
 <template>
   <div id="activePage" :style="{'background-color':bgcolor}">
     <div class="active-bg">
@@ -433,20 +432,14 @@
           this.$toast(res.error_message);
         }
       },
-      //页面分享信息获取方法
-      pageShareInfo () {
-        if (this.isWxLogin) this.$getWxShareData("assist/index", JSON.stringify({
-          launch_id: this.activityData.base.launch_id,
-          activity_id: this.activity_id
-        }));
-      },//页面分享信息获取方法
+      // 页面分享信息获取方法
       pageShareInfo () {
         if (this.isWxLogin) this.$getWxShareData("assist/index", JSON.stringify({
           launch_id: this.activityData.base.launch_id,
           activity_id: this.activity_id
         }));
       },
-      //开启助力点击
+      // 开启助力点击
       async startHelp () {
         var tStamp = this.$getTimeStamp();
         var data = {
@@ -535,16 +528,21 @@
       //领取奖励
       receiveAwardes (item,index) {
         if (item.state == 2) {
-          this.$toast("已领取");
+          if (item.traget_url) {
+            window.location.href = item.traget_url;
+          }
         } else if (item.state == 1) {
-          this.addressShow(index);
+          if (this.activityData.base.user_id != 0) {
+            this.addressShow(index);
+          }
         } else if (item.state == 0 && this.activityData.base.launch_id != 0) {
-          this.$toast("还差"+ (item.goal_num - item.curr_num) +"人助力");
+          if (item.traget_url) {
+            window.location.href = item.traget_url;
+          }
         } else if (item.state == 0 && this.activityData.base.launch_id == 0) {
-          this.$toast("需"+ (item.goal_num - item.curr_num) +"人助力");
-        }
-        if (item.traget_url) {
-          window.location.href = item.traget_url;
+          if (item.traget_url) {
+            window.location.href = item.traget_url;
+          }
         }
       },
       changeHtml (content) {
