@@ -101,7 +101,7 @@
       </div>
       <div class="filePackageUrl">
         <div class="urlLink">{{ this.url }}</div>
-        <van-button slot="button" size="small" round class="copyBtn" @click="copyUrl">复制</van-button>
+        <van-button slot="button" size="small" round class="copyBtn" v-clipboard:copy="(this.url)" v-clipboard:success="copyUrl" v-clipboard:error="onError">复制</van-button>
       </div>
     </van-popup>
     <Loading :isLoading="isLoading"></Loading>
@@ -329,7 +329,12 @@ export default {
     },
     // 点击自动复制内容
     copyUrl () {
-      const input = document.createElement('input');
+      this.$message({
+        message: `链接复制成功！`,
+        type: 'success'
+      });
+      this.snackBar.info(this.$t('prompt.copySuccess'))
+      /*const input = document.createElement('input');
       document.body.appendChild(input);
       input.setAttribute('value', this.url);
       input.select();
@@ -337,7 +342,10 @@ export default {
         document.execCommand('copy')
       }
       document.body.removeChild(input);
-      this.$toast("链接复制成功");
+      this.$toast("链接复制成功");*/
+    },
+    onError () {
+      this.$message.error(this.$t('prompt.copyFail'))
     }
   }
 }
