@@ -97,14 +97,32 @@ export default {
     getLoginData() {
       // this.$router.push({name:"couponreceive"});
       sessionStorage.setItem("gotoLogin", "no");
+      // 微信
       sessionStorage.setItem("isWxLogin", "no");
+      // ios
+      sessionStorage.setItem("isIosLogin", "no");
+      // android
+      sessionStorage.setItem("isAndroidLogin", "no");
       // console.log(111,Number(localStorage.getItem("get_count")))
 
-      // 未授权时微信端访问授权页面
-      if (
+      var u = navigator.userAgent,
+        app = navigator.appVersion;
+      var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+      var _wx =
         window.navigator.userAgent.toLowerCase().match(/MicroMessenger/i) ==
-        "micromessenger"
-      ) {
+        "micromessenger";
+
+      console.log(u, app, _ios, _android);
+      if (_ios) {
+        // ios
+        sessionStorage.setItem("isIosLogin", "yes");
+      } else if (_android) {
+        // android
+        sessionStorage.setItem("isAndroidLogin", "yes");
+      } else if (_wx) {
+        // 微信
+        // 未授权时微信端访问授权页面
         sessionStorage.setItem("isWxLogin", "yes");
         if (
           localStorage.getItem("openid") == "undefined" ||

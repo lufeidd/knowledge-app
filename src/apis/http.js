@@ -12,10 +12,10 @@ var app_version = sessionStorage.getItem("isWxLogin") == "yes" ? 'weixin' : 'wap
 var open_id = localStorage.getItem('openid');
 var instance = axios.create({
     // dev
-    baseURL: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis',
+    // baseURL: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis',
 
     // run build
-    // baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
+    baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
 
     headers: { 'App-version': app_version, 'unique-code': open_id },
     // responseType: 'blob',    // 测试发票下载
@@ -32,10 +32,11 @@ instance.interceptors.request.use(function (config) {
         if (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/index') != -1 || localStorage.getItem('routerLink').indexOf('/library/detail') != -1) {
             window.location.href = window.location.href.split('#')[0] + '#/404?msg=请在微信端打开~';
         }
-        // 引导app端打开
-        // if() {
-        //     window.location.href = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
-        // }
+       // 引导app端打开
+       //  if(localStorage.getItem('routerLink').indexOf('/redeem/codeInput') != -1 ) {
+       //      window.location.href = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
+       //  }
+
     }
 
     return config;
