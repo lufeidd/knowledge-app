@@ -3,10 +3,10 @@
     <div class="top_bg"></div>
     <h3 class="title">兑换失败</h3>
     <p class="content">
-      活动已经结束！
+      {{this.errorMsg}}
     </p>
     <div class="button_wrapper">
-      <van-button type="primary" color="#F05654" @click="">重新兑换</van-button>
+      <van-button type="primary" color="#F05654" @click="toIndexPage">返回首页</van-button>
     </div>
     <!--<img src="./../../../assets/redeem/fail.png" alt="">-->
   </div>
@@ -17,20 +17,21 @@
     name: "fail",
     data() {
       return {
-
+        errorMsg: ''
       };
     },
     methods: {
+      toIndexPage() {
+        this.$router.push({name: 'personalIndex'});
+      }
     },
     created() {
-      this.$toast({
-        icon: './../../../assets/redeem/failed-line.png',
-        message: '兑换失败'
-      });
+      this.errorMsg = this.$route.query.errorMsg;
+      // console.log(this.errorMsg);
     }
   }
 </script>
 
-<style src="@/style/scss/pages/redeem/result/fail.scss" lang="sass">
+<style src="@/style/scss/pages/redeem/result/appFail.scss" lang="sass">
 
 </style>

@@ -1,22 +1,23 @@
 <template>
-  <div id="wapSuccessPage">
+  <div id="failPage">
     <div class="top_bg"></div>
-    <h3 class="title">兑换成功</h3>
+    <h3 class="title">兑换失败</h3>
     <p class="content">
-      恭喜您获得商品名“{{goodsName}}”快打开火把知识App，点击<span class="content_title">“我的-我的购买"</span>查看吧！
+      {{this.errorMsg}}
     </p>
     <div class="button_wrapper">
       <van-button type="primary" color="#F05654" @click="download">打开火把知识App</van-button>
     </div>
+    <!--<img src="./../../../assets/redeem/fail.png" alt="">-->
   </div>
 </template>
 
 <script>
   export default {
-    name: "wap-success",
+    name: "fail",
     data() {
       return {
-        goodsName: ''
+        errorMsg: ''
       };
     },
     methods: {
@@ -37,11 +38,12 @@
       }
     },
     created() {
-      this.goodsName = this.$route.query.goodsName;
+      this.errorMsg = this.$route.query.errorMsg;
+      // console.log(this.errorMsg);
     }
   }
 </script>
 
-<style src="@/style/scss/pages/redeem/result/wapSuccess.scss" lang="scss">
+<style src="@/style/scss/pages/redeem/result/wapFail.scss" lang="sass">
 
 </style>

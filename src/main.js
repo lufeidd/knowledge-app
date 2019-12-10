@@ -15,6 +15,9 @@ import 'swiper/dist/css/swiper.css'
 // cropper
 import VueCropper from 'vue-cropper'
 
+//clipboard
+import VueClipboard from 'vue-clipboard2'
+
 // 加密方式
 import JsEncrypt from 'jsencrypt'
 
@@ -61,7 +64,7 @@ import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
   Cell, CellGroup,
   Icon, Popup, DatetimePicker, SwipeCell, Dialog,
-  Actionsheet,
+  // Actionsheet,
   AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle,
   Tab, Tabs,
   GoodsAction,
@@ -89,7 +92,7 @@ Vue.use(Popup)
 Vue.use(DatetimePicker)
 Vue.use(SwipeCell)
 Vue.use(Dialog)
-Vue.use(Actionsheet)
+// Vue.use(Actionsheet)
 Vue.use(AddressEdit)
 Vue.use(Lazyload)
 Vue.use(SwitchCell)
@@ -98,7 +101,7 @@ Vue.use(Tag)
 Vue.use(Tab).use(Tabs)
 Vue.use(Circle)
 Vue.use(GoodsAction)
-Vue.use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
+// Vue.use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
 Vue.use(Step).use(Steps)
 Vue.use(List)
 Vue.use(Stepper)
@@ -122,6 +125,9 @@ Vue.use(VueAwesomeSwiper)
 // cropper
 Vue.use(VueCropper)
 
+// clipboard
+Vue.use(VueClipboard)
+
 // JSEncrypt
 // Vue.prototype.$jsEncrypt = JsEncrypt
 
@@ -138,6 +144,7 @@ Vue.config.productionTip = false
 
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
+
   next();
   // 存放页面来源地址
   if (from.path != to.path) {
@@ -169,11 +176,10 @@ router.beforeEach((to, from, next) => {
   // 存放来源地址，如果未登录，进入登录页或者第三方绑定页不修改fromLink，回退到指定页面
   var index = 0; // 索引初始化
   // loginState 1: 已登录，0：未登录
-  if(!localStorage.getItem('loginState')) localStorage.setItem('loginState', 0)
+  if (!localStorage.getItem('loginState')) localStorage.setItem('loginState', 0)
   var token = parseInt(localStorage.getItem('loginState'));
   // const isLogin = store.state.isLogin;
   next()
-  
   // 判断页面是否需要登录，未登录则引导跳转到登录页
   if (to.meta.requireAuth) {
     next();
@@ -245,7 +251,7 @@ router.beforeEach((to, from, next) => {
   next()
 
   // 不需要登录的页面，如果未登录，进入登录页或者第三方绑定页不修改defaultLink，回退到指定页面
-  if(!localStorage.getItem('defaultLink')) {
+  if (!localStorage.getItem('defaultLink')) {
     localStorage.setItem('defaultLink', window.location.href.split('#')[0] + '#' + '/personal/index');
     next();
   }
@@ -255,8 +261,20 @@ router.beforeEach((to, from, next) => {
     next();
   }
 
+  // 针对未调用接口页面引导app端打开
+  // 网页端跳转 404 页面
+  next();
+  // 引导app端打开
+  if (sessionStorage.getItem("isWxLogin") == "no" && to.path == '/redeem/codeInput') {
+    replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
+
+    next();
+  }
+
   next()
   window.location.replace(replaceUrl); // 重定向跳转
+
+
 })
 
 /* eslint-disable no-new */

@@ -15,12 +15,18 @@
     margin: 0 auto;
     margin-top: 38px;
     width: 345px;
+    @media screen and (device-width: 320px) {
+      width: 295px;
+    }
     background: #F5F5F5;
   }
   .validate_num {
     display: inline-block;
     margin-top: 10px;
       width: 215px;
+      @media screen and (device-width: 320px) {
+        width: 165px;
+      }
       background: #F5F5F5;
   }
   .validate_image {
@@ -45,10 +51,16 @@
     margin: 0 auto;
     margin-top: 53px;
     width: 345px;
+    @media screen and (device-width: 320px) {
+      width: 295px;
+    }
     .van-button--primary {
       width: 345px;
       height: 40px;
       border-radius: 3px;
+      @media screen and (device-width: 320px) {
+        width: 295px;
+      }
       .van-button__text {
         font-size: 15px;
         font-family: PingFang SC;
