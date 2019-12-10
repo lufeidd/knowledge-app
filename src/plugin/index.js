@@ -855,7 +855,7 @@ export default {
       return __json;
     }
 
-    //跳转App链接
+    // 跳转App链接，微信端引导跳转app下载
     Vue.prototype.$linkToApp = function () {
       var u = navigator.userAgent,
         app = navigator.appVersion;
@@ -870,5 +870,7 @@ export default {
           "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
       }
     }
+
+    // 
   }
 }

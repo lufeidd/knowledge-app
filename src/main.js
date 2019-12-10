@@ -173,6 +173,7 @@ router.beforeEach((to, from, next) => {
   var token = parseInt(localStorage.getItem('loginState'));
   // const isLogin = store.state.isLogin;
   next()
+  
   // 判断页面是否需要登录，未登录则引导跳转到登录页
   if (to.meta.requireAuth) {
     next();
