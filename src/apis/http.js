@@ -32,10 +32,11 @@ instance.interceptors.request.use(function (config) {
         if (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/index') != -1 || localStorage.getItem('routerLink').indexOf('/library/detail') != -1) {
             window.location.href = window.location.href.split('#')[0] + '#/404?msg=请在微信端打开~';
         }
-        // 引导app端打开
-        // if() {
-        //     window.location.href = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
-        // }
+       // 引导app端打开
+       //  if(localStorage.getItem('routerLink').indexOf('/redeem/codeInput') != -1 ) {
+       //      window.location.href = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
+       //  }
+
     }
 
     return config;

@@ -43,6 +43,9 @@
         width: 160px;
         height: 40px;
         border-radius: 5px;
+        @media screen and (device-width: 320px) {
+          width: 130px;
+        }
       }
       .van-button--primary {
         margin: 35px 25px 0 0;

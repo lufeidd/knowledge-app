@@ -11,17 +11,24 @@
   }
   .header_wrapper {
     padding: 15px;
+    .picture {
+      display: inline-block;
+      width: 80px;
+      height: 80px;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
     .content {
       display: inline-block;
       margin-left: 12px;
-      .author {
+      .title {
         font-size: 16px;
         font-family: PingFang SC;
         font-weight: 500;
         color: #000000;
         line-height: 34px;
       }
-      .title {
+      .sub_title {
         font-size: 14px;
         font-family: PingFang SC;
         font-weight: 500;
