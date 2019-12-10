@@ -108,6 +108,9 @@ cnpm install weixin-js-sdk --save-dev
 // vue 集中式存储和管理应用程序中所有组件的状态
 cnpm install vuex --save
 
+// 复制粘贴板
+cnpm install --save vue-clipboard2
+
 cnpm install
 
 cnpm run dev

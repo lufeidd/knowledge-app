@@ -265,15 +265,18 @@ router.beforeEach((to, from, next) => {
   // 网页端跳转 404 页面
   next();
   // 引导app端打开
-  if (sessionStorage.getItem("isWxLogin") == "no" && to.path == '/redeem/codeInput') {
-    replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
+  if (sessionStorage.getItem("isIosLogin") == "no" && sessionStorage.getItem("isAndroidLogin") == "no") {
+    next();
+    if (to.path == '/redeem/codeInput') {
+      replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
+      next();
+    }
 
     next();
   }
 
   next()
   window.location.replace(replaceUrl); // 重定向跳转
-
 
 })
 
