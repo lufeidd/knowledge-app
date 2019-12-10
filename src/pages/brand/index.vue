@@ -315,7 +315,7 @@ export default {
             this.programFinished = true;
             this.currentPage = 1;
           }
-        }, 500);
+        }, 1);
       } else {
         this.$toast(res.error_message);
       }

@@ -412,7 +412,7 @@ export default {
             this.programFinished = true;
             this.page = 1;
           }
-        }, 500);
+        }, 1);
 
         // 获取页面分享信息
         var _pageName = "";

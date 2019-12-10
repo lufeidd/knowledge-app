@@ -213,6 +213,7 @@ export default {
         mobile: this.phone,
         auth_code: this.code,
         pwd: this.password,
+        source_url: localStorage.getItem('defaultLink'),
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -222,7 +223,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        localStorage.setItem("loginState", 1);
+        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
 
         this.$router.push({ name: "personalIndex", query: data });
         console.log(res);
@@ -230,7 +231,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 100);
+          localStorage.setItem("loginState", 0);
         }
         this.$toast(res.error_message);
       }

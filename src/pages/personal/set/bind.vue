@@ -73,6 +73,7 @@ export default {
         type: 2,
         timestamp: tStamp,
         openid: localStorage.getItem('openid'),
+        source_url: localStorage.getItem("defaultLink"),
         version: "1.0"
       };
       data.sign = this.$getSign(data);

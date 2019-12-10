@@ -3,7 +3,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
 const state = {
-    isLogin: 100,   // 100未登录，1已登录
+    isLogin: 100,   // 0未登录，1已登录
 }
 const getters = {   //实时监听state值的变化(最新状态)
     getLoginState(state) {  //方法名随意,主要是来承载变化的showFooter的值

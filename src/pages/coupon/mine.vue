@@ -11,12 +11,12 @@
       >
         <van-tab :title="'未使用（'+notUse+'）'">
           <van-list
-            v-model="programLoading1"
-            :finished="programFinished1"
+            v-model="programLoading"
+            :finished="programFinished"
             finished-text="已经到底了~"
-            @load="programLoad1"
+            @load="programLoad"
           >
-            <div class="content" v-for="(item,index) in couponList1" :key="index">
+            <div class="content" v-for="(item,index) in couponList" :key="index">
               <!-- 可使用 -->
               <div class="toUse" @click="toresult(item,index)">
                 <div class="left"></div>
@@ -65,12 +65,12 @@
         </van-tab>
         <van-tab title="已使用">
           <van-list
-            v-model="programLoading2"
-            :finished="programFinished2"
+            v-model="programLoading"
+            :finished="programFinished"
             finished-text="已经到底了~"
-            @load="programLoad2"
+            @load="programLoad"
           >
-            <div class="content" v-for="(item,index) in couponList2" :key="index">
+            <div class="content" v-for="(item,index) in couponList" :key="index">
               <div class="toUse isused" @click="toresult(item,index)">
                 <div class="left"></div>
                 <div class="mid">
@@ -114,12 +114,12 @@
         </van-tab>
         <van-tab title="已过期">
           <van-list
-            v-model="programLoading3"
-            :finished="programFinished3"
+            v-model="programLoading"
+            :finished="programFinished"
             finished-text="已经到底了~"
-            @load="programLoad3"
+            @load="programLoad"
           >
-            <div class="content" v-for="(item,index) in couponList3" :key="index">
+            <div class="content" v-for="(item,index) in couponList" :key="index">
               <div class="toUse overdue" @click="toresult(item,index)">
                 <div class="left"></div>
                 <div class="mid">
@@ -218,21 +218,13 @@ import { USER_TICKET_GETS } from "../../apis/coupon.js";
 export default {
   data() {
     return {
-      programLoading1: false,
-      programFinished1: false,
-      programLoading2: false,
-      programFinished2: false,
-      programLoading3: false,
-      programFinished3: false,
+      programLoading: false,
+      programFinished: false,
       activekey: 0,
       notUse: 0,
       priceSort: true,
-      page1: 1,
-      page2: 1,
-      page3: 1,
-      couponList1: [],
-      couponList2: [],
-      couponList3: [],
+      page: 1,
+      couponList: [],
       coupon_state: 1
     };
   },
@@ -243,108 +235,54 @@ export default {
     // 点击tab页切换
     tabChange(index) {
       this.activekey = index;
-    },
-    programLoad1() {
-      this.getList1();
-    },
-    programLoad2() {
-      this.getList2();
-    },
-    programLoad3() {
-      this.getList3();
-    },
-    async getList1() {
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        version: "1.0",
-        page: this.page1,
-        state: 1
-      };
-      data.sign = this.$getSign(data);
-      let res = await USER_TICKET_GETS(data);
-      if (res.hasOwnProperty("response_code")) {
-        this.notUse = res.response_data.total_count;
-        // 异步更新数据
-        var result = res.response_data.result;
-        setTimeout(() => {
-        for (let i = 0; i < result.length; i++) {
-          this.couponList1.push(result[i]);
-        }
-        // 加载状态结束
-        this.programLoading1 = false;
-        this.page1++;
-
-        // 数据全部加载完成
-        if (this.page1 > res.response_data.total_page) {
-          this.programFinished1 = true;
-          this.page1 = 1;
-        }
-        }, 600);
-      } else {
-        this.$toast(res.error_message);
+      if (this.activekey == 0) {
+        this.coupon_state = 1;
+      } else if (this.activekey == 1) {
+        this.coupon_state = 2;
+      } else if (this.activekey == 2) {
+        this.coupon_state = 4;
+      }
+      this.couponList = [];
+      this.page = 1;
+      this.programLoading = true; //下拉加载中
+      this.programFinished = false; //下拉结束
+      if (this.programLoading) {
+        this.programLoad();
       }
     },
-    async getList2() {
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        version: "1.0",
-        page: this.page2,
-        state: 2
-      };
-      data.sign = this.$getSign(data);
-      let res = await USER_TICKET_GETS(data);
-      if (res.hasOwnProperty("response_code")) {
-
-        // 异步更新数据
-        var result = res.response_data.result;
-        setTimeout(() => {
-        for (let i = 0; i < result.length; i++) {
-          this.couponList2.push(result[i]);
-        }
-        // 加载状态结束
-        this.programLoading2 = false;
-        this.page2++;
-
-        // 数据全部加载完成
-        if (this.page2 > res.response_data.total_page) {
-          this.programFinished2 = true;
-          this.page2 = 1;
-        }
-        }, 600);
-      } else {
-        this.$toast(res.error_message);
-      }
+    programLoad() {
+      this.getList();
     },
-    async getList3() {
+    async getList() {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
         version: "1.0",
-        page: this.page3,
-        state: 4
+        page: this.page,
+        state: this.coupon_state
       };
       data.sign = this.$getSign(data);
       let res = await USER_TICKET_GETS(data);
       if (res.hasOwnProperty("response_code")) {
-
+        if (this.coupon_state == 0) {
+          this.notUse = res.response_data.total_count;
+        }
         // 异步更新数据
         var result = res.response_data.result;
-        setTimeout(() => {
-        for (let i = 0; i < result.length; i++) {
-          this.couponList3.push(result[i]);
-        }
-        // 加载状态结束
-        this.programLoading3 = false;
-        this.page3++;
+        // setTimeout(() => {
+          for (let i = 0; i < result.length; i++) {
+            this.couponList.push(result[i]);
+          }
+          // 加载状态结束
+          this.programLoading = false;
+          this.page++;
 
-        // 数据全部加载完成
-        if (this.page3 > res.response_data.total_page) {
-          this.programFinished3 = true;
-          this.page3 = 1;
-        }
-        }, 600);
+          // 数据全部加载完成
+          if (this.page > res.response_data.total_page) {
+            this.programFinished = true;
+            this.page = 1;
+          }
+        // }, 1);
       } else {
         this.$toast(res.error_message);
       }
@@ -359,19 +297,7 @@ export default {
       });
     },
     receiveMore() {
-      // window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
-      var u = navigator.userAgent,
-        app = navigator.appVersion;
-      var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-      var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
-      console.log(u, app, _ios, _android);
-      if (_ios) {
-        window.location.href =
-          "https://apps.apple.com/cn/app/%E7%81%AB%E6%8A%8A%E7%9F%A5%E8%AF%86/id1473766311";
-      } else if (_android) {
-        window.location.href =
-          "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
-      }
+      this.$linkToApp();
     },
     count_time(endtime) {
       var time1 = new Date(endtime);

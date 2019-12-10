@@ -2098,7 +2098,6 @@ export default {
     // load
     recommendLoad() {
       this.recommendData();
-      console.log(999, this.activeKey);
     },
     async recommendData() {
       var tStamp = this.$getTimeStamp();

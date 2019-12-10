@@ -27,9 +27,18 @@ instance.interceptors.request.use(function (config) {
     config.credentials = true;
 
     // 网页端跳转 404 页面
-    if (sessionStorage.getItem("isWxLogin") == "no" && (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/index') != -1 || localStorage.getItem('routerLink').indexOf('/library/detail') != -1)) {
-        window.location.href = window.location.href.split('#')[0] + '#/404';
+    if (sessionStorage.getItem("isWxLogin") == "no") {
+        // 微信支付/需要微信端打开，引导微信内打开
+        if (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/index') != -1 || localStorage.getItem('routerLink').indexOf('/library/detail') != -1) {
+            window.location.href = window.location.href.split('#')[0] + '#/404?msg=请在微信端打开~';
+        }
+       // 引导app端打开
+       //  if(localStorage.getItem('routerLink').indexOf('/redeem/codeInput') != -1 ) {
+       //      window.location.href = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
+       //  }
+
     }
+
     return config;
 }, function (error) {
     // 对请求错误做些什么

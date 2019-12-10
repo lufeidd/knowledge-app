@@ -479,7 +479,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        localStorage.setItem("loginState", 1);
+        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
 
         this.goodsInfo = res.response_data.goods_info;
         this.payBank = res.response_data.pay_bank;
@@ -515,7 +515,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 100);
+          localStorage.setItem("loginState", 0);
         }
         this.$toast(res.error_message);
       }
@@ -599,8 +599,6 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await CASHIER_PAY_ADD(data);
-
-      console.log(999, res.response_data);
 
       if (res.hasOwnProperty("response_code")) {
         // var _package = "prepay_id=" + res.response_data.pay_arr.prepayid;
@@ -747,7 +745,6 @@ export default {
           } else {
             _length = tempArray1.length;
           }
-          // console.log(999,_length)
           for (var k = 0; k < _length; k++) {
             // if (tempArray1[check_goods[k]]) {
             //   tempArray2.push(check_goods[k]);

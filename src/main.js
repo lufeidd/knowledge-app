@@ -64,11 +64,11 @@ import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
   Cell, CellGroup,
   Icon, Popup, DatetimePicker, SwipeCell, Dialog,
-  ActionSheet,
+  // Actionsheet,
   AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle,
   Tab, Tabs,
   GoodsAction,
-  // GoodsActionBigBtn, GoodsActionMiniBtn,
+  GoodsActionBigBtn, GoodsActionMiniBtn,
   Step, Steps,
   List, Stepper, SubmitBar,
   Swipe, SwipeItem,
@@ -92,7 +92,7 @@ Vue.use(Popup)
 Vue.use(DatetimePicker)
 Vue.use(SwipeCell)
 Vue.use(Dialog)
-Vue.use(ActionSheet)
+// Vue.use(Actionsheet)
 Vue.use(AddressEdit)
 Vue.use(Lazyload)
 Vue.use(SwitchCell)
@@ -144,115 +144,138 @@ Vue.config.productionTip = false
 
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
-  next();
-  // 存放页面来源地址
-  if (from.path != to.path) { next();
-    if(from.path == '/') {
-      localStorage.setItem('fromLink', to.path); next();
-    } else {
-      localStorage.setItem('fromLink', from.path); next();
-    }
-    next();
-  }
-  next();
-  // 同类页面跳转执行页面刷新
-  if (from.path.toLocaleLowerCase() == '/custompage' && from.path.toLocaleLowerCase() == to.path.toLocaleLowerCase()) {
-    window.location.reload();
-    // console.log(9999, from.path, to.path)
-    next();
-  }
-  next();
-  /* 路由发生变化修改页面 title */
-  if (to.meta.title) {
-    document.title = to.meta.title;
-    next()
-  }
-  next()
 
-  // 重定向功能，为解决ios微信上复制链接功能不能复制到动态路由问题
-  // 获取地址前段部分，不算参数
-  var replaceUrl = window.location.href.split('#')[0] + '#' + to.path;
-  var index = 0; // 索引初始化
-  var token = parseInt(localStorage.getItem('loginState'));
-  // const isLogin = store.state.isLogin;
-  next()
-  // 如果页面需要登录才跳转，未登录跳转到登录页
-  if (to.meta.requireAuth) {
-    console.log('token:', token)
-    next();
-    // 非当前页面刷新，判断是否登录，未登录跳转到登录页面
-    // 个人中心页面除个人中心首页其他页面当前刷新未登录都需要跳转到登录页面
-    if (from.name != null || (from.name == null && to.name != 'personalIndex')) {
-
-      // 判断是否登录过，如果有登陆过，说明有token,或者token未过期，可以跳过登录（2）
-      // 未登录跳转到登录页面
-      if (!token || token == 100) {
-        replaceUrl = window.location.href.split('#')[0] + '#' + '/login/index';
-
+      next();
+      // 存放页面来源地址
+      if (from.path != to.path) {
         next();
-      } else {
-        //如果该路由不需要验证，那么直接往后走          
+        if (from.path == '/') {
+          localStorage.setItem('fromLink', to.path); next();
+        } else {
+          localStorage.setItem('fromLink', from.path); next();
+        }
         next();
       }
       next();
-    }
-    next();
-  }
-
-  next()
-  // 给replaceUrl拼接参数
-  for (var i in to.query) {
-    // 判断是否等于第一个参数
-    if (index == 0) {
-      // 拼接地址第一个参数，添加“?”号
-      replaceUrl += '?' + i + '=' + to.query[i];
-    } else {
-      // 拼接地址非第一个参数，添加“&”号
-      replaceUrl += '&' + i + '=' + to.query[i];
-    }
-    index++; // 索引++
-  }
-  next()
-  //判断该页面有 brand_id
-  if (from.query.brand_id) {
-    // 路由切换时，如果没有就添加，有就跳过执行，添加固定参数
-    if (!to.query.brand_id) {
-      next()
-      // 朋友圈   from=timeline&isappinstalled=0
-      // 微信群   from=groupmessage&isappinstalled=0
-      // 好友分享 from=singlemessage&isappinstalled=0
-      if (replaceUrl.indexOf('timeline') != -1 || replaceUrl.indexOf('groupmessage') != -1 || replaceUrl.indexOf('singlemessage') != -1) {
+      // 同类页面跳转执行页面刷新
+      if (from.path.toLocaleLowerCase() == '/custompage' && from.path.toLocaleLowerCase() == to.path.toLocaleLowerCase()) {
+        window.location.reload();
+        next();
+      }
+      next();
+      /* 路由发生变化修改页面 title */
+      if (to.meta.title) {
+        document.title = to.meta.title;
         next()
-        if (replaceUrl.split('#')[1].indexOf("?") != -1) {
-          replaceUrl += '&brand_id=' + from.query.brand_id;
-          next()
+      }
+      next()
+
+      // 重定向功能，为解决ios微信上复制链接功能不能复制到动态路由问题
+      // 获取地址前段部分，不算参数
+      var replaceUrl = window.location.href.split('#')[0] + '#' + to.path;
+      // 存放来源地址，如果未登录，进入登录页或者第三方绑定页不修改fromLink，回退到指定页面
+      var index = 0; // 索引初始化
+      // loginState 1: 已登录，0：未登录
+      if(!localStorage.getItem('loginState')) localStorage.setItem('loginState', 0)
+      var token = parseInt(localStorage.getItem('loginState'));
+      // const isLogin = store.state.isLogin;
+      next()
+      // 判断页面是否需要登录，未登录则引导跳转到登录页
+      if (to.meta.requireAuth) {
+        next();
+        // 非当前页面刷新，判断是否登录，未登录跳转到登录页面
+        // 个人中心页面除个人中心首页其他页面当前刷新未登录都需要跳转到登录页面
+        if (from.name != null || (from.name == null && to.name != 'personalIndex')) {
+          // 判断是否登录过，如果有登陆过，说明有token,或者token未过期，可以跳过登录（2）
+          // 未登录跳转到登录页面
+          if (token != 1) {
+            replaceUrl = window.location.href.split('#')[0] + '#' + '/login/index';
+            next();
+          } else {
+            //如果该路由已登录，那么直接往后走     
+            next();
+          }
+          next();
+        }
+        next();
+      }
+      next()
+      // 给replaceUrl拼接参数
+      for (var i in to.query) {
+        // 判断是否等于第一个参数
+        if (index == 0) {
+          // 拼接地址第一个参数，添加“?”号
+          replaceUrl += '?' + i + '=' + to.query[i];
         } else {
-          replaceUrl += '?brand_id=' + from.query.brand_id;
+          // 拼接地址非第一个参数，添加“&”号
+          replaceUrl += '&' + i + '=' + to.query[i];
+        }
+        index++; // 索引++
+      }
+      next()
+      //判断该页面有 brand_id
+      if (from.query.brand_id) {
+        // 路由切换时，如果没有就添加，有就跳过执行，添加固定参数
+        if (!to.query.brand_id) {
+          next()
+          // 朋友圈   from=timeline&isappinstalled=0
+          // 微信群   from=groupmessage&isappinstalled=0
+          // 好友分享 from=singlemessage&isappinstalled=0
+          if (replaceUrl.indexOf('timeline') != -1 || replaceUrl.indexOf('groupmessage') != -1 || replaceUrl.indexOf('singlemessage') != -1) {
+            next()
+            if (replaceUrl.split('#')[1].indexOf("?") != -1) {
+              replaceUrl += '&brand_id=' + from.query.brand_id;
+              next()
+            } else {
+              replaceUrl += '?brand_id=' + from.query.brand_id;
+              next()
+            }
+          } else {
+            next()
+            if (replaceUrl.indexOf("?") != -1) {
+              replaceUrl += '&brand_id=' + from.query.brand_id;
+              next()
+            } else {
+              replaceUrl += '?brand_id=' + from.query.brand_id;
+              next()
+            }
+          }
           next()
         }
       } else {
         next()
-        if (replaceUrl.indexOf("?") != -1) {
-          replaceUrl += '&brand_id=' + from.query.brand_id;
-          next()
-        } else {
-          replaceUrl += '?brand_id=' + from.query.brand_id;
-          next()
-        }
+      }
+      next()
+
+      localStorage.setItem('routerLink', replaceUrl);
+      next()
+
+      // 不需要登录的页面，如果未登录，进入登录页或者第三方绑定页不修改defaultLink，回退到指定页面
+      if(!localStorage.getItem('defaultLink')) {
+        localStorage.setItem('defaultLink', window.location.href.split('#')[0] + '#' + '/personal/index');
+        next();
+      }
+      if (!to.meta.requireAuth && token != 1 && to.name != 'login' && to.name != 'register' && to.name != 'password' && to.name != 'prototype' && to.name != 'setphone' && to.name != 'bindphone') {
+        // 记录未登录跳转到登录页原页面，用来登录后回退
+        localStorage.setItem('defaultLink', localStorage.getItem('routerLink'));
+        next();
       }
 
-      next()
-    }
-  } else {
+    // 针对未调用接口页面引导app端打开
+    // 网页端跳转 404 页面
+      next();
+      // 引导app端打开
+      if (sessionStorage.getItem("isWxLogin") == "no" && to.path == '/redeem/codeInput') {
+        replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
+
+        next();
+      }
+
     next()
-  }
-  next()
-
-  localStorage.setItem('routerLink', replaceUrl);
   window.location.replace(replaceUrl); // 重定向跳转
-})
 
-console.log('main');
+
+})
 
 /* eslint-disable no-new */
 new Vue({

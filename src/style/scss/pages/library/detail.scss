@@ -128,7 +128,7 @@
         align-items: center;
         padding: 15px;
         border-bottom: 1px solid #f0f0f0;
-        a{
+        .fileText{
           display: flex;
           justify-content: center;
           align-items: center;
@@ -160,38 +160,54 @@
 
   //email弹窗事件
   .emailPopup{
-    width: 69.67%;
-    height: 18%;
+    /*width: 86.67%;
+    height: 30%;*/
+    width: 86.67%;
+    height: 200px;
     border-radius: 5px;
     padding: 25px 10px 0;
     overflow: hidden;
     top: 150px;
     position: absolute;
+    .text{
+      font-family:PingFang SC;
+      font-weight:500;
+      color: #333333;
+      span{
+        color: #999999;
+      }
+    }
+    .close{
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 13px;
+      color: #999;
+    }
     .van-cell{
       border-bottom: 1px solid #e6e6e6;
+      padding: 10px 15px 10px 0;
     }
-    .button{
+    .send{
+      background: #efefef;
+      color: #999999;
+    }
+    .filePackageUrl{
       display: flex;
-      justify-content: center;
       align-items: center;
-      margin-top: 10px;
-      .close{
-        color: #333333;
-        font-size: 14px;
+      line-height: 40px;
+      padding: 0 15px 0 0;
+      .urlLink{
         flex-grow: 1;
-        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #666666;
       }
-      .send{
-        background: #F05654;
-        border-radius:28px;
-        width:90px;
-        height:28px;
-        text-align: center;
-        line-height: 28px;
-        span{
-          color: #ffffff;
-          font-size: 14px;
-        }
+      .copyBtn{
+        flex-shrink: 0;
+        background: #F45856;
+        color: #ffffff;
       }
     }
   }
