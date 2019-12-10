@@ -276,10 +276,12 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.is_Login = res.response_data.is_login;
+        if(res.response_data.hasOwnProperty('is_login')) if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
         if (res.response_data.is_login == 1) {
           this.cartData();
         }
       } else {
+        localStorage.setItem("loginState", 0);
         this.$toast(res.error_message);
       }
     },

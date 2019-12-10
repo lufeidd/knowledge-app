@@ -102,14 +102,17 @@ export default {
         }
         if (res.response_data.exist == 1) {
           // brand_id等信息
-          var route = window.location.href.split('#')[1];
-          var query = '';
-          if (route.indexOf('?') != -1) {
-            query = '?' + route.split('?')[1];
-          }
-          window.location.href = window.location.protocol + "//" + window.location.hostname + '/#/personal/index' + query;
+          // var route = window.location.href.split('#')[1];
+          // var query = '';
+          // if (route.indexOf('?') != -1) {
+          //   query = '?' + route.split('?')[1];
+          // }
+          // window.location.href = window.location.protocol + "//" + window.location.hostname + '/#/personal/index' + query;
+
+          // 微信第三方登录回退到指定页面defaultLink
+          window.location.href = localStorage.getItem("defaultLink");
+
           this.wxCodeStr = '';
-          // console.log('from:', replaceUrl);
         }
       } else {
         this.$toast(res.error_message);

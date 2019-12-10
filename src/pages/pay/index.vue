@@ -84,7 +84,6 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await CASHIER_PAY_ADD(data);
-      console.log(999, res.response_data);
       if (res.hasOwnProperty("response_code")) {
         // var _package = "prepay_id=" + res.response_data.pay_arr.prepayid;
         console.log(

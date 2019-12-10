@@ -495,7 +495,6 @@ export default {
      */
     openAnswer(__type, comment_id) {
       // 未登录跳转至登录页
-      console.log(999, this.isLogin);
       if (this.isLogin == 0) {
         this.$router.push({ name: "login", params: {} });
         this.$toast("用户未登录!");

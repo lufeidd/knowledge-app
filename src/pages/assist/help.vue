@@ -460,6 +460,7 @@ export default {
         outer_name: localStorage.getItem("nickname"),
         header_pic: localStorage.getItem("headimg"),
         openid: localStorage.getItem("openid"),
+        source_url: localStorage.getItem("defaultLink"),
         version: "1.0",
         timestamp: tStamp
       };

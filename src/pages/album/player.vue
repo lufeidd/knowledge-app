@@ -25,7 +25,6 @@
     <!-- 音频播放器 -->
     <audio
       id="musicPlayer"
-      @canplay="audioCanPlay"
       :src="baseData.file_path"
       preload="load"
       @ended="onEnded"
@@ -153,7 +152,6 @@ export default {
       info[8] = this.$route.query.goods_id;
       // 专辑图片
       info[9] = this.album_info.pic;
-      console.log(123, item.progress)
       localStorage.setItem("miniAudio", JSON.stringify(info));
     },
     // 获取专辑/商品接口信息
@@ -185,9 +183,6 @@ export default {
       // 关联播放列表
       this.listData(this.activeGoodNo, true);
     },
-    audioCanPlay() {
-      // this.$toast("can play");
-    },
     // 清除倒计时
     clearClock() {
       // 播放结束后销毁倒计时
@@ -211,16 +206,17 @@ export default {
     audioStatus(_status) {
       var audio = document.getElementById("musicPlayer");
       // if (audio.canPlayType("audio/mpeg") == "probably") {
-      this.playStatus = _status;
-      if (_status) {
-        audio.pause();
-      } else {
-        audio.play();
-      }
-      var second = parseInt(audio.currentTime);
-      this.audioTimeChange(second, _status);
+        this.playStatus = _status;
+        if (_status) {
+          audio.pause();
+        } else {
+          audio.play();
+        }
+        var second = parseInt(audio.currentTime);
+        console.log("当前播放时间：", second);
+        this.audioTimeChange(second, _status);
       // } else {
-      //   this.$toast('音频加载中...');
+      //   this.$toast("音频加载中...");
       // }
     },
     // 播放中倒计时
@@ -238,10 +234,11 @@ export default {
           clearInterval(this.clock);
         } else {
           second++;
+          audio.currentTime = second;
           this.currentTime__ = this.todate(second);
           // 绑定slider
           this.audiobindtoslider(second);
-          // console.log("倒计时：", second);
+          console.log("倒计时：", second);
         }
       }, 1000);
       // 音频实时播放进度，每5s更新
@@ -291,7 +288,7 @@ export default {
       // 如果是非专辑，则传入goods_id
       var _pid = this.$route.query.pid;
       var _goodsId = this.$route.query.goods_id;
-      if (_pid == null || _pid == 'NaN') {
+      if (_pid == null || _pid == "NaN") {
         _pid = this.$route.query.goods_id;
         _goodsId = null;
       }
@@ -386,7 +383,7 @@ export default {
 
     // 播放结束
     onEnded() {
-      this.$toast("end");
+      // this.$toast("end");
       this.clearClock();
       var audio = document.getElementById("musicPlayer");
       // 重置
