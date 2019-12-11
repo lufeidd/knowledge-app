@@ -705,7 +705,8 @@ export default new Router({
       component: couponmine,
       meta: {
         keepAlive: false,  // false不需要被缓存，true需要缓存
-        title: '我的优惠券'
+        title: '我的优惠券',
+        requireAuth: true
       },
     },
     {
@@ -746,6 +747,7 @@ export default new Router({
       component: groupdetail,
       meta: {
         title: '拼团详情',
+        requireAuth: true
       }
     },
     // 订单确认
