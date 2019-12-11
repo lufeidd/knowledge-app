@@ -115,7 +115,7 @@
         if (res.error_code == 99) { // 未登录
           this.$router.push({name: 'redeemLogin', params: {goodsItem: JSON.stringify(item)}});
         } else if (res.hasOwnProperty("response_code")) {
-          // console.log(res);
+          console.log(res);
           if (this.isApp()) { // APP
             this.$router.push({name: 'appSuccess', query: {goodsName: this.percentCoupons.title, goodsType: this.couponsDetail.goods_type}});
           } else {  // WAP

@@ -230,9 +230,10 @@
           this.getAddressData();
           this.addressShowPopup = true;
         }else if (res.hasOwnProperty("response_code")) {
-          // console.log(res);
+          console.log(res);
+          let data = res.response_data;
           if (this.isApp()) { // APP
-            this.$router.push({name: 'appSuccess', query: {goodsName: this.percentGoods.title, goodsType: this.goodsDetail.goods_type}});
+            this.$router.push({name: 'appSuccess', query: {goodsName: this.percentGoods.title, resData: data}});
           } else {  //  WAP
             this.$router.push({name: 'wapSuccess', query: {goodsName: this.percentGoods.title}});
           }
