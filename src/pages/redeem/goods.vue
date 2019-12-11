@@ -115,6 +115,7 @@
             item.state = 0; // 已领完
           }
         });
+        this.goodsList = [];
         //  加载
         for (let i = 0; i < list.length; i++) {
           this.goodsList.push(list[i]);
