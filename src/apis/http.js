@@ -10,39 +10,28 @@ import Vue from 'vue';
 // 创建axios的一个实例
 var app_version = sessionStorage.getItem("isWxLogin") == "yes" ? 'weixin' : 'wap';
 var open_id = localStorage.getItem('openid');
-var instance = axios.create({
-    // dev
-    // baseURL: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis',
+var obj = {};
+obj.baseURL = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis';
+// obj.baseURL =  window.location.protocol + "//" + window.location.hostname + '/apis';
+obj.timeout = 15000;
 
-    // run build
-    baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
-
-    headers: { 'App-version': app_version, 'unique-code': open_id },
-    // responseType: 'blob',    // 测试发票下载
-    timeout: 15000,
-})
+// 如果有设置过headers则不设置
+if (sessionStorage.getItem("hasHeader") == "no") {
+    obj.headers = {
+        'App-version': app_version,
+        'unique-code': open_id
+    };
+}
 
 // 一、请求拦截器 忽略
+var instance = axios.create(obj);
 instance.interceptors.request.use(function (config) {
     config.credentials = true;
-
-    // 网页端跳转 404 页面
-    if (sessionStorage.getItem("isWxLogin") == "no") {
-        // 微信支付/需要微信端打开，引导微信内打开
-        if (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/index') != -1 || localStorage.getItem('routerLink').indexOf('/library/detail') != -1) {
-            window.location.href = window.location.href.split('#')[0] + '#/404?msg=请在微信端打开~';
-        }
-       // 引导app端打开
-       //  if(localStorage.getItem('routerLink').indexOf('/redeem/codeInput') != -1 ) {
-       //      window.location.href = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
-       //  }
-
-    }
 
     return config;
 }, function (error) {
     // 对请求错误做些什么
-    // console.log('request error');
+    console.log('request error');
     return Promise.reject(error);
 });
 

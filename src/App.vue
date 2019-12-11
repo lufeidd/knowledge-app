@@ -99,27 +99,25 @@ export default {
       sessionStorage.setItem("gotoLogin", "no");
       // 微信
       sessionStorage.setItem("isWxLogin", "no");
-      // ios
-      sessionStorage.setItem("isIosLogin", "no");
-      // android
-      sessionStorage.setItem("isAndroidLogin", "no");
-      // console.log(111,Number(localStorage.getItem("get_count")))
-
-      var u = navigator.userAgent,
-        app = navigator.appVersion;
-      var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-      var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
-      var _wx =
-        window.navigator.userAgent.toLowerCase().match(/MicroMessenger/i) ==
+      // 针对webview:火把的ios
+      sessionStorage.setItem("isHuobaIosLogin", "no");
+      // 针对webview:火把的Android
+      sessionStorage.setItem("isHuobaAndroidLogin", "no");
+      // 是否设置过头信息
+      sessionStorage.setItem("hasHeader", "no");
+      var u = navigator.userAgent;
+      var _ios = u.toLowerCase().indexOf("huoba:ios:28:108:web") > -1;
+      var _android = u.toLowerCase().indexOf("huoba:android:28:108:web") > -1;
+      var _wx = u.toLowerCase().match(/MicroMessenger/i) ==
         "micromessenger";
-
-      console.log(u, app, _ios, _android);
+      var _hasHeader = u.toLowerCase().indexOf("huoba:") > -1;
+      if(_hasHeader) sessionStorage.setItem("hasHeader", "yes");
       if (_ios) {
-        // ios
-        sessionStorage.setItem("isIosLogin", "yes");
+        // 针对webview:火把的ios
+        sessionStorage.setItem("isHuobaIosLogin", "yes");
       } else if (_android) {
-        // android
-        sessionStorage.setItem("isAndroidLogin", "yes");
+        // 针对webview:火把的Android
+        sessionStorage.setItem("isHuobaAndroidLogin", "yes");
       } else if (_wx) {
         // 微信
         // 未授权时微信端访问授权页面
@@ -135,10 +133,6 @@ export default {
           localStorage.getItem("unionid") == null ||
           localStorage.getItem("headimg") == "null" ||
           localStorage.getItem("headimg") == null
-          //  ||
-          // this.$route.name == "pay" ||
-          // this.$route.name == "payaccount" ||
-          // this.$route.name == "account"
         ) {
           // 微信登录 code
           this.$getWxCode();
@@ -194,14 +188,6 @@ export default {
             this.$toast("未获取到code");
           }
         }
-        console.log(
-          "openid:",
-          localStorage.getItem("openid"),
-          "unionid:",
-          localStorage.getItem("unionid"),
-          "nickname:",
-          localStorage.getItem("nickname")
-        );
       }
     }
   }
