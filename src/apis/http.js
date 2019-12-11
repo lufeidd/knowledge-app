@@ -38,10 +38,6 @@ instance.interceptors.request.use(function (config) {
 // 二、响应拦截器 忽略
 instance.interceptors.response.use(function (response) {
     if (response.status === 200) {
-        // console.log(200);
-        // $('#loadingPage').remove();
-
-        // console.log(localStorage.getItem('routerLink'));
         // 处理请求成功的逻辑
         return response.data; // 必须返回，后面的接口的then，才能获取response
     } else {

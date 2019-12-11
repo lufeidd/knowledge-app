@@ -64,7 +64,7 @@ import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
   Cell, CellGroup,
   Icon, Popup, DatetimePicker, SwipeCell, Dialog,
-  // Actionsheet,
+  Actionsheet,
   AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle,
   Tab, Tabs,
   GoodsAction,
@@ -92,7 +92,7 @@ Vue.use(Popup)
 Vue.use(DatetimePicker)
 Vue.use(SwipeCell)
 Vue.use(Dialog)
-// Vue.use(Actionsheet)
+Vue.use(Actionsheet)
 Vue.use(AddressEdit)
 Vue.use(Lazyload)
 Vue.use(SwitchCell)
@@ -101,7 +101,7 @@ Vue.use(Tag)
 Vue.use(Tab).use(Tabs)
 Vue.use(Circle)
 Vue.use(GoodsAction)
-// Vue.use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
+Vue.use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
 Vue.use(Step).use(Steps)
 Vue.use(List)
 Vue.use(Stepper)
@@ -141,6 +141,32 @@ Vue.prototype.$md5 = md5;
 Vue.use(VueCookies)
 
 Vue.config.productionTip = false
+
+
+/*
+
+全局路由特殊情况处理
+
+1、只能在微信端打开的页面
+  meta: {
+    isWxLogin: true
+  }
+
+2、只能在app端打开的页面
+  meta: {
+    isAppLogin: true
+  } 
+
+3、必须登录才能访问的页面
+  meta: {
+    requireAuth: true
+  }
+
+4、不需要登录进入的页面，未登录状态，有触发到需要登录的动作，需要回退到原路径
+  localStorage.getItem("defaultLink")
+
+*/
+
 
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
