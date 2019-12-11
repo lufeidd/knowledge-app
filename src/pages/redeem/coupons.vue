@@ -72,15 +72,18 @@
         }
 
         let list = this.couponsDetail.goods_list;
+        // console.log(list);
         list.forEach((item) => {
           if (item.goods_num == item.used_num) {
             item.state = 0; // 已领完
           }
         });
+        this.couponsList = [];
         //  加载
         for (let i = 0; i < list.length; i++) {
           this.couponsList.push(list[i]);
         }
+        // console.log(this.couponsList);
         // 加载状态结束
         this.couponsLoading = false;
 
@@ -128,12 +131,12 @@
       },
       // 是否是APP
       isApp() {
-        var u = navigator.userAgent,
-          app = navigator.appVersion;
-        var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-        var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
-        console.log(u, app, _ios, _android);
-        if (_ios || _android) {
+        // var u = navigator.userAgent,
+        //   app = navigator.appVersion;
+        // var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        // var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+        // console.log(u, app, _ios, _android);
+        if (sessionStorage.getItem("isHuobaIosLogin") == "yes" || sessionStorage.getItem("isHuobaAndroidLogin") == "yes") {
           return true;
         } else {
           return false;
