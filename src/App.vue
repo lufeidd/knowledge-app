@@ -97,11 +97,11 @@ export default {
     getLoginData() {
       // this.$router.push({name:"couponreceive"});
       sessionStorage.setItem("gotoLogin", "no");
-      // 微信
+      // 微信端
       sessionStorage.setItem("isWxLogin", "no");
-      // 针对webview:火把的ios
+      // 针对webview:火把的ios端
       sessionStorage.setItem("isHuobaIosLogin", "no");
-      // 针对webview:火把的Android
+      // 针对webview:火把的Android端
       sessionStorage.setItem("isHuobaAndroidLogin", "no");
       // 是否设置过头信息
       sessionStorage.setItem("hasHeader", "no");
@@ -113,13 +113,13 @@ export default {
       var _hasHeader = u.toLowerCase().indexOf("huoba:") > -1;
       if(_hasHeader) sessionStorage.setItem("hasHeader", "yes");
       if (_ios) {
-        // 针对webview:火把的ios
+        // 针对webview:火把的ios端
         sessionStorage.setItem("isHuobaIosLogin", "yes");
       } else if (_android) {
-        // 针对webview:火把的Android
+        // 针对webview:火把的Android端
         sessionStorage.setItem("isHuobaAndroidLogin", "yes");
       } else if (_wx) {
-        // 微信
+        // 微信端
         // 未授权时微信端访问授权页面
         sessionStorage.setItem("isWxLogin", "yes");
         if (

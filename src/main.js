@@ -255,6 +255,7 @@ router.beforeEach((to, from, next) => {
     localStorage.setItem('defaultLink', window.location.href.split('#')[0] + '#' + '/personal/index');
     next();
   }
+  next();
   if (!to.meta.requireAuth && token != 1 && to.name != 'login' && to.name != 'register' && to.name != 'password' && to.name != 'prototype' && to.name != 'setphone' && to.name != 'bindphone') {
     // defaultLink记录未登录跳转到登录页原页面，用来登录后回退
     localStorage.setItem('defaultLink', localStorage.getItem('routerLink'));
@@ -268,7 +269,7 @@ router.beforeEach((to, from, next) => {
   // 需要微信端打开，引导微信内打开
   if (sessionStorage.getItem("isWxLogin") == "no") {
     if (to.meta.isWxLogin) {
-      replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
+      replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在微信端打开~';
       next();
     }
     next();
