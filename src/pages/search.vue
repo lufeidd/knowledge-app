@@ -264,34 +264,37 @@ export default {
     },
     searchItem(item) {
       var data = {};
+      var q = {};
 
       if (this.type == "order") {
         data.name = "orderresult";
-        data.query.type = "order";
-        data.query.searchContent = item.content;
+        q.type = "order";
+        q.searchContent = item.content;
       }
       if (this.type == "brand") {
         data.name = "brandresult";
-        data.query.type = "brand";
-        data.query.searchContent = item.content;
+        q.type = "brand";
+        q.searchContent = item.content;
       }
       if (this.type == "mall") {
         data.name = "brandresult";
-        data.query.type = "mall";
-        data.query.searchContent = item.content;
+        q.type = "mall";
+        q.searchContent = item.content;
         if (this.$route.query.supplier_id != "undefined")
-          data.query.supplier_id = this.$route.query.supplier_id;
+          q.supplier_id = this.$route.query.supplier_id;
       }
       if (this.type == "coupon") {
         data.name = "couponresult";
-        data.query.ticket_id = this.$route.query.ticket_id;
-        data.query.searchContent = item.content;
+        q.ticket_id = this.$route.query.ticket_id;
+        q.searchContent = item.content;
       }
       if (this.type == "multi") {
         data.name = "multiresult";
-        data.query.multi_id = this.$route.query.multi_id;
-        data.query.searchContent = item.content;
+        q.multi_id = this.$route.query.multi_id;
+        q.searchContent = item.content;
       }
+
+      data.query = q;
 
       this.$router.push(data);
     }
