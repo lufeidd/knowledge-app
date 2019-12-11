@@ -131,7 +131,7 @@ export default {
           break;
         case "mall":
           var _query = {};
-          _query.type = "";
+          _query.type = "mall";
           _query.searchContent = this.searchHintData.search;
           if(this.$route.query.supplier_id != "undefined") {
             _query.supplier_id = this.$route.query.supplier_id;
@@ -167,7 +167,7 @@ export default {
           this.$router.push({
             name: "multiresult",
             query: {
-              type: "coupon",
+              type: "multi",
               multi_id: this.$route.query.multi_id,
               searchContent: this.searchHintData.search
             }
@@ -251,16 +251,43 @@ export default {
       });
     },
     hotSearchItem(item) {
-      var queryTmp = {};
-      queryTmp.searchContent = item;
-      queryTmp.type = this.$route.query.type;
-      if (this.$route.query.supplier_id != "undefined")
-        queryTmp.supplier_id = this.$route.query.supplier_id;
+      var data = {};
+      var q = {};
 
-      this.$router.push({
-        name: "brandresult",
-        query: queryTmp
-      });
+      if (this.type == "order") {
+        data.name = "orderresult";
+        q.type = "order";
+        q.searchContent = item.content;
+      }
+      if (this.type == "brand") {
+        data.name = "brandresult";
+        q.type = "brand";
+        q.searchContent = item.content;
+      }
+      if (this.type == "mall") {
+        data.name = "brandresult";
+        q.type = "mall";
+        q.searchContent = item.content;
+        if (this.$route.query.supplier_id != "undefined")
+          q.supplier_id = this.$route.query.supplier_id;
+      }
+      if (this.type == "coupon") {
+        data.name = "couponresult";
+        q.type = "coupon";
+        q.ticket_id = this.$route.query.ticket_id;
+        q.searchContent = item.content;
+      }
+      if (this.type == "multi") {
+        data.name = "multiresult";
+        q.type = "multi";
+        q.multi_id = this.$route.query.multi_id;
+        q.searchContent = item.content;
+      }
+
+      data.query = q;
+
+      this.$router.push(data);
+
     },
     searchItem(item) {
       var data = {};
@@ -285,11 +312,13 @@ export default {
       }
       if (this.type == "coupon") {
         data.name = "couponresult";
+        q.type = "coupon";
         q.ticket_id = this.$route.query.ticket_id;
         q.searchContent = item.content;
       }
       if (this.type == "multi") {
         data.name = "multiresult";
+        q.type = "multi";
         q.multi_id = this.$route.query.multi_id;
         q.searchContent = item.content;
       }
