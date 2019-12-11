@@ -64,7 +64,7 @@ import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
   Cell, CellGroup,
   Icon, Popup, DatetimePicker, SwipeCell, Dialog,
-  // Actionsheet,
+  Actionsheet,
   AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle,
   Tab, Tabs,
   GoodsAction,
@@ -92,7 +92,7 @@ Vue.use(Popup)
 Vue.use(DatetimePicker)
 Vue.use(SwipeCell)
 Vue.use(Dialog)
-// Vue.use(Actionsheet)
+Vue.use(Actionsheet)
 Vue.use(AddressEdit)
 Vue.use(Lazyload)
 Vue.use(SwitchCell)
@@ -101,7 +101,7 @@ Vue.use(Tag)
 Vue.use(Tab).use(Tabs)
 Vue.use(Circle)
 Vue.use(GoodsAction)
-// Vue.use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
+Vue.use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
 Vue.use(Step).use(Steps)
 Vue.use(List)
 Vue.use(Stepper)
@@ -142,6 +142,32 @@ Vue.use(VueCookies)
 
 Vue.config.productionTip = false
 
+
+/*
+
+全局路由特殊情况处理
+
+1、只能在微信端打开的页面
+  meta: {
+    isWxLogin: true
+  }
+
+2、只能在app端打开的页面
+  meta: {
+    isAppLogin: true
+  }
+
+3、必须登录才能访问的页面
+  meta: {
+    requireAuth: true
+  }
+
+4、不需要登录进入的页面，未登录状态，有触发到需要登录的动作，需要回退到原路径
+  localStorage.getItem("defaultLink")
+
+*/
+
+
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
 
@@ -157,7 +183,7 @@ router.beforeEach((to, from, next) => {
     next();
   }
   next();
-  // 同类页面跳转执行页面刷新
+  // 自定义页面跳自定义页面执行刷新动作
   if (from.path.toLocaleLowerCase() == '/custompage' && from.path.toLocaleLowerCase() == to.path.toLocaleLowerCase()) {
     window.location.reload();
     next();
@@ -178,7 +204,6 @@ router.beforeEach((to, from, next) => {
   // loginState 1: 已登录，0：未登录
   if (!localStorage.getItem('loginState')) localStorage.setItem('loginState', 0)
   var token = parseInt(localStorage.getItem('loginState'));
-  // const isLogin = store.state.isLogin;
   next()
   // 判断页面是否需要登录，未登录则引导跳转到登录页
   if (to.meta.requireAuth) {
@@ -247,16 +272,18 @@ router.beforeEach((to, from, next) => {
   }
   next()
 
+  // 记录当前路由
   localStorage.setItem('routerLink', replaceUrl);
-  next()
+  next();
 
   // 不需要登录的页面，如果未登录，进入登录页或者第三方绑定页不修改defaultLink，回退到指定页面
   if (!localStorage.getItem('defaultLink')) {
     localStorage.setItem('defaultLink', window.location.href.split('#')[0] + '#' + '/personal/index');
     next();
   }
+  next();
   if (!to.meta.requireAuth && token != 1 && to.name != 'login' && to.name != 'register' && to.name != 'password' && to.name != 'prototype' && to.name != 'setphone' && to.name != 'bindphone') {
-    // 记录未登录跳转到登录页原页面，用来登录后回退
+    // defaultLink记录未登录跳转到登录页原页面，用来登录后回退
     localStorage.setItem('defaultLink', localStorage.getItem('routerLink'));
     next();
   }
@@ -264,10 +291,21 @@ router.beforeEach((to, from, next) => {
   // 针对未调用接口页面引导app端打开
   // 网页端跳转 404 页面
   next();
-  // 引导app端打开
-  if (sessionStorage.getItem("isIosLogin") == "no" && sessionStorage.getItem("isAndroidLogin") == "no") {
+
+  // 需要微信端打开，引导微信内打开
+  if (sessionStorage.getItem("isWxLogin") == "no") {
+    if (to.meta.isWxLogin) {
+      replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在微信端打开~';
+      next();
+    }
     next();
-    if (to.path == '/redeem/codeInput') {
+  }
+  next();
+
+  // 引导app端打开
+  if (sessionStorage.getItem("isHuobaIosLogin") == "no" && sessionStorage.getItem("isHuobaAndroidLogin") == "no") {
+    next();
+    if (to.meta.isAppLogin) {
       replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
       next();
     }

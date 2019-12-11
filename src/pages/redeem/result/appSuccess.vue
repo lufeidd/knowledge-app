@@ -26,10 +26,13 @@
        switch(this.goodsType) {
          case 1 :
            this.$router.push({name: 'ebookshelf'});
+           break;
          case 2 :
            this.$router.push({name: 'couponmine'});
+           break;
          case 3 :
            this.$router.push({name: 'orderlist'});
+           break;
        }
      }
     },

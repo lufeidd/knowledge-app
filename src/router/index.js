@@ -230,7 +230,8 @@ export default new Router({
       name: 'bindphone',
       component: bindphone,
       meta: {
-        title: '绑定手机号'
+        title: '绑定手机号',
+        // requireAuth: false
       }
     },
     // 个人中心 - 首页
@@ -296,7 +297,8 @@ export default new Router({
       component: account,
       meta: {
         title: '充值',
-        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+        requireAuth: true, // 需要登录才能进入的页面可以增加一个meta属性
+        isWxLogin: true,   // 必须在微信端打开
       }
     },
     {
@@ -780,7 +782,8 @@ export default new Router({
       name: 'pay',
       component: pay,
       meta: {
-        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+        requireAuth: true, // 需要登录才能进入的页面可以增加一个meta属性
+        isWxLogin: true,   // 必须在微信端打开
       },
       //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
     },
@@ -792,6 +795,7 @@ export default new Router({
         keepAlive: false,  // false不需要被缓存，true需要缓存
         title: '结算',
         requireAuth: true, // 需要登录才能进入的页面可以增加一个meta属性
+        isWxLogin: true,   // 必须在微信端打开
       },
       //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
       // beforeEnter: (to, from, next) => {
@@ -836,9 +840,10 @@ export default new Router({
       path: '/library/detail',
       name: 'librarydetail',
       component: librarydetail,
-      // meta: {
-      //   requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
-      // },
+      meta: {
+        //   requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+        isWxLogin: true,        // 必须在微信端打开
+      },
     },
     // 兑换活动
     {
@@ -849,7 +854,11 @@ export default new Router({
     {
       path: '/redeem/codeInput',
       name: 'codeInput',
-      component: codeInput
+      component: codeInput,
+      meta: {
+        //   requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+        isAppLogin: true,       // 必须在app内打开
+      },
     },
     {
       path: '/redeem/straightLinkIndex',

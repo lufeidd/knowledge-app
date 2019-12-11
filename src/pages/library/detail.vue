@@ -101,7 +101,7 @@
       </div>
       <div class="filePackageUrl">
         <div class="urlLink">{{ this.url }}</div>
-        <van-button slot="button" size="small" round class="copyBtn" @click="copyUrl">复制</van-button>
+        <van-button slot="button" size="small" round class="copyBtn" v-clipboard:copy="this.url" v-clipboard:success="copyUrl">复制</van-button>
       </div>
     </van-popup>
     <Loading :isLoading="isLoading"></Loading>
@@ -109,9 +109,19 @@
 </template>
 
 <style src="@/style/scss/pages/library/detail.scss" scoped lang="scss"></style>
+<style>
+  #libraryDetail .input .van-field__control{
+    border-bottom: 1px solid #e6e6e6;
+    padding-bottom: 10px;
+  }
+</style>
 <style lang="scss" scoped>
   #loadingPage{
     background: #f0f0f0!important;
+  }
+  #libraryDetail .emailPopup .van-cell {
+    border-bottom: 0;
+    padding: 10px 0px 10px 0;
   }
 </style>
 <script>
@@ -329,14 +339,6 @@ export default {
     },
     // 点击自动复制内容
     copyUrl () {
-      const input = document.createElement('input');
-      document.body.appendChild(input);
-      input.setAttribute('value', this.url);
-      input.select();
-      if (document.execCommand('copy')) {
-        document.execCommand('copy')
-      }
-      document.body.removeChild(input);
       this.$toast("链接复制成功");
     }
   }
