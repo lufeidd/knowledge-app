@@ -115,9 +115,11 @@
         if (res.error_code == 99) { // 未登录
           this.$router.push({name: 'redeemLogin', params: {goodsItem: JSON.stringify(item)}});
         } else if (res.hasOwnProperty("response_code")) {
+          let data = res.response_data;
           console.log(res);
+            // this.$router.push({name: 'appSuccess', query: {goodsName: this.percentCoupons.title, resData: data}});
           if (this.isApp()) { // APP
-            this.$router.push({name: 'appSuccess', query: {goodsName: this.percentCoupons.title, goodsType: this.couponsDetail.goods_type}});
+            this.$router.push({name: 'appSuccess', query: {goodsName: this.percentCoupons.title, resData: data}});
           } else {  // WAP
             this.$router.push({name: 'wapSuccess', query: {goodsName: this.percentCoupons.title}});
           }
