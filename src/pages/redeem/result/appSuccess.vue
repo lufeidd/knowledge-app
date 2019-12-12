@@ -23,7 +23,7 @@
     },
     methods: {
      toCheck() {
-       this.$toast(this.resData.redeem_goods_type);
+       // this.$toast(this.resData.redeem_goods_type);
        if (this.resData.redeem_goods_type == 1) { //  虚拟
          if (this.resData.goods_type == 4) {  //  电子书
            this.$router.push({name: 'ebookdetail', query: {goods_id: this.resData.goods_id}});
@@ -31,8 +31,8 @@
            this.$router.push({name: 'albumdetail', query: {goods_id: this.resData.goods_id}});
          }
        } else if (this.resData.redeem_goods_type == 2) {  // 优惠券
-         console.log('url', window.location.href);
-         this.$toast(window.location.href);
+         // console.log('url', window.location.href);
+         // this.$toast(window.location.href);
           this.$router.push({name: 'couponmine'});
        } else if (this.resData.redeem_goods_type == 3) {
          this.$router.push({name: 'orderdetail', query: {order_id: this.resData.order_id}});
