@@ -27,7 +27,7 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url)">
+          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -37,7 +37,7 @@
         <div class="showContent">
           <swiper class="swiperTags" :options="swiperOption" ref="mySwiper">
             <swiper-slide v-for="(litem,lindex) in item.content.list" :key="lindex">
-              <div class="slide" @click="linktoDetail(litem.url)">
+              <div class="slide" @click="linktoDetail(litem.url,item.supplier_id)">
                 <div class="ratiobox">
                   <div
                     class="bookImg"
@@ -65,7 +65,7 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url)">
+          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -83,7 +83,7 @@
                 v-for="(litem,lindex) in item.content.list"
                 :key="lindex"
               >
-                <div class="ratiobox" @click="linktoDetail(litem.url)">
+                <div class="ratiobox" @click="linktoDetail(litem.url,item.supplier_id)">
                   <div
                     class="bookImg"
                     :style="{'background-image':'url('+litem.pic+')','padding-bottom':(item.content.list[0].height/item.content.list[0].width)*100+'%','background-size':'cover'}"
@@ -96,7 +96,7 @@
                 v-for="(litem,lindex) in item.content.list"
                 :key="lindex"
               >
-                <div class="ratiobox" @click="linktoDetail(litem.url)">
+                <div class="ratiobox" @click="linktoDetail(litem.url,item.supplier_id)">
                   <div
                     class="bookImg"
                     :style="{'background-image':'url('+litem.pic+')','padding-bottom':(item.content.list[0].height/item.content.list[0].width)*100+'%','background-size':'cover'}"
@@ -109,7 +109,7 @@
                 v-for="(litem,lindex) in item.content.list"
                 :key="lindex"
               >
-                <div class="ratiobox" @click="linktoDetail(litem.url)">
+                <div class="ratiobox" @click="linktoDetail(litem.url,item.supplier_id)">
                   <div
                     class="bookImg"
                     :style="{'background-image':'url('+litem.pic+')','padding-bottom':(item.content.list[0].height/item.content.list[0].width)*100+'%','background-size':'cover'}"
@@ -122,7 +122,7 @@
                 v-for="(litem,lindex) in item.content.list"
                 :key="lindex"
               >
-                <div class="ratiobox" @click="linktoDetail(litem.url)">
+                <div class="ratiobox" @click="linktoDetail(litem.url,item.supplier_id)">
                   <div
                     class="bookImg"
                     :style="{'background-image':'url('+litem.pic+')','padding-bottom':(item.content.list[0].height/item.content.list[0].width)*100+'%','background-size':'cover'}"
@@ -136,7 +136,7 @@
                 v-for="(litem,lindex) in item.content.list"
                 :key="lindex"
               >
-                <div class="ratiobox" @click="linktoDetail(litem.url)">
+                <div class="ratiobox" @click="linktoDetail(litem.url,item.supplier_id)">
                   <div
                     class="bookImg"
                     :style="{'background-image':'url('+litem.pic+')','padding-bottom':(item.content.list[0].height/item.content.list[0].width)*100+'%','border-radius':'3px','background-size':'cover'}"
@@ -155,7 +155,7 @@
                 v-for="(litem,lindex) in item.content.list"
                 :key="lindex"
               >
-                <div class="ratiobox" @click="linktoDetail(litem.url)">
+                <div class="ratiobox" @click="linktoDetail(litem.url,item.supplier_id)">
                   <div
                     class="bookImg"
                     :style="{'background-image':'url('+litem.pic+')','padding-bottom':(item.content.list[0].height/item.content.list[0].width)*100+'%','border-radius':'3px','background-size':'cover'}"
@@ -170,7 +170,7 @@
                 v-for="(litem,lindex) in item.content.list"
                 :key="lindex"
               >
-                <div class="ratiobox" @click="linktoDetail(litem.url)">
+                <div class="ratiobox" @click="linktoDetail(litem.url,item.supplier_id)">
                   <div
                     class="bookImg"
                     :style="{'background-image':'url('+litem.pic+')','padding-bottom':(item.content.list[0].height/item.content.list[0].width)*100+'%','border-radius':'3px','background-size':'cover'}"
@@ -192,7 +192,7 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url)">
+          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -205,7 +205,7 @@
             style="width:100%;margin-top:10px;text-align:center;"
             v-for="(litem,lindex) in item.content.list"
             :key="lindex"
-            @click="linktoDetail(litem.url)"
+            @click="linktoDetail(litem.url,item.supplier_id)"
             v-if="item.content.list.length == 1"
           >
             <img :src="litem.pic" alt width="44px" height="44px" style="border-radius:50%;" />
@@ -216,7 +216,7 @@
             style="width:50%;margin-top:10px;text-align:center;"
             v-for="(litem,lindex) in item.content.list"
             :key="lindex"
-            @click="linktoDetail(litem.url)"
+            @click="linktoDetail(litem.url,item.supplier_id)"
             v-if="item.content.list.length == 2"
           >
             <img :src="litem.pic" alt width="44px" height="44px" style="border-radius:50%;" />
@@ -227,7 +227,7 @@
             style="width:33.33%;margin-top:10px;text-align:center;"
             v-for="(litem,lindex) in item.content.list"
             :key="lindex"
-            @click="linktoDetail(litem.url)"
+            @click="linktoDetail(litem.url,item.supplier_id)"
             v-if="item.content.list.length == 3"
           >
             <img :src="litem.pic" alt width="44px" height="44px" style="border-radius:50%;" />
@@ -238,7 +238,7 @@
             style="width:25%;margin-top:10px;text-align:center;"
             v-for="(litem,lindex) in item.content.list"
             :key="lindex"
-            @click="linktoDetail(litem.url)"
+            @click="linktoDetail(litem.url,item.supplier_id)"
             v-if="item.content.list.length == 4"
           >
             <img :src="litem.pic" alt width="44px" height="44px" style="border-radius:50%;" />
@@ -249,7 +249,7 @@
             style="width:20%;margin-top:10px;text-align:center;"
             v-for="(litem,lindex) in item.content.list"
             :key="lindex"
-            @click="linktoDetail(litem.url)"
+            @click="linktoDetail(litem.url,item.supplier_id)"
             v-if="item.content.list.length == 5"
           >
             <img :src="litem.pic" alt width="44px" height="44px" style="border-radius:50%;" />
@@ -268,7 +268,7 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url)">
+          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -279,7 +279,7 @@
           <swiper class="swiperTags" :options="swiperOption_column" ref="mySwiper">
             <swiper-slide v-for="(litem,lindex) in item.content.list" :key="lindex">
               <div class="slide">
-                <div class="ratiobox" @click="linktoDetail(litem.url)">
+                <div class="ratiobox" @click="linktoDetail(litem.url,item.supplier_id)">
                   <div
                     class="bookImg"
                     :style="{'background-image':'url('+litem.pic+')','padding-bottom':'70.67%','background-size':'cover'}"
@@ -302,7 +302,7 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url)">
+          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -327,7 +327,7 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url)">
+          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -338,7 +338,7 @@
           class="content"
           v-for="(litem,lindex) in item.content.list"
           :key="lindex"
-          @click="linktoDetail(litem.url)"
+          @click="linktoDetail(litem.url,item.supplier_id)"
         >
           <div class="ratiobox">
             <div class="bookImg" v-lazy:background-image="litem.pic"></div>
@@ -357,7 +357,7 @@
         <div
           class="materialTitle"
           v-if="item.is_show_title == 1"
-          @click="linktoDetail(item.more_url)"
+          @click="linktoDetail(item.more_url,item.supplier_id)"
         >
           <div class="text">
             <span class="verticleLine"></span>
@@ -373,7 +373,7 @@
         <div>
           <van-row gutter="20" type="flex" class="ebooklist">
             <van-col span="8" v-for="(litem,lindex) in item.content.list" :key="lindex">
-              <div class="ratiobox" @click="linktoDetail(litem.url)">
+              <div class="ratiobox" @click="linktoDetail(litem.url,item.supplier_id)">
                 <div class="ebookImg" v-lazy:background-image="litem.pic"></div>
               </div>
               <div class="title">{{ litem.title }}</div>
@@ -398,7 +398,7 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url)">
+          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -411,7 +411,7 @@
             class="content"
             v-for="(litem,lindex) in item.content.list"
             :key="lindex"
-            @click="linktoDetail(litem.url)"
+            @click="linktoDetail(litem.url,item.supplier_id)"
           >
             <div class="ratiobox">
               <div class="bookImg" v-lazy:background-image="litem.pic"></div>
@@ -431,7 +431,7 @@
         <div v-if="item.temp_id == 118">
           <van-row gutter="20" type="flex" class="ebooklist">
             <van-col span="8" v-for="(litem,lindex) in item.content.list" :key="lindex">
-              <div class="ratioebox" @click="linktoDetail(litem.url)">
+              <div class="ratioebox" @click="linktoDetail(litem.url,item.supplier_id)">
                 <div class="ebookImg" v-lazy:background-image="litem.pic"></div>
               </div>
               <div class="title">{{ litem.title }}</div>
@@ -451,7 +451,7 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url)">
+          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -461,7 +461,7 @@
         <div>
           <van-row gutter="20" type="flex" class="ebooklist">
             <van-col span="8" v-for="(litem,lindex) in item.content.list" :key="lindex">
-              <div class="ratiobox" @click="linktoDetail(litem.url)">
+              <div class="ratiobox" @click="linktoDetail(litem.url,item.supplier_id)">
                 <div class="ebookImg" v-lazy:background-image="litem.pic"></div>
               </div>
               <div class="title">{{ litem.title }}</div>
@@ -486,7 +486,7 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url)">
+          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -505,7 +505,7 @@
               <div class="materialObject" style="padding:0 15px 15px 15px;">
                 <van-row gutter="20" type="flex" class="ebooklist">
                   <van-col span="8" v-for="(items,indexs) in item.content.list" :key="indexs">
-                    <div class="ratiobox" @click="linktoDetail(items.url)">
+                    <div class="ratiobox" @click="linktoDetail(items.url,item.supplier_id)">
                       <div class="ebookImg" v-lazy:background-image="items.pic"></div>
                     </div>
                     <div class="title">{{items.title}}</div>
@@ -686,11 +686,12 @@ export default {
         this.$toast(res.error_message);
       }
     },
-    linktoDetail(link) {
+    linktoDetail(link,supplierId) {
       var data = this.$translate(JSON.parse(link));
       data.query.type = "mall";
       data.query.title = this.title;
-      console.log(1111, this.$route.query, data.query.page_id);
+      if(JSON.parse(link).action == "page/get") {data.query.supplier_id = supplierId}
+      // console.log(1111,supplierId,data.query.supplier_id, data.query.page_id);return
       // return;
       if (data.name == "") {
         return;
@@ -698,13 +699,13 @@ export default {
         // 网页链接
         window.location.href = data.query.url;
         return;
-      } 
+      }
       // else if (data.name == "custompage") {
       //   // 自定义页面
       //   this.$router.push({
       //     query: merge(this.$route.query, { page_id: data.query.page_id })
       //   });
-      // } 
+      // }
       else {
         this.$router.push(data);
       }
