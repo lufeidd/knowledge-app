@@ -660,10 +660,10 @@ export default {
         document.title = this.page_title;
         this.bgColor = res.response_data.page_info.bgcolor;
         this.supplier_id = res.response_data.supplier_id;
+        this.$route.query.supplier_id = res.response_data.supplier_id;
         this.brand_id = res.response_data.brand_id;
-
         this.module_list = res.response_data.module_list;
-
+        // console.log(888,this.$route.query.supplier_id)
         for (let j = 0; j < this.module_list.length; j++) {
           if (this.module_list[j].module_type == 21) {
             this.bookData = this.module_list[j].content.list;
