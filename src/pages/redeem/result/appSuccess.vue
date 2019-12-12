@@ -23,6 +23,7 @@
     },
     methods: {
      toCheck() {
+       this.$toast(this.resData.redeem_goods_type);
        if (this.resData.redeem_goods_type == 1) { //  虚拟
          if (this.resData.goods_type == 4) {  //  电子书
            this.$router.push({name: 'ebookdetail', query: {goods_id: this.resData.goods_id}});
