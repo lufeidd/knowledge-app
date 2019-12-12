@@ -122,11 +122,7 @@
                   </div>
                 </div>
                 <!-- 电子书 -->
-                <div
-                  class="content ebook"
-                  @click="gotoDetail(item)"
-                  v-if="item.goods_type == 4"
-                >
+                <div class="content ebook" @click="gotoDetail(item)" v-if="item.goods_type == 4">
                   <div class="ratiobox">
                     <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
                   </div>
@@ -137,7 +133,7 @@
                       <span class="good">
                         <!-- <svg class="icon" aria-hidden="true">
                           <use xlink:href="#icon-time-line" />
-                        </svg> -->
+                        </svg>-->
                         <span>{{item.book_author}}</span>
                       </span>
                       <span class="price">
@@ -205,7 +201,7 @@ export default {
       supplier_id: null,
       tagids: null,
       cids: null,
-      isbrand_id:null,
+      isbrand_id: null
     };
   },
   mounted() {
@@ -227,59 +223,11 @@ export default {
     document.title = "搜索结果-" + this.title;
 
     this.getGoodsColum();
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-      }, 100);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
   },
   methods: {
-    // 获取页面分享信息
-    // async wxShareData() {
-    //   var tStamp = this.$getTimeStamp();
-    //   var data = {};
-    //   switch (this.$route.query.type) {
-    //     case "mall":
-    //       var tmp = {};
-    //       tmp.supplier_id = this.$route.query.supplier_id;
-    //       tmp.brand_id = this.$route.query.brand_id;
-    //       if (this.$route.query.searchContent)
-    //         tmp.keywords = this.$route.query.searchContent;
-    //       if (this.$route.query.goods_type)
-    //         tmp.goods_type = this.$route.query.goods_type;
-
-    //       data = {
-    //         page_name: "mall/goods/search",
-    //         params: JSON.stringify(tmp),
-    //         version: "1.0",
-    //         timestamp: tStamp
-    //       };
-    //       break;
-    //     case "brand":
-    //       data = {
-    //         page_name: "brand/goods/search",
-    //         params: JSON.stringify({
-    //           brand_id: this.$route.query.brand_id,
-    //           keywords: this.$route.query.searchContent
-    //         }),
-    //         version: "1.0",
-    //         timestamp: tStamp
-    //       };
-    //       break;
-    //   }
-    //   data.sign = this.$getSign(data);
-    //   let res = await WX_SHARE(data);
-    //   if (res.hasOwnProperty("response_code")) {
-    //     // console.log(res.response_data)
-    //     // 微信分享
-    //     this.$getWxData(
-    //       res.response_data.share_info.title,
-    //       res.response_data.share_info.desc,
-    //       res.response_data.share_info.pic,
-    //       res.response_data.share_info.url
-    //     );
-    //   } else {
-    //     this.$toast(res.error_message);
-    //   }
-    // },
     gotoDetail(item) {
       var goodsType = item.goods_type;
       if (goodsType == 1 || goodsType == 2) {
@@ -366,13 +314,27 @@ export default {
               keywords: this.$route.query.searchContent
             });
             break;
-          // case "index":
-          //   _pageName = "brand/goods/search";
-          //   _params = JSON.stringify({
-          //     brand_id: this.$route.query.brand_id,
-          //     keywords: this.$route.query.searchContent
-          //   });
-          //   break;
+          case "index":
+            _pageName = "brand/goods/search";
+            _params = JSON.stringify({
+              brand_id: this.$route.query.brand_id,
+              keywords: this.$route.query.searchContent
+            });
+            break;
+          case "coupon":
+            _pageName = "brand/goods/search";
+            _params = JSON.stringify({
+              brand_id: this.$route.query.brand_id,
+              keywords: this.$route.query.searchContent
+            });
+            break;
+          case "multi":
+            _pageName = "brand/goods/search";
+            _params = JSON.stringify({
+              brand_id: this.$route.query.brand_id,
+              keywords: this.$route.query.searchContent
+            });
+            break;
         }
         // if (this.isWxLogin) this.wxShareData();
         if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
@@ -385,7 +347,7 @@ export default {
       var data = {
         keywords: this.searchContent,
         goods_type: this.goods_type,
-        brand_id: (this.isbrand_id == 'no') ? 0 :this.$route.query.brand_id,
+        brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
         supplier_id: this.supplier_id,
         tagids: this.tagids,
         cids: this.cids,
@@ -415,30 +377,30 @@ export default {
         }, 1);
 
         // 获取页面分享信息
-        var _pageName = "";
-        var _params = "";
-        switch (this.$route.query.type) {
-          case "mall":
-            var tmp = {};
-            tmp.supplier_id = this.$route.query.supplier_id;
-            tmp.brand_id = this.$route.query.brand_id;
-            if (this.$route.query.searchContent)
-              tmp.keywords = this.$route.query.searchContent;
-            if (this.$route.query.goods_type)
-              tmp.goods_type = this.$route.query.goods_type;
-            _pageName = "mall/goods/search";
-            _params = JSON.stringify(tmp);
-            break;
-          case "brand":
-            _pageName = "brand/goods/search";
-            _params = JSON.stringify({
-              brand_id: this.$route.query.brand_id,
-              keywords: this.$route.query.searchContent
-            });
-            break;
-        }
-        // if (this.isWxLogin) this.wxShareData();
-        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+        // var _pageName = "";
+        // var _params = "";
+        // switch (this.$route.query.type) {
+        //   case "mall":
+        //     var tmp = {};
+        //     tmp.supplier_id = this.$route.query.supplier_id;
+        //     tmp.brand_id = this.$route.query.brand_id;
+        //     if (this.$route.query.searchContent)
+        //       tmp.keywords = this.$route.query.searchContent;
+        //     if (this.$route.query.goods_type)
+        //       tmp.goods_type = this.$route.query.goods_type;
+        //     _pageName = "mall/goods/search";
+        //     _params = JSON.stringify(tmp);
+        //     break;
+        //   case "brand":
+        //     _pageName = "brand/goods/search";
+        //     _params = JSON.stringify({
+        //       brand_id: this.$route.query.brand_id,
+        //       keywords: this.$route.query.searchContent
+        //     });
+        //     break;
+        // }
+        // // if (this.isWxLogin) this.wxShareData();
+        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
       } else {
         this.$toast(res.error_message);
       }

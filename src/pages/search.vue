@@ -97,12 +97,8 @@ export default {
     this.type = this.$route.query.type;
     this.searchHintData.type = this.$route.query.type;
 
-    // console.log(this.type);
     this.getHotKey();
     this.getLocalItem();
-    // console.log(123, history.length);
-    // let len = history.length;
-    // history.go(-(len-1));
   },
   methods: {
     clear() {
@@ -134,13 +130,15 @@ export default {
           this.saveItem();
           break;
         case "mall":
+          var _query = {};
+          _query.type = "mall";
+          _query.searchContent = this.searchHintData.search;
+          if(this.$route.query.supplier_id != "undefined") {
+            _query.supplier_id = this.$route.query.supplier_id;
+          }
           this.$router.push({
             name: "brandresult",
-            query: {
-              type: "mall",
-              supplier_id: this.$route.query.supplier_id,
-              searchContent: this.searchHintData.search
-            }
+            query: _query
           });
           this.saveItem();
           break;
@@ -149,7 +147,6 @@ export default {
             name: "brandresult",
             query: {
               type: "index",
-              // supplier_id: this.$route.query.supplier_id,
               searchContent: this.searchHintData.search
             }
           });
@@ -170,7 +167,7 @@ export default {
           this.$router.push({
             name: "multiresult",
             query: {
-              type: "coupon",
+              type: "multi",
               multi_id: this.$route.query.multi_id,
               searchContent: this.searchHintData.search
             }
@@ -180,9 +177,8 @@ export default {
       }
     },
     onSearch() {
-      console.log($('#searchHint').find('input').blur());
       if (
-        this.searchHintData.search.trim() == "" ||
+        this.searchHintData.search.trim() == '' ||
         this.searchHintData.search.length == 0
       ) {
         this.$toast("请输入您要搜索的内容！");
@@ -199,7 +195,7 @@ export default {
         this.searchTo("index");
       } else if (this.type == "coupon") {
         this.searchTo("coupon");
-      }else if (this.type == "multi") {
+      } else if (this.type == "multi") {
         this.searchTo("multi");
       } else {
         this.$toast("请输入您要搜索的内容！");
@@ -215,7 +211,6 @@ export default {
       let res = await SEARCH_HOTKEY_GETS(data);
       if (res.hasOwnProperty("response_code")) {
         this.hotSearch = res.response_data;
-        // console.log(res);
       } else {
         this.$toast(res.error_message);
       }
@@ -245,7 +240,6 @@ export default {
       this.list = list;
     },
     toResult(item) {
-      console.log(item);
       // return;
       this.$router.push({
         name: "orderresult",
@@ -257,66 +251,81 @@ export default {
       });
     },
     hotSearchItem(item) {
-      console.log(item);
-      var queryTmp = {};
-      queryTmp.searchContent = item;
-      queryTmp.type = this.$route.query.type;
-      if (this.$route.query.supplier_id)
-        queryTmp.supplier_id = this.$route.query.supplier_id;
+      var data = {};
+      var q = {};
 
-      this.$router.push({
-        name: "brandresult",
-        query: queryTmp
-      });
-    },
-    searchItem(item) {
-      console.log(item);
       if (this.type == "order") {
-        this.$router.push({
-          name: "orderresult",
-          query: {
-            type: "order",
-            searchContent: item.content
-          }
-        });
+        data.name = "orderresult";
+        q.type = "order";
+        q.searchContent = item.content;
       }
       if (this.type == "brand") {
-        this.$router.push({
-          name: "brandresult",
-          query: {
-            type: "brand",
-            searchContent: item.content
-          }
-        });
+        data.name = "brandresult";
+        q.type = "brand";
+        q.searchContent = item.content;
       }
       if (this.type == "mall") {
-        this.$router.push({
-          name: "brandresult",
-          query: {
-            type: "mall",
-            supplier_id: this.$route.query.supplier_id,
-            searchContent: item.content
-          }
-        });
+        data.name = "brandresult";
+        q.type = "mall";
+        q.searchContent = item.content;
+        if (this.$route.query.supplier_id != "undefined")
+          q.supplier_id = this.$route.query.supplier_id;
       }
       if (this.type == "coupon") {
-        this.$router.push({
-          name: "couponresult",
-          query: {
-            ticket_id: this.$route.query.ticket_id,
-            searchContent: item.content
-          }
-        });
+        data.name = "couponresult";
+        q.type = "coupon";
+        q.ticket_id = this.$route.query.ticket_id;
+        q.searchContent = item.content;
       }
       if (this.type == "multi") {
-        this.$router.push({
-          name: "multiresult",
-          query: {
-            multi_id: this.$route.query.multi_id,
-            searchContent: item.content
-          }
-        });
+        data.name = "multiresult";
+        q.type = "multi";
+        q.multi_id = this.$route.query.multi_id;
+        q.searchContent = item.content;
       }
+
+      data.query = q;
+
+      this.$router.push(data);
+
+    },
+    searchItem(item) {
+      var data = {};
+      var q = {};
+
+      if (this.type == "order") {
+        data.name = "orderresult";
+        q.type = "order";
+        q.searchContent = item.content;
+      }
+      if (this.type == "brand") {
+        data.name = "brandresult";
+        q.type = "brand";
+        q.searchContent = item.content;
+      }
+      if (this.type == "mall") {
+        data.name = "brandresult";
+        q.type = "mall";
+        q.searchContent = item.content;
+        if (this.$route.query.supplier_id != "undefined")
+          q.supplier_id = this.$route.query.supplier_id;
+      }
+      if (this.type == "coupon") {
+        data.name = "couponresult";
+        q.type = "coupon";
+        q.ticket_id = this.$route.query.ticket_id;
+        q.searchContent = item.content;
+      }
+      if (this.type == "multi") {
+        data.name = "multiresult";
+        q.type = "multi";
+        q.multi_id = this.$route.query.multi_id;
+        q.searchContent = item.content;
+      }
+
+      data.query = q;
+
+      this.$router.push(data);
     }
   }
 };

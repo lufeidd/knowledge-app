@@ -11,8 +11,13 @@ import Vue from 'vue';
 var app_version = sessionStorage.getItem("isWxLogin") == "yes" ? 'weixin' : 'wap';
 var open_id = localStorage.getItem('openid');
 var obj = {};
-obj.baseURL = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis';
-// obj.baseURL =  window.location.protocol + "//" + window.location.hostname + '/apis';
+
+// run dev
+// obj.baseURL = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis';
+
+// run build
+obj.baseURL =  window.location.protocol + "//" + window.location.hostname + '/apis';
+
 obj.timeout = 15000;
 
 // 如果有设置过headers则不设置
