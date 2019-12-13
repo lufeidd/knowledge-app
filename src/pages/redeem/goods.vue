@@ -1,11 +1,14 @@
 <template>
-  <div id="redeemGoodsPage">
-    <van-list
+  <div id="redeemGoodsPage" :style="{'background-color':goodsDetail.colour.bg?goodsDetail.colour.bg:''}">
+    <!-- <van-list
       v-model="goodsLoading"
       :finished="goodsFinished"
       finished-text="没有更多了"
       @load="goodsLoad"
-    >
+    > -->
+      <div class="propaganda" v-if="goodsDetail.pic">
+        <img :src="goodsDetail.pic" alt="">
+      </div>
       <div
         class="goods_wrapper"
         v-for="item in goodsList"
@@ -31,9 +34,9 @@
         </div>
         <div class="goods_detail">{{item.content}}</div>
       </div>
-    </van-list>
+    <!-- </van-list> -->
     <div class="rule">
-      <p>{{goodsDetail.description}}</p>
+      <p :style="{'color':goodsDetail.colour.text?goodsDetail.colour.text:''}">{{goodsDetail.description}}</p>
     </div>
     <!-- 点击获取地址显示的弹层 -->
     <van-popup v-model="addressShowPopup" class="addressPopup">
@@ -83,14 +86,16 @@
       return {
         code: '0',
         redeem: '',
-        goodsDetail: {},
+        goodsDetail: {
+          colour:{bg:'',text:''}
+        },
         goodsList: [],
-        goodsLoading: false,
-        goodsFinished: false,
+        // goodsLoading: false,
+        // goodsFinished: false,
         addressShowPopup: false,
         addressData: [],
         addressId: 0,
-        percentGoods: {}
+        percentGoods: {},
       };
     },
     methods: {
@@ -106,6 +111,9 @@
         // console.log(res);
         if (res.hasOwnProperty("response_code")) {
           this.goodsDetail = res.response_data;
+          this.goodsDetail.colour = JSON.parse(this.goodsDetail.colour);
+          document.title = this.goodsDetail.page_title?this.goodsDetail.page_title:'火把知识'
+          console.log(this.goodsDetail.colour.bg)
         }
 
         let list = this.goodsDetail.goods_list;
@@ -121,15 +129,12 @@
           this.goodsList.push(list[i]);
         }
         // 加载状态结束
-        this.goodsLoading = false;
+        // this.goodsLoading = false;
 
         // 数据全部加载完成
         if (this.goodsList.length >= list.length) {
-          this.goodsFinished = true;
+          // this.goodsFinished = true;
         }
-      },
-      goodsLoad() {
-        this.getGoodsDetail();
       },
       goodsRedeem(item) {
         if (item != undefined) {
@@ -263,7 +268,7 @@
       this.redeem = this.$route.params.redeem;
     },
     mounted() {
-      this.goodsLoad();
+      this.getGoodsDetail();
     }
   }
 </script>
