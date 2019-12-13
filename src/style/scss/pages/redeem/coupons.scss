@@ -15,6 +15,7 @@
   padding:15px;
   .coupons_wrapper {
     position: relative;
+    margin-bottom: 10px;
     .content {
       @include displayFlex(flex, null, null);
       position: relative;
