@@ -99,6 +99,10 @@
         border-radius: 12px;
         margin-top: 10px;
       }
+      .van-button--disabled{
+        opacity: 1;
+        background-color: #f69a98;
+      }
       .right_radio,.left_radio{
         display: inline-block;
         width:20px;
