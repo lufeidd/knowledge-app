@@ -15,18 +15,15 @@
   padding:15px;
   .coupons_wrapper {
     position: relative;
-    // margin: 0 auto;
-    // margin-top: 10px;
-    // width: 345px;
-    // height: 230px;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    @include bgImageOne('./../../../../assets/redeem/frame2');
     .content {
-      padding-left: 10px;
-      div {
-        display: inline-block;
-      }
+      @include displayFlex(flex, null, null);
+      position: relative;
+      padding:15px 10px;
+      border-radius: 5px 5px 0 0;
+      background-color: #FFF;
+      border: 1px dashed #FFE5E5;
+      border-width:0 0 1px 0;
+
       .denomination {
         margin-right: 10px;
         vertical-align: top;
@@ -38,14 +35,15 @@
           color: #F05654;
         }
         .amount {
-          font-size: 44px;
-          font-family: PingFang SC;
+          font-size: 30px;
+          font-family: PingFangBold;
           font-weight: bold;
           color: #F05654;
         }
       }
       .requirement {
-        margin-top: 18px;
+        @include textOverflow;
+        flex-grow: 1;
         vertical-align: top;
         .state {
           margin-left: 4px;
@@ -68,11 +66,13 @@
         background-size: contain;
         background-repeat: no-repeat;
         @include bgImageOne('./../../../../assets/redeem/nothing_left');
+        position: absolute;
+        right: 56px;
       }
       .redeem_btn {
-        position: absolute;
-        top: 24px;
-        right: 10px;
+        // position: absolute;
+        // top: 35px;
+        // right: 10px;
       }
       .van-button--default {
         padding: 0 5px;
@@ -95,11 +95,30 @@
         line-height: 24px;
         background: #F05654;
         //opacity: 0.6;
+        border:none;
         border-radius: 12px;
+        margin-top: 10px;
       }
+      .van-button--disabled{
+        opacity: 1;
+        background-color: #f69a98;
+      }
+      .right_radio,.left_radio{
+        display: inline-block;
+        width:20px;
+        height:20px;
+        background-color: #F5F5F5;
+        position: absolute;
+        border-radius: 50%;
+        bottom: -10px;
+      }
+      .right_radio{right: -10px;}
+      .left_radio{left: -10px;}
     }
     .goods_list {
       padding:15px;
+      background-color: #FFF;
+      border-radius: 0 0 5px 5px;
       .ratiobox {
         position: relative;
         .bookImg {
