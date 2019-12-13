@@ -18,27 +18,30 @@
     data() {
       return {
         goodsName: '',
-        goodsType: ''
+        resData: {}
       };
     },
     methods: {
      toCheck() {
-       switch(this.goodsType) {
-         case 1 :
-           this.$router.push({name: 'ebookshelf'});
-           break;
-         case 2 :
-           this.$router.push({name: 'couponmine'});
-           break;
-         case 3 :
-           this.$router.push({name: 'orderlist'});
-           break;
+       // this.$toast(this.resData.redeem_goods_type);
+       if (this.resData.redeem_goods_type == 1) { //  虚拟
+         if (this.resData.goods_type == 4) {  //  电子书
+           this.$router.push({name: 'ebookdetail', query: {goods_id: this.resData.goods_id}});
+         } else if (this.resData.goods_type == 9) {
+           this.$router.push({name: 'albumdetail', query: {goods_id: this.resData.goods_id}});
+         }
+       } else if (this.resData.redeem_goods_type == 2) {  // 优惠券
+         // console.log('url', window.location.href);
+         // this.$toast(window.location.href);
+          this.$router.push({name: 'couponmine'});
+       } else if (this.resData.redeem_goods_type == 3) {
+         this.$router.push({name: 'orderdetail', query: {order_id: this.resData.order_id}});
        }
      }
     },
     created() {
       this.goodsName = this.$route.query.goodsName;
-      this.goodsType = this.$route.query.goodsType;
+      this.resData = this.$route.query.resData;
       // console.log(this.goodsType);
     }
   }

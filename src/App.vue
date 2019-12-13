@@ -106,8 +106,8 @@ export default {
       // 是否设置过头信息
       sessionStorage.setItem("hasHeader", "no");
       var u = navigator.userAgent;
-      var _ios = u.toLowerCase().indexOf("huoba:ios:28:108:web") > -1;
-      var _android = u.toLowerCase().indexOf("huoba:android:28:108:web") > -1;
+      var _ios = u.toLowerCase().indexOf("huoba:ios") > -1;
+      var _android = u.toLowerCase().indexOf("huoba:android") > -1;
       var _wx = u.toLowerCase().match(/MicroMessenger/i) ==
         "micromessenger";
       var _hasHeader = u.toLowerCase().indexOf("huoba:") > -1;

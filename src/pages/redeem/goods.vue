@@ -235,9 +235,10 @@
           this.getAddressData();
           this.addressShowPopup = true;
         }else if (res.hasOwnProperty("response_code")) {
-          // console.log(res);
+          console.log(res);
+          let data = res.response_data;
           if (this.isApp()) { // APP
-            this.$router.push({name: 'appSuccess', query: {goodsName: this.percentGoods.title, goodsType: this.goodsDetail.goods_type}});
+            this.$router.push({name: 'appSuccess', query: {goodsName: this.percentGoods.title, resData: data}});
           } else {  //  WAP
             this.$router.push({name: 'wapSuccess', query: {goodsName: this.percentGoods.title}});
           }
@@ -251,12 +252,12 @@
       },
       // 是否是APP
       isApp() {
-        var u = navigator.userAgent,
-          app = navigator.appVersion;
-        var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-        var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
-        console.log(u, app, _ios, _android);
-        if (_ios || _android) {
+        // var u = navigator.userAgent,
+        //   app = navigator.appVersion;
+        // var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        // var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+        // console.log(u, app, _ios, _android);
+        if (sessionStorage.getItem("isHuobaIosLogin") == "yes" || sessionStorage.getItem("isHuobaAndroidLogin") == "yes") {
           return true;
         } else {
           return false;
