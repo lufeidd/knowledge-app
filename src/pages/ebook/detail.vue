@@ -719,7 +719,7 @@
     background: linear-gradient(to right, #f72d3e 100%, #f35636 100%);
     border-radius: 15px 0 0 15px;
     font-size: $fontSize - 2;
-    position: fixed;
+    position: absolute;
     z-index: 99;
     top: 130px;
     right: 0;

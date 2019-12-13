@@ -257,17 +257,17 @@ export default {
       if (this.type == "order") {
         data.name = "orderresult";
         q.type = "order";
-        q.searchContent = item.content;
+        q.searchContent = item;
       }
       if (this.type == "brand") {
         data.name = "brandresult";
         q.type = "brand";
-        q.searchContent = item.content;
+        q.searchContent = item;
       }
       if (this.type == "mall") {
         data.name = "brandresult";
         q.type = "mall";
-        q.searchContent = item.content;
+        q.searchContent = item;
         if (this.$route.query.supplier_id != "undefined")
           q.supplier_id = this.$route.query.supplier_id;
       }
@@ -275,13 +275,13 @@ export default {
         data.name = "couponresult";
         q.type = "coupon";
         q.ticket_id = this.$route.query.ticket_id;
-        q.searchContent = item.content;
+        q.searchContent = item;
       }
       if (this.type == "multi") {
         data.name = "multiresult";
         q.type = "multi";
         q.multi_id = this.$route.query.multi_id;
-        q.searchContent = item.content;
+        q.searchContent = item;
       }
 
       data.query = q;
