@@ -52,6 +52,7 @@
           version: "1.0"
         };
         let res = await REDEEM_ITEM_GET(data);
+        console.log(res);
         if (res.error_code == 100) {  // 需要输入验证码
           let msg = res.error_message.split('|')[0];
           this.userId = res.error_message.split('|')[1];
@@ -60,6 +61,8 @@
           this.validateImage = 'http://wap.huoba.dev.lsk/callback/captcha?user_id=' + id;
           this.validateFlag = true;
           this.$toast(msg);
+        } else if (res.error_code == 0) {
+          this.refreshImage();
         } else if (res.error_code == 99) {  // 未登录  res.error_code == 99
           // 跳转到登录页
           this.$router.push({name: 'login'});
