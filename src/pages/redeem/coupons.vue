@@ -10,8 +10,7 @@
         <div class="content">
           <!--兑换面额-->
           <div class="denomination">
-            <span class="currency">￥</span>
-            <span class="amount">{{item.money}}</span>
+            <span class="currency">￥<span class="amount">{{item.money}}</span></span>
           </div>
           <!--兑换条件-->
           <div class="requirement">
@@ -24,6 +23,8 @@
             <van-button type="primary" disabled color="#F05654" v-if="item.state == 0">免费兑换</van-button>
             <van-button type="primary" color="#F05654" @click="couponsRedeem(item)" v-else>免费兑换</van-button>
           </div>
+          <span class="right_radio"></span>
+          <span class="left_radio"></span>
         </div>
         <div class="goods_list">
           <!--<div class="goods_item"></div>-->
