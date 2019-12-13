@@ -266,7 +266,7 @@
     },
     created() {
       this.code = this.$route.params.code;
-      this.redeem = this.$route.params.redeem;
+      this.redeem = sessionStorage.getItem("redeemId");
     },
     mounted() {
       this.getGoodsDetail();

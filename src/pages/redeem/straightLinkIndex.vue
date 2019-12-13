@@ -24,9 +24,9 @@
         if (res.hasOwnProperty("response_code")) {
           // 判断是商品还是优惠券
           if (res.response_data.goods_type == 2) {
-            this.$router.push({name: 'redeemCoupons', params: {code: '0', redeem: this.redeem}});
+            this.$router.push({name: 'redeemCoupons', params: {code: '0'}});
           } else {
-            this.$router.push({name: 'redeemGoods', params: {code: '0', redeem: this.redeem}});
+            this.$router.push({name: 'redeemGoods', params: {code: '0'}});
           }
         } else {
           this.$router.push({name: 'fail', query: {errorMsg: res.error_message}});
@@ -36,6 +36,7 @@
     },
     created() {
       this.redeem = this.$route.query.redeem;
+      sessionStorage.setItem("redeemId", this.redeem);
     },
     mounted() {
       this.getDetail();
