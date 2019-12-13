@@ -849,13 +849,17 @@ export default new Router({
     {
       path: '/redeem/codeIndex',
       name: 'codeIndex',
-      component: codeIndex
+      component: codeIndex,
+      meta: {
+        title: '火把知识'
+      }
     },
     {
       path: '/redeem/codeInput',
       name: 'codeInput',
       component: codeInput,
       meta: {
+        title: '兑换码',
         //   requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
         isAppLogin: true,       // 必须在app内打开
       },
@@ -888,7 +892,10 @@ export default new Router({
     {
       path: '/redeem/login/:goodsItem',
       name: 'redeemLogin',
-      component: redeemLogin
+      component: redeemLogin,
+      meta: {
+        title: '登录火把知识'
+      }
     },
     {
       path: '/redeem/goods/:code',

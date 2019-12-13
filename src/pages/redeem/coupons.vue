@@ -109,55 +109,34 @@ export default {
       // console.log(this.goodsDetail);
       this.submitRedeem(item);
     },
-    async submitRedeem(item) {
-      let data = {
-        redeem_id: this.couponsDetail.redeem_id,
-        ticket_id: this.percentCoupons.ticket_id,
-        code: this.code,
-        version: "1.0"
-      };
-      let res = await REDEEM_GOODS(data);
-      // console.log(res);
-      if (res.error_code == 99) {
-        // 未登录
-        this.$router.push({
-          name: "redeemLogin",
-          params: { goodsItem: JSON.stringify(item) }
-        });
-      } else if (res.hasOwnProperty("response_code")) {
+      async submitRedeem(item) {
+        let data = {
+          redeem_id: this.couponsDetail.redeem_id,
+          ticket_id: this.percentCoupons.ticket_id,
+          code: this.code,
+          version: "1.0"
+        };
+        let res = await REDEEM_GOODS(data);
         // console.log(res);
-        if (this.isApp()) {
-          // APP
-          this.$router.push({
-            name: "appSuccess",
-            query: {
-              goodsName: this.percentCoupons.title,
-              goodsType: this.couponsDetail.goods_type
-            }
-          });
+        if (res.error_code == 99) { // 未登录
+          this.$router.push({name: 'redeemLogin', params: {goodsItem: JSON.stringify(item)}});
+        } else if (res.hasOwnProperty("response_code")) {
+          let data = res.response_data;
+          console.log(res);
+            // this.$router.push({name: 'appSuccess', query: {goodsName: this.percentCoupons.title, resData: data}});
+          if (this.isApp()) { // APP
+            this.$router.push({name: 'appSuccess', query: {goodsName: this.percentCoupons.title, resData: data}});
+          } else {  // WAP
+            this.$router.push({name: 'wapSuccess', query: {goodsName: this.percentCoupons.title}});
+          }
         } else {
-          // WAP
-          this.$router.push({
-            name: "wapSuccess",
-            query: { goodsName: this.percentCoupons.title }
-          });
+          if (this.isApp()) { // APP
+            this.$router.push({name: 'appFail', query: {errorMsg: res.error_message}});
+          } else {  // WAP
+            this.$router.push({name: 'wapFail', query: {errorMsg: res.error_message}});
+          }
         }
-      } else {
-        if (this.isApp()) {
-          // APP
-          this.$router.push({
-            name: "appFail",
-            query: { errorMsg: res.error_message }
-          });
-        } else {
-          // WAP
-          this.$router.push({
-            name: "wapFail",
-            query: { errorMsg: res.error_message }
-          });
-        }
-      }
-    },
+      },
     // 是否是APP
     isApp() {
       // var u = navigator.userAgent,
