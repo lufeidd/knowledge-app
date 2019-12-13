@@ -58,6 +58,7 @@
           font-family: PingFang SC;
           font-weight: 500;
           color: #F05654;
+          @include textOverflow;
         }
       }
       .nothing_left {
