@@ -139,10 +139,12 @@
       goodsRedeem(item) {
         if (item != undefined) {
           this.percentGoods = item;
+          sessionStorage.setItem("goodsItem", JSON.stringify(item));
+          sessionStorage.setItem("goodsType", "goods");
         }
         // console.log(this.percentGoods);
         // console.log(this.goodsDetail);
-        this.submitRedeem(item);
+        this.submitRedeem();
       },
 
 
@@ -229,13 +231,13 @@
           version: "1.0"
         };
         let res = await REDEEM_GOODS(data);
-        if (res.error_code == 99) { // 未登录
-          this.$router.push({name: 'redeemLogin', params: {goodsItem: JSON.stringify(item)}});
+        if (res.error_code == 100) { // 未登录
+          this.$router.push({name: 'redeemLogin'});
         } else if (this.goodsDetail.goods_type == 3 && this.addressId == 0) {  // 商品类型是实物
           this.getAddressData();
           this.addressShowPopup = true;
         }else if (res.hasOwnProperty("response_code")) {
-          console.log(res);
+          // console.log(res);
           let data = res.response_data;
           if (this.isApp()) { // APP
             this.$router.push({name: 'appSuccess', query: {goodsName: this.percentGoods.title, resData: data}});

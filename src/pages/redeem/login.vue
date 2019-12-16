@@ -1,8 +1,8 @@
 <template>
   <div id="redeemLoginPage">
-    <header class="header_wrapper">
+    <header class="header_wrapper" v-if="goodsType == 'goods'">
       <!--<img src="" alt="" width="80" height="80">-->
-      <div class="picture" v-lazy:background-image="goodsDetail.pic[0]"></div>
+      <div class="picture" v-lazy:background-image="goodsDetail.pic"></div>
       <div class="content">
         <h3 class="title">{{goodsDetail.title}}</h3>
         <p class="sub_title">{{goodsDetail.sub_title}}</p>
@@ -11,7 +11,7 @@
         </p>
       </div>
     </header>
-    <div class="spacing_bar"></div>
+    <div class="spacing_bar" v-if="goodsType == 'goods'"></div>
     <main class="main_wrapper">
       <van-cell-group>
         <van-field
@@ -39,7 +39,7 @@
           </template>
         </van-field>
       </van-cell-group>
-      <div class="button_wrapper" v-if="codeData.disabled">
+      <div class="button_wrapper" v-if="submitData.disabled">
         <van-button type="primary" color="#F05654" disabled>兑换</van-button>
       </div>
       <div class="button_wrapper" v-else>
@@ -66,6 +66,7 @@
         submitData: {
           disabled: true
         },
+        goodsType: '',
         goodsDetail: {}
       };
     },
@@ -237,8 +238,8 @@
       }
     },
     created() {
-      this.goodsDetail = JSON.parse(this.$route.params.goodsItem);
-      console.log(this.$route.params.goodsItem);
+      this.goodsType = sessionStorage.getItem("goodsType");
+      this.goodsDetail = JSON.parse(sessionStorage.getItem("goodsItem"));
     }
   }
 </script>
