@@ -11,6 +11,7 @@
         </p>
       </div>
     </header>
+    <header class="header_wrapper" v-else></header>
     <div class="spacing_bar" v-if="goodsType == 'goods'"></div>
     <main class="main_wrapper">
       <van-cell-group>
@@ -39,10 +40,10 @@
         </van-field>
       </van-cell-group>
       <div class="button_wrapper" v-if="submitData.disabled">
-        <van-button type="primary" color="#F05654" disabled>兑换</van-button>
+        <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" disabled>兑换</van-button>
       </div>
       <div class="button_wrapper" v-else>
-        <van-button type="primary" color="#F05654" @click="validatePhone">兑换</van-button>
+        <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" @click="validatePhone">兑换</van-button>
       </div>
     </main>
   </div>

@@ -11,7 +11,7 @@
       </div>
     </van-cell-group>
     <div class="button_wrapper">
-      <van-button type="primary" color="#F05654" @click="toRedeem">兑换</van-button>
+      <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" @click="toRedeem">兑换</van-button>
     </div>
     <p class="notes_one">
       1.参与活动有机会获得兑换码,使用兑换码可兑换超值优惠券以及虚拟商品。
