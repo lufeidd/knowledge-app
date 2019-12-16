@@ -32,7 +32,7 @@
             </van-button>
           </div>
         </div>
-        <div class="goods_detail">{{item.content}}</div>
+        <div class="goods_detail">{{item.contents}}</div>
       </div>
     <!-- </van-list> -->
     <div class="rule">
@@ -48,7 +48,7 @@
           <div class="addressMember">
             <div
               class="default"
-              @click="editAction(Item.address_id)"
+              @click="editAction(Item.address_id,index)"
               :class="{ active: Item.is_default == 1 }"
             >
               <svg class="icon" aria-hidden="true" v-if="Item.is_default == 1">
@@ -98,6 +98,7 @@
         addressData: [],
         addressId: 0,
         percentGoods: {},
+        pupFlag: false
       };
     },
     methods: {
@@ -185,13 +186,15 @@
             this.$store.commit("changeLoginState", 100);
             localStorage.setItem("loginState", 100);
           }
-          this.$toast(res.error_message);
+          // this.$toast(res.error_message);
+          this.$router.push({name: 'redeemLogin'});
         }
       },
       //确认兑换
       async sureRedeem() {
         for (let i = 0; i < this.addressData.length; i++) {
           if (this.addressData[i].is_default == 1) {
+            this.popFlag = true;
             this.submitRedeem();
             return false;
           }
@@ -219,40 +222,56 @@
           // }
         } else {
           this.$toast(res.error_message);
+
         }
       },
       editAction(address_id, key) {
         this.editAddress(address_id, key);
       },
       async submitRedeem() {
-        let data = {
-          redeem_id: this.goodsDetail.redeem_id,
-          goods_id: this.percentGoods.goods_id,
-          address_id: this.addressId,
-          code: this.code,
-          version: "1.0"
-        };
-        let res = await REDEEM_GOODS(data);
-        if (res.error_code == 100) { // 未登录
-          this.$router.push({name: 'redeemLogin'});
-        } else if (this.goodsDetail.goods_type == 3 && this.addressId == 0) {  // 商品类型是实物
-          this.getAddressData();
-          this.addressShowPopup = true;
-        }else if (res.hasOwnProperty("response_code")) {
-          // console.log(res);
-          let data = res.response_data;
-          if (this.isApp()) { // APP
-            this.$router.push({name: 'appSuccess', query: {goodsName: this.percentGoods.title, resData: data}});
-          } else {  //  WAP
-            this.$router.push({name: 'wapSuccess', query: {goodsName: this.percentGoods.title}});
+        let res;
+        if (this.goodsDetail.goods_type == 3 ) {
+          if (!this.popFlag) {
+            this.getAddressData();
+            this.addressShowPopup = true;
+            return false;
+          } else {
+            let data = {
+              address_id: this.addressId,
+              redeem_id: this.goodsDetail.redeem_id,
+              goods_id: this.percentGoods.goods_id,
+              code: this.code,
+              version: "1.0"
+            };
+            res = await REDEEM_GOODS(data);
           }
-        } else {
-          if (this.isApp()) { // APP
-            this.$router.push({name: 'appFail', query: {errorMsg: res.error_message}});
-          } else {  //  WAP
-            this.$router.push({name: 'wapFail', query: {errorMsg: res.error_message}});
-          }
+        } else{
+          let data = {
+            redeem_id: this.goodsDetail.redeem_id,
+            goods_id: this.percentGoods.goods_id,
+            code: this.code,
+            version: "1.0"
+          };
+          res = await REDEEM_GOODS(data);
         }
+        if (res.error_code == 100) { // 未登录
+          // console.log("未登录");
+          this.$router.push({name: 'redeemLogin'});
+        } else if (res.hasOwnProperty("response_code")) {
+            // console.log(res);
+            let data = res.response_data;
+            if (this.isApp()) { // APP
+              this.$router.push({name: 'appSuccess', query: {goodsName: this.percentGoods.title, resData: data}});
+            } else {  //  WAP
+              this.$router.push({name: 'wapSuccess', query: {goodsName: this.percentGoods.title, goodsNameType: 'goods'}});
+            }
+          } else {
+            if (this.isApp()) { // APP
+              this.$router.push({name: 'appFail', query: {errorMsg: res.error_message}});
+            } else {  //  WAP
+              this.$router.push({name: 'wapFail', query: {errorMsg: res.error_message}});
+            }
+          }
       },
       // 是否是APP
       isApp() {
