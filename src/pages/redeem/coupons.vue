@@ -6,6 +6,9 @@
       finished-text="没有更多了"
       @load="couponsLoad"
     >
+      <div class="propaganda" v-if="couponsDetail.pic">
+        <img :src="couponsDetail.pic" alt="" width="100%">
+      </div>
       <div class="coupons_wrapper" v-for="item in couponsList" :key="item.id" :title="item">
         <div class="content">
           <!--兑换面额-->
@@ -47,11 +50,13 @@
     <div class="rule">
       <p :style="{'color':couponsDetail.colour.text?couponsDetail.colour.text:''}">{{couponsDetail.description}}</p>
     </div>
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
 <script>
-import { REDEEM_ITEM_GET, REDEEM_GOODS } from "@/apis/redeem";
+  import easyNav from "@/components/easyNav";
+  import { REDEEM_ITEM_GET, REDEEM_GOODS } from "@/apis/redeem";
 
 export default {
   name: "coupons",
@@ -175,6 +180,9 @@ export default {
   },
   mounted() {
     this.couponsLoad();
+  },
+  components: {
+    EazyNav: easyNav
   }
 };
 </script>

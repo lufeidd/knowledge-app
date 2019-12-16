@@ -7,7 +7,7 @@
       @load="goodsLoad"
     > -->
       <div class="propaganda" v-if="goodsDetail.pic">
-        <img :src="goodsDetail.pic" alt="">
+        <img :src="goodsDetail.pic" alt="" width="100%">
       </div>
       <div
         class="goods_wrapper"
@@ -73,10 +73,12 @@
         </div>
       </div>
     </van-popup>
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
 <script>
+  import easyNav from "@/components/easyNav";
   import {USER_ADDRESS_EDIT, USER_ADDRESS_LIST} from "@/apis/user.js";
   import {REDEEM_ITEM_GET, REDEEM_GOODS} from "@/apis/redeem.js";
 
@@ -272,6 +274,9 @@
     },
     mounted() {
       this.getGoodsDetail();
+    },
+    components: {
+      EazyNav: easyNav
     }
   }
 </script>
