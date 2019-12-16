@@ -6,7 +6,7 @@
       恭喜您获得商品名“{{goodsName}}”快打开火把知识App，点击<span class="content_title">“我的-我的购买"</span>查看吧！
     </p>
     <div class="button_wrapper">
-      <van-button type="primary" color="#F05654" @click="download">打开火把知识App</van-button>
+      <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" @click="download">打开火把知识App</van-button>
     </div>
   </div>
 </template>

@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="button_wrapper">
-        <van-button type="primary" color="#F05654" v-clipboard:copy="redeemDetail.code" v-clipboard:success="copyCode">复制兑换码</van-button>
+        <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" v-clipboard:copy="redeemDetail.code" v-clipboard:success="copyCode">复制兑换码</van-button>
         <van-button type="default" @click="toRedeem">前往兑换</van-button>
       </div>
       <p class="notes_one">

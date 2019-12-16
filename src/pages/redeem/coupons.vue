@@ -17,14 +17,14 @@
           </div>
           <!--兑换条件-->
           <div class="requirement">
-            <van-button type="default" size="mini" round color="#FFB54D">{{item.brand}}</van-button>
+            <van-button type="default" size="mini" round style="background:#FFB54D;border: 1px solid #FFB54D;">{{item.brand}}</van-button>
             <span class="state">{{item.range}}</span>
             <p class="price">满{{item.min_money}}元可用</p>
           </div>
           <div class="nothing_left" v-if="item.state == 0"></div>
           <div class="redeem_btn">
-            <van-button type="primary" disabled color="#F05654" v-if="item.state == 0">免费兑换</van-button>
-            <van-button type="primary" color="#F05654" @click="couponsRedeem(item)" v-else>免费兑换</van-button>
+            <van-button type="primary" disabled style="background:#F05654;border: 1px solid #F05654;" v-if="item.state == 0">免费兑换</van-button>
+            <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" @click="couponsRedeem(item)" v-else>免费兑换</van-button>
           </div>
           <span class="right_radio" :style="{'background-color': couponsDetail.colour.bg?couponsDetail.colour.bg: ''}"></span>
           <span class="left_radio" :style="{'background-color': couponsDetail.colour.bg?couponsDetail.colour.bg: ''}"></span>
