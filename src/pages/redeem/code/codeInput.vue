@@ -67,7 +67,6 @@
           // this.validateImage = 'http://wap.huoba.dev.lsk/callback/captcha?user_id=' + id;
           this.validateImage =  window.location.protocol + "//" + window.location.hostname + '/callback/captcha?user_id=' + id;
           this.validateFlag = true;
-          this.$toast(msg);
         } else if (res.error_code == 0) { // 验证码错误
           this.validateNum = "";
         } else if (res.error_code == 99) {  // 未登录  res.error_code == 99
