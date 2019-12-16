@@ -213,12 +213,11 @@
 
                 <div
                   class="message active"
-                  v-if="item.reply_num > 2 && replyPage[key] - 1 < item.reply_total_page"
+                  v-if="item.reply_num > 2 && replyPage[key] <= item.reply_total_page"
                 >
                   <!-- <van-pagination v-model="item.reply_current_page" :page-count="item.reply_total_page" mode="simple" @change="pageChange(item.comment_id, key)" /> -->
 
-                  <span class="name" @click="pageChange(item.comment_id, key)">
-                    共{{ item.reply_num }}条回复
+                  <span class="name" @click="pageChange(item.comment_id, key)">共{{ item.reply_num }}条回复
                     <svg class="icon" aria-hidden="true">
                       <use xlink:href="#icon-fold-line" />
                     </svg>
@@ -227,6 +226,7 @@
                     </svg>-->
                   </span>
                 </div>
+
               </div>
 
               <!-- 回复 -->
@@ -282,10 +282,7 @@
           @click="gotoPlayer('video')"
           v-if="baseData.free_path != '' && baseData.goods_type == 2"
         />
-        <van-goods-action-big-btn
-          :text="'¥ '+baseData.price + ' 购买'"
-          @click="buyAction(goodsId)"
-        />
+        <van-goods-action-big-btn :text="'¥ '+baseData.price + ' 购买'" @click="buyAction(goodsId)" />
         <van-goods-action-big-btn
           primary
           :text="'¥ '+couponInfo.groupbuy.groupbuy_price + ' 拼团'"
@@ -880,26 +877,29 @@ export default {
   updated() {
     // console.log(7474,$('.van-goods-action-big-btn .van-button__text'))
     if (this.baseData.single_activity_id) {
-      $('.van-goods-action-big-btn .van-button__text').html(
+      $(".van-goods-action-big-btn .van-button__text").html(
         '<div style="line-height:1;font-size:16px;">限时促销价￥' +
-          this.baseData.price+
+          this.baseData.price +
           '</div><div style="line-height:1;font-size:12px;margin-top:5px;"><del style="color:#e1e1e1;">原价￥' +
           this.baseData.market_price +
-          '</del> 购买专辑</div>'
+          "</del> 购买专辑</div>"
       );
     }
-    if (this.couponInfo.groupbuy && Object.keys(this.couponInfo.groupbuy).length > 0) {
-      $('.van-goods-action-big-btn.van-button--warning .van-button__text').html(
+    if (
+      this.couponInfo.groupbuy &&
+      Object.keys(this.couponInfo.groupbuy).length > 0
+    ) {
+      $(".van-goods-action-big-btn.van-button--warning .van-button__text").html(
         '<div style="line-height:1;font-size:15px;">￥' +
-          this.baseData.price+
+          this.baseData.price +
           '</div><div style="line-height:1;font-size:15px;margin-top:5px;"> 直接购买</div>'
       );
-      $('.van-goods-action-big-btn.van-button--danger .van-button__text').html(
+      $(".van-goods-action-big-btn.van-button--danger .van-button__text").html(
         '<div style="line-height:1;font-size:15px;">￥' +
-          this.couponInfo.groupbuy.groupbuy_price+
+          this.couponInfo.groupbuy.groupbuy_price +
           '</div><div style="line-height:1;font-size:15px;margin-top:5px;"> ' +
           this.couponInfo.groupbuy.groupbuy_num +
-          '人拼团价</div>'
+          "人拼团价</div>"
       );
     }
   },
@@ -1165,10 +1165,11 @@ export default {
     // 跳转到音乐播放器
     gotoPlayer(__type) {
       var queryTmp = {};
-      if(this.pid != NaN) queryTmp.pid = this.pid;
+      if (this.pid != NaN) queryTmp.pid = this.pid;
       queryTmp.goods_id = this.goodsId;
       queryTmp.ad = parseInt(this.$route.query.ad) == 1 ? 1 : 0;
-      if(this.$route.query.goods_no != 'undefined') queryTmp.goods_no = this.$route.query.goods_no;
+      if (this.$route.query.goods_no != "undefined")
+        queryTmp.goods_no = this.$route.query.goods_no;
 
       // 点击迷你播放音频
       if (__type == "mini") {
@@ -1371,12 +1372,16 @@ export default {
         document.title = "节目详情-" + res.response_data.base.title;
         // 优惠券
         this.couponInfo = res.response_data.activity;
-        if (this.couponInfo.groupbuy &&
+        if (
+          this.couponInfo.groupbuy &&
           Object.keys(this.couponInfo.groupbuy).length > 0 &&
           this.couponInfo.groupbuy.open_list.length > 0
         ) {
-          if(this.couponInfo.groupbuy.open_list.length > 2){
-            this.couponInfo.groupbuy.open_list = this.couponInfo.groupbuy.open_list.slice(0,2)
+          if (this.couponInfo.groupbuy.open_list.length > 2) {
+            this.couponInfo.groupbuy.open_list = this.couponInfo.groupbuy.open_list.slice(
+              0,
+              2
+            );
           }
           for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
             this.remain_time.push({
@@ -1651,7 +1656,8 @@ export default {
     // 回复展开更多
     pageChange(comment_id, key) {
       this.replyData(comment_id, key);
-      // console.log("当前页数组：", this.replyPage, 'key:', key);
+      // this.replyPage[key] = 2;
+      console.log("当前页数组：", this.replyPage, 'key:', key);
     },
     // 关闭评论弹窗
     commentClose() {

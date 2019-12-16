@@ -364,7 +364,7 @@
 
       <!-- 暂无库存 -->
       <div class="disabled" v-if="baseData.stores <= 0">
-        <!-- <div style="height: 50px;"></div> -->
+        <div style="height: 50px;"></div>
         <div class="none">库存不足</div>
         <van-goods-action>
           <van-goods-action-mini-btn
