@@ -91,6 +91,7 @@ export default {
     return {};
   },
   mounted() {
+    console.log('app.vue')
     this.getLoginData();
   },
   methods: {
@@ -137,7 +138,6 @@ export default {
           // 微信登录 code
           this.$getWxCode();
           // 微信授权
-
           if (this.wxCodeStr == "") {
             var this_count = Number(localStorage.getItem("get_count"));
             if (this_count < 2) {
