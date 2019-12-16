@@ -13,7 +13,7 @@
     margin: 0;
   }
   .propaganda{
-    
+
   }
   .goods_wrapper {
     margin: 10px 15px 0 15px;
@@ -21,6 +21,7 @@
     border-radius: 5px;
     background: #FFFFFF;
     .goods_intro {
+      display: flex;
       position: relative;
       .picture {
         display: inline-block;
@@ -52,6 +53,7 @@
         }
       }
       .content {
+        flex: 1;
         display: inline-block;
         margin-left: 12px;
         .title {

@@ -64,11 +64,11 @@ import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
   Cell, CellGroup,
   Icon, Popup, DatetimePicker, SwipeCell, Dialog,
-  Actionsheet,
+  // Actionsheet,
   AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle,
   Tab, Tabs,
   GoodsAction,
-  GoodsActionBigBtn, GoodsActionMiniBtn,
+  // GoodsActionBigBtn, GoodsActionMiniBtn,
   Step, Steps,
   List, Stepper, SubmitBar,
   Swipe, SwipeItem,
@@ -92,7 +92,7 @@ Vue.use(Popup)
 Vue.use(DatetimePicker)
 Vue.use(SwipeCell)
 Vue.use(Dialog)
-Vue.use(Actionsheet)
+// Vue.use(Actionsheet)
 Vue.use(AddressEdit)
 Vue.use(Lazyload)
 Vue.use(SwitchCell)
@@ -101,7 +101,7 @@ Vue.use(Tag)
 Vue.use(Tab).use(Tabs)
 Vue.use(Circle)
 Vue.use(GoodsAction)
-Vue.use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
+// Vue.use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
 Vue.use(Step).use(Steps)
 Vue.use(List)
 Vue.use(Stepper)
@@ -303,15 +303,15 @@ router.beforeEach((to, from, next) => {
   next();
 
   // 引导app端打开
-  // if (sessionStorage.getItem("isHuobaIosLogin") == "no" && sessionStorage.getItem("isHuobaAndroidLogin") == "no") {
-  //   next();
-  //   if (to.meta.isAppLogin) {
-  //     replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
-  //     next();
-  //   }
-  //
-  //   next();
-  // }
+  if (sessionStorage.getItem("isHuobaIosLogin") == "no" && sessionStorage.getItem("isHuobaAndroidLogin") == "no") {
+    next();
+    if (to.meta.isAppLogin) {
+      replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
+      next();
+    }
+
+    next();
+  }
 
   next()
   window.location.replace(replaceUrl); // 重定向跳转
