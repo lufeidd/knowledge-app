@@ -890,7 +890,7 @@ export default new Router({
       component: wapFail
     },
     {
-      path: '/redeem/login/:goodsItem',
+      path: '/redeem/login',
       name: 'redeemLogin',
       component: redeemLogin,
       meta: {

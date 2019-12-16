@@ -119,8 +119,12 @@ export default {
         };
         let res = await REDEEM_GOODS(data);
         // console.log(res);
-        if (res.error_code == 99) { // 未登录
-          this.$router.push({name: 'redeemLogin', params: {goodsItem: JSON.stringify(item)}});
+        if (res.error_code == 100) { // 未登录
+          sessionStorage.setItem("goodsItem", JSON.stringify(item));
+          sessionStorage.setItem("goodsType", "coupons");
+          // console.log(sessionStorage.getItem("goodsItem"));
+          this.$router.push({name: 'redeemLogin'});
+
         } else if (res.hasOwnProperty("response_code")) {
           let data = res.response_data;
           console.log(res);
