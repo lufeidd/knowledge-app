@@ -63,7 +63,9 @@
           this.userId = res.error_message.split('|')[1];
           let id = this.userId.replace('+', '%2B');
           // console.log('user', id);
-          this.validateImage = 'http://wap.huoba.dev.lsk/callback/captcha?user_id=' + id;
+          // window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis'
+          // this.validateImage = 'http://wap.huoba.dev.lsk/callback/captcha?user_id=' + id;
+          this.validateImage =  window.location.protocol + "//" + window.location.hostname + '/callback/captcha?user_id=' + id;
           this.validateFlag = true;
           this.$toast(msg);
         } else if (res.error_code == 0) { // 验证码错误

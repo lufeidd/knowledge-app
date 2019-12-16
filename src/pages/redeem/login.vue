@@ -214,21 +214,21 @@
           type: 2,
           mobile: this.phone,
           auth_code: this.code,
-          // outer_id: localStorage.getItem("unionid"),
-          // outer_name: localStorage.getItem("nickname"),
-          // header_pic: localStorage.getItem("headimg"),
-          // openid: localStorage.getItem("openid"),
-          outer_id: tStamp,
-          outer_name: tStamp,
-          header_pic: tStamp,
-          openid: tStamp, //  测试
+          outer_id: localStorage.getItem("unionid"),
+          outer_name: localStorage.getItem("nickname"),
+          header_pic: localStorage.getItem("headimg"),
+          openid: localStorage.getItem("openid"),
+          // outer_id: tStamp,
+          // outer_name: tStamp,
+          // header_pic: tStamp,
+          // openid: tStamp, //  测试
           version: "1.0",
           timestamp: tStamp
         };
         data.sign = this.$getSign(data);
         let res = await LOGIN_BIND_PARTERNER(data);
-        // if (res.hasOwnProperty("response_code")) {
-        if (true) { // 测试
+        if (res.hasOwnProperty("response_code")) {
+        // if (true) { // 测试
           console.log(res);
           this.$router.go(-1);
         } else {

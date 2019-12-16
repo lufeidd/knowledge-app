@@ -35,6 +35,57 @@
     padding-left: 50px;
     padding-right: 50px;
   }
+
+  .app_pic {
+    margin: 33px 32px;
+    width: 246px;
+    height: 165px;
+    @include bgImageOne('./../../../assets/pay/app');
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  .app_txt {
+    margin: 0 0 40px 0;
+    padding: 0 20px;
+    text-align: center;
+    font-size: 14px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    line-height: 20px;
+  }
+  .button {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+    .refuse {
+      flex-grow: 1;
+      text-align: center;
+    }
+    .open_app {
+      flex-grow: 1;
+      text-align: center;
+    }
+    .van-button--primary {
+      border-radius: 3px;
+      .van-button__text {
+        font-size: 15px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #FFFFFF;
+      }
+    }
+    .van-button--default {
+      border: none;
+      border-radius: 3px;
+      .van-button__text {
+        font-size: 15px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #F05654;
+      }
+    }
+  }
 }
 
 #accountPage {
@@ -156,7 +207,6 @@
     .detail {
       margin-left: 5px;
       flex-grow: 1;
-
 
       .top {
         display: flex;
@@ -363,7 +413,6 @@
     }
   }
 
-
   & .listBox.disable {
     & .list {
       opacity: .5;
@@ -399,7 +448,7 @@
       & .history {
         @include font("PingFangBold", $fontSize + 1, $redDark);
         margin-right: 8px;
-        .promotion{
+        .promotion {
           font-size: $fontSize - 1;
           color: #999;
           margin-left: 10px;
@@ -467,30 +516,30 @@
       }
     }
   }
-  & .toMall{
+  & .toMall {
     display: inline-block;
     // width: 65px;
     // height: 24px;
-    border:1px solid $redLight;
-    line-height:normal;
-    padding:2px 5px;
+    border: 1px solid $redLight;
+    line-height: normal;
+    padding: 2px 5px;
     text-align: center;
     @include font(null, $fontSize - 2, $redLight);
     border-radius: 12px;
   }
   & .van-popup {
-    .van-tabs{
-      .van-tabs__line{
-      background-color: #f05654 !important;
+    .van-tabs {
+      .van-tabs__line {
+        background-color: #f05654 !important;
+      }
     }
-    }
-    .sure{
-      position:fixed;
-      bottom:10px;
+    .sure {
+      position: fixed;
+      bottom: 10px;
       left: 15px;
       background-color: $redLight;
-      color:$white;
-      width:calc(100% - 30px);
+      color: $white;
+      width: calc(100% - 30px);
       height: 35px;
       line-height: 35px;
       text-align: center;
@@ -512,13 +561,13 @@
         flex-grow: 1;
       }
     }
-    .checkedText{
-      padding:10px 15px;
+    .checkedText {
+      padding: 10px 15px;
       // padding-top:10px;
       @include displayFlex(flex, space-between, center);
     }
-    .content.canuse{
-      bottom:55px;
+    .content.canuse {
+      bottom: 55px;
       // top: 120px;
     }
     .content {
@@ -623,27 +672,27 @@
           }
 
           .used {
-            @include font("PingFangBlod", $fontSize , $redLight);
+            @include font("PingFangBlod", $fontSize, $redLight);
             position: absolute;
             right: 15px;
             top: 35%;
-            margin-top:-7px;
+            margin-top: -7px;
           }
-          .shopCoupon{
+          .shopCoupon {
             position: absolute;
             left: 5px;
             top: -10px;
-            color:$redLight;
+            color: $redLight;
             display: inline-block;
-            .icon{
+            .icon {
               font-size: 70px;
             }
-            .dianpu{
+            .dianpu {
               display: inline-block;
               width: 36px;
-              color:$white;
+              color: $white;
               position: absolute;
-              top:50%;
+              top: 50%;
               left: 50%;
               margin-top: -12px;
               margin-left: -20px;
@@ -654,12 +703,12 @@
         }
       }
     }
-    .whyNoUse{
+    .whyNoUse {
       background-color: #cdcdcd;
-      padding:3px 8px;
+      padding: 3px 8px;
       font-size: $fontSize - 2;
       margin-top: 5px;
-      color:$white;
+      color: $white;
     }
   }
 }
