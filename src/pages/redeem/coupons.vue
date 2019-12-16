@@ -1,5 +1,5 @@
 <template>
-  <div id="redeemCouponsPage">
+  <div id="redeemCouponsPage" :style="{'background-color': couponsDetail.colour.bg?couponsDetail.colour.bg: ''}">
     <van-list
       v-model="couponsLoading"
       :finished="couponsFinished"
@@ -23,8 +23,8 @@
             <van-button type="primary" disabled color="#F05654" v-if="item.state == 0">免费兑换</van-button>
             <van-button type="primary" color="#F05654" @click="couponsRedeem(item)" v-else>免费兑换</van-button>
           </div>
-          <span class="right_radio"></span>
-          <span class="left_radio"></span>
+          <span class="right_radio" :style="{'background-color': couponsDetail.colour.bg?couponsDetail.colour.bg: ''}"></span>
+          <span class="left_radio" :style="{'background-color': couponsDetail.colour.bg?couponsDetail.colour.bg: ''}"></span>
         </div>
         <div class="goods_list">
           <!--<div class="goods_item"></div>-->
@@ -44,6 +44,9 @@
         </div>
       </div>
     </van-list>
+    <div class="rule">
+      <p :style="{'color':couponsDetail.colour.text?couponsDetail.colour.text:''}">{{couponsDetail.description}}</p>
+    </div>
   </div>
 </template>
 
@@ -56,7 +59,9 @@ export default {
     return {
       code: "0",
       redeem: "0",
-      couponsDetail: {},
+      couponsDetail: {
+        colour: {bg: '', text: ''}
+      },
       couponsLoading: false,
       couponsFinished: false,
       couponsList: [],
@@ -76,6 +81,9 @@ export default {
       // console.log(res);
       if (res.hasOwnProperty("response_code")) {
         this.couponsDetail = res.response_data;
+        this.couponsDetail.colour = JSON.parse(this.couponsDetail.colour);
+        document.title = this.couponsDetail.page_title?this.couponsDetail.page_title:'火把知识';
+        // console.log(this.couponsDetail.colour);
       }
 
       let list = this.couponsDetail.goods_list;
