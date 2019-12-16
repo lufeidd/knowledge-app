@@ -16,7 +16,6 @@
       <van-cell-group>
         <van-field
           class="phone_num"
-          type="number"
           v-model="phone"
           clearable
           maxlength="11"

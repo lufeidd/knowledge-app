@@ -21,6 +21,7 @@
           version: "1.0"
         };
         let res = await REDEEM_ITEM_GET(data);
+        this.$toast(res);
         if (res.hasOwnProperty("response_code")) {
           // 判断是商品还是优惠券
           if (res.response_data.goods_type == 2) {
