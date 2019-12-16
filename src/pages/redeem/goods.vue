@@ -73,7 +73,7 @@
         </div>
       </div>
     </van-popup>
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" v-if="!isApp()"></EazyNav>
   </div>
 </template>
 

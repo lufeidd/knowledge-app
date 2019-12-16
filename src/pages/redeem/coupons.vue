@@ -50,7 +50,7 @@
     <div class="rule">
       <p :style="{'color':couponsDetail.colour.text?couponsDetail.colour.text:''}">{{couponsDetail.description}}</p>
     </div>
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" v-if="!isApp()"></EazyNav>
   </div>
 </template>
 
