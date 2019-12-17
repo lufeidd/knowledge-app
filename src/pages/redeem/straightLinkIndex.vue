@@ -30,7 +30,7 @@
             this.$router.push({name: 'redeemGoods', params: {code: '0'}});
           }
         } else {
-          this.$router.push({name: 'fail', query: {errorMsg: res.error_message}});
+          this.$router.push({name: 'wapFail', query: {errorMsg: res.error_message}});
         };
         console.log(res);
       }
