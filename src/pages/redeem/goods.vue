@@ -261,7 +261,7 @@
             // console.log(res);
             let data = res.response_data;
             if (this.isApp()) { // APP
-              this.$router.push({name: 'appSuccess', query: {goodsName: this.percentGoods.title, resData: data}});
+              this.$router.push({name: 'appSuccess', query: {goodsName: this.percentGoods.title, resData: data, goodsNameType: 'goods'}});
             } else {  //  WAP
               this.$router.push({name: 'wapSuccess', query: {goodsName: this.percentGoods.title, goodsNameType: 'goods'}});
             }

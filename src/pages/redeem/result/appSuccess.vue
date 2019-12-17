@@ -2,9 +2,11 @@
   <div id="appSuccessPage">
     <div class="top_bg"></div>
     <h3 class="title">兑换成功</h3>
-    <p class="content">
-      恭喜您获得商品名“{{goodsName}}”
-      快去看看吧！
+    <p class="content" v-if="goodsNameType == 'goods'">
+      恭喜您获得商品名“{{goodsName}}”，快去看看吧！
+    </p>
+    <p class="content" v-if="goodsNameType == 'coupons'">
+      恭喜您获得优惠券，快去看看吧！
     </p>
     <div class="button_wrapper">
       <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" @click="toCheck">去看看</van-button>
@@ -18,6 +20,7 @@
     data() {
       return {
         goodsName: '',
+        goodsNameType: '',
         resData: {}
       };
     },
@@ -42,6 +45,7 @@
     created() {
       this.goodsName = this.$route.query.goodsName;
       this.resData = this.$route.query.resData;
+      this.goodsNameType = this.$route.query.goodsNameType;
       // console.log(this.goodsType);
     }
   }

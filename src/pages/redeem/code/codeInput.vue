@@ -84,6 +84,9 @@
         }
         console.log(res);
       }
+    },
+    mounted() {
+      document.title = '兑换码';
     }
   }
 </script>
