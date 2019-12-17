@@ -25,14 +25,16 @@
           <div class="content">
             <h3 class="title">{{item.title}}</h3>
             <p class="sub_title">{{item.sub_title}}</p>
-            <p class="price">￥{{item.price}}</p>
-            <van-button class="redeem_btn" type="primary" disabled style="background:#F05654;border: 1px solid #F05654;" v-if="item.state == 0">免费兑换
-            </van-button>
-            <van-button class="redeem_btn" type="primary" style="background:#F05654;border: 1px solid #F05654;" @click="goodsRedeem(item)" v-else>免费兑换
-            </van-button>
+            <p class="price">
+              ￥{{item.price}}
+              <van-button class="redeem_btn" type="primary" disabled style="background:#F05654;border: 1px solid #F05654;" v-if="item.state == 0">免费兑换
+              </van-button>
+              <van-button class="redeem_btn" type="primary" style="background:#F05654;border: 1px solid #F05654;" @click="goodsRedeem(item)" v-else>免费兑换
+              </van-button>
+            </p>
           </div>
         </div>
-        <div class="goods_detail">{{item.contents}}</div>
+        <!--<div class="goods_detail">{{item.contents}}</div>-->
       </div>
     <!-- </van-list> -->
     <div class="rule">
