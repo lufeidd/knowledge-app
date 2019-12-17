@@ -143,7 +143,7 @@ export default {
           console.log(res);
             // this.$router.push({name: 'appSuccess', query: {goodsName: this.percentCoupons.title, resData: data}});
           if (this.isApp()) { // APP
-            this.$router.push({name: 'appSuccess', query: {goodsName: this.percentCoupons.title, resData: data}});
+            this.$router.push({name: 'appSuccess', query: {goodsName: this.percentCoupons.title, resData: data, goodsNameType: 'coupons'}});
           } else {  // WAP
             this.$router.push({name: 'wapSuccess', query: {goodsName: this.percentCoupons.title, goodsNameType: 'coupons'}});
           }
