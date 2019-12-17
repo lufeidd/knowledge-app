@@ -52,8 +52,8 @@
           version: "1.0"
         };
         let res = await REDEEM_ITEM_GET(data);
-        console.log(res);
-        if (res.hasOwnProperty("error_message" && res.error_code != 100)) {
+        // console.log(res);
+        if (res.hasOwnProperty("error_message")  && res.error_code != 100) {
           this.$toast(res.error_message);
           this.refreshImage();
         }
