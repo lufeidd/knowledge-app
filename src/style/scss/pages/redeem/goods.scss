@@ -23,11 +23,14 @@
     .goods_intro {
       display: flex;
       position: relative;
+      text-overflow: ellipsis;
+      overflow: hidden;
       .picture {
         display: inline-block;
         position: relative;
-        width: 80px;
-        height: 80px;
+        flex-basis: 85px;
+        flex-shrink: 0;
+        height: 85px;
         border-radius: 3px;
         background-size: cover;
         background-repeat: no-repeat;
@@ -56,38 +59,57 @@
       .content {
         flex: 1;
         display: inline-block;
+        position: relative;
         margin-left: 12px;
+        margin-top: -3px;
         .title {
-          font-size: 16px;
-          font-family: PingFang SC;
-          font-weight: 500;
-          color: #000000;
-          line-height: 34px;
-        }
-        .sub_title {
           font-size: 14px;
           font-family: PingFang SC;
           font-weight: 500;
+          color: #333333;
+          line-height: 18px;
+          @include twoColtextOverflow;
+          white-space: pre-wrap;
+          word-break: break-all;
+        }
+        .sub_title {
+          margin-top: 3px;
+          font-size: 12px;
+          font-family: PingFang SC;
+          font-weight: 500;
           color: #999999;
-          line-height: 34px;
+          height: 18px;
+          line-height: 18px;
+
+          overflow : hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          white-space: pre-wrap;
+          word-break: break-all;
         }
         .price {
+          position: absolute;
+          width: 100%;
+          right: 0;
+          bottom: 0;
           font-size: 12px;
           font-family: PingFang SC;
           font-weight: bold;
           color: #F05654;
-          line-height: 34px;
+          line-height: 27px;
         }
         .redeem_btn {
           position: absolute;
-          right: 10px;
-          bottom: 10px;
+          right: 0;
+          bottom: 0;
           border-radius: 3px;
           width: 80px;
           height: 27px;
         }
         .van-button {
-          line-height: 27px;
+          line-height: 25px;
         }
         .van-button--normal {
           padding: 0;
@@ -103,7 +125,8 @@
       }
     }
     .goods_detail {
-      font-size: 14px;
+      margin-top: 10px;
+      font-size: 12px;
       font-family: PingFang SC;
       font-weight: 500;
       color: #666666;
