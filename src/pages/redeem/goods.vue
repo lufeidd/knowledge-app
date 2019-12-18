@@ -236,7 +236,7 @@
       },
       async submitRedeem() {
         let res;
-        if (this.goodsDetail.goods_type == 3 ) {
+        if (this.goodsDetail.goods_type == 3 && localStorage.getItem("loginState") == 1) {
           if (!this.popFlag) {
             this.getAddressData();
             this.addressShowPopup = true;
@@ -261,6 +261,7 @@
           res = await REDEEM_GOODS(data);
         }
         if (res.error_code == 100) { // 未登录
+          localStorage.setItem("loginState", 0);
           if (localStorage.getItem("unionid")) {
             this.$router.push({name: 'redeemLogin'});
           } else {
@@ -268,6 +269,7 @@
           }
 
         } else if (res.hasOwnProperty("response_code")) {
+          localStorage.setItem("loginState", 1);
             // console.log(res);
             let data = res.response_data;
             if (this.isApp()) { // APP
