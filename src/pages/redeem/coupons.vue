@@ -178,7 +178,7 @@ export default {
     }
   },
   created() {
-    this.code = this.$route.params.code;
+    this.code = this.$route.query.code;
     this.redeem = sessionStorage.getItem("redeemId");
     // console.log(this.couponsDetail);
     // console.log('code',this.code);

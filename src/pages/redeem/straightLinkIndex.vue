@@ -25,9 +25,9 @@
         if (res.hasOwnProperty("response_code")) {
           // 判断是商品还是优惠券
           if (res.response_data.goods_type == 2) {
-            this.$router.push({name: 'redeemCoupons', params: {code: '0'}});
+            this.$router.push({name: 'redeemCoupons', query: {redeem_id: this.redeem}});
           } else {
-            this.$router.push({name: 'redeemGoods', params: {code: '0'}});
+            this.$router.push({name: 'redeemGoods', query: {redeem_id: this.redeem}});
           }
         } else {
           this.$router.push({name: 'wapFail', query: {errorMsg: res.error_message}});

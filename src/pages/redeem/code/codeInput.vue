@@ -76,9 +76,9 @@
         } else if (res.hasOwnProperty("response_code")) {
           // 判断是商品还是优惠券
           if (res.response_data.goods_type == 2) {
-            this.$router.push({name: 'redeemCoupons', params: {code: this.codeNum}});
+            this.$router.push({name: 'redeemCoupons', query: {code: this.codeNum}});
           } else {
-            this.$router.push({name: 'redeemGoods', params: {code: this.codeNum}});
+            this.$router.push({name: 'redeemGoods', query: {code: this.codeNum}});
             // console.log(this.$route);
           }
         }

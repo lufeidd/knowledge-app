@@ -912,12 +912,12 @@ export default new Router({
       }
     },
     {
-      path: '/redeem/goods/:code',
+      path: '/redeem/goods',
       name: 'redeemGoods',
       component: redeemGoods
     },
     {
-      path: '/redeem/coupons/:code',
+      path: '/redeem/coupons',
       name: 'redeemCoupons',
       component: redeemCoupons
     }
