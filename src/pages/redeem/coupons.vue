@@ -137,6 +137,7 @@ export default {
           sessionStorage.setItem("goodsType", "coupons");
           // console.log(sessionStorage.getItem("goodsItem"));
           if (localStorage.getItem("unionid")) {
+          // if (false) {
             this.$router.push({name: 'redeemLogin'});
           } else {
             this.$router.push({name: 'login'});
