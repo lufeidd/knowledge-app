@@ -348,6 +348,8 @@
         </div>
       </div>
     </van-popup>
+    <CopyRight></CopyRight>
+    <div style="height: 60px;"></div>
     <div class="bottom">
       <div
         class="isbuy"
@@ -423,7 +425,11 @@
       </div>
     </van-dialog>
     <!-- 拼团 -->
-    <div class="groupBuy" @click="toGoodsGroup" v-if="couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length>0 && baseData.is_payed == 0">
+    <div
+      class="groupBuy"
+      @click="toGoodsGroup"
+      v-if="couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length>0 && baseData.is_payed == 0"
+    >
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-left-arrow" />
       </svg>
@@ -692,7 +698,6 @@
         </div>
       </div>
     </van-popup>
-    <CopyRight></CopyRight>
     <EazyNav type="brand"></EazyNav>
   </div>
 </template>
@@ -835,7 +840,7 @@ export default {
       groupModel: false,
       isgroup: false,
       remain_time: [],
-      groupbuy_id:null,
+      groupbuy_id: null
     };
   },
   mounted() {
@@ -909,12 +914,16 @@ export default {
         if (this.couponInfo.single.remain_time > 0) {
           this.$countTime(this.couponInfo.single.remain_time);
         }
-        if (this.couponInfo.groupbuy &&
+        if (
+          this.couponInfo.groupbuy &&
           Object.keys(this.couponInfo.groupbuy).length > 0 &&
           this.couponInfo.groupbuy.open_list.length > 0
         ) {
-          if(this.couponInfo.groupbuy.open_list.length > 2){
-            this.couponInfo.groupbuy.open_list = this.couponInfo.groupbuy.open_list.slice(0,2)
+          if (this.couponInfo.groupbuy.open_list.length > 2) {
+            this.couponInfo.groupbuy.open_list = this.couponInfo.groupbuy.open_list.slice(
+              0,
+              2
+            );
           }
           for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
             this.remain_time.push({
@@ -1190,8 +1199,9 @@ export default {
       data.timestamp = tStamp;
       data.goods_id = this.goods_id;
       data.version = "1.0";
-      if(this.$refs.pay.order_ticket_id) data.ticket_id = this.$refs.pay.order_ticket_id;
-      if(this.groupbuy_id) data.groupbuy_id = this.couponInfo.groupbuy.id;
+      if (this.$refs.pay.order_ticket_id)
+        data.ticket_id = this.$refs.pay.order_ticket_id;
+      if (this.groupbuy_id) data.groupbuy_id = this.couponInfo.groupbuy.id;
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADD(data);
       if (res.hasOwnProperty("response_code")) {
@@ -1306,13 +1316,13 @@ export default {
         // this.groupModel = false;
         // this.isgroup = true;
         // this.$refs.pay.buyShow = true;
-          this.$router.push({
-            name: "payaccount",
-            query: {
-              goods_id: this.goods_id,
-              groupbuy_id: this.couponInfo.groupbuy.id
-            }
-          });
+        this.$router.push({
+          name: "payaccount",
+          query: {
+            goods_id: this.goods_id,
+            groupbuy_id: this.couponInfo.groupbuy.id
+          }
+        });
       } else {
         this.$router.push({ name: "login" });
       }

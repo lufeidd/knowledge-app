@@ -140,21 +140,6 @@ export default {
         // console.log(res);
         // this.$router.push({ name: "personalIndex", query: "" });
 
-        var fromLink = localStorage.getItem("fromLink");
-
-        // if (
-        //   fromLink.indexOf("/login/index") != -1 ||
-        //   fromLink.indexOf("/personal/set/index") != -1 ||
-        //   fromLink.indexOf("/login/password") != -1 ||
-        //   fromLink.indexOf("/login/register") != -1 ||
-        //   fromLink.indexOf("/personal/set/password") != -1 ||
-        //   fromLink == "/"
-        // ) {
-        //   this.$router.replace({ name: "personalIndex" });
-        // } else {
-        //   this.$router.go(-1);
-        // }
-
         // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
         window.location.href = localStorage.getItem("defaultLink");
       } else {
