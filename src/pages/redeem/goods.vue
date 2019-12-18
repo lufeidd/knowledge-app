@@ -262,6 +262,7 @@
         }
         if (res.error_code == 100) { // 未登录
           localStorage.setItem("loginState", 0);
+          // if (true) {
           if (localStorage.getItem("unionid")) {
             this.$router.push({name: 'redeemLogin'});
           } else {
@@ -302,6 +303,8 @@
     created() {
       this.code = this.$route.query.code;
       this.redeem = sessionStorage.getItem("redeemId");
+      // sessionStorage.setItem('goodsParams', JSON.stringify(this.$route.query));
+      sessionStorage.setItem('hash', window.location.hash);
     },
     mounted() {
       this.getGoodsDetail();
