@@ -298,12 +298,11 @@
       }
     },
     created() {
-      this.code = this.$route.params.code;
+      this.code = this.$route.query.code;
       this.redeem = sessionStorage.getItem("redeemId");
     },
     mounted() {
       this.getGoodsDetail();
-      this.$toast(localStorage.getItem("defaultLink"));
     },
     components: {
       EazyNav: easyNav
