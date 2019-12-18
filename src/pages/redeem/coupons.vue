@@ -133,6 +133,7 @@ export default {
         let res = await REDEEM_GOODS(data);
         // console.log(res);
         if (res.error_code == 100) { // 未登录
+          localStorage.setItem("loginState", 0);
           sessionStorage.setItem("goodsItem", JSON.stringify(item));
           sessionStorage.setItem("goodsType", "coupons");
           // console.log(sessionStorage.getItem("goodsItem"));
@@ -144,6 +145,7 @@ export default {
           }
 
         } else if (res.hasOwnProperty("response_code")) {
+          localStorage.setItem("loginState", 1);
           let data = res.response_data;
           console.log(res);
             // this.$router.push({name: 'appSuccess', query: {goodsName: this.percentCoupons.title, resData: data}});
