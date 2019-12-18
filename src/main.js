@@ -1,6 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-console.log(3)
+console.log('main.js')
 import Vue from 'vue'
 import App from './App'
 import router from './router/index'
@@ -170,7 +170,6 @@ Vue.config.productionTip = false
 
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
-console.log('router beforeEach', to)
   next();
   // 存放页面来源地址
   if (from.path != to.path) {

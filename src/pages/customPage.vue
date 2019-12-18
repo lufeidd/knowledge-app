@@ -740,7 +740,7 @@ export default {
       }
       // else if (data.name == "custompage") {
       //   // 自定义页面
-      //   this.$router.push({
+      //   this.$router.replace({
       //     query: merge(this.$route.query, { page_id: data.query.page_id })
       //   });
       // }

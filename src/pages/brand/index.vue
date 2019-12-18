@@ -280,7 +280,7 @@ export default {
       this.programFinished = false;
       this.currentPage = 1;
       this.packets_id = this.brandData.column_list[index].packets_id;
-      this.$router.push({
+      this.$router.replace({
         query: merge(this.$route.query, { packets_id: this.packets_id })
       });
     },

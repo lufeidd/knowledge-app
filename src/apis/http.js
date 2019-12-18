@@ -2,7 +2,7 @@
  * author: nancyzeng
  * date:2019/4/26
  */
-console.log(1)
+console.log('http.js')
 import axios from 'axios'
 import qs from "Qs";
 import Vue from 'vue';
