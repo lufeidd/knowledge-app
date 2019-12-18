@@ -876,9 +876,6 @@
           </div>
         </div>
       </van-popup>
-      <!-- <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div>-->
       <!-- 快速导航 -->
       <!-- <easyNav :navData="navData"></easyNav> -->
     </div>

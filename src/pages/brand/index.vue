@@ -55,8 +55,14 @@
               </div>
               <div class="right">
                 <div class="text">{{item.title}}</div>
-                <div class="pinpai" v-if="item.goods_type == 1 || item.goods_type == 2 || item.goods_type == 6 || item.goods_type == 9">{{ item.brand_name }}</div>
-                <div class="pinpai" v-if="item.goods_type == 4 || item.goods_type == 3">{{ item.book_author }}</div>
+                <div
+                  class="pinpai"
+                  v-if="item.goods_type == 1 || item.goods_type == 2 || item.goods_type == 6 || item.goods_type == 9"
+                >{{ item.brand_name }}</div>
+                <div
+                  class="pinpai"
+                  v-if="item.goods_type == 4 || item.goods_type == 3"
+                >{{ item.book_author }}</div>
                 <div class="nice">
                   <span class="good" v-if="item.goods_type == 6">
                     <svg class="icon" aria-hidden="true">
@@ -64,7 +70,10 @@
                     </svg>
                     <span>{{item.praise_num}}</span>
                   </span>
-                  <span class="comment" v-if="item.goods_type == 1 || item.goods_type == 2 || item.goods_type == 6 || item.goods_type == 9">
+                  <span
+                    class="comment"
+                    v-if="item.goods_type == 1 || item.goods_type == 2 || item.goods_type == 6 || item.goods_type == 9"
+                  >
                     <svg class="icon" aria-hidden="true">
                       <use xlink:href="#icon-comment-line" />
                     </svg>
@@ -79,9 +88,6 @@
             </div>
           </van-list>
         </template>
-        <div style="position:relative;height:90px;">
-          <CopyRight></CopyRight>
-      </div>
       </van-tab>
     </van-tabs>
 
@@ -103,6 +109,7 @@
       <div class="line"></div>
       <div class="content">{{brandData.summary}}</div>
     </van-popup>
+    <CopyRight></CopyRight>
 
     <EazyNav type="brand"></EazyNav>
   </div>
@@ -139,7 +146,7 @@ export default {
     } else {
       this.$toast("商户信息丢失，请返回重新访问页面!");
       this.$router.replace({
-        name: "personalIndex",
+        name: "personalIndex"
       });
     }
   },
@@ -353,14 +360,14 @@ export default {
           }
         });
       }
-       //电子书
-      if(item.goods_type == 4) {
+      //电子书
+      if (item.goods_type == 4) {
         this.$router.push({
-          name:"ebookdetail",
-          query:{
-            goods_id:item.goods_id,
+          name: "ebookdetail",
+          query: {
+            goods_id: item.goods_id
           }
-        })
+        });
       }
     },
     toMall() {

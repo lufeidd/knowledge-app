@@ -47,9 +47,7 @@
         </van-col>
       </van-row>
     </div>
-    <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-    <!-- <CopyRight></CopyRight> -->
   </div>
 </template>
 

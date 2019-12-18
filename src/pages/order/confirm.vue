@@ -277,7 +277,6 @@
       </van-tabs>
     </van-popup>
     <EazyNav type="order"></EazyNav>
-    <!-- <CopyRight></CopyRight> -->
   </div>
 </template>
 

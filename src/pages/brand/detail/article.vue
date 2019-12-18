@@ -10,7 +10,11 @@
         <div class="from">
           <div class="articleInfo">
             <div class="ratiobox">
-              <router-link :to="{name: 'brand', query: {brand_id: articleInfo.brand_id}}" class="bookImg" v-lazy:background-image="articleInfo.header_pic"></router-link>
+              <router-link
+                :to="{name: 'brand', query: {brand_id: articleInfo.brand_id}}"
+                class="bookImg"
+                v-lazy:background-image="articleInfo.header_pic"
+              ></router-link>
             </div>
             <div class="detail">
               <span>{{articleInfo.name}}</span>
@@ -196,7 +200,7 @@
           </div>
         </div>
       </van-popup>
-
+      <CopyRight></CopyRight>
       <div style="height: 60px;"></div>
       <div v-if="this.isIphx" style="height: 34px;"></div>
       <!-- 快来写评论吧 -->
@@ -226,10 +230,6 @@
             <use xlink:href="#icon-good-block" />
           </svg>
         </div>
-      </div>
-      <!-- <easyNav :navData="navData"></easyNav> -->
-      <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
       </div>
       <EazyNav type="brand"></EazyNav>
     </div>

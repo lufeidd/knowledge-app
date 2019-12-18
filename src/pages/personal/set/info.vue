@@ -81,8 +81,8 @@
     <div style="margin-top: 5px;">
       <van-button size="large" @click="save">保存</van-button>
     </div>
-    <EazyNav type="brand"></EazyNav>
     <CopyRight></CopyRight>
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 

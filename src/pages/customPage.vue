@@ -577,9 +577,6 @@
         </div>
       </div>
     </div>
-    <!-- <div style="position:relative;height:90px;">
-      <CopyRight></CopyRight>
-    </div>-->
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="mall"></EazyNav>
   </div>

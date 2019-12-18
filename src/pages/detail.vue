@@ -343,9 +343,6 @@
           </van-cell>
         </div>
       </van-popup>
-      <!-- <div style="height: 90px;position:relative">
-        <CopyRight></CopyRight>
-      </div>-->
       <!-- <div v-if="this.isIphx" style="height: 34px;"></div> -->
       <div style="height:60px;"></div>
       <!-- 加入购物车、立即购买 -->

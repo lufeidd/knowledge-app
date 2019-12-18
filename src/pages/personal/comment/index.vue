@@ -40,11 +40,8 @@
         </div>
       </div>
     </van-list>
-      <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div>
     </div>
-    <!-- <easyNav :navData="navData"></easyNav> -->
+    <CopyRight></CopyRight>
     <EazyNav type="brand"></EazyNav>
   </div>
 </template>

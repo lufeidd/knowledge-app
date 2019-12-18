@@ -105,11 +105,11 @@
       </van-swipe-cell>
     </van-list>
       <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
+        
       </div>
     </div>
+    <CopyRight></CopyRight>
     <!-- 快速导航 -->
-    <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
 
   </div>

@@ -27,9 +27,6 @@
         </div>
       </div>
     </div>
-      <!-- <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div> -->
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div style="height: 60px;"></div>
     <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-if="refund_state<3">

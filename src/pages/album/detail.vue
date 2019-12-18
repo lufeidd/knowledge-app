@@ -217,7 +217,8 @@
                 >
                   <!-- <van-pagination v-model="item.reply_current_page" :page-count="item.reply_total_page" mode="simple" @change="pageChange(item.comment_id, key)" /> -->
 
-                  <span class="name" @click="pageChange(item.comment_id, key)">共{{ item.reply_num }}条回复
+                  <span class="name" @click="pageChange(item.comment_id, key)">
+                    共{{ item.reply_num }}条回复
                     <svg class="icon" aria-hidden="true">
                       <use xlink:href="#icon-fold-line" />
                     </svg>
@@ -226,7 +227,6 @@
                     </svg>-->
                   </span>
                 </div>
-
               </div>
 
               <!-- 回复 -->
@@ -239,6 +239,7 @@
         </van-list>
       </div>
 
+      <CopyRight></CopyRight>
       <div v-if="baseData.is_free == 0 && baseData.is_payed == 0" style="height: 60px;"></div>
       <!-- <div v-if="myAudioData.src" style="height: 60px;"></div> -->
       <div v-if="this.isIphx" style="height: 34px;"></div>
@@ -697,9 +698,6 @@
           </div>
         </div>
       </van-popup>
-      <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div>
     </div>
     <EazyNav type="brand" ref="nav"></EazyNav>
   </div>
@@ -1657,7 +1655,7 @@ export default {
     pageChange(comment_id, key) {
       this.replyData(comment_id, key);
       // this.replyPage[key] = 2;
-      console.log("当前页数组：", this.replyPage, 'key:', key);
+      console.log("当前页数组：", this.replyPage, "key:", key);
     },
     // 关闭评论弹窗
     commentClose() {

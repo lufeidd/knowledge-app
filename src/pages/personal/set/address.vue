@@ -42,8 +42,8 @@
       />
     </van-popup>
 
-    <EazyNav type="brand"></EazyNav>
     <CopyRight></CopyRight>
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 

@@ -40,9 +40,6 @@
         <van-button round size="small" type="danger" @click="next">下一章</van-button>
       </div>
     </div>
-    <!-- <div style="position:relative;height:90px;">
-      <CopyRight></CopyRight>
-    </div>-->
 
     <!-- 设置弹层 -->
     <van-popup v-model="setShow" position="bottom" >

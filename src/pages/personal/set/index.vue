@@ -27,9 +27,8 @@
       <van-button size="large" @click="logoutAction">退出登录</van-button>
     </div>
     <!-- 快速导航 -->
-    <!-- <easyNav :navData="navData"></easyNav> -->
-    <EazyNav type="brand"></EazyNav>
     <CopyRight></CopyRight>
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 

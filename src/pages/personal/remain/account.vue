@@ -24,10 +24,7 @@
     <div class="recharge" style="padding-bottom: 40px;">
       <van-button slot="button" size="large" round type="danger" @click="account()">充值</van-button>
     </div>
-    <div style="height:90px;position:relative;">
       <CopyRight></CopyRight>
-    </div>
-    <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
   </div>
 </template>

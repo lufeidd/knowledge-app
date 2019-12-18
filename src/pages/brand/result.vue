@@ -152,12 +152,8 @@
           </template>
         </van-tab>
       </van-tabs>
-      <!-- <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div> -->
     <!-- </div> -->
     </van-list>
-    <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
   </div>
 </template>

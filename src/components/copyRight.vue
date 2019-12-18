@@ -9,9 +9,11 @@
 
 <style lang="scss">
   #copyRight{
-    position: absolute;
-    bottom:60px;
-    padding:0px 15px;
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    padding: 0 15px;
+    line-height: 60px;
     text-align: center;
     color:$cl9;
     box-sizing: border-box;

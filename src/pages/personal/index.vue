@@ -257,7 +257,6 @@
           </div>
         </router-link>
 
-
         <!-- 我的评论 -->
         <router-link v-if="infoData.is_login" to="/personal/comment/index" class="cell">
           <div class="svg">
@@ -323,11 +322,8 @@
         </router-link>
       </template>
     </div>
-    <div style="height:125px;position:relative;">
-      <CopyRight></CopyRight>
-    </div>
+    <CopyRight></CopyRight>
     <!-- 快速导航 -->
-    <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
   </div>
 </template>
@@ -383,7 +379,8 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.$store.commit("changeLoginState", 1);
-        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
+        if (res.response_data.hasOwnProperty("is_login"))
+          localStorage.setItem("loginState", res.response_data.is_login);
 
         this.$set(this.infoData, "user_header", res.response_data.user_header);
         this.$set(this.infoData, "user_name", res.response_data.user_name);
