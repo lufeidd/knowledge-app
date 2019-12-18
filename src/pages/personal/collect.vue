@@ -104,9 +104,6 @@
         </span>
       </van-swipe-cell>
     </van-list>
-      <div style="position:relative;height:90px;">
-        
-      </div>
     </div>
     <CopyRight></CopyRight>
     <!-- 快速导航 -->
