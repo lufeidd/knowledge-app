@@ -279,9 +279,6 @@
         </div>
       </van-list>
     </div>
-    <div style="position:relative;height:90px;">
-      <CopyRight></CopyRight>
-    </div>
     <!-- 评论 -->
     <van-popup v-model="commentModel" position="bottom" style="max-height:70%;">
       <div class="audioList">
@@ -389,7 +386,6 @@
     ></ebookpay>
     <!-- 充值余额并支付 -->
     <ebookrecharge ref="recharge" :info="info" :goods_id="goods_id" @return="returnUp"></ebookrecharge>
-    <EazyNav type="brand"></EazyNav>
     <!-- 数字键盘 -->
     <van-number-keyboard
       :show="showKeyboard"
@@ -696,6 +692,8 @@
         </div>
       </div>
     </van-popup>
+    <CopyRight></CopyRight>
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -719,7 +717,7 @@
     background: linear-gradient(to right, #f72d3e 100%, #f35636 100%);
     border-radius: 15px 0 0 15px;
     font-size: $fontSize - 2;
-    position: fixed;
+    position: absolute;
     z-index: 99;
     top: 130px;
     right: 0;

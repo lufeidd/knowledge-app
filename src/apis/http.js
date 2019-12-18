@@ -2,7 +2,7 @@
  * author: nancyzeng
  * date:2019/4/26
  */
-
+console.log('http.js')
 import axios from 'axios'
 import qs from "Qs";
 import Vue from 'vue';
@@ -10,40 +10,39 @@ import Vue from 'vue';
 // 创建axios的一个实例
 var app_version = sessionStorage.getItem("isWxLogin") == "yes" ? 'weixin' : 'wap';
 var open_id = localStorage.getItem('openid');
-var instance = axios.create({
-    // dev
-    baseURL: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis',
+var obj = {};
 
-    // run build
-    // baseURL: window.location.protocol + "//" + window.location.hostname + '/apis',
+// run dev
+// obj.baseURL = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis';
 
-    headers: { 'App-version': app_version, 'unique-code': open_id },
-    // responseType: 'blob',    // 测试发票下载
-    timeout: 15000,
-})
+// run build
+obj.baseURL =  window.location.protocol + "//" + window.location.hostname + '/apis';
+
+obj.timeout = 15000;
+
+// 如果有设置过headers则不设置
+if (sessionStorage.getItem("hasHeader") == "no") {
+    obj.headers = {
+        'App-version': app_version,
+        'unique-code': open_id
+    };
+}
 
 // 一、请求拦截器 忽略
+var instance = axios.create(obj);
 instance.interceptors.request.use(function (config) {
     config.credentials = true;
 
-    // 网页端跳转 404 页面
-    if (sessionStorage.getItem("isWxLogin") == "no" && (localStorage.getItem('routerLink').indexOf('/personal/remain/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/account') != -1 || localStorage.getItem('routerLink').indexOf('/pay/index') != -1 || localStorage.getItem('routerLink').indexOf('/library/detail') != -1)) {
-        window.location.href = window.location.href.split('#')[0] + '#/404';
-    }
     return config;
 }, function (error) {
     // 对请求错误做些什么
-    // console.log('request error');
+    console.log('request error');
     return Promise.reject(error);
 });
 
 // 二、响应拦截器 忽略
 instance.interceptors.response.use(function (response) {
     if (response.status === 200) {
-        // console.log(200);
-        // $('#loadingPage').remove();
-
-        // console.log(localStorage.getItem('routerLink'));
         // 处理请求成功的逻辑
         return response.data; // 必须返回，后面的接口的then，才能获取response
     } else {

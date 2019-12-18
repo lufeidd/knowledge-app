@@ -101,7 +101,7 @@
       </div>
       <div class="filePackageUrl">
         <div class="urlLink">{{ this.url }}</div>
-        <van-button slot="button" size="small" round class="copyBtn" @click="copyUrl">复制</van-button>
+        <van-button slot="button" size="small" round class="copyBtn" v-clipboard:copy="this.url" v-clipboard:success="copyUrl">复制</van-button>
       </div>
     </van-popup>
     <Loading :isLoading="isLoading"></Loading>
@@ -109,9 +109,19 @@
 </template>
 
 <style src="@/style/scss/pages/library/detail.scss" scoped lang="scss"></style>
-<style lang="scss">
+<style>
+  #libraryDetail .input .van-field__control{
+    border-bottom: 1px solid #e6e6e6;
+    padding-bottom: 10px;
+  }
+</style>
+<style lang="scss" scoped>
   #loadingPage{
     background: #f0f0f0!important;
+  }
+  #libraryDetail .emailPopup .van-cell {
+    border-bottom: 0;
+    padding: 10px 0px 10px 0;
   }
 </style>
 <script>
@@ -128,7 +138,7 @@ export default {
       isDownload: true,
       timeoutId: 0,
       fileHideUrl: '',
-      url: 'http://file.mhuoba.com123fadfafasfasfasfa',
+      url: '',
       packageData: {
         base: {},
         brand_info: {},
@@ -147,8 +157,28 @@ export default {
   },
   methods: {
     // email显示弹窗事件
-    emailClick () {
-      this.emailShowPopup = true
+    async emailClick () {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        file_package_detail_id : this.packageData.base.compress_file_id,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await FILEPACKAGE_GETURL(data);
+      if (res.hasOwnProperty("response_code")) {
+        if (res.response_data.file_path != null) {
+          this.url = res.response_data.file_path;
+          this.emailShowPopup = true
+        }
+      } else {
+        if (res.error_code === 100) {
+          this.$toast(res.error_message);
+          this.login();
+        } else {
+          this.$toast(res.error_message);
+        }
+      }
     },
     closeEmail () {
       this.emailShowPopup = false
@@ -276,10 +306,21 @@ export default {
         } else if (this.packageData.base.is_download != 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price != 0) {
           this.buyAction(this.goods_id);
         } else {
-          this.fileHideUrl = res.response_data.file_path;
-          this.timeoutId = setTimeout(() => {
-            document.getElementById('hideDom').click();
-          },100)
+          const u = navigator.userAgent;
+          const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+          console.log('判断');
+          if (isiOS) {
+            // ios
+            console.log('ios');
+            this.fileHideUrl = res.response_data.file_path;
+            this.timeoutId = setTimeout(() => {
+              document.getElementById('hideDom').click();
+            },100)
+          } else {
+            // andriod
+            console.log('andriod');
+            this.$toast('Android暂不支持预览，请下载文件后查看');
+          }
         }
       } else {
         if (res.error_code === 100) {
@@ -298,14 +339,6 @@ export default {
     },
     // 点击自动复制内容
     copyUrl () {
-      const input = document.createElement('input');
-      document.body.appendChild(input);
-      input.setAttribute('value', this.url);
-      input.select();
-      if (document.execCommand('copy')) {
-        document.execCommand('copy')
-      }
-      document.body.removeChild(input);
       this.$toast("链接复制成功");
     }
   }

@@ -876,9 +876,6 @@
           </div>
         </div>
       </van-popup>
-      <!-- <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div>-->
       <!-- 快速导航 -->
       <!-- <easyNav :navData="navData"></easyNav> -->
     </div>
@@ -2098,7 +2095,6 @@ export default {
     // load
     recommendLoad() {
       this.recommendData();
-      console.log(999, this.activeKey);
     },
     async recommendData() {
       var tStamp = this.$getTimeStamp();

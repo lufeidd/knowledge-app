@@ -7,59 +7,55 @@
       <div>还没有关注的内容，快去看看吧~</div>
     </div>
     <div v-else>
-    <van-list
-      v-model="focusLoading"
-      :finished="focusFinished"
-      finished-text="没有更多了"
-      @load="focusLoad"
-    >
-      <van-swipe-cell
-        :right-width="65"
-        :left-width="0"
-        :on-close="focusClose"
-        v-for="(item, key) in focusList"
-        :key="key"
+      <van-list
+        v-model="focusLoading"
+        :finished="focusFinished"
+        finished-text="没有更多了"
+        @load="focusLoad"
       >
-        <div
-          @click="gotoBrand(item.brand_id, item.brand_name)"
-          class="listBox"
-          v-if="focusStatus[key].brand_id != null"
+        <van-swipe-cell
+          :right-width="65"
+          :left-width="0"
+          :on-close="focusClose"
+          v-for="(item, key) in focusList"
+          :key="key"
         >
-          <div class="left">
-            <div class="ratioBox">
-              <div class="box">
-                <img :src="item.header_pic" />
+          <div
+            @click="gotoBrand(item.brand_id, item.brand_name)"
+            class="listBox"
+            v-if="focusStatus[key].brand_id != null"
+          >
+            <div class="left">
+              <div class="ratioBox">
+                <div class="box">
+                  <img :src="item.header_pic" />
+                </div>
               </div>
             </div>
-          </div>
-          <div class="right">
-            <div class="title">{{ item.brand_name }}</div>
-            <div class="subTitle">已被{{ item.fans_num }}人关注</div>
-            <!-- <div class="new">
+            <div class="right">
+              <div class="title">{{ item.brand_name }}</div>
+              <div class="subTitle">已被{{ item.fans_num }}人关注</div>
+              <!-- <div class="new">
               <span class="text">更新</span>
               <span class="count">+{{ item.update_num }}</span>
-            </div>-->
+              </div>-->
+            </div>
+            <div class="left" style="flex-basis: 0;margin-right: 10px;">
+              <svg class="icon" aria-hidden="true" style="width: 14px;height: 14px;color: #ccc;">
+                <use xlink:href="#icon-next-line" />
+              </svg>
+            </div>
           </div>
-          <div class="left" style="flex-basis: 0;margin-right: 10px;">
-            <svg class="icon" aria-hidden="true" style="width: 14px;height: 14px;color: #ccc;">
-              <use xlink:href="#icon-next-line" />
-            </svg>
-          </div>
-        </div>
-        <span slot="right" @click="focusCancel(item.brand_id, key)">
-          <div>取消关注</div>
-        </span>
-      </van-swipe-cell>
-    </van-list>
-      <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div>
+          <span slot="right" @click="focusCancel(item.brand_id, key)">
+            <div>取消关注</div>
+          </span>
+        </van-swipe-cell>
+      </van-list>
     </div>
 
+    <CopyRight></CopyRight>
     <!-- 快速导航 -->
-    <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
-
   </div>
 </template>
 
@@ -116,7 +112,7 @@ export default {
           };
           data.sign = this.$getSign(data);
           res = await FOCUS(data);
-              console.log("关注列表：", res.response_data);
+          console.log("关注列表：", res.response_data);
 
           // 出错提示
           if (
@@ -127,7 +123,8 @@ export default {
               var result = res.response_data.result;
               // store 设置登录状态
               this.$store.commit("changeLoginState", 1);
-              localStorage.setItem("loginState", 1);
+              if (res.response_data.hasOwnProperty("is_login"))
+                localStorage.setItem("loginState", res.response_data.is_login);
 
               for (let i = 0; i < result.length; i++) {
                 this.focusList.push(result[i]);
@@ -145,7 +142,7 @@ export default {
             if (res.hasOwnProperty("error_code") && res.error_code == 100) {
               // store 设置登录状态
               this.$store.commit("changeLoginState", 100);
-              localStorage.setItem("loginState", 100);
+              localStorage.setItem("loginState", 0);
             }
             this.focusFinished = true;
             // this.$toast(res.error_message);

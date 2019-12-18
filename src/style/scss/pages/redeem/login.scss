@@ -10,30 +10,65 @@
     margin: 0;
   }
   .header_wrapper {
+    display: flex;
+    position: relative;
+    text-overflow: ellipsis;
+    overflow: hidden;
     padding: 15px;
-    .content {
+    .picture {
       display: inline-block;
+      position: relative;
+      flex-basis: 85px;
+      flex-shrink: 0;
+      margin: 3px 0 3px 3px;
+      height: 85px;
+      border-radius: 3px;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .content {
+      flex: 1;
+      display: inline-block;
+      position: relative;
       margin-left: 12px;
-      .author {
-        font-size: 16px;
-        font-family: PingFang SC;
-        font-weight: 500;
-        color: #000000;
-        line-height: 34px;
-      }
       .title {
         font-size: 14px;
         font-family: PingFang SC;
         font-weight: 500;
+        color: #333333;
+        line-height: 18px;
+        @include twoColtextOverflow;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+      .sub_title {
+        margin-top: 3px;
+        font-size: 12px;
+        font-family: PingFang SC;
+        font-weight: 500;
         color: #999999;
-        line-height: 34px;
+        height: 18px;
+        line-height: 18px;
+
+        overflow : hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        white-space: pre-wrap;
+        word-break: break-all;
       }
       .price {
-        font-size: 12px;
+        position: absolute;
+        width: 100%;
+        right: 0;
+        bottom: 0;
+        font-size: 14px;
         font-family: PingFang SC;
         font-weight: bold;
         color: #F05654;
-        line-height: 34px;
+        height: 14px;
+        line-height: 14px;
       }
     }
   }
@@ -51,7 +86,7 @@
     }
     .van-field__control {
       padding: 10px;
-      border-bottom: 0.5px solid #DCDCDC;
+      border-bottom: 0.5px solid #ECECEC;
       width: 285px;
       font-size: 14px;
       font-family: PingFang SC;

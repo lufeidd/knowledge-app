@@ -240,6 +240,23 @@
           </div>
         </router-link>
 
+        <!-- 兑换码 -->
+        <router-link to="/redeem/codeInput" class="cell">
+          <div class="svg">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-personalRedeem" />
+            </svg>
+          </div>
+          <div class="desc">
+            <span class="text">兑换码</span>
+          </div>
+          <div class="action">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-next-line" />
+            </svg>
+          </div>
+        </router-link>
+
         <!-- 我的评论 -->
         <router-link v-if="infoData.is_login" to="/personal/comment/index" class="cell">
           <div class="svg">
@@ -305,11 +322,8 @@
         </router-link>
       </template>
     </div>
-    <div style="height:125px;position:relative;">
-      <CopyRight></CopyRight>
-    </div>
+    <CopyRight></CopyRight>
     <!-- 快速导航 -->
-    <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand"></EazyNav>
   </div>
 </template>
@@ -365,7 +379,8 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.$store.commit("changeLoginState", 1);
-        localStorage.setItem("loginState", 1);
+        if (res.response_data.hasOwnProperty("is_login"))
+          localStorage.setItem("loginState", res.response_data.is_login);
 
         this.$set(this.infoData, "user_header", res.response_data.user_header);
         this.$set(this.infoData, "user_name", res.response_data.user_name);
@@ -385,7 +400,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 100);
+          localStorage.setItem("loginState", 0);
         }
         this.$toast(res.error_message);
       }

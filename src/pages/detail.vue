@@ -219,7 +219,12 @@
         </div>
       </van-popup>
       <!-- 领取优惠券 -->
-      <van-popup v-model="couponModel" v-if="couponInfo.ticket" position="bottom" style="max-height:65%;min-height:65%;">
+      <van-popup
+        v-model="couponModel"
+        v-if="couponInfo.ticket"
+        position="bottom"
+        style="max-height:65%;min-height:65%;"
+      >
         <div class="header">
           <span class="catalogWord">可用优惠券（满足条件后可用于当前商品）</span>
           <span>
@@ -315,7 +320,12 @@
         </div>
       </van-popup>
       <!-- 满减满折 -->
-      <van-popup v-model="multiModel" position="bottom" v-if="couponInfo.multi" style="max-height:50%;min-height:50%;">
+      <van-popup
+        v-model="multiModel"
+        position="bottom"
+        v-if="couponInfo.multi"
+        style="max-height:50%;min-height:50%;"
+      >
         <div class="header">
           <span class="catalogWord">活动</span>
           <span>
@@ -325,7 +335,7 @@
           </span>
         </div>
         <div class="content" style="padding:0">
-          <van-cell is-link  @click="toMultiResult" class="multi">
+          <van-cell is-link @click="toMultiResult" class="multi">
             <template slot="title">
               <span class="multi_radio">{{couponInfo.multi.tag}}</span>
               <span style="font-size:12px;white-space:wrap;">{{couponInfo.multi.desc}}</span>
@@ -333,9 +343,6 @@
           </van-cell>
         </div>
       </van-popup>
-      <!-- <div style="height: 90px;position:relative">
-        <CopyRight></CopyRight>
-      </div>-->
       <!-- <div v-if="this.isIphx" style="height: 34px;"></div> -->
       <div style="height:60px;"></div>
       <!-- 加入购物车、立即购买 -->
@@ -354,7 +361,7 @@
 
       <!-- 暂无库存 -->
       <div class="disabled" v-if="baseData.stores <= 0">
-        <!-- <div style="height: 50px;"></div> -->
+        <div style="height: 50px;"></div>
         <div class="none">库存不足</div>
         <van-goods-action>
           <van-goods-action-mini-btn
@@ -418,7 +425,7 @@
       margin-top: -6px;
     }
   }
-  .multi .van-cell__title{
+  .multi .van-cell__title {
     white-space: pre-wrap;
   }
 }
@@ -485,7 +492,7 @@ export default {
       activeIndex: 1,
       popupModel: false,
       couponModel: false,
-      multiModel:false,
+      multiModel: false,
       requestState: true,
       // 倒计时
       timeData: "2019-10-17 20:28:00",
@@ -505,6 +512,7 @@ export default {
     this.albumData();
     this.getCouponList();
     // this.$countTime(this.timeData);
+
   },
   methods: {
     toGoodsGroup() {
@@ -556,7 +564,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        localStorage.setItem("loginState", 1);
+        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
 
         this.addressData = [];
         for (let i = 0; i < res.response_data.length; i++) {
@@ -567,7 +575,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 100);
+          localStorage.setItem("loginState", 0);
         }
         this.$toast(res.error_message);
       }
@@ -591,7 +599,7 @@ export default {
         if (res.response_data.success == 1) {
           this.$toast("添加购物车成功~");
           this.shoppingcart_num++;
-          this.$refs.nav.navData.goods_nums ++;
+          this.$refs.nav.navData.goods_nums++;
         }
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
@@ -644,6 +652,19 @@ export default {
         document.title = "商品详情-" + res.response_data.base.title;
         // 优惠券
         this.couponInfo = res.response_data.activity;
+        if (this.$route.query.isactivity == 1) {
+        } else {
+          if (this.couponInfo.groupbuy.state == 1) {
+            this.$router.replace({
+              name: "groupgoods",
+              query: {
+                goods_id: this.baseData.goods_id,
+                groupbuy_id: this.couponInfo.groupbuy.id
+              }
+            });
+            return;
+          }
+        }
         if (this.couponInfo.single.remain_time > 0) {
           this.$countTime(this.couponInfo.single.remain_time);
         }
@@ -871,16 +892,16 @@ export default {
         }
       });
     },
-    showMulti(){
+    showMulti() {
       this.multiModel = true;
     },
-    toMultiResult(){
+    toMultiResult() {
       this.$router.push({
-        name:"multiresult",
-        query:{
-          multi_id:this.couponInfo.multi.activity_id,
+        name: "multiresult",
+        query: {
+          multi_id: this.couponInfo.multi.activity_id
         }
-      })
+      });
     }
   }
 };

@@ -137,7 +137,8 @@ import codeIndex from '@/pages/redeem/codeIndex'
 import codeInput from '@/pages/redeem/code/codeInput'
 import appSuccess from '@/pages/redeem/result/appSuccess'
 import wapSuccess from '@/pages/redeem/result/wapSuccess'
-import fail from '@/pages/redeem/result/fail'
+import appFail from '@/pages/redeem/result/appFail'
+import wapFail from '@/pages/redeem/result/wapFail'
 import redeemLogin from '@/pages/redeem/login'
 import redeemGoods from '@/pages/redeem/goods'
 import redeemCoupons from '@/pages/redeem/coupons'
@@ -195,6 +196,7 @@ export default new Router({
       component: login,
       meta: {
         title: '登录',
+        noDefaultLink: true,  // 不记录在defaultLink中
         // requireAuth: true
       }
     },
@@ -204,6 +206,7 @@ export default new Router({
       component: password,
       meta: {
         title: '找回密码',
+        noDefaultLink: true,  // 不记录在defaultLink中
         // requireAuth: true
       }
     },
@@ -213,6 +216,7 @@ export default new Router({
       component: register,
       meta: {
         title: '注册',
+        noDefaultLink: true,  // 不记录在defaultLink中
         // requireAuth: true
       }
     },
@@ -221,7 +225,8 @@ export default new Router({
       name: 'prototype',
       component: prototype,
       meta: {
-        title: '协议'
+        title: '协议',
+        noDefaultLink: true,  // 不记录在defaultLink中
       }
     },
     {
@@ -229,7 +234,9 @@ export default new Router({
       name: 'bindphone',
       component: bindphone,
       meta: {
-        title: '绑定手机号'
+        title: '绑定手机号',
+        noDefaultLink: true,  // 不记录在defaultLink中
+        // requireAuth: false
       }
     },
     // 个人中心 - 首页
@@ -241,6 +248,14 @@ export default new Router({
         title: '个人中心',
         requireAuth: false // 需要登录才能进入的页面可以增加一个meta属性
       },
+      beforeEnter: (to, from, next) => {
+        // ...
+        next();
+      },
+      beforeLeave: (to, from, next) => {
+        // ...
+        next();
+      }
     },
     {
       path: '/personal/collect',
@@ -295,7 +310,8 @@ export default new Router({
       component: account,
       meta: {
         title: '充值',
-        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+        requireAuth: true, // 需要登录才能进入的页面可以增加一个meta属性
+        isWxLogin: true,   // 必须在微信端打开
       }
     },
     {
@@ -440,10 +456,10 @@ export default new Router({
       name: 'set',
       component: set,
       //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
-      beforeEnter: (to, from, next) => {
-        from.path == '/personal/set/info' ? next('/personal/index') : next();
-        from.path == '/personal/set/phone' ? next('/personal/index') : next();
-      },
+      // beforeEnter: (to, from, next) => {
+      //   from.path == '/personal/set/info' ? next('/personal/index') : next();
+      //   from.path == '/personal/set/phone' ? next('/personal/index') : next();
+      // },
       meta: {
         title: '设置',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
@@ -454,9 +470,9 @@ export default new Router({
       name: 'address',
       component: address,
       //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
-      beforeEnter: (to, from, next) => {
-        from.path == '/personal/set/index' ? next('/personal/index') : next();
-      },
+      // beforeEnter: (to, from, next) => {
+      //   from.path == '/personal/set/index' ? next('/personal/index') : next();
+      // },
       meta: {
         title: '我的收货地址',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
@@ -517,9 +533,9 @@ export default new Router({
       name: 'setpassword',
       component: setpassword,
       //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
-      beforeEnter: (to, from, next) => {
-        from.path == '/login/index' ? next('/personal/index') : next();
-      },
+      // beforeEnter: (to, from, next) => {
+      //   from.path == '/login/index' ? next('/personal/index') : next();
+      // },
       meta: {
         title: '',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
@@ -531,6 +547,7 @@ export default new Router({
       component: setphone,
       meta: {
         title: '手机绑定',
+        noDefaultLink: true,  // 不记录在defaultLink中
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
@@ -704,7 +721,8 @@ export default new Router({
       component: couponmine,
       meta: {
         keepAlive: false,  // false不需要被缓存，true需要缓存
-        title: '我的优惠券'
+        title: '我的优惠券',
+        requireAuth: true
       },
     },
     {
@@ -745,6 +763,7 @@ export default new Router({
       component: groupdetail,
       meta: {
         title: '拼团详情',
+        requireAuth: true
       }
     },
     // 订单确认
@@ -756,9 +775,9 @@ export default new Router({
         title: '订单确认',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       },
-      beforeEnter: (to, from, next) => {
-        from.path == '/pay/index' ? next('/personal/index') : next();
-      },
+      // beforeEnter: (to, from, next) => {
+      //   from.path == '/pay/index' ? next('/personal/index') : next();
+      // },
     },
     // 订单商品确认
     {
@@ -777,7 +796,8 @@ export default new Router({
       name: 'pay',
       component: pay,
       meta: {
-        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+        requireAuth: true, // 需要登录才能进入的页面可以增加一个meta属性
+        isWxLogin: true,   // 必须在微信端打开
       },
       //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
     },
@@ -789,11 +809,12 @@ export default new Router({
         keepAlive: false,  // false不需要被缓存，true需要缓存
         title: '结算',
         requireAuth: true, // 需要登录才能进入的页面可以增加一个meta属性
+        isWxLogin: true,   // 必须在微信端打开
       },
       //beforeEnter 在进入这个路由之前，先判断是从哪个路由跳转的
-      beforeEnter: (to, from, next) => {
-        from.path == '/pay/success' ? next('/personal/index') : next();
-      },
+      // beforeEnter: (to, from, next) => {
+      //   from.path == '/pay/success' ? next('/personal/index') : next();
+      // },
     },
     {
       path: '/pay/success',
@@ -832,18 +853,30 @@ export default new Router({
     {
       path: '/library/detail',
       name: 'librarydetail',
-      component: librarydetail
+      component: librarydetail,
+      meta: {
+        //   requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+        isWxLogin: true,        // 必须在微信端打开
+      },
     },
     // 兑换活动
     {
       path: '/redeem/codeIndex',
       name: 'codeIndex',
-      component: codeIndex
+      component: codeIndex,
+      meta: {
+        title: '火把知识'
+      }
     },
     {
       path: '/redeem/codeInput',
       name: 'codeInput',
-      component: codeInput
+      component: codeInput,
+      meta: {
+        title: '兑换码',
+        //   requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+        isAppLogin: true,       // 必须在app内打开
+      },
     },
     {
       path: '/redeem/straightLinkIndex',
@@ -861,22 +894,30 @@ export default new Router({
       component: wapSuccess
     },
     {
-      path: '/redeem/fail',
-      name: 'fail',
-      component: fail
+      path: '/redeem/appFail',
+      name: 'appFail',
+      component: appFail
+    },
+    {
+      path: '/redeem/wapFail',
+      name: 'wapFail',
+      component: wapFail
     },
     {
       path: '/redeem/login',
       name: 'redeemLogin',
-      component: redeemLogin
+      component: redeemLogin,
+      meta: {
+        title: '登录火把知识'
+      }
     },
     {
-      path: '/redeem/goods',
+      path: '/redeem/goods/:code',
       name: 'redeemGoods',
       component: redeemGoods
     },
     {
-      path: '/redeem/coupons',
+      path: '/redeem/coupons/:code',
       name: 'redeemCoupons',
       component: redeemCoupons
     }

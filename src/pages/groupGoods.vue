@@ -36,8 +36,7 @@
               </span>
             </div>
             <div class="original">
-              直买价
-              <del>￥{{baseData.market_price.toFixed(2)}}</del>
+              直买价：￥{{baseData.price.toFixed(2)}}
             </div>
           </div>
           <div class="promotionRight">
@@ -389,9 +388,6 @@
         </div>
       </van-popup>
 
-      <!-- <div style="height: 90px;position:relative">
-        <CopyRight></CopyRight>
-      </div>-->
       <!-- <div v-if="this.isIphx" style="height: 34px;"></div> -->
       <div style="height:60px;"></div>
       <div class="groupFoot" :class="{iphx:this.isIphx}">
@@ -562,7 +558,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        localStorage.setItem("loginState", 1);
+        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
 
         this.addressData = [];
         for (let i = 0; i < res.response_data.length; i++) {
@@ -573,7 +569,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 100);
+          localStorage.setItem("loginState", 0);
         }
         this.$toast(res.error_message);
       }
@@ -763,7 +759,8 @@ export default {
       this.$router.push({
         name: "detail",
         query: {
-          goods_id: this.baseData.goods_id
+          goods_id: this.baseData.goods_id,
+          isactivity: 1,
         }
       });
     },

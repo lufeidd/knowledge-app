@@ -334,7 +334,6 @@
           </div>
         </van-dialog>
       </div>
-      <!-- <CopyRight></CopyRight> -->
     </div>
     <EazyNav type="brand" ref="nav"></EazyNav>
   </div>

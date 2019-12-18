@@ -81,8 +81,8 @@
     <div style="margin-top: 5px;">
       <van-button size="large" @click="save">保存</van-button>
     </div>
-    <EazyNav type="brand"></EazyNav>
     <CopyRight></CopyRight>
+    <EazyNav type="brand"></EazyNav>
   </div>
 </template>
 
@@ -281,7 +281,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // store 设置登录状态
         this.$store.commit("changeLoginState", 1);
-        localStorage.setItem("loginState", 1);
+        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
 
         this.$set(this.infoList, "header_pic", res.response_data.header_pic);
         this.$set(this.infoList, "mobile", res.response_data.mobile);
@@ -296,7 +296,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 100) {
           // store 设置登录状态
           this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 100);
+          localStorage.setItem("loginState", 0);
         }
         this.$toast(res.error_message);
       }

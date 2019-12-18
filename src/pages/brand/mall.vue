@@ -340,10 +340,7 @@
       </div>
 
     </div>
-    <div style="position:relative;height:90px;">
-      <CopyRight></CopyRight>
-    </div>
-    <!-- <easyNav :navData="navData"></easyNav> -->
+    <CopyRight></CopyRight>
     <EazyNav type="mall"></EazyNav>
   </div>
 </template>
