@@ -233,7 +233,7 @@
           console.log(res);
           this.$router.go(-1);
         } else {
-          this.$toast(res.error_message);
+          // this.$toast(res.error_message);
         }
       }
     },

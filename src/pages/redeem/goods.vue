@@ -38,7 +38,7 @@
       </div>
     <!-- </van-list> -->
     <div class="rule">
-      <p :style="{'color':goodsDetail.colour.text?goodsDetail.colour.text:''}">{{goodsDetail.description}}</p>
+      <p :style="{'color':goodsDetail.colour.text?goodsDetail.colour.text:''}" v-html="goodsDetail.description"></p>
     </div>
     <!-- 点击获取地址显示的弹层 -->
     <van-popup v-model="addressShowPopup" class="addressPopup">
@@ -75,7 +75,7 @@
         </div>
       </div>
     </van-popup>
-    <EazyNav type="brand" v-if="!isApp()"></EazyNav>
+    <!--<EazyNav type="brand" v-if="!isApp()"></EazyNav>-->
   </div>
 </template>
 
@@ -118,11 +118,11 @@
           this.goodsDetail = res.response_data;
           this.goodsDetail.colour = JSON.parse(this.goodsDetail.colour);
           document.title = this.goodsDetail.page_title?this.goodsDetail.page_title:'火把知识'
-          console.log(this.goodsDetail.colour.bg)
+          // console.log(this.goodsDetail.colour.bg)
         }
 
         let list = this.goodsDetail.goods_list;
-        console.log(list);
+        // console.log(list);
         list.forEach((item) => {
           if (item.goods_num == item.used_num) {
             item.state = 0; // 已领完
@@ -189,7 +189,11 @@
             localStorage.setItem("loginState", 100);
           }
           // this.$toast(res.error_message);
-          this.$router.push({name: 'redeemLogin'});
+          if (localStorage.getItem("unionid")) {
+            this.$router.push({name: 'redeemLogin'});
+          } else {
+            this.$router.push({name: 'login'});
+          }
         }
       },
       //确认兑换
@@ -257,8 +261,12 @@
           res = await REDEEM_GOODS(data);
         }
         if (res.error_code == 100) { // 未登录
-          // console.log("未登录");
-          this.$router.push({name: 'redeemLogin'});
+          if (localStorage.getItem("unionid")) {
+            this.$router.push({name: 'redeemLogin'});
+          } else {
+            this.$router.push({name: 'login'});
+          }
+
         } else if (res.hasOwnProperty("response_code")) {
             // console.log(res);
             let data = res.response_data;
