@@ -1,5 +1,7 @@
 <template>
   <div id="feedbackPage">
+
+<div style="padding: 0 15px;">
     <textarea
       cols="30"
       v-model="content"
@@ -19,6 +21,9 @@
       /{{ phoneTotal }}
     </div>
     <upload :uploadData="uploadData"></upload>
+</div>
+
+
 
     <div v-if="this.isIphx" style="height: 34px;"></div>
 

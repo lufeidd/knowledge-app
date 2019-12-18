@@ -27,7 +27,11 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
+          <span
+            class="all"
+            v-if="item.is_more"
+            @click="linktoDetail(item.more_url,item.supplier_id)"
+          >
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -65,7 +69,11 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
+          <span
+            class="all"
+            v-if="item.is_more"
+            @click="linktoDetail(item.more_url,item.supplier_id)"
+          >
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -192,7 +200,11 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
+          <span
+            class="all"
+            v-if="item.is_more"
+            @click="linktoDetail(item.more_url,item.supplier_id)"
+          >
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -268,7 +280,11 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
+          <span
+            class="all"
+            v-if="item.is_more"
+            @click="linktoDetail(item.more_url,item.supplier_id)"
+          >
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -302,7 +318,11 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
+          <span
+            class="all"
+            v-if="item.is_more"
+            @click="linktoDetail(item.more_url,item.supplier_id)"
+          >
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -327,7 +347,11 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
+          <span
+            class="all"
+            v-if="item.is_more"
+            @click="linktoDetail(item.more_url,item.supplier_id)"
+          >
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -398,7 +422,11 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
+          <span
+            class="all"
+            v-if="item.is_more"
+            @click="linktoDetail(item.more_url,item.supplier_id)"
+          >
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -451,7 +479,11 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
+          <span
+            class="all"
+            v-if="item.is_more"
+            @click="linktoDetail(item.more_url,item.supplier_id)"
+          >
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -486,7 +518,11 @@
             <span class="verticleLine"></span>
             <span class="lh titleOver">{{item.module_title}}</span>
           </div>
-          <span class="all" v-if="item.is_more" @click="linktoDetail(item.more_url,item.supplier_id)">
+          <span
+            class="all"
+            v-if="item.is_more"
+            @click="linktoDetail(item.more_url,item.supplier_id)"
+          >
             更多
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
@@ -686,11 +722,13 @@ export default {
         this.$toast(res.error_message);
       }
     },
-    linktoDetail(link,supplierId) {
+    linktoDetail(link, supplierId) {
       var data = this.$translate(JSON.parse(link));
       data.query.type = "mall";
       data.query.title = this.title;
-      if(JSON.parse(link).action == "page/get") {data.query.supplier_id = supplierId}
+      if (JSON.parse(link).action == "page/get") {
+        data.query.supplier_id = supplierId;
+      }
       // console.log(1111,supplierId,data.query.supplier_id, data.query.page_id);return
       // return;
       if (data.name == "") {

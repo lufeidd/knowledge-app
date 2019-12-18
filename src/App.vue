@@ -77,7 +77,6 @@ body,
   color: #999;
 }
 </style>
-
 <script>
 import axios from "axios";
 
@@ -91,7 +90,6 @@ export default {
     return {};
   },
   mounted() {
-    console.log('app.vue')
     this.getLoginData();
   },
   methods: {
@@ -109,10 +107,9 @@ export default {
       var u = navigator.userAgent;
       var _ios = u.toLowerCase().indexOf("huoba:ios") > -1;
       var _android = u.toLowerCase().indexOf("huoba:android") > -1;
-      var _wx = u.toLowerCase().match(/MicroMessenger/i) ==
-        "micromessenger";
+      var _wx = u.toLowerCase().match(/MicroMessenger/i) == "micromessenger";
       var _hasHeader = u.toLowerCase().indexOf("huoba:") > -1;
-      if(_hasHeader) sessionStorage.setItem("hasHeader", "yes");
+      if (_hasHeader) sessionStorage.setItem("hasHeader", "yes");
       if (_ios) {
         // 针对webview:火把的ios端
         sessionStorage.setItem("isHuobaIosLogin", "yes");

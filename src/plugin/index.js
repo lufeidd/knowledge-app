@@ -1,3 +1,4 @@
+console.log(2)
 import crypto from "crypto";
 import axios from 'axios'
 import qs from "Qs";

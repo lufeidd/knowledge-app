@@ -1,5 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+console.log(3)
 import Vue from 'vue'
 import App from './App'
 import router from './router/index'
@@ -52,7 +53,6 @@ Vue.use(download)
 Vue.use(nav)
 Vue.use(loading)
 Vue.use(copyRight)
-
 
 // vant
 // import Vant from 'vant';
@@ -170,7 +170,7 @@ Vue.config.productionTip = false
 
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
-
+console.log('router beforeEach', to)
   next();
   // 存放页面来源地址
   if (from.path != to.path) {
@@ -279,11 +279,12 @@ router.beforeEach((to, from, next) => {
 
   // 不需要登录的页面，如果未登录，进入登录页或者第三方绑定页不修改defaultLink，回退到指定页面
   if (!localStorage.getItem('defaultLink')) {
+    // 默认跳转到个人中心
     localStorage.setItem('defaultLink', window.location.href.split('#')[0] + '#' + '/personal/index');
     next();
   }
   next();
-  if (!to.meta.requireAuth && token != 1 && to.name != 'login' && to.name != 'register' && to.name != 'password' && to.name != 'prototype' && to.name != 'setphone' && to.name != 'bindphone') {
+  if (!to.meta.requireAuth && token != 1 && !to.meta.noDefaultLink) {
     // defaultLink记录未登录跳转到登录页原页面，用来登录后回退
     localStorage.setItem('defaultLink', localStorage.getItem('routerLink'));
     next();
