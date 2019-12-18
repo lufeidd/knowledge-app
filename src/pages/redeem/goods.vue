@@ -262,8 +262,8 @@
         }
         if (res.error_code == 100) { // 未登录
           localStorage.setItem("loginState", 0);
-          if (true) {
-          // if (localStorage.getItem("unionid")) {
+          // if (true) {
+          if (localStorage.getItem("unionid")) {
             this.$router.push({name: 'redeemLogin'});
           } else {
             this.$router.push({name: 'login'});
