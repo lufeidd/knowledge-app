@@ -182,6 +182,7 @@ export default {
   created() {
     this.code = this.$route.query.code;
     this.redeem = sessionStorage.getItem("redeemId");
+    sessionStorage.setItem('hash', window.location.hash);
     // console.log(this.couponsDetail);
     // console.log('code',this.code);
   },
