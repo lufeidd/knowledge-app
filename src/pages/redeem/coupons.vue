@@ -48,9 +48,9 @@
       </div>
     </van-list>
     <div class="rule">
-      <p :style="{'color':couponsDetail.colour.text?couponsDetail.colour.text:''}">{{couponsDetail.description}}</p>
+      <p :style="{'color':couponsDetail.colour.text?couponsDetail.colour.text:''}" v-html="couponsDetail.description"></p>
     </div>
-    <EazyNav type="brand" v-if="!isApp()"></EazyNav>
+    <!--<EazyNav type="brand" v-if="!isApp()"></EazyNav>-->
   </div>
 </template>
 
@@ -136,7 +136,11 @@ export default {
           sessionStorage.setItem("goodsItem", JSON.stringify(item));
           sessionStorage.setItem("goodsType", "coupons");
           // console.log(sessionStorage.getItem("goodsItem"));
-          this.$router.push({name: 'redeemLogin'});
+          if (localStorage.getItem("unionid")) {
+            this.$router.push({name: 'redeemLogin'});
+          } else {
+            this.$router.push({name: 'login'});
+          }
 
         } else if (res.hasOwnProperty("response_code")) {
           let data = res.response_data;
