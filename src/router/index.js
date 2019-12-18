@@ -900,7 +900,10 @@ export default new Router({
     {
       path: '/redeem/goods/:code',
       name: 'redeemGoods',
-      component: redeemGoods
+      component: redeemGoods,
+      beforeEnter: (to, from, next) => {
+
+      }
     },
     {
       path: '/redeem/coupons/:code',

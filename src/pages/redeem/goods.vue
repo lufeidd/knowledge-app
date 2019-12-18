@@ -303,6 +303,7 @@
     },
     mounted() {
       this.getGoodsDetail();
+      this.$toast(localStorage.getItem('defaultLink'));
     },
     components: {
       EazyNav: easyNav
