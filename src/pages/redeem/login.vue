@@ -215,6 +215,7 @@
           type: 2,
           mobile: this.phone,
           auth_code: this.code,
+          source_url: localStorage.getItem("fromLink"),
           outer_id: localStorage.getItem("unionid"),
           outer_name: localStorage.getItem("nickname"),
           header_pic: localStorage.getItem("headimg"),
