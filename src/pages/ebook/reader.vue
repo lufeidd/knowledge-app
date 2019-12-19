@@ -120,7 +120,7 @@
     ></ebookcatalog>
     <!-- 评论 -->
     <ebookcomment ref="comment" :goods_id="goods_id" :isLogin="isLogin"></ebookcomment>
-    <EazyNav type="brand" ref="nav"></EazyNav>
+    <EazyNav type="brand" ref="nav" :isShow="true"></EazyNav>
     <!-- 数字键盘 -->
     <van-number-keyboard
       :show="showKeyboard"

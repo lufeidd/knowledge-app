@@ -18,7 +18,7 @@
       <span class="button" v-if="item.if_comment == 0" @click="comment(item)">评价</span>
     </div>
     <CopyRight></CopyRight>
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 

@@ -48,7 +48,7 @@
         </template>
       </div>
     </div>
-
+<EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 

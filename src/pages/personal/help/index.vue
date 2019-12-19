@@ -24,7 +24,7 @@
       <van-button type="danger" size="large" replace to="/personal/help/feedback">我要反馈</van-button>
     </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
 
   </div>
 </template>

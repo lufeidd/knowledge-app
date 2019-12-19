@@ -35,7 +35,7 @@
       <van-button type="danger" size="large" replace @click="submitFeedback">提交</van-button>
     </div>
 
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 

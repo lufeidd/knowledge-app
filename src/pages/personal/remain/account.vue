@@ -25,7 +25,7 @@
       <van-button slot="button" size="large" round type="danger" @click="account()">充值</van-button>
     </div>
       <CopyRight></CopyRight>
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 

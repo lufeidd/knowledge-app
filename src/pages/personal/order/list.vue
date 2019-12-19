@@ -143,7 +143,7 @@
       </van-list>
     </div>
     <CopyRight></CopyRight>
-    <EazyNav type="order"></EazyNav>
+    <EazyNav type="order" :isShow="false"></EazyNav>
   </div>
 </template>
 

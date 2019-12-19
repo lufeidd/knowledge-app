@@ -58,6 +58,7 @@
       </van-row>
     </div>
     <CopyRight></CopyRight>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 

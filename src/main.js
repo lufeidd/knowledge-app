@@ -180,6 +180,7 @@ Vue.config.productionTip = false
 
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
+  Vue.use(plugin)
   next();
   // 存放页面来源地址
   if (from.path != to.path) {

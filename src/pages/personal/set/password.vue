@@ -31,6 +31,7 @@
       </div>
     </div>
     <CopyRight></CopyRight>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 

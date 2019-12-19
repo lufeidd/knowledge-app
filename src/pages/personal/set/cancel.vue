@@ -20,6 +20,7 @@
     <div class="bottomBox" :class="{ iphx: this.isIphx }">
       <van-button size="large" type="danger">确定注销账号</van-button>
     </div>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 

@@ -317,6 +317,7 @@
         </van-tab>
       </van-tabs>
     </van-popup>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 

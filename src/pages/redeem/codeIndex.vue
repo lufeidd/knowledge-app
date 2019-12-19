@@ -30,6 +30,7 @@
       <div class="outdated_img"></div>
       <p class="outdated_remind"><span>{{time}}</span>秒后回到个人中心</p>
     </van-popup>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 

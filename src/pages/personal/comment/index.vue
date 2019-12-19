@@ -42,7 +42,7 @@
     </van-list>
     </div>
     <CopyRight></CopyRight>
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 

@@ -9,7 +9,6 @@ import wx from 'weixin-js-sdk';
 // import req from "./../apis/http.js";
 import { SERVER_TIME, WX_SHARE, WX_SHARE_LOG, ADDRESS, CASHIER_PAY_CHECK } from "./../apis/public.js";
 import { LOGIN_PARTERNER } from "./../apis/passport.js";
-import { USER_HOMEPAGE } from "./../apis/user";
 
 // 支持await async
 // import regeneratorRuntime from './../regenerator-runtime/runtime.js';
@@ -872,26 +871,6 @@ export default {
         window.location.href =
           "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
       }
-    }
-
-    // 获取登录状态
-    Vue.prototype.$getLoginState = async function () {
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        version: "1.0"
-      };
-      data.sign = this.$getSign(data);
-      let res = await USER_HOMEPAGE(data);
-      if (res.hasOwnProperty("response_code")) {
-        this.is_Login = res.response_data.is_login;
-        if (res.response_data.hasOwnProperty("is_login"))
-          localStorage.setItem("loginState", res.response_data.is_login);
-      } else {
-        localStorage.setItem("loginState", 0);
-        this.$toast(res.error_message);
-      }
-
     }
 
   }

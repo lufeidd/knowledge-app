@@ -43,7 +43,7 @@
     </van-popup>
 
     <CopyRight></CopyRight>
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 

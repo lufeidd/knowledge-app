@@ -36,6 +36,7 @@
       <!-- 加载页 -->
       <loading :isLoading="isLoading"></loading>
     </van-popup>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 

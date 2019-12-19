@@ -19,6 +19,7 @@
       @cancel="bindModel=false"
     />
     <CopyRight></CopyRight>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 

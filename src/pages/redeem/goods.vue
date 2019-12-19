@@ -74,8 +74,7 @@
           <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" @click="sureRedeem">确认兑换</van-button>
         </div>
       </div>
-    </van-popup>
-    <!--<EazyNav type="brand" v-if="!isApp()"></EazyNav>-->
+    </van-popup><EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
@@ -300,9 +299,6 @@
     mounted() {
       this.getGoodsDetail();
     },
-    components: {
-      EazyNav: easyNav
-    }
   }
 </script>
 

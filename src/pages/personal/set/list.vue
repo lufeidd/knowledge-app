@@ -60,7 +60,7 @@
 
       <div class="count">{{ addressData.length }}/50</div>
     </div>
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 

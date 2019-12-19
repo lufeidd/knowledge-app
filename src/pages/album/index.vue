@@ -876,10 +876,8 @@
           </div>
         </div>
       </van-popup>
-      <!-- 快速导航 -->
-      <!-- <easyNav :navData="navData"></easyNav> -->
     </div>
-    <EazyNav type="brand" ref="nav"></EazyNav>
+    <EazyNav type="brand" ref="nav" :isShow="true"></EazyNav>
   </div>
 </template>
 

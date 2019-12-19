@@ -84,6 +84,7 @@
       ref="control"
       @audioChange="audioAction"
     ></audioList>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 

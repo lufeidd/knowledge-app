@@ -163,7 +163,7 @@
       </div>
     </div>
     <CopyRight></CopyRight>
-    <EazyNav type="index"></EazyNav>
+    <EazyNav type="index" :isShow="true"></EazyNav>
   </div>
 </template>
 

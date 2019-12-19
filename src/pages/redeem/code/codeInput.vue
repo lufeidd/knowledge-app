@@ -21,6 +21,7 @@
     <p class="notes_two">
       提示：请使用英文输入法。
     </p>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 

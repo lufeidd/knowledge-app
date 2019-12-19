@@ -377,7 +377,7 @@
         </van-goods-action>
       </div>
     </div>
-    <EazyNav type="brand" ref="nav"></EazyNav>
+    <EazyNav type="brand" ref="nav" :isShow="true"></EazyNav>
     <!-- 拼团 -->
     <div
       class="groupBuy"

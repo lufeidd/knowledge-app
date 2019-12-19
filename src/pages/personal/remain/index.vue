@@ -19,7 +19,7 @@
       <van-button slot="button" size="large" round type="danger" @click="recharge()">充值</van-button>
     </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
     <CopyRight></CopyRight>
   </div>
 </template>

@@ -578,7 +578,7 @@
       </div>
     </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
-    <EazyNav type="mall"></EazyNav>
+    <EazyNav type="mall" :isShow="true"></EazyNav>
   </div>
 </template>
 

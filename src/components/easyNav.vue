@@ -1,5 +1,5 @@
 <template>
-  <div id="easyNav">
+  <div v-if="isShow" id="easyNav">
     <div class="button" @click="foldAction">
       <svg class="icon" aria-hidden="true" v-if="navData.fold">
         <use xlink:href="#icon-more-line" />
@@ -168,11 +168,10 @@
 
 <script>
 import { CART_INFO } from "../apis/shopping";
-// import { USER_HOMEPAGE } from "../apis/user";
+import { USER_HOMEPAGE } from "../apis/user";
 export default {
   // name: "easyNav",
-  // props: ["navData"],
-  props: ["type", "goods_nums"],
+  props: ["type", "isShow"],
   data() {
     return {
       navData: {
@@ -189,43 +188,37 @@ export default {
         loginLink:"/login/index",
         goods_nums: 0
       },
-      is_Login: null
     };
   },
   mounted() {
-    console.log('easyNav.vue')
     if (this.type === undefined) {
       this.type = this.navData.type;
     }
-    // this.isLogin();
+    this.isLogin();
   },
   methods: {
     foldAction() {
       this.navData.fold = !this.navData.fold;
-      // if (this.is_Login == 1) {
-      //   this.cartData();
-      // }
     },
-    // async isLogin() {
-    //   var tStamp = this.$getTimeStamp();
-    //   let data = {
-    //     timestamp: tStamp,
-    //     version: "1.0"
-    //   };
-    //   data.sign = this.$getSign(data);
-    //   let res = await USER_HOMEPAGE(data);
+    async isLogin() {
+      var tStamp = this.$getTimeStamp();
+      let data = {
+        timestamp: tStamp,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await USER_HOMEPAGE(data);
 
-    //   if (res.hasOwnProperty("response_code")) {
-    //     this.is_Login = res.response_data.is_login;
-    //     if(res.response_data.hasOwnProperty('is_login')) 
-    //     if (res.response_data.is_login == 1) {
-    //       this.cartData();
-    //     }
-    //   } else {
-    //     
-    //     this.$toast(res.error_message);
-    //   }
-    // },
+      if (res.hasOwnProperty("response_code")) {
+        if(res.response_data.hasOwnProperty('is_login')) 
+        if (res.response_data.is_login == 1) {
+          this.cartData();
+        }
+      } else {
+        
+        this.$toast(res.error_message);
+      }
+    },
     // 获取购物车信息
     async cartData() {
       var tStamp = this.$getTimeStamp();

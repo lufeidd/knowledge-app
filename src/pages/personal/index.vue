@@ -324,7 +324,7 @@
     </div>
     <CopyRight></CopyRight>
     <!-- 快速导航 -->
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 
