@@ -3,83 +3,88 @@
     id="redeemCouponsPage"
     :style="{'background-color': couponsDetail.colour.bg?couponsDetail.colour.bg: ''}"
   >
-    <van-list
-      v-model="couponsLoading"
-      :finished="couponsFinished"
-      finished-text="没有更多了"
-      @load="couponsLoad"
-    >
-      <div class="propaganda" v-if="couponsDetail.pic">
-        <img :src="couponsDetail.pic" alt width="100%" />
-      </div>
-      <div class="coupons_wrapper" v-for="item in couponsList" :key="item.id" :title="item">
-        <div class="content">
-          <!--兑换面额-->
-          <div class="denomination">
+    <div v-if="!remindPopShow">
+      <van-list
+        v-model="couponsLoading"
+        :finished="couponsFinished"
+        finished-text="没有更多了"
+        @load="couponsLoad"
+      >
+        <div class="propaganda" v-if="couponsDetail.pic">
+          <img :src="couponsDetail.pic" alt width="100%" />
+        </div>
+        <div class="coupons_wrapper" v-for="item in couponsList" :key="item.id" :title="item">
+          <div class="content">
+            <!--兑换面额-->
+            <div class="denomination">
             <span class="currency">
               ￥
               <span class="amount">{{item.money}}</span>
             </span>
+            </div>
+            <!--兑换条件-->
+            <div class="requirement">
+              <van-button
+                type="default"
+                size="mini"
+                round
+                style="background:#FFB54D;border: 1px solid #FFB54D;"
+              >{{item.brand}}</van-button>
+              <span class="state">{{item.range}}</span>
+              <p class="price">满{{item.min_money}}元可用</p>
+            </div>
+            <div class="nothing_left" v-if="item.state == 0"></div>
+            <div class="redeem_btn">
+              <van-button
+                type="primary"
+                disabled
+                style="background:#F05654;border: 1px solid #F05654;"
+                v-if="item.state == 0"
+              >免费兑换</van-button>
+              <van-button
+                type="primary"
+                style="background:#F05654;border: 1px solid #F05654;"
+                @click="couponsRedeem(item)"
+                v-else
+              >免费兑换</van-button>
+            </div>
+            <span
+              class="right_radio"
+              :style="{'background-color': couponsDetail.colour.bg?couponsDetail.colour.bg: ''}"
+            ></span>
+            <span
+              class="left_radio"
+              :style="{'background-color': couponsDetail.colour.bg?couponsDetail.colour.bg: ''}"
+            ></span>
           </div>
-          <!--兑换条件-->
-          <div class="requirement">
-            <van-button
-              type="default"
-              size="mini"
-              round
-              style="background:#FFB54D;border: 1px solid #FFB54D;"
-            >{{item.brand}}</van-button>
-            <span class="state">{{item.range}}</span>
-            <p class="price">满{{item.min_money}}元可用</p>
+          <div class="goods_list">
+            <!--<div class="goods_item"></div>-->
+            <van-row gutter="15">
+              <van-col span="8" v-for="(subItem, index) in item.goods" :key="index">
+                <div class="ratiobox">
+                  <div class="bookImg" v-lazy:background-image="subItem.pic"></div>
+                  <div class="price">￥{{subItem.price}}</div>
+                  <div class="type" v-if="subItem.goods_type == 1">音频</div>
+                  <div class="type" v-if="subItem.goods_type == 2">视频</div>
+                  <div class="type" v-if="subItem.goods_type == 3">图书</div>
+                  <div class="type" v-if="subItem.goods_type == 4">电子书</div>
+                  <div class="type" v-if="subItem.goods_type == 9">专辑</div>
+                </div>
+              </van-col>
+            </van-row>
           </div>
-          <div class="nothing_left" v-if="item.state == 0"></div>
-          <div class="redeem_btn">
-            <van-button
-              type="primary"
-              disabled
-              style="background:#F05654;border: 1px solid #F05654;"
-              v-if="item.state == 0"
-            >免费兑换</van-button>
-            <van-button
-              type="primary"
-              style="background:#F05654;border: 1px solid #F05654;"
-              @click="couponsRedeem(item)"
-              v-else
-            >免费兑换</van-button>
-          </div>
-          <span
-            class="right_radio"
-            :style="{'background-color': couponsDetail.colour.bg?couponsDetail.colour.bg: ''}"
-          ></span>
-          <span
-            class="left_radio"
-            :style="{'background-color': couponsDetail.colour.bg?couponsDetail.colour.bg: ''}"
-          ></span>
         </div>
-        <div class="goods_list">
-          <!--<div class="goods_item"></div>-->
-          <van-row gutter="15">
-            <van-col span="8" v-for="(subItem, index) in item.goods" :key="index">
-              <div class="ratiobox">
-                <div class="bookImg" v-lazy:background-image="subItem.pic"></div>
-                <div class="price">￥{{subItem.price}}</div>
-                <div class="type" v-if="subItem.goods_type == 1">音频</div>
-                <div class="type" v-if="subItem.goods_type == 2">视频</div>
-                <div class="type" v-if="subItem.goods_type == 3">图书</div>
-                <div class="type" v-if="subItem.goods_type == 4">电子书</div>
-                <div class="type" v-if="subItem.goods_type == 9">专辑</div>
-              </div>
-            </van-col>
-          </van-row>
-        </div>
+      </van-list>
+      <div class="rule">
+        <p
+          :style="{'color':couponsDetail.colour.text?couponsDetail.colour.text:''}"
+          v-html="couponsDetail.description"
+        ></p>
       </div>
-    </van-list>
-    <div class="rule">
-      <p
-        :style="{'color':couponsDetail.colour.text?couponsDetail.colour.text:''}"
-        v-html="couponsDetail.description"
-      ></p>
     </div>
+    <van-popup class="" v-model="remindPopShow">
+      <h4 class="">不可二次分享</h4>
+    </van-popup>
     <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
@@ -92,8 +97,11 @@ export default {
   name: "coupons",
   data() {
     return {
-      code: "0",
-      redeem: "0",
+      code: '0',
+      redeem: '',
+      secShare: '',
+      remindPopShow: false,
+      time: 3,
       couponsDetail: {
         colour: { bg: "", text: "" }
       },
@@ -116,6 +124,8 @@ export default {
       // console.log(res);
       if (res.hasOwnProperty("response_code")) {
         this.couponsDetail = res.response_data;
+        this.secShare = res.response_data.sec_share;
+        this.visitPage();
         this.couponsDetail.colour = JSON.parse(this.couponsDetail.colour);
         document.title = this.couponsDetail.page_title
           ? this.couponsDetail.page_title
@@ -231,14 +241,25 @@ export default {
       } else {
         return false;
       }
+    },
+    visitPage() {
+      if (this.secShare == 0 &&  sessionStorage.getItem('originLink') != 1) { // 不可二次分享
+        this.remindPopShow = true;
+        const timer = setInterval(() => {
+          this.time--;
+          if (this.time == 0) {
+            this.remindPopShow = false;
+            clearInterval(timer);
+            this.$router.push({name: 'personalIndex'});
+          }
+        }, 1000);
+      }
     }
   },
   created() {
     this.code = this.$route.query.code;
-    this.redeem = sessionStorage.getItem("redeemId");
+    this.redeem = this.$route.query.redeem_id;
     sessionStorage.setItem("hash", window.location.hash);
-    // console.log(this.couponsDetail);
-    // console.log('code',this.code);
   },
   mounted() {
     this.couponsLoad();
