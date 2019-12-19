@@ -111,9 +111,7 @@
         </div>
 
         <div class="left two" v-if="item.bank_type == 'balance' && user_balance < goodsInfo.price">
-          <!-- <router-link to="../personal/remain/account"> -->
           <van-button round type="danger" @click="recharge">充值</van-button>
-          <!-- </router-link> -->
         </div>
       </div>
     </div>
@@ -323,7 +321,6 @@
 <style src="@/style/scss/pages/pay.scss" scoped lang="scss"></style>
 
 <style lang="scss">
-// @import url("./../../style/scss/components/button.scss");
 #payaccountPage {
   .van-button {
     border-radius: 50px;
@@ -601,7 +598,6 @@ export default {
       let res = await CASHIER_PAY_ADD(data);
 
       if (res.hasOwnProperty("response_code")) {
-        // var _package = "prepay_id=" + res.response_data.pay_arr.prepayid;
         console.log(
           res.response_data.pay_arr.timeStamp,
           res.response_data.pay_arr.nonceStr,
@@ -703,14 +699,10 @@ export default {
       }
     },
     judge(item, index, _state) {
-      // var _goods = item.goods_ids;
       var _goods = [];
       var _count = 0;
-      // if(_state == 1){
-      // _goods = [];
       for (var a = 0; a < this.ticket_lists.canuse.length; a++) {
         if (this.ticket_lists.canuse[a].selected == 1) {
-          // _goods.push(this.ticket_lists.canuse[a].goods_ids.join(','))
           _goods = _goods.concat(this.ticket_lists.canuse[a].goods_ids);
           _count++;
         }
@@ -720,21 +712,8 @@ export default {
       } else {
         this.chooseMax = true;
       }
-      // }else{
-      //   this.chooseMax = false;
-      // }
-      // console.log(111,_goods)
-      // var tempArray1 = [];
       var tempArray1 = _goods;
       var _arr = this.ticket_lists.canuse;
-      // var _arr = this.ticket_lists.canuse.filter(function(x, y) {
-      //   return x.selected == 0 && index !== y;
-      // });
-      // console.log(_arr);
-      // for (var i = 0; i < _goods.length; i++) {
-      //   tempArray1[_goods[i]] = true;
-      // }
-      // console.log('jiance1',tempArray1)
       for (var j = 0; j < _arr.length; j++) {
         if (_arr[j].selected == 0 && j !== index) {
           var check_goods = _arr[j].goods_ids;
@@ -746,14 +725,10 @@ export default {
             _length = tempArray1.length;
           }
           for (var k = 0; k < _length; k++) {
-            // if (tempArray1[check_goods[k]]) {
-            //   tempArray2.push(check_goods[k]);
-            // }
             if (check_goods.includes(tempArray1[k])) {
               tempArray2.push(check_goods[k]);
             }
           }
-          // console.log('jiance2',tempArray2)
 
           if (tempArray2.length > 0) {
             this.ticket_lists.canuse = this.ticket_lists.canuse.map(
@@ -813,12 +788,10 @@ export default {
       // this.pay_price =
       //   this.total_money + this.dispatch_price - this.discount_price;
       this.couponModel = false;
-      // console.log(this.order_ticket_ids);
     },
     reflesh() {
       console.log("取消了");
       location.reload();
-      // this.infoData();
     }
   }
 };
