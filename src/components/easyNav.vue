@@ -168,7 +168,7 @@
 
 <script>
 import { CART_INFO } from "../apis/shopping";
-import { USER_HOMEPAGE } from "../apis/user";
+// import { USER_HOMEPAGE } from "../apis/user";
 export default {
   // name: "easyNav",
   // props: ["navData"],
@@ -197,7 +197,7 @@ export default {
     if (this.type === undefined) {
       this.type = this.navData.type;
     }
-    this.isLogin();
+    // this.isLogin();
   },
   methods: {
     foldAction() {
@@ -206,26 +206,26 @@ export default {
       //   this.cartData();
       // }
     },
-    async isLogin() {
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        version: "1.0"
-      };
-      data.sign = this.$getSign(data);
-      let res = await USER_HOMEPAGE(data);
+    // async isLogin() {
+    //   var tStamp = this.$getTimeStamp();
+    //   let data = {
+    //     timestamp: tStamp,
+    //     version: "1.0"
+    //   };
+    //   data.sign = this.$getSign(data);
+    //   let res = await USER_HOMEPAGE(data);
 
-      if (res.hasOwnProperty("response_code")) {
-        this.is_Login = res.response_data.is_login;
-        if(res.response_data.hasOwnProperty('is_login')) if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
-        if (res.response_data.is_login == 1) {
-          this.cartData();
-        }
-      } else {
-        localStorage.setItem("loginState", 0);
-        this.$toast(res.error_message);
-      }
-    },
+    //   if (res.hasOwnProperty("response_code")) {
+    //     this.is_Login = res.response_data.is_login;
+    //     if(res.response_data.hasOwnProperty('is_login')) 
+    //     if (res.response_data.is_login == 1) {
+    //       this.cartData();
+    //     }
+    //   } else {
+    //     
+    //     this.$toast(res.error_message);
+    //   }
+    // },
     // 获取购物车信息
     async cartData() {
       var tStamp = this.$getTimeStamp();

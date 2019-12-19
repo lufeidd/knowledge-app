@@ -166,10 +166,6 @@ export default {
             res.hasOwnProperty("response_code") &&
             res.response_data.hasOwnProperty("result")
           ) {
-            // store 设置登录状态
-            this.$store.commit("changeLoginState", 1);
-            if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
-
             setTimeout(() => {
               var result = res.response_data.result;
 
@@ -189,12 +185,6 @@ export default {
               }
             }, 500);
           } else {
-            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-              // store 设置登录状态
-              this.$store.commit("changeLoginState", 100);
-              localStorage.setItem("loginState", 0);
-
-            }
             this.collectFinished = true;
             // this.$toast(res.error_message);
           }

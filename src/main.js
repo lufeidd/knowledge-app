@@ -116,7 +116,7 @@ Vue.use(RadioGroup)
 Vue.use(Radio)
 Vue.use(Picker)
 
-//
+// 插件
 Vue.use(plugin)
 
 // swiper

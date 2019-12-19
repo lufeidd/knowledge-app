@@ -170,9 +170,6 @@
         data.sign = this.$getSign(data);
         let res = await USER_ADDRESS_LIST(data);
         if (res.hasOwnProperty("response_code")) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 1);
-          localStorage.setItem("loginState", 1);
 
           this.addressData = [];
           for (let i = 0; i < res.response_data.length; i++) {
@@ -183,11 +180,6 @@
           }
           this.addressShowPopup = true;
         } else {
-          if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-            // store 设置登录状态
-            this.$store.commit("changeLoginState", 100);
-            localStorage.setItem("loginState", 100);
-          }
           // this.$toast(res.error_message);
           if (localStorage.getItem("unionid")) {
             this.$router.push({name: 'redeemLogin'});
@@ -261,7 +253,7 @@
           res = await REDEEM_GOODS(data);
         }
         if (res.error_code == 100) { // 未登录
-          localStorage.setItem("loginState", 0);
+          
           // if (true) {
           if (localStorage.getItem("unionid")) {
             this.$router.push({name: 'redeemLogin'});
@@ -270,7 +262,6 @@
           }
 
         } else if (res.hasOwnProperty("response_code")) {
-          localStorage.setItem("loginState", 1);
             // console.log(res);
             let data = res.response_data;
             if (this.isApp()) { // APP

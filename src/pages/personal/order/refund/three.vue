@@ -260,8 +260,7 @@ export default {
         data.sign = this.$getSign(data);
         let res = await COMMON_UPLOAD(data);
         if (res.hasOwnProperty("response_code")) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 1);
+          
 
           var arr = [];
           for (let i = 0; i < res.response_data.length; i++) {
@@ -270,10 +269,6 @@ export default {
           this.pic = arr.join(",");
           // console.log(this.pic);return
         } else {
-          if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-            // store 设置登录状态
-            this.$store.commit("changeLoginState", 100);
-          }
           this.$toast(res.error_message);
         }
       }
