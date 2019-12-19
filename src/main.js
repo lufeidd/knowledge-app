@@ -1,6 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-console.log('main.js')
+
 import Vue from 'vue'
 import App from './App'
 import router from './router/index'
@@ -164,6 +164,16 @@ Vue.config.productionTip = false
 
 4、不需要登录进入的页面，未登录状态，有触发到需要登录的动作，需要回退到原路径
   localStorage.getItem("defaultLink")
+
+本地数据存储
+
+1、defaultLink：记录需要登录的页面路径（引导登录后回退到指定页面）
+2、routerLink：记录当前页面路径
+3、fromLink：记录来源路径
+4、miniAudio：记录迷你音频当前播放
+5、audioProgress：记录音频播放进度
+6、loginState：记录当前登录状态
+7、closeAudio：记录迷你音频展示状态
 
 */
 

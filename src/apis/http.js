@@ -2,7 +2,7 @@
  * author: nancyzeng
  * date:2019/4/26
  */
-console.log('http.js')
+
 import axios from 'axios'
 import qs from "Qs";
 import Vue from 'vue';
@@ -13,10 +13,10 @@ var open_id = localStorage.getItem('openid');
 var obj = {};
 
 // run dev
-// obj.baseURL = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis';
+obj.baseURL = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis';
 
 // run build
-obj.baseURL =  window.location.protocol + "//" + window.location.hostname + '/apis';
+// obj.baseURL =  window.location.protocol + "//" + window.location.hostname + '/apis';
 
 obj.timeout = 15000;
 

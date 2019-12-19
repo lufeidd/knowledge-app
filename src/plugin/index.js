@@ -1,4 +1,4 @@
-console.log('plugin/index.js')
+
 import crypto from "crypto";
 import axios from 'axios'
 import qs from "Qs";

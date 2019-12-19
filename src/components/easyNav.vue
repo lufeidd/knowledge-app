@@ -1,64 +1,4 @@
 <template>
-  <!-- <div id="easyNav">
-    <div class="button" @click="foldAction">
-      <svg class="icon" aria-hidden="true" v-if="navData.fold">
-        <use xlink:href="#icon-more-line"></use>
-      </svg>
-      <svg class="icon" aria-hidden="true" v-else>
-        <use xlink:href="#icon-open-line"></use>
-      </svg>
-      <div>
-        快速
-        <br>导航
-      </div>
-    </div>
-    <div class="route" v-if="navData.fold">
-      <router-link :to="navData.homeLink" class="link" v-if="navData.home">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-home-line"></use>
-        </svg>
-        <div>首页</div>
-      </router-link>
-
-      <router-link
-        v-if="navData.type == 'brand' && navData.search"
-        :to="{path:navData.searchLink,query:{type:navData.type}}"
-        class="link"
-      >
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-littleSearch-line"></use>
-        </svg>
-        <div>搜索</div>
-      </router-link>
-      <router-link
-        v-if="navData.type == 'order' && navData.search"
-        :to="{path:navData.searchLink,query:{type:navData.type}}"
-        class="link"
-      >
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-littleSearch-line"></use>
-        </svg>
-        <div>搜索</div>
-      </router-link>
-      <router-link
-        v-if="navData.type == 'mall' && navData.search"
-        :to="{path:navData.searchLink,query:{type:navData.type, supplier_id: navData.supplier_id}}"
-        class="link"
-      >
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-littleSearch-line"></use>
-        </svg>
-        <div>搜索</div>
-      </router-link>
-
-      <router-link :to="navData.personalLink" class="link" v-if="navData.personal">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-personal-line"></use>
-        </svg>
-        <div>我的</div>
-      </router-link>
-    </div>
-  </div>-->
   <div id="easyNav">
     <div class="button" @click="foldAction">
       <svg class="icon" aria-hidden="true" v-if="navData.fold">
@@ -253,6 +193,7 @@ export default {
     };
   },
   mounted() {
+    console.log('easyNav.vue')
     if (this.type === undefined) {
       this.type = this.navData.type;
     }
