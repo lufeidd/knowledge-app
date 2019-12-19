@@ -354,7 +354,7 @@ export default {
         self.timeDataDesc = '距活动结束还剩' + d + '天';
         self.timeData = '距结束还剩' + d + '天';
         self.grouptimeData = d;
-      } else if (d < 1) {
+      } else if (d < 1 && d > 0) {
         self.showDay = false;
         self.showTime = true;
         self.groupshowDay = false;
@@ -387,6 +387,8 @@ export default {
         self.timeDataDesc = '限时促销'
         self.timeData = '火把拼团'
         self.grouptimeData = d;
+      } else if (d < 0) {
+        self.timeData = ''
       }
       // console.log(d,self.clock)
     }

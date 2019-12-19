@@ -44,7 +44,7 @@
       />
     </van-popup>
     <!-- <easyNav :navData="navData"></easyNav> -->
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
 
   </div>
 </template>
@@ -155,9 +155,6 @@ export default {
       ) {
         this.totalIncome += Number(res.response_data.total_money_in);
         var result = res.response_data.result;
-        // store 设置登录状态
-        this.$store.commit("changeLoginState", 1);
-        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
 
         setTimeout(() => {
           for (let i = 0; i < res.response_data.result.length; i++) {
@@ -176,11 +173,6 @@ export default {
           }
         }, 500);
       } else {
-        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 0);
-        }
         this.$toast(res.error_message);
       }
     },

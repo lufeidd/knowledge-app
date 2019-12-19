@@ -63,7 +63,7 @@
         </template>
       </div>
     </div>
-
+<EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
@@ -221,18 +221,12 @@ export default {
       let res = await REG(data);
 
       if (res.hasOwnProperty("response_code")) {
-        // store 设置登录状态
-        this.$store.commit("changeLoginState", 1);
-        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
+        // this.$router.push({ name: "personalIndex", query: data });
+        // console.log(res);
 
-        this.$router.push({ name: "personalIndex", query: data });
-        console.log(res);
+        // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
+        window.location.href = localStorage.getItem("defaultLink");
       } else {
-        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 0);
-        }
         this.$toast(res.error_message);
       }
     },

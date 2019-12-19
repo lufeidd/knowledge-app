@@ -28,8 +28,8 @@
         <use xlink:href="#icon-next-line"></use>
       </svg>
     </div>
-    <EazyNav type="order"></EazyNav>
     <CopyRight></CopyRight>
+    <EazyNav type="order" :isShow="false"></EazyNav>
   </div>
 </template>
 

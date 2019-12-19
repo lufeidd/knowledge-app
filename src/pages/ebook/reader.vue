@@ -40,9 +40,6 @@
         <van-button round size="small" type="danger" @click="next">下一章</van-button>
       </div>
     </div>
-    <!-- <div style="position:relative;height:90px;">
-      <CopyRight></CopyRight>
-    </div>-->
 
     <!-- 设置弹层 -->
     <van-popup v-model="setShow" position="bottom" >
@@ -123,7 +120,7 @@
     ></ebookcatalog>
     <!-- 评论 -->
     <ebookcomment ref="comment" :goods_id="goods_id" :isLogin="isLogin"></ebookcomment>
-    <EazyNav type="brand" ref="nav"></EazyNav>
+    <EazyNav type="brand" ref="nav" :isShow="true"></EazyNav>
     <!-- 数字键盘 -->
     <van-number-keyboard
       :show="showKeyboard"

@@ -47,7 +47,7 @@
       />
     </van-popup>
     <!-- <easyNav :navData="navData"></easyNav> -->
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
 
   </div>
 </template>

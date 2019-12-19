@@ -334,9 +334,8 @@
           </div>
         </van-dialog>
       </div>
-      <!-- <CopyRight></CopyRight> -->
     </div>
-    <EazyNav type="brand" ref="nav"></EazyNav>
+    <EazyNav type="brand" ref="nav" :isShow="true"></EazyNav>
   </div>
 </template>
 <style src="@/style/scss/pages/cart.scss" scoped lang="scss"></style>

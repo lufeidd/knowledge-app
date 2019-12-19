@@ -5,7 +5,7 @@
       <!-- <p>{{contentData.content}}</p> -->
     </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
 
   </div>
 </template>
@@ -52,20 +52,10 @@ export default {
 
       let res = await USER_HELPER_DETAIL(data);
       if(res.hasOwnProperty("response_code")){
-        // store 设置登录状态
-        this.$store.commit("changeLoginState", 1);
-        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
-
         this.contentData = res.response_data;
         // console.log(res.response_data);
         $('.content').append(this.contentData.content);
       }else{
-        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 0);
-
-        }
         this.$toast(res.error_message);
       }
     }

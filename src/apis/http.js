@@ -11,8 +11,13 @@ import Vue from 'vue';
 var app_version = sessionStorage.getItem("isWxLogin") == "yes" ? 'weixin' : 'wap';
 var open_id = localStorage.getItem('openid');
 var obj = {};
+
+// run dev
 obj.baseURL = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis';
+
+// run build
 // obj.baseURL =  window.location.protocol + "//" + window.location.hostname + '/apis';
+
 obj.timeout = 15000;
 
 // 如果有设置过headers则不设置
@@ -38,10 +43,6 @@ instance.interceptors.request.use(function (config) {
 // 二、响应拦截器 忽略
 instance.interceptors.response.use(function (response) {
     if (response.status === 200) {
-        // console.log(200);
-        // $('#loadingPage').remove();
-
-        // console.log(localStorage.getItem('routerLink'));
         // 处理请求成功的逻辑
         return response.data; // 必须返回，后面的接口的then，才能获取response
     } else {

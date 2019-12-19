@@ -12,20 +12,19 @@
   overflow: hidden;
   min-height: 100%;
   background: #F5F5F5;
+  padding:15px;
   .coupons_wrapper {
     position: relative;
-    margin: 0 auto;
-    margin-top: 10px;
-    width: 345px;
-    height: 230px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    @include bgImageOne('./../../../../assets/redeem/frame2');
+    margin-bottom: 10px;
     .content {
-      padding-left: 10px;
-      div {
-        display: inline-block;
-      }
+      @include displayFlex(flex, null, null);
+      position: relative;
+      padding:15px 10px;
+      border-radius: 5px 5px 0 0;
+      background-color: #FFF;
+      border: 1px dashed #FFE5E5;
+      border-width:0 0 1px 0;
+
       .denomination {
         margin-right: 10px;
         vertical-align: top;
@@ -37,14 +36,15 @@
           color: #F05654;
         }
         .amount {
-          font-size: 44px;
-          font-family: PingFang SC;
+          font-size: 30px;
+          font-family: PingFangBold;
           font-weight: bold;
           color: #F05654;
         }
       }
       .requirement {
-        margin-top: 18px;
+        @include textOverflow;
+        flex-grow: 1;
         vertical-align: top;
         .state {
           margin-left: 4px;
@@ -58,6 +58,7 @@
           font-family: PingFang SC;
           font-weight: 500;
           color: #F05654;
+          @include textOverflow;
         }
       }
       .nothing_left {
@@ -67,19 +68,21 @@
         background-size: contain;
         background-repeat: no-repeat;
         @include bgImageOne('./../../../../assets/redeem/nothing_left');
+        position: absolute;
+        right: 56px;
       }
       .redeem_btn {
-        position: absolute;
-        top: 24px;
-        right: 10px;
+        // position: absolute;
+        // top: 35px;
+        // right: 10px;
       }
       .van-button--default {
-        padding: 0;
-        width: 48px;
-        height: 17px;
-        line-height: 17px;
+        padding: 0 5px;
+        // width: 48px;
+        // height: 17px;
+        // line-height: 17px;
         background: #FFB54D;
-        border-radius: 8px;
+        // border-radius: 8px;
         .van-button__text {
           font-size: 12px;
           font-family: PingFang SC;
@@ -94,20 +97,67 @@
         line-height: 24px;
         background: #F05654;
         //opacity: 0.6;
+        border:none;
         border-radius: 12px;
+        margin-top: 10px;
       }
+      .van-button--disabled{
+        opacity: 1;
+        background-color: #f69a98;
+      }
+      .right_radio,.left_radio{
+        display: inline-block;
+        width:20px;
+        height:20px;
+        background-color: #F5F5F5;
+        position: absolute;
+        border-radius: 50%;
+        bottom: -10px;
+      }
+      .right_radio{right: -10px;}
+      .left_radio{left: -10px;}
     }
     .goods_list {
-      .goods_item {
-        display: inline-block;
-        margin: 15px 0 15px 10px;
-        width: 100px;
-        height: 128px;
-        background: #FFFFFF;
-        border: 0.5px solid #EEEEEE;
-        border-radius: 3px;
-        background-size: cover;
+      padding:15px;
+      background-color: #FFF;
+      border-radius: 0 0 5px 5px;
+      .ratiobox {
+        position: relative;
+        .bookImg {
+          display: block;
+          @include ratioBox (100%, 100%, 1px solid $greyLight, contain, $white, null);
+          border-radius: 3px 3px 0 0;
+          box-sizing: border-box;
+        }
+        .price{
+          box-sizing: border-box;
+          border:1px solid #FFEEEE;
+          border-width: 0 1px 1px 1px;
+          border-radius: 0 0 3px 3px;
+          text-align: center;
+          color:$redLight;
+          font-size: $fontSize - 2;
+          padding:5px;
+        }
+        .type{
+          position: absolute;
+          top:5px;
+          left:5px;
+          padding:0 5px;
+          background-color:rgba(0,0,0,0.4);
+          color:#FFF;
+          font-size: $fontSize - 2;
+          border-radius:3px;
+        }
       }
     }
+  }
+  .rule {
+    margin: 28px 15px 64px 15px;
+    font-size: 14px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    line-height: 19px;
   }
 }

@@ -196,6 +196,7 @@ export default new Router({
       component: login,
       meta: {
         title: '登录',
+        noDefaultLink: true,  // 不记录在defaultLink中
         // requireAuth: true
       }
     },
@@ -205,6 +206,7 @@ export default new Router({
       component: password,
       meta: {
         title: '找回密码',
+        noDefaultLink: true,  // 不记录在defaultLink中
         // requireAuth: true
       }
     },
@@ -214,6 +216,7 @@ export default new Router({
       component: register,
       meta: {
         title: '注册',
+        noDefaultLink: true,  // 不记录在defaultLink中
         // requireAuth: true
       }
     },
@@ -222,7 +225,8 @@ export default new Router({
       name: 'prototype',
       component: prototype,
       meta: {
-        title: '协议'
+        title: '协议',
+        noDefaultLink: true,  // 不记录在defaultLink中
       }
     },
     {
@@ -231,6 +235,7 @@ export default new Router({
       component: bindphone,
       meta: {
         title: '绑定手机号',
+        noDefaultLink: true,  // 不记录在defaultLink中
         // requireAuth: false
       }
     },
@@ -243,6 +248,14 @@ export default new Router({
         title: '个人中心',
         requireAuth: false // 需要登录才能进入的页面可以增加一个meta属性
       },
+      beforeEnter: (to, from, next) => {
+        // ...
+        next();
+      },
+      beforeLeave: (to, from, next) => {
+        // ...
+        next();
+      }
     },
     {
       path: '/personal/collect',
@@ -534,6 +547,7 @@ export default new Router({
       component: setphone,
       meta: {
         title: '手机绑定',
+        noDefaultLink: true,  // 不记录在defaultLink中
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
@@ -707,7 +721,8 @@ export default new Router({
       component: couponmine,
       meta: {
         keepAlive: false,  // false不需要被缓存，true需要缓存
-        title: '我的优惠券'
+        title: '我的优惠券',
+        requireAuth: true
       },
     },
     {
@@ -748,6 +763,7 @@ export default new Router({
       component: groupdetail,
       meta: {
         title: '拼团详情',
+        requireAuth: true
       }
     },
     // 订单确认
@@ -847,13 +863,17 @@ export default new Router({
     {
       path: '/redeem/codeIndex',
       name: 'codeIndex',
-      component: codeIndex
+      component: codeIndex,
+      meta: {
+        title: '火把知识'
+      }
     },
     {
       path: '/redeem/codeInput',
       name: 'codeInput',
       component: codeInput,
       meta: {
+        title: '兑换码',
         //   requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
         isAppLogin: true,       // 必须在app内打开
       },
@@ -884,17 +904,20 @@ export default new Router({
       component: wapFail
     },
     {
-      path: '/redeem/login/:goodsItem',
+      path: '/redeem/login',
       name: 'redeemLogin',
-      component: redeemLogin
+      component: redeemLogin,
+      meta: {
+        title: '登录火把知识'
+      }
     },
     {
-      path: '/redeem/goods/:code',
+      path: '/redeem/goods',
       name: 'redeemGoods',
       component: redeemGoods
     },
     {
-      path: '/redeem/coupons/:code',
+      path: '/redeem/coupons',
       name: 'redeemCoupons',
       component: redeemCoupons
     }

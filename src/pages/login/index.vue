@@ -57,9 +57,8 @@
         </van-col>-->
       </van-row>
     </div>
-    <div style="height:150px;position:relative;">
-      <CopyRight></CopyRight>
-    </div>
+    <CopyRight></CopyRight>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
@@ -136,36 +135,13 @@ export default {
       data.sign = this.$getSign(data);
       let res = await LOG(data);
       if (res.hasOwnProperty("response_code")) {
-        // store 设置登录状态
-        this.$store.commit("changeLoginState", 1);
-        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
         // console.log(res);
         // this.$router.push({ name: "personalIndex", query: "" });
-
-        var fromLink = localStorage.getItem("fromLink");
-
-        // if (
-        //   fromLink.indexOf("/login/index") != -1 ||
-        //   fromLink.indexOf("/personal/set/index") != -1 ||
-        //   fromLink.indexOf("/login/password") != -1 ||
-        //   fromLink.indexOf("/login/register") != -1 ||
-        //   fromLink.indexOf("/personal/set/password") != -1 ||
-        //   fromLink == "/"
-        // ) {
-        //   this.$router.replace({ name: "personalIndex" });
-        // } else {
-        //   this.$router.go(-1);
-        // }
 
         // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
         window.location.href = localStorage.getItem("defaultLink");
       } else {
         this.$toast(res.error_message);
-        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 0);
-        }
       }
     },
     loginAction() {

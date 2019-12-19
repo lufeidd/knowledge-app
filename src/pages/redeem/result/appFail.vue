@@ -6,9 +6,10 @@
       {{this.errorMsg}}
     </p>
     <div class="button_wrapper">
-      <van-button type="primary" color="#F05654" @click="toIndexPage">返回首页</van-button>
+      <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" @click="toIndexPage">返回首页</van-button>
     </div>
     <!--<img src="./../../../assets/redeem/fail.png" alt="">-->
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 

@@ -1,5 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+
 import Vue from 'vue'
 import App from './App'
 import router from './router/index'
@@ -53,7 +54,6 @@ Vue.use(nav)
 Vue.use(loading)
 Vue.use(copyRight)
 
-
 // vant
 // import Vant from 'vant';
 // import 'vant/lib/index.css';
@@ -64,7 +64,7 @@ import {
   Field, Toast, Button, Checkbox, CheckboxGroup, Row, Col, Slider, Uploader,
   Cell, CellGroup,
   Icon, Popup, DatetimePicker, SwipeCell, Dialog,
-  // Actionsheet,
+  Actionsheet,
   AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle,
   Tab, Tabs,
   GoodsAction,
@@ -92,7 +92,7 @@ Vue.use(Popup)
 Vue.use(DatetimePicker)
 Vue.use(SwipeCell)
 Vue.use(Dialog)
-// Vue.use(Actionsheet)
+Vue.use(Actionsheet)
 Vue.use(AddressEdit)
 Vue.use(Lazyload)
 Vue.use(SwitchCell)
@@ -101,7 +101,7 @@ Vue.use(Tag)
 Vue.use(Tab).use(Tabs)
 Vue.use(Circle)
 Vue.use(GoodsAction)
-// Vue.use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
+Vue.use(GoodsActionBigBtn).use(GoodsActionMiniBtn)
 Vue.use(Step).use(Steps)
 Vue.use(List)
 Vue.use(Stepper)
@@ -116,7 +116,7 @@ Vue.use(RadioGroup)
 Vue.use(Radio)
 Vue.use(Picker)
 
-//
+// 插件
 Vue.use(plugin)
 
 // swiper
@@ -142,9 +142,45 @@ Vue.use(VueCookies)
 
 Vue.config.productionTip = false
 
+
+/*
+
+全局路由特殊情况处理
+
+1、只能在微信端打开的页面
+  meta: {
+    isWxLogin: true
+  }
+
+2、只能在app端打开的页面
+  meta: {
+    isAppLogin: true
+  }
+
+3、必须登录才能访问的页面
+  meta: {
+    requireAuth: true
+  }
+
+4、不需要登录进入的页面，未登录状态，有触发到需要登录的动作，需要回退到原路径
+  localStorage.getItem("defaultLink")
+
+本地数据存储
+
+1、defaultLink：记录需要登录的页面路径（引导登录后回退到指定页面）
+2、routerLink：记录当前页面路径
+3、fromLink：记录来源路径
+4、miniAudio：记录迷你音频当前播放
+5、audioProgress：记录音频播放进度
+6、loginState：记录当前登录状态
+7、closeAudio：记录迷你音频展示状态
+
+*/
+
+
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
-
+  Vue.use(plugin)
   next();
   // 存放页面来源地址
   if (from.path != to.path) {
@@ -176,6 +212,7 @@ router.beforeEach((to, from, next) => {
   // 存放来源地址，如果未登录，进入登录页或者第三方绑定页不修改fromLink，回退到指定页面
   var index = 0; // 索引初始化
   // loginState 1: 已登录，0：未登录
+  
   if (!localStorage.getItem('loginState')) localStorage.setItem('loginState', 0)
   var token = parseInt(localStorage.getItem('loginState'));
   next()
@@ -252,11 +289,12 @@ router.beforeEach((to, from, next) => {
 
   // 不需要登录的页面，如果未登录，进入登录页或者第三方绑定页不修改defaultLink，回退到指定页面
   if (!localStorage.getItem('defaultLink')) {
+    // 默认跳转到个人中心
     localStorage.setItem('defaultLink', window.location.href.split('#')[0] + '#' + '/personal/index');
     next();
   }
   next();
-  if (!to.meta.requireAuth && token != 1 && to.name != 'login' && to.name != 'register' && to.name != 'password' && to.name != 'prototype' && to.name != 'setphone' && to.name != 'bindphone') {
+  if (!to.meta.requireAuth && token != 1 && !to.meta.noDefaultLink) {
     // defaultLink记录未登录跳转到登录页原页面，用来登录后回退
     localStorage.setItem('defaultLink', localStorage.getItem('routerLink'));
     next();

@@ -12,82 +12,82 @@
         @load="programLoad"
       >
         <div v-for="(item,index) in goodsData" :key="index" style="margin-bottom:10px;">
-            <div class="content" v-if="item.type == 2">
-              <div class="head" @click="toBrandindex(item)">
-                <div class="titleFrom">
-                  <div class="ratiobox">
-                    <a class="bookImg" v-lazy:background-image="item.brand_header_pic"></a>
-                  </div>
-                  <span class="publish">{{item.brand_name}}</span>
+          <div class="content" v-if="item.type == 2">
+            <div class="head" @click="toBrandindex(item)">
+              <div class="titleFrom">
+                <div class="ratiobox">
+                  <a class="bookImg" v-lazy:background-image="item.brand_header_pic"></a>
                 </div>
-                <span
-                  :class="(item.state == 4 || item.state == 7) ? 'order2':'order1'"
-                >{{item.state_desc}}</span>
+                <span class="publish">{{item.brand_name}}</span>
               </div>
-              <div class="section">
-                <div class="bookDetail" v-if="item.details.length == 1" @click="toDetail(item)">
-                  <div class="ratiobox">
-                    <a class="bookImg" v-lazy:background-image="item.details[0].pic"></a>
-                  </div>
-                  <span class="title">{{item.details[0].goods_name}}</span>
+              <span
+                :class="(item.state == 4 || item.state == 7) ? 'order2':'order1'"
+              >{{item.state_desc}}</span>
+            </div>
+            <div class="section">
+              <div class="bookDetail" v-if="item.details.length == 1" @click="toDetail(item)">
+                <div class="ratiobox">
+                  <a class="bookImg" v-lazy:background-image="item.details[0].pic"></a>
                 </div>
-                <swiper
-                  @click="toDetail(item)"
-                  class="swiperTags"
-                  :options="swiperOption"
-                  ref="mySwiper"
-                  v-else
-                >
-                  <swiper-slide v-for="(item1,index1) in item.details" :key="'swiper-'+index1">
-                    <div class="ratiobox">
-                      <a class="bookImg" v-lazy:background-image="item1.pic"></a>
-                    </div>
-                  </swiper-slide>
-                </swiper>
-                <div class="tip1">
-                  <span class="actulPay">
-                    共件{{item.goods_nums}}商品
-                    {{item.state == 1? '待付款：':'实付款：'}}
-                    <span
-                      class="money"
-                    >￥{{item.order_money}}</span>
-                  </span>
-                </div>
+                <span class="title">{{item.details[0].goods_name}}</span>
               </div>
-              <div class="footFinish">
-                <div>
+              <swiper
+                @click="toDetail(item)"
+                class="swiperTags"
+                :options="swiperOption"
+                ref="mySwiper"
+                v-else
+              >
+                <swiper-slide v-for="(item1,index1) in item.details" :key="'swiper-'+index1">
+                  <div class="ratiobox">
+                    <a class="bookImg" v-lazy:background-image="item1.pic"></a>
+                  </div>
+                </swiper-slide>
+              </swiper>
+              <div class="tip1">
+                <span class="actulPay">
+                  共件{{item.goods_nums}}商品
+                  {{item.state == 1? '待付款：':'实付款：'}}
                   <span
-                    class="button button1"
-                    @click="repply(item)"
-                    v-if="item.invoice_id == 0 && item.state == 4"
-                  >申请发票</span>
-                </div>
-                <div>
-                  <span class="button button1" @click="cancel(item)" v-if="item.state == 1">取消订单</span>
-                  <span class="button button2" @click="toPay(item)" v-if="item.state == 1">去支付</span>
-                  <span
-                    class="button button2"
-                    @click="toComment(item,index)"
-                    v-if="item.state == 4&&item.if_comment == 0"
-                  >评价</span>
-                  <span
-                    class="button button1"
-                    @click="buyAgain(item)"
-                    v-if="item.state == 4||item.state==7"
-                  >再次购买</span>
-                  <span
-                    class="button button2"
-                    @click="confirmReceive(item)"
-                    v-if="item.state == 3||item.state == 5"
-                  >确认收货</span>
-                  <span
-                    class="button button1"
-                    @click="tologistics(item)"
-                    v-if="item.state == 2||item.state == 5"
-                  >查看物流</span>
-                </div>
+                    class="money"
+                  >￥{{item.order_money}}</span>
+                </span>
               </div>
             </div>
+            <div class="footFinish">
+              <div>
+                <span
+                  class="button button1"
+                  @click="repply(item)"
+                  v-if="item.invoice_id == 0 && item.state == 4"
+                >申请发票</span>
+              </div>
+              <div>
+                <span class="button button1" @click="cancel(item)" v-if="item.state == 1">取消订单</span>
+                <span class="button button2" @click="toPay(item)" v-if="item.state == 1">去支付</span>
+                <span
+                  class="button button2"
+                  @click="toComment(item,index)"
+                  v-if="item.state == 4&&item.if_comment == 0"
+                >评价</span>
+                <span
+                  class="button button1"
+                  @click="buyAgain(item)"
+                  v-if="item.state == 4||item.state==7"
+                >再次购买</span>
+                <span
+                  class="button button2"
+                  @click="confirmReceive(item)"
+                  v-if="item.state == 3||item.state == 5"
+                >确认收货</span>
+                <span
+                  class="button button1"
+                  @click="tologistics(item)"
+                  v-if="item.state == 2||item.state == 5"
+                >查看物流</span>
+              </div>
+            </div>
+          </div>
           <!-- 虚拟商品 -->
           <div class="content" v-if="item.type == 1" style="margin-bottom:10px;">
             <div class="head" @click="toBrandindex(item)">
@@ -99,7 +99,12 @@
               </div>
               <span :class="item.state == 0? 'order1':'order2'">{{item.state_desc}}</span>
             </div>
-            <div class="section" v-for="(item1,index1) in item.details" @click="toDetail(item)" :key="index1">
+            <div
+              class="section"
+              v-for="(item1,index1) in item.details"
+              @click="toDetail(item)"
+              :key="index1"
+            >
               <div class="bookDetail">
                 <div class="ratiobox">
                   <a class="bookImg" v-lazy:background-image="item1.pic"></a>
@@ -116,7 +121,11 @@
             </div>
             <div class="foot">
               <div>
-                <span class="button button1" @click="repply(item)" v-if="item.invoice_id == 0 && item.state !==9 && item.state !== 7 && item.state !== 1">申请发票</span>
+                <span
+                  class="button button1"
+                  @click="repply(item)"
+                  v-if="item.invoice_id == 0 && item.state !==9 && item.state !== 7 && item.state !== 1"
+                >申请发票</span>
               </div>
               <div>
                 <span
@@ -132,12 +141,9 @@
           </div>
         </div>
       </van-list>
-      <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div>
     </div>
-    <!-- <easyNav :navData="navData"></easyNav> -->
-    <EazyNav type="order"></EazyNav>
+    <CopyRight></CopyRight>
+    <EazyNav type="order" :isShow="false"></EazyNav>
   </div>
 </template>
 
@@ -205,11 +211,6 @@ export default {
         res.response_data.hasOwnProperty("result")
       ) {
         var result = res.response_data.result;
-
-        // store 设置登录状态
-        this.$store.commit("changeLoginState", 1);
-        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
-
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
             this.goodsData.push(result[i]);
@@ -224,11 +225,6 @@ export default {
           }
         }, 500);
       } else {
-        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 0);
-        }
 
         this.$toast(res.error_message);
       }

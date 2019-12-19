@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div><EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
@@ -21,21 +21,23 @@
           version: "1.0"
         };
         let res = await REDEEM_ITEM_GET(data);
+        // this.$toast(res);
         if (res.hasOwnProperty("response_code")) {
           // 判断是商品还是优惠券
           if (res.response_data.goods_type == 2) {
-            this.$router.push({name: 'redeemCoupons', params: {code: '0', redeem: this.redeem}});
+            this.$router.push({name: 'redeemCoupons', query: {redeem_id: this.redeem}});
           } else {
-            this.$router.push({name: 'redeemGoods', params: {code: '0', redeem: this.redeem}});
+            this.$router.push({name: 'redeemGoods', query: {redeem_id: this.redeem}});
           }
         } else {
-          this.$router.push({name: 'fail', query: {errorMsg: res.error_message}});
+          this.$router.push({name: 'wapFail', query: {errorMsg: res.error_message}});
         };
         console.log(res);
       }
     },
     created() {
       this.redeem = this.$route.query.redeem;
+      sessionStorage.setItem("redeemId", this.redeem);
     },
     mounted() {
       this.getDetail();

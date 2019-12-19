@@ -7,27 +7,33 @@
       <div class="ratiobox" v-else>
         <div class="bookImg" :style="bgUrl"></div>
       </div>
-      <div class="shop">{{couponInfo.brand_name}}&nbsp送您一张优惠券</div>
-      <div class="time"><span v-if="couponInfo.use_time_type == 1">{{couponInfo.use_stime.replace(/-/g,'.').substring(0,10)}}- {{couponInfo.use_etime.replace(/-/g,'.').substring(0,10)}}</span><span v-if="couponInfo.use_time_type == 2">领取后{{couponInfo.use_time_day}}天有效</span><div class="couponPrice">
-        ￥
-        <span class="price">{{couponInfo.money}}</span>
-      </div></div>
+      <div class="shop">{{couponInfo.brand_name}}&nbsp;送您一张优惠券</div>
+      <div class="time">
+        <span
+          v-if="couponInfo.use_time_type == 1"
+        >{{couponInfo.use_stime.replace(/-/g,'.').substring(0,10)}}- {{couponInfo.use_etime.replace(/-/g,'.').substring(0,10)}}</span>
+        <span v-if="couponInfo.use_time_type == 2">领取后{{couponInfo.use_time_day}}天有效</span>
+        <div class="couponPrice">
+          ￥
+          <span class="price">{{couponInfo.money}}</span>
+        </div>
+      </div>
 
       <div class="condition">满{{couponInfo.use_min_money}}元可用</div>
       <span class="received" v-if="couponInfo.state == 3">
         <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-yilingqu" />
-          </svg>
+          <use xlink:href="#icon-yilingqu" />
+        </svg>
       </span>
       <span class="received" v-if="couponInfo.state == 4">
         <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-overed-line" />
-          </svg>
+          <use xlink:href="#icon-overed-line" />
+        </svg>
       </span>
       <span class="received" v-if="couponInfo.state == 2">
         <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-received-line" />
-          </svg>
+          <use xlink:href="#icon-received-line" />
+        </svg>
       </span>
     </div>
     <div style="margin:15px 0;" v-if="couponInfo.state == 1">
@@ -42,7 +48,12 @@
           <van-button round style="height:35px;line-height:35px;" @click="toMyCoupon">我的优惠券</van-button>
         </van-col>
         <van-col span="12">
-          <van-button round type="danger" style="height:35px;line-height:35px;" @click="receiveMore">领取更多好券</van-button>
+          <van-button
+            round
+            type="danger"
+            style="height:35px;line-height:35px;"
+            @click="receiveMore"
+          >领取更多好券</van-button>
         </van-col>
       </van-row>
     </div>
@@ -52,7 +63,11 @@
           <van-button round style="height:35px;line-height:35px;" @click="receiveMore">领更多好券</van-button>
         </van-col>
         <van-col span="12">
-          <van-button round type="danger" style="height:35px;line-height:35px;">{{couponInfo.get_stime_desc}}</van-button>
+          <van-button
+            round
+            type="danger"
+            style="height:35px;line-height:35px;"
+          >{{couponInfo.get_stime_desc}}</van-button>
         </van-col>
       </van-row>
     </div>
@@ -124,8 +139,9 @@
           </van-row>
         </div>
       </van-list>
-      </div>
     </div>
+
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
@@ -135,19 +151,24 @@
   .van-button {
     width: 100%;
   }
-  .van-button--small{
+  .van-button--small {
     font-size: $fontSize + 4;
     height: 42px;
     line-height: 42px;
   }
-  .van-button--default{
-    border-color:$redLight;
-    color:$redLight;
+  .van-button--default {
+    border-color: $redLight;
+    color: $redLight;
   }
 }
 </style>
 <script>
-import { TICKET_GET,TICKET_LINK,TICKET_DETAIL_GETS,TICKET_GOODS_RECOMMEND } from "../../apis/coupon.js";
+import {
+  TICKET_GET,
+  TICKET_LINK,
+  TICKET_DETAIL_GETS,
+  TICKET_GOODS_RECOMMEND
+} from "../../apis/coupon.js";
 import { USER_HOMEPAGE } from "../../apis/user.js";
 export default {
   data() {
@@ -157,24 +178,29 @@ export default {
       commentFinished: false,
       commentLoading1: false,
       commentFinished1: false,
-      goodsList:[],
-      goodsList1:[],
-      bgUrl:{backgroundImage:'url('+require('../../assets/null/coupon.png')+')'},
-      overbgUrl:{backgroundImage:'url('+require('../../assets/null/received.png')+')'},
-      ticket_id:'',
-      couponInfo:{
-        state:null,
-        use_stime:'',
-        use_etime:'',
-        brand_name:null,
-        get_stime_desc:'',
-        use_min_money:null,
+      goodsList: [],
+      goodsList1: [],
+      bgUrl: {
+        backgroundImage: "url(" + require("../../assets/null/coupon.png") + ")"
       },
-      showMore:false,
-      isReceived:false,
-      page:1,
-      page1:1,
-      islogin:null,
+      overbgUrl: {
+        backgroundImage:
+          "url(" + require("../../assets/null/received.png") + ")"
+      },
+      ticket_id: "",
+      couponInfo: {
+        state: null,
+        use_stime: "",
+        use_etime: "",
+        brand_name: null,
+        get_stime_desc: "",
+        use_min_money: null
+      },
+      showMore: false,
+      isReceived: false,
+      page: 1,
+      page1: 1,
+      islogin: null
     };
   },
   mounted() {
@@ -207,12 +233,12 @@ export default {
       }
     },
     // 优惠券详情
-    async ticketDetail(){
+    async ticketDetail() {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
         version: "1.0",
-        ticket_id: this.ticket_id,
+        ticket_id: this.ticket_id
       };
       data.sign = this.$getSign(data);
       let res = await TICKET_GET(data);
@@ -225,48 +251,48 @@ export default {
       }
     },
     // 优惠券领取
-    async ticketLink(){
+    async ticketLink() {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
         version: "1.0",
-        ticket_id: this.ticket_id,
+        ticket_id: this.ticket_id
       };
       data.sign = this.$getSign(data);
       let res = await TICKET_LINK(data);
       if (res.hasOwnProperty("response_code")) {
         // console.log(res);
-        this.$toast('领取成功！');
+        this.$toast("领取成功！");
         this.couponInfo.state = 3;
       } else {
         this.$toast(res.error_message);
       }
     },
-    receive(){
-      if(this.islogin){
+    receive() {
+      if (this.islogin) {
         this.ticketLink();
-      }else{
-        this.$toast('用户未登录');
+      } else {
+        this.$toast("用户未登录");
         this.$router.push({
-          name:"login"
-        })
+          name: "login"
+        });
       }
       // this.showMore = true;
     },
-    toMyCoupon(){
-      if(this.islogin){
+    toMyCoupon() {
+      if (this.islogin) {
         this.$router.push({
-          name:"couponmine"
-        })
-      }else{
-        this.$toast('用户未登录');
+          name: "couponmine"
+        });
+      } else {
+        this.$toast("用户未登录");
         this.$router.push({
-          name:"login"
-        })
+          name: "login"
+        });
       }
     },
-    receiveMore(){
- // window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
+    receiveMore() {
+      // window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
       var u = navigator.userAgent,
         app = navigator.appVersion;
       var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
@@ -286,11 +312,11 @@ export default {
         timestamp: tStamp,
         version: "1.0",
         page: this.page,
-        ticket_id: this.ticket_id,
+        ticket_id: this.ticket_id
       };
       data.sign = this.$getSign(data);
-        var res = await TICKET_DETAIL_GETS(data);
-        // var res = await TICKET_GOODS_RECOMMEND(data);
+      var res = await TICKET_DETAIL_GETS(data);
+      // var res = await TICKET_GOODS_RECOMMEND(data);
 
       if (res.hasOwnProperty("response_code")) {
         // console.log(res);
@@ -320,7 +346,7 @@ export default {
         timestamp: tStamp,
         version: "1.0",
         page: this.page1,
-        ticket_id: this.ticket_id,
+        ticket_id: this.ticket_id
       };
       data.sign = this.$getSign(data);
       var res = await TICKET_GOODS_RECOMMEND(data);
@@ -347,15 +373,15 @@ export default {
         this.$toast(res.error_message);
       }
     },
-    toResult(){
+    toResult() {
       this.$router.push({
-        name:"couponresult",
-        query:{
-          ticket_id:this.ticket_id,
+        name: "couponresult",
+        query: {
+          ticket_id: this.ticket_id
         }
-      })
+      });
     },
-    toDetail(item,index){
+    toDetail(item, index) {
       // 音频/视频
       if (item.goods_type == 1 || item.goods_type == 2) {
         this.$router.push({

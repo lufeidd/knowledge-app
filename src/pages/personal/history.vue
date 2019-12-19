@@ -5,223 +5,220 @@
       <div>还没有历史的内容，快去看看吧~</div>
     </div>
     <div v-else>
-    <van-list
-      v-model="historyLoading"
-      :finished="historyFinished"
-      finished-text="没有更多了"
-      @load="historyLoad"
-    >
-      <van-swipe-cell
-        v-for="(item, key) in historyList"
-        :key="key"
-        :right-width="65"
-        :left-width="0"
-        :on-close="historyClose"
+      <van-list
+        v-model="historyLoading"
+        :finished="historyFinished"
+        finished-text="没有更多了"
+        @load="historyLoad"
       >
-        <template v-if="historyStatus[key].id != null">
-          <!-- 音频/视频 -->
-          <router-link
-            v-if="item.type == 1 || item.type == 2"
-            :to="{name: 'albumdetail', query: {goods_id: item.target}}"
-            class="listBox"
-          >
-            <div class="left">
-              <!-- <div class="ratioBox">
+        <van-swipe-cell
+          v-for="(item, key) in historyList"
+          :key="key"
+          :right-width="65"
+          :left-width="0"
+          :on-close="historyClose"
+        >
+          <template v-if="historyStatus[key].id != null">
+            <!-- 音频/视频 -->
+            <router-link
+              v-if="item.type == 1 || item.type == 2"
+              :to="{name: 'albumdetail', query: {goods_id: item.target}}"
+              class="listBox"
+            >
+              <div class="left">
+                <!-- <div class="ratioBox">
                 <div class="box">
                   <img :src="item.data.pic[0]">
                 </div>
-              </div> -->
-              <div class="ratiobox">
-                <div class="boxImg" v-lazy:background-image="item.data.pic[0]"></div>
+                </div>-->
+                <div class="ratiobox">
+                  <div class="boxImg" v-lazy:background-image="item.data.pic[0]"></div>
+                </div>
               </div>
-            </div>
-            <div class="center">
-              <div class="title">{{ item.data.title }}</div>
-              <div class="subTitle">{{ item.data.subTitle }}</div>
-              <div class="info">
-                <span class="type" v-if="item.type == 1">音频</span>
-                <span class="type" v-if="item.type == 2">视频</span>
-                <span class="count">
-                  <svg class="icon" aria-hidden="true" v-if="item.type == 1">
-                    <use xlink:href="#icon-audio-line" />
-                  </svg>
-                  <svg class="icon" aria-hidden="true" v-if="item.type == 2">
-                    <use xlink:href="#icon-video-line" />
-                  </svg>
-                  {{ item.data.play_num }}
-                </span>
-                <span class="time">
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-time-line" />
-                  </svg>
-                  {{ item.data.update_time }}
-                </span>
+              <div class="center">
+                <div class="title">{{ item.data.title }}</div>
+                <div class="subTitle">{{ item.data.subTitle }}</div>
+                <div class="info">
+                  <span class="type" v-if="item.type == 1">音频</span>
+                  <span class="type" v-if="item.type == 2">视频</span>
+                  <span class="count">
+                    <svg class="icon" aria-hidden="true" v-if="item.type == 1">
+                      <use xlink:href="#icon-audio-line" />
+                    </svg>
+                    <svg class="icon" aria-hidden="true" v-if="item.type == 2">
+                      <use xlink:href="#icon-video-line" />
+                    </svg>
+                    {{ item.data.play_num }}
+                  </span>
+                  <span class="time">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-time-line" />
+                    </svg>
+                    {{ item.data.update_time }}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div class="right">
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-next-line" />
-              </svg>
-            </div>
-          </router-link>
-          <!-- 专辑 -->
-          <router-link
-            v-if="item.type == 9"
-            :to="{name: 'album', query: {goods_id: item.target}}"
-            class="listBox"
-          >
-            <div class="left">
-              <div class="ratiobook">
-                <div class="bookImg" v-lazy:background-image="item.data.pic[0]"></div>
+              <div class="right">
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-next-line" />
+                </svg>
               </div>
-            </div>
-            <div class="center">
-              <div class="title">{{ item.data.title }}</div>
-              <div class="subTitle">{{ item.data.subTitle }}</div>
-              <div class="info">
-                <span class="type">专辑</span>
-                <span class="count">
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-eye-line" />
-                  </svg>
-                  {{ item.data.play_num }}
-                </span>
-                <span class="time">
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-time-line" />
-                  </svg>
-                  {{ item.data.update_time }}
-                </span>
+            </router-link>
+            <!-- 专辑 -->
+            <router-link
+              v-if="item.type == 9"
+              :to="{name: 'album', query: {goods_id: item.target}}"
+              class="listBox"
+            >
+              <div class="left">
+                <div class="ratiobook">
+                  <div class="bookImg" v-lazy:background-image="item.data.pic[0]"></div>
+                </div>
               </div>
-            </div>
-            <div class="right">
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-next-line" />
-              </svg>
-            </div>
-          </router-link>
-          <!-- 文章 -->
-          <router-link
-            v-if="item.type == 6"
-            :to="{name: 'article', query: {goods_id: item.target}}"
-            class="listBox"
-          >
-            <div class="left">
-              <div class="ratiobox">
-                <div class="boxImg" v-lazy:background-image="item.data.pic[0]"></div>
+              <div class="center">
+                <div class="title">{{ item.data.title }}</div>
+                <div class="subTitle">{{ item.data.subTitle }}</div>
+                <div class="info">
+                  <span class="type">专辑</span>
+                  <span class="count">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-eye-line" />
+                    </svg>
+                    {{ item.data.play_num }}
+                  </span>
+                  <span class="time">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-time-line" />
+                    </svg>
+                    {{ item.data.update_time }}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div class="center">
-              <div class="title">{{ item.data.title }}</div>
-              <div class="subTitle">{{ item.data.subTitle }}</div>
-              <div class="info">
-                <span class="type" v-if="item.type == 6">文章</span>
-                <span class="count">
-                  <svg class="icon" aria-hidden="true" v-if="item.type == 6">
-                    <use xlink:href="#icon-eye-line" />
-                  </svg>
-                  {{ item.data.play_num }}
-                </span>
-                <span class="time">
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-time-line" />
-                  </svg>
-                  {{ item.data.update_time }}
-                </span>
+              <div class="right">
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-next-line" />
+                </svg>
               </div>
-            </div>
-            <div class="right">
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-next-line" />
-              </svg>
-            </div>
-          </router-link>
-          <!-- 纸质书 -->
-          <router-link
-            v-if="item.type == 3"
-            :to="{name: 'detail', query: {goods_id: item.target}}"
-            class="listBox"
-          >
-            <div class="left">
-              <div class="ratiobook">
-                <div class="bookImg" v-lazy:background-image="item.data.pic[0]"></div>
+            </router-link>
+            <!-- 文章 -->
+            <router-link
+              v-if="item.type == 6"
+              :to="{name: 'article', query: {goods_id: item.target}}"
+              class="listBox"
+            >
+              <div class="left">
+                <div class="ratiobox">
+                  <div class="boxImg" v-lazy:background-image="item.data.pic[0]"></div>
+                </div>
               </div>
-            </div>
-            <div class="center">
-              <div class="title">{{ item.data.title }}</div>
-              <div class="subTitle">{{ item.data.subTitle }}</div>
-              <div class="info">
-                <span class="type" v-if="item.type == 3">图书</span>
-                <!-- <span class="count">
+              <div class="center">
+                <div class="title">{{ item.data.title }}</div>
+                <div class="subTitle">{{ item.data.subTitle }}</div>
+                <div class="info">
+                  <span class="type" v-if="item.type == 6">文章</span>
+                  <span class="count">
+                    <svg class="icon" aria-hidden="true" v-if="item.type == 6">
+                      <use xlink:href="#icon-eye-line" />
+                    </svg>
+                    {{ item.data.play_num }}
+                  </span>
+                  <span class="time">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-time-line" />
+                    </svg>
+                    {{ item.data.update_time }}
+                  </span>
+                </div>
+              </div>
+              <div class="right">
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-next-line" />
+                </svg>
+              </div>
+            </router-link>
+            <!-- 纸质书 -->
+            <router-link
+              v-if="item.type == 3"
+              :to="{name: 'detail', query: {goods_id: item.target}}"
+              class="listBox"
+            >
+              <div class="left">
+                <div class="ratiobook">
+                  <div class="bookImg" v-lazy:background-image="item.data.pic[0]"></div>
+                </div>
+              </div>
+              <div class="center">
+                <div class="title">{{ item.data.title }}</div>
+                <div class="subTitle">{{ item.data.subTitle }}</div>
+                <div class="info">
+                  <span class="type" v-if="item.type == 3">图书</span>
+                  <!-- <span class="count">
                   <svg class="icon" aria-hidden="true" v-if="item.type == 3">
                     <use xlink:href="#icon-eye-line"></use>
                   </svg>
                   {{ item.data.play_num }}
-                </span>-->
-                <span class="time">
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-time-line" />
-                  </svg>
-                  {{ item.data.update_time }}
-                </span>
+                  </span>-->
+                  <span class="time">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-time-line" />
+                    </svg>
+                    {{ item.data.update_time }}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div class="right">
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-next-line" />
-              </svg>
-            </div>
-          </router-link>
-          <!-- 电子书 -->
-          <router-link
-            v-if="item.type == 4"
-            :to="{name: 'ebookdetail', query: {goods_id: item.target}}"
-            class="listBox"
-          >
-            <div class="left">
-              <div class="ratioebook">
-                <div class="ebookImg" v-lazy:background-image="item.data.pic[0]"></div>
+              <div class="right">
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-next-line" />
+                </svg>
               </div>
-            </div>
-            <div class="center">
-              <div class="title">{{ item.data.title }}</div>
-              <div class="subTitle">{{ item.data.subTitle }}</div>
-              <div class="info">
-                <span class="type" v-if="item.type == 4">电子书</span>
-                <span class="count">
-                  <svg class="icon" aria-hidden="true" v-if="item.type == 4">
-                    <use xlink:href="#icon-eye-line" />
-                  </svg>
-                  {{ item.data.read_num }}
-                </span>
-                <span class="time">
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-time-line" />
-                  </svg>
-                  {{ item.data.update_time }}
-                </span>
+            </router-link>
+            <!-- 电子书 -->
+            <router-link
+              v-if="item.type == 4"
+              :to="{name: 'ebookdetail', query: {goods_id: item.target}}"
+              class="listBox"
+            >
+              <div class="left">
+                <div class="ratioebook">
+                  <div class="ebookImg" v-lazy:background-image="item.data.pic[0]"></div>
+                </div>
               </div>
-            </div>
-            <div class="right">
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-next-line" />
-              </svg>
-            </div>
-          </router-link>
-        </template>
+              <div class="center">
+                <div class="title">{{ item.data.title }}</div>
+                <div class="subTitle">{{ item.data.subTitle }}</div>
+                <div class="info">
+                  <span class="type" v-if="item.type == 4">电子书</span>
+                  <span class="count">
+                    <svg class="icon" aria-hidden="true" v-if="item.type == 4">
+                      <use xlink:href="#icon-eye-line" />
+                    </svg>
+                    {{ item.data.read_num }}
+                  </span>
+                  <span class="time">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-time-line" />
+                    </svg>
+                    {{ item.data.update_time }}
+                  </span>
+                </div>
+              </div>
+              <div class="right">
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-next-line" />
+                </svg>
+              </div>
+            </router-link>
+          </template>
 
-        <span slot="right" @click="historyCancel(item.id, key)">
-          <div>删除历史</div>
-        </span>
-      </van-swipe-cell>
-    </van-list>
-      <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div>
+          <span slot="right" @click="historyCancel(item.id, key)">
+            <div>删除历史</div>
+          </span>
+        </van-swipe-cell>
+      </van-list>
     </div>
+    <CopyRight></CopyRight>
     <!-- 快速导航 -->
-    <!-- <easyNav :navData="navData"></easyNav> -->
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 
@@ -283,10 +280,6 @@ export default {
             res.hasOwnProperty("response_code") &&
             res.response_data.hasOwnProperty("result")
           ) {
-            // store 设置登录状态
-            this.$store.commit("changeLoginState", 1);
-            if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
-
             setTimeout(() => {
               var result = res.response_data.result;
 
@@ -304,11 +297,6 @@ export default {
               console.log("历史列表：", result);
             }, 500);
           } else {
-            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-              // store 设置登录状态
-              this.$store.commit("changeLoginState", 100);
-              localStorage.setItem("loginState", 0);
-            }
             this.historyFinished = true;
             // this.$toast(res.error_message);
           }

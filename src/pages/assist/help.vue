@@ -116,6 +116,7 @@
       </div>
       <div class="button">立即打开</div>
     </div>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 

@@ -2,7 +2,7 @@
   <div id="successPage" class="comment">
     <div class="thanks">
       <svg class="icon order" aria-hidden="true">
-        <use xlink:href="#icon-order-comment"></use>
+        <use xlink:href="#icon-order-comment" />
       </svg>
       <span>感谢您的评价！</span>
     </div>
@@ -13,29 +13,26 @@
       finished-text="没有更多了"
       @load="programLoad"
     >
-    <div class="list" v-for="item in listData">
-      <div class="bookDetail">
-        <div class="ratiobox">
-          <a class="bookImg" v-lazy:background-image="item.pic"></a>
-        </div>
-        <div class="info">
-          <span class="title">{{item.goods_name}}</span>
-          <div class="commentLine">
-            <span class="number">
-              <span class="money">¥ {{item.price}}</span> x{{item.buy_count}}
-            </span>
+      <div class="list" v-for="item in listData">
+        <div class="bookDetail">
+          <div class="ratiobox">
+            <a class="bookImg" v-lazy:background-image="item.pic"></a>
+          </div>
+          <div class="info">
+            <span class="title">{{item.goods_name}}</span>
+            <div class="commentLine">
+              <span class="number">
+                <span class="money">¥ {{item.price}}</span>
+                x{{item.buy_count}}
+              </span>
+            </div>
           </div>
         </div>
+        <span class="button" @click="toComment(item)">评价</span>
       </div>
-       <span class="button" @click="toComment(item)">评价</span>
-    </div>
     </van-list>
-      <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div>
-    <!-- <easyNav :navData="navData"></easyNav> -->
-    <EazyNav type="brand"></EazyNav>
-
+    <CopyRight></CopyRight>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 
@@ -50,11 +47,11 @@ export default {
   // },
   data() {
     return {
-      listData:[],
-      page:1,
-      page_size:5,
+      listData: [],
+      page: 1,
+      page_size: 5,
       programLoading: false,
-      programFinished: false,
+      programFinished: false
       // navData: {
       //   fold: false,
       //   home: true,
@@ -67,14 +64,12 @@ export default {
       // },
     };
   },
-  mounted(){
-
-  },
-  methods:{
+  mounted() {},
+  methods: {
     programLoad() {
       this.getData();
     },
-    async getData(){
+    async getData() {
       var tStamp = this.$getTimeStamp();
       var data = {
         page: this.page,
@@ -103,16 +98,16 @@ export default {
         this.$toast(res.error_message);
       }
     },
-    toComment(item){
+    toComment(item) {
       console.log(item);
       this.$router.push({
-        name:'commentpunish',
-        query:{
-          pic:item.pic,
-          order_id:item.order_id,
-          detail_id:item.detail_id,
+        name: "commentpunish",
+        query: {
+          pic: item.pic,
+          order_id: item.order_id,
+          detail_id: item.detail_id
         }
-      })
+      });
     }
   }
 };

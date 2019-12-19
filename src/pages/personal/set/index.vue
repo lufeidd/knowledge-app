@@ -27,9 +27,8 @@
       <van-button size="large" @click="logoutAction">退出登录</van-button>
     </div>
     <!-- 快速导航 -->
-    <!-- <easyNav :navData="navData"></easyNav> -->
-    <EazyNav type="brand"></EazyNav>
     <CopyRight></CopyRight>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 
@@ -139,10 +138,6 @@ export default {
         this.$set(this.infoData, "user_header", res.response_data.user_header);
         this.$set(this.infoData, "user_name", res.response_data.user_name);
         this.$set(this.infoData, "is_login", res.response_data.is_login);
-        // store 设置登录状态
-        this.$store.commit("changeLoginState", 1);
-        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
-
         if (this.infoData.is_login == 1) {
           $(".ratioBox").css(
             "background-image",
@@ -150,11 +145,6 @@ export default {
           );
         }
       } else {
-        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 0);
-        }
         this.$toast(res.error_message);
       }
     },
@@ -172,8 +162,6 @@ export default {
       let res = await LOGOUT(data);
       console.log(res.response_data);
       if (res.hasOwnProperty("response_code")) {
-        this.$store.commit("changeLoginState", 1);
-        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
         // 退出登录将localstorage中进度数据清空
         localStorage.setItem("miniAudio", null);
         localStorage.setItem("audioProgress", null);
@@ -188,9 +176,6 @@ export default {
         this.unionid = "";
 
         sessionStorage.setItem("headPic", null);
-
-        this.$store.commit("changeLoginState", 100);
-        localStorage.setItem("loginState", 0);
         this.$router.push("/login/index");
       } else {
         this.$toast(res.error_message);

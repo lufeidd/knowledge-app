@@ -84,6 +84,7 @@
       ref="control"
       @audioChange="audioAction"
     ></audioList>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
@@ -548,7 +549,7 @@ export default {
 
       // 设置音频播放信息
       this.setBaseData("item", item);
-      this.$router.push({
+      this.$router.replace({
         query: merge(this.$route.query, {
           goods_id: item.goods_id,
           goods_no: item.goods_no
@@ -582,7 +583,7 @@ export default {
         this.baseData.duration_str = item.duration;
         this.baseData.duration = item.ori_duration;
         this.activeGoodNo = item.goods_no;
-        this.$router.push({
+        this.$router.replace({
           query: merge(this.$route.query, {
             goods_id: item.goods_id,
             goods_no: item.goods_no

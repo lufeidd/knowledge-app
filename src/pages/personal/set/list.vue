@@ -45,11 +45,8 @@
           </div>
         </div>
       </li>
-      <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div>
     </ul>
-
+    <CopyRight></CopyRight>
     <div style="height: 60px;"></div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="bottomBox" :class="{ iphx: this.isIphx }">
@@ -63,7 +60,7 @@
 
       <div class="count">{{ addressData.length }}/50</div>
     </div>
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 
@@ -138,9 +135,6 @@ export default {
       data.sign = this.$getSign(data);
       let res = await USER_ADDRESS_LIST(data);
       if (res.hasOwnProperty("response_code")) {
-        // store 设置登录状态
-        this.$store.commit("changeLoginState", 1);
-        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
 
         this.addressData = [];
         for (let i = 0; i < res.response_data.length; i++) {
@@ -148,11 +142,6 @@ export default {
         }
         this.finished = true;
       } else {
-        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 0);
-        }
         this.$toast(res.error_message);
       }
       // console.log(res);
@@ -171,7 +160,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.getAddressData();
         // 从订单确认页面进入的获取地址需要主动回退
-        if(this.$route.query.type && this.$route.query.type == 'confirm') {
+        if (this.$route.query.type && this.$route.query.type == "confirm") {
           this.$router.go(-1);
         }
       } else {

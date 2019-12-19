@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="button_wrapper">
-        <van-button type="primary" color="#F05654" v-clipboard:copy="redeemDetail.code" v-clipboard:success="copyCode">复制兑换码</van-button>
+        <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" v-clipboard:copy="redeemDetail.code" v-clipboard:success="copyCode">复制兑换码</van-button>
         <van-button type="default" @click="toRedeem">前往兑换</van-button>
       </div>
       <p class="notes_one">
@@ -28,8 +28,9 @@
     <van-popup class="outdated_info" v-model="isOutdated">
       <h4 class="outdated_title">活动已结束</h4>
       <div class="outdated_img"></div>
-      <p class="outdated_remind"><span>{{time}}</span>秒后回到火把号首页</p>
+      <p class="outdated_remind"><span>{{time}}</span>秒后回到个人中心</p>
     </van-popup>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
@@ -66,22 +67,7 @@
         }
       },
       toRedeem() {
-        // 活动是否结束
-        let endTime= new Date(this.redeemDetail.end_time).getTime();
-        let nowTime = new Date().getTime();
-        if (endTime < nowTime) {
-          this.isOutdated = true;
-          const timer = setInterval(() => {
-            this.time--;
-            if (this.time == 0) {
-              this.isOutdated = false;
-              clearInterval(timer);
-            }
-          }, 1000);
-        }else {
-          // this.$router.push('./codeInput');
-          this.download();
-        }
+        this.download();
       },
       // 兑换码详情
       async codeDetail() {
@@ -91,9 +77,19 @@
           version: "1.0"
         };
         let res = await REDEEM_CODE_GET(data);
-        // console.log(res);
+        console.log('res',res);
         if (res.hasOwnProperty("response_code")) {
           this.redeemDetail = res.response_data;
+        } else if (res.error_code == 0) { // 活动结束
+          this.isOutdated = true;
+          const timer = setInterval(() => {
+            this.time--;
+            if (this.time == 0) {
+              this.isOutdated = false;
+              clearInterval(timer);
+              this.$router.push({name: 'personalIndex'});
+            }
+          }, 1000);
         }
       }
     },

@@ -281,7 +281,7 @@
         </template>
       </van-submit-bar>
     </div>
-    <EazyNav type="coupon" ref="nav"></EazyNav>
+    <EazyNav type="coupon" ref="nav" :isShow="false"></EazyNav>
   </div>
 </template>
 

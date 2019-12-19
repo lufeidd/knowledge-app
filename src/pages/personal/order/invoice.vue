@@ -80,7 +80,7 @@
       <van-button type="danger" size="large" @click="submitAction">提交</van-button>
 
     </div>
-    <EazyNav type="order"></EazyNav>
+    <EazyNav type="order" :isShow="false"></EazyNav>
     <van-actionsheet
       v-model="invoiceModle"
       :actions="invoiceActions"

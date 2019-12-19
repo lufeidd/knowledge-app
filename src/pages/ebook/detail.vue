@@ -279,9 +279,6 @@
         </div>
       </van-list>
     </div>
-    <div style="position:relative;height:90px;">
-      <CopyRight></CopyRight>
-    </div>
     <!-- 评论 -->
     <van-popup v-model="commentModel" position="bottom" style="max-height:70%;">
       <div class="audioList">
@@ -351,6 +348,8 @@
         </div>
       </div>
     </van-popup>
+    <CopyRight></CopyRight>
+    <div style="height: 60px;"></div>
     <div class="bottom">
       <div
         class="isbuy"
@@ -389,7 +388,6 @@
     ></ebookpay>
     <!-- 充值余额并支付 -->
     <ebookrecharge ref="recharge" :info="info" :goods_id="goods_id" @return="returnUp"></ebookrecharge>
-    <EazyNav type="brand"></EazyNav>
     <!-- 数字键盘 -->
     <van-number-keyboard
       :show="showKeyboard"
@@ -427,7 +425,11 @@
       </div>
     </van-dialog>
     <!-- 拼团 -->
-    <div class="groupBuy" @click="toGoodsGroup" v-if="couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length>0 && baseData.is_payed == 0">
+    <div
+      class="groupBuy"
+      @click="toGoodsGroup"
+      v-if="couponInfo.groupbuy && Object.keys(couponInfo.groupbuy).length>0 && baseData.is_payed == 0"
+    >
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-left-arrow" />
       </svg>
@@ -696,6 +698,7 @@
         </div>
       </div>
     </van-popup>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 
@@ -719,7 +722,7 @@
     background: linear-gradient(to right, #f72d3e 100%, #f35636 100%);
     border-radius: 15px 0 0 15px;
     font-size: $fontSize - 2;
-    position: fixed;
+    position: absolute;
     z-index: 99;
     top: 130px;
     right: 0;
@@ -837,7 +840,7 @@ export default {
       groupModel: false,
       isgroup: false,
       remain_time: [],
-      groupbuy_id:null,
+      groupbuy_id: null
     };
   },
   mounted() {
@@ -911,12 +914,16 @@ export default {
         if (this.couponInfo.single.remain_time > 0) {
           this.$countTime(this.couponInfo.single.remain_time);
         }
-        if (this.couponInfo.groupbuy &&
+        if (
+          this.couponInfo.groupbuy &&
           Object.keys(this.couponInfo.groupbuy).length > 0 &&
           this.couponInfo.groupbuy.open_list.length > 0
         ) {
-          if(this.couponInfo.groupbuy.open_list.length > 2){
-            this.couponInfo.groupbuy.open_list = this.couponInfo.groupbuy.open_list.slice(0,2)
+          if (this.couponInfo.groupbuy.open_list.length > 2) {
+            this.couponInfo.groupbuy.open_list = this.couponInfo.groupbuy.open_list.slice(
+              0,
+              2
+            );
           }
           for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
             this.remain_time.push({
@@ -1192,8 +1199,9 @@ export default {
       data.timestamp = tStamp;
       data.goods_id = this.goods_id;
       data.version = "1.0";
-      if(this.$refs.pay.order_ticket_id) data.ticket_id = this.$refs.pay.order_ticket_id;
-      if(this.groupbuy_id) data.groupbuy_id = this.couponInfo.groupbuy.id;
+      if (this.$refs.pay.order_ticket_id)
+        data.ticket_id = this.$refs.pay.order_ticket_id;
+      if (this.groupbuy_id) data.groupbuy_id = this.couponInfo.groupbuy.id;
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADD(data);
       if (res.hasOwnProperty("response_code")) {
@@ -1308,13 +1316,13 @@ export default {
         // this.groupModel = false;
         // this.isgroup = true;
         // this.$refs.pay.buyShow = true;
-          this.$router.push({
-            name: "payaccount",
-            query: {
-              goods_id: this.goods_id,
-              groupbuy_id: this.couponInfo.groupbuy.id
-            }
-          });
+        this.$router.push({
+          name: "payaccount",
+          query: {
+            goods_id: this.goods_id,
+            groupbuy_id: this.couponInfo.groupbuy.id
+          }
+        });
       } else {
         this.$router.push({ name: "login" });
       }

@@ -4,7 +4,7 @@
       <img src="./../assets/null/net.png" width="100%">
       <div>网络不给力，点击屏幕重试~</div>
     </div>
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
     
   </div>
 </template>

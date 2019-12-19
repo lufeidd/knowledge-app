@@ -160,12 +160,10 @@
             </div>
           </div>
         </van-list>
-        <div style="position:relative;height:90px;">
-          <CopyRight></CopyRight>
-        </div>
       </div>
     </div>
-    <EazyNav type="index"></EazyNav>
+    <CopyRight></CopyRight>
+    <EazyNav type="index" :isShow="true"></EazyNav>
   </div>
 </template>
 

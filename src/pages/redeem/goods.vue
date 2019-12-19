@@ -1,11 +1,14 @@
 <template>
-  <div id="redeemGoodsPage">
-    <van-list
+  <div id="redeemGoodsPage" :style="{'background-color':goodsDetail.colour.bg?goodsDetail.colour.bg:''}">
+    <!-- <van-list
       v-model="goodsLoading"
       :finished="goodsFinished"
       finished-text="没有更多了"
       @load="goodsLoad"
-    >
+    > -->
+      <div class="propaganda" v-if="goodsDetail.pic">
+        <img :src="goodsDetail.pic" alt="" width="100%">
+      </div>
       <div
         class="goods_wrapper"
         v-for="item in goodsList"
@@ -22,18 +25,20 @@
           <div class="content">
             <h3 class="title">{{item.title}}</h3>
             <p class="sub_title">{{item.sub_title}}</p>
-            <p class="price">￥{{item.price}}</p>
-            <van-button class="redeem_btn" type="primary" disabled color="#F05654" v-if="item.state == 0">免费兑换
-            </van-button>
-            <van-button class="redeem_btn" type="primary" color="#F05654" @click="goodsRedeem(item)" v-else>免费兑换
-            </van-button>
+            <p class="price">
+              ￥{{item.price}}
+              <van-button class="redeem_btn" type="primary" disabled style="background:#F05654;border: 1px solid #F05654;" v-if="item.state == 0">免费兑换
+              </van-button>
+              <van-button class="redeem_btn" type="primary" style="background:#F05654;border: 1px solid #F05654;" @click="goodsRedeem(item)" v-else>免费兑换
+              </van-button>
+            </p>
           </div>
         </div>
-        <div class="goods_detail">{{item.content}}</div>
+        <!--<div class="goods_detail">{{item.contents}}</div>-->
       </div>
-    </van-list>
+    <!-- </van-list> -->
     <div class="rule">
-      <p>{{goodsDetail.description}}</p>
+      <p :style="{'color':goodsDetail.colour.text?goodsDetail.colour.text:''}" v-html="goodsDetail.description"></p>
     </div>
     <!-- 点击获取地址显示的弹层 -->
     <van-popup v-model="addressShowPopup" class="addressPopup">
@@ -45,7 +50,7 @@
           <div class="addressMember">
             <div
               class="default"
-              @click="editAction(Item.address_id)"
+              @click="editAction(Item.address_id,index)"
               :class="{ active: Item.is_default == 1 }"
             >
               <svg class="icon" aria-hidden="true" v-if="Item.is_default == 1">
@@ -66,14 +71,15 @@
           <van-button type="default" @click="addAddress">新建收货地址</van-button>
         </div>
         <div class="define" v-if="addressData.length">
-          <van-button type="primary" color="#F05654" @click="sureRedeem">确认兑换</van-button>
+          <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" @click="sureRedeem">确认兑换</van-button>
         </div>
       </div>
-    </van-popup>
+    </van-popup><EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
 <script>
+  import easyNav from "@/components/easyNav";
   import {USER_ADDRESS_EDIT, USER_ADDRESS_LIST} from "@/apis/user.js";
   import {REDEEM_ITEM_GET, REDEEM_GOODS} from "@/apis/redeem.js";
 
@@ -83,14 +89,17 @@
       return {
         code: '0',
         redeem: '',
-        goodsDetail: {},
+        goodsDetail: {
+          colour:{bg:'',text:''}
+        },
         goodsList: [],
-        goodsLoading: false,
-        goodsFinished: false,
+        // goodsLoading: false,
+        // goodsFinished: false,
         addressShowPopup: false,
         addressData: [],
         addressId: 0,
-        percentGoods: {}
+        percentGoods: {},
+        pupFlag: false
       };
     },
     methods: {
@@ -106,37 +115,40 @@
         // console.log(res);
         if (res.hasOwnProperty("response_code")) {
           this.goodsDetail = res.response_data;
+          this.goodsDetail.colour = JSON.parse(this.goodsDetail.colour);
+          document.title = this.goodsDetail.page_title?this.goodsDetail.page_title:'火把知识'
+          // console.log(this.goodsDetail.colour.bg)
         }
 
         let list = this.goodsDetail.goods_list;
-        console.log(list);
+        // console.log(list);
         list.forEach((item) => {
           if (item.goods_num == item.used_num) {
             item.state = 0; // 已领完
           }
         });
+        this.goodsList = [];
         //  加载
         for (let i = 0; i < list.length; i++) {
           this.goodsList.push(list[i]);
         }
         // 加载状态结束
-        this.goodsLoading = false;
+        // this.goodsLoading = false;
 
         // 数据全部加载完成
         if (this.goodsList.length >= list.length) {
-          this.goodsFinished = true;
+          // this.goodsFinished = true;
         }
-      },
-      goodsLoad() {
-        this.getGoodsDetail();
       },
       goodsRedeem(item) {
         if (item != undefined) {
           this.percentGoods = item;
+          sessionStorage.setItem("goodsItem", JSON.stringify(item));
+          sessionStorage.setItem("goodsType", "goods");
         }
         // console.log(this.percentGoods);
         // console.log(this.goodsDetail);
-        this.submitRedeem(item);
+        this.submitRedeem();
       },
 
 
@@ -157,9 +169,6 @@
         data.sign = this.$getSign(data);
         let res = await USER_ADDRESS_LIST(data);
         if (res.hasOwnProperty("response_code")) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 1);
-          localStorage.setItem("loginState", 1);
 
           this.addressData = [];
           for (let i = 0; i < res.response_data.length; i++) {
@@ -170,18 +179,19 @@
           }
           this.addressShowPopup = true;
         } else {
-          if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-            // store 设置登录状态
-            this.$store.commit("changeLoginState", 100);
-            localStorage.setItem("loginState", 100);
+          // this.$toast(res.error_message);
+          if (localStorage.getItem("unionid")) {
+            this.$router.push({name: 'redeemLogin'});
+          } else {
+            this.$router.push({name: 'login'});
           }
-          this.$toast(res.error_message);
         }
       },
       //确认兑换
       async sureRedeem() {
         for (let i = 0; i < this.addressData.length; i++) {
           if (this.addressData[i].is_default == 1) {
+            this.popFlag = true;
             this.submitRedeem();
             return false;
           }
@@ -209,48 +219,71 @@
           // }
         } else {
           this.$toast(res.error_message);
+
         }
       },
       editAction(address_id, key) {
         this.editAddress(address_id, key);
       },
       async submitRedeem() {
-        let data = {
-          redeem_id: this.goodsDetail.redeem_id,
-          goods_id: this.percentGoods.goods_id,
-          address_id: this.addressId,
-          code: this.code,
-          version: "1.0"
-        };
-        let res = await REDEEM_GOODS(data);
-        if (res.error_code == 99) { // 未登录
-          this.$router.push({name: 'redeemLogin', params: {goodsItem: JSON.stringify(item)}});
-        } else if (this.goodsDetail.goods_type == 3 && this.addressId == 0) {  // 商品类型是实物
-          this.getAddressData();
-          this.addressShowPopup = true;
-        }else if (res.hasOwnProperty("response_code")) {
-          // console.log(res);
-          if (this.isApp()) { // APP
-            this.$router.push({name: 'appSuccess', query: {goodsName: this.percentGoods.title, goodsType: this.goodsDetail.goods_type}});
-          } else {  //  WAP
-            this.$router.push({name: 'wapSuccess', query: {goodsName: this.percentGoods.title}});
+        let res;
+        if (this.goodsDetail.goods_type == 3 && localStorage.getItem("loginState") == 1) {
+          if (!this.popFlag) {
+            this.getAddressData();
+            this.addressShowPopup = true;
+            return false;
+          } else {
+            let data = {
+              address_id: this.addressId,
+              redeem_id: this.goodsDetail.redeem_id,
+              goods_id: this.percentGoods.goods_id,
+              code: this.code,
+              version: "1.0"
+            };
+            res = await REDEEM_GOODS(data);
           }
-        } else {
-          if (this.isApp()) { // APP
-            this.$router.push({name: 'appFail', query: {errorMsg: res.error_message}});
-          } else {  //  WAP
-            this.$router.push({name: 'wapFail', query: {errorMsg: res.error_message}});
-          }
+        } else{
+          let data = {
+            redeem_id: this.goodsDetail.redeem_id,
+            goods_id: this.percentGoods.goods_id,
+            code: this.code,
+            version: "1.0"
+          };
+          res = await REDEEM_GOODS(data);
         }
+        if (res.error_code == 100) { // 未登录
+          
+          // if (true) {
+          if (localStorage.getItem("unionid")) {
+            this.$router.push({name: 'redeemLogin'});
+          } else {
+            this.$router.push({name: 'login'});
+          }
+
+        } else if (res.hasOwnProperty("response_code")) {
+            // console.log(res);
+            let data = res.response_data;
+            if (this.isApp()) { // APP
+              this.$router.push({name: 'appSuccess', query: {goodsName: this.percentGoods.title, resData: data, goodsNameType: 'goods'}});
+            } else {  //  WAP
+              this.$router.push({name: 'wapSuccess', query: {goodsName: this.percentGoods.title, goodsNameType: 'goods'}});
+            }
+          } else {
+            if (this.isApp()) { // APP
+              this.$router.push({name: 'appFail', query: {errorMsg: res.error_message}});
+            } else {  //  WAP
+              this.$router.push({name: 'wapFail', query: {errorMsg: res.error_message}});
+            }
+          }
       },
       // 是否是APP
       isApp() {
-        var u = navigator.userAgent,
-          app = navigator.appVersion;
-        var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-        var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
-        console.log(u, app, _ios, _android);
-        if (_ios || _android) {
+        // var u = navigator.userAgent,
+        //   app = navigator.appVersion;
+        // var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        // var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+        // console.log(u, app, _ios, _android);
+        if (sessionStorage.getItem("isHuobaIosLogin") == "yes" || sessionStorage.getItem("isHuobaAndroidLogin") == "yes") {
           return true;
         } else {
           return false;
@@ -258,12 +291,14 @@
       }
     },
     created() {
-      this.code = this.$route.params.code;
-      this.redeem = this.$route.params.redeem;
+      this.code = this.$route.query.code;
+      this.redeem = sessionStorage.getItem("redeemId");
+      // sessionStorage.setItem('goodsParams', JSON.stringify(this.$route.query));
+      sessionStorage.setItem('hash', window.location.hash);
     },
     mounted() {
-      this.goodsLoad();
-    }
+      this.getGoodsDetail();
+    },
   }
 </script>
 

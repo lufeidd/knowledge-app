@@ -79,8 +79,7 @@
         </van-cell-group>
       </van-radio-group>
     </van-popup>
-    <EazyNav type="order"></EazyNav>
-    <!-- <CopyRight></CopyRight> -->
+    <EazyNav type="order" :isShow="false"></EazyNav>
   </div>
 </template>
 
@@ -247,8 +246,7 @@ export default {
         data.sign = this.$getSign(data);
         let res = await COMMON_UPLOAD(data);
         if (res.hasOwnProperty("response_code")) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 1);
+          
 
           // console.log(res);
           var arr = [];
@@ -257,10 +255,6 @@ export default {
           }
           this.pic = arr.join(",");
         } else {
-          if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-            // store 设置登录状态
-            this.$store.commit("changeLoginState", 100);
-          }
           this.$toast(res.error_message);
         }
       }

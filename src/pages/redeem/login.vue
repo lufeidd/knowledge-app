@@ -1,8 +1,8 @@
 <template>
   <div id="redeemLoginPage">
-    <header class="header_wrapper">
+    <header class="header_wrapper" v-if="goodsType == 'goods'">
       <!--<img src="" alt="" width="80" height="80">-->
-      <div class="picture" v-lazy:background-image="goodsDetail.pic[0]"></div>
+      <div class="picture" v-lazy:background-image="goodsDetail.pic"></div>
       <div class="content">
         <h3 class="title">{{goodsDetail.title}}</h3>
         <p class="sub_title">{{goodsDetail.sub_title}}</p>
@@ -11,12 +11,12 @@
         </p>
       </div>
     </header>
-    <div class="spacing_bar"></div>
+    <header class="header_wrapper" v-else></header>
+    <div class="spacing_bar" v-if="goodsType == 'goods'"></div>
     <main class="main_wrapper">
       <van-cell-group>
         <van-field
           class="phone_num"
-          type="number"
           v-model="phone"
           clearable
           maxlength="11"
@@ -39,13 +39,13 @@
           </template>
         </van-field>
       </van-cell-group>
-      <div class="button_wrapper" v-if="codeData.disabled">
-        <van-button type="primary" color="#F05654" disabled>兑换</van-button>
+      <div class="button_wrapper" v-if="submitData.disabled">
+        <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" disabled>兑换</van-button>
       </div>
       <div class="button_wrapper" v-else>
-        <van-button type="primary" color="#F05654" @click="validatePhone">兑换</van-button>
+        <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" @click="validatePhone">兑换</van-button>
       </div>
-    </main>
+    </main><EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
@@ -66,6 +66,7 @@
         submitData: {
           disabled: true
         },
+        goodsType: '',
         goodsDetail: {}
       };
     },
@@ -214,21 +215,22 @@
           type: 2,
           mobile: this.phone,
           auth_code: this.code,
-          // outer_id: localStorage.getItem("unionid"),
-          // outer_name: localStorage.getItem("nickname"),
-          // header_pic: localStorage.getItem("headimg"),
-          // openid: localStorage.getItem("openid"),
-          outer_id: tStamp,
-          outer_name: tStamp,
-          header_pic: tStamp,
-          openid: tStamp, //  测试
+          source_url: sessionStorage.getItem("hash").replace("#",""),
+          outer_id: localStorage.getItem("unionid"),
+          outer_name: localStorage.getItem("nickname"),
+          header_pic: localStorage.getItem("headimg"),
+          openid: localStorage.getItem("openid"),
+          // outer_id: tStamp,
+          // outer_name: tStamp,
+          // header_pic: tStamp,
+          // openid: tStamp, //  测试
           version: "1.0",
           timestamp: tStamp
         };
         data.sign = this.$getSign(data);
         let res = await LOGIN_BIND_PARTERNER(data);
-        // if (res.hasOwnProperty("response_code")) {
-        if (true) { // 测试
+        if (res.hasOwnProperty("response_code")) {
+        // if (true) { // 测试
           console.log(res);
           this.$router.go(-1);
         } else {
@@ -237,8 +239,7 @@
       }
     },
     created() {
-      this.goodsDetail = JSON.parse(this.$route.params.goodsItem);
-      console.log(this.$route.params.goodsItem);
+      this.goodsType = sessionStorage.getItem("goodsType");
     }
   }
 </script>

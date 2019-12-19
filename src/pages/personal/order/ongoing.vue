@@ -27,9 +27,6 @@
         </div>
       </div>
     </div>
-      <!-- <div style="position:relative;height:90px;">
-        <CopyRight></CopyRight>
-      </div> -->
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div style="height: 60px;"></div>
     <div class="foot bottomBox" :class="{iphx:this.isIphx}" v-if="refund_state<3">
@@ -38,7 +35,7 @@
       <span class="button" @click="re_refund" v-if="refund_state == 2">重新申请</span>
       <span class="button" @click="cancle_refund" v-if="refund_state == 0 || refund_state == 1">撤销申请</span>
     </div>
-    <EazyNav type="order"></EazyNav>
+    <EazyNav type="order" :isShow="false"></EazyNav>
   </div>
 </template>
 

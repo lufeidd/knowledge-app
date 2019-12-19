@@ -317,6 +317,7 @@
         </van-tab>
       </van-tabs>
     </van-popup>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
@@ -477,10 +478,6 @@ export default {
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADDINFO(data);
       if (res.hasOwnProperty("response_code")) {
-        // store 设置登录状态
-        this.$store.commit("changeLoginState", 1);
-        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
-
         this.goodsInfo = res.response_data.goods_info;
         this.payBank = res.response_data.pay_bank;
         this.descInfo = res.response_data.desc;
@@ -512,11 +509,6 @@ export default {
           "可用优惠券（" + this.ticket_lists.canuse.length + "）";
         // console.log(res);
       } else {
-        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 0);
-        }
         this.$toast(res.error_message);
       }
     },

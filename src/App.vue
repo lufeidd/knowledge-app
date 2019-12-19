@@ -77,7 +77,6 @@ body,
   color: #999;
 }
 </style>
-
 <script>
 import axios from "axios";
 
@@ -106,12 +105,11 @@ export default {
       // 是否设置过头信息
       sessionStorage.setItem("hasHeader", "no");
       var u = navigator.userAgent;
-      var _ios = u.toLowerCase().indexOf("huoba:ios:28:108:web") > -1;
-      var _android = u.toLowerCase().indexOf("huoba:android:28:108:web") > -1;
-      var _wx = u.toLowerCase().match(/MicroMessenger/i) ==
-        "micromessenger";
+      var _ios = u.toLowerCase().indexOf("huoba:ios") > -1;
+      var _android = u.toLowerCase().indexOf("huoba:android") > -1;
+      var _wx = u.toLowerCase().match(/MicroMessenger/i) == "micromessenger";
       var _hasHeader = u.toLowerCase().indexOf("huoba:") > -1;
-      if(_hasHeader) sessionStorage.setItem("hasHeader", "yes");
+      if (_hasHeader) sessionStorage.setItem("hasHeader", "yes");
       if (_ios) {
         // 针对webview:火把的ios端
         sessionStorage.setItem("isHuobaIosLogin", "yes");
@@ -137,7 +135,6 @@ export default {
           // 微信登录 code
           this.$getWxCode();
           // 微信授权
-
           if (this.wxCodeStr == "") {
             var this_count = Number(localStorage.getItem("get_count"));
             if (this_count < 2) {

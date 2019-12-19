@@ -5,7 +5,7 @@ import downloadApp from './downloadApp.vue';
 import eazyNav from './easyNav.vue';
 // 加载中
 import loading from './loading.vue';
-//版权
+// 版权
 import copyRight from './copyRight.vue';
 
 export default {
