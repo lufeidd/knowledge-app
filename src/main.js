@@ -174,6 +174,7 @@ Vue.config.productionTip = false
 5、audioProgress：记录音频播放进度
 6、loginState：记录当前登录状态
 7、closeAudio：记录迷你音频展示状态
+8、cmts:记录历史搜索内容
 
 */
 
@@ -212,7 +213,7 @@ router.beforeEach((to, from, next) => {
   // 存放来源地址，如果未登录，进入登录页或者第三方绑定页不修改fromLink，回退到指定页面
   var index = 0; // 索引初始化
   // loginState 1: 已登录，0：未登录
-  
+
   if (!localStorage.getItem('loginState')) localStorage.setItem('loginState', 0)
   var token = parseInt(localStorage.getItem('loginState'));
   next()
