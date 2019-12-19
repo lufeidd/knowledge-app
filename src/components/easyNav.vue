@@ -188,6 +188,7 @@ export default {
         loginLink:"/login/index",
         goods_nums: 0
       },
+      is_Login:null,
     };
   },
   mounted() {
