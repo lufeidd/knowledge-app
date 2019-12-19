@@ -35,7 +35,7 @@
       <van-button type="danger" size="large" replace @click="submitFeedback">提交</van-button>
     </div>
 
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 
@@ -156,9 +156,8 @@ export default {
         data.sign = this.$getSign(data);
         let res = await COMMON_UPLOAD(data);
         if (res.hasOwnProperty("response_code")) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 1);
-          if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
+          
+          
 
           // console.log(res);
           var arr = [];
@@ -170,11 +169,6 @@ export default {
 
           // console.log(this.content,this.contact)
         } else {
-          if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-            // store 设置登录状态
-            this.$store.commit("changeLoginState", 100);
-            localStorage.setItem("loginState", 0);
-          }
           this.$toast(res.error_message);
         }
       }

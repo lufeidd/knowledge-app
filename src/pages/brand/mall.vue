@@ -341,7 +341,7 @@
 
     </div>
     <CopyRight></CopyRight>
-    <EazyNav type="mall"></EazyNav>
+    <EazyNav type="mall" :isShow="true"></EazyNav>
   </div>
 </template>
 

@@ -218,7 +218,7 @@
     </div>
     <CopyRight></CopyRight>
     <!-- 快速导航 -->
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 
@@ -280,11 +280,6 @@ export default {
             res.hasOwnProperty("response_code") &&
             res.response_data.hasOwnProperty("result")
           ) {
-            // store 设置登录状态
-            this.$store.commit("changeLoginState", 1);
-            if (res.response_data.hasOwnProperty("is_login"))
-              localStorage.setItem("loginState", res.response_data.is_login);
-
             setTimeout(() => {
               var result = res.response_data.result;
 
@@ -302,11 +297,6 @@ export default {
               console.log("历史列表：", result);
             }, 500);
           } else {
-            if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-              // store 设置登录状态
-              this.$store.commit("changeLoginState", 100);
-              localStorage.setItem("loginState", 0);
-            }
             this.historyFinished = true;
             // this.$toast(res.error_message);
           }

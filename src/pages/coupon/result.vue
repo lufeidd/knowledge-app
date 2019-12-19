@@ -191,7 +191,7 @@
         </van-tab>
       </van-tabs>
     </div>
-    <EazyNav type="coupon" ref="nav"></EazyNav>
+    <EazyNav type="coupon" ref="nav" :isShow="false"></EazyNav>
   </div>
 </template>
 

@@ -21,6 +21,7 @@
     <p class="notes_two">
       提示：请使用英文输入法。
     </p>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
@@ -54,7 +55,11 @@
         let res = await REDEEM_ITEM_GET(data);
         // console.log(res);
         if (res.hasOwnProperty("error_message")  && res.error_code != 100) {
-          this.$toast(res.error_message);
+          if (res.error_message == '参数不能为空') {
+            this.$toast("请输入兑换码");
+          } else {
+            this.$toast(res.error_message);
+          }
           this.refreshImage();
         }
 

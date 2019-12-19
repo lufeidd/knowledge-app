@@ -276,7 +276,7 @@
         </van-tab>
       </van-tabs>
     </van-popup>
-    <EazyNav type="order"></EazyNav>
+    <EazyNav type="order" :isShow="false"></EazyNav>
   </div>
 </template>
 

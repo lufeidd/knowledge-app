@@ -324,7 +324,7 @@
     </div>
     <CopyRight></CopyRight>
     <!-- 快速导航 -->
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 
@@ -355,8 +355,8 @@ export default {
     };
   },
   mounted() {
-    this.homeData();
     // console.log("token:", this.$cookies.get("token"));
+    this.homeData();
   },
   methods: {
     gotoRemain() {
@@ -378,10 +378,6 @@ export default {
       // console.log( res.response_data, this.$cookies.get("token"));
 
       if (res.hasOwnProperty("response_code")) {
-        this.$store.commit("changeLoginState", 1);
-        if (res.response_data.hasOwnProperty("is_login"))
-          localStorage.setItem("loginState", res.response_data.is_login);
-
         this.$set(this.infoData, "user_header", res.response_data.user_header);
         this.$set(this.infoData, "user_name", res.response_data.user_name);
         this.$set(this.infoData, "follow_num", res.response_data.follow_num);
@@ -397,11 +393,6 @@ export default {
           );
         }
       } else {
-        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 0);
-        }
         this.$toast(res.error_message);
       }
     }

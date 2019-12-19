@@ -24,7 +24,7 @@
       <van-button type="danger" size="large" replace to="/personal/help/feedback">我要反馈</van-button>
     </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
-    <EazyNav type="brand"></EazyNav>
+    <EazyNav type="brand" :isShow="true"></EazyNav>
 
   </div>
 </template>
@@ -73,10 +73,6 @@ export default {
       data.sign = this.$getSign(data);
       let res = await USER_HELPER_GETS(data);
       if (res.hasOwnProperty("response_code")) {
-        // this.listData = res.response_data.result;
-        this.$store.commit("changeLoginState", 1);
-        if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
-
         var result = res.response_data.result;
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
@@ -92,11 +88,6 @@ export default {
           }
         }, 500);
       } else {
-        if (res.hasOwnProperty("error_code") && res.error_code == 100) {
-          // store 设置登录状态
-          this.$store.commit("changeLoginState", 100);
-          localStorage.setItem("loginState", 0);
-        }
         this.$toast(res.error_message);
       }
     },

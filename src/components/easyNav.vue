@@ -1,5 +1,5 @@
 <template>
-  <div id="easyNav">
+  <div v-if="isShow" id="easyNav">
     <div class="button" @click="foldAction">
       <svg class="icon" aria-hidden="true" v-if="navData.fold">
         <use xlink:href="#icon-more-line" />
@@ -171,8 +171,7 @@ import { CART_INFO } from "../apis/shopping";
 import { USER_HOMEPAGE } from "../apis/user";
 export default {
   // name: "easyNav",
-  // props: ["navData"],
-  props: ["type", "goods_nums"],
+  props: ["type", "isShow"],
   data() {
     return {
       navData: {
@@ -189,11 +188,9 @@ export default {
         loginLink:"/login/index",
         goods_nums: 0
       },
-      is_Login: null
     };
   },
   mounted() {
-    console.log('easyNav.vue')
     if (this.type === undefined) {
       this.type = this.navData.type;
     }
@@ -202,9 +199,6 @@ export default {
   methods: {
     foldAction() {
       this.navData.fold = !this.navData.fold;
-      // if (this.is_Login == 1) {
-      //   this.cartData();
-      // }
     },
     async isLogin() {
       var tStamp = this.$getTimeStamp();
@@ -216,13 +210,12 @@ export default {
       let res = await USER_HOMEPAGE(data);
 
       if (res.hasOwnProperty("response_code")) {
-        this.is_Login = res.response_data.is_login;
-        if(res.response_data.hasOwnProperty('is_login')) if(res.response_data.hasOwnProperty('is_login')) localStorage.setItem("loginState", res.response_data.is_login);
+        if(res.response_data.hasOwnProperty('is_login')) 
         if (res.response_data.is_login == 1) {
           this.cartData();
         }
       } else {
-        localStorage.setItem("loginState", 0);
+        
         this.$toast(res.error_message);
       }
     },

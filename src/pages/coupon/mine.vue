@@ -178,6 +178,7 @@
         </svg> 领取更多好券
       </van-button>
     </div>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 

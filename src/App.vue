@@ -90,7 +90,6 @@ export default {
     return {};
   },
   mounted() {
-    console.log('app.vue')
     this.getLoginData();
   },
   methods: {

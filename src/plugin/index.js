@@ -1,4 +1,3 @@
-
 import crypto from "crypto";
 import axios from 'axios'
 import qs from "Qs";
@@ -388,7 +387,7 @@ export default {
         self.timeDataDesc = '限时促销'
         self.timeData = '火把拼团'
         self.grouptimeData = d;
-      } else if (d < 0){
+      } else if (d < 0) {
         self.timeData = ''
       }
       // console.log(d,self.clock)
