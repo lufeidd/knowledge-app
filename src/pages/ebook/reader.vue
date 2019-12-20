@@ -287,9 +287,6 @@ export default {
       e.preventDefault();
     })
   },
-  updated(){
-    // $('.ebookDetail').find('link[type="text/css"]').remove();
-  },
   methods: {
     toShelf() {
       this.$router.push({ name: "ebookshelf" });

@@ -6,38 +6,38 @@
     style="min-height:100%;max-height:100%;"
   >
     <div id="ebookComment" class>
-      <div class="head">
-        <span class="catalogWord">{{totalCount}}</span>
+      <div class="hb-head">
+        <span class="hb-catalogWord">{{totalCount}}</span>
         <span>
           <svg class="icon" aria-hidden="true" @click="closePopup">
             <use xlink:href="#icon-close-line" />
           </svg>
         </span>
       </div>
-      <div class="content">
+      <div class="hb-content">
         <!-- 评论 -->
-        <div class="commentBox">
+        <div class="hb-commentBox">
           <van-list
             v-model="commentLoading"
             :finished="commentFinished"
             finished-text="没有更多了"
             @load="commentLoad"
           >
-            <div class="listBox" v-for="(item, key) in discussData" :key="key">
-              <div class="left">
+            <div class="hb-listBox" v-for="(item, key) in discussData" :key="key">
+              <div class="hb-left">
                 <div class="ratioBox">
                   <div class="box">
                     <img :src="item.user_header" />
                   </div>
                 </div>
               </div>
-              <div class="center">
-                <div class="title">
-                  <div class="text">{{ item.nick_name }}</div>
+              <div class="hb-center">
+                <div class="hb-title">
+                  <div class="hb-text">{{ item.nick_name }}</div>
                 </div>
-                <div class="subTitle">{{ item.content }}</div>
+                <div class="hb-subTitle">{{ item.content }}</div>
 
-                <div class="messageBox" v-if="answerData[key].length > 0">
+                <div class="hb-messageBox" v-if="answerData[key].length > 0">
                   <!-- 回复 -->
 
                   <!-- <div
@@ -50,21 +50,21 @@
                   </div>-->
 
                   <div
-                    class="message active"
+                    class="hb-message active"
                     v-for="(replyItem, key) in answerData[key]"
                     :key="key"
                   >
-                    <span class="name">{{ replyItem.nick_name }}</span>
-                    <span class="dialog">{{ replyItem.content }}</span>
+                    <span class="hb-name">{{ replyItem.nick_name }}</span>
+                    <span class="hb-dialog">{{ replyItem.content }}</span>
                   </div>
 
                   <div
-                    class="message active"
+                    class="hb-message active"
                     v-if="item.reply_num > 2 && replyPage[key] <= item.reply_total_page"
                   >
                     <!-- <van-pagination v-model="item.reply_current_page" :page-count="item.reply_total_page" mode="simple" @change="pageChange(item.comment_id, key)" /> -->
 
-                    <span class="name" @click="pageChange(item.comment_id, key)">
+                    <span class="hb-name" @click="pageChange(item.comment_id, key)">
                       共{{ item.reply_num }}条回复
                       <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-fold-line" />
@@ -77,8 +77,8 @@
                 </div>
 
                 <!-- 回复 -->
-                <div class="answerBox">
-                  <span class="date">{{ item.create_time }}</span>
+                <div class="hb-answerBox">
+                  <span class="hb-date">{{ item.create_time }}</span>
                   <span class="action" @click="openAnswer('reply', item.comment_id)">回复</span>
                 </div>
               </div>
@@ -86,8 +86,8 @@
           </van-list>
         </div>
       </div>
-      <div class="foot">
-        <div class="comment" @click="openAnswer('comment', null)">
+      <div class="hb-foot">
+        <div class="hb-comment" @click="openAnswer('comment', null)">
           <span>
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-edit-line" />
@@ -98,20 +98,20 @@
       </div>
       <!-- 评论 -->
       <van-popup v-model="commentModel" position="bottom" style="min-height:50%;max-height:50%;">
-        <div class="audioList">
-          <div class="title">
-            <div class="action" @click="commentClose">
+        <div class="hb-audioList">
+          <div class="hb-title">
+            <div class="hb-action" @click="commentClose">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-fold-line" />
               </svg>
             </div>
             <div>发表评论</div>
-            <div class="punish" @click="punishComment">发布</div>
+            <div class="hb-punish" @click="punishComment">发布</div>
           </div>
           <!-- 音频列表 -->
-          <div class="content">
+          <div class="hb-content">
             <textarea v-model="contentModel" placeholder="快来写评论吧!" @input="inputChange"></textarea>
-            <div class="count">
+            <div class="hb-count">
               <span :class="{ active: contentLength > contentTotal }">{{ contentLength }}</span>
               /{{ contentTotal }}
             </div>
@@ -124,7 +124,7 @@
 
 <style lang="scss" scoped>
 #ebookComment {
-  .head {
+  .hb-head {
     background-color: #f5f5f5;
     padding: 0 15px;
     height: 40px;
@@ -133,11 +133,11 @@
     // width: 100%;
     // box-sizing: border-box;
     @include displayFlex(flex, space-between, center);
-    .catalogWord {
+    .hb-catalogWord {
       font-size: $fontSize + 1;
     }
   }
-  .content {
+  .hb-content {
     padding: 15px;
     position: absolute;
     top: 40px;
@@ -146,43 +146,38 @@
     width: 100%;
     box-sizing: border-box;
     // 评论
-    & .commentBox {
+    & .hb-commentBox {
       background-color: $white;
       margin-top: 5px;
-
-      & .listBox {
+      & .hb-listBox {
         @include displayFlex(flex, null, flex-start);
         background-color: $white;
         // border-bottom: 1px solid $greyLight;
         margin-bottom: 5px;
-
-        & .left {
+        & .hb-left {
           @include flexBasis(35px);
           margin-right: 10px;
           margin-top: 5px;
-
           & .ratioBox {
             border-radius: 35px;
           }
         }
-
-        & .center {
+        & .hb-center {
           display: block;
           text-indent: 0 !important;
           text-align: left !important;
-          & .title {
+          flex-grow: 1;
+          & .hb-title {
             @include font("PingFangBold", $fontSize - 1, #666);
             @include textOverflow;
             display: block;
-
-            & .text {
+            & .hb-text {
               @include textOverflow;
               display: block;
               padding-right: 0;
             }
           }
-
-          & .subTitle {
+          & .hb-subTitle {
             @include font("PingFangBold", $fontSize, #333);
             margin-top: 5px;
             white-space: pre-wrap;
@@ -191,40 +186,32 @@
             overflow: visible;
             -webkit-line-clamp: 1000;
           }
-
-          & .messageBox {
+          & .hb-messageBox {
             background-color: #f7f7f7;
             padding: 5px;
             margin-top: 5px;
             font-size: $fontSize - 1;
-
-            & .message {
+            & .hb-message {
               display: none;
               margin-top: 2px;
-
-              & .name {
+              & .hb-name {
                 color: $orangeLight;
               }
-
-              & .dialog {
+              & .hb-dialog {
                 color: #666;
               }
             }
-
-            & .message.active {
+            & .hb-message.active {
               display: block;
             }
           }
-
           // 回复
-          & .answerBox {
+          & .hb-answerBox {
             margin-top: 15px;
-
-            & .date {
+            & .hb-date {
               @include font(null, $fontSize - 1, #999);
               margin-right: 15px;
             }
-
             & .action {
               @include font(null, $fontSize - 1, #333);
               margin-right: 15px;
@@ -233,9 +220,8 @@
         }
       }
     }
-
   }
-  .foot {
+  .hb-foot {
     height: 50px;
     box-sizing: border-box;
     border-top: 1px solid #f5f5f5;
@@ -243,7 +229,7 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    .comment {
+    .hb-comment {
       padding: 0 15px;
       background-color: #f5f5f5;
       border-radius: 16px;
@@ -252,12 +238,11 @@
       color: $cl6;
     }
   }
-  & .audioList {
+  & .hb-audioList {
       position: relative;
       height: 94vh;
       overflow: hidden;
-
-      & .title {
+      & .hb-title {
         height: 44px;
         line-height: 44px;
         border-bottom: 1px #eee solid;
@@ -265,25 +250,20 @@
         position: relative;
         @include displayFlex(flex, center, center);
         @include font(null, $fontSize + 2, #999);
-
-        & .action {
+        & .hb-action {
           @include position(absolute, "tl", 0, 0, 44px, 44px, null);
-
           & .icon {
             width: 20px;
             height: 20px;
           }
         }
-
-        & .punish {
+        & .hb-punish {
           @include position(absolute, "tr", 0, 0, 60px, 44px, null);
           color: $redDark;
         }
       }
-
-      & .content {
+      & .hb-content {
         padding: 10px;
-
         & textarea {
           width: 100%;
           border: 1px #ccc solid;
@@ -292,12 +272,10 @@
           box-sizing: border-box;
           min-height: 100px;
         }
-
-        & .count {
+        & .hb-count {
           font-size: $fontSize - 2;
           color: #999;
           text-align: right;
-
           & .active {
             color: $redDark;
           }
@@ -358,7 +336,6 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await COMMENT(data);
-
       if (res.hasOwnProperty("response_code")) {
         // 异步更新数据
         var result = res.response_data.result;
@@ -372,17 +349,14 @@ export default {
           // 加载状态结束
           this.commentLoading = false;
           this.commentPage++;
-
           // 数据全部加载完成
           if (this.commentPage > res.response_data.total_page) {
             this.commentFinished = true;
             this.commentPage = 1;
           }
         }, 600);
-
         // 设置总评论数
         this.totalCount = "评论 (" + res.response_data.total_count + ")";
-
         // console.log("当前页数组：", this.replyPage);
         // console.log("评论列表：", result);
       } else {
@@ -400,7 +374,6 @@ export default {
         version: "1.0"
       };
       let res = await COMMENT(data);
-
       if (res.hasOwnProperty("response_code")) {
         // 异步更新数据
         var result = res.response_data.result;
