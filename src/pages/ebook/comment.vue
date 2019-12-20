@@ -166,6 +166,7 @@
           display: block;
           text-indent: 0 !important;
           text-align: left !important;
+          flex-grow: 1;
           & .hb-title {
             @include font("PingFangBold", $fontSize - 1, #666);
             @include textOverflow;
