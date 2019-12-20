@@ -288,7 +288,7 @@ export default {
     })
   },
   updated(){
-    $('.ebookDetail').find('link[type="text/css"]').remove();
+    // $('.ebookDetail').find('link[type="text/css"]').remove();
   },
   methods: {
     toShelf() {
