@@ -388,7 +388,7 @@ export default {
         self.timeData = '火把拼团'
         self.grouptimeData = d;
       } else if (d < 0) {
-        self.timeData = ''
+        self.timeData = '火把拼团'
       }
       // console.log(d,self.clock)
     }

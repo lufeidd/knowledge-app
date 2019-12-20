@@ -41,13 +41,15 @@
           </div>
           <div class="promotionRight">
             <div
+              v-if="timeData"
               style="margin-top:5px;margin-bottom:5px;font-size:15px;"
             >{{timeData}}</div>
-            <!-- <div v-else style="margin-top:5px;margin-bottom:5px;font-size:15px;">火把拼团</div> -->
+            <div v-else style="margin-top:5px;margin-bottom:5px;font-size:15px;">火把拼团</div>
             <div
+              v-if="couponInfo.groupbuy.join_desc"
               style="font-size:13px;"
             >{{couponInfo.groupbuy.join_desc}}</div>
-            <!-- <div v-else>该商品仅剩{{baseData.stores}}件</div> -->
+            <div v-else>该商品仅剩{{baseData.stores}}件</div>
           </div>
         </div>
 
