@@ -77,7 +77,7 @@
           version: "1.0"
         };
         let res = await REDEEM_CODE_GET(data);
-        console.log('res',res);
+        // console.log('res',res);
         if (res.hasOwnProperty("response_code")) {
           this.redeemDetail = res.response_data;
         } else if (res.error_code == 0) { // 活动结束

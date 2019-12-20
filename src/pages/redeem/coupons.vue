@@ -82,8 +82,10 @@
         ></p>
       </div>
     </div>
-    <van-popup class="" v-model="remindPopShow">
-      <h4 class="">不可二次分享</h4>
+    <van-popup class="limit_info" v-model="remindPopShow">
+      <h4 class="limit_title">此活动仅限受邀用户参加</h4>
+      <div class="limit_img"></div>
+      <p class="limit_remind"><span>{{time}}</span>秒后回到个人中心</p>
     </van-popup>
     <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>

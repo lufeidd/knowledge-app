@@ -144,31 +144,31 @@
     .outdated_title {
       margin: 0 auto;
       text-align: center;
-      margin-top: 18px;
-      width: 115px;
+      margin-top: 21px;
+      width: 100px;
       height: 17px;
-      font-size: 18px;
+      font-size: 15px;
       font-family: PingFang SC;
       font-weight: 500;
       color: #333333;
-      line-height: 34px;
-      background-size: 115px 17px;
+      line-height: 28px;
+      background-size: 100px 17px;
       background-repeat: no-repeat;
       @include bgImageOne('./../../../../assets/redeem/title');
     }
     .outdated_img {
       margin: 0 auto;
-      margin-top: 27px;
-      width: 113px;
-      height: 88px;
-      background-size: 113px 88px;
+      margin-top: 28px;
+      width: 105px;
+      height: 83px;
+      background-size: 105px 83px;
       background-repeat: no-repeat;
       @include bgImageOne('./../../../../assets/redeem/outdated');
     }
     .outdated_remind {
-      margin-top: 33px;
+      margin-top: 18px;
       text-align: center;
-      font-size: 15px;
+      font-size: 14px;
       font-family: PingFang SC;
       font-weight: 500;
       color: #999999;
