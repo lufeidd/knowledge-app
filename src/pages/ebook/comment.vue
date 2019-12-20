@@ -122,7 +122,7 @@
   </van-popup>
 </template>
 
-<style lang="scss" >
+<style lang="scss" scoped>
 #ebookComment {
   .head {
     background-color: #f5f5f5;

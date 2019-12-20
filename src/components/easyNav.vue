@@ -217,7 +217,6 @@ export default {
           this.cartData();
         }
       } else {
-
         this.$toast(res.error_message);
       }
     },
