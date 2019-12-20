@@ -135,8 +135,12 @@ export default {
       data.sign = this.$getSign(data);
       let res = await LOG(data);
       if (res.hasOwnProperty("response_code")) {
-        // console.log(res);
-        // this.$router.push({ name: "personalIndex", query: "" });
+        // 登录将localstorage中进度数据清空
+        localStorage.setItem("miniAudio", null);
+        localStorage.setItem("audioProgress", null);
+        localStorage.setItem("cmts", null);
+        localStorage.setItem("fromLink", null);
+        localStorage.setItem("closeAudio", null);
 
         // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
         window.location.href = localStorage.getItem("defaultLink");

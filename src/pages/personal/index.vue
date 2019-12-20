@@ -342,14 +342,6 @@ export default {
   // },
   data() {
     return {
-      // 快速导航
-      // navData: {
-      //   fold: false,
-      //   home: true,
-      //   homeLink: "/brand/index",
-      //   search: false,
-      //   personal: false
-      // },
       // 信息
       infoData: {}
     };

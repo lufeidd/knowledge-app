@@ -35,7 +35,7 @@ export default {
     Vue.prototype.isIphx = ua.match(/mobile/) && $(window).width() == 375 && $(window).height() == 812;
     Vue.prototype.isWxLogin = ua.match(/MicroMessenger/i) == 'micromessenger';
 
-    // 存储第三方登录
+    // 存储第三方登录code
     Vue.prototype.wxCodeStr = '';
     Vue.prototype.appid = "wx0980638eef192092";
 
@@ -870,6 +870,101 @@ export default {
       } else if (_android) {
         window.location.href =
           "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
+      }
+    }
+
+    // 获取当前设备信息，微信端第一次访问提示授权
+    Vue.prototype.$setLoginData = async function () {
+      // 微信授权状态
+      sessionStorage.setItem("gotoLogin", "no");
+      // 微信端
+      sessionStorage.setItem("isWxLogin", "no");
+      // 针对webview:火把的ios端
+      sessionStorage.setItem("isHuobaIosLogin", "no");
+      // 针对webview:火把的Android端
+      sessionStorage.setItem("isHuobaAndroidLogin", "no");
+      // 是否设置过头信息
+      sessionStorage.setItem("hasHeader", "no");
+      var u = navigator.userAgent;
+      var _ios = u.toLowerCase().indexOf("huoba:ios") > -1;
+      var _android = u.toLowerCase().indexOf("huoba:android") > -1;
+      var _wx = u.toLowerCase().match(/MicroMessenger/i) == "micromessenger";
+      var _hasHeader = u.toLowerCase().indexOf("huoba:") > -1;
+      if (_hasHeader) sessionStorage.setItem("hasHeader", "yes");
+      if (_ios) {
+        // 针对webview:火把的ios端
+        sessionStorage.setItem("isHuobaIosLogin", "yes");
+      } else if (_android) {
+        // 针对webview:火把的Android端
+        sessionStorage.setItem("isHuobaAndroidLogin", "yes");
+      } else if (_wx) {
+        // 微信端
+        // 未授权时微信端访问授权页面
+        sessionStorage.setItem("isWxLogin", "yes");
+        if (
+          localStorage.getItem("openid") == "undefined" ||
+          localStorage.getItem("openid") == undefined ||
+          localStorage.getItem("openid") == "null" ||
+          localStorage.getItem("openid") == null ||
+          localStorage.getItem("nickname") == "null" ||
+          localStorage.getItem("nickname") == null ||
+          localStorage.getItem("unionid") == "null" ||
+          localStorage.getItem("unionid") == null ||
+          localStorage.getItem("headimg") == "null" ||
+          localStorage.getItem("headimg") == null
+        ) {
+          // 微信登录 code
+          this.$getWxCode();
+          // 微信授权
+          if (this.wxCodeStr == "") {
+            var this_count = Number(localStorage.getItem("get_count"));
+            if (this_count < 2) {
+              this_count++;
+              localStorage.setItem("get_count", this_count);
+              this.$wxLogin();
+            } else {
+              localStorage.setItem("get_count", 0);
+            }
+          }
+          if (this.wxCodeStr.length > 6) {
+            let url =
+              window.location.protocol +
+              "//" +
+              window.location.hostname +
+              "/callback/weixin/Userinfo?code=" +
+              this.wxCodeStr;
+            // 获取 openid，nickname
+            var self = this;
+            axios
+              .get(url)
+              .then(function (response) {
+                if (
+                  response.data.hasOwnProperty("code") &&
+                  response.data.code == "1000"
+                ) {
+                  console.log(response.data.msg);
+                } else {
+                  localStorage.setItem("openid", response.data.openid);
+                  localStorage.setItem("nickname", response.data.nickname);
+                  localStorage.setItem("unionid", response.data.unionid);
+                  localStorage.setItem("headimg", response.data.headimgurl);
+                  self.wxCodeStr = "";
+                  window.location.href =
+                    window.location.protocol +
+                    "//" +
+                    window.location.hostname +
+                    "/#" +
+                    window.location.href.split("#")[1];
+                }
+              })
+              .catch(function (error) {
+                self.fetchError = error;
+                console.log("error:", error);
+              });
+          } else {
+            this.$toast("未获取到code");
+          }
+        }
       }
     }
 
