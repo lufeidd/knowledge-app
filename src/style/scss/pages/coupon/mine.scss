@@ -30,6 +30,7 @@
     .toUse{
       box-sizing: border-box;
       background-color: $white;
+      border-radius: 6px;
       @include displayFlex(flex, null, null);
       align-items:stretch;
       .left{
