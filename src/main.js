@@ -167,14 +167,23 @@ Vue.config.productionTip = false
 
 本地数据存储
 
-1、defaultLink：记录需要登录的页面路径（引导登录后回退到指定页面）
-2、routerLink：记录当前页面路径
-3、fromLink：记录来源路径
-4、miniAudio：记录迷你音频当前播放
-5、audioProgress：记录音频播放进度
-6、loginState：记录当前登录状态
-7、closeAudio：记录迷你音频展示状态
-8、cmts:记录历史搜索内容
+A、localStorage
+  1、defaultLink：记录需要登录的页面路径（引导登录后回退到指定页面）
+  2、routerLink：记录当前页面路径
+  3、fromLink：记录来源路径
+  4、miniAudio：记录迷你音频当前播放
+  5、audioProgress：记录音频播放进度
+  6、loginState：记录当前登录状态
+  7、closeAudio：记录迷你音频展示状态
+  8、cmts：记录历史搜索内容
+  9、get_count：记录授权次数，最多3次
+
+B、sessionStorage
+  1、isHuobaAndroidLogin：记录当前是针对webview:火把的Android端
+  2、isHuobaIosLogin：记录当前是针对webview:火把的ios端
+  3、isWxLogin：记录当前是微信端
+  4、hasHeader：记录是否已经设置过头信息
+  5、gotoLogin：记录是否允许微信授权
 
 */
 
