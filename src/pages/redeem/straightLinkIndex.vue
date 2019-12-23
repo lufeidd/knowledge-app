@@ -1,5 +1,6 @@
 <template>
-  <div><EazyNav type="brand" :isShow="false"></EazyNav>
+  <div>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
@@ -10,7 +11,8 @@
     name: "straight-link-index",
     data() {
       return {
-        redeem: ''
+        redeem: '',
+        secShare: '' //  是否允许二次分享
       };
     },
     methods: {
@@ -23,6 +25,7 @@
         let res = await REDEEM_ITEM_GET(data);
         // this.$toast(res);
         if (res.hasOwnProperty("response_code")) {
+          this.secShare = res.response_data.sec_share;
           // 判断是商品还是优惠券
           if (res.response_data.goods_type == 2) {
             this.$router.push({name: 'redeemCoupons', query: {redeem_id: this.redeem}});
@@ -32,12 +35,12 @@
         } else {
           this.$router.push({name: 'wapFail', query: {errorMsg: res.error_message}});
         };
-        console.log(res);
+        // console.log(res);
       }
     },
     created() {
       this.redeem = this.$route.query.redeem;
-      sessionStorage.setItem("redeemId", this.redeem);
+      sessionStorage.setItem('originLink', 1);
     },
     mounted() {
       this.getDetail();

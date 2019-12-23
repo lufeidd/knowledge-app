@@ -1,11 +1,12 @@
 <template>
   <div id="redeemGoodsPage" :style="{'background-color':goodsDetail.colour.bg?goodsDetail.colour.bg:''}">
-    <!-- <van-list
-      v-model="goodsLoading"
-      :finished="goodsFinished"
-      finished-text="没有更多了"
-      @load="goodsLoad"
-    > -->
+    <div v-if="!remindPopShow">
+      <!-- <van-list
+     v-model="goodsLoading"
+     :finished="goodsFinished"
+     finished-text="没有更多了"
+     @load="goodsLoad"
+   > -->
       <div class="propaganda" v-if="goodsDetail.pic">
         <img :src="goodsDetail.pic" alt="" width="100%">
       </div>
@@ -36,45 +37,52 @@
         </div>
         <!--<div class="goods_detail">{{item.contents}}</div>-->
       </div>
-    <!-- </van-list> -->
-    <div class="rule">
-      <p :style="{'color':goodsDetail.colour.text?goodsDetail.colour.text:''}" v-html="goodsDetail.description"></p>
-    </div>
-    <!-- 点击获取地址显示的弹层 -->
-    <van-popup v-model="addressShowPopup" class="addressPopup">
-      <svg class="icon close" aria-hidden="true" @click="addressClose">
-        <use xlink:href="#icon-close-line"/>
-      </svg>
-      <div class="addressBox">
-        <div v-for="(Item,index) in addressData" :key="index">
-          <div class="addressMember">
-            <div
-              class="default"
-              @click="editAction(Item.address_id,index)"
-              :class="{ active: Item.is_default == 1 }"
-            >
-              <svg class="icon" aria-hidden="true" v-if="Item.is_default == 1">
-                <use xlink:href="#icon-checked-block"/>
-              </svg>
-              <svg class="icon" aria-hidden="true" v-else>
-                <use xlink:href="#icon-uncheck-line"/>
-              </svg>
-            </div>
-            <div class="title">{{ Item.consignee }}/{{ Item.mobile }}/{{ Item.province }}{{ Item.city }}{{ Item.county
-              }}{{ Item.address }}
+      <!-- </van-list> -->
+      <div class="rule">
+        <p :style="{'color':goodsDetail.colour.text?goodsDetail.colour.text:''}" v-html="goodsDetail.description"></p>
+      </div>
+      <!-- 点击获取地址显示的弹层 -->
+      <van-popup v-model="addressShowPopup" class="addressPopup">
+        <svg class="icon close" aria-hidden="true" @click="addressClose">
+          <use xlink:href="#icon-close-line"/>
+        </svg>
+        <div class="addressBox">
+          <div v-for="(Item,index) in addressData" :key="index">
+            <div class="addressMember">
+              <div
+                class="default"
+                @click="editAction(Item.address_id,index)"
+                :class="{ active: Item.is_default == 1 }"
+              >
+                <svg class="icon" aria-hidden="true" v-if="Item.is_default == 1">
+                  <use xlink:href="#icon-checked-block"/>
+                </svg>
+                <svg class="icon" aria-hidden="true" v-else>
+                  <use xlink:href="#icon-uncheck-line"/>
+                </svg>
+              </div>
+              <div class="title">{{ Item.consignee }}/{{ Item.mobile }}/{{ Item.province }}{{ Item.city }}{{ Item.county
+                }}{{ Item.address }}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="button">
-        <div class="addButton">
-          <van-button type="default" @click="addAddress">新建收货地址</van-button>
+        <div class="button">
+          <div class="addButton">
+            <van-button type="default" @click="addAddress">新建收货地址</van-button>
+          </div>
+          <div class="define" v-if="addressData.length">
+            <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" @click="sureRedeem">确认兑换</van-button>
+          </div>
         </div>
-        <div class="define" v-if="addressData.length">
-          <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" @click="sureRedeem">确认兑换</van-button>
-        </div>
-      </div>
-    </van-popup><EazyNav type="brand" :isShow="false"></EazyNav>
+      </van-popup>
+    </div>
+    <van-popup class="limit_info" v-model="remindPopShow">
+      <h4 class="limit_title">此活动仅限受邀用户参加</h4>
+      <div class="limit_img"></div>
+      <p class="limit_remind"><span>{{time}}</span>秒后回到个人中心</p>
+    </van-popup>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
@@ -89,6 +97,9 @@
       return {
         code: '0',
         redeem: '',
+        secShare: '',
+        remindPopShow: false,
+        time: 3,
         goodsDetail: {
           colour:{bg:'',text:''}
         },
@@ -115,6 +126,8 @@
         // console.log(res);
         if (res.hasOwnProperty("response_code")) {
           this.goodsDetail = res.response_data;
+          this.secShare = res.response_data.sec_share;
+          this.visitPage();
           this.goodsDetail.colour = JSON.parse(this.goodsDetail.colour);
           document.title = this.goodsDetail.page_title?this.goodsDetail.page_title:'火把知识'
           // console.log(this.goodsDetail.colour.bg)
@@ -252,7 +265,7 @@
           res = await REDEEM_GOODS(data);
         }
         if (res.error_code == 100) { // 未登录
-          
+
           // if (true) {
           if (localStorage.getItem("unionid")) {
             this.$router.push({name: 'redeemLogin'});
@@ -288,12 +301,24 @@
         } else {
           return false;
         }
+      },
+      visitPage() {
+        if (this.secShare == 0 &&  sessionStorage.getItem('originLink') != 1) { // 不可二次分享
+          this.remindPopShow = true;
+          const timer = setInterval(() => {
+            this.time--;
+            if (this.time == 0) {
+              this.remindPopShow = false;
+              clearInterval(timer);
+              this.$router.push({name: 'personalIndex'});
+            }
+          }, 1000);
+        }
       }
     },
     created() {
       this.code = this.$route.query.code;
-      this.redeem = sessionStorage.getItem("redeemId");
-      // sessionStorage.setItem('goodsParams', JSON.stringify(this.$route.query));
+      this.redeem = this.$route.query.redeem_id;
       sessionStorage.setItem('hash', window.location.hash);
     },
     mounted() {

@@ -210,4 +210,43 @@
       }
     }
   }
+  .limit_info {
+    overflow: hidden;
+    width: 214px;
+    height: 214px;
+    border-radius: 5px;
+    .limit_title {
+      margin: 0 auto;
+      text-align: center;
+      margin-top: 21px;
+      width: 186px;
+      height: 17px;
+      font-size: 15px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #333333;
+      line-height: 28px;
+      background-size: 186px 17px;
+      background-repeat: no-repeat;
+      @include bgImageOne('./../../../../assets/redeem/title2');
+    }
+    .limit_img {
+      margin: 0 auto;
+      margin-top: 28px;
+      width: 105px;
+      height: 83px;
+      background-size: 105px 83px;
+      background-repeat: no-repeat;
+      @include bgImageOne('./../../../../assets/redeem/outdated');
+    }
+    .limit_remind {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 14px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #999999;
+      line-height: 34px;
+    }
+  }
 }
