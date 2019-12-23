@@ -118,6 +118,7 @@
         let data = {
           code: this.code,
           redeem_id: this.redeem,
+          access: 1,
           is_captcha: 1,
           version: "1.0"
         };
