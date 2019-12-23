@@ -89,6 +89,9 @@
         console.log(res);
       }
     },
+    created() {
+      sessionStorage.setItem('originLink', 1);
+    },
     mounted() {
       document.title = '兑换码';
     }
