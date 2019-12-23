@@ -16,6 +16,7 @@
     <main class="main_wrapper">
       <van-cell-group>
         <van-field
+          type="tel"
           class="phone_num"
           v-model="phone"
           clearable
@@ -24,6 +25,7 @@
           @input="checkSubmit ('phone')"
         />
         <van-field
+          type="number"
           class="message_num"
           v-model="code"
           clearable
@@ -240,6 +242,7 @@
     },
     created() {
       this.goodsType = sessionStorage.getItem("goodsType");
+      this.goodsDetail = JSON.parse(sessionStorage.getItem("goodsItem"));
     }
   }
 </script>
