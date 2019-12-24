@@ -18,7 +18,7 @@
       <div class="infoBox">
         <div class="promotion">
           <img
-            v-if="couponInfo.groupbuy && (couponInfo.groupbuy.user_remain_nums > 0 || couponInfo.groupbuy.remain_time > 0)"
+            v-if="couponInfo.groupbuy && (couponInfo.groupbuy.user_remain_nums > 0 && couponInfo.groupbuy.remain_time > 0)"
             src="../assets/null/group_bg.png"
             width="100%"
             height="65px"

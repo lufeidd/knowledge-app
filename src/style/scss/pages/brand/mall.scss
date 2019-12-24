@@ -334,7 +334,7 @@
   }
   .materialObject {
     background-color: $white;
-    margin-top: 15px;
+    margin-top: 50px;
 
     .goods {
       @include displayFlex(flex, space-between, null);
