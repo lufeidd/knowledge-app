@@ -12,15 +12,6 @@
             </div>
           </div>
         </van-col>
-        <!-- <van-col class="action" style="width: 50px;">
-          <div class="ratioBox" @click="toPlayer">
-            <div class="box" :class="{rotateAction: !audioData.type}">
-              <span>
-                <img :src="audioData.pic" />
-              </span>
-            </div>
-          </div>
-        </van-col>-->
 
         <van-col v-if="isList" class="action" style="width: 50px;margin-left: 5px;">
           <svg class="icon" aria-hidden="true" @click="showList">
@@ -28,7 +19,7 @@
           </svg>
         </van-col>
         <van-col class="action" style="width: 50px;position: relative;">
-          <div class="play" @click="playAudio(null)" v-if="audioData.type || playType">
+          <div class="play" @click="playAudio" v-if="audioData.type || playType">
             <van-icon name="play" />
           </div>
           <div class="play" @click="pauseAudio" v-else>
@@ -74,7 +65,7 @@ export default {
     return {
       closeAudio: localStorage.getItem("closeAudio"),
       unfold: true,
-      playType: true,
+      playType: false,
       // 存储是否新增
       isAdd: false,
       // 是否显示播放列表入口
@@ -125,29 +116,14 @@ export default {
     $(window).on("scroll", function() {
       self.unfold = true;
     });
-
-    // console.log(this.showBuyButton)
     // 播放结束后销毁倒计时
     this.clearClock();
     // 判断是否显示节目列表入口
     this.hasList();
-    // 非专辑节目goods_id，不存在播放列表，隐藏miniAudio.vue列表入口
-    var info = JSON.parse(localStorage.getItem("miniAudio"));
-    if (info != null && info[1] == null) {
-      this.isList = false;
-    } else {
-      this.isList = true;
-    }
-
     this.audioData.type = true;
-    // // 设置音频播放状态
+    // 设置音频播放状态
     this.setPlayerAudio();
-    // 延时600ms设置duration
     this.setDuration();
-    // 暂停音频
-    setTimeout(() => {
-      this.pauseAudio();
-    }, 600);
   },
   methods: {
     closeAudioAction() {
@@ -186,23 +162,14 @@ export default {
         // if(info[8] != null && info[8] != "") this.baseData.goods_id = info[8];
       }
     },
-    // 延时600ms设置duration
     setDuration() {
       var audio = document.getElementById("myMiniAudio");
-      var self = this;
-
-      // if(audio.canPlayType('audio/mpeg') == "probably") {
-      // }
-
-      setTimeout(function() {
-        self.audioData.duration = audio.duration;
-        self.duration__ = self.todate(audio.duration);
-        // 设置slider当前播放进度
-        self.audioData.sliderValue =
-          (self.audioData.currentTime / audio.duration) * 100;
-        // slider和音频播放同步
-        self.audioSliderChange();
-      }, 600);
+      audio.currentTime = 0;
+      this.audioData.duration = audio.duration;
+      // 设置slider当前播放进度
+      this.audioData.sliderValue = 0;
+      // slider和音频播放同步
+      this.audioSliderChange();
     },
     // 用户播放进度记录
     async currentTimeData(info) {
@@ -260,23 +227,20 @@ export default {
     },
     // 播放时间戳
     audioTimeChange(second, type) {
+      var audio = document.getElementById("myMiniAudio");
+      // 暂停
       if (type) {
-        clearInterval(this.clock);
-        // 音频暂停停止5s倒计时，同时更新音频播放进度
-        clearInterval(this.progressClock);
-        this.updateProgress();
+        this.clearClock();
         return false;
       }
       this.clock = window.setInterval(() => {
         // 修复倒计时中音频paused状态改变的问题
-        if (document.getElementById("myMiniAudio").paused)
-          document.getElementById("myMiniAudio").play();
-
-        if (second >= document.getElementById("myMiniAudio").duration) {
+        if (audio.paused) audio.play();
+        if (second >= audio.duration) {
           clearInterval(this.clock);
-          return false;
         } else {
           second++;
+          audio.currentTime = second;
           console.log(second);
           // 绑定slider
           this.audiobindtoslider(second);
@@ -291,6 +255,7 @@ export default {
       this.progressClock = window.setInterval(() => {
         // console.log('每5s更新');
         this.updateProgress();
+        this.$emit("progressListData");
       }, 5000);
     },
     // 更新迷你音频播放进度
@@ -324,8 +289,6 @@ export default {
 
       // 设置迷你音频播放状态
       this.$emit("setMiniAudio", info);
-
-      // console.log(123, "miniAudio:", "info:", info, "currentTime:", __currentTime, "result:", result, this.isAdd);
     },
     // 更新播放进度记录
     updateProgressData(info, result, __currentTime) {
@@ -395,54 +358,43 @@ export default {
       // console.log("当记录不存在则添加", 'goods_id:', info[8], 'goods_no:', info[0], 'progress:', __currentTime, 'pid:', info[1], "result:", arr);
     },
     // 点击播放
-    playAudio(__currentTime) {
-      localStorage.setItem('closeAudio', 'no');
-      this.closeAudio = 'no';
-
-      this.count = 1;
-      this.clearClock();
-      // 非专辑节目goods_id，不存在播放列表，隐藏miniAudio.vue列表入口
-      var info = JSON.parse(localStorage.getItem("miniAudio"));
-
-      // 用户播放进度记录
-      if (info != null && info.length > 0) this.currentTimeData(info);
-
-      if (info != null && info.length > 0 && info[1] == null) {
-        this.isList = false;
-      } else {
-        this.isList = true;
-      }
-      // 切换播放状态
-      this.playType = false;
-      var audio = document.getElementById("myMiniAudio");
-      var second = parseInt(audio.currentTime);
-      // 设置当前播放时间null != 0，null为点击播放按钮，继续播放或者获取localstorage记录
-      if (__currentTime == null) {
-        // audio.currentTime = 0;
-        // second = __currentTime;
-      }
-      // 播放
-      audio.play();
-      console.log("测试全部播放:", __currentTime);
-      this.$emit("setType", false);
-      this.audioTimeChange(second, false);
-      console.log("播放");
+    playAudio() {
+      this.audioStatus(false);
     },
     // 点击暂停
     pauseAudio() {
+      this.audioStatus(true);
+    },
+    resetCurrentTime() {
+      var audio = document.getElementById("myMiniAudio");
+      audio.currentTime = 0;
+    },
+    audioStatus(_status) {
+      this.clearClock();
       // 判断是否显示节目列表入口
       this.hasList();
-      this.clearClock();
       var audio = document.getElementById("myMiniAudio");
-      // 暂停
-      if (audio) audio.pause();
-      // 切换播放状态
-      this.$emit("setType", true);
-      this.playType = true;
+      // if (audio.canPlayType("audio/mpeg") == "probably") {
+      this.playType = _status;
+      this.$emit("setType", _status);
+      if (_status) {
+        audio.pause();
+      } else {
+        this.count = 1;
+        // 记录迷你音频展示状态
+        localStorage.setItem("closeAudio", "no");
+        this.closeAudio = "no";
+        audio.play();
+      }
+
       var second = parseInt(audio.currentTime);
-      this.audioTimeChange(second, true);
-      console.log("暂停");
+      console.log("当前播放时间：", second);
+      this.audioTimeChange(second, _status);
+      // } else {
+      //   this.$toast("音频加载中...");
+      // }
     },
+
     // 播放结束
     onEnded() {
       this.clearClock();
@@ -474,9 +426,6 @@ export default {
         audio.currentTime = (this.audioData.sliderValue / 100) * audio.duration;
       // 绑定slider
       this.audiobindtoslider(audio.currentTime);
-      // this.audioData.currentTime = this.todate(audio.currentTime);
-      // 先暂停再播放
-      this.pauseAudio();
     },
     // 日期格式转换
     todate(second) {

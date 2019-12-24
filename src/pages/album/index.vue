@@ -484,6 +484,7 @@
         @showAudioList="audioListShow"
         @linkToPlayer="gotoPlayer"
         @getAllProgram="getAllProgramData"
+        @progressListData="progressListData"
       ></miniAudio>
 
       <!-- 播放列表 -->
@@ -495,6 +496,7 @@
         @audioChange="audioAction"
         ref="controlList"
       ></audioList>
+
       <!-- 领取优惠券 -->
       <van-popup v-model="couponModel" position="bottom" style="max-height:65%;min-height:65%;">
         <div class="header">
@@ -913,7 +915,6 @@
 <script>
 import miniAudio from "./../../components/miniAudio";
 import audioList from "./../../pages/album/list";
-// import easyNav from "./../../components/easyNav";
 //  引入接口
 import { ALBUM, ALBUM_DETAIL } from "../../apis/album.js";
 import { GOODS_TICKET_GETS, TICKET_LINK } from "../../apis/coupon.js";
@@ -940,15 +941,6 @@ export default {
       showBuyButton: true,
       isLogin: null,
       onsale: null,
-      // 快速导航
-      // navData: {
-      //   fold: false,
-      //   home: true,
-      //   homeLink: "/brand/index",
-      //   search: false,
-      //   personal: true,
-      //   personalLink: "/personal/index",
-      // },
       /*
        * ----------------------------------介绍----------------------------------
        */
@@ -1014,7 +1006,9 @@ export default {
       // 节目总数
       programTotalCount: 0,
       // 迷你音频当前节目信息
-      myAudioData: {},
+      myAudioData: {
+        type: false
+      },
       // 存放当前播放音频key值
       activeGoodNo: null,
       // 存放当前播放器播放状态
@@ -1066,28 +1060,30 @@ export default {
     this.getCouponList();
   },
   updated() {
-    console.log(7474,$('.van-goods-action-big-btn .van-button__text'))
     if (this.baseData.single_activity_id) {
-      $('.van-goods-action-big-btn .van-button__text').html(
+      $(".van-goods-action-big-btn .van-button__text").html(
         '<div style="line-height:1;font-size:16px;">限时促销价￥' +
           this.baseData.price +
           '</div><div style="line-height:1;font-size:12px;margin-top:5px;"><del style="color:#e1e1e1;">原价￥' +
           this.baseData.market_price +
-          '</del> 购买专辑</div>'
+          "</del> 购买专辑</div>"
       );
     }
-    if (this.couponInfo.groupbuy && Object.keys(this.couponInfo.groupbuy).length > 0) {
-      $('.van-goods-action-big-btn.van-button--warning .van-button__text').html(
+    if (
+      this.couponInfo.groupbuy &&
+      Object.keys(this.couponInfo.groupbuy).length > 0
+    ) {
+      $(".van-goods-action-big-btn.van-button--warning .van-button__text").html(
         '<div style="line-height:1;font-size:15px;">￥' +
-          this.baseData.price+
+          this.baseData.price +
           '</div><div style="line-height:1;font-size:15px;margin-top:5px;"> 直接购买</div>'
       );
-      $('.van-goods-action-big-btn.van-button--danger .van-button__text').html(
+      $(".van-goods-action-big-btn.van-button--danger .van-button__text").html(
         '<div style="line-height:1;font-size:15px;">￥' +
-          this.couponInfo.groupbuy.groupbuy_price+
+          this.couponInfo.groupbuy.groupbuy_price +
           '</div><div style="line-height:1;font-size:15px;margin-top:5px;"> ' +
           this.couponInfo.groupbuy.groupbuy_num +
-          '人拼团价</div>'
+          "人拼团价</div>"
       );
     }
   },
@@ -1158,9 +1154,16 @@ export default {
         document.title = "节目详情-" + res.response_data.base.title;
         // 优惠券
         this.couponInfo = res.response_data.activity;
-        if (this.couponInfo.groupbuy && Object.keys(this.couponInfo.groupbuy).length > 0 &&this.couponInfo.groupbuy.open_list.length > 0) {
-          if(this.couponInfo.groupbuy.open_list.length > 2){
-            this.couponInfo.groupbuy.open_list = this.couponInfo.groupbuy.open_list.slice(0,2)
+        if (
+          this.couponInfo.groupbuy &&
+          Object.keys(this.couponInfo.groupbuy).length > 0 &&
+          this.couponInfo.groupbuy.open_list.length > 0
+        ) {
+          if (this.couponInfo.groupbuy.open_list.length > 2) {
+            this.couponInfo.groupbuy.open_list = this.couponInfo.groupbuy.open_list.slice(
+              0,
+              2
+            );
           }
           for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
             this.remain_time.push({
@@ -1563,7 +1566,6 @@ export default {
     },
     // 获取节目列表
     async programData(_type) {
-      // console.log(this.programPage);
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
@@ -1641,21 +1643,19 @@ export default {
       }
 
       // 设置缩放音频当前播放进度
-      setTimeout(() => {
-        var audio = document.getElementById("myMiniAudio");
+      // setTimeout(() => {
+      var audio = document.getElementById("myMiniAudio");
 
-        // currentTime关联slider进度
-        if (info != null && info[5] != null && info[5] != "") {
-          if (this.$refs.control)
-            this.$refs.control.audioData.sliderValue =
-              (info[5] / audio.duration) * 100;
-        }
-        if (info != null && info[4] != null && info[4] != "") {
-          if (this.$refs.control) this.$refs.control.audioSliderChange();
-        }
-      }, 600);
-
-      // console.log("localStorage迷你音频信息:", info, "当前goodsNo:", this.activeGoodNo, "当前pid:", this.baseData.goods_id, "当前goodsId:", this.myAudioData.goodsId, "当前currentTime：", this.myAudioData.currentTime);
+      // currentTime关联slider进度
+      if (info != null && info[5] != null && info[5] != "") {
+        if (this.$refs.control)
+          this.$refs.control.audioData.sliderValue =
+            (info[5] / audio.duration) * 100;
+      }
+      if (info != null && info[4] != null && info[4] != "") {
+        if (this.$refs.control) this.$refs.control.audioSliderChange();
+      }
+      // }, 600);
     },
     // 将当前音频播放信息存放到localStorage: miniAudio
     miniAudioData(info) {
@@ -1694,23 +1694,22 @@ export default {
         this.$set(this.myAudioData, "album", __album);
         this.$set(this.myAudioData, "goodsId", __goodsId);
         this.$set(this.myAudioData, "albumPic", __albumPic);
-        // console.logthis.myAudioData)
 
         // localStorage存储
         localStorage.setItem("miniAudio", JSON.stringify(info));
 
         // 解决父页面子组件实时刷新问题
-        setTimeout(() => {
-          if (this.$refs.control) {
-            this.$refs.control.audioData.pic = __pic;
-            this.$refs.control.audioData.src = __src;
-            this.$refs.control.audioData.currentTime = __currentTime;
-            this.$refs.control.audioData.duration = __duration;
-            this.$refs.control.audioData.program = __program;
-            this.$refs.control.audioData.album = __album;
-            this.$refs.control.audioData.albumPic = __albumPic;
-          }
-        }, 600);
+        // setTimeout(() => {
+        if (this.$refs.control) {
+          this.$refs.control.audioData.pic = __pic;
+          this.$refs.control.audioData.src = __src;
+          this.$refs.control.audioData.currentTime = __currentTime;
+          this.$refs.control.audioData.duration = __duration;
+          this.$refs.control.audioData.program = __program;
+          this.$refs.control.audioData.album = __album;
+          this.$refs.control.audioData.albumPic = __albumPic;
+        }
+        // }, 600);
 
         if (info[3] == null) {
           $("#miniAudio").css("display", "none");
@@ -1753,6 +1752,8 @@ export default {
           }
         }
       }
+      // 关联list当前音频播放进度
+      this.$refs.controlList.progressListData();
     },
     // 将当前专辑节目列表播放进度信息存放到localStorage
     audioProgressData(result) {
@@ -1775,7 +1776,6 @@ export default {
     },
     // 节目列表播放/暂停音频
     audioAction(item) {
-      console.log(item.goods_type);
       // 视频跳转到节目详情页
       // if (item.goods_type == 2) {
       //   this.$router.push({
@@ -1827,16 +1827,22 @@ export default {
       }
 
       // 父页面关联子组件
-      setTimeout(() => {
-        if (this.audioPlaying) {
-          this.$refs.control.playAudio(__currentTime);
-          // 设置全部播放状态
-          this.allPlayStatus = "pause";
-        } else {
-          this.$refs.control.pauseAudio();
-          this.allPlayStatus = "continue";
+      // setTimeout(() => {
+      if (this.audioPlaying) {
+        // 切换音频时候currentTime设置为0
+        this.audioPrev = this.audioNext;
+        this.audioNext = item.file_path;
+        if (this.audioPrev != this.audioNext) {
+          this.$refs.control.resetCurrentTime();
         }
-      }, 600);
+        this.$refs.control.playAudio();
+        // 设置全部播放状态
+        this.allPlayStatus = "pause";
+      } else {
+        this.$refs.control.pauseAudio();
+        this.allPlayStatus = "continue";
+      }
+      // }, 600);
 
       // console.log(__currentTime)
 
@@ -1890,8 +1896,6 @@ export default {
       // 关联节目列表播放状态
       this.myAudioData.type = __type;
       this.audioPlaying = !__type;
-
-      console.log(123, __type, this.allPlayStatus);
     },
     // --------------------------------播放列表----------------------------------
     audioListShow(__type) {
@@ -2050,9 +2054,9 @@ export default {
 
       // 更新播放器当前播放音频
       this.miniAudioData(info);
-      setTimeout(() => {
-        this.$refs.control.playAudio(0);
-      }, 600);
+      // setTimeout(() => {
+      this.$refs.control.playAudio();
+      // }, 600);
     },
     // 全部播放
     allAction() {
@@ -2074,7 +2078,7 @@ export default {
       // 继续播放
       else {
         this.allPlayStatus = "pause";
-        this.$refs.control.playAudio(null);
+        this.$refs.control.playAudio();
       }
     },
     // 购买
@@ -2105,7 +2109,6 @@ export default {
       };
       data.sign = this.$getSign(data);
       let res = await RECOMMEND(data);
-      console.log(666, res);
       if (res.hasOwnProperty("response_code")) {
         // 异步更新数据
         var result = res.response_data.result;
