@@ -305,7 +305,7 @@ export default {
           }
         }, 1);
 
-        获取页面分享信息
+        // 获取页面分享信息
         var _pageName = "";
         var _params = "";
         switch (this.$route.query.type) {
