@@ -23,13 +23,18 @@
     </div>
 
     <!-- 音频播放器 -->
-    <audio
+    <!-- <audio
       id="musicPlayer"
       :src="baseData.file_path"
       preload="load"
       @ended="onEnded"
+      @canplay="audioCanplay"
       autoplay="autoplay"
-    ></audio>
+    ></audio>-->
+
+    <audio ref="audio" id="musicPlayer" preload="load" @ended="onEnded">
+      <source :src="baseData.file_path" />您的浏览器不支持 audio 元素。
+    </audio>
 
     <!-- 进度条 -->
     <div class="sliderBox">
@@ -84,7 +89,7 @@
       ref="control"
       @audioChange="audioAction"
     ></audioList>
-    
+
     <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
@@ -175,7 +180,8 @@ export default {
         this.setBaseData("base", res.response_data.base);
         // 账号信息，是否登录
         this.isLogin = res.response_data.user_info.is_login;
-        this.playAudio();
+        // this.pauseAudio();
+        // this.playAudio();
       } else {
         this.$toast(res.error_message);
       }
@@ -207,19 +213,22 @@ export default {
     },
     audioStatus(_status) {
       var audio = document.getElementById("musicPlayer");
-      // if (audio.canPlayType("audio/mpeg") == "probably") {
-        this.playStatus = _status;
-        if (_status) {
-          audio.pause();
-        } else {
-          audio.play();
-        }
-        var second = parseInt(audio.currentTime);
-        console.log("当前播放时间：", second);
-        this.audioTimeChange(second, _status);
-      // } else {
-      //   this.$toast("音频加载中...");
-      // }
+      if (!audio.hasAttribute("src")) {
+        this.$refs.audio.src = this.baseData.file_path;
+        audio.load();
+        return;
+      }
+
+      this.playStatus = _status;
+      if (_status) {
+        audio.pause();
+      } else {
+        audio.load();
+        audio.play();
+      }
+      var second = parseInt(audio.currentTime);
+      this.audioTimeChange(second, _status);
+      console.log("当前播放时间：", second);
     },
     // 播放中倒计时
     audioTimeChange(second, type) {
@@ -236,11 +245,10 @@ export default {
           clearInterval(this.clock);
         } else {
           second++;
-          audio.currentTime = second;
           this.currentTime__ = this.todate(second);
           // 绑定slider
           this.audiobindtoslider(second);
-          console.log("倒计时：", second);
+          console.log("倒计时：", second, audio.currentTime);
         }
       }, 1000);
       // 音频实时播放进度，每5s更新
@@ -594,6 +602,7 @@ export default {
       this.baseData.title = item.title;
       this.baseData.pic = item.pic;
       this.baseData.file_path = item.file_path;
+      this.$refs.audio.src = item.file_path;
       document.title = "正在播放-" + item.title;
       // 更新localStorage:miniAudio数据
       this.updateMiniAudio(item);
