@@ -355,9 +355,13 @@ export default {
     tabChange(index, title) {
       this.activekey = index;
       this.brandData = [];
-      this.programFinished = false;
       this.page = 1;
       this.goods_type = Number(this.column_list[index].goods_type);
+      this.programLoading = true; //下拉加载中
+      this.programFinished = false; //下拉结束
+      if (this.programLoading) {
+        this.programLoad();
+      }
     }
   }
 };
