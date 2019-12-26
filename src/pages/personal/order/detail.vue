@@ -288,7 +288,7 @@
           <span
             class="button button3"
             @click="apply"
-            v-if="showInvoice && infoData.state == 4 && (if_refund ==1 || if_refund == 5) && item.want_invoice == 1"
+            v-if="showInvoice && infoData.state == 4 && (if_refund ==1 || if_refund == 5) && infoData.want_invoice == 1"
           >申请发票</span>
         </div>
         <div style="padding-right:15px;">
