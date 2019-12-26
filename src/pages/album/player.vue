@@ -213,17 +213,17 @@ export default {
     },
     audioStatus(_status) {
       var audio = document.getElementById("musicPlayer");
-      if (!audio.hasAttribute("src")) {
-        this.$refs.audio.src = this.baseData.file_path;
-        audio.load();
-        return;
-      }
+      // if (!audio.hasAttribute("src")) {
+      //   this.$refs.audio.src = this.baseData.file_path;
+      //   audio.load();
+      //   return;
+      // }
 
       this.playStatus = _status;
       if (_status) {
         audio.pause();
       } else {
-        audio.load();
+        // audio.load();
         audio.play();
       }
       var second = parseInt(audio.currentTime);
@@ -390,7 +390,6 @@ export default {
         }
       }
     },
-
     // 播放结束
     onEnded() {
       // this.$toast("end");

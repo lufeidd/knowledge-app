@@ -141,8 +141,8 @@
           </div>
         </div>
       </van-list>
+      <CopyRight></CopyRight>
     </div>
-    <CopyRight></CopyRight>
     <EazyNav type="order" :isShow="true"></EazyNav>
   </div>
 </template>
@@ -225,7 +225,6 @@ export default {
           }
         }, 500);
       } else {
-
         this.$toast(res.error_message);
       }
     },
