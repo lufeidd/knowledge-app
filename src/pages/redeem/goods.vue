@@ -119,6 +119,7 @@
           code: this.code,
           redeem_id: this.redeem,
           access: 1,
+          encrypt: 1,
           is_captcha: 1,
           version: "1.0"
         };
@@ -319,7 +320,7 @@
     },
     created() {
       this.code = this.$route.query.code;
-      this.redeem = this.$route.query.redeem_id;
+      this.redeem = decodeURIComponent(this.$route.query.redeem_id).replace(' ', '+');
       sessionStorage.setItem('hash', window.location.hash);
     },
     mounted() {
