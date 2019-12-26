@@ -177,6 +177,7 @@ A、localStorage
   7、closeAudio：记录迷你音频展示状态
   8、cmts：记录历史搜索内容
   9、get_count：记录授权次数，最多3次
+  10、linkFrom：记录页面进入方式，gzh：来自公众号
 
 B、sessionStorage
   1、isHuobaAndroidLogin：记录当前是针对webview:火把的Android端
@@ -191,6 +192,12 @@ B、sessionStorage
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
   next();
+  // 记录页面进入方式，gzh：来自公众号
+  if(localStorage.getItem('routerLink').indexOf('linkFrom=gzh')) {
+    localStorage.setItem('linkFrom', 'gzh');
+    next();
+  }
+  next()
   // 存放页面来源地址
   if (from.path != to.path) {
     next();

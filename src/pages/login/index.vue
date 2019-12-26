@@ -102,8 +102,13 @@ export default {
     if (
       this.wxCodeStr.length > 6 &&
       sessionStorage.getItem("gotoLogin") == "yes"
-    )
+    ) {
       this.$getWxLoginData();
+      // linkFrom=gzh，公众号绑定手机号入口进入，提示已绑定手机号
+      if (localStorage.getItem("linkFrom") == "gzh") {
+        this.wxLogin();
+      }
+    }
   },
   methods: {
     // 微信登录

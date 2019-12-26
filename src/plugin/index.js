@@ -109,12 +109,10 @@ export default {
           // }
           // window.location.href = window.location.protocol + "//" + window.location.hostname + '/#/personal/index' + query;
 
-          // ?from=gzh，公众号绑定手机号入口进入，提示已绑定手机号
-          if (localStorage.getItem("defaultLink").indexOf('from=gzh') != -1) {
-            this.$toast(res.response_data.msg);
+          // linkFrom=gzh，公众号绑定手机号入口进入，提示已绑定手机号
+          if (localStorage.getItem("linkFrom") == 'gzh') {
             this.$dialog.alert({
-              title: '标题',
-              message: '弹窗内容'
+              message: res.response_data.msg
             }).then(() => {
               // 微信第三方登录回退到指定页面defaultLink
               window.location.href = localStorage.getItem("defaultLink");
