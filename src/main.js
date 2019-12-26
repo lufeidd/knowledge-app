@@ -193,7 +193,7 @@ B、sessionStorage
 router.beforeEach((to, from, next) => {
   next();
   // 记录页面进入方式，gzh：来自公众号
-  if(localStorage.getItem('routerLink').indexOf('linkFrom=gzh')) {
+  if(localStorage.getItem('routerLink') && localStorage.getItem('routerLink').indexOf('linkFrom=gzh') != -1) {
     localStorage.setItem('linkFrom', 'gzh');
     next();
   }
