@@ -26,11 +26,13 @@
         // this.$toast(res);
         if (res.hasOwnProperty("response_code")) {
           this.secShare = res.response_data.sec_share;
+          let encryptRedeem = encodeURIComponent(res.response_data.redeem_id);
+          console.log(encryptRedeem);
           // 判断是商品还是优惠券
           if (res.response_data.goods_type == 2) {
-            this.$router.push({name: 'redeemCoupons', query: {redeem_id: this.redeem}});
+            this.$router.push({name: 'redeemCoupons', query: {redeem_id: encryptRedeem}});
           } else {
-            this.$router.push({name: 'redeemGoods', query: {redeem_id: this.redeem}});
+            this.$router.push({name: 'redeemGoods', query: {redeem_id: encryptRedeem}});
           }
         } else {
           this.$router.push({name: 'wapFail', query: {errorMsg: res.error_message}});
