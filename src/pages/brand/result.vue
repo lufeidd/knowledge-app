@@ -283,6 +283,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         var result = res.response_data.result;
         this.column_list = res.response_data.column;
+        
         var _index = 0;
         for (let i = 0; i < this.column_list.length; i++) {
           if (this.column_list[i].goods_type == this.goods_type) {
