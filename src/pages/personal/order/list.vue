@@ -124,7 +124,7 @@
                 <span
                   class="button button1"
                   @click="repply(item)"
-                  v-if="item.invoice_id == 0 && item.state !==9 && item.state !== 7 && item.state !== 1 && item.want_invoice == 1"
+                  v-if="item.invoice_id == 0 && item.state !==9 && item.state !== 7 && item.state !== 1 "
                 >申请发票</span>
               </div>
               <div>
