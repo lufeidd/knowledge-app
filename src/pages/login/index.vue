@@ -99,20 +99,27 @@ export default {
 
     // 获取第三方微信登录code
     this.$getWxCode();
+    // linkFrom=gzh，公众号绑定手机号入口进入，提示已绑定手机号
     if (
-      this.wxCodeStr.length > 6 &&
-      sessionStorage.getItem("gotoLogin") == "yes"
+      this.wxCodeStr.length > 6 ||
+      localStorage.getItem("linkFrom") == "gzh"
     ) {
-      this.$getWxLoginData();
-      // linkFrom=gzh，公众号绑定手机号入口进入，提示已绑定手机号
       if (localStorage.getItem("linkFrom") == "gzh") {
-        this.wxLogin();
+        this.gotoLogin = true;
+        sessionStorage.setItem("gotoLogin", "yes");
+      }
+      // 允许微信第三方登录
+      if (sessionStorage.getItem("gotoLogin") == "yes") {
+        // 第三方登录
+        this.$getWxLoginData();
       }
     }
   },
   methods: {
     // 微信登录
     wxLogin() {
+      // 重置页面来源
+      localStorage.setItem("linkFrom", "");
       this.gotoLogin = true;
       sessionStorage.setItem("gotoLogin", "yes");
       this.$wxLogin();

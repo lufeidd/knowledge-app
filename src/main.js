@@ -184,19 +184,13 @@ B、sessionStorage
   2、isHuobaIosLogin：记录当前是针对webview:火把的ios端
   3、isWxLogin：记录当前是微信端
   4、hasHeader：记录是否已经设置过头信息
-  5、gotoLogin：记录是否允许微信授权
+  5、gotoLogin：记录是否允许微信第三方登录
 
 */
 
 
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
-  next();
-  // 记录页面进入方式，gzh：来自公众号
-  if(localStorage.getItem('routerLink') && localStorage.getItem('routerLink').indexOf('linkFrom=gzh') != -1) {
-    localStorage.setItem('linkFrom', 'gzh');
-    next();
-  }
   next()
   // 存放页面来源地址
   if (from.path != to.path) {
@@ -301,6 +295,16 @@ router.beforeEach((to, from, next) => {
 
   // 记录当前路由
   localStorage.setItem('routerLink', replaceUrl);
+  next();
+  // 记录页面进入方式，gzh：来自公众号
+  if (localStorage.getItem('routerLink').indexOf('linkFrom=gzh') != -1) {
+    localStorage.setItem('linkFrom', 'gzh');
+    next();
+  } else {
+    next();
+    localStorage.setItem('linkFrom', '');
+    next();
+  }
   next();
 
   // 不需要登录的页面，如果未登录，进入登录页或者第三方绑定页不修改defaultLink，回退到指定页面

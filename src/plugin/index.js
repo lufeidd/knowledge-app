@@ -43,7 +43,6 @@ export default {
     Vue.prototype.$getWxCode = async function () {
       // 获取微信登录授权code
       var str = window.location.href;
-      console.log('str', str)
       str = str.split("#")[0];
       if (str.indexOf('code=') != -1) {
         var sIndex = str.split("#")[0].indexOf("code=") + 5;
@@ -51,28 +50,38 @@ export default {
 
         // 存储第三方登录code
         this.wxCodeStr = str.substring(sIndex, eIndex);
+        // localStorage.setItem('wxCode', this.wxCodeStr);
         console.log('code:', this.wxCodeStr);
       }
     }
     Vue.prototype.$getWxLoginData = async function () {
-      let url = window.location.protocol + "//" + window.location.hostname + "/callback/weixin/Userinfo?code=" + this.wxCodeStr;
-      var self = this;
-      // console.log('url:', url)
-      axios
-        .get(url)
-        .then(function (response) {
-          // console.log(response);
-          localStorage.setItem('nickname', response.data.nickname);
-          localStorage.setItem('headimg', response.data.headimgurl);
-          localStorage.setItem('openid', response.data.openid);
-          localStorage.setItem('unionid', response.data.unionid);
+      // 已经授权过
+      if (this.wxCodeStr == '') {
+        if (localStorage.getItem('unionid') != undefined || localStorage.getItem('unionid') != 'undefined' || localStorage.getItem('unionid') != 'null' || localStorage.getItem('unionid') != null) {
           // 第三方用户登录接口
-          self.$getLoginParterner(response.data.headimgurl, response.data.unionid, response.data.nickname, 2);
-        })
-        .catch(function (error) {
-          self.fetchError = error;
-          console.log('error:', error);
-        });
+          this.$getLoginParterner(localStorage.getItem('headimg'), localStorage.getItem('unionid'), localStorage.getItem('nickname'), 2);
+        }
+
+      } else {
+        let url = window.location.protocol + "//" + window.location.hostname + "/callback/weixin/Userinfo?code=" + this.wxCodeStr;
+        var self = this;
+        // console.log('url:', url)
+        axios
+          .get(url)
+          .then(function (response) {
+            // console.log(response);
+            localStorage.setItem('nickname', response.data.nickname);
+            localStorage.setItem('headimg', response.data.headimgurl);
+            localStorage.setItem('openid', response.data.openid);
+            localStorage.setItem('unionid', response.data.unionid);
+            // 第三方用户登录接口
+            self.$getLoginParterner(response.data.headimgurl, response.data.unionid, response.data.nickname, 2);
+          })
+          .catch(function (error) {
+            self.fetchError = error;
+            console.log('error:', error);
+          });
+      }
     }
     Vue.prototype.$getLoginParterner = async function (_headimg, _unionid, _outerName, _type) {
       var tStamp = this.$getTimeStamp();
@@ -595,6 +604,13 @@ export default {
         case 'jump/url':
           __name = 'url'
           queryTmp.url = dataTmp.params.url;
+          break;
+        // 优惠券详情
+        case 'ticket/link/detal':
+          __name = 'coupon/receive'
+          queryTmp.ticket_id = dataTmp.params.ticket_id;
+          break;
+        default:
           break;
       }
 
