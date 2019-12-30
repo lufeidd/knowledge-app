@@ -26,7 +26,11 @@
     </main>
     <CopyRight></CopyRight>
     <van-popup class="outdated_info" v-model="isOutdated">
-      <h4 class="outdated_title">{{errMsg}}</h4>
+      <h4 class="outdated_title">
+        <i class="title_left"></i>
+        {{errMsg}}
+        <i class="title_right"></i>
+      </h4>
       <div class="outdated_img"></div>
       <p class="outdated_remind"><span>{{time}}</span>秒后回到个人中心</p>
     </van-popup>
@@ -81,7 +85,7 @@
         // console.log('res',res);
         if (res.hasOwnProperty("response_code")) {
           this.redeemDetail = res.response_data;
-        } else if (res.hasOwnProperty("error_code")) {
+        } else if (res.hasOwnProperty("error_code")) { // 活动结束
           this.errMsg = res.error_message;
           this.isOutdated = true;
           const timer = setInterval(() => {
@@ -97,7 +101,7 @@
       }
     },
     mounted() {
-      this.encryptedCode = this.$route.query.code.replace(' ', '+');
+      this.encryptedCode = this.$route.query.code.replace(/\s/g, '+');
       // console.log(this.encryptedCode);
       this.codeDetail();
     },
