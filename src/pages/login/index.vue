@@ -153,6 +153,7 @@ export default {
         localStorage.setItem("cmts", null);
         localStorage.setItem("fromLink", null);
         localStorage.setItem("closeAudio", null);
+        localStorage.setItem(("loginState"), 1);
 
         // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
         window.location.href = localStorage.getItem("defaultLink");

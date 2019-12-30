@@ -142,6 +142,24 @@
     height: 214px;
     border-radius: 5px;
     .outdated_title {
+      .title_left {
+        display: inline-block;
+        vertical-align: text-top;
+        width: 11px;
+        height: 13px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        @include bgImageOne('./../../../../assets/redeem/title_left');
+      }
+      .title_right {
+        display: inline-block;
+        vertical-align: text-top;
+        width: 11px;
+        height: 13px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        @include bgImageOne('./../../../../assets/redeem/title_right');
+      }
       margin: 0 auto;
       text-align: center;
       margin-top: 21px;
@@ -152,10 +170,6 @@
       font-weight: 500;
       color: #333333;
       line-height: 28px;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      @include bgImageOne('./../../../../assets/redeem/title');
     }
     .outdated_img {
       margin: 0 auto;
