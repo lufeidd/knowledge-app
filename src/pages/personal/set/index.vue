@@ -168,8 +168,6 @@ export default {
         localStorage.setItem("cmts", null);
         localStorage.setItem("fromLink", null);
         localStorage.setItem("closeAudio", null);
-        // localStorage.setItem('nickname', null);
-        // localStorage.setItem('unionid', null);
 
         this.wxCodeStr = "";
         this.nickname = "";

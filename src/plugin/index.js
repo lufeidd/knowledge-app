@@ -35,7 +35,7 @@ export default {
     Vue.prototype.isIphx = ua.match(/mobile/) && $(window).width() == 375 && $(window).height() == 812;
     Vue.prototype.isWxLogin = ua.match(/MicroMessenger/i) == 'micromessenger';
 
-    // 存储第三方登录
+    // 存储第三方登录code
     Vue.prototype.wxCodeStr = '';
     Vue.prototype.appid = "wx0980638eef192092";
 
@@ -43,7 +43,6 @@ export default {
     Vue.prototype.$getWxCode = async function () {
       // 获取微信登录授权code
       var str = window.location.href;
-      console.log('str', str)
       str = str.split("#")[0];
       if (str.indexOf('code=') != -1) {
         var sIndex = str.split("#")[0].indexOf("code=") + 5;
@@ -51,28 +50,38 @@ export default {
 
         // 存储第三方登录code
         this.wxCodeStr = str.substring(sIndex, eIndex);
+        // localStorage.setItem('wxCode', this.wxCodeStr);
         console.log('code:', this.wxCodeStr);
       }
     }
     Vue.prototype.$getWxLoginData = async function () {
-      let url = window.location.protocol + "//" + window.location.hostname + "/callback/weixin/Userinfo?code=" + this.wxCodeStr;
-      var self = this;
-      // console.log('url:', url)
-      axios
-        .get(url)
-        .then(function (response) {
-          // console.log(response);
-          localStorage.setItem('nickname', response.data.nickname);
-          localStorage.setItem('headimg', response.data.headimgurl);
-          localStorage.setItem('openid', response.data.openid);
-          localStorage.setItem('unionid', response.data.unionid);
+      // 已经授权过
+      if (this.wxCodeStr == '') {
+        if (localStorage.getItem('unionid') != undefined || localStorage.getItem('unionid') != 'undefined' || localStorage.getItem('unionid') != 'null' || localStorage.getItem('unionid') != null) {
           // 第三方用户登录接口
-          self.$getLoginParterner(response.data.headimgurl, response.data.unionid, response.data.nickname, 2);
-        })
-        .catch(function (error) {
-          self.fetchError = error;
-          console.log('error:', error);
-        });
+          this.$getLoginParterner(localStorage.getItem('headimg'), localStorage.getItem('unionid'), localStorage.getItem('nickname'), 2);
+        }
+
+      } else {
+        let url = window.location.protocol + "//" + window.location.hostname + "/callback/weixin/Userinfo?code=" + this.wxCodeStr;
+        var self = this;
+        // console.log('url:', url)
+        axios
+          .get(url)
+          .then(function (response) {
+            // console.log(response);
+            localStorage.setItem('nickname', response.data.nickname);
+            localStorage.setItem('headimg', response.data.headimgurl);
+            localStorage.setItem('openid', response.data.openid);
+            localStorage.setItem('unionid', response.data.unionid);
+            // 第三方用户登录接口
+            self.$getLoginParterner(response.data.headimgurl, response.data.unionid, response.data.nickname, 2);
+          })
+          .catch(function (error) {
+            self.fetchError = error;
+            console.log('error:', error);
+          });
+      }
     }
     Vue.prototype.$getLoginParterner = async function (_headimg, _unionid, _outerName, _type) {
       var tStamp = this.$getTimeStamp();
@@ -109,8 +118,18 @@ export default {
           // }
           // window.location.href = window.location.protocol + "//" + window.location.hostname + '/#/personal/index' + query;
 
-          // 微信第三方登录回退到指定页面defaultLink
-          window.location.href = localStorage.getItem("defaultLink");
+          // linkFrom=gzh，公众号绑定手机号入口进入，提示已绑定手机号
+          if (localStorage.getItem("linkFrom") == 'gzh') {
+            this.$dialog.alert({
+              message: res.response_data.msg
+            }).then(() => {
+              // 微信第三方登录回退到指定页面defaultLink
+              window.location.href = localStorage.getItem("defaultLink");
+            });
+          } else {
+            // 微信第三方登录回退到指定页面defaultLink
+            window.location.href = localStorage.getItem("defaultLink");
+          }
 
           this.wxCodeStr = '';
         }
@@ -388,7 +407,7 @@ export default {
         self.timeData = '火把拼团'
         self.grouptimeData = d;
       } else if (d < 0) {
-        self.timeData = ''
+        self.timeData = '火把拼团'
       }
       // console.log(d,self.clock)
     }
@@ -585,6 +604,13 @@ export default {
         case 'jump/url':
           __name = 'url'
           queryTmp.url = dataTmp.params.url;
+          break;
+        // 优惠券详情
+        case 'ticket/link/detal':
+          __name = 'coupon/receive'
+          queryTmp.ticket_id = dataTmp.params.ticket_id;
+          break;
+        default:
           break;
       }
 
@@ -870,6 +896,101 @@ export default {
       } else if (_android) {
         window.location.href =
           "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
+      }
+    }
+
+    // 获取当前设备信息，微信端第一次访问提示授权
+    Vue.prototype.$setLoginData = async function () {
+      // 微信授权状态
+      sessionStorage.setItem("gotoLogin", "no");
+      // 微信端
+      sessionStorage.setItem("isWxLogin", "no");
+      // 针对webview:火把的ios端
+      sessionStorage.setItem("isHuobaIosLogin", "no");
+      // 针对webview:火把的Android端
+      sessionStorage.setItem("isHuobaAndroidLogin", "no");
+      // 是否设置过头信息
+      sessionStorage.setItem("hasHeader", "no");
+      var u = navigator.userAgent;
+      var _ios = u.toLowerCase().indexOf("huoba:ios") > -1;
+      var _android = u.toLowerCase().indexOf("huoba:android") > -1;
+      var _wx = u.toLowerCase().match(/MicroMessenger/i) == "micromessenger";
+      var _hasHeader = u.toLowerCase().indexOf("huoba:") > -1;
+      if (_hasHeader) sessionStorage.setItem("hasHeader", "yes");
+      if (_ios) {
+        // 针对webview:火把的ios端
+        sessionStorage.setItem("isHuobaIosLogin", "yes");
+      } else if (_android) {
+        // 针对webview:火把的Android端
+        sessionStorage.setItem("isHuobaAndroidLogin", "yes");
+      } else if (_wx) {
+        // 微信端
+        // 未授权时微信端访问授权页面
+        sessionStorage.setItem("isWxLogin", "yes");
+        if (
+          localStorage.getItem("openid") == "undefined" ||
+          localStorage.getItem("openid") == undefined ||
+          localStorage.getItem("openid") == "null" ||
+          localStorage.getItem("openid") == null ||
+          localStorage.getItem("nickname") == "null" ||
+          localStorage.getItem("nickname") == null ||
+          localStorage.getItem("unionid") == "null" ||
+          localStorage.getItem("unionid") == null ||
+          localStorage.getItem("headimg") == "null" ||
+          localStorage.getItem("headimg") == null
+        ) {
+          // 微信登录 code
+          this.$getWxCode();
+          // 微信授权
+          if (this.wxCodeStr == "") {
+            var this_count = Number(localStorage.getItem("get_count"));
+            if (this_count < 2) {
+              this_count++;
+              localStorage.setItem("get_count", this_count);
+              this.$wxLogin();
+            } else {
+              localStorage.setItem("get_count", 0);
+            }
+          }
+          if (this.wxCodeStr.length > 6) {
+            let url =
+              window.location.protocol +
+              "//" +
+              window.location.hostname +
+              "/callback/weixin/Userinfo?code=" +
+              this.wxCodeStr;
+            // 获取 openid，nickname
+            var self = this;
+            axios
+              .get(url)
+              .then(function (response) {
+                if (
+                  response.data.hasOwnProperty("code") &&
+                  response.data.code == "1000"
+                ) {
+                  console.log(response.data.msg);
+                } else {
+                  localStorage.setItem("openid", response.data.openid);
+                  localStorage.setItem("nickname", response.data.nickname);
+                  localStorage.setItem("unionid", response.data.unionid);
+                  localStorage.setItem("headimg", response.data.headimgurl);
+                  self.wxCodeStr = "";
+                  window.location.href =
+                    window.location.protocol +
+                    "//" +
+                    window.location.hostname +
+                    "/#" +
+                    window.location.href.split("#")[1];
+                }
+              })
+              .catch(function (error) {
+                self.fetchError = error;
+                console.log("error:", error);
+              });
+          } else {
+            this.$toast("未获取到code");
+          }
+        }
       }
     }
 

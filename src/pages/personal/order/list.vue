@@ -124,7 +124,7 @@
                 <span
                   class="button button1"
                   @click="repply(item)"
-                  v-if="item.invoice_id == 0 && item.state !==9 && item.state !== 7 && item.state !== 1"
+                  v-if="item.invoice_id == 0 && item.state !==9 && item.state !== 7 && item.state !== 1 && item.want_invoice == 1"
                 >申请发票</span>
               </div>
               <div>
@@ -141,9 +141,9 @@
           </div>
         </div>
       </van-list>
+      <CopyRight></CopyRight>
     </div>
-    <CopyRight></CopyRight>
-    <EazyNav type="order" :isShow="false"></EazyNav>
+    <EazyNav type="order" :isShow="true"></EazyNav>
   </div>
 </template>
 
@@ -225,7 +225,6 @@ export default {
           }
         }, 500);
       } else {
-
         this.$toast(res.error_message);
       }
     },

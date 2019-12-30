@@ -1,23 +1,23 @@
 <template>
   <van-popup v-model="catalogPopup" position="bottom" :close-on-click-overlay="false" style="min-height:100%;max-height:100%;">
     <div id="catalogList" class="catalogList">
-      <div class="head">
-        <span class="catalogWord">目录</span>
+      <div class="hb-head">
+        <span class="hb-catalogWord">目录</span>
         <span>
           <svg class="icon" aria-hidden="true" @click="closePopup">
             <use xlink:href="#icon-close-line" />
           </svg>
         </span>
       </div>
-      <div class="content">
-        <div class="info">
+      <div class="hb-content">
+        <div class="hb-info">
           <div class="ratiobox">
             <div class="bookImg" :style="{'background-image':'url('+info.pic+')'}"></div>
           </div>
-          <div class="right">
-            <div class="title">{{info.goods_title}}</div>
-            <div class="author">{{info.author}}</div>
-            <div class="detail">
+          <div class="hb-right">
+            <div class="hb-title">{{info.goods_title}}</div>
+            <div class="hb-author">{{info.author}}</div>
+            <div class="hb-detail">
               <span>共{{info.chapter_count}}章</span>
               <span v-if="info.serialize_status">{{info.serialize_status == 1?'连载中':'完结'}}</span>
               <span v-if="readingTime">已读{{readingTime}}%</span>
@@ -25,16 +25,16 @@
           </div>
         </div>
         <!-- 章节目录 -->
-        <div class="list">
+        <div class="hb-list">
           <ul>
             <li v-for="(item,index) in ebookList" :key="index" @click="read(item,index)">
-              <div class="left red" v-if="item.chapter_id == chapter_id">
+              <div class="hb-left red" v-if="item.chapter_id == chapter_id">
                 <!-- <div>第{{index+1}}章</div> -->
-                <div class="title">{{item.chapter_name}}</div>
+                <div class="hb-title">{{item.chapter_name}}</div>
               </div>
-              <div class="left" v-else>
+              <div class="hb-left" v-else>
                 <!-- <div>第{{index+1}}章</div> -->
-                <div class="title">{{item.chapter_name}}</div>
+                <div class="hb-title">{{item.chapter_name}}</div>
               </div>
               <span>
                 <svg
@@ -56,7 +56,7 @@
 
 <style lang="scss">
 #catalogList {
-  .head {
+  .hb-head {
     background-color: #f5f5f5;
     padding: 0 15px;
     height: 40px;
@@ -65,11 +65,11 @@
     // width: 100%;
     // box-sizing: border-box;
     @include displayFlex(flex, space-between, center);
-    .catalogWord {
+    .hb-catalogWord {
       font-size: $fontSize + 1;
     }
   }
-  .content {
+  .hb-content {
     padding: 15px;
     position: absolute;
     top: 40px;
@@ -77,7 +77,7 @@
     overflow-y: auto;
     width: 100%;
     box-sizing: border-box;
-    .info {
+    .hb-info {
       @include displayFlex(flex, null, null);
       .ratiobox {
         min-width: 75px;
@@ -96,7 +96,7 @@
           box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
         }
       }
-      .right {
+      .hb-right {
         flex-grow: 1;
         width: 76%;
         margin-left: 10px;
@@ -107,39 +107,39 @@
         padding: 10px 0;
         text-align: left;
         text-indent: 0;
-        .title {
+        .hb-title {
           font-size: $fontSize + 2;
           @include textOverflow;
         }
-        .author {
+        .hb-author {
           color: $cl6;
         }
-        .detail {
+        .hb-detail {
           font-size: $fontSize - 1;
           color: $cl9;
         }
       }
     }
   }
-  .list {
+  .hb-list {
     margin-top: 10px;
     ul {
       li {
         padding: 10px 0;
         border-bottom: 1px solid #eee;
         @include displayFlex(flex, space-between, center);
-        .left {
+        .hb-left {
           // flex-grow: 1;
           width: 95%;
           @include displayFlex(flex, null, center);
         }
-        .left.grey {
+        .hb-left.grey {
           color: $cl9;
         }
-        .left.red {
+        .hb-left.red {
           color: $redDark;
         }
-        .title {
+        .hb-title {
           @include textOverflow;
           width: 80%;
           // margin-left: 10px;

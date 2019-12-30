@@ -272,7 +272,7 @@
         v-if="infoData.type == 1 && (infoData.if_comment == 0 || showInvoice == true) && infoData.state !== 9 && infoData.state !== 7 && infoData.state !== 1"
       >
         <div>
-          <span class="button button3" @click="apply" v-if="showInvoice">申请发票</span>
+          <span class="button button3" @click="apply" v-if="showInvoice && infoData.want_invoice == 1">申请发票</span>
         </div>
         <div style="padding-right:15px;">
           <span class="button button2" @click="toComment" v-if="infoData.if_comment == 0 ">评价</span>
@@ -288,7 +288,7 @@
           <span
             class="button button3"
             @click="apply"
-            v-if="showInvoice && infoData.state == 4 && (if_refund ==1 || if_refund == 5)"
+            v-if="showInvoice && infoData.state == 4 && (if_refund ==1 || if_refund == 5) && infoData.want_invoice == 1"
           >申请发票</span>
         </div>
         <div style="padding-right:15px;">
