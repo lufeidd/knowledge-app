@@ -46,11 +46,13 @@
       },
       async toRedeem() {
         // console.log(this.validateNum);
+        this.$toast(this.codeNum);
         let data = {
           code: this.codeNum,
           captcha: this.validateNum,
           version: "1.0"
         };
+
         let res = await REDEEM_ITEM_GET(data);
         // console.log(res);
         if (res.hasOwnProperty("error_message")  && res.error_code != 100) {
@@ -74,9 +76,6 @@
           this.$toast(msg);
         } else if (res.error_code == 0) { // 验证码错误
           this.validateNum = "";
-        } else if (res.error_code == 99) {  // 未登录  res.error_code == 99
-          // 跳转到登录页
-          this.$router.push({name: 'login'});
         } else if (res.hasOwnProperty("response_code")) {
           // 判断是商品还是优惠券
           if (res.response_data.goods_type == 2) {

@@ -212,7 +212,7 @@ router.beforeEach((to, from, next) => {
   // 存放来源地址，如果未登录，进入登录页或者第三方绑定页不修改fromLink，回退到指定页面
   var index = 0; // 索引初始化
   // loginState 1: 已登录，0：未登录
-  
+
   if (!localStorage.getItem('loginState')) localStorage.setItem('loginState', 0)
   var token = parseInt(localStorage.getItem('loginState'));
   next()
@@ -315,15 +315,15 @@ router.beforeEach((to, from, next) => {
   next();
 
   // 引导app端打开
-  if (sessionStorage.getItem("isHuobaIosLogin") == "no" && sessionStorage.getItem("isHuobaAndroidLogin") == "no") {
-    next();
-    if (to.meta.isAppLogin) {
-      replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
-      next();
-    }
-
-    next();
-  }
+  // if (sessionStorage.getItem("isHuobaIosLogin") == "no" && sessionStorage.getItem("isHuobaAndroidLogin") == "no") {
+  //   next();
+  //   if (to.meta.isAppLogin) {
+  //     replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
+  //     next();
+  //   }
+  //
+  //   next();
+  // }
 
   next()
   window.location.replace(replaceUrl); // 重定向跳转
