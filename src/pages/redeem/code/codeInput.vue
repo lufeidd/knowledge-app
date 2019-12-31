@@ -92,8 +92,10 @@
         this.validateImage += `&${num}`;
       },
       async toRedeem() {
+        let codeNum = this.codeNum.replace(' ','');
+        // console.log(codeNum);
         let data = {
-          code: this.codeNum,
+          code: codeNum,
           captcha: this.validateNum,
           version: "1.0"
         };
