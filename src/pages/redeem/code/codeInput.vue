@@ -105,9 +105,9 @@
           // 接口请求成功
           // 判断是商品还是优惠券
           if (res.response_data.goods_type == 2) {
-            this.$router.push({name: 'redeemCoupons', query: {code: this.codeNum}});
+            this.$router.push({name: 'redeemCoupons', query: {code: codeNum}});
           } else {
-            this.$router.push({name: 'redeemGoods', query: {code: this.codeNum}});
+            this.$router.push({name: 'redeemGoods', query: {code: codeNum}});
           }
         } else {
           if(res.hasOwnProperty("error_code")) {
