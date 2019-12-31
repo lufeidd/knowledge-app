@@ -256,8 +256,6 @@ export default {
       if (result != null && result.length > 0) {
         for (let i = 0; i < this.programList.length; i++) {
           this.progressList.push(this.programList[i]);
-          // console.log(this.programList[i])
-
           for (let j = 0; j < result.length; j++) {
             // 当节目播放进度存在localStorage时,显示已播放进度
             if (

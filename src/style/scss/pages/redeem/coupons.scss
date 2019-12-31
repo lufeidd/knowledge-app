@@ -107,8 +107,8 @@
       }
       .right_radio,.left_radio{
         display: inline-block;
-        width:20px;
-        height:20px;
+        width: 20px;
+        height: 20px;
         background-color: #F5F5F5;
         position: absolute;
         border-radius: 50%;
@@ -131,7 +131,7 @@
         }
         .price{
           box-sizing: border-box;
-          border:1px solid #FFEEEE;
+          border: 1px solid #FFEEEE;
           border-width: 0 1px 1px 1px;
           border-radius: 0 0 3px 3px;
           text-align: center;
@@ -159,5 +159,44 @@
     font-weight: 500;
     color: #333333;
     line-height: 19px;
+  }
+  .limit_info {
+    overflow: hidden;
+    width: 214px;
+    height: 214px;
+    border-radius: 5px;
+    .limit_title {
+      margin: 0 auto;
+      text-align: center;
+      margin-top: 21px;
+      width: 186px;
+      height: 17px;
+      font-size: 15px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #333333;
+      line-height: 28px;
+      background-size: 186px 17px;
+      background-repeat: no-repeat;
+      @include bgImageOne('./../../../../assets/redeem/title2');
+    }
+    .limit_img {
+      margin: 0 auto;
+      margin-top: 28px;
+      width: 105px;
+      height: 83px;
+      background-size: 105px 83px;
+      background-repeat: no-repeat;
+      @include bgImageOne('./../../../../assets/redeem/outdated');
+    }
+    .limit_remind {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 14px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #999999;
+      line-height: 34px;
+    }
   }
 }

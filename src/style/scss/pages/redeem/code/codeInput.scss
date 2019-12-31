@@ -19,7 +19,24 @@
       width: 295px;
     }
     background: #F5F5F5;
+    .van-field__control {
+      //color: transparent;
+      text-align: center;
+    }
   }
+
+
+  .code_wrapper {
+    position: relative;
+    #inputContainer {
+      position: absolute;
+      top: -32px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      font-size: 13px;
+    }
+  }
+
   .validate_num {
     display: inline-block;
     margin-top: 10px;

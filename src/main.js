@@ -167,21 +167,31 @@ Vue.config.productionTip = false
 
 本地数据存储
 
-1、defaultLink：记录需要登录的页面路径（引导登录后回退到指定页面）
-2、routerLink：记录当前页面路径
-3、fromLink：记录来源路径
-4、miniAudio：记录迷你音频当前播放
-5、audioProgress：记录音频播放进度
-6、loginState：记录当前登录状态
-7、closeAudio：记录迷你音频展示状态
+A、localStorage
+  1、defaultLink：记录需要登录的页面路径（引导登录后回退到指定页面）
+  2、routerLink：记录当前页面路径
+  3、fromLink：记录来源路径
+  4、miniAudio：记录迷你音频当前播放
+  5、audioProgress：记录音频播放进度
+  6、loginState：记录当前登录状态
+  7、closeAudio：记录迷你音频展示状态
+  8、cmts：记录历史搜索内容
+  9、get_count：记录授权次数，最多3次
+  10、linkFrom：记录页面进入方式，gzh：来自公众号
+
+B、sessionStorage
+  1、isHuobaAndroidLogin：记录当前是针对webview:火把的Android端
+  2、isHuobaIosLogin：记录当前是针对webview:火把的ios端
+  3、isWxLogin：记录当前是微信端
+  4、hasHeader：记录是否已经设置过头信息
+  5、gotoLogin：记录是否允许微信第三方登录
 
 */
 
 
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
-  Vue.use(plugin)
-  next();
+  next()
   // 存放页面来源地址
   if (from.path != to.path) {
     next();
@@ -212,7 +222,7 @@ router.beforeEach((to, from, next) => {
   // 存放来源地址，如果未登录，进入登录页或者第三方绑定页不修改fromLink，回退到指定页面
   var index = 0; // 索引初始化
   // loginState 1: 已登录，0：未登录
-  
+
   if (!localStorage.getItem('loginState')) localStorage.setItem('loginState', 0)
   var token = parseInt(localStorage.getItem('loginState'));
   next()
@@ -286,6 +296,16 @@ router.beforeEach((to, from, next) => {
   // 记录当前路由
   localStorage.setItem('routerLink', replaceUrl);
   next();
+  // 记录页面进入方式，gzh：来自公众号
+  if (localStorage.getItem('routerLink').indexOf('linkFrom=gzh') != -1) {
+    localStorage.setItem('linkFrom', 'gzh');
+    next();
+  } else {
+    next();
+    localStorage.setItem('linkFrom', '');
+    next();
+  }
+  next();
 
   // 不需要登录的页面，如果未登录，进入登录页或者第三方绑定页不修改defaultLink，回退到指定页面
   if (!localStorage.getItem('defaultLink')) {
@@ -315,15 +335,15 @@ router.beforeEach((to, from, next) => {
   next();
 
   // 引导app端打开
-  if (sessionStorage.getItem("isHuobaIosLogin") == "no" && sessionStorage.getItem("isHuobaAndroidLogin") == "no") {
-    next();
-    if (to.meta.isAppLogin) {
-      replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
-      next();
-    }
-
-    next();
-  }
+  // if (sessionStorage.getItem("isHuobaIosLogin") == "no" && sessionStorage.getItem("isHuobaAndroidLogin") == "no") {
+  //   next();
+  //   if (to.meta.isAppLogin) {
+  //     replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
+  //     next();
+  //   }
+  //
+  //   next();
+  // }
 
   next()
   window.location.replace(replaceUrl); // 重定向跳转

@@ -18,7 +18,7 @@
       <div class="infoBox">
         <div class="promotion">
           <img
-            v-if="couponInfo.groupbuy && couponInfo.groupbuy.user_remain_nums > 0"
+            v-if="couponInfo.groupbuy && (couponInfo.groupbuy.user_remain_nums > 0 && couponInfo.groupbuy.remain_time > 0)"
             src="../assets/null/group_bg.png"
             width="100%"
             height="65px"
@@ -30,7 +30,7 @@
               <span class="price">{{couponInfo.groupbuy.groupbuy_price.toFixed(2)}}</span>
               <span class="group">
                 <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-rentuan" />
+                  <use xlink:href="#icon-rentuan"/>
                 </svg>
                 <span class="group_num">{{couponInfo.groupbuy.groupbuy_num}}人团</span>
               </span>
@@ -41,12 +41,12 @@
           </div>
           <div class="promotionRight">
             <div
+              v-if="timeData"
               style="margin-top:5px;margin-bottom:5px;font-size:15px;"
-              v-if="couponInfo.groupbuy.join_nums<couponInfo.groupbuy.limit_nums"
             >{{timeData}}</div>
             <div v-else style="margin-top:5px;margin-bottom:5px;font-size:15px;">火把拼团</div>
             <div
-              v-if="baseData.stores > 10 "
+              v-if="couponInfo.groupbuy.join_desc"
               style="font-size:13px;"
             >{{couponInfo.groupbuy.join_desc}}</div>
             <div v-else>该商品仅剩{{baseData.stores}}件</div>

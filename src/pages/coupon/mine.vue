@@ -125,7 +125,7 @@
                 <div class="mid">
                   <div>
                     ￥
-                    <span class="price">5</span>
+                    <span class="price">{{item.money}}</span>
                   </div>
                   <div class="condition">满{{item.use_min_money}}元可用</div>
                   <span class="circle top"></span>
@@ -265,7 +265,7 @@ export default {
       data.sign = this.$getSign(data);
       let res = await USER_TICKET_GETS(data);
       if (res.hasOwnProperty("response_code")) {
-        if (this.coupon_state == 0) {
+        if (this.coupon_state == 1) {
           this.notUse = res.response_data.total_count;
         }
         // 异步更新数据
