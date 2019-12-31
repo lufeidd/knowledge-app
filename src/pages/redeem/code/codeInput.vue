@@ -12,7 +12,7 @@
                    placeholder="请输入8位兑换码,不区分大小写,长按可粘贴。"
                    />
       <!--验证码-->
-      <div v-show="true" class="validate_wrapper">
+      <div v-show="validateFlag" class="validate_wrapper">
         <van-field class="validate_num" clearable v-model="validateNum" placeholder="请输入右侧验证码。"/>
         <div class="validate_image" @click="refreshImage">
           <img :src="validateImage" width="120" height="44" alt="">
