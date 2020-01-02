@@ -140,6 +140,7 @@ export default {
       timeoutId: 0,
       fileHideUrl: '',
       url: '',
+      ImagePreviewDialog: '',
       packageData: {
         base: {},
         brand_info: {},
@@ -155,6 +156,11 @@ export default {
   mounted () {
     this.goods_id = this.$route.query.goods_id;
     this.packageGet();
+  },
+  // 在beforeRouteLeave钩子中调用clase()方法关闭预览遮罩
+  beforeRouteLeave (to,from,next) {
+    this.ImagePreviewDialog.close()
+    next()
   },
   methods: {
     // email显示弹窗事件
@@ -268,9 +274,9 @@ export default {
       if (this.packageData.base.price != 0 && this.packageData.base.is_payed == '0') {
         this.buyAction(this.goods_id);
       } else if (this.packageData.base.is_payed != '0') {
-        ImagePreview(item)
+        this.ImagePreviewDialog = ImagePreview(item)
       } else if (this.packageData.base.price == 0) {
-        ImagePreview(item)
+        this.ImagePreviewDialog = ImagePreview(item)
       }
     },
     textPackIcon () {
