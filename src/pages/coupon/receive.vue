@@ -181,7 +181,7 @@
     }
     .descrip {
       text-align: center;
-      color: $cl6;
+      color: $cl9;
       .seconds {
         color: $redDark;
       }
