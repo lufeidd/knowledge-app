@@ -140,7 +140,17 @@
         </div>
       </van-list>
     </div>
-
+    <van-popup v-model="failedModel">
+      <div class="faildContent">
+        <p>此优惠券不存在</p>
+        <p>
+          <img src="../../assets/redeem/outdated.png" alt width="55px"/>
+        </p>
+        <div class="descrip">
+          <span class="seconds">3</span>秒后回到首页
+        </div>
+      </div>
+    </van-popup>
     <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
@@ -159,6 +169,23 @@
   .van-button--default {
     border-color: $redLight;
     color: $redLight;
+  }
+  .van-popup {
+    border-radius: 5px;
+  }
+  .faildContent {
+    padding: 15px 30px;
+    p {
+      text-align: center;
+      font-size: $fontSize + 1;
+    }
+    .descrip {
+      text-align: center;
+      color: $cl9;
+      .seconds {
+        color: $redDark;
+      }
+    }
   }
 }
 </style>
@@ -200,7 +227,8 @@ export default {
       isReceived: false,
       page: 1,
       page1: 1,
-      islogin: null
+      islogin: null,
+      failedModel: false
     };
   },
   mounted() {
@@ -248,6 +276,18 @@ export default {
         // console.log(111,this.couponInfo.use_stime<this.couponInfo.use_etime)
       } else {
         this.$toast(res.error_message);
+        if (res.error_message == "优惠券不存在") {
+          this.failedModel = true;
+          var _this = this;
+          setTimeout(() => {
+            _this.$router.push({
+              name: "brand",
+              query:{
+                brand_id:_this.$route.query.brand_id
+              }
+            });
+          }, 3000);
+        }
       }
     },
     // 优惠券领取
