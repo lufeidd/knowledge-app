@@ -53,6 +53,7 @@ https://github.com/xyxiao001/vue-cropper
 13、活动助力
 14、满折满减
 15、图书资源/文件包
+16、兑换活动
 ```
 
 # 项目运行

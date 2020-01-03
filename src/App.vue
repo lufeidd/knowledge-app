@@ -87,6 +87,7 @@ import wx from "weixin-js-sdk";
 export default {
   name: "App",
   mounted() {
+    // 获取适配信息，并微信授权
     this.$setLoginData();
   }
 };

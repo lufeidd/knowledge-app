@@ -728,7 +728,6 @@
 }
 </style>
 
-
 <script>
 import miniAudio from "./../../components/miniAudio";
 import audioList from "./../../pages/album/list";

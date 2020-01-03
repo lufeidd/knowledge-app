@@ -99,15 +99,27 @@ export default {
 
     // 获取第三方微信登录code
     this.$getWxCode();
+    // linkFrom=gzh，公众号绑定手机号入口进入，提示已绑定手机号
     if (
-      this.wxCodeStr.length > 6 &&
-      sessionStorage.getItem("gotoLogin") == "yes"
-    )
-      this.$getWxLoginData();
+      this.wxCodeStr.length > 6 ||
+      localStorage.getItem("linkFrom") == "gzh"
+    ) {
+      if (localStorage.getItem("linkFrom") == "gzh") {
+        this.gotoLogin = true;
+        sessionStorage.setItem("gotoLogin", "yes");
+      }
+      // 允许微信第三方登录
+      if (sessionStorage.getItem("gotoLogin") == "yes") {
+        // 第三方登录
+        this.$getWxLoginData();
+      }
+    }
   },
   methods: {
     // 微信登录
     wxLogin() {
+      // 重置页面来源
+      localStorage.setItem("linkFrom", "");
       this.gotoLogin = true;
       sessionStorage.setItem("gotoLogin", "yes");
       this.$wxLogin();
@@ -141,6 +153,7 @@ export default {
         localStorage.setItem("cmts", null);
         localStorage.setItem("fromLink", null);
         localStorage.setItem("closeAudio", null);
+        localStorage.setItem(("loginState"), 1);
 
         // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
         window.location.href = localStorage.getItem("defaultLink");

@@ -43,7 +43,6 @@ export default {
     Vue.prototype.$getWxCode = async function () {
       // 获取微信登录授权code
       var str = window.location.href;
-      console.log('str', str)
       str = str.split("#")[0];
       if (str.indexOf('code=') != -1) {
         var sIndex = str.split("#")[0].indexOf("code=") + 5;
@@ -51,28 +50,38 @@ export default {
 
         // 存储第三方登录code
         this.wxCodeStr = str.substring(sIndex, eIndex);
+        // localStorage.setItem('wxCode', this.wxCodeStr);
         console.log('code:', this.wxCodeStr);
       }
     }
     Vue.prototype.$getWxLoginData = async function () {
-      let url = window.location.protocol + "//" + window.location.hostname + "/callback/weixin/Userinfo?code=" + this.wxCodeStr;
-      var self = this;
-      // console.log('url:', url)
-      axios
-        .get(url)
-        .then(function (response) {
-          // console.log(response);
-          localStorage.setItem('nickname', response.data.nickname);
-          localStorage.setItem('headimg', response.data.headimgurl);
-          localStorage.setItem('openid', response.data.openid);
-          localStorage.setItem('unionid', response.data.unionid);
+      // 已经授权过
+      if (this.wxCodeStr == '') {
+        if (localStorage.getItem('unionid') != undefined || localStorage.getItem('unionid') != 'undefined' || localStorage.getItem('unionid') != 'null' || localStorage.getItem('unionid') != null) {
           // 第三方用户登录接口
-          self.$getLoginParterner(response.data.headimgurl, response.data.unionid, response.data.nickname, 2);
-        })
-        .catch(function (error) {
-          self.fetchError = error;
-          console.log('error:', error);
-        });
+          this.$getLoginParterner(localStorage.getItem('headimg'), localStorage.getItem('unionid'), localStorage.getItem('nickname'), 2);
+        }
+
+      } else {
+        let url = window.location.protocol + "//" + window.location.hostname + "/callback/weixin/Userinfo?code=" + this.wxCodeStr;
+        var self = this;
+        // console.log('url:', url)
+        axios
+          .get(url)
+          .then(function (response) {
+            // console.log(response);
+            localStorage.setItem('nickname', response.data.nickname);
+            localStorage.setItem('headimg', response.data.headimgurl);
+            localStorage.setItem('openid', response.data.openid);
+            localStorage.setItem('unionid', response.data.unionid);
+            // 第三方用户登录接口
+            self.$getLoginParterner(response.data.headimgurl, response.data.unionid, response.data.nickname, 2);
+          })
+          .catch(function (error) {
+            self.fetchError = error;
+            console.log('error:', error);
+          });
+      }
     }
     Vue.prototype.$getLoginParterner = async function (_headimg, _unionid, _outerName, _type) {
       var tStamp = this.$getTimeStamp();
@@ -109,8 +118,18 @@ export default {
           // }
           // window.location.href = window.location.protocol + "//" + window.location.hostname + '/#/personal/index' + query;
 
-          // 微信第三方登录回退到指定页面defaultLink
-          window.location.href = localStorage.getItem("defaultLink");
+          // linkFrom=gzh，公众号绑定手机号入口进入，提示已绑定手机号
+          if (localStorage.getItem("linkFrom") == 'gzh') {
+            this.$dialog.alert({
+              message: res.response_data.msg
+            }).then(() => {
+              // 微信第三方登录回退到指定页面defaultLink
+              window.location.href = localStorage.getItem("defaultLink");
+            });
+          } else {
+            // 微信第三方登录回退到指定页面defaultLink
+            window.location.href = localStorage.getItem("defaultLink");
+          }
 
           this.wxCodeStr = '';
         }
@@ -586,10 +605,12 @@ export default {
           __name = 'url'
           queryTmp.url = dataTmp.params.url;
           break;
-        // 优惠券跳转
+        // 优惠券详情
         case 'ticket/link/detail':
-            __name = 'couponreceive'
-            queryTmp.ticket_id = dataTmp.params.ticket_id;
+          __name = 'coupon/receive'
+          queryTmp.ticket_id = dataTmp.params.ticket_id;
+          break;
+        default:
           break;
       }
 
