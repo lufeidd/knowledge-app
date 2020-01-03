@@ -607,7 +607,7 @@ export default {
           break;
         // 优惠券详情
         case 'ticket/link/detail':
-          __name = 'coupon/receive'
+          __name = 'couponreceive'
           queryTmp.ticket_id = dataTmp.params.ticket_id;
           break;
         default:
