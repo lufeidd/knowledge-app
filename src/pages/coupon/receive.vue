@@ -275,18 +275,19 @@ export default {
         this.couponInfo = res.response_data;
         // console.log(111,this.couponInfo.use_stime<this.couponInfo.use_etime)
       } else {
-        this.$toast(res.error_message);
         if (res.error_message == "优惠券不存在") {
           this.failedModel = true;
           var _this = this;
           setTimeout(() => {
-            _this.$router.push({
+            _this.$router.replace({
               name: "brand",
               query:{
                 brand_id:_this.$route.query.brand_id
               }
             });
           }, 3000);
+        }else{
+          this.$toast(res.error_message);
         }
       }
     },
