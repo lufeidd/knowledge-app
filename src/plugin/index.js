@@ -586,6 +586,11 @@ export default {
           __name = 'url'
           queryTmp.url = dataTmp.params.url;
           break;
+        // 优惠券跳转
+        case 'ticket/link/detail':
+            __name = 'couponreceive'
+            queryTmp.ticket_id = dataTmp.params.ticket_id;
+          break;
       }
 
       dataRes = {

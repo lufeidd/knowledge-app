@@ -46,6 +46,7 @@
           font-size: $fontSize + 1;
           .commentContent{
             margin-right: 10px;
+            word-break: break-word;
           }
           .delete{
             color: orange;
