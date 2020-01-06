@@ -271,7 +271,6 @@ export default {
         // console.log(111,this.couponInfo.use_stime<this.couponInfo.use_etime)
       } else {
         if (res.error_message == "优惠券不存在") {
-          this.couponInfo = {};
           this.failedModel = true;
           var _this = this;
           setTimeout(() => {
