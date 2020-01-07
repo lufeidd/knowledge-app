@@ -1383,7 +1383,7 @@ export default {
           for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
             this.remain_time.push({
               time: this.couponInfo.groupbuy.open_list[i].remain_time,
-              date: ""
+              date: "",
             });
             this.$timeCountDown(this.remain_time[i]);
           }

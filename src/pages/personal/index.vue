@@ -120,7 +120,7 @@
             </svg>
           </div>
           <div class="desc">
-            <span class="text">我的购买</span>
+            <span class="text">我的订单</span>
           </div>
           <div class="action">
             <svg class="icon" aria-hidden="true">
@@ -135,7 +135,7 @@
             </svg>
           </div>
           <div class="desc">
-            <span class="text">我的购买</span>
+            <span class="text">我的订单</span>
           </div>
           <div class="action">
             <svg class="icon" aria-hidden="true">
