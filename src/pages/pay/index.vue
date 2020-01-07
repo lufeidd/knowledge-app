@@ -32,11 +32,11 @@ export default {
     return {
       timeData: {
         time: 100,
-        date: "00:00:00"
+        date: "00:00:00",
       },
       money: null,
       pay_id: null,
-      open_id:null,
+      open_id: null,
     };
   },
   mounted() {
@@ -46,10 +46,31 @@ export default {
     // 新增订单
     this.addOrderData();
   },
+ beforeRouteLeave(to, from, next) {
+    var _this = this
+    var _hour = this.timeData.date.substring(0,2)
+    var _minute = this.timeData.date.substring(3,5)
+    this.$dialog
+      .confirm({
+        title: "确认要离开支付页面？",
+        message: '您的订单在'+_hour+'小时'+_minute+'分钟内未支付将被取消，请尽快完成支付。',
+        cancelButtonText: "继续支付",
+        confirmButtonText: "确认离开"
+      })
+      .then(() => {
+        next()
+        _this.$router.replace({
+          name:"orderlist",
+        })
+      })
+      .catch(() => {
+        // on cancel
+      });
+  },
   methods: {
     // 微信支付
-    wxPayAction () {
-        this.cashierPayData();
+    wxPayAction() {
+      this.cashierPayData();
     },
     // 新增订单
     async addOrderData() {
@@ -102,7 +123,7 @@ export default {
       } else {
         this.$toast(res.error_message);
       }
-    },
+    }
   }
 };
 </script>

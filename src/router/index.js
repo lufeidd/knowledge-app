@@ -330,7 +330,7 @@ export default new Router({
       component: orderdetail,
       meta: {
         keepAlive: false,  // false不需要被缓存，true需要缓存
-        title: '我的订单',
+        title: '订单详情',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       },
     },
@@ -339,7 +339,7 @@ export default new Router({
       name: 'orderlist',
       component: orderlist,
       meta: {
-        title: '我的购买',
+        title: '我的订单',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
