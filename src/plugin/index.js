@@ -349,7 +349,6 @@ export default {
             if (m < 10) m = '0' + m
             if (s < 10) s = '0' + s
             let res = h + ":" + m + ":" + s
-
             options.date = res;
             // console.log(res)
           }, 1000)
