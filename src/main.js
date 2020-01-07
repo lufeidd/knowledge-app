@@ -178,6 +178,7 @@ A、localStorage
   8、cmts：记录历史搜索内容
   9、get_count：记录授权次数，最多3次
   10、linkFrom：记录页面进入方式，gzh：来自公众号
+  11、home_id：记录原始页面，放置到快速导航入口
 
 B、sessionStorage
   1、isHuobaAndroidLogin：记录当前是针对webview:火把的Android端
@@ -191,7 +192,7 @@ B、sessionStorage
 
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
-  next()
+  next();
   // 存放页面来源地址
   if (from.path != to.path) {
     next();
@@ -246,7 +247,17 @@ router.beforeEach((to, from, next) => {
     next();
   }
   next()
-  // 给replaceUrl拼接参数
+
+
+
+  // 记录原始页面，放置到快速导航入口
+  if (to.query.home_id) {
+    localStorage.setItem('home_id', to.query.home_id);
+    next();
+  }
+  next()
+
+  // 给replaceUrl拼接参数，删除home_id
   for (var i in to.query) {
     // 判断是否等于第一个参数
     if (index == 0) {
@@ -259,6 +270,7 @@ router.beforeEach((to, from, next) => {
     index++; // 索引++
   }
   next()
+
   //判断该页面有 brand_id
   if (from.query.brand_id) {
     // 路由切换时，如果没有就添加，有就跳过执行，添加固定参数
