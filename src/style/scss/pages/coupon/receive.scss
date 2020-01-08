@@ -5,7 +5,9 @@
 @charset "utf-8";
 
 #receivePage {
-  padding: 15px;
+  .receiveContainer{
+    padding: 15px;
+  }
   .coupon.overdue{
     // background: url("../../../../assets/null/received.png") no-repeat center;
     // background-size:cover;

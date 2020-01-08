@@ -8,12 +8,11 @@
       v-else
       v-model="programLoading"
       :finished="programFinished"
-      finished-text="没有更多了"
+      :finished-text="activekey>0?'没有更多了':''"
       @load="programLoad"
       class="list"
-      v-else
     >
-    <!-- <div> -->
+      <!-- <div> -->
       <div class="searhResult">
         <svg class="icon searchIcon" aria-hidden="true">
           <use xlink:href="#icon-search-line" />
@@ -31,128 +30,290 @@
         v-model="activekey"
       >
         <van-tab :title="items.name" v-for="(items,index) in column_list" :key="index">
-          <template v-if="activekey == index">
-            <!-- <van-list
-              v-model="programLoading"
-              :finished="programFinished"
-              finished-text="没有更多了"
-              @load="programLoad"
-            > -->
-              <div v-for="(item,index) in brandData" :key="index">
-                <!-- 图书,专辑 -->
+          <template v-if="activekey == 0">
+            <div v-for="(litem,lindex) in summaryList" :key="lindex">
+              <div class="summaryList" v-if="litem.search_type == 'brand'">
+                <div class="head">
+                  <span class="verticleLine"></span>
+                  <span class="brandName">火把号</span>
+                </div>
                 <div
-                  class="content book"
-                  @click="gotoDetail(item)"
-                  v-if="item.goods_type == 3 || item.goods_type == 9"
+                  class="brandContent"
+                  v-for="(bitem,bindex) in litem.result"
+                  :key="bindex"
+                  @click="toBrand(bitem,bindex)"
                 >
-                  <div class="ratiobook">
-                    <div class="bookimg" v-lazy:background-image="item.pic[0]"></div>
-                  </div>
-                  <div class="right">
-                    <div class="text">{{item.title}}</div>
-                    <div class="pinpai">{{item.sub_title}}</div>
-                    <div class="nice">
-                      <span class="good" v-if="item.goods_type == 6">
-                        <svg class="icon" aria-hidden="true">
-                          <use xlink:href="#icon-good-line" />
-                        </svg>
-                        <span>{{item.praise_num}}</span>
-                      </span>
-                      <span class="price" v-if="item.goods_type == 3">
-                        <span>￥{{ item.price }}</span>
-                      </span>
-                      <span class="comment" v-if="item.goods_type == 9">
-                        <svg class="icon" aria-hidden="true">
-                          <use xlink:href="#icon-album-line" />
-                        </svg>
-                        <span>共{{ item.item_count }}集</span>
-                      </span>
+                  <img :src="bitem.brand_pic" alt width="45px" height="45px" />
+                  <span class="bname">{{bitem.brand_name}}</span>
+                </div>
+                <div class="readMore" v-if="litem.result.length > 2">
+                  <span @click="watchMore(litem,lindex)">
+                    查看更多
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-next-line" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              <div class="summaryList" v-if="litem.search_type == 'goods'">
+                <div class="head">
+                  <span class="verticleLine"></span>
+                  <span class="brandName">{{litem.column_name}}</span>
+                </div>
+                <div v-for="(gitem,gindex) in litem.result" :key="gindex">
+                  <!-- 图书,专辑 -->
+                  <div
+                    class="content book"
+                    @click="gotoDetail(gitem)"
+                    v-if="gitem.goods_type == 3 || gitem.goods_type == 9"
+                  >
+                    <div class="ratiobook">
+                      <div class="bookimg" v-lazy:background-image="gitem.pic[0]"></div>
+                    </div>
+                    <div class="right">
+                      <div class="text">{{gitem.title}}</div>
+                      <div class="pinpai">{{gitem.sub_title}}</div>
+                      <div class="nice">
+                        <span class="good" v-if="gitem.goods_type == 6">
+                          <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-good-line" />
+                          </svg>
+                          <span>{{gitem.praise_num}}</span>
+                        </span>
+                        <span class="price" v-if="gitem.goods_type == 3">
+                          <span>￥{{ gitem.price }}</span>
+                        </span>
+                        <span class="comment" v-if="gitem.goods_type == 9">
+                          <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-album-line" />
+                          </svg>
+                          <span>共{{ gitem.item_count }}集</span>
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <!-- 文章 -->
-                <div class="content" @click="gotoDetail(item)" v-if="item.goods_type == 6">
-                  <div class="ratiobox">
-                    <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+                  <!-- 文章 -->
+                  <div class="content" @click="gotoDetail(gitem)" v-if="gitem.goods_type == 6">
+                    <div class="ratiobox">
+                      <div class="bookImg" v-lazy:background-image="gitem.pic[0]"></div>
+                    </div>
+                    <div class="right">
+                      <div class="text">{{gitem.title}}</div>
+                      <div class="pinpai">{{gitem.sub_title}}</div>
+                      <div class="nice">
+                        <span class="good" v-if="gitem.goods_type == 6">
+                          <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-good-line" />
+                          </svg>
+                          <span>{{gitem.praise_num}}</span>
+                        </span>
+                        <span class="comment">
+                          <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-comment-line" />
+                          </svg>
+                          <span>{{ gitem.comment_num }}</span>
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="right">
-                    <div class="text">{{item.title}}</div>
-                    <div class="pinpai">{{item.sub_title}}</div>
-                    <div class="nice">
-                      <span class="good" v-if="item.goods_type == 6">
-                        <svg class="icon" aria-hidden="true">
-                          <use xlink:href="#icon-good-line" />
-                        </svg>
-                        <span>{{item.praise_num}}</span>
-                      </span>
-                      <span class="comment">
-                        <svg class="icon" aria-hidden="true">
+                  <!-- 音视频 -->
+                  <div
+                    class="content audio"
+                    @click="gotoDetail(gitem)"
+                    v-if="gitem.goods_type == 1 || gitem.goods_type == 2"
+                  >
+                    <div class="ratiobox">
+                      <div class="bookImg" v-lazy:background-image="gitem.pic[0]"></div>
+                    </div>
+                    <div class="right">
+                      <div class="text">{{gitem.title}}</div>
+                      <div class="pinpai">{{gitem.sub_title}}</div>
+                      <div class="nice">
+                        <span class="good">
+                          <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-time-line" />
+                          </svg>
+                          <span>{{gitem.duration}}</span>
+                        </span>
+                        <span class="price">
+                          <!-- <svg class="icon" aria-hidden="true">
                           <use xlink:href="#icon-comment-line" />
-                        </svg>
-                        <span>{{ item.comment_num }}</span>
-                      </span>
+                          </svg>-->
+                          <span v-if="gitem.price">￥{{ gitem.price }}</span>
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <!-- 音视频 -->
-                <div
-                  class="content audio"
-                  @click="gotoDetail(item)"
-                  v-if="item.goods_type == 1 || item.goods_type == 2"
-                >
-                  <div class="ratiobox">
-                    <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
-                  </div>
-                  <div class="right">
-                    <div class="text">{{item.title}}</div>
-                    <div class="pinpai">{{item.sub_title}}</div>
-                    <div class="nice">
-                      <span class="good">
-                        <svg class="icon" aria-hidden="true">
+                  <!-- 电子书 -->
+                  <div
+                    class="content ebook"
+                    @click="gotoDetail(gitem)"
+                    v-if="gitem.goods_type == 4"
+                  >
+                    <div class="ratiobox">
+                      <div class="bookImg" v-lazy:background-image="gitem.pic[0]"></div>
+                    </div>
+                    <div class="right">
+                      <div class="text">{{gitem.title}}</div>
+                      <!-- <div class="pinpai">{{item.sub_title}}</div> -->
+                      <div class="nice">
+                        <span class="good">
+                          <!-- <svg class="icon" aria-hidden="true">
                           <use xlink:href="#icon-time-line" />
-                        </svg>
-                        <span>{{item.duration}}</span>
-                      </span>
-                      <span class="price">
-                        <!-- <svg class="icon" aria-hidden="true">
+                          </svg>-->
+                          <span>{{gitem.book_author}}</span>
+                        </span>
+                        <span class="price">
+                          <!-- <svg class="icon" aria-hidden="true">
                           <use xlink:href="#icon-comment-line" />
-                        </svg>-->
-                        <span v-if="item.price">￥{{ item.price }}</span>
-                      </span>
+                          </svg>-->
+                          <span v-if="gitem.price">￥{{ gitem.price }}</span>
+                          <span v-else>免费</span>
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <!-- 电子书 -->
-                <div class="content ebook" @click="gotoDetail(item)" v-if="item.goods_type == 4">
-                  <div class="ratiobox">
-                    <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
-                  </div>
-                  <div class="right">
-                    <div class="text">{{item.title}}</div>
-                    <!-- <div class="pinpai">{{item.sub_title}}</div> -->
-                    <div class="nice">
-                      <span class="good">
-                        <!-- <svg class="icon" aria-hidden="true">
-                          <use xlink:href="#icon-time-line" />
-                        </svg>-->
-                        <span>{{item.book_author}}</span>
-                      </span>
-                      <span class="price">
-                        <!-- <svg class="icon" aria-hidden="true">
-                          <use xlink:href="#icon-comment-line" />
-                        </svg>-->
-                        <span v-if="item.price">￥{{ item.price }}</span>
-                        <span v-else>免费</span>
-                      </span>
-                    </div>
+                <div class="readMore" v-if="litem.result.length > 2">
+                  <span @click="watchMore(litem,lindex)">
+                    查看更多
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-next-line" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- 火把号 -->
+          <template v-if="activekey == 1">
+            <div class="summaryList huoba">
+              <div
+                class="brandContent"
+                v-for="(hbitem,hbindex) in huobaList"
+                :key="hbindex"
+                @click="toBrand(hbitem,hbindex)"
+              >
+                <img :src="hbitem.brand_pic" alt width="45px" height="45px" />
+                <span class="bname">{{hbitem.brand_name}}</span>
+              </div>
+            </div>
+          </template>
+          <template v-if="activekey > 1">
+            <div v-for="(item,index) in brandData" :key="index">
+              <!-- 图书,专辑 -->
+              <div
+                class="content book"
+                @click="gotoDetail(item)"
+                v-if="item.goods_type == 3 || item.goods_type == 9"
+              >
+                <div class="ratiobook">
+                  <div class="bookimg" v-lazy:background-image="item.pic[0]"></div>
+                </div>
+                <div class="right">
+                  <div class="text">{{item.title}}</div>
+                  <div class="pinpai">{{item.sub_title}}</div>
+                  <div class="nice">
+                    <span class="good" v-if="item.goods_type == 6">
+                      <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-good-line" />
+                      </svg>
+                      <span>{{item.praise_num}}</span>
+                    </span>
+                    <span class="price" v-if="item.goods_type == 3">
+                      <span>￥{{ item.price }}</span>
+                    </span>
+                    <span class="comment" v-if="item.goods_type == 9">
+                      <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-album-line" />
+                      </svg>
+                      <span>共{{ item.item_count }}集</span>
+                    </span>
                   </div>
                 </div>
               </div>
-            <!-- </van-list> -->
+              <!-- 文章 -->
+              <div class="content" @click="gotoDetail(item)" v-if="item.goods_type == 6">
+                <div class="ratiobox">
+                  <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+                </div>
+                <div class="right">
+                  <div class="text">{{item.title}}</div>
+                  <div class="pinpai">{{item.sub_title}}</div>
+                  <div class="nice">
+                    <span class="good" v-if="item.goods_type == 6">
+                      <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-good-line" />
+                      </svg>
+                      <span>{{item.praise_num}}</span>
+                    </span>
+                    <span class="comment">
+                      <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-comment-line" />
+                      </svg>
+                      <span>{{ item.comment_num }}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <!-- 音视频 -->
+              <div
+                class="content audio"
+                @click="gotoDetail(item)"
+                v-if="item.goods_type == 1 || item.goods_type == 2"
+              >
+                <div class="ratiobox">
+                  <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+                </div>
+                <div class="right">
+                  <div class="text">{{item.title}}</div>
+                  <div class="pinpai">{{item.sub_title}}</div>
+                  <div class="nice">
+                    <span class="good">
+                      <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-time-line" />
+                      </svg>
+                      <span>{{item.duration}}</span>
+                    </span>
+                    <span class="price">
+                      <!-- <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-comment-line" />
+                      </svg>-->
+                      <span v-if="item.price">￥{{ item.price }}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <!-- 电子书 -->
+              <div class="content ebook" @click="gotoDetail(item)" v-if="item.goods_type == 4">
+                <div class="ratiobox">
+                  <div class="bookImg" v-lazy:background-image="item.pic[0]"></div>
+                </div>
+                <div class="right">
+                  <div class="text">{{item.title}}</div>
+                  <!-- <div class="pinpai">{{item.sub_title}}</div> -->
+                  <div class="nice">
+                    <span class="good">
+                      <!-- <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-time-line" />
+                      </svg>-->
+                      <span>{{item.book_author}}</span>
+                    </span>
+                    <span class="price">
+                      <!-- <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-comment-line" />
+                      </svg>-->
+                      <span v-if="item.price">￥{{ item.price }}</span>
+                      <span v-else>免费</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </template>
         </van-tab>
       </van-tabs>
-    <!-- </div> -->
+      <!-- </div> -->
     </van-list>
     <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
@@ -161,7 +322,11 @@
 <style src="@/style/scss/pages/brand/result.scss" scoped lang="scss"></style>
 
 <script>
-import { BRAND_SEARCH_GOODS_GETS } from "../../apis/brand.js";
+import {
+  BRAND_SEARCH_GOODS_GETS,
+  SEARCH_GOODS_SUMMARY,
+  SEARCH_BRAND_GETS
+} from "../../apis/brand.js";
 import { WX_SHARE } from "../../apis/public.js";
 // import easyNav from "../../components/easyNav";
 import resultVue from "../personal/order/result.vue";
@@ -184,7 +349,16 @@ export default {
       state: "brand",
       brandData: [],
       bookData: [],
-      column_list: [],
+      column_list: [
+        { name: "综合", goods_type: 0 },
+        { name: "火把号", goods_type: -1 },
+        { name: "图书", goods_type: 3 },
+        { name: "电子书", goods_type: 4 },
+        { name: "专辑", goods_type: 9 },
+        { name: "文章", goods_type: 6 },
+        { name: "音频", goods_type: 1 },
+        { name: "视频", goods_type: 2 }
+      ],
       programLoading: false,
       programFinished: false,
       // 搜索结果参数
@@ -198,7 +372,10 @@ export default {
       supplier_id: null,
       tagids: null,
       cids: null,
-      isbrand_id: null
+      isbrand_id: null,
+      summaryList: [],
+      huobapage: 1,
+      huobaList: []
     };
   },
   mounted() {
@@ -221,6 +398,7 @@ export default {
 
     // this.getGoodsColum();
     // this.getGoods();
+    this.getSummaryGoods();
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 100);
@@ -262,10 +440,12 @@ export default {
     },
     programLoad() {
       this.getGoods();
+      this.huobaBrand();
     },
     async getGoods() {
       var tStamp = this.$getTimeStamp();
       var data = {
+        scene: "platform",
         keywords: this.searchContent,
         goods_type: this.goods_type,
         brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
@@ -282,7 +462,7 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         var result = res.response_data.result;
-        this.column_list = res.response_data.column;
+        // this.column_list = res.response_data.column;
         // console.log(111,this.column_list)
         var _index = 0;
         for (let i = 0; i < this.column_list.length; i++) {
@@ -341,6 +521,58 @@ export default {
         this.$toast(res.error_message);
       }
     },
+    // 综合列表
+    async getSummaryGoods() {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        scene: "platform",
+        keywords: this.searchContent,
+        brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
+        supplier_id: this.supplier_id,
+        cids: this.cids,
+        version: "1.0",
+        timestamp: tStamp
+      };
+      data.sign = this.$getSign(data);
+      let res = await SEARCH_GOODS_SUMMARY(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        this.summaryList = res.response_data.list;
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+    // 火把公号列表
+    async huobaBrand() {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        keywords: this.searchContent,
+        page: this.page,
+        version: "1.0",
+        timestamp: tStamp
+      };
+      data.sign = this.$getSign(data);
+      let res = await SEARCH_BRAND_GETS(data);
+
+      if (res.hasOwnProperty("response_code")) {
+        var result = res.response_data.result;
+        setTimeout(() => {
+          for (let i = 0; i < result.length; i++) {
+            this.huobaList.push(result[i]);
+          }
+          this.programLoading = false;
+          this.page++;
+          // console.log('thispage',this.page)
+          // 数据全部加载完成
+          if (this.page > res.response_data.total_page) {
+            this.programFinished = true;
+            this.page = 1;
+          }
+        }, 1);
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
     // 跳转搜索页
     inputText() {
       this.$router.push({
@@ -352,16 +584,72 @@ export default {
         }
       });
     },
-    // 点击tab页切换
-    tabChange(index, title) {
-      this.activekey = index;
+    // 跳转公众号首页
+    toBrand(item, index) {
+      this.$router.push({
+        name: "brand",
+        query: {
+          brand_id: item.brand_id
+        }
+      });
+    },
+    // 查看更多
+    watchMore(item, index) {
+      console.log(item);
+      if (item.search_type == "goods") {
+        switch (item.goods_type) {
+          case 1:
+            this.activekey = 6;
+            this.goods_type = 1;
+            break;
+          case 2:
+            this.activekey = 7;
+            this.goods_type = 2;
+            break;
+          case 3:
+            this.activekey = 2;
+            this.goods_type = 3;
+            break;
+          case 4:
+            this.activekey = 3;
+            this.goods_type = 4;
+            break;
+          case 6:
+            this.activekey = 5;
+            this.goods_type = 6;
+            break;
+          case 9:
+            this.activekey = 4;
+            this.goods_type = 9;
+            break;
+          default:
+            break;
+        }
+      } else {
+        this.activekey = 1;
+      }
       this.brandData = [];
+      this.huobaList = [];
       this.page = 1;
-      this.goods_type = Number(this.column_list[index].goods_type);
       this.programLoading = true; //下拉加载中
       this.programFinished = false; //下拉结束
       if (this.programLoading) {
         this.programLoad();
+      }
+    },
+    // 点击tab页切换
+    tabChange(index, title) {
+      this.activekey = index;
+      this.goods_type = Number(this.column_list[index].goods_type);
+      if (index > 0) {
+        this.brandData = [];
+        this.huobaList = [];
+        this.page = 1;
+        this.programLoading = true; //下拉加载中
+        this.programFinished = false; //下拉结束
+        if (this.programLoading) {
+          this.programLoad();
+        }
       }
     }
   }

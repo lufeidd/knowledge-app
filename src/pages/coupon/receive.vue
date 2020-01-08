@@ -1,6 +1,6 @@
 <template>
   <div id="receivePage">
-    <div v-if="Object.keys(couponInfo).length > 0">
+    <div class="receiveContainer" v-if="Object.keys(couponInfo).length > 0">
       <div class="coupon" :class="(couponInfo.state==2||couponInfo.state==4)?'overdue':''">
         <div class="ratiobox" v-if="couponInfo.state==2||couponInfo.state==4">
           <div class="bookImg" :style="overbgUrl"></div>
