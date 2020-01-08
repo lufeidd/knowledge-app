@@ -179,6 +179,9 @@ export default new Router({
     {
       path: '/',
       redirect: '/brand/index',
+      meta: {
+        unreload: true, //当前页跳转不需要刷新
+      }
     },
     // 首页
     {

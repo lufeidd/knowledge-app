@@ -13,12 +13,18 @@
       </div>
     </div>
     <div class="route" v-if="navData.fold">
-      <router-link :to="navData.homeLink" class="link" v-if="navData.home">
+      <div @click="gotoLink('origin')" class="link" v-if="navData.origin">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-home-line" />
+        </svg>
+        <div>来源</div>
+      </div>
+      <div @click="gotoLink('home')" class="link" v-if="navData.home">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-home-line" />
         </svg>
         <div>首页</div>
-      </router-link>
+      </div>
       <!-- 公号首页 -->
       <router-link
         v-if="type == 'brand' && navData.search"
@@ -167,6 +173,8 @@
 </style>
 
 <script>
+// vue无刷新修改url参数
+import merge from "webpack-merge";
 import { CART_INFO } from "../apis/shopping";
 import { USER_HOMEPAGE } from "../apis/user";
 export default {
@@ -176,6 +184,8 @@ export default {
     return {
       navData: {
         fold: false,
+        origin: true,
+        originLink: "/brand/index",
         home: true,
         homeLink: "/brand/index",
         search: true,
@@ -185,19 +195,58 @@ export default {
         cart: true,
         cartLink: "/cart",
         type: "brand",
-        loginLink:"/login/index",
+        loginLink: "/login/index",
         goods_nums: 0
       },
-      is_Login:null,
+      is_Login: null
     };
   },
   mounted() {
+    // home_id记录来源公号
+    if (localStorage.getItem("home_id")) {
+      this.navData.origin = true;
+    } else {
+      this.navData.origin = false;
+    }
     if (this.type === undefined) {
       this.type = this.navData.type;
     }
     this.isLogin();
   },
+  destroyed () {
+    this.navData.fold = false;
+  },
   methods: {
+    gotoLink(_type) {
+      var brand_id;
+      // 来源公号
+      if (_type == "origin") {
+        // 进入来源公号
+        sessionStorage.setItem("pagefrom", "origin");
+        console.log(123)
+
+        if (localStorage.getItem("home_id")) {
+          brand_id = localStorage.getItem("home_id");
+        } else {
+          this.$toast("来源公号不存在！");
+          return;
+        }
+      }
+      // 当前公号
+      if (_type == "home") {
+        if (localStorage.getItem("home_id")) {
+          brand_id = localStorage.getItem("brand_id");
+        } else {
+          this.$toast("公号不存在！");
+          return;
+        }
+      }
+      this.$router.replace({
+        name: "brand",
+        query: { brand_id: brand_id }
+      });
+      location.reload();
+    },
     foldAction() {
       this.navData.fold = !this.navData.fold;
     },
@@ -211,7 +260,7 @@ export default {
       let res = await USER_HOMEPAGE(data);
 
       if (res.hasOwnProperty("response_code")) {
-        if(res.response_data.hasOwnProperty('is_login')) {
+        if (res.response_data.hasOwnProperty("is_login")) {
           this.is_Login = res.response_data.is_login;
           localStorage.setItem("loginState", res.response_data.is_login);
         }

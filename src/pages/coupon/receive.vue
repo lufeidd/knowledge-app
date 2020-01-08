@@ -224,7 +224,7 @@ export default {
       page: 1,
       page1: 1,
       islogin: null,
-      failedModel: false
+      failedModel: true
     };
   },
   mounted() {

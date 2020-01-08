@@ -1056,7 +1056,6 @@ export default {
       remain_time: []
     };
   },
-  destroyed() {},
   mounted() {
     this.baseData.goods_id = parseInt(this.$route.query.goods_id);
     // 当前页接口信息

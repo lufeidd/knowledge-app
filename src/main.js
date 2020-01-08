@@ -165,6 +165,12 @@ Vue.config.productionTip = false
 4、不需要登录进入的页面，未登录状态，有触发到需要登录的动作，需要回退到原路径
   localStorage.getItem("defaultLink")
 
+
+5、当前页跳转不需要刷新，默认刷新
+  meta: {
+    unreload: true
+  }
+
 本地数据存储
 
 A、localStorage
@@ -179,6 +185,7 @@ A、localStorage
   9、get_count：记录授权次数，最多3次
   10、linkFrom：记录页面进入方式，gzh：来自公众号
   11、home_id：记录原始页面，放置到快速导航入口
+  12、brand_id：记录当前公号id
 
 B、sessionStorage
   1、isHuobaAndroidLogin：记录当前是针对webview:火把的Android端
@@ -186,6 +193,7 @@ B、sessionStorage
   3、isWxLogin：记录当前是微信端
   4、hasHeader：记录是否已经设置过头信息
   5、gotoLogin：记录是否允许微信第三方登录
+  6、pagefrom：记录页面来源，origin表示从原始公号快速导航入口进入
 
 */
 
@@ -248,31 +256,42 @@ router.beforeEach((to, from, next) => {
   }
   next()
 
-
-
   // 记录原始页面，放置到快速导航入口
   if (to.query.home_id) {
     localStorage.setItem('home_id', to.query.home_id);
     next();
   }
+  next();
+
+  // 存储当前brand_id
+  if (to.query.brand_id && sessionStorage.getItem('pagefrom') != 'origin') {
+    localStorage.setItem('brand_id', to.query.brand_id);
+    next()
+  } 
+  next()
+  console.log(456)
+  // sessionStorage.setItem("pagefrom", "");
+
   next()
 
-  // 给replaceUrl拼接参数，删除home_id
+  // 给replaceUrl拼接参数
   for (var i in to.query) {
-    // 判断是否等于第一个参数
-    if (index == 0) {
-      // 拼接地址第一个参数，添加“?”号
-      replaceUrl += '?' + i + '=' + to.query[i];
-    } else {
-      // 拼接地址非第一个参数，添加“&”号
-      replaceUrl += '&' + i + '=' + to.query[i];
+    if (i != 'home_id') {
+      // 判断是否等于第一个参数
+      var tmp = "?";
+      if (index > 0) {
+        // 拼接地址非第一个参数，添加“&”号
+        tmp = '&';
+      }
+      replaceUrl += tmp + i + '=' + to.query[i];
+      index++; // 索引++
     }
-    index++; // 索引++
   }
   next()
 
   //判断该页面有 brand_id
   if (from.query.brand_id) {
+    next();
     // 路由切换时，如果没有就添加，有就跳过执行，添加固定参数
     if (!to.query.brand_id) {
       next()
@@ -359,6 +378,14 @@ router.beforeEach((to, from, next) => {
 
   next()
   window.location.replace(replaceUrl); // 重定向跳转
+
+  next();
+  // 相同页面跳转刷新，除个别不需要刷新的页面外，比如brand/index
+  if(from.path == to.path && !to.meta.unreload) {
+    location.reload();
+    next();
+  }
+  next();
 
 })
 

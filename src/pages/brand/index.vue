@@ -138,6 +138,10 @@ export default {
       activekey: 0
     };
   },
+  destroyed() {
+    // this.$toast(99999)
+    // location.reload();
+  },
   mounted() {
     if (this.$route.query.title) document.title = this.$route.query.title;
     this.brand_id = parseInt(this.$route.query.brand_id);
