@@ -439,7 +439,8 @@ export default {
     prev() {
       if (this.chapter_id > this.minChapter) {
         this.currenChapterTitle = this.currenChapterTitle - 1;
-        this.chapter_id = this.ebookList[this.currenChapterTitle-1].chapter_id;
+        // this.chapter_id = this.ebookList[this.currenChapterTitle-1].chapter_id;
+        this.chapter_id = this.chapter_id -1
         // console.log(555,this.chapter_id);return
         this.$router.push({
           name: "ebookreader",
@@ -458,7 +459,8 @@ export default {
     next() {
       if (this.chapter_id < this.maxChapter) {
         // this.chapter_id = this.chapter_id + 1;
-        this.chapter_id = this.ebookList[this.currenChapterTitle].chapter_id;
+        // this.chapter_id = this.ebookList[this.currenChapterTitle].chapter_id;
+        this.chapter_id = this.chapter_id + 1
         this.currenChapterTitle = this.currenChapterTitle + 1;
         // console.log(666,this.chapter_id);return
         this.$router.push({
