@@ -461,13 +461,13 @@ export default {
         var result = res.response_data.result;
         // this.column_list = res.response_data.column;
         // console.log(111,this.column_list)
-        var _index = 0;
-        for (let i = 0; i < this.column_list.length; i++) {
-          if (this.column_list[i].goods_type == this.goods_type) {
-            _index = i;
+        if (this.goods_type > 0) {
+          for (let i = 0; i < this.column_list.length; i++) {
+            if (this.column_list[i].goods_type == this.goods_type) {
+              this.activekey = i;
+            }
           }
         }
-        this.activekey = _index;
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
             this.brandData.push(result[i]);
@@ -594,7 +594,7 @@ export default {
     // 查看更多
     watchMore(item, index) {
       console.log(item);
-      var _index = this.getArrayIndex(this.column_list,item)
+      var _index = this.getArrayIndex(this.column_list, item);
       this.activekey = _index;
       this.goods_type = this.column_list[_index].goods_type;
       this.brandData = [];
@@ -607,14 +607,14 @@ export default {
       }
     },
     getArrayIndex(arr, obj) {
-      for(var i=0;i<this.column_list.length;i++){
-        if(obj.search_type == 'goods'){
-          if(this.column_list[i].goods_type == obj.goods_type){
-            return i
+      for (var i = 0; i < this.column_list.length; i++) {
+        if (obj.search_type == "goods") {
+          if (this.column_list[i].goods_type == obj.goods_type) {
+            return i;
           }
-        }else{
-          if(this.column_list[i].search_type == obj.search_type){
-            return i
+        } else {
+          if (this.column_list[i].search_type == obj.search_type) {
+            return i;
           }
         }
       }

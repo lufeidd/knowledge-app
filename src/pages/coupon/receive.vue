@@ -303,6 +303,8 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // console.log(res);
         this.$toast("领取成功！");
+        this.couponInfo.use_stime = res.response_data.use_stime
+        this.couponInfo.use_etime = res.response_data.use_etime
         this.couponInfo.state = 3;
       } else {
         this.$toast(res.error_message);

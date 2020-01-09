@@ -273,17 +273,16 @@
                   <span class="toMall btn" v-if="item.state == 3" @click="toResult(item,index)">可用商品</span>
                 </div>
                 <div class="time">
-                  <span v-if="item.state == 3">{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</span>
+                  <span
+                    v-if="item.state == 3"
+                  >{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</span>
                   <span v-else>
                     <span v-if="item.use_time_type == 2">领取后{{item.use_time_day}}天有效</span>
-                    <span v-else>{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</span>
+                    <span
+                      v-else
+                    >{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</span>
                   </span>
                 </div>
-                <!-- <div class="time" v-if="item.use_time_type == 2">领取后{{item.use_time_day}}天有效</div>
-                <div
-                  class="time"
-                  v-else
-                >{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div> -->
                 <span class="used" v-if="item.state == 3">
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-yilingqu" />
@@ -523,7 +522,6 @@ export default {
     this.albumData();
     this.getCouponList();
     // this.$countTime(this.timeData);
-
   },
   methods: {
     toGoodsGroup() {
@@ -617,7 +615,7 @@ export default {
       });
     },
     changeHtml(content) {
-      if(typeof content == 'string') {
+      if (typeof content == "string") {
         return content.replace(/\n/g, "<br>");
       } else {
         return content;
@@ -864,10 +862,10 @@ export default {
         this.$router.push({ name: "login", params: {} });
         this.$toast("用户未登录!");
       } else {
-        this.ticketLink(item.ticket_id,index);
+        this.ticketLink(item.ticket_id, index);
       }
     },
-    async ticketLink(ticket_id,index) {
+    async ticketLink(ticket_id, index) {
       this.requestState = false;
       var tStamp = this.$getTimeStamp();
       let data = {
@@ -881,10 +879,14 @@ export default {
         // console.log(res);
         this.$toast("领取成功！");
         this.requestState = true;
-        this.couponList = this.couponList.map((value,key) =>{
-          if(key == index) value.state = 3;
-          return value
-        })
+        this.couponList = this.couponList.map((value, key) => {
+          if (key == index) {
+            value.state = 3;
+            value.use_stime = res.response_data.use_stime;
+            value.use_etime = res.response_data.use_etime;
+          }
+          return value;
+        });
       } else {
         this.$toast(res.error_message);
         this.requestState = true;
