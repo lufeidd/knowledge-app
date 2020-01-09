@@ -145,7 +145,7 @@
         </van-list>
       </div>
     </div>
-    <van-popup v-model="failedModel">
+    <van-popup v-model="failedModel" :close-on-click-overlay=false>
       <div class="faildContent">
         <p>此优惠券不存在</p>
         <p>
@@ -226,7 +226,7 @@ export default {
       page: 1,
       page1: 1,
       islogin: null,
-      failedModel: true
+      failedModel: false
     };
   },
   mounted() {

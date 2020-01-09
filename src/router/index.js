@@ -164,6 +164,7 @@ export default new Router({
       component: nullpage,
       meta: {
         title: '页面不见了',
+        unreload: true
       }
     },
     // 访问超时
@@ -173,6 +174,7 @@ export default new Router({
       component: timeout,
       meta: {
         title: '访问超时',
+        unreload: true
       }
     },
     // 根目录
