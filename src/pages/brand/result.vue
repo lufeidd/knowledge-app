@@ -30,7 +30,9 @@
         v-model="activekey"
       >
         <van-tab :title="items.name" v-for="(items,index) in column_list" :key="index">
-          <template v-if="activekey == 0">
+          <template
+            v-if="items.goods_type == 0 && items.search_type && items.search_type == 'summary'"
+          >
             <div v-for="(litem,lindex) in summaryList" :key="lindex">
               <div class="summaryList" v-if="litem.search_type == 'brand'">
                 <div class="head">
@@ -174,7 +176,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="readMore" v-if="litem.result.length > 2">
+                <div class="readMore" v-if="litem.result.length > 0">
                   <span @click="watchMore(litem,lindex)">
                     查看更多
                     <svg class="icon" aria-hidden="true">
@@ -186,7 +188,9 @@
             </div>
           </template>
           <!-- 火把号 -->
-          <template v-if="activekey == 1">
+          <template
+            v-if="items.goods_type == 0 && items.search_type && items.search_type == 'brand'"
+          >
             <div class="summaryList huoba">
               <div
                 class="brandContent"
@@ -199,7 +203,9 @@
               </div>
             </div>
           </template>
-          <template v-if="activekey > 1">
+          <template
+            v-if="items.goods_type > 0 && items.search_type && items.search_type == 'goods'"
+          >
             <div v-for="(item,index) in brandData" :key="index">
               <!-- 图书,专辑 -->
               <div
@@ -349,16 +355,7 @@ export default {
       state: "brand",
       brandData: [],
       bookData: [],
-      column_list: [
-        { name: "综合", goods_type: 0 },
-        { name: "火把号", goods_type: -1 },
-        { name: "图书", goods_type: 3 },
-        { name: "电子书", goods_type: 4 },
-        { name: "专辑", goods_type: 9 },
-        { name: "文章", goods_type: 6 },
-        { name: "音频", goods_type: 1 },
-        { name: "视频", goods_type: 2 }
-      ],
+      column_list: [],
       programLoading: false,
       programFinished: false,
       // 搜索结果参数
@@ -537,6 +534,7 @@ export default {
       let res = await SEARCH_GOODS_SUMMARY(data);
 
       if (res.hasOwnProperty("response_code")) {
+        this.column_list = res.response_data.column;
         this.summaryList = res.response_data.list;
       } else {
         this.$toast(res.error_message);
@@ -596,38 +594,9 @@ export default {
     // 查看更多
     watchMore(item, index) {
       console.log(item);
-      if (item.search_type == "goods") {
-        switch (item.goods_type) {
-          case 1:
-            this.activekey = 6;
-            this.goods_type = 1;
-            break;
-          case 2:
-            this.activekey = 7;
-            this.goods_type = 2;
-            break;
-          case 3:
-            this.activekey = 2;
-            this.goods_type = 3;
-            break;
-          case 4:
-            this.activekey = 3;
-            this.goods_type = 4;
-            break;
-          case 6:
-            this.activekey = 5;
-            this.goods_type = 6;
-            break;
-          case 9:
-            this.activekey = 4;
-            this.goods_type = 9;
-            break;
-          default:
-            break;
-        }
-      } else {
-        this.activekey = 1;
-      }
+      var _index = this.getArrayIndex(this.column_list,item)
+      this.activekey = _index;
+      this.goods_type = this.column_list[_index].goods_type;
       this.brandData = [];
       this.huobaList = [];
       this.page = 1;
@@ -635,6 +604,19 @@ export default {
       this.programFinished = false; //下拉结束
       if (this.programLoading) {
         this.programLoad();
+      }
+    },
+    getArrayIndex(arr, obj) {
+      for(var i=0;i<this.column_list.length;i++){
+        if(obj.search_type == 'goods'){
+          if(this.column_list[i].goods_type == obj.goods_type){
+            return i
+          }
+        }else{
+          if(this.column_list[i].search_type == obj.search_type){
+            return i
+          }
+        }
       }
     },
     // 点击tab页切换

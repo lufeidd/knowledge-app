@@ -114,6 +114,7 @@ export default {
         var data = {
           k: this.searchHintData.search,
           brand_id:this.$route.query.brand_id,
+          supplier_id:this.$route.query.supplier_id,
           version: "1.0",
           timestamp: tStamp
         };

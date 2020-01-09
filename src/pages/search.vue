@@ -255,7 +255,8 @@ export default {
     //读取本地历史记录
     getLocalItem() {
       var list = JSON.parse(localStorage.getItem("cmts") || "[]");
-      this.list = list;
+      // console.log(list)
+      if(list)this.list = list;
     },
     toResult(item) {
       // return;
