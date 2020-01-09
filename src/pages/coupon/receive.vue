@@ -10,10 +10,13 @@
         </div>
         <div class="shop">{{couponInfo.brand_name}}&nbsp;送您一张优惠券</div>
         <div class="time">
-          <span
-            v-if="couponInfo.use_time_type == 1"
-          >{{couponInfo.use_stime.replace(/-/g,'.').substring(0,10)}}- {{couponInfo.use_etime.replace(/-/g,'.').substring(0,10)}}</span>
-          <span v-if="couponInfo.use_time_type == 2">领取后{{couponInfo.use_time_day}}天有效</span>
+          <span v-if="couponInfo.state == 3">{{couponInfo.use_stime.replace(/-/g,'.').substring(0,10)}}- {{couponInfo.use_etime.replace(/-/g,'.').substring(0,10)}}</span>
+          <span v-else>
+            <span v-if="couponInfo.use_time_type == 2">领取后{{couponInfo.use_time_day}}天有效</span>
+            <span
+              v-else
+            >{{couponInfo.use_stime.replace(/-/g,'.').substring(0,10)}}- {{couponInfo.use_etime.replace(/-/g,'.').substring(0,10)}}</span>
+          </span>
           <div class="couponPrice">
             ￥
             <span class="price">{{couponInfo.money}}</span>
@@ -189,7 +192,6 @@
       }
     }
   }
-
 }
 </style>
 <script>
@@ -282,7 +284,7 @@ export default {
               }
             });
           }, 3000);
-        }else{
+        } else {
           this.$toast(res.error_message);
         }
       }
@@ -300,6 +302,8 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // console.log(res);
         this.$toast("领取成功！");
+        this.couponInfo.use_stime = res.response_data.use_stime
+        this.couponInfo.use_etime = res.response_data.use_etime
         this.couponInfo.state = 3;
       } else {
         this.$toast(res.error_message);
