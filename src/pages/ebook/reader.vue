@@ -391,8 +391,8 @@ export default {
             this.ebookList.push(res.response_data[i]);
           }
         }
-        this.minChapter = this.ebookList[0].chapter_id;
-        this.maxChapter = this.ebookList.slice(-1)[0].chapter_id;
+        this.minChapter = res.response_data[0].chapter_id;
+        this.maxChapter = res.response_data.slice(-1)[0].chapter_id;
         this.ebookSchedule = (
           (this.currenChapterTitle / this.ebookList.length) *
           100
