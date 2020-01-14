@@ -600,24 +600,9 @@ import {
   BRAND_SEARCH_GOODS_GETS,
   PAGE_GET
 } from "../apis/brand.js";
-import { WX_SHARE } from "../apis/public.js";
 export default {
-  // components: {
-  //   easyNav
-  // },
   data() {
     return {
-      // navData: {
-      //   fold: false,
-      //   home: true,
-      //   homeLink: "/brand/index",
-      //   search: true,
-      //   searchLink: "/search",
-      //   personal: true,
-      //   personalLink: "/personal/index",
-      //   type: "mall",
-      //   supplier_id: null
-      // },
       swiperOption: {
         loop: true,
         autoplay: {
@@ -650,7 +635,6 @@ export default {
   },
   mounted() {
     this.page_id = this.$route.query.page_id;
-    // this.page_id = 109;
     this.supplier_id = this.$route.query.supplier_id;
     this.getData();
   },
@@ -659,11 +643,6 @@ export default {
   },
   // 进入当前页面
   beforeRouteEnter(to, from, next) {
-    // console.log(to, from ,next);
-
-    // 外链进入
-    // if(from.name != null) {
-    // }
     next();
   },
   methods: {
@@ -677,18 +656,35 @@ export default {
         }
       });
     },
+    // 自定义装修页面
     async getData() {
+      var _type = this.$route.query.type ? this.$route.query.type : 'page';
       var tStamp = this.$getTimeStamp();
-      var data = {
-        type: "page",
-        page_id: this.page_id,
-        version: "1.0",
-        timestamp: tStamp
-      };
+      var data = {};
+      data.version = "1.0";
+      data.timestamp = tStamp;
+      switch (_type) {
+        // 自定义装修页面
+        case "page":
+          data.type = "page";
+          data.page_id = this.page_id;
+          break;
+        // 商城页
+        case "mall":
+          data.type = "mall";
+          data.supplier_id = this.$route.query.supplier_id;
+          break;
+        // 发现页
+        case "find":
+          data.type = "find";
+          break;
+        default:
+          break;
+      }
       data.sign = this.$getSign(data);
       let res = await PAGE_GET(data);
       if (res.hasOwnProperty("response_code")) {
-        console.log(res);
+        console.log(1234, res);
         this.page_title = res.response_data.title;
         document.title = this.page_title;
         this.bgColor = res.response_data.page_info.bgcolor;

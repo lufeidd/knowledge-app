@@ -750,8 +750,7 @@ import {
   FOCUS_CANCEL,
   COMMENT,
   COMMENT_ADD,
-  RECOMMEND,
-  WX_SHARE
+  RECOMMEND
 } from "../../apis/public.js";
 
 export default {
@@ -911,37 +910,6 @@ export default {
     }
   },
   methods: {
-    // 获取页面分享信息
-    // async wxShareData() {
-    //   var tStamp = this.$getTimeStamp();
-    //   var tmp = {};
-    //   tmp.goods_id = this.$route.query.goods_id;
-    //   if (this.$route.query.pid != null) tmp.album_id = this.$route.query.pid;
-
-    //   var data = {
-    //     page_name: "goods/detail",
-    //     params: JSON.stringify({
-    //       goods_id: this.$route.query.goods_id,
-    //       album_id: this.$route.query.pid
-    //     }),
-    //     version: "1.0",
-    //     timestamp: tStamp
-    //   };
-    //   data.sign = this.$getSign(data);
-    //   let res = await WX_SHARE(data);
-    //   if (res.hasOwnProperty("response_code")) {
-    //     // console.log(res.response_data)
-    //     // 微信分享
-    //     this.$getWxData(
-    //       res.response_data.share_info.title,
-    //       res.response_data.share_info.desc,
-    //       res.response_data.share_info.pic,
-    //       res.response_data.share_info.url
-    //     );
-    //   } else {
-    //     this.$toast(res.error_message);
-    //   }
-    // },
     // 判断视频播放是否收费
     videoPlay() {
       // 含有试听视频，播放该试听视频

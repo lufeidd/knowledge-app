@@ -822,8 +822,9 @@ export default {
     },
     toMall() {
       this.$router.push({
-        name: "mall",
+        name: "custompage",
         query: {
+          type: 'mall',
           supplier_id: this.brandInfoData.supplier_id
         }
       });

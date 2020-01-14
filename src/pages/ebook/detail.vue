@@ -768,8 +768,7 @@ import {
   FOCUS_CANCEL,
   COMMENT,
   COMMENT_ADD,
-  RECOMMEND,
-  WX_SHARE
+  RECOMMEND
 } from "../../apis/public.js";
 import { GOODS_TICKET_GETS, TICKET_LINK } from "../../apis/coupon.js";
 export default {

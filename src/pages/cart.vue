@@ -44,14 +44,14 @@
               </svg>
             </div>
             <router-link
-              :to="{name: 'mall', query: {supplier_id: item.supplier_id,title:item.brand_name,}}"
+              :to="{name: 'custompage', query: {supplier_id: item.supplier_id,title:item.brand_name, type: 'mall'}}"
               class="center"
             >
               <div class="title">
                 <div class="text">{{ item.brand_name }}</div>
               </div>
             </router-link>
-            <router-link :to="{name: 'mall', query: {supplier_id: item.supplier_id}}" class="right">
+            <router-link :to="{name: 'custompage', query: {supplier_id: item.supplier_id, type: 'mall'}}" class="right">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-next-line" />
               </svg>

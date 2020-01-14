@@ -333,25 +333,10 @@ import {
   SEARCH_GOODS_SUMMARY,
   SEARCH_BRAND_GETS
 } from "../../apis/brand.js";
-import { WX_SHARE } from "../../apis/public.js";
-// import easyNav from "../../components/easyNav";
 import resultVue from "../personal/order/result.vue";
 export default {
-  // components: {
-  //   easyNav
-  // },
   data() {
     return {
-      // navData: {
-      //   fold: false,
-      //   home: true,
-      //   homeLink: "/",
-      //   search: true,
-      //   searchLink: "/search",
-      //   personal: true,
-      //   personalLink: "/personal/index",
-      //   type: "brand"
-      // },
       state: "brand",
       brandData: [],
       bookData: [],

@@ -185,7 +185,6 @@ A、localStorage
   9、get_count：记录授权次数，最多3次
   10、linkFrom：记录页面进入方式，gzh：来自公众号
   11、home_id：记录原始页面，放置到快速导航入口
-  12、brand_id：记录当前公号id
 
 B、sessionStorage
   1、isHuobaAndroidLogin：记录当前是针对webview:火把的Android端
@@ -193,7 +192,6 @@ B、sessionStorage
   3、isWxLogin：记录当前是微信端
   4、hasHeader：记录是否已经设置过头信息
   5、gotoLogin：记录是否允许微信第三方登录
-  6、pagefrom：记录页面来源，origin表示从原始公号快速导航入口进入
 
 */
 
@@ -255,23 +253,26 @@ router.beforeEach((to, from, next) => {
     next();
   }
   next()
-
-  // 记录原始页面，放置到快速导航入口
+  
+  // 记录原始店铺，放置到快速导航入口
   if (to.query.home_id) {
     localStorage.setItem('home_id', to.query.home_id);
     next();
+  } else {
+    next();
+    if (!localStorage.getItem('home_id')) {
+      next();
+      if (to.query.brand_id) {
+        localStorage.setItem('home_id', to.query.brand_id);
+        next();
+      } else {
+        localStorage.setItem('home_id', 'all');
+        next();
+      }
+      next();
+    }
+    next();
   }
-  next();
-
-  // 存储当前brand_id
-  if (to.query.brand_id && sessionStorage.getItem('pagefrom') != 'origin') {
-    localStorage.setItem('brand_id', to.query.brand_id);
-    next()
-  } 
-  next()
-  console.log(456)
-  // sessionStorage.setItem("pagefrom", "");
-
   next()
 
   // 给replaceUrl拼接参数
@@ -381,7 +382,7 @@ router.beforeEach((to, from, next) => {
 
   next();
   // 相同页面跳转刷新，除个别不需要刷新的页面外，比如brand/index
-  if(from.path == to.path && !to.meta.unreload) {
+  if (from.path == to.path && !to.meta.unreload) {
     location.reload();
     next();
   }

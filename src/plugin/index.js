@@ -232,6 +232,7 @@ export default {
       let data = {
         page_name: _pageName,
         params: _params,
+        home_id: localStorage.getItem('home_id'),
         timestamp: tStamp,
         version: "1.1"
       };
@@ -584,8 +585,9 @@ export default {
           break;
         // 供应商商城首页
         case 'mall/index':
-          __name = 'mall';
+          __name = 'custompage';
           queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
+          queryTmp.type = 'mall';
 
           break;
         // 公号首页

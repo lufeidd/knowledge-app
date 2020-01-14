@@ -708,6 +708,7 @@ export default new Router({
       component: brand,
       meta: {
         keepAlive: false,  // false不需要被缓存，true需要缓存
+        unreload: true,
       },
     },
     //优惠券
