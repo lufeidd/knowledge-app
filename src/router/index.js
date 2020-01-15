@@ -11,6 +11,12 @@ import register from '@/pages/login/register'
 import prototype from '@/pages/login/prototype'
 import bindphone from '@/pages/login/bindphone'
 
+// 登录/注册2.0
+import  loginV2 from '@/pages/login2.0/index'
+import bindPhoneV2 from '@/pages/login2.0/wxLogin/bindPhone'
+import prototypeV2 from '@/pages/login2.0/prototype'
+
+
 // 个人中心 - 我的余额
 import remain from '@/pages/personal/remain/index'
 import record from '@/pages/personal/remain/record'
@@ -242,6 +248,36 @@ export default new Router({
         title: '绑定手机号',
         noDefaultLink: true,  // 不记录在defaultLink中
         // requireAuth: false
+      }
+    },
+    // 登录/注册2.0
+    {
+      path: '/login2.0/index',
+      name: 'login2.0',
+      component: loginV2,
+      meta: {
+        title: '登录',
+        noDefaultLink: true,  // 不记录在defaultLink中
+        // requireAuth: true
+      }
+    },
+    {
+      path: '/login2.0/wxLogin/bindPhone',
+      name: 'bindPhone2.0',
+      component: bindPhoneV2,
+      meta: {
+        title: '绑定手机号',
+        noDefaultLink: true,  // 不记录在defaultLink中
+        // requireAuth: false
+      }
+    },
+    {
+      path: '/login2.0/prototype',
+      name: 'prototype2.0',
+      component: prototypeV2,
+      meta: {
+        // title: '协议',
+        noDefaultLink: true,  // 不记录在defaultLink中
       }
     },
     // 个人中心 - 首页
