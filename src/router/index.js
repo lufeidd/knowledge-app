@@ -251,6 +251,7 @@ export default new Router({
       component: personal,
       meta: {
         title: '个人中心',
+        keepAlive: false,
         requireAuth: false // 需要登录才能进入的页面可以增加一个meta属性
       },
       beforeEnter: (to, from, next) => {
@@ -563,7 +564,6 @@ export default new Router({
       component: help,
       meta: {
         title: '帮助与反馈',
-        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
     {

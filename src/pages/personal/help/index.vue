@@ -21,9 +21,8 @@
     <div style="height: 60px;"></div>
 
     <div class="bottomBox" :class="{iphx:this.isIphx}">
-      <van-button type="danger" size="large" replace to="/personal/help/feedback">我要反馈</van-button>
+      <van-button type="danger" size="large" to="/personal/help/feedback">我要反馈</van-button>
     </div>
-    <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand" :isShow="true"></EazyNav>
 
   </div>

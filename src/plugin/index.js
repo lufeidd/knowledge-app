@@ -18,7 +18,6 @@ import { LOGIN_PARTERNER } from "./../apis/passport.js";
 
 export default {
   install: function (Vue, options) {
-
     // 省市区
     // 省
     Vue.prototype.provinceList = {};
@@ -993,6 +992,41 @@ export default {
           }
         }
       }
+    }
+
+    // 配合正则，表单字符指定位置添加空格
+    Vue.prototype.$inputSpace = function (code, type) {
+      var str = "";
+      var _bool = false;
+      var _len = code.length;
+      switch (type) {
+        // 八位验证码，第五位加空格
+        case 'code':
+          Array.from(code, (item, index) => {
+            if (index == 3) {
+              str += item + " ";
+            } else {
+              str += item;
+            }
+          });
+          Array.from(str, (item, index) => {
+            if (item == " " && index == _len) {
+              _bool = true;
+            }
+          });
+          break;
+        // 手机号码，第四位以及第八位加空格 150 0000 0000
+        case 'tel':
+
+          break;
+        default:
+          break;
+      }
+
+      if (_bool && this.$store.state.isDel) {
+        str = str.trim();
+      }
+      return str;
     }
 
   }

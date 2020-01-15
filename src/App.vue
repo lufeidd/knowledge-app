@@ -1,11 +1,20 @@
 <template>
   <div id="app">
-    <Download></Download>
-    <!-- 页面缓存, $route.meta.keepAlive默认false -->
-    <keep-alive>
-      <router-view v-if="$route.meta.keepAlive" />
-    </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive" />
+    <!-- 需要微信端打开，引导微信内打开 -->
+    <!-- 引导app端打开 -->
+    <span class="nullBox" v-if="nullPage == 1">
+      <img src="./assets/null/link.png" width="100%" />
+      <div>{{ msg }}</div>
+      <EazyNav type="brand" :isShow="true"></EazyNav>
+    </span>
+    <span v-else>
+      <Download></Download>
+      <!-- 页面缓存, $route.meta.keepAlive默认false -->
+      <keep-alive>
+        <router-view v-if="$route.meta.keepAlive" />
+      </keep-alive>
+      <router-view v-if="!$route.meta.keepAlive" />
+    </span>
   </div>
 </template>
 
@@ -79,14 +88,24 @@ body,
 </style>
 <script>
 import axios from "axios";
-
-// 下载app
-// import download from './components/index';
 // 微信分享，引入sdk
 import wx from "weixin-js-sdk";
 export default {
   name: "App",
+  data() {
+    return {
+      nullPage: this.$route.query.nullPage ? this.$route.query.nullPage : 0,
+      msg: this.$route.query.msg ? this.$route.query.msg : ""
+    };
+  },
   mounted() {
+    let self = this;
+    $("input").on("keydown", function(event) {
+      var e = event || window.event || arguments.callee.caller.arguments[0];
+      if (e && e.keyCode == 8) {
+        self.$store.state.isDel = true;
+      }
+    });
     // 获取适配信息，并微信授权
     this.$setLoginData();
   }
