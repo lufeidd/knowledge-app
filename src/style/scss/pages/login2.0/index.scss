@@ -9,6 +9,7 @@
   background-color: $white;
   min-height: 100%;
   overflow: hidden;
+  padding: 0 40px;
   p, h3 {
     margin: 0;
   }
@@ -31,7 +32,6 @@
   }
   .action_wrapper {
     margin-top: 143px;
-    padding: 0 40px;
     .van-button--danger {
       border-radius: 3px;
       .van-button__text {

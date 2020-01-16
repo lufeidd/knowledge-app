@@ -33,7 +33,8 @@
         </p>
         <p class="content_two">
           点击同意即表示您已阅读并同意
-          <router-link :to="{name: 'prototype2.0', query: {type: 'prototype'}}" class="prototype">《火把平台用户注册协议》</router-link>
+          <router-link :to="{name: 'prototype2.0', query: {type: 'prototype'}}" class="prototype">《火把平台用户注册协议》
+          </router-link>
           与
           <router-link :to="{name: 'prototype2.0', query: {type: 'private'}}" class="prototype">《火把平台用户隐私条款》</router-link>
         </p>

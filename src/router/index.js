@@ -15,6 +15,7 @@ import bindphone from '@/pages/login/bindphone'
 import  loginV2 from '@/pages/login2.0/index'
 import bindPhoneV2 from '@/pages/login2.0/wxLogin/bindPhone'
 import prototypeV2 from '@/pages/login2.0/prototype'
+import verificationV2 from '@/pages/login2.0/verification'
 
 
 // 个人中心 - 我的余额
@@ -262,6 +263,16 @@ export default new Router({
       }
     },
     {
+      path: '/login2.0/verification',
+      name: 'verification2.0',
+      component: verificationV2,
+      meta: {
+        // title: '',
+        noDefaultLink: true,  // 不记录在defaultLink中
+        // requireAuth: true
+      }
+    },
+    {
       path: '/login2.0/wxLogin/bindPhone',
       name: 'bindPhone2.0',
       component: bindPhoneV2,
@@ -276,7 +287,6 @@ export default new Router({
       name: 'prototype2.0',
       component: prototypeV2,
       meta: {
-        // title: '协议',
         noDefaultLink: true,  // 不记录在defaultLink中
       }
     },
