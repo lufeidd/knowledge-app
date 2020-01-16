@@ -99,6 +99,7 @@ export default {
     };
   },
   mounted() {
+    // 表单输入监控删除动作
     let self = this;
     $("input").on("keydown", function(event) {
       var e = event || window.event || arguments.callee.caller.arguments[0];

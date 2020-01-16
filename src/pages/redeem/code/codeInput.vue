@@ -57,7 +57,7 @@ export default {
     document.title = "兑换码";
   },
   methods: {
-    inputCode(event) {
+    inputCode() {
       // 配合正则，表单字符指定位置添加空格
       var _code = this.codeNum
         .toLocaleUpperCase()
