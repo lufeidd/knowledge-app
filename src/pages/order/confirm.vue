@@ -85,10 +85,10 @@
         <template slot="title">
           <span style="margin-right:10px;color:#333;">优惠券</span>
           <span class="toMall" v-if="discount_price == ticket_price">已选最大优惠</span>
-          <span class="toMall" v-if="ticket_num">已选{{ticket_num}}张</span>
+          <span class="toMall" v-if="ticket_num && discount_price != ticket_price">已选{{ticket_num}}张</span>
         </template>
       </van-cell>
-      <van-cell title is-link value="无可用券" style="margin:5px 0;" v-else>
+      <van-cell title is-link value="无可用券" style="margin:5px 0;" v-else @click="shownoCoupon">
         <template slot="title">
           <span style="margin-right:10px;color:#333;">优惠券</span>
         </template>
@@ -276,6 +276,64 @@
         </van-tab>
       </van-tabs>
     </van-popup>
+    <van-popup v-model="nocouponModel" position="bottom" style="max-height:80%;min-height:80%;">
+      <div class="header">
+        <div class="catalogWord">优惠券</div>
+        <span>
+          <svg class="icon" aria-hidden="true" @click="closePopup">
+            <use xlink:href="#icon-close-line" />
+          </svg>
+        </span>
+      </div>
+      <van-tabs v-model="active1" title-active-color="#f05654" title-inactive-color="#999">
+        <van-tab :title="nouseCoupon">
+          <div class="content">
+            <div v-for="(item,index) in ticket_lists.nouse" :key="index">
+              <div
+                style="border-radius:0 6px 6px 0;margin-top:10px;overflow:hidden;box-shadow:0 0 10px rgba(0,0,0,0.06);"
+              >
+                <div class="toUse overdue">
+                  <div class="left"></div>
+                  <div class="mid">
+                    <div>
+                      ￥
+                      <span class="price">{{item.money}}</span>
+                    </div>
+                    <div class="condition">{{item.use_money_desc}}</div>
+                    <span class="circle top"></span>
+                    <span class="circle bottom"></span>
+                  </div>
+                  <div class="right">
+                    <div>
+                      <span class="shopCoupon">
+                        <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-coupon-block" />
+                        </svg>
+                        <span class="dianpu" v-if="item.brand_id">店铺券</span>
+                        <span class="dianpu" v-else>平台券</span>
+                      </span>
+                      <span class="shop">{{item.brand_name}}</span>
+                    </div>
+                    <div class="desc">{{item.use_range_desc}}</div>
+                    <!-- <span class="used">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-received-line" />
+                    </svg>
+                    </span>-->
+                    <div
+                      class="time"
+                    >{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="whyNoUse"
+              >{{item.cart_money>0?'还差'+item.cart_money+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
+            </div>
+          </div>
+        </van-tab>
+      </van-tabs>
+    </van-popup>
     <EazyNav type="order" :isShow="false"></EazyNav>
   </div>
 </template>
@@ -322,7 +380,9 @@ export default {
       couponInfo: null,
       couponList: [],
       couponModel: false,
+      nocouponModel:false,
       active: 0,
+      active1:0,
       nouseCoupon: "",
       useCoupon: "",
       ticket_price: null,
@@ -339,7 +399,7 @@ export default {
       discount_price_desc: "",
       groupbuy_id: null,
       groupbuy_open_id: null,
-      payState:true,
+      payState: true
     };
   },
   mounted() {
@@ -443,7 +503,7 @@ export default {
         data.detail_ids = this.$route.query.detail_ids;
       if (this.$route.query.detail) data.detail = this.$route.query.detail;
       data.ticket_ids = this.order_ticket_ids;
-      if(this.address_id) data.address_id = this.address_id;
+      if (this.address_id) data.address_id = this.address_id;
       data.sign = this.$getSign(data);
       let res = await ORDER_PHYSICAL_ADDINFO(data);
 
@@ -451,7 +511,10 @@ export default {
         this.dispatch_price = res.response_data.dispatch_price;
         // this.pay_price = res.response_data.pay_price;
         this.pay_price =
-          this.total_money + this.dispatch_price - this.discount_price - this.yh_price;
+          this.total_money +
+          this.dispatch_price -
+          this.discount_price -
+          this.yh_price;
 
         if (this.discount_price > 0) {
           this.discount_price_desc = "优惠￥" + this.discount_price;
@@ -487,7 +550,11 @@ export default {
         this.pay_id = res.response_data.pay_id;
         this.$router.push({
           name: "pay",
-          query: { pay_id: this.pay_id, money: this.pay_price,open_id:res.response_data.groupbuy_open_id }
+          query: {
+            pay_id: this.pay_id,
+            money: this.pay_price,
+            open_id: res.response_data.groupbuy_open_id
+          }
         });
       } else {
         this.$toast(res.error_message);
@@ -506,8 +573,12 @@ export default {
     showCoupon() {
       this.couponModel = true;
     },
+    shownoCoupon(){
+      this.nocouponModel = true;
+    },
     closePopup() {
       this.couponModel = false;
+      this.nocouponModel = false;
     },
     chooseTicket(item, index) {
       this.ticket_lists.canuse = this.ticket_lists.canuse.map((value, key) => {
