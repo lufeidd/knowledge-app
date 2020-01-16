@@ -49,8 +49,8 @@
       <div class="prototype">
         <van-checkbox v-model="checked" @click="checkAction">阅读并同意</van-checkbox>
         <span style="position:absolute;top:0px;left:90px;">
-        <router-link :to="{name: 'prototype', query: {type: 'prototype'}}">《火把平台用户注册协议》</router-link>
-        <router-link :to="{name: 'prototype', query: {type: 'private'}}">《隐私条款》</router-link>
+          <router-link :to="{name: 'prototype', query: {type: 'prototype'}}">《火把平台用户注册协议》</router-link>
+          <router-link :to="{name: 'prototype', query: {type: 'private'}}">《隐私条款》</router-link>
         </span>
       </div>
 
@@ -62,8 +62,12 @@
           <van-button slot="button" size="large" round type="danger" @click="submitAction">确认并提交</van-button>
         </template>
       </div>
+      <!-- 验证码倒计时，刷新保留当前手机倒计时时间 -->
+      <!-- 
+      <div>{{ cdata.phone }}</div>
+      <div v-if="cdata.time">{{ cdata.time }}s后重新发送</div>-->
     </div>
-<EazyNav type="brand" :isShow="false"></EazyNav>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
@@ -73,41 +77,41 @@
 @import url("./../../style/scss/components/checkbox.scss");
 // @import url("./../../style/scss/components/button.scss");
 #registerPage {
-.van-button {
-  border-radius: 50px;
-}
+  .van-button {
+    border-radius: 50px;
+  }
 
-.van-button::before {
-  display: none;
-}
+  .van-button::before {
+    display: none;
+  }
 
-.van-button--plain.van-button--danger {
-  background-color: #fff;
-}
+  .van-button--plain.van-button--danger {
+    background-color: #fff;
+  }
 
-.van-button--danger {
-  background-color: #f05654;
-  border-color: #f05654;
-}
+  .van-button--danger {
+    background-color: #f05654;
+    border-color: #f05654;
+  }
 
-.van-button--danger.van-button--disabled {
-  background-color: #d6d6d6;
-  border-color: #d6d6d6;
-  opacity: 1;
-}
+  .van-button--danger.van-button--disabled {
+    background-color: #d6d6d6;
+    border-color: #d6d6d6;
+    opacity: 1;
+  }
 
-.van-button--small {
-  min-width: 80px;
-}
+  .van-button--small {
+    min-width: 80px;
+  }
 
-.van-button--large {
-  height: 50px;
-  line-height: 50px;
-}
+  .van-button--large {
+    height: 50px;
+    line-height: 50px;
+  }
 
-.van-button--default {
-  color: #333;
-}
+  .van-button--default {
+    color: #333;
+  }
   .phone .van-field__label {
     border-right: 1px #d6d6d6 solid;
   }
@@ -119,14 +123,21 @@
 }
 </style>
 
-
 <script>
 //  引入接口
-import { REG, SMS,PASSPORT_CHECKPHONE } from "../../apis/passport.js";
+import { REG, SMS, PASSPORT_CHECKPHONE } from "../../apis/passport.js";
 
 export default {
   data() {
     return {
+      // 验证码倒计时，刷新保留当前手机倒计时时间
+      // cdata: {
+      //   time: sessionStorage.getItem("second")
+      //     ? parseInt(sessionStorage.getItem("second"))
+      //     : 60,
+      //   phone: "15000000005"
+      // },
+
       phone: "",
       isPhone: true,
       code: "",
@@ -143,7 +154,8 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$route.query);
+    // 验证码倒计时，刷新保留当前手机倒计时时间
+    // this.$countDown2(this.cdata);
   },
   methods: {
     // 格式校验
@@ -188,7 +200,7 @@ export default {
       this.sms();
     },
     //判断手机号是否已注册
-    async check_phone(){
+    async check_phone() {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
@@ -213,7 +225,7 @@ export default {
         mobile: this.phone,
         auth_code: this.code,
         pwd: this.password,
-        source_url: localStorage.getItem('defaultLink'),
+        source_url: localStorage.getItem("defaultLink"),
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -236,3 +248,6 @@ export default {
   }
 };
 </script>
+
+
+

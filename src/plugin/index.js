@@ -318,7 +318,40 @@ export default {
           time--
           options.disabled = true
           options.timeMsg = time + 's'
-          // console.log(time)
+        }, 1000)
+      } else {
+        self.$toast('时间格式不正确')
+      }
+    }
+
+
+    // 验证码倒计时，刷新保留当前手机倒计时时间
+    Vue.prototype.$countDown2 = function (cdata) {
+      if (!sessionStorage.getItem('phone')) {
+        sessionStorage.setItem('phone', cdata.phone);
+      } else {
+        if (cdata.phone != sessionStorage.getItem('phone')) {
+          sessionStorage.setItem('phone', cdata.phone)
+          sessionStorage.setItem('second', 60);
+          cdata.time = 60;
+          clearInterval(this.clock)
+        }
+      }
+      if (!sessionStorage.getItem('second')) {
+        sessionStorage.setItem('second', cdata.time);
+      }
+
+      let self = this
+      let time = cdata.time
+      if (typeof time === 'number') {
+        this.clock = window.setInterval(() => {
+          if (time === 0) {
+            clearInterval(this.clock)
+            return false
+          }
+          time--
+          cdata.time = time;
+          sessionStorage.setItem('second', cdata.time)
         }, 1000)
       } else {
         self.$toast('时间格式不正确')

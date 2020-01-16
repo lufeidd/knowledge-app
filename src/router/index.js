@@ -640,7 +640,6 @@ export default new Router({
       component: helpdetail,
       meta: {
         title: '帮助与反馈',
-        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
     {

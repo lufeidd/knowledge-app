@@ -192,6 +192,8 @@ B、sessionStorage
   3、isWxLogin：记录当前是微信端
   4、hasHeader：记录是否已经设置过头信息
   5、gotoLogin：记录是否允许微信第三方登录
+  6、phone：记录验证码手机号
+  7、second：记录验证码手机号对应倒计时
 
 
 路由参数
@@ -201,7 +203,6 @@ B、sessionStorage
   3、linkFrom=gzh链接来自公众号
 
 */
-
 
 
 
@@ -410,7 +411,6 @@ router.beforeEach((to, from, next) => {
 
   next()
   window.location.replace(replaceUrl); // 重定向跳转
-
   next();
   // 相同页面跳转刷新，除个别不需要刷新的页面外，比如brand/index
   if ((from.path == to.path && !to.meta.unreload) || from.fullPath.indexOf("nullPage=1") != -1) {

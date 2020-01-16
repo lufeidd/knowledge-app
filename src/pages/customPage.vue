@@ -577,7 +577,6 @@
         </div>
       </div>
     </div>
-    <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="mall" :isShow="true"></EazyNav>
   </div>
 </template>
@@ -658,7 +657,7 @@ export default {
     },
     // 自定义装修页面
     async getData() {
-      var _type = this.$route.query.type ? this.$route.query.type : 'page';
+      var _type = this.$route.query.type ? this.$route.query.type : "page";
       var tStamp = this.$getTimeStamp();
       var data = {};
       data.version = "1.0";
@@ -705,11 +704,13 @@ export default {
         // 获取页面分享信息
         // if(this.isWxLogin) this.wxShareData();
         var _pageName = "page/get";
-        var _params = JSON.stringify({
-          brand_id: this.brand_id,
-          supplier_id: this.supplier_id,
-          page_id: this.page_id
-        });
+        var _data = {};
+
+        if(this.$route.query.type) _data.type = this.$route.query.type;
+        if(this.$route.query.page_id) _data.page_id = this.$route.query.page_id;
+        if(this.$route.query.supplier_id) _data.supplier_id = this.$route.query.supplier_id;
+        
+        var _params = JSON.stringify(_data);
         if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
       } else {
         this.$toast(res.error_message);
@@ -717,7 +718,6 @@ export default {
     },
     linktoDetail(link, supplierId) {
       var data = this.$translate(JSON.parse(link));
-      data.query.type = "mall";
       data.query.title = this.title;
       if (JSON.parse(link).action == "page/get") {
         data.query.supplier_id = supplierId;
