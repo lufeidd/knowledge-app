@@ -51,7 +51,7 @@
           <span class="toMall" v-if="ticket_num && discount_price != ticket_price">已选{{ticket_num}}张</span>
         </template>
       </van-cell>
-      <van-cell title is-link value="无可用券" style="margin:5px 0;" v-else @click="showCoupon">
+      <van-cell title is-link value="无可用券" style="margin:5px 0;" v-else @click="shownoCoupon">
         <template slot="title">
           <span style="margin-right:10px;">优惠券</span>
         </template>
