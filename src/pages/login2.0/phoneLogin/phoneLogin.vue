@@ -9,7 +9,7 @@
         v-model="phone"
         clearable
         maxlength="11"
-        placeholder="请输入您的手机号"
+        placeholder="请输入手机号"
         @input="checkSubmit ('phone')"
       />
     </div>
@@ -23,6 +23,9 @@
     </router-link>
     <div class="wx_login">
       <p class="wx_login_text">快捷登录方式</p>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-weixin-block"/>
+      </svg>
     </div>
     <van-popup v-model="registerPopShow" class="register">
       <p class="title">
