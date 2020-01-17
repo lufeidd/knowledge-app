@@ -104,7 +104,7 @@ export default {
         // 登录成功exist = 1；没有绑定过 exist = 0；
         if (res.response_data.exist == 0) {
           this.$router.replace({
-            name: "bindphone",
+            name: "bindPhone2.0",
             query: { bindtype: _type, outerId: _unionid }
           });
         }
