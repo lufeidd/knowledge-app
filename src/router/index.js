@@ -20,6 +20,7 @@ import phoneLoginV2 from '@/pages/login2.0/phoneLogin/phoneLogin'
 import passwordLoginV2 from '@/pages/login2.0/passwordLogin/passwordLogin'
 import changePasswordV2 from '@/pages/login2.0/set/changePassword'
 import changePhoneV2 from '@/pages/login2.0/set/changePhone'
+import authenticationV2 from '@/pages/login2.0/set/authentication'
 
 
 // 个人中心 - 我的余额
@@ -328,6 +329,16 @@ export default new Router({
       path: '/login2.0/set/changePhone',
       name: 'changePhone2.0',
       component: changePhoneV2,
+      meta: {
+        // title: '',
+        noDefaultLink: true,  // 不记录在defaultLink中
+        // requireAuth: false
+      }
+    },
+    {
+      path: '/login2.0/set/authentication',
+      name: 'authentication2.0',
+      component: authenticationV2,
       meta: {
         // title: '',
         noDefaultLink: true,  // 不记录在defaultLink中
