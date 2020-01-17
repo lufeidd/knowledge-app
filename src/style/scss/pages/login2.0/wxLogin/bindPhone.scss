@@ -98,7 +98,7 @@
   }
   .register {
     width: 255px;
-    height: 265px;
+    //height: 265px;
     .title {
       margin: 20px 0 25px 0;
       text-align: center;
@@ -121,6 +121,7 @@
     .btn_wrapper {
       display: flex;
       margin-top: 20px;
+      margin-bottom: 15px;
       .disagree {
         flex-grow: 1;
         text-align: center;
