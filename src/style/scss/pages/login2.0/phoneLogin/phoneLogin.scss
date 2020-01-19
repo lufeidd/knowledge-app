@@ -1,0 +1,158 @@
+/*
+ * author: lrf
+ * date:2020/1/15
+ */
+
+@charset "UTF-8";
+
+#phoneLoginPage {
+  background-color: $white;
+  min-height: 100%;
+  overflow: hidden;
+  p, h3 {
+    margin: 0;
+  }
+  .huoba_pic {
+    margin: 0 auto;
+    margin-top: 45px;
+    width: 61px;
+    height: 60px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    @include bgImageTwo('./../../../../../assets/login2.0/huobaApp');
+  }
+  .huoba_name {
+    margin-top: 4px;
+    text-align: center;
+    font-size: 16px;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #000000;
+  }
+  .field_wrapper {
+    margin: 95px 40px 23px 40px;
+  }
+  .van-field__control {
+    padding: 10px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #A7A7A7;
+    line-height: 20px;
+  }
+  .van-cell:not(:last-child)::after,
+  .van-cell::after {
+    content: ' ';
+    position: absolute;
+    pointer-events: none;
+    box-sizing: border-box;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transform: scaleY(.5);
+    transform: scaleY(.5);
+    border-bottom: 1px solid #DCDCDC;
+  }
+
+  .button_wrapper {
+    margin: 0 40px;
+  }
+  .link_text {
+    display: inline-block;
+    margin: 25px 0 0 48px;
+    font-size: 13px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #F05654;
+  }
+  .wx_login {
+    margin-top: 73px;
+    text-align: center;
+    .wx_login_text {
+      font-size: 13px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #999999;
+    }
+    .wx_login_text::before {
+      content: '';
+      display: inline-block;
+      margin-right: 11px;
+      width: 64px;
+      vertical-align: middle;
+      border: 0.5px solid #E5E5E5;
+    }
+    .wx_login_text::after {
+      content: '';
+      display: inline-block;
+      margin-left: 11px;
+      width: 64px;
+      vertical-align: middle;
+      border: 0.5px solid #E5E5E5;
+    }
+    .icon {
+      display: inline-block;
+      margin-top: 23px;
+      width: 38px;
+      height: 38px;
+      color: #3CA938;
+      border-radius: 50%;
+    }
+  }
+  .register {
+    width: 255px;
+    height: 265px;
+    .title {
+      margin: 20px 0 25px 0;
+      text-align: center;
+      font-size: 16px;
+      font-family: PingFang SC;
+      font-weight: bold;
+      color: #333333;
+    }
+    .content_one, .content_two {
+      margin: 0 15px;
+      font-size: 13px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #333333;
+      line-height: 18px;
+    }
+    .prototype {
+      color: #F05654;
+    }
+    .btn_wrapper {
+      display: flex;
+      margin-top: 20px;
+      .disagree {
+        flex-grow: 1;
+        text-align: center;
+      }
+      .agree {
+        flex-grow: 1;
+        text-align: center;
+      }
+      .van-button {
+        width: 100px;
+      }
+      .van-button--danger {
+        border-radius: 3px;
+        .van-button__text {
+          font-size: 15px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #FFFFFF;
+        }
+      }
+      .van-button--default {
+        border-radius: 3px;
+        .van-button__text {
+          font-size: 15px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #999999;
+        }
+      }
+    }
+  }
+
+}

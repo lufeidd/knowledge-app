@@ -1,146 +1,161 @@
 <template>
   <div id="receivePage">
-    <div class="coupon" :class="(couponInfo.state==2||couponInfo.state==4)?'overdue':''">
-      <div class="ratiobox" v-if="couponInfo.state==2||couponInfo.state==4">
-        <div class="bookImg" :style="overbgUrl"></div>
-      </div>
-      <div class="ratiobox" v-else>
-        <div class="bookImg" :style="bgUrl"></div>
-      </div>
-      <div class="shop">{{couponInfo.brand_name}}&nbsp;送您一张优惠券</div>
-      <div class="time">
-        <span
-          v-if="couponInfo.use_time_type == 1"
-        >{{couponInfo.use_stime.replace(/-/g,'.').substring(0,10)}}- {{couponInfo.use_etime.replace(/-/g,'.').substring(0,10)}}</span>
-        <span v-if="couponInfo.use_time_type == 2">领取后{{couponInfo.use_time_day}}天有效</span>
-        <div class="couponPrice">
-          ￥
-          <span class="price">{{couponInfo.money}}</span>
+    <div class="receiveContainer" v-if="Object.keys(couponInfo).length > 0">
+      <div class="coupon" :class="(couponInfo.state==2||couponInfo.state==4)?'overdue':''">
+        <div class="ratiobox" v-if="couponInfo.state==2||couponInfo.state==4">
+          <div class="bookImg" :style="overbgUrl"></div>
         </div>
-      </div>
+        <div class="ratiobox" v-else>
+          <div class="bookImg" :style="bgUrl"></div>
+        </div>
+        <div class="shop">{{couponInfo.brand_name}}&nbsp;送您一张优惠券</div>
+        <div class="time">
+          <span v-if="couponInfo.state !== 0"><span v-if="couponInfo.state == 3">{{couponInfo.use_stime.replace(/-/g,'.').substring(0,10)}}- {{couponInfo.use_etime.replace(/-/g,'.').substring(0,10)}}</span>
+          <span v-else>
+            <span v-if="couponInfo.use_time_type == 2">领取后{{couponInfo.use_time_day}}天有效</span>
+            <span
+              v-else
+            >{{couponInfo.use_stime.replace(/-/g,'.').substring(0,10)}}- {{couponInfo.use_etime.replace(/-/g,'.').substring(0,10)}}</span>
+          </span></span>
+          <div class="couponPrice">
+            ￥
+            <span class="price">{{couponInfo.money}}</span>
+          </div>
+        </div>
 
-      <div class="condition">满{{couponInfo.use_min_money}}元可用</div>
-      <span class="received" v-if="couponInfo.state == 3">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-yilingqu" />
-        </svg>
-      </span>
-      <span class="received" v-if="couponInfo.state == 4">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-overed-line" />
-        </svg>
-      </span>
-      <span class="received" v-if="couponInfo.state == 2">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-received-line" />
-        </svg>
-      </span>
-    </div>
-    <div style="margin:15px 0;" v-if="couponInfo.state == 1">
-      <van-button round type="danger" size="small" @click="receive">点击领取</van-button>
-    </div>
-    <div style="margin:15px 0;" v-if="couponInfo.state == 2 || couponInfo.state == 4">
-      <van-button round type="danger" size="small" @click="receiveMore">领更多好券</van-button>
-    </div>
-    <div style="margin:30px 0;" v-if="couponInfo.state == 3">
-      <van-row gutter="20">
-        <van-col span="12">
-          <van-button round style="height:35px;line-height:35px;" @click="toMyCoupon">我的优惠券</van-button>
-        </van-col>
-        <van-col span="12">
-          <van-button
-            round
-            type="danger"
-            style="height:35px;line-height:35px;"
-            @click="receiveMore"
-          >领取更多好券</van-button>
-        </van-col>
-      </van-row>
-    </div>
-    <div style="margin:30px 0;" v-if="couponInfo.state == 0">
-      <van-row gutter="20">
-        <van-col span="12">
-          <van-button round style="height:35px;line-height:35px;" @click="receiveMore">领更多好券</van-button>
-        </van-col>
-        <van-col span="12">
-          <van-button
-            round
-            type="danger"
-            style="height:35px;line-height:35px;"
-          >{{couponInfo.get_stime_desc}}</van-button>
-        </van-col>
-      </van-row>
-    </div>
-    <!-- v-if="showMore" -->
-    <div v-if="couponInfo.state !== 1 ">
-      <div class="goodsCoupon">
-        <div v-if="couponInfo.state == 3">以下商品可使用此优惠券</div>
-        <div v-else>为您推荐</div>
-        <span class="more" v-if="couponInfo.state == 3" @click="toResult">
-          更多
+        <div class="condition">满{{couponInfo.use_min_money}}元可用</div>
+        <span class="received" v-if="couponInfo.state == 3">
           <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-next-line" />
+            <use xlink:href="#icon-yilingqu" />
+          </svg>
+        </span>
+        <span class="received" v-if="couponInfo.state == 4">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-overed-line" />
+          </svg>
+        </span>
+        <span class="received" v-if="couponInfo.state == 2">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-received-line" />
           </svg>
         </span>
       </div>
-      <van-list
-        v-model="commentLoading"
-        :finished="commentFinished"
-        finished-text="已经到底了~"
-        @load="commentLoad"
-        v-if="couponInfo.state == 3"
-      >
-        <div>
-          <van-row gutter="20" type="flex" class="goodsList">
-            <van-col span="12" v-for="(item,index) in goodsList" :key="index">
-              <div class="content" @click="toDetail(item,index)">
-                <div class="ratiobox" @click="toDetail(item,index)">
-                  <div class="bookImg" v-lazy:background-image="item.pic"></div>
-                  <span class="goodsType" v-if="item.goods_type == 9">专辑</span>
-                  <span class="goodsType" v-if="item.goods_type == 4">电子书</span>
-                  <span class="goodsType" v-if="item.goods_type == 3">纸书</span>
-                  <span class="goodsType" v-if="item.goods_type == 1">音频</span>
-                  <span class="goodsType" v-if="item.goods_type == 2">视频</span>
-                  <span class="goodsType" v-if="item.goods_type == 6">文章</span>
-                </div>
-                <div class="title">{{ item.title }}</div>
-                <div class="price" v-if="item.price">￥{{ item.price }}</div>
-                <div class="price" v-else>免费</div>
-              </div>
-            </van-col>
-          </van-row>
+      <div style="margin:15px 0;" v-if="couponInfo.state == 1">
+        <van-button round type="danger" size="small" @click="receive">点击领取</van-button>
+      </div>
+      <div style="margin:15px 0;" v-if="couponInfo.state == 2 || couponInfo.state == 4">
+        <van-button round type="danger" size="small" @click="receiveMore">领更多好券</van-button>
+      </div>
+      <div style="margin:30px 0;" v-if="couponInfo.state == 3">
+        <van-row gutter="20">
+          <van-col span="12">
+            <van-button round style="height:35px;line-height:35px;" @click="toMyCoupon">我的优惠券</van-button>
+          </van-col>
+          <van-col span="12">
+            <van-button
+              round
+              type="danger"
+              style="height:35px;line-height:35px;"
+              @click="receiveMore"
+            >领取更多好券</van-button>
+          </van-col>
+        </van-row>
+      </div>
+      <div style="margin:30px 0;" v-if="couponInfo.state == 0">
+        <van-row gutter="20">
+          <van-col span="12">
+            <van-button round style="height:35px;line-height:35px;" @click="receiveMore">领更多好券</van-button>
+          </van-col>
+          <van-col span="12">
+            <van-button
+              round
+              type="danger"
+              style="height:35px;line-height:35px;"
+            >{{couponInfo.get_stime_desc}}</van-button>
+          </van-col>
+        </van-row>
+      </div>
+      <!-- v-if="showMore" -->
+      <div v-if="couponInfo.state !== 1 ">
+        <div class="goodsCoupon">
+          <div v-if="couponInfo.state == 3">以下商品可使用此优惠券</div>
+          <div v-else>为您推荐</div>
+          <span class="more" v-if="couponInfo.state == 3" @click="toResult">
+            更多
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-next-line" />
+            </svg>
+          </span>
         </div>
-      </van-list>
-      <van-list
-        v-model="commentLoading1"
-        :finished="commentFinished1"
-        finished-text="已经到底了~"
-        @load="commentLoad1"
-        v-else
-      >
-        <div>
-          <van-row gutter="20" type="flex" class="goodsList">
-            <van-col span="12" v-for="(item,index) in goodsList1" :key="index">
-              <div class="content" @click="toDetail(item,index)">
-                <div class="ratiobox" @click="toDetail(item,index)">
-                  <div class="bookImg" v-lazy:background-image="item.pic"></div>
-                  <span class="goodsType" v-if="item.goods_type == 9">专辑</span>
-                  <span class="goodsType" v-if="item.goods_type == 4">电子书</span>
-                  <span class="goodsType" v-if="item.goods_type == 3">纸书</span>
-                  <span class="goodsType" v-if="item.goods_type == 1">音频</span>
-                  <span class="goodsType" v-if="item.goods_type == 2">视频</span>
-                  <span class="goodsType" v-if="item.goods_type == 6">文章</span>
+        <van-list
+          v-model="commentLoading"
+          :finished="commentFinished"
+          finished-text="已经到底了~"
+          @load="commentLoad"
+          v-if="couponInfo.state == 3"
+        >
+          <div>
+            <van-row gutter="20" type="flex" class="goodsList">
+              <van-col span="12" v-for="(item,index) in goodsList" :key="index">
+                <div class="content" @click="toDetail(item,index)">
+                  <div class="ratiobox" @click="toDetail(item,index)">
+                    <div class="bookImg" v-lazy:background-image="item.pic"></div>
+                    <span class="goodsType" v-if="item.goods_type == 9">专辑</span>
+                    <span class="goodsType" v-if="item.goods_type == 4">电子书</span>
+                    <span class="goodsType" v-if="item.goods_type == 3">纸书</span>
+                    <span class="goodsType" v-if="item.goods_type == 1">音频</span>
+                    <span class="goodsType" v-if="item.goods_type == 2">视频</span>
+                    <span class="goodsType" v-if="item.goods_type == 6">文章</span>
+                  </div>
+                  <div class="title">{{ item.title }}</div>
+                  <div class="price" v-if="item.price">￥{{ item.price }}</div>
+                  <div class="price" v-else>免费</div>
                 </div>
-                <div class="title">{{ item.title }}</div>
-                <div class="price" v-if="item.price">￥{{ item.price }}</div>
-                <div class="price" v-else>免费</div>
-              </div>
-            </van-col>
-          </van-row>
-        </div>
-      </van-list>
+              </van-col>
+            </van-row>
+          </div>
+        </van-list>
+        <van-list
+          v-model="commentLoading1"
+          :finished="commentFinished1"
+          finished-text="已经到底了~"
+          @load="commentLoad1"
+          v-else
+        >
+          <div>
+            <van-row gutter="20" type="flex" class="goodsList">
+              <van-col span="12" v-for="(item,index) in goodsList1" :key="index">
+                <div class="content" @click="toDetail(item,index)">
+                  <div class="ratiobox" @click="toDetail(item,index)">
+                    <div class="bookImg" v-lazy:background-image="item.pic"></div>
+                    <span class="goodsType" v-if="item.goods_type == 9">专辑</span>
+                    <span class="goodsType" v-if="item.goods_type == 4">电子书</span>
+                    <span class="goodsType" v-if="item.goods_type == 3">纸书</span>
+                    <span class="goodsType" v-if="item.goods_type == 1">音频</span>
+                    <span class="goodsType" v-if="item.goods_type == 2">视频</span>
+                    <span class="goodsType" v-if="item.goods_type == 6">文章</span>
+                  </div>
+                  <div class="title">{{ item.title }}</div>
+                  <div class="price" v-if="item.price">￥{{ item.price }}</div>
+                  <div class="price" v-else>免费</div>
+                </div>
+              </van-col>
+            </van-row>
+          </div>
+        </van-list>
+      </div>
     </div>
-
+    <van-popup v-model="failedModel" :close-on-click-overlay=false>
+      <div class="faildContent">
+        <p>此优惠券不存在</p>
+        <p>
+          <img src="../../assets/redeem/outdated.png" alt width="55px" />
+        </p>
+        <div class="descrip">
+          <span class="seconds">3</span>秒后回到首页
+        </div>
+      </div>
+    </van-popup>
     <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
@@ -159,6 +174,23 @@
   .van-button--default {
     border-color: $redLight;
     color: $redLight;
+  }
+  .van-popup {
+    border-radius: 5px;
+  }
+  .faildContent {
+    padding: 15px 30px;
+    p {
+      text-align: center;
+      font-size: $fontSize + 1;
+    }
+    .descrip {
+      text-align: center;
+      color: $cl9;
+      .seconds {
+        color: $redDark;
+      }
+    }
   }
 }
 </style>
@@ -188,19 +220,13 @@ export default {
           "url(" + require("../../assets/null/received.png") + ")"
       },
       ticket_id: "",
-      couponInfo: {
-        state: null,
-        use_stime: "",
-        use_etime: "",
-        brand_name: null,
-        get_stime_desc: "",
-        use_min_money: null
-      },
+      couponInfo: {},
       showMore: false,
       isReceived: false,
       page: 1,
       page1: 1,
-      islogin: null
+      islogin: null,
+      failedModel: false
     };
   },
   mounted() {
@@ -247,7 +273,20 @@ export default {
         this.couponInfo = res.response_data;
         // console.log(111,this.couponInfo.use_stime<this.couponInfo.use_etime)
       } else {
-        this.$toast(res.error_message);
+        if (res.error_message == "优惠券不存在") {
+          this.failedModel = true;
+          var _this = this;
+          setTimeout(() => {
+            _this.$router.replace({
+              name: "brand",
+              query: {
+                brand_id: _this.$route.query.brand_id
+              }
+            });
+          }, 3000);
+        } else {
+          this.$toast(res.error_message);
+        }
       }
     },
     // 优惠券领取
@@ -263,6 +302,8 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         // console.log(res);
         this.$toast("领取成功！");
+        this.couponInfo.use_stime = res.response_data.use_stime
+        this.couponInfo.use_etime = res.response_data.use_etime
         this.couponInfo.state = 3;
       } else {
         this.$toast(res.error_message);

@@ -11,6 +11,18 @@ import register from '@/pages/login/register'
 import prototype from '@/pages/login/prototype'
 import bindphone from '@/pages/login/bindphone'
 
+// 登录/注册2.0
+import  loginV2 from '@/pages/login2.0/index'
+import prototypeV2 from '@/pages/login2.0/prototype'
+import verificationV2 from '@/pages/login2.0/verification'
+import bindPhoneV2 from '@/pages/login2.0/wxLogin/bindPhone'
+import phoneLoginV2 from '@/pages/login2.0/phoneLogin/phoneLogin'
+import passwordLoginV2 from '@/pages/login2.0/passwordLogin/passwordLogin'
+import changePasswordV2 from '@/pages/login2.0/set/changePassword'
+import changePhoneV2 from '@/pages/login2.0/set/changePhone'
+import authenticationV2 from '@/pages/login2.0/set/authentication'
+
+
 // 个人中心 - 我的余额
 import remain from '@/pages/personal/remain/index'
 import record from '@/pages/personal/remain/record'
@@ -164,6 +176,7 @@ export default new Router({
       component: nullpage,
       meta: {
         title: '页面不见了',
+        unreload: true
       }
     },
     // 访问超时
@@ -173,12 +186,16 @@ export default new Router({
       component: timeout,
       meta: {
         title: '访问超时',
+        unreload: true
       }
     },
     // 根目录
     {
       path: '/',
       redirect: '/brand/index',
+      meta: {
+        unreload: true, //当前页跳转不需要刷新
+      }
     },
     // 首页
     {
@@ -239,6 +256,95 @@ export default new Router({
         // requireAuth: false
       }
     },
+    // 登录/注册2.0
+    {
+      path: '/login2.0/index',
+      name: 'login2.0',
+      component: loginV2,
+      meta: {
+        title: '登录',
+        noDefaultLink: true,  // 不记录在defaultLink中
+        // requireAuth: true
+      }
+    },
+    {
+      path: '/login2.0/verification',
+      name: 'verification2.0',
+      component: verificationV2,
+      meta: {
+        // title: '',
+        noDefaultLink: true,  // 不记录在defaultLink中
+        // requireAuth: true
+      }
+    },
+    {
+      path: '/login2.0/prototype',
+      name: 'prototype2.0',
+      component: prototypeV2,
+      meta: {
+        noDefaultLink: true,  // 不记录在defaultLink中
+      }
+    },
+    {
+      path: '/login2.0/wxLogin/bindPhone',
+      name: 'bindPhone2.0',
+      component: bindPhoneV2,
+      meta: {
+        title: '绑定手机号',
+        noDefaultLink: true,  // 不记录在defaultLink中
+        // requireAuth: false
+      }
+    },
+    {
+      path: '/login2.0/phoneLogin/phoneLogin',
+      name: 'phoneLogin2.0',
+      component: phoneLoginV2,
+      meta: {
+        // title: '',
+        noDefaultLink: true,  // 不记录在defaultLink中
+        // requireAuth: false
+      }
+    },
+    {
+      path: '/login2.0/passwordLogin/passwordLogin',
+      name: 'passwordLogin2.0',
+      component: passwordLoginV2,
+      meta: {
+        // title: '',
+        noDefaultLink: true,  // 不记录在defaultLink中
+        // requireAuth: false
+      }
+    },
+    {
+      path: '/login2.0/set/changePassword',
+      name: 'changePassword2.0',
+      component: changePasswordV2,
+      meta: {
+        // title: '',
+        noDefaultLink: true,  // 不记录在defaultLink中
+        // requireAuth: false
+      }
+    },
+    {
+      path: '/login2.0/set/changePhone',
+      name: 'changePhone2.0',
+      component: changePhoneV2,
+      meta: {
+        // title: '',
+        noDefaultLink: true,  // 不记录在defaultLink中
+        // requireAuth: false
+      }
+    },
+    {
+      path: '/login2.0/set/authentication',
+      name: 'authentication2.0',
+      component: authenticationV2,
+      meta: {
+        // title: '',
+        noDefaultLink: true,  // 不记录在defaultLink中
+        // requireAuth: false
+      }
+    },
     // 个人中心 - 首页
     {
       path: '/personal/index',
@@ -246,6 +352,7 @@ export default new Router({
       component: personal,
       meta: {
         title: '个人中心',
+        keepAlive: false,
         requireAuth: false // 需要登录才能进入的页面可以增加一个meta属性
       },
       beforeEnter: (to, from, next) => {
@@ -330,7 +437,7 @@ export default new Router({
       component: orderdetail,
       meta: {
         keepAlive: false,  // false不需要被缓存，true需要缓存
-        title: '我的订单',
+        title: '订单详情',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       },
     },
@@ -339,7 +446,7 @@ export default new Router({
       name: 'orderlist',
       component: orderlist,
       meta: {
-        title: '我的购买',
+        title: '我的订单',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
@@ -558,7 +665,6 @@ export default new Router({
       component: help,
       meta: {
         title: '帮助与反馈',
-        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
     {
@@ -567,7 +673,6 @@ export default new Router({
       component: helpdetail,
       meta: {
         title: '帮助与反馈',
-        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
     {
@@ -703,6 +808,7 @@ export default new Router({
       component: brand,
       meta: {
         keepAlive: false,  // false不需要被缓存，true需要缓存
+        unreload: true,
       },
     },
     //优惠券

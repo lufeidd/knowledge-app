@@ -70,6 +70,33 @@
         box-sizing: border-box;
       }
     }
+    .hotContent{
+      @include textOverflow;
+      text-align: left;
+      color: $cl6;
+      .hotSort{
+        display: inline-block;
+        font-size: $fontSize - 2;
+        width: 17px;
+        line-height: 17px;
+        background-color: #DEDEDE;
+        text-align: center;
+        border-radius: 3px;
+        color: $cl9;
+      }
+      .hotSort.first,.hotSort.second,.hotSort.third{
+        color:$white;
+      }
+      .hotSort.first{
+        background-color: $redLight;
+      }
+      .hotSort.second{
+        background-color: #FFA22A;
+      }
+      .hotSort.third{
+        background-color: #FFCF2A;
+      }
+    }
   }
   .title{
     @include displayFlex(flex,space-between,center);
@@ -79,6 +106,7 @@
     }
     .clear{
       color: $cl6;
+      font-size: $fontSize - 1;
     }
   }
 }

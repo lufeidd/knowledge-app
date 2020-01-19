@@ -140,7 +140,7 @@ export default {
             this.page = 1;
           }
         }, 500);
-        
+
       } else {
         this.$toast(res.error_message);
       }
@@ -184,6 +184,15 @@ export default {
           query: {
             goods_id: item.goods_id,
             pid: null
+          }
+        });
+      }
+      // 电子书
+      if (item.goods_type == 4) {
+        this.$router.push({
+          name: "ebookdetail",
+          query: {
+            goods_id: item.goods_id,
           }
         });
       }

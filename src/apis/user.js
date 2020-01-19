@@ -8,6 +8,9 @@ import req from './http.js'
 // 个人中心首页
 export const USER_HOMEPAGE = query => req('post', '/user/homepage', query);
 
+// 获取发现页的内容详情(APP)
+export const FAXIAN = query => req('post', '/page/faxian/index', query);
+
 // 获取用户基本信息
 export const USER_INFO = query => req('post', '/user/info/get', query);
 export const USER_INFO_EDIT = query => req('post', '/user/info/edit', query);

@@ -1,0 +1,56 @@
+/*
+ * author: lrf
+ * date:2020/1/15
+ */
+
+@charset "UTF-8";
+
+#loginV2 {
+  background-color: $white;
+  min-height: 100%;
+  overflow: hidden;
+  padding: 0 40px;
+  p, h3 {
+    margin: 0;
+  }
+  .huoba_pic {
+    margin: 0 auto;
+    margin-top: 45px;
+    width: 61px;
+    height: 60px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    @include bgImageTwo('./../../../../assets/login2.0/huobaApp');
+  }
+  .huoba_name {
+    margin-top: 4px;
+    text-align: center;
+    font-size: 16px;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #000000;
+  }
+  .action_wrapper {
+    margin-top: 143px;
+    .van-button--danger {
+      border-radius: 3px;
+      .van-button__text {
+        font-size: 15px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #FFFFFF;
+      }
+    }
+    .van-button--default {
+      margin: 15px 0 0 0;
+      border: 0.5px solid #F05654;
+      border-radius: 3px;
+      .van-button__text {
+        font-size: 15px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #F05654;
+      }
+    }
+  }
+}

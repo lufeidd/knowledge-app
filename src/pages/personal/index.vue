@@ -120,7 +120,7 @@
             </svg>
           </div>
           <div class="desc">
-            <span class="text">我的购买</span>
+            <span class="text">我的订单</span>
           </div>
           <div class="action">
             <svg class="icon" aria-hidden="true">
@@ -135,7 +135,7 @@
             </svg>
           </div>
           <div class="desc">
-            <span class="text">我的购买</span>
+            <span class="text">我的订单</span>
           </div>
           <div class="action">
             <svg class="icon" aria-hidden="true">
@@ -290,7 +290,7 @@
         </router-link>
 
         <!-- 帮助与反馈 -->
-        <router-link v-if="infoData.is_login" to="/personal/help/index" class="cell">
+        <router-link to="/personal/help/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-personalHelp" />
@@ -305,7 +305,7 @@
             </svg>
           </div>
         </router-link>
-        <router-link v-else to="/login/index" class="cell">
+        <!-- <router-link v-else to="/login/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-personalHelp" />
@@ -319,7 +319,7 @@
               <use xlink:href="#icon-next-line" />
             </svg>
           </div>
-        </router-link>
+        </router-link> -->
       </template>
     </div>
     <CopyRight></CopyRight>

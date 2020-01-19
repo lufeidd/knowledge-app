@@ -545,9 +545,17 @@
                   <span class="toMall btn red" v-if="item.state == 1 && !requestState">点击领取</span>
                   <span class="toMall btn" v-if="item.state == 3" @click="toResult(item,index)">可用商品</span>
                 </div>
-                <div
-                  class="time"
-                >{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
+                <div class="time">
+                  <span
+                    v-if="item.state == 3"
+                  >{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</span>
+                  <span v-else>
+                    <span v-if="item.use_time_type == 2">领取后{{item.use_time_day}}天有效</span>
+                    <span
+                      v-else
+                    >{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</span>
+                  </span>
+                </div>
                 <span class="used" v-if="item.state == 3">
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-yilingqu" />
@@ -584,8 +592,10 @@
                     <use xlink:href="#icon-received-line" />
                   </svg>
                 </span>
+                <div class="time" v-if="item.use_time_type == 2">领取后{{item.use_time_day}}天有效</div>
                 <div
                   class="time"
+                  v-else
                 >{{item.use_stime.replace(/-/g,'.').substring(0,10)}}-{{item.use_etime.replace(/-/g,'.').substring(0,10)}}</div>
               </div>
             </div>
@@ -924,8 +934,7 @@ import {
   FOCUS_CANCEL,
   COMMENT,
   COMMENT_ADD,
-  RECOMMEND,
-  WX_SHARE
+  RECOMMEND
 } from "../../apis/public.js";
 import { setTimeout } from "timers";
 import { truncate } from "fs";
@@ -1056,7 +1065,6 @@ export default {
       remain_time: []
     };
   },
-  destroyed() {},
   mounted() {
     this.baseData.goods_id = parseInt(this.$route.query.goods_id);
     // 当前页接口信息
@@ -1110,30 +1118,6 @@ export default {
         }
       });
     },
-    // 获取页面分享信息
-    // async wxShareData() {
-    //   var tStamp = this.$getTimeStamp();
-    //   var data = {
-    //     page_name: "goods/detail",
-    //     params: JSON.stringify({ goods_id: this.$route.query.goods_id }),
-    //     version: "1.0",
-    //     timestamp: tStamp
-    //   };
-    //   data.sign = this.$getSign(data);
-    //   let res = await WX_SHARE(data);
-    //   if (res.hasOwnProperty("response_code")) {
-    //     // console.log(res.response_data)
-    //     // 微信分享
-    //     this.$getWxData(
-    //       res.response_data.share_info.title,
-    //       res.response_data.share_info.desc,
-    //       res.response_data.share_info.pic,
-    //       res.response_data.share_info.url
-    //     );
-    //   } else {
-    //     this.$toast(res.error_message);
-    //   }
-    // },
     // --------------------------------专辑信息----------------------------------
     // 获取专辑接口信息
     async albumData() {
@@ -2122,10 +2106,10 @@ export default {
         this.$router.push({ name: "login", params: {} });
         this.$toast("用户未登录!");
       } else {
-        this.ticketLink(item.ticket_id);
+        this.ticketLink(item.ticket_id,index);
       }
     },
-    async ticketLink(ticket_id) {
+    async ticketLink(ticket_id,index) {
       this.requestState = false;
       var tStamp = this.$getTimeStamp();
       let data = {
@@ -2139,6 +2123,14 @@ export default {
         // console.log(res);
         this.$toast("领取成功！");
         this.requestState = true;
+        this.couponList = this.couponList.map((value, key) => {
+          if (key == index) {
+            value.state = 3;
+            value.use_stime = res.response_data.use_stime;
+            value.use_etime = res.response_data.use_etime;
+          }
+          return value;
+        });
       } else {
         this.$toast(res.error_message);
         this.requestState = true;

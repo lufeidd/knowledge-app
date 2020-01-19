@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 10px 15px;">
+  <div :style="style">
     <div v-if="type == 'private'">
       <div style="text-align: center;padding: 20px 0;font-size: 17px;font-weight: bold;">火把平台用户隐私条款</div>
       <div style="padding: 10px 0;">
@@ -251,16 +251,24 @@
     <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
-
+<style>
+html {
+  min-width: 0!important;
+}
+</style>
 <script>
 export default {
   data() {
     return {
+      style: 'padding: 10px 15px;',
       type: "prototype",
       checked: true,
     };
   },
   mounted() {
+    if(sessionStorage.getItem('isHuobaAndroidLogin') == 'yes' || sessionStorage.getItem('isHuobaIosLogin') == 'yes') {
+      this.style = 'padding: 10px 0;'
+    }
     this.type = this.$route.query.type;
   }
 };

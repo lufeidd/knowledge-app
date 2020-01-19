@@ -44,14 +44,14 @@
               </svg>
             </div>
             <router-link
-              :to="{name: 'mall', query: {supplier_id: item.supplier_id,title:item.brand_name,}}"
+              :to="{name: 'custompage', query: {supplier_id: item.supplier_id,title:item.brand_name, type: 'mall'}}"
               class="center"
             >
               <div class="title">
                 <div class="text">{{ item.brand_name }}</div>
               </div>
             </router-link>
-            <router-link :to="{name: 'mall', query: {supplier_id: item.supplier_id}}" class="right">
+            <router-link :to="{name: 'custompage', query: {supplier_id: item.supplier_id, type: 'mall'}}" class="right">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-next-line" />
               </svg>
@@ -344,17 +344,17 @@
   .van-stepper__input {
     color: #333;
   }
-  .van-dialog{
-    top:40%;
+  .van-dialog {
+    top: 40%;
   }
   .van-dialog .van-stepper__input {
     // background-color: rgba(54, 133, 206, 0.16);
     // color: $cl6;
   }
 }
-.van-dialog .van-button--default{
-    border:1px solid #ebedf0;
-  }
+.van-dialog .van-button--default {
+  border: 1px solid #ebedf0;
+}
 </style>
 <script>
 import {
@@ -388,7 +388,7 @@ export default {
       editIndex: 0,
       editgIndex: 0,
       editlindex: 0,
-      showCount:0,
+      showCount: 0
     };
   },
   mounted() {
@@ -439,7 +439,10 @@ export default {
     },
     confirmEdit() {
       console.log(this.goods_nums - this.oldCount + this.editCount);
-      if (this.goods_nums - this.oldCount + this.editCount <= 120 && this.editCount > 0) {
+      if (
+        this.goods_nums - this.oldCount + this.editCount <= 120 &&
+        this.editCount > 0
+      ) {
         this.productCountData(this.editDetail_id, this.editCount);
         this.cartlist[this.editIndex].act_list[
           this.editgIndex
@@ -450,9 +453,9 @@ export default {
           return value;
         });
       } else {
-        if(this.editCount <= 0){
-          this.$toast('商品件数不能小于1件~')
-        }else{
+        if (this.editCount <= 0) {
+          this.$toast("商品件数不能小于1件~");
+        } else {
           this.$toast("购物车商品总数量不能超过120件~");
         }
       }
@@ -540,34 +543,19 @@ export default {
         detail_ids
       );
     },
-    changeState(_list){
-        for (let i = 0; i < _list.length; i++) {
-          for (
-            let j = 0;
-            j < _list[i].act_list.length;
-            j++
-          ) {
-            this.cartlist[i].act_list[j].is_reach =
-              _list[i].act_list[j].is_reach;
-            this.cartlist[i].act_list[j].summary =
-              _list[i].act_list[j].summary;
-            for (
-              let k = 0;
-              k <
-              _list[i].act_list[j].goods_list.length;
-              k++
-            ) {
-              this.cartlist[i].act_list[j].goods_list[k].price =
-                _list[i].act_list[j].goods_list[
-                  k
-                ].price;
-              this.cartlist[i].act_list[j].goods_list[k].goods_desc =
-                _list[i].act_list[j].goods_list[
-                  k
-                ].goods_desc;
-            }
+    changeState(_list) {
+      for (let i = 0; i < _list.length; i++) {
+        for (let j = 0; j < _list[i].act_list.length; j++) {
+          this.cartlist[i].act_list[j].is_reach = _list[i].act_list[j].is_reach;
+          this.cartlist[i].act_list[j].summary = _list[i].act_list[j].summary;
+          for (let k = 0; k < _list[i].act_list[j].goods_list.length; k++) {
+            this.cartlist[i].act_list[j].goods_list[k].price =
+              _list[i].act_list[j].goods_list[k].price;
+            this.cartlist[i].act_list[j].goods_list[k].goods_desc =
+              _list[i].act_list[j].goods_list[k].goods_desc;
           }
         }
+      }
     },
     // 改变数量
     async productCountData(detail_id, count) {

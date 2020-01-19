@@ -25,25 +25,34 @@
         </van-col>
       </van-row>
     </div>
+    <!-- 最近搜索 -->
+    <div class="searchRecommend searchHistory" v-if="list.length>0">
+      <p class="recommend title">
+        <span class="history">最近搜索</span>
+        <span class="clear" @click="clear" v-if="list.length>0">清空</span>
+      </p>
+      <van-row type="flex" gutter="15">
+        <van-col span="6" v-for="(item,index) in list" :key="index">
+          <span class="tag" @click="searchItem(item)">{{item.content}}</span>
+        </van-col>
+      </van-row>
+    </div>
+    <!-- 热门搜索 -->
     <div
       class="searchRecommend"
       v-if="(this.type == 'brand' || this.type == 'mall') && hotSearch.length > 0"
     >
       <p class="recommend">热门搜索</p>
       <van-row type="flex" gutter="15">
-        <van-col span="6" v-for="(item,index) in hotSearch" :key="index">
-          <span class="tag" @click="hotSearchItem(item)">{{item}}</span>
-        </van-col>
-      </van-row>
-    </div>
-    <div class="searchRecommend searchHistory">
-      <p class="recommend title">
-        <span class="history">搜索历史</span>
-        <span class="clear" @click="clear">清除</span>
-      </p>
-      <van-row type="flex" gutter="15">
-        <van-col span="6" v-for="(item,index) in list" :key="index">
-          <span class="tag" @click="searchItem(item)">{{item.content}}</span>
+        <van-col span="12" v-for="(item,index) in hotSearch" :key="index">
+          <!-- <span class="tag" @click="hotSearchItem(item)">{{item}}</span> -->
+          <div class="hotContent" @click="hotSearchItem(item)">
+            <span class="hotSort first" v-if="index == 0">{{index+1}}</span>
+            <span class="hotSort second" v-if="index == 1">{{index+1}}</span>
+            <span class="hotSort third" v-if="index == 2">{{index+1}}</span>
+            <span class="hotSort" v-if="index > 2">{{index+1}}</span>
+            <span class="hotDesc">{{item}}</span>
+          </div>
         </van-col>
       </van-row>
     </div>
@@ -100,8 +109,19 @@ export default {
   },
   methods: {
     clear() {
-      this.list = [];
-      localStorage.removeItem("cmts");
+      this.$dialog
+        .confirm({
+          title: "确认清空历史记录？",
+          cancelButtonText: "取消",
+          confirmButtonText: "清空"
+        })
+        .then(() => {
+          this.list = [];
+          localStorage.removeItem("cmts");
+        })
+        .catch(() => {
+          // on cancel
+        });
     },
     // 搜索按钮
     searchTo(_type) {
@@ -131,7 +151,7 @@ export default {
           var _query = {};
           _query.type = "mall";
           _query.searchContent = this.searchHintData.search;
-          if(this.$route.query.supplier_id != "undefined") {
+          if (this.$route.query.supplier_id != "undefined") {
             _query.supplier_id = this.$route.query.supplier_id;
           }
           this.$router.push({
@@ -176,7 +196,7 @@ export default {
     },
     onSearch() {
       if (
-        this.searchHintData.search.trim() == '' ||
+        this.searchHintData.search.trim() == "" ||
         this.searchHintData.search.length == 0
       ) {
         this.$toast("请输入您要搜索的内容！");
@@ -235,7 +255,8 @@ export default {
     //读取本地历史记录
     getLocalItem() {
       var list = JSON.parse(localStorage.getItem("cmts") || "[]");
-      this.list = list;
+      // console.log(list)
+      if(list)this.list = list;
     },
     toResult(item) {
       // return;
@@ -285,7 +306,6 @@ export default {
       data.query = q;
 
       this.$router.push(data);
-
     },
     searchItem(item) {
       var data = {};

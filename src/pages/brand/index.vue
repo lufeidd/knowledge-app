@@ -138,13 +138,16 @@ export default {
       activekey: 0
     };
   },
+  destroyed() {
+    // this.$toast(99999)
+    // location.reload();
+  },
   mounted() {
     if (this.$route.query.title) document.title = this.$route.query.title;
     this.brand_id = parseInt(this.$route.query.brand_id);
     if (this.brand_id) {
       this.brandGetData();
     } else {
-      this.$toast("商户信息丢失，请返回重新访问页面!");
       this.$router.replace({
         name: "personalIndex"
       });
@@ -222,10 +225,10 @@ export default {
       let res = await BRAND_INFO(data);
       if (res.hasOwnProperty("response_code")) {
         this.brandData = res.response_data;
-
         // 获取页面分享信息
-        if (this.isWxLogin) this.wxShareData();
-
+        var _pageName = "brand/index";
+        var _params = JSON.stringify({ brand_id: this.$route.query.brand_id });
+        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
         // title
         document.title = this.brandData.name;
 
@@ -252,30 +255,31 @@ export default {
         this.$toast(res.error_message);
       }
     },
-    // 获取页面分享信息
-    async wxShareData() {
-      var tStamp = this.$getTimeStamp();
-      var data = {
-        page_name: "brand/index",
-        params: JSON.stringify({ brand_id: this.$route.query.brand_id }),
-        version: "1.0",
-        timestamp: tStamp
-      };
-      data.sign = this.$getSign(data);
-      let res = await WX_SHARE(data);
-      if (res.hasOwnProperty("response_code")) {
-        // console.log(res.response_data)
-        // 微信分享
-        this.$getWxData(
-          res.response_data.share_info.title,
-          res.response_data.share_info.desc,
-          res.response_data.share_info.pic,
-          res.response_data.share_info.url
-        );
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
+
+    // // 获取页面分享信息
+    // async wxShareData() {
+    //   var tStamp = this.$getTimeStamp();
+    //   var data = {
+    //     page_name: "brand/index",
+    //     params: JSON.stringify({ brand_id: this.$route.query.brand_id }),
+    //     version: "1.0",
+    //     timestamp: tStamp
+    //   };
+    //   data.sign = this.$getSign(data);
+    //   let res = await WX_SHARE(data);
+    //   if (res.hasOwnProperty("response_code")) {
+    //     // console.log(res.response_data)
+    //     // 微信分享
+    //     this.$getWxData(
+    //       res.response_data.share_info.title,
+    //       res.response_data.share_info.desc,
+    //       res.response_data.share_info.pic,
+    //       res.response_data.share_info.url
+    //     );
+    //   } else {
+    //     this.$toast(res.error_message);
+    //   }
+    // },
     // 列表下拉加载
     programLoad() {
       this.columnListData();
@@ -372,8 +376,9 @@ export default {
     },
     toMall() {
       this.$router.push({
-        name: "mall",
+        name: "custompage",
         query: {
+          type: 'mall',
           supplier_id: this.brandData.supplier_id,
           title: this.brandData.name
         }

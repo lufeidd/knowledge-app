@@ -18,7 +18,6 @@ import { LOGIN_PARTERNER } from "./../apis/passport.js";
 
 export default {
   install: function (Vue, options) {
-
     // 省市区
     // 省
     Vue.prototype.provinceList = {};
@@ -104,10 +103,12 @@ export default {
         console.log("unionid:", _unionid, "parterner:", res.response_data);
         // 登录成功exist = 1；没有绑定过 exist = 0；
         if (res.response_data.exist == 0) {
+
           this.$router.replace({
-            name: "bindphone",
+            name: "bindPhone2.0",
             query: { bindtype: _type, outerId: _unionid }
           });
+
         }
         if (res.response_data.exist == 1) {
           // brand_id等信息
@@ -232,6 +233,7 @@ export default {
       let data = {
         page_name: _pageName,
         params: _params,
+        home_id: localStorage.getItem('home_id'),
         timestamp: tStamp,
         version: "1.1"
       };
@@ -318,7 +320,40 @@ export default {
           time--
           options.disabled = true
           options.timeMsg = time + 's'
-          // console.log(time)
+        }, 1000)
+      } else {
+        self.$toast('时间格式不正确')
+      }
+    }
+
+
+    // 验证码倒计时，刷新保留当前手机倒计时时间
+    Vue.prototype.$countDown2 = function (cdata) {
+      if (!sessionStorage.getItem('phone')) {
+        sessionStorage.setItem('phone', cdata.phone);
+      } else {
+        if (cdata.phone != sessionStorage.getItem('phone')) {
+          sessionStorage.setItem('phone', cdata.phone)
+          sessionStorage.setItem('second', 60);
+          cdata.time = 60;
+          clearInterval(this.clock)
+        }
+      }
+      if (!sessionStorage.getItem('second')) {
+        sessionStorage.setItem('second', cdata.time);
+      }
+
+      let self = this
+      let time = cdata.time
+      if (typeof time === 'number') {
+        this.clock = window.setInterval(() => {
+          if (time === 0) {
+            clearInterval(this.clock)
+            return false
+          }
+          time--
+          cdata.time = time;
+          sessionStorage.setItem('second', cdata.time)
         }, 1000)
       } else {
         self.$toast('时间格式不正确')
@@ -349,7 +384,6 @@ export default {
             if (m < 10) m = '0' + m
             if (s < 10) s = '0' + s
             let res = h + ":" + m + ":" + s
-
             options.date = res;
             // console.log(res)
           }, 1000)
@@ -585,8 +619,9 @@ export default {
           break;
         // 供应商商城首页
         case 'mall/index':
-          __name = 'mall';
+          __name = 'custompage';
           queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
+          queryTmp.type = 'mall';
 
           break;
         // 公号首页
@@ -606,8 +641,8 @@ export default {
           queryTmp.url = dataTmp.params.url;
           break;
         // 优惠券详情
-        case 'ticket/link/detal':
-          __name = 'coupon/receive'
+        case 'ticket/link/detail':
+          __name = 'couponreceive'
           queryTmp.ticket_id = dataTmp.params.ticket_id;
           break;
         default:
@@ -992,6 +1027,54 @@ export default {
           }
         }
       }
+    }
+
+    // 配合正则，表单字符指定位置添加空格
+    Vue.prototype.$inputSpace = function (code, type) {
+      var str = "";
+      var _bool = false;
+      var _len = code.length;
+      switch (type) {
+        // 八位验证码，第五位加空格
+        case 'code':
+          Array.from(code, (item, index) => {
+            if (index == 3) {
+              str += item + " ";
+            } else {
+              str += item;
+            }
+          });
+          Array.from(str, (item, index) => {
+            if (item == " " && index == _len) {
+              _bool = true;
+            }
+          });
+          break;
+        // 手机号码，第四位以及第八位加空格 150 0000 0000
+        case 'tel':
+          // 添加空格
+          Array.from(code, (item, index) => {
+            if (index == 2 || index == 6) {
+              str += item + " ";
+            } else {
+              str += item;
+            }
+          });
+          // 去除空格
+          Array.from(str, (item, index) => {
+            if(item == " " && (str.length == 4 || str.length == 9)) {
+                _bool = true;
+            }
+          });
+          break;
+        default:
+          break;
+      }
+
+      if (_bool && this.$store.state.isDel) {
+        str = str.substring(0, str.length - 1);
+      }
+      return str;
     }
 
   }

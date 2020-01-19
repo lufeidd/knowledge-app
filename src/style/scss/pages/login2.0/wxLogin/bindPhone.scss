@@ -1,0 +1,157 @@
+/*
+ * author: lrf
+ * date:2020/1/15
+ */
+
+@charset "UTF-8";
+
+#bindPhonePage {
+  background-color: $white;
+  min-height: 100%;
+  overflow: hidden;
+  p {
+    margin: 0;
+  }
+  .action_wrapper {
+    margin-top: 143px;
+    padding: 0 40px;
+    .phone {
+      margin-bottom: 23px;
+    }
+    .van-field__control {
+      padding: 10px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #A7A7A7;
+      line-height: 20px;
+    }
+
+    .van-cell:not(:last-child)::after,
+    .van-cell::after {
+      content: ' ';
+      position: absolute;
+      pointer-events: none;
+      box-sizing: border-box;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      -webkit-transform: scaleY(.5);
+      transform: scaleY(.5);
+      border-bottom: 1px solid #DCDCDC;
+    }
+
+    .van-button--danger {
+      border-radius: 3px;
+      .van-button__text {
+        font-size: 15px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #FFFFFF;
+      }
+    }
+  }
+  .info {
+    margin: 65px 40px 185px 40px;
+    font-size: 18px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #333333;
+  }
+  .leave {
+    width: 255px;
+    height: 126px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    .leave_remind {
+      margin: 20px auto;
+      width: 157px;
+      font-size: 15px;
+      font-family: PingFang SC;
+      font-weight: bold;
+      color: #333333;
+      line-height: 20px;
+      text-align: center;
+    }
+    .btn_wrapper {
+      display: flex;
+      height: 46px;
+      line-height: 46px;
+      border-top: 0.5px solid #E5E5E5;
+      .cancel {
+        flex: 1;
+        text-align: center;
+        border-right: 0.5px solid #E5E5E5;
+        font-size: 16px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #999999;
+      }
+      .confirm {
+        flex: 1;
+        text-align: center;
+        font-size: 16px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #333333;
+      }
+    }
+  }
+  .register {
+    width: 255px;
+    //height: 265px;
+    .title {
+      margin: 20px 0 25px 0;
+      text-align: center;
+      font-size: 16px;
+      font-family: PingFang SC;
+      font-weight: bold;
+      color: #333333;
+    }
+    .content_one, .content_two {
+      margin: 0 15px;
+      font-size: 13px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #333333;
+      line-height: 18px;
+    }
+    .prototype {
+      color: #F05654;
+    }
+    .btn_wrapper {
+      display: flex;
+      margin-top: 20px;
+      margin-bottom: 15px;
+      .disagree {
+        flex-grow: 1;
+        text-align: center;
+      }
+      .agree {
+        flex-grow: 1;
+        text-align: center;
+      }
+      .van-button {
+        width: 100px;
+      }
+      .van-button--danger {
+        border-radius: 3px;
+        .van-button__text {
+          font-size: 15px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #FFFFFF;
+        }
+      }
+      .van-button--default {
+        border-radius: 3px;
+        .van-button__text {
+          font-size: 15px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #999999;
+        }
+      }
+    }
+  }
+}
+

@@ -42,10 +42,10 @@
       background-color: #fff;
       padding: 15px;
       .ratiobox {
-        min-width: 129px;
+        min-width: 95px;
         .bookImg {
           display: block;
-          @include ratioBox (100%, 71.3%, 1px solid $greyLight, contain, $white, null);
+          @include ratioBox (100%, 61.58%, 1px solid $greyLight, contain, $white, null);
           border-radius: 2.5px;
         }
       }
@@ -79,7 +79,7 @@
     }
     .content.book{
       .ratiobook {
-        min-width: 129px;
+        min-width: 95px;
         .bookimg {
           display: block;
           @include ratioBox (100%, 100%, 1px solid $greyLight, contain, $white, null);
@@ -89,7 +89,7 @@
     }
     .content.audio{
       .ratiobox {
-        min-width: 129px;
+        min-width: 95px;
         .bookImg {
           display: block;
           @include ratioBox (100%, 61.8%, 1px solid $greyLight, contain, $white, null);
@@ -121,5 +121,46 @@
     }
   .van-tabs__wrap--scrollable .van-tab{
       flex:0;
+  }
+  // 综合列表
+  .summaryList.huoba{
+    margin-top: 0;
+  }
+  .summaryList{
+    background-color: #fff;
+    margin-top: 10px;
+    padding: 15px;
+    .head{
+      @include textOverflow;
+      .verticleLine{
+        display: inline-block;
+        width: 2.5px;
+        height: 11px;
+        background-color: $redLight;
+        border-radius: 2.5px;
+      }
+      .brandName{
+        font-size: $fontSize + 2;
+      }
+    }
+    .brandContent{
+      padding:10px 0;
+      @include displayFlex(flex, null, center);
+      img{border-radius: 50%;}
+      .bname{
+        font-size: $fontSize + 1;
+        margin-left: 10px;
+        @include textOverflow;
+      }
+    }
+    .readMore{
+      color: $cl9;
+      text-align: center;
+      margin-top: 15px;
+      .icon{font-size: $fontSize - 2;}
+    }
+    .content{
+      padding: 15px 0;
+    }
   }
 }

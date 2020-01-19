@@ -13,12 +13,20 @@
       </div>
     </div>
     <div class="route" v-if="navData.fold">
-      <router-link :to="navData.homeLink" class="link" v-if="navData.home">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-home-line" />
-        </svg>
-        <div>首页</div>
-      </router-link>
+      <div @click="gotoLink" class="link" v-if="navData.home">
+        <template v-if='home_id == "all"'>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-discover-line" />
+          </svg>
+          <div>发现</div>
+        </template>
+        <template v-else>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-home-line" />
+          </svg>
+          <div>首页</div>
+        </template>
+      </div>
       <!-- 公号首页 -->
       <router-link
         v-if="type == 'brand' && navData.search"
@@ -169,6 +177,7 @@
 <script>
 import { CART_INFO } from "../apis/shopping";
 import { USER_HOMEPAGE } from "../apis/user";
+import { FAXIAN } from "../apis/user";
 export default {
   // name: "easyNav",
   props: ["type", "isShow"],
@@ -185,19 +194,37 @@ export default {
         cart: true,
         cartLink: "/cart",
         type: "brand",
-        loginLink:"/login/index",
+        loginLink: "/login/index",
         goods_nums: 0
       },
-      is_Login:null,
+      is_Login: null
     };
   },
   mounted() {
+    this.home_id = localStorage.getItem("home_id");
     if (this.type === undefined) {
       this.type = this.navData.type;
     }
     this.isLogin();
   },
+  destroyed() {
+    this.navData.fold = false;
+  },
   methods: {
+    gotoLink() {
+      if (this.home_id == "all") {
+        this.$router.push({
+          name: "custompage",
+          query: { type: 'find' }
+        });
+      } else {
+        this.$router.push({
+          name: "brand",
+          query: { brand_id: localStorage.getItem("home_id") }
+        });
+        location.reload();
+      }
+    },
     foldAction() {
       this.navData.fold = !this.navData.fold;
     },
@@ -211,7 +238,7 @@ export default {
       let res = await USER_HOMEPAGE(data);
 
       if (res.hasOwnProperty("response_code")) {
-        if(res.response_data.hasOwnProperty('is_login')) {
+        if (res.response_data.hasOwnProperty("is_login")) {
           this.is_Login = res.response_data.is_login;
           localStorage.setItem("loginState", res.response_data.is_login);
         }

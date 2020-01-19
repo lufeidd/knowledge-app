@@ -577,7 +577,6 @@
         </div>
       </div>
     </div>
-    <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="mall" :isShow="true"></EazyNav>
   </div>
 </template>
@@ -600,24 +599,9 @@ import {
   BRAND_SEARCH_GOODS_GETS,
   PAGE_GET
 } from "../../apis/brand.js";
-import { WX_SHARE } from "../../apis/public.js";
 export default {
-  // components: {
-  //   easyNav
-  // },
   data() {
     return {
-      // navData: {
-      //   fold: false,
-      //   home: true,
-      //   homeLink: "/brand/index",
-      //   search: true,
-      //   searchLink: "/search",
-      //   personal: true,
-      //   personalLink: "/personal/index",
-      //   type: "mall",
-      //   supplier_id: null
-      // },
       swiperOption: {
         loop: true,
         autoplay: {
@@ -649,22 +633,11 @@ export default {
     };
   },
   mounted() {
-    // this.page_id = this.$route.query.page_id;
-    // this.page_id = 109;
     this.supplier_id = this.$route.query.supplier_id;
     this.getData();
   },
   updated() {
     $("#customPage").css("backgroundColor", this.bgColor);
-  },
-  // 进入当前页面
-  beforeRouteEnter(to, from, next) {
-    // console.log(to, from ,next);
-
-    // 外链进入
-    // if(from.name != null) {
-    // }
-    next();
   },
   methods: {
     inputText() {

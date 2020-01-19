@@ -320,7 +320,7 @@
     },
     created() {
       this.code = this.$route.query.code;
-      this.redeem = decodeURIComponent(this.$route.query.redeem_id).replace(' ', '+');
+      this.redeem = decodeURIComponent(this.$route.query.redeem_id).replace(/\s/g, '+');
       sessionStorage.setItem('hash', window.location.hash);
     },
     mounted() {

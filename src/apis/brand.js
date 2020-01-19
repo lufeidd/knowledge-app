@@ -16,3 +16,9 @@ export const BRAND_PAGE_MALL_INDEX = query => req('post', '/page/mall/index', qu
 
 //自定义商城
 export const PAGE_GET = query => req('post', '/page/get', query);
+
+//商品搜索综合
+export const SEARCH_GOODS_SUMMARY = query => req('post','/search/goods/summary',query)
+
+//火把号搜索
+export const SEARCH_BRAND_GETS = query => req('post','/search/brand/gets',query)
