@@ -140,6 +140,7 @@ export default {
       timeoutId: 0,
       fileHideUrl: '',
       url: '',
+      detailImgRouter: '',
       packageData: {
         base: {},
         brand_info: {},
@@ -151,6 +152,10 @@ export default {
       emailValue: '',
       activeName: 'a'
     }
+  },
+  beforeRouteLeave(to,from,next){
+    this.detailImgRouter&&this.detailImgRouter.close()
+    next()
   },
   mounted () {
     this.goods_id = this.$route.query.goods_id;
@@ -268,9 +273,15 @@ export default {
       if (this.packageData.base.price != 0 && this.packageData.base.is_payed == '0') {
         this.buyAction(this.goods_id);
       } else if (this.packageData.base.is_payed != '0') {
-        ImagePreview(item)
+        this.detailImgRouter = ImagePreview({
+          images: item
+        });
+        //ImagePreview(item)
       } else if (this.packageData.base.price == 0) {
-        ImagePreview(item)
+        this.detailImgRouter = ImagePreview({
+          images: item
+        });
+        //ImagePreview(item)
       }
     },
     textPackIcon () {
