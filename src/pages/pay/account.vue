@@ -39,7 +39,7 @@
       <van-cell
         title
         is-link
-        :value="'优惠￥'+discount_price.toFixed(2)"
+        :value="discount_price_desc"
         @click="showCoupon"
         style="margin:5px 0;"
         v-if="ticket_lists.canuse.length>0"
@@ -508,6 +508,7 @@ export default {
       total_money: 0,
       order_ticket_ids: "",
       single_activity_id: null,
+      discount_price_desc:"",
       groupbuy_id: null,
       groupbuy_open_id: null,
       open_id: null
@@ -548,6 +549,12 @@ export default {
         this.discount_price = res.response_data.ticket_price;
         this.ticket_lists = res.response_data.ticket_lists;
         this.single_activity_id = res.response_data.single_activity_id;
+        if (this.discount_price > 0) {
+          this.discount_price_desc = "优惠￥" + this.discount_price;
+        } else {
+          this.discount_price_desc =
+            this.ticket_lists.canuse.length + "张券可用";
+        }
         // this.pay_price = this.total_money - this.discount_price;
         for (var i = 0; i < this.ticket_lists.canuse.length; i++) {
           if (this.ticket_lists.canuse[i].selected == 0) {
@@ -686,6 +693,7 @@ export default {
         this.order_id = res.response_data.order_id;
         this.pay_id = res.response_data.pay_id;
         this.open_id = res.response_data.groupbuy_open_id;
+        this.discount_price = res.response_data.ticket_price;
 
         // 交易支付请求发起
         if (_index == 1) this.cashierPayData(this.pay_id);
@@ -820,6 +828,12 @@ export default {
           }
         }
       }
+        if (this.discount_price > 0) {
+          this.discount_price_desc = "优惠￥" + this.discount_price;
+        } else {
+          this.discount_price_desc =
+            this.ticket_lists.canuse.length + "张券可用";
+        }
       // this.pay_price =
       //   this.total_money + this.dispatch_price - this.discount_price;
     },
@@ -841,6 +855,12 @@ export default {
             this.order_ticket_ids += this.ticket_lists.canuse[i].id;
           }
         }
+      }
+      if (this.discount_price > 0) {
+        this.discount_price_desc = "优惠￥" + this.discount_price;
+      } else {
+        this.discount_price_desc =
+          this.ticket_lists.canuse.length + "张券可用";
       }
       // this.pay_price =
       //   this.total_money + this.dispatch_price - this.discount_price;
