@@ -8,9 +8,8 @@
         class="phone_num"
         v-model="phone"
         clearable
-        maxlength="11"
         placeholder="请输入手机号"
-        @input="checkSubmit ('phone')"
+        @input="checkSubmit ()"
       />
     </div>
     <div class="button_wrapper" v-if="submitData.disabled">
@@ -66,20 +65,20 @@
     },
     methods: {
       // 格式校验
-      checkSubmit(type) {
-        // var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
-        // if (type === "phone") {
-        //   if (regPhone.test(this.phone)) {
-        //     this.codeData.disabled = false;
-        //   } else {
-        //     this.codeData.disabled = true;
-        //   }
-        // }
-        // if (regPhone.test(this.phone) && this.code.length == 4) {
-        //   this.submitData.disabled = false;
-        // } else {
-        //   this.submitData.disabled = true;
-        // }
+      checkSubmit() {
+        // 配合正则，表单字符指定位置添加空格
+        var _code = this.phone
+          .replace(/[^0-9]/g, "")
+          .substring(0, 11);
+        var _type = 'tel';
+        this.phone = this.$inputSpace(_code, _type);
+
+        var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
+          if (regPhone.test(this.phone.replace(/\s/g, ''))) {
+            this.submitData.disabled = false;
+          } else {
+            this.submitData.disabled = true;
+          }
       },
     }
   }

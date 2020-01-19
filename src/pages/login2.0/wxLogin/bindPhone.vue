@@ -9,15 +9,14 @@
         placeholder="请输入手机号"
         error-message
         type="tel"
-        maxlength="11"
-        @input="checkSubmit ('phone')"
+        @input="checkSubmit ()"
       />
       <template v-if="submitData.disabled">
         <van-button slot="button" size="large" type="danger" disabled>获取验证码</van-button>
-       </template>
+      </template>
       <template v-else>
         <van-button slot="button" size="large" type="danger" @click="getCode">获取验证码</van-button>
-       </template>
+      </template>
     </div>
     <van-popup v-model="leavePopShow" class="leave">
       <p class="leave_remind">
@@ -56,7 +55,8 @@
 </template>
 
 <script>
-  import { PASSPORT_CHECKPHONE, REGISTER_ITEMS } from "@/apis/passport.js";
+  import {PASSPORT_CHECKPHONE, LOGIN_BIND_PARTERNER, REGISTER_ITEMS} from "@/apis/passport.js";
+
   export default {
     data() {
       return {
@@ -64,7 +64,7 @@
         isRegister: null, // 0 未注册 1 已注册
         content: '',
         submitData: {
-          disabled: false
+          disabled: true
         },
         leavePopShow: false,
         registerPopShow: false
@@ -73,19 +73,25 @@
     methods: {
       checkSubmit() {
         // 配合正则，表单字符指定位置添加空格
-        // var _code = this.codeNum
-        //   .toLocaleUpperCase()
-        //   .replace(/[^a-zA-Z0-9]/g, "")
-        //   .substring(0, 8);
-        // var _type = 'code';
-        // this.codeNum = this.$inputSpace(_code, _type);
+        var _code = this.phone
+          .replace(/[^0-9]/g, "")
+          .substring(0, 11);
+        var _type = 'tel';
+        this.phone = this.$inputSpace(_code, _type);
+
+        var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
+        if (regPhone.test(this.phone.replace(/\s/g, ''))) {
+          this.submitData.disabled = false;
+        } else {
+          this.submitData.disabled = true;
+        }
       },
       //判断手机号是否已注册
       async checkPhone() {
         var tStamp = this.$getTimeStamp();
         let data = {
           timestamp: tStamp,
-          mobile: this.phone,
+          mobile: this.phone.replace(/\s/g, ''),
           version: "1.1"
         };
         data.sign = this.$getSign(data);
@@ -97,6 +103,33 @@
           // console.log(66,this.isRegister);
         } else {
           this.isRegister = null;
+          this.$toast(res.error_message);
+        }
+      },
+      // 绑定手机号  还需修改
+      async bindphoneData() {
+        // console.log(localStorage.getItem('nickname'));
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          mobile: this.phone,
+          header_pic: localStorage.getItem('headimg'),
+          auth_code: this.code,
+          outer_id: this.outerId,
+          type: this.bindtype,
+          outer_name: localStorage.getItem('nickname'),
+          openid: localStorage.getItem('openid'),
+          source_url: localStorage.getItem("defaultLink"),
+          version: "1.0"
+        };
+        data.sign = this.$getSign(data);
+        let res = await LOGIN_BIND_PARTERNER(data);
+        console.log("bindphone:", res.response_data);
+        if (res.hasOwnProperty("response_code")) {
+          // 手机号未绑定到其他微信 // 跳转回唤醒登录页
+
+        } else {
+          // 绑定失败
           this.$toast(res.error_message);
         }
       },
@@ -118,9 +151,9 @@
         this.checkPhone().then(function () {
           console.log(_this.isRegister);
           if (_this.isRegister == 0) {  // 未注册
-              console.log('未注册');
-              _this.registerItems();
-              _this.registerPopShow = true; //  弹注册条款
+            console.log('未注册');
+            _this.registerItems();
+            _this.registerPopShow = true; //  弹注册条款
 
           } else if (_this.isRegister == 1) { // 已注册
             this.bindphoneData();
@@ -128,14 +161,16 @@
         });
       },
       agree() {
-        this.$router.replace({name: 'verification2.0', query: {phone: ''}});
+        this.$router.replace({name: 'verification2.0', query: {phone: this.phone}});
       },
       disagree() {
         this.registerPopShow = false;
       }
     },
     mounted() {
-
+      // this.bindtype = parseInt(this.$route.query.bindtype);
+      // this.outerId = this.$route.query.outerId;
+      // this.activity_id = this.$route.query.activity_id ? this.$route.query.activity_id : false;
     }
 
   }
