@@ -325,6 +325,7 @@
         </span>
       </div>
       <van-tabs v-model="active1" title-active-color="#f05654" title-inactive-color="#999">
+        <van-tab :title="useCoupon"></van-tab>
         <van-tab :title="nouseCoupon">
           <div class="content">
             <div v-for="(item,index) in ticket_lists.nouse" :key="index">
@@ -497,7 +498,7 @@ export default {
       couponModel: false,
       nocouponModel: false,
       active: 0,
-      active1: 0,
+      active1: 1,
       nouseCoupon: "",
       useCoupon: "",
       ticket_price: null,
