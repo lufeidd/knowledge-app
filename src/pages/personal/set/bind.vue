@@ -59,7 +59,7 @@ export default {
     this.$getWxCode();
     if (
       this.wxCodeStr.length > 6 &&
-      sessionStorage.getItem("gotoLogin") == "yes"
+      localStorage.getItem("gotoLogin") == "yes"
     )
       this.$getWxLoginData();
   },
@@ -82,7 +82,7 @@ export default {
 
       // 出错提示
       if (res.hasOwnProperty("response_code")) {
-        sessionStorage.setItem("gotoLogin", "yes");
+        localStorage.setItem("gotoLogin", "yes");
         this.$wxLogin();
       } else {
         this.$toast(res.error_message);

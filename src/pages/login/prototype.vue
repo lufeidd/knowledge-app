@@ -253,21 +253,24 @@
 </template>
 <style>
 html {
-  min-width: 0!important;
+  min-width: 0 !important;
 }
 </style>
 <script>
 export default {
   data() {
     return {
-      style: 'padding: 10px 15px;',
+      style: "padding: 10px 15px;",
       type: "prototype",
-      checked: true,
+      checked: true
     };
   },
   mounted() {
-    if(sessionStorage.getItem('isHuobaAndroidLogin') == 'yes' || sessionStorage.getItem('isHuobaIosLogin') == 'yes') {
-      this.style = 'padding: 10px 0;'
+    if (
+      localStorage.getItem("isHuobaAndroidLogin") == "yes" ||
+      localStorage.getItem("isHuobaIosLogin") == "yes"
+    ) {
+      this.style = "padding: 10px 0;";
     }
     this.type = this.$route.query.type;
   }

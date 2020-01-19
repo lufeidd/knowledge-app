@@ -51,7 +51,7 @@ export default {
     };
   },
   created() {
-    sessionStorage.setItem("originLink", 1);
+    localStorage.setItem("originLink", 1);
   },
   mounted() {
     document.title = "兑换码";

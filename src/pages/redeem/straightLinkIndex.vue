@@ -42,7 +42,7 @@
     },
     created() {
       this.redeem = this.$route.query.redeem;
-      sessionStorage.setItem('originLink', 1);
+      localStorage.setItem('originLink', 1);
     },
     mounted() {
       this.getDetail();

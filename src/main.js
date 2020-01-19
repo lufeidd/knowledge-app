@@ -184,16 +184,13 @@ A、localStorage
   9、get_count：记录授权次数，最多3次
   10、linkFrom：记录页面进入方式，gzh：来自公众号
   11、home_id：记录原始页面，放置到快速导航入口
-
-B、sessionStorage
-  1、isHuobaAndroidLogin：记录当前是针对webview:火把的Android端
-  2、isHuobaIosLogin：记录当前是针对webview:火把的ios端
-  3、isWxLogin：记录当前是微信端
-  4、hasHeader：记录是否已经设置过头信息
-  5、gotoLogin：记录是否允许微信第三方登录
-  6、phone：记录验证码手机号
-  7、second：记录验证码手机号对应倒计时
-  8、isNullPage：记录当前路由是否携带nullPage，如果携带，进入页面需要刷新一次
+  12、isHuobaAndroidLogin：记录当前是针对webview:火把的Android端
+  13、isHuobaIosLogin：记录当前是针对webview:火把的ios端
+  14、isWxLogin：记录当前是微信端
+  15、hasHeader：记录是否已经设置过头信息
+  16、gotoLogin：记录是否允许微信第三方登录
+  17、phone：记录验证码手机号
+  18、second：记录验证码手机号对应倒计时
 
 路由参数
 
@@ -276,15 +273,7 @@ router.beforeEach((to, from, next) => {
   }
   next()
 
-  // 给replaceUrl拼接参数
-  sessionStorage.setItem('isNullPage', 'no');
-  if(replaceUrl.indexOf('nullPage') != 1 && sessionStorage.getItem('isWxLogin') == 'yes') {
-    // 携带nullPage进入页面需要刷新一次
-    sessionStorage.setItem('isNullPage', 'yes');
-    next()
-  }
-  next()
-
+  // 过滤路由参数
   for (var i in to.query) {
     var _bool = true;
     if (i == 'home_id') {
@@ -293,7 +282,7 @@ router.beforeEach((to, from, next) => {
     }
     next()
     // 记录完原始公号后路由去除home_id
-    if (sessionStorage.getItem('isWxLogin') == 'yes') {
+    if (localStorage.getItem('isWxLogin') == 'yes') {
       next()
       // 微信端，将参数nullPage屏蔽
       // 非微信端，不用屏蔽nullPage
@@ -384,13 +373,12 @@ router.beforeEach((to, from, next) => {
     localStorage.setItem('defaultLink', localStorage.getItem('routerLink'));
     next();
   }
-
   next();
 
   // 需要微信端打开，引导微信内打开
   if (to.meta.isWxLogin) {
     next();
-    if (sessionStorage.getItem("isWxLogin") == "no") {
+    if (localStorage.getItem("isWxLogin") == "no") {
       next();
       if (replaceUrl.indexOf("nullPage") == -1) {
         next();
@@ -412,7 +400,7 @@ router.beforeEach((to, from, next) => {
   // 引导app端打开
   if (to.meta.isAppLogin) {
     next();
-    if (sessionStorage.getItem("isHuobaIosLogin") == "no" && sessionStorage.getItem("isHuobaAndroidLogin") == "no") {
+    if (localStorage.getItem("isHuobaIosLogin") == "no" && localStorage.getItem("isHuobaAndroidLogin") == "no") {
       next();
       if (replaceUrl.indexOf("nullPage") == -1) {
         next();
@@ -430,11 +418,12 @@ router.beforeEach((to, from, next) => {
     }
   }
   next();
-
+  
   window.location.replace(replaceUrl); // 重定向跳转
   next();
+
   // 相同页面跳转刷新，除个别不需要刷新的页面外，比如brand/index
-  if ((from.path == to.path && !to.meta.unreload) || from.fullPath.indexOf("nullPage") != -1 || sessionStorage.getItem('isNullPage') == 'yes') {
+  if (from.path == to.path && !to.meta.unreload || !localStorage.getItem("isWxLogin")) {
     location.reload();
     next();
   }

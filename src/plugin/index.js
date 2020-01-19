@@ -329,18 +329,18 @@ export default {
 
     // 验证码倒计时，刷新保留当前手机倒计时时间
     Vue.prototype.$countDown2 = function (cdata) {
-      if (!sessionStorage.getItem('phone')) {
-        sessionStorage.setItem('phone', cdata.phone);
+      if (!localStorage.getItem('phone')) {
+        localStorage.setItem('phone', cdata.phone);
       } else {
-        if (cdata.phone != sessionStorage.getItem('phone')) {
-          sessionStorage.setItem('phone', cdata.phone)
-          sessionStorage.setItem('second', 60);
+        if (cdata.phone != localStorage.getItem('phone')) {
+          localStorage.setItem('phone', cdata.phone)
+          localStorage.setItem('second', 60);
           cdata.time = 60;
           clearInterval(this.clock)
         }
       }
-      if (!sessionStorage.getItem('second')) {
-        sessionStorage.setItem('second', cdata.time);
+      if (!localStorage.getItem('second')) {
+        localStorage.setItem('second', cdata.time);
       }
 
       let self = this
@@ -353,7 +353,7 @@ export default {
           }
           time--
           cdata.time = time;
-          sessionStorage.setItem('second', cdata.time)
+          localStorage.setItem('second', cdata.time)
         }, 1000)
       } else {
         self.$toast('时间格式不正确')
@@ -792,7 +792,6 @@ export default {
           }
         }
       } else {
-        // this.$toast(res.error_message);
         window.clearInterval(this.checkPayTime);
         this.$toast("购买失败");
         if (localStorage.getItem('routerLink').indexOf('/ebook/detail') != -1) {
@@ -937,31 +936,31 @@ export default {
     // 获取当前设备信息，微信端第一次访问提示授权
     Vue.prototype.$setLoginData = async function () {
       // 微信授权状态
-      sessionStorage.setItem("gotoLogin", "no");
+      localStorage.setItem("gotoLogin", "no");
       // 微信端
-      sessionStorage.setItem("isWxLogin", "no");
+      localStorage.setItem("isWxLogin", "no");
       // 针对webview:火把的ios端
-      sessionStorage.setItem("isHuobaIosLogin", "no");
+      localStorage.setItem("isHuobaIosLogin", "no");
       // 针对webview:火把的Android端
-      sessionStorage.setItem("isHuobaAndroidLogin", "no");
+      localStorage.setItem("isHuobaAndroidLogin", "no");
       // 是否设置过头信息
-      sessionStorage.setItem("hasHeader", "no");
+      localStorage.setItem("hasHeader", "no");
       var u = navigator.userAgent;
       var _ios = u.toLowerCase().indexOf("huoba:ios") > -1;
       var _android = u.toLowerCase().indexOf("huoba:android") > -1;
       var _wx = u.toLowerCase().match(/MicroMessenger/i) == "micromessenger";
       var _hasHeader = u.toLowerCase().indexOf("huoba:") > -1;
-      if (_hasHeader) sessionStorage.setItem("hasHeader", "yes");
+      if (_hasHeader) localStorage.setItem("hasHeader", "yes");
       if (_ios) {
         // 针对webview:火把的ios端
-        sessionStorage.setItem("isHuobaIosLogin", "yes");
+        localStorage.setItem("isHuobaIosLogin", "yes");
       } else if (_android) {
         // 针对webview:火把的Android端
-        sessionStorage.setItem("isHuobaAndroidLogin", "yes");
+        localStorage.setItem("isHuobaAndroidLogin", "yes");
       } else if (_wx) {
         // 微信端
         // 未授权时微信端访问授权页面
-        sessionStorage.setItem("isWxLogin", "yes");
+        localStorage.setItem("isWxLogin", "yes");
         if (
           localStorage.getItem("openid") == "undefined" ||
           localStorage.getItem("openid") == undefined ||
@@ -1023,7 +1022,7 @@ export default {
                 console.log("error:", error);
               });
           } else {
-            this.$toast("未获取到code");
+            console.log("未获取到code");
           }
         }
       }
@@ -1062,8 +1061,8 @@ export default {
           });
           // 去除空格
           Array.from(str, (item, index) => {
-            if(item == " " && (str.length == 4 || str.length == 9)) {
-                _bool = true;
+            if (item == " " && (str.length == 4 || str.length == 9)) {
+              _bool = true;
             }
           });
           break;

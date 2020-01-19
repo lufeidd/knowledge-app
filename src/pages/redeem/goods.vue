@@ -158,8 +158,8 @@
       goodsRedeem(item) {
         if (item != undefined) {
           this.percentGoods = item;
-          sessionStorage.setItem("goodsItem", JSON.stringify(item));
-          sessionStorage.setItem("goodsType", "goods");
+          localStorage.setItem("goodsItem", JSON.stringify(item));
+          localStorage.setItem("goodsType", "goods");
         }
         // console.log(this.percentGoods);
         // console.log(this.goodsDetail);
@@ -293,19 +293,14 @@
       },
       // 是否是APP
       isApp() {
-        // var u = navigator.userAgent,
-        //   app = navigator.appVersion;
-        // var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-        // var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
-        // console.log(u, app, _ios, _android);
-        if (sessionStorage.getItem("isHuobaIosLogin") == "yes" || sessionStorage.getItem("isHuobaAndroidLogin") == "yes") {
+        if (localStorage.getItem("isHuobaIosLogin") == "yes" || localStorage.getItem("isHuobaAndroidLogin") == "yes") {
           return true;
         } else {
           return false;
         }
       },
       visitPage() {
-        if (this.secShare == 0 &&  sessionStorage.getItem('originLink') != 1) { // 不可二次分享
+        if (this.secShare == 0 &&  localStorage.getItem('originLink') != 1) { // 不可二次分享
           this.remindPopShow = true;
           const timer = setInterval(() => {
             this.time--;
@@ -321,7 +316,7 @@
     created() {
       this.code = this.$route.query.code;
       this.redeem = decodeURIComponent(this.$route.query.redeem_id).replace(/\s/g, '+');
-      sessionStorage.setItem('hash', window.location.hash);
+      localStorage.setItem('hash', window.location.hash);
     },
     mounted() {
       this.getGoodsDetail();
