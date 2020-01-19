@@ -104,7 +104,7 @@ export default {
         // 登录成功exist = 1；没有绑定过 exist = 0；
         if (res.response_data.exist == 0) {
           this.$router.replace({
-            name: "bindphone",
+            name: "bindPhone2.0",
             query: { bindtype: _type, outerId: _unionid }
           });
         }
@@ -1050,14 +1050,27 @@ export default {
           break;
         // 手机号码，第四位以及第八位加空格 150 0000 0000
         case 'tel':
-
+          // 添加空格
+          Array.from(code, (item, index) => {
+            if (index == 2 || index == 6) {
+              str += item + " ";
+            } else {
+              str += item;
+            }
+          });
+          // 去除空格
+          Array.from(str, (item, index) => {
+            if(item == " " && (str.length == 4 || str.length == 9)) {
+                _bool = true;
+            }
+          });
           break;
         default:
           break;
       }
 
       if (_bool && this.$store.state.isDel) {
-        str = str.trim();
+        str = str.substring(0, str.length - 1);
       }
       return str;
     }

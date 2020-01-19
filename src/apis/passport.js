@@ -50,3 +50,13 @@ export const LOGIN_BIND_LIST = query => req('post', '/passport/binding/gets', qu
 
 //判断手机号是否已注册
 export const PASSPORT_CHECKPHONE = query => req('post', '/passport/checkphone', query);
+
+/*
+ * added by lrf
+ * date:2020/1/17
+ */
+
+// 登录注册2.0新增接口
+
+// 是否弹注册条款
+export const REGISTER_ITEMS = query => req('post', '/passport/privates', query);
