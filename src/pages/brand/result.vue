@@ -31,7 +31,7 @@
       >
         <van-tab :title="items.name" v-for="(items,index) in column_list" :key="index">
           <template
-            v-if="items.goods_type == 0 && items.search_type && items.search_type == 'summary'"
+            v-if="items.goods_type == 0 && items.search_type && items.search_type == 'summary' && activekey == index"
           >
             <div v-for="(litem,lindex) in summaryList" :key="lindex">
               <div class="summaryList" v-if="litem.search_type == 'brand'">
@@ -189,7 +189,7 @@
           </template>
           <!-- 火把号 -->
           <template
-            v-if="items.goods_type == 0 && items.search_type && items.search_type == 'brand'"
+            v-if="items.goods_type == 0 && items.search_type && items.search_type == 'brand' && activekey == index"
           >
             <div class="summaryList huoba">
               <div
@@ -204,7 +204,7 @@
             </div>
           </template>
           <template
-            v-if="items.goods_type > 0 && items.search_type && items.search_type == 'goods'"
+            v-if="items.goods_type > 0 && items.search_type && items.search_type == 'goods' && activekey == index"
           >
             <div v-for="(item,index) in brandData" :key="index">
               <!-- 图书,专辑 -->
