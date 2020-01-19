@@ -309,7 +309,7 @@
               </div>
               <div
                 class="whyNoUse"
-              >{{item.cart_money>0?'还差'+item.cart_money+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
+              >{{item.cart_money>0?'还差'+(item.use_min_money-item.cart_money)+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
             </div>
           </div>
         </van-tab>
@@ -325,6 +325,7 @@
         </span>
       </div>
       <van-tabs v-model="active1" title-active-color="#f05654" title-inactive-color="#999">
+        <van-tab :title="useCoupon"></van-tab>
         <van-tab :title="nouseCoupon">
           <div class="content">
             <div v-for="(item,index) in ticket_lists.nouse" :key="index">
@@ -367,7 +368,7 @@
               </div>
               <div
                 class="whyNoUse"
-              >{{item.cart_money>0?'还差'+item.cart_money+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
+              >{{item.cart_money>0?'还差'+(item.use_min_money-item.cart_money)+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
             </div>
           </div>
         </van-tab>
@@ -497,7 +498,7 @@ export default {
       couponModel: false,
       nocouponModel: false,
       active: 0,
-      active1: 0,
+      active1: 1,
       nouseCoupon: "",
       useCoupon: "",
       ticket_price: null,
