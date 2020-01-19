@@ -142,7 +142,6 @@ Vue.use(VueCookies)
 
 Vue.config.productionTip = false
 
-
 /*
 
 全局路由特殊情况处理
@@ -194,17 +193,15 @@ B、sessionStorage
   5、gotoLogin：记录是否允许微信第三方登录
   6、phone：记录验证码手机号
   7、second：记录验证码手机号对应倒计时
-
+  8、isNullPage：记录当前路由是否携带nullPage，如果携带，进入页面需要刷新一次
 
 路由参数
 
-  1、nullPage=1引导微信/app登录
+  1、nullPage=1：引导微信  2：app登录
   2、home_id=all/公号id，携带原始公号
   3、linkFrom=gzh链接来自公众号
 
 */
-
-
 
 // 注册一个全局前置守卫,确保要调用 next 方法，否则钩子就不会被 resolved
 router.beforeEach((to, from, next) => {
@@ -220,12 +217,6 @@ router.beforeEach((to, from, next) => {
     next();
   }
   next();
-  // 自定义页面跳自定义页面执行刷新动作
-  if (from.path.toLocaleLowerCase() == '/custompage' && from.path.toLocaleLowerCase() == to.path.toLocaleLowerCase()) {
-    window.location.reload();
-    next();
-  }
-  next();
   /* 路由发生变化修改页面 title */
   if (to.meta.title) {
     document.title = to.meta.title;
@@ -238,8 +229,8 @@ router.beforeEach((to, from, next) => {
   var replaceUrl = window.location.href.split('#')[0] + '#' + to.path;
   // 存放来源地址，如果未登录，进入登录页或者第三方绑定页不修改fromLink，回退到指定页面
   var index = 0; // 索引初始化
-  // loginState 1: 已登录，0：未登录
 
+  // loginState 1: 已登录，0：未登录
   if (!localStorage.getItem('loginState')) localStorage.setItem('loginState', 0)
   var token = parseInt(localStorage.getItem('loginState'));
   next()
@@ -286,21 +277,49 @@ router.beforeEach((to, from, next) => {
   next()
 
   // 给replaceUrl拼接参数
+  sessionStorage.setItem('isNullPage', 'no');
+  if(replaceUrl.indexOf('nullPage') != 1 && sessionStorage.getItem('isWxLogin') == 'yes') {
+    // 携带nullPage进入页面需要刷新一次
+    sessionStorage.setItem('isNullPage', 'yes');
+    next()
+  }
+  next()
+
   for (var i in to.query) {
-    // 记录完原始公号后路由去除home_id
-    if (i != 'home_id') {
-      // 微信端登录将nullPage和msg去除
-      if ((sessionStorage.getItem("isWxLogin") == 'yes' && i != 'nullPage' && i != 'msg') || sessionStorage.getItem("isWxLogin") == 'no') {
-        // 判断是否等于第一个参数
-        var tmp = "?";
-        if (index > 0) {
-          // 拼接地址非第一个参数，添加“&”号
-          tmp = '&';
-        }
-        replaceUrl += tmp + i + '=' + to.query[i];
-        index++; // 索引++
-      }
+    var _bool = true;
+    if (i == 'home_id') {
+      _bool = false;
+      next()
     }
+    next()
+    // 记录完原始公号后路由去除home_id
+    if (sessionStorage.getItem('isWxLogin') == 'yes') {
+      next()
+      // 微信端，将参数nullPage屏蔽
+      // 非微信端，不用屏蔽nullPage
+      if (i == 'nullPage') {
+        _bool = false;
+        next()
+      }
+      next()
+    }
+    next()
+    if (_bool) {
+      next()
+      // 判断是否等于第一个参数
+      if (index > 0) {
+        // 拼接地址非第一个参数，添加“&”号
+        replaceUrl += '&' + i + '=' + to.query[i];
+        next()
+      } else {
+        replaceUrl += '?' + i + '=' + to.query[i];
+        next()
+      }
+      index++; // 索引++
+      next()
+    }
+
+    next()
   }
   next()
 
@@ -367,19 +386,22 @@ router.beforeEach((to, from, next) => {
   }
 
   next();
+
   // 需要微信端打开，引导微信内打开
-  if (sessionStorage.getItem("isWxLogin") == "no") {
-    // 必须在微信端打开
-    if (to.meta.isWxLogin) {
-      // replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在微信端打开~';
+  if (to.meta.isWxLogin) {
+    next();
+    if (sessionStorage.getItem("isWxLogin") == "no") {
+      next();
       if (replaceUrl.indexOf("nullPage") == -1) {
-        if (replaceUrl.indexOf("?") != -1) {
-          replaceUrl += '&nullPage=1&msg=请在微信端打开~';
-          next()
+        next();
+        if (replaceUrl.indexOf("?") == -1) {
+          replaceUrl += '?nullPage=1';
+          next();
         } else {
-          replaceUrl += '?nullPage=1&msg=请在微信端打开~';
-          next()
+          replaceUrl += '&nullPage=1';
+          next();
         }
+
         next();
       }
       next();
@@ -387,33 +409,32 @@ router.beforeEach((to, from, next) => {
     next();
   }
   next();
-
   // 引导app端打开
-  if (sessionStorage.getItem("isHuobaIosLogin") == "no" && sessionStorage.getItem("isHuobaAndroidLogin") == "no") {
+  if (to.meta.isAppLogin) {
     next();
-    if (to.meta.isAppLogin) {
-      // replaceUrl = window.location.href.split('#')[0] + '#/404?msg=请在app端打开~';
+    if (sessionStorage.getItem("isHuobaIosLogin") == "no" && sessionStorage.getItem("isHuobaAndroidLogin") == "no") {
+      next();
       if (replaceUrl.indexOf("nullPage") == -1) {
-        if (replaceUrl.indexOf("?") != -1) {
-          replaceUrl += '&nullPage=1&msg=请在app端打开~';
-          next()
+        next();
+        if (replaceUrl.indexOf("?") == -1) {
+          replaceUrl += '?nullPage=2';
+          next();
         } else {
-          replaceUrl += '?nullPage=1&msg=请在app端打开~';
-          next()
+          replaceUrl += '&nullPage=2';
+          next();
         }
+
         next();
       }
       next();
     }
-
-    next();
   }
+  next();
 
-  next()
   window.location.replace(replaceUrl); // 重定向跳转
   next();
   // 相同页面跳转刷新，除个别不需要刷新的页面外，比如brand/index
-  if ((from.path == to.path && !to.meta.unreload) || from.fullPath.indexOf("nullPage=1") != -1) {
+  if ((from.path == to.path && !to.meta.unreload) || from.fullPath.indexOf("nullPage") != -1 || sessionStorage.getItem('isNullPage') == 'yes') {
     location.reload();
     next();
   }

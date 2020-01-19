@@ -103,10 +103,12 @@ export default {
         console.log("unionid:", _unionid, "parterner:", res.response_data);
         // 登录成功exist = 1；没有绑定过 exist = 0；
         if (res.response_data.exist == 0) {
+
           this.$router.replace({
             name: "bindphone",
             query: { bindtype: _type, outerId: _unionid }
           });
+
         }
         if (res.response_data.exist == 1) {
           // brand_id等信息

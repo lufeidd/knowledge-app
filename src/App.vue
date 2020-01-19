@@ -2,7 +2,7 @@
   <div id="app">
     <!-- 需要微信端打开，引导微信内打开 -->
     <!-- 引导app端打开 -->
-    <span class="nullBox" v-if="nullPage == 1">
+    <span class="nullBox" v-if="nullPage == 1 || nullPage == 2">
       <img src="./assets/null/link.png" width="100%" />
       <div>{{ msg }}</div>
       <EazyNav type="brand" :isShow="true"></EazyNav>
@@ -95,10 +95,12 @@ export default {
   data() {
     return {
       nullPage: this.$route.query.nullPage ? this.$route.query.nullPage : 0,
-      msg: this.$route.query.msg ? this.$route.query.msg : ""
+      msg: ""
     };
   },
   mounted() {
+    if (this.$route.query.nullPage == 1) this.msg = "请在微信端打开~";
+    if (this.$route.query.nullPage == 2) this.msg = "请在app端打开~";
     // 表单输入监控删除动作
     let self = this;
     $("input").on("keydown", function(event) {
