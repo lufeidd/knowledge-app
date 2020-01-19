@@ -9,12 +9,12 @@
   background-color: $white;
   min-height: 100%;
   overflow: hidden;
-  padding: 0 40px;
+
   p {
     margin: 0;
   }
   .info {
-    margin-top: 65px;
+    margin: 65px 40px 0 40px;
     font-size: 18px;
     font-family: PingFang SC;
     font-weight: 500;
@@ -24,13 +24,15 @@
   }
   .phone {
     font-family: PingFang SC;
+    margin: 0 40px;
     font-weight: 500;
     color: #333333;
     line-height: 24px;
     height: 24px;
   }
   .van-password-input {
-    margin-top: 106px;
+    margin: 106px 40px 0 40px;
+
   }
   .van-password-input__security li:not(:last-of-type) {
     margin-right: 28px;
@@ -43,10 +45,49 @@
     border: none;
   }
   .tips {
-    margin-top: 25px;
+    margin: 25px 40px 0 40px;
     font-family: PingFang SC;
     font-weight: 500;
     color: #F05654;
   }
+  //.leave {
+  //  width: 255px;
+  //  height: 126px;
+  //  background: #FFFFFF;
+  //  border-radius: 5px;
+  //  .leave_remind {
+  //    margin: 20px auto;
+  //    width: 157px;
+  //    font-size: 15px;
+  //    font-family: PingFang SC;
+  //    font-weight: bold;
+  //    color: #333333;
+  //    line-height: 20px;
+  //    text-align: center;
+  //  }
+  //  .btn_wrapper {
+  //    display: flex;
+  //    height: 46px;
+  //    line-height: 46px;
+  //    border-top: 0.5px solid #E5E5E5;
+  //    .cancel {
+  //      flex: 1;
+  //      text-align: center;
+  //      border-right: 0.5px solid #E5E5E5;
+  //      font-size: 16px;
+  //      font-family: PingFang SC;
+  //      font-weight: 500;
+  //      color: #999999;
+  //    }
+  //    .confirm {
+  //      flex: 1;
+  //      text-align: center;
+  //      font-size: 16px;
+  //      font-family: PingFang SC;
+  //      font-weight: 500;
+  //      color: #333333;
+  //    }
+  //  }
+  //}
 }
 

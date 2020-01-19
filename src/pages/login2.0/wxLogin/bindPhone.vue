@@ -161,7 +161,7 @@
         });
       },
       agree() {
-        this.$router.replace({name: 'verification2.0', query: {phone: this.phone}});
+        this.$router.push({name: 'verification2.0', query: {phone: this.phone}});
       },
       disagree() {
         this.registerPopShow = false;

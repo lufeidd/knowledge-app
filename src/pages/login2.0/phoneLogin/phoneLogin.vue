@@ -18,7 +18,7 @@
     <div class="button_wrapper" v-else>
       <van-button size="large" type="danger" @click="">获取验证码</van-button>
     </div>
-    <router-link :to="{name: ''}" class="link_text">密码登录
+    <router-link :to="{name: 'passwordLogin2.0'}" class="link_text">密码登录
     </router-link>
     <div class="wx_login">
       <p class="wx_login_text">快捷登录方式</p>
