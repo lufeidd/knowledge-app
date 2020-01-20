@@ -109,6 +109,11 @@ export default {
             query: { bindtype: _type, outerId: _unionid }
           });
 
+          // this.$router.replace({
+          //   name: "bindPhone2.0",
+          //   query: { bindtype: _type, outerId: _unionid }
+          // });
+
         }
         if (res.response_data.exist == 1) {
           // brand_id等信息

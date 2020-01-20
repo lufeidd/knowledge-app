@@ -68,7 +68,8 @@ import {
   AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle,
   Tab, Tabs,
   GoodsAction,
-  GoodsActionBigBtn, GoodsActionMiniBtn,
+  GoodsActionBigBtn, 
+  GoodsActionMiniBtn,
   Step, Steps,
   List, Stepper, SubmitBar,
   Swipe, SwipeItem,
@@ -423,7 +424,9 @@ router.beforeEach((to, from, next) => {
   next();
 
   // 相同页面跳转刷新，除个别不需要刷新的页面外，比如brand/index
-  if (from.path == to.path && !to.meta.unreload || !localStorage.getItem("isWxLogin")) {
+  // 从引导页回退需要刷新
+  // 引导微信页复制链接在微信中打开链接需要刷新
+  if (from.path == to.path && !to.meta.unreload || !localStorage.getItem("isWxLogin") || from.fullPath.indexOf("nullPage=1") != -1) {
     location.reload();
     next();
   }
