@@ -1,6 +1,7 @@
 <template>
   <div id="libraryDetail">
     <div class="package">
+      <div class="defineHeight">1111</div>
       <div class="title">
         <div class="text">
           <span class="line"></span>
