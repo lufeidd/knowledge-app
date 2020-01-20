@@ -1,6 +1,9 @@
 <template>
   <div id="resultPage">
-    <div class="nullBox" v-if="programFinished && contentData.length == 0 && summaryList.length == 0">
+    <div
+      class="nullBox"
+      v-if="programFinished && contentData.length == 0 && summaryList.length == 0"
+    >
       <img src="../../assets/null/list.png" width="100%" />
       <div>您搜索的内容为空</div>
     </div>
@@ -48,7 +51,7 @@
                   <img :src="bitem.brand_pic" alt width="45px" height="45px" />
                   <span class="bname">{{bitem.brand_name}}</span>
                 </div>
-                <div class="readMore" v-if="litem.result.length > 2">
+                <div class="readMore" v-if="litem.result_num > 2">
                   <span @click="watchMore(litem,lindex)">
                     查看更多
                     <svg class="icon" aria-hidden="true">
@@ -176,7 +179,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="readMore" v-if="litem.result.length > 2">
+                <div class="readMore" v-if="litem.result_num > 2">
                   <span @click="watchMore(litem,lindex)">
                     查看更多
                     <svg class="icon" aria-hidden="true">
@@ -357,7 +360,8 @@ export default {
       isbrand_id: null,
       summaryList: [],
       huobapage: 1,
-      huobaList: []
+      huobaList: [],
+      judgehome_id: null
     };
   },
   mounted() {
@@ -377,7 +381,7 @@ export default {
     // title
     this.title = this.$route.query.title ? this.$route.query.title : "";
     document.title = "搜索结果-" + this.title;
-
+    this.judgehome_id = localStorage.getItem("home_id");
     // this.getGoodsColum();
     // this.getGoods();
     this.getSummaryGoods();
@@ -426,19 +430,42 @@ export default {
     },
     async getGoods() {
       var tStamp = this.$getTimeStamp();
-      var data = {
-        scene: "platform",
-        keywords: this.searchContent,
-        goods_type: this.goods_type,
-        brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
-        supplier_id: this.supplier_id,
-        tagids: this.tagids,
-        cids: this.cids,
-        page: this.page,
-        page_size: this.page_size,
-        version: "1.0",
-        timestamp: tStamp
-      };
+      var data = {};
+      if (this.judgehome_id == "all") {
+        data = {
+          scene: "platform",
+          keywords: this.searchContent,
+          goods_type: this.goods_type,
+          // brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
+          // supplier_id: this.supplier_id,
+          tagids: this.tagids,
+          cids: this.cids,
+          page: this.page,
+          page_size: this.page_size,
+          version: "1.0",
+          timestamp: tStamp
+        };
+      } else {
+        data = {
+          keywords: this.searchContent,
+          goods_type: this.goods_type,
+          brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
+          supplier_id: this.supplier_id,
+          tagids: this.tagids,
+          cids: this.cids,
+          page: this.page,
+          page_size: this.page_size,
+          version: "1.0",
+          timestamp: tStamp
+        };
+        if (this.$route.query.type == "brand") {
+          data.scene = "brand";
+        } else if (this.$route.query.type == "mall") {
+          data.scene = "mall";
+        } else {
+          data.scene = "platform";
+        }
+      }
       data.sign = this.$getSign(data);
       let res = await BRAND_SEARCH_GOODS_GETS(data);
 
@@ -513,15 +540,35 @@ export default {
     // 综合列表
     async getSummaryGoods() {
       var tStamp = this.$getTimeStamp();
-      var data = {
-        scene: "platform",
-        keywords: this.searchContent,
-        brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
-        supplier_id: this.supplier_id,
-        cids: this.cids,
-        version: "1.0",
-        timestamp: tStamp
-      };
+      var data = {};
+      if (this.judgehome_id == "all") {
+        data = {
+          scene: "platform",
+          keywords: this.searchContent,
+          // brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
+          // supplier_id: this.supplier_id,
+          cids: this.cids,
+          version: "1.0",
+          timestamp: tStamp
+        };
+      } else {
+        data = {
+          keywords: this.searchContent,
+          brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
+          supplier_id: this.supplier_id,
+          cids: this.cids,
+          version: "1.0",
+          timestamp: tStamp
+        };
+        if (this.$route.query.type == "brand") {
+          data.scene = "brand";
+        } else if (this.$route.query.type == "mall") {
+          data.scene = "mall";
+        } else {
+          data.scene = "platform";
+        }
+      }
+
       data.sign = this.$getSign(data);
       let res = await SEARCH_GOODS_SUMMARY(data);
 
