@@ -497,6 +497,13 @@ export default {
               keywords: this.$route.query.searchContent
             });
             break;
+          case "all":
+            _pageName = "brand/goods/search";
+            _params = JSON.stringify({
+              brand_id: this.$route.query.brand_id,
+              keywords: this.$route.query.searchContent
+            });
+            break;
         }
         if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
       } else {
