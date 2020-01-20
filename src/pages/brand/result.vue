@@ -48,7 +48,7 @@
                   <img :src="bitem.brand_pic" alt width="45px" height="45px" />
                   <span class="bname">{{bitem.brand_name}}</span>
                 </div>
-                <div class="readMore" v-if="litem.result.length > 2">
+                <div class="readMore" v-if="litem.result_num > 2">
                   <span @click="watchMore(litem,lindex)">
                     查看更多
                     <svg class="icon" aria-hidden="true">
@@ -176,7 +176,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="readMore" v-if="litem.result.length > 2">
+                <div class="readMore" v-if="litem.result_num > 2">
                   <span @click="watchMore(litem,lindex)">
                     查看更多
                     <svg class="icon" aria-hidden="true">
