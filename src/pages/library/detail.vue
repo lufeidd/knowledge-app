@@ -153,7 +153,7 @@ export default {
       activeName: 'a'
     }
   },
-  beforeRouteLeave(to,from,next){
+  beforeRouteLeave (to,from,next) {
     this.detailImgRouter&&this.detailImgRouter.close()
     next()
   },
@@ -276,12 +276,11 @@ export default {
         this.detailImgRouter = ImagePreview({
           images: item
         });
-        //ImagePreview(item)
+        // ImagePreview(item)
       } else if (this.packageData.base.price == 0) {
         this.detailImgRouter = ImagePreview({
           images: item
         });
-        //ImagePreview(item)
       }
     },
     textPackIcon () {
