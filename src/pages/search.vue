@@ -40,7 +40,7 @@
     <!-- 热门搜索 -->
     <div
       class="searchRecommend"
-      v-if="(this.type == 'brand' || this.type == 'mall') && hotSearch.length > 0"
+      v-if="(type == 'brand' || type == 'mall') && hotSearch.length > 0 && home_id == 'all'"
     >
       <p class="recommend">热门搜索</p>
       <van-row type="flex" gutter="15">
@@ -90,6 +90,7 @@ export default {
       //   type: "order"
       // },
       type: "",
+      home_id:"",
       hotSearch: [],
       state: [
         { order_state: 1, order_desc: "待付款" },
@@ -97,13 +98,14 @@ export default {
         { order_state: 5, order_desc: "已发货" },
         { order_state: 4, order_desc: "已完成" }
       ],
-      list: []
+      list: [],
+
     };
   },
   mounted() {
     this.type = this.$route.query.type;
     this.searchHintData.type = this.$route.query.type;
-
+    this.home_id = localStorage.getItem("home_id")
     this.getHotKey();
     this.getLocalItem();
   },
