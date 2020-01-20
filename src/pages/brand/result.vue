@@ -1,6 +1,6 @@
 <template>
   <div id="resultPage">
-    <div class="nullBox" v-if="programFinished && contentData.length == 0">
+    <div class="nullBox" v-if="programFinished && contentData.length == 0 && summaryList.length == 0">
       <img src="../../assets/null/list.png" width="100%" />
       <div>您搜索的内容为空</div>
     </div>
@@ -176,7 +176,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="readMore" v-if="litem.result.length > 0">
+                <div class="readMore" v-if="litem.result.length > 2">
                   <span @click="watchMore(litem,lindex)">
                     查看更多
                     <svg class="icon" aria-hidden="true">
@@ -191,7 +191,7 @@
           <template
             v-if="items.goods_type == 0 && items.search_type && items.search_type == 'brand' && activekey == index"
           >
-            <div class="summaryList huoba">
+            <div class="summaryList huoba" v-if="huobaList.length>0">
               <div
                 class="brandContent"
                 v-for="(hbitem,hbindex) in huobaList"
