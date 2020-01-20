@@ -4,7 +4,7 @@
       <div class="title">
         <div class="text">
           <span class="line"></span>
-          <span class="lh titleOver">{{ packageData.base.title }}</span>
+          <span class="lh">{{ packageData.base.title }}</span>
         </div>
       </div>
       <div class="content">
