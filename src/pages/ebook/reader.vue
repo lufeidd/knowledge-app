@@ -226,6 +226,7 @@ export default {
       commentNumber: null,
       currenChapterTitle: null,
       ebookList: [],
+      ebookAllList:[],
       test: true,
       ebookSchedule: null,
       isLogin: null,
@@ -391,6 +392,7 @@ export default {
             this.ebookList.push(res.response_data[i]);
           }
         }
+        this.ebookAllList = res.response_data
         this.minChapter = res.response_data[0].chapter_id;
         this.maxChapter = res.response_data.slice(-1)[0].chapter_id;
         this.ebookSchedule = (
@@ -440,7 +442,13 @@ export default {
       if (this.chapter_id > this.minChapter) {
         this.currenChapterTitle = this.currenChapterTitle - 1;
         // this.chapter_id = this.ebookList[this.currenChapterTitle-1].chapter_id;
-        this.chapter_id = this.chapter_id -1
+        var ebook_index
+        for(var i=0;i<this.ebookAllList.length;i++){
+          if(this.ebookAllList[i].chapter_id == this.chapter_id){
+            ebook_index = i-1
+          }
+        }
+        this.chapter_id = this.ebookAllList[ebook_index].chapter_id
         // console.log(555,this.chapter_id);return
         this.$router.push({
           name: "ebookreader",
@@ -460,7 +468,13 @@ export default {
       if (this.chapter_id < this.maxChapter) {
         // this.chapter_id = this.chapter_id + 1;
         // this.chapter_id = this.ebookList[this.currenChapterTitle].chapter_id;
-        this.chapter_id = this.chapter_id + 1
+        var ebook_index
+        for(var i=0;i<this.ebookAllList.length;i++){
+          if(this.ebookAllList[i].chapter_id == this.chapter_id){
+            ebook_index = i+1
+          }
+        }
+        this.chapter_id = this.ebookAllList[ebook_index].chapter_id
         this.currenChapterTitle = this.currenChapterTitle + 1;
         // console.log(666,this.chapter_id);return
         this.$router.push({
