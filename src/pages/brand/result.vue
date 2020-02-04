@@ -425,8 +425,11 @@ export default {
       }
     },
     programLoad() {
-      this.getGoods();
-      this.huobaBrand();
+      if(this.column_list[this.activekey].search_type == 'brand'){
+        this.huobaBrand();
+      }else{
+        this.getGoods();
+      }
     },
     async getGoods() {
       var tStamp = this.$getTimeStamp();
@@ -450,7 +453,7 @@ export default {
           keywords: this.searchContent,
           goods_type: this.goods_type,
           brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
-          supplier_id: this.supplier_id,
+          supplier_id: this.supplier_id?this.supplier_id:0,
           tagids: this.tagids,
           cids: this.cids,
           page: this.page,
@@ -548,7 +551,7 @@ export default {
         data = {
           keywords: this.searchContent,
           brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
-          supplier_id: this.supplier_id,
+          supplier_id: this.supplier_id?this.supplier_id:0,
           cids: this.cids,
           version: "1.0",
           timestamp: tStamp
@@ -655,7 +658,7 @@ export default {
     tabChange(index, title) {
       this.activekey = index;
       this.goods_type = Number(this.column_list[index].goods_type);
-      if (index > 0) {
+      // if (index > 0) {
         this.brandData = [];
         this.huobaList = [];
         this.page = 1;
@@ -664,7 +667,7 @@ export default {
         if (this.programLoading) {
           this.programLoad();
         }
-      }
+      // }
     }
   }
 };
