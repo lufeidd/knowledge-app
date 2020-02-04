@@ -11,7 +11,7 @@
       v-else
       v-model="programLoading"
       :finished="programFinished"
-      :finished-text="activekey>0?'没有更多了':''"
+      finished-text="没有更多了"
       @load="programLoad"
       class="list"
     >
@@ -428,8 +428,11 @@ export default {
     programLoad() {
       if(this.column_list[this.activekey].search_type == 'brand'){
         this.huobaBrand();
-      }else{
+      }else if(this.column_list[this.activekey].search_type == 'goods'){
         this.getGoods();
+      }else if(this.column_list[this.activekey].search_type == 'summary'){
+        this.programFinished = true;
+        this.programLoading = false
       }
     },
     async getGoods() {
@@ -454,7 +457,7 @@ export default {
           keywords: this.searchContent,
           goods_type: this.goods_type,
           brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
-          supplier_id: this.supplier_id?this.supplier_id:0,
+          // supplier_id: this.supplier_id?this.supplier_id:0,
           tagids: this.tagids,
           cids: this.cids,
           page: this.page,
@@ -462,6 +465,7 @@ export default {
           version: "1.0",
           timestamp: tStamp
         };
+        if(this.supplier_id){data.supplier_id = this.supplier_id}
         if (this.$route.query.type == "brand") {
           data.scene = "brand";
         } else if (this.$route.query.type == "mall") {
@@ -559,11 +563,12 @@ export default {
         data = {
           keywords: this.searchContent,
           brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
-          supplier_id: this.supplier_id?this.supplier_id:0,
+          // supplier_id: this.supplier_id?this.supplier_id:0,
           cids: this.cids,
           version: "1.0",
           timestamp: tStamp
         };
+        if(this.supplier_id){data.supplier_id = this.supplier_id}
         if (this.$route.query.type == "brand") {
           data.scene = "brand";
         } else if (this.$route.query.type == "mall") {
@@ -579,6 +584,8 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.column_list = res.response_data.column;
         this.summaryList = res.response_data.list;
+        this.programFinished = true;
+        this.programLoading = false
       } else {
         this.$toast(res.error_message);
       }
