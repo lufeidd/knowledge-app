@@ -432,6 +432,8 @@ export default {
       }else if(this.column_list[this.activekey].search_type == 'summary'){
         this.programFinished = true;
         this.programLoading = false
+      }else{
+        this.getGoods();
       }
     },
     async getGoods() {
