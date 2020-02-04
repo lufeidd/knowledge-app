@@ -379,8 +379,9 @@ export default {
     this.cids = this.$route.query.cids ? this.$route.query.cids : null;
 
     // title
-    this.title = this.$route.query.title ? this.$route.query.title : "";
-    document.title = "搜索结果-" + this.title;
+    this.title = this.$route.query.searchContent ? this.$route.query.searchContent : "";
+    if(this.title != "") this.title = '-' + this.title;
+    document.title = "搜索结果" + this.title;
     this.judgehome_id = localStorage.getItem("home_id");
     // this.getGoodsColum();
     // this.getGoods();
