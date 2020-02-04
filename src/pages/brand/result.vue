@@ -427,7 +427,7 @@ export default {
     programLoad() {
       if(this.column_list[this.activekey].search_type == 'brand'){
         this.huobaBrand();
-      }else{
+      }else if(this.column_list[this.activekey].search_type == 'goods'){
         this.getGoods();
       }
     },
