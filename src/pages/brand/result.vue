@@ -483,14 +483,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         var result = res.response_data.result;
         // this.column_list = res.response_data.column;
-        // console.log(111,this.column_list)
-        if (this.goods_type > 0) {
-          for (let i = 0; i < this.column_list.length; i++) {
-            if (this.column_list[i].goods_type == this.goods_type) {
-              this.activekey = i;
-            }
-          }
-        }
+
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
             this.brandData.push(result[i]);
@@ -579,6 +572,14 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.column_list = res.response_data.column;
+        // console.log(111,this.column_list)
+        if (this.goods_type > 0) {
+          for (let i = 0; i < this.column_list.length; i++) {
+            if (this.column_list[i].goods_type == this.goods_type) {
+              this.activekey = i;
+            }
+          }
+        }
         this.summaryList = res.response_data.list;
         this.programFinished = true;
         this.programLoading = false
