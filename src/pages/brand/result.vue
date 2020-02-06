@@ -343,7 +343,7 @@ export default {
       state: "brand",
       brandData: [],
       bookData: [],
-      column_list: [],
+      column_list: [{search_type:null}],
       programLoading: false,
       programFinished: false,
       // 搜索结果参数
@@ -426,11 +426,13 @@ export default {
       }
     },
     programLoad() {
-      if(this.column_list[this.activekey].search_type == 'brand'){
+      var list_index = this.activekey
+      // console.log(666,this.column_list)
+      if(this.column_list[list_index].search_type == 'brand'){
         this.huobaBrand();
-      }else if(this.column_list[this.activekey].search_type == 'goods'){
+      }else if(this.column_list[list_index].search_type == 'goods'){
         this.getGoods();
-      }else if(this.column_list[this.activekey].search_type == 'summary'){
+      }else if(this.column_list[list_index].search_type == 'summary'){
         this.programFinished = true;
         this.programLoading = false
       }else{
@@ -482,14 +484,7 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         var result = res.response_data.result;
         // this.column_list = res.response_data.column;
-        // console.log(111,this.column_list)
-        if (this.goods_type > 0) {
-          for (let i = 0; i < this.column_list.length; i++) {
-            if (this.column_list[i].goods_type == this.goods_type) {
-              this.activekey = i;
-            }
-          }
-        }
+
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
             this.brandData.push(result[i]);
@@ -585,6 +580,14 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.column_list = res.response_data.column;
+        // console.log(111,this.column_list)
+        if (this.goods_type > 0) {
+          for (let i = 0; i < this.column_list.length; i++) {
+            if (this.column_list[i].goods_type == this.goods_type) {
+              this.activekey = i;
+            }
+          }
+        }
         this.summaryList = res.response_data.list;
         this.programFinished = true;
         this.programLoading = false
