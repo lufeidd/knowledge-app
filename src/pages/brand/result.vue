@@ -343,7 +343,7 @@ export default {
       state: "brand",
       brandData: [],
       bookData: [],
-      column_list: [],
+      column_list: [{search_type:null}],
       programLoading: false,
       programFinished: false,
       // 搜索结果参数
@@ -425,11 +425,13 @@ export default {
       }
     },
     programLoad() {
-      if(this.column_list[this.activekey].search_type == 'brand'){
+      var list_index = this.activekey
+      // console.log(666,this.column_list)
+      if(this.column_list[list_index].search_type == 'brand'){
         this.huobaBrand();
-      }else if(this.column_list[this.activekey].search_type == 'goods'){
+      }else if(this.column_list[list_index].search_type == 'goods'){
         this.getGoods();
-      }else if(this.column_list[this.activekey].search_type == 'summary'){
+      }else if(this.column_list[list_index].search_type == 'summary'){
         this.programFinished = true;
         this.programLoading = false
       }else{
