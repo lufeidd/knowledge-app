@@ -610,7 +610,7 @@ export default {
           break;
         case 'search/result':
           __name = 'brandresult';
-          queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
+          if (dataTmp.params.supplier_id) queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
           if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
           if (dataTmp.params.goods_type) queryTmp.goods_type = dataTmp.params.goods_type;
           if (dataTmp.params.cids) queryTmp.cids = dataTmp.params.cids;
