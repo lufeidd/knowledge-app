@@ -156,6 +156,10 @@
 
 <style src="@/style/scss/pages/ebook/reader.scss" scoped lang="scss"></style>
 <style lang="scss">
+span {
+  line-height: unset;
+  text-indent: unset;
+}
 #readerPage {
   .van-dialog__confirm {
     display: none;
