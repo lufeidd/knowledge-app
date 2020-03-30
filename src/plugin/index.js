@@ -111,12 +111,10 @@ export default {
             name: "bindphone",
             query: { bindtype: _type, outerId: _unionid }
           });
-
           // this.$router.replace({
           //   name: "bindPhone2.0",
           //   query: { bindtype: _type, outerId: _unionid }
           // });
-
         }
         if (res.response_data.exist == 1) {
           // brand_id等信息
@@ -350,9 +348,9 @@ export default {
       if (!localStorage.getItem('phone')) {
         localStorage.setItem('phone', cdata.phone);
       } else {
-        if (cdata.phone != localStorage.getItem('phone')) {
-          localStorage.setItem('phone', cdata.phone)
-          localStorage.setItem('second', 60);
+        if (cdata.phone != sessionStorage.getItem('phone') || cdata.time === 0) {
+          sessionStorage.setItem('phone', cdata.phone)
+          sessionStorage.setItem('second', 60);
           cdata.time = 60;
           clearInterval(this.clock)
         }
