@@ -156,7 +156,8 @@
 
 <style src="@/style/scss/pages/ebook/reader.scss" scoped lang="scss"></style>
 <style lang="scss">
-span {
+span,
+body span {
   line-height: unset;
   text-indent: unset;
 }
