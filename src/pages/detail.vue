@@ -355,6 +355,7 @@
       </van-popup>
       <!-- <div v-if="this.isIphx" style="height: 34px;"></div> -->
       <div style="height:60px;"></div>
+
       <!-- 加入购物车、立即购买 -->
       <van-goods-action>
         <van-goods-action-mini-btn

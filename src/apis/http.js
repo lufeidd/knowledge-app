@@ -8,7 +8,7 @@ import qs from "Qs";
 import Vue from 'vue';
 
 // 创建axios的一个实例
-var app_version = sessionStorage.getItem("isWxLogin") == "yes" ? 'weixin' : 'wap';
+var app_version = localStorage.getItem("isWxLogin") == "yes" ? 'weixin' : 'wap';
 var open_id = localStorage.getItem('openid');
 var obj = {};
 
@@ -21,7 +21,7 @@ obj.baseURL = window.location.protocol + "//" + window.location.hostname + ":" +
 obj.timeout = 15000;
 
 // 如果有设置过headers则不设置
-if (sessionStorage.getItem("hasHeader") == "no") {
+if (localStorage.getItem("hasHeader") == "no") {
     obj.headers = {
         'App-version': app_version,
         'unique-code': open_id

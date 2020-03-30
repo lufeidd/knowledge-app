@@ -21,7 +21,7 @@
         // 重置页面来源
         localStorage.setItem("linkFrom", "");
         this.gotoLogin = true;
-        sessionStorage.setItem("gotoLogin", "yes");
+        localStorage.setItem("gotoLogin", "yes");
         this.$wxLogin();
       },
       phoneLogin() {
@@ -38,10 +38,10 @@
       ) {
         if (localStorage.getItem("linkFrom") == "gzh") {
           this.gotoLogin = true;
-          sessionStorage.setItem("gotoLogin", "yes");
+          localStorage.setItem("gotoLogin", "yes");
         }
         // 允许微信第三方登录
-        if (sessionStorage.getItem("gotoLogin") == "yes") {
+        if (localStorage.getItem("gotoLogin") == "yes") {
           // 第三方登录
           this.$getWxLoginData();
         }
