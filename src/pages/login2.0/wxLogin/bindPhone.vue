@@ -55,18 +55,20 @@
 </template>
 
 <script>
-  import {PASSPORT_CHECKPHONE, LOGIN_BIND_PARTERNER, REGISTER_ITEMS} from "@/apis/passport.js";
+  import {PASSPORT_CHECKPHONE, REGISTER_ITEMS} from "@/apis/passport.js";
 
   export default {
     data() {
       return {
         phone: '',
+        code: '',
         isRegister: null, // 0 未注册 1 已注册
         content: '',
         submitData: {
           disabled: true
         },
         leavePopShow: false,
+        isBack: true, // 是否是离开页面
         registerPopShow: false
       };
     },
@@ -106,33 +108,6 @@
           this.$toast(res.error_message);
         }
       },
-      // 绑定手机号  还需修改
-      async bindphoneData() {
-        // console.log(localStorage.getItem('nickname'));
-        var tStamp = this.$getTimeStamp();
-        let data = {
-          timestamp: tStamp,
-          mobile: this.phone,
-          header_pic: localStorage.getItem('headimg'),
-          auth_code: this.code,
-          outer_id: this.outerId,
-          type: this.bindtype,
-          outer_name: localStorage.getItem('nickname'),
-          openid: localStorage.getItem('openid'),
-          source_url: localStorage.getItem("defaultLink"),
-          version: "1.0"
-        };
-        data.sign = this.$getSign(data);
-        let res = await LOGIN_BIND_PARTERNER(data);
-        console.log("bindphone:", res.response_data);
-        if (res.hasOwnProperty("response_code")) {
-          // 手机号未绑定到其他微信 // 跳转回唤醒登录页
-
-        } else {
-          // 绑定失败
-          this.$toast(res.error_message);
-        }
-      },
       async registerItems() {
         let data = {
           version: "1.1"
@@ -156,21 +131,48 @@
             _this.registerPopShow = true; //  弹注册条款
 
           } else if (_this.isRegister == 1) { // 已注册
-            this.bindphoneData();
+            // this.bindphoneData();
           }
         });
       },
       agree() {
-        this.$router.push({name: 'verification2.0', query: {phone: this.phone}});
+        this.isBack = false;
+        this.$router.push({name: 'verification2.0', query: {phone: this.phone, type: 'wxLogin'}});
+
       },
       disagree() {
         this.registerPopShow = false;
       }
     },
     mounted() {
-      // this.bindtype = parseInt(this.$route.query.bindtype);
-      // this.outerId = this.$route.query.outerId;
-      // this.activity_id = this.$route.query.activity_id ? this.$route.query.activity_id : false;
+
+    },
+    beforeRouteLeave(to, from, next) {
+      var _this = this;
+
+      if (this.isBack == true) {
+        this.$dialog
+          .confirm({
+            title: '点击"返回"将中断登录，确定返回？',
+            cancelButtonText: "取消",
+            confirmButtonText: "确定"
+          })
+          .then(() => {
+            next();
+            this.$router.push({name: 'login2.0'});
+          })
+          .catch(() => {
+            // on cancel
+            next();
+            //  为什么用replace只生效了一次？
+            _this.$router.push({
+              name: "bindPhone2.0"
+            });
+          });
+      } else {
+        next();
+      }
+
     }
 
   }
