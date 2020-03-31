@@ -317,7 +317,7 @@ export default {
         } else if (this.packageData.base.is_download != 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price != 0) {
           this.buyAction(this.goods_id);
         } else {
-          const u = navigator.userAgent;
+          /*const u = navigator.userAgent;
           const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
           console.log('判断');
           if (isiOS) {
@@ -331,7 +331,11 @@ export default {
             // andriod
             console.log('andriod');
             this.$toast('Android暂不支持预览，请下载文件后查看');
-          }
+          }*/
+          this.fileHideUrl = res.response_data.file_path;
+          this.timeoutId = setTimeout(() => {
+            document.getElementById('hideDom').click();
+          },100)
         }
       } else {
         if (res.error_code === 100) {
