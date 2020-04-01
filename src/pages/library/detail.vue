@@ -140,6 +140,7 @@ export default {
       timeoutId: 0,
       fileHideUrl: '',
       url: '',
+      phoneType: '',
       detailImgRouter: '',
       packageData: {
         base: {},
@@ -160,6 +161,7 @@ export default {
   mounted () {
     this.goods_id = this.$route.query.goods_id;
     this.packageGet();
+    this.phoneTypeMethod();
   },
   methods: {
     // email显示弹窗事件
@@ -167,7 +169,8 @@ export default {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
-        file_package_detail_id : this.packageData.base.compress_file_id,
+        file_package_detail_id: this.packageData.base.compress_file_id,
+        equipment: this.phoneType,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -301,12 +304,28 @@ export default {
           });
         }
     },
+    // 机型判断方法
+    phoneTypeMethod () {
+      const u = navigator.userAgent;
+      const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      console.log('判断');
+      if (isiOS) {
+        // ios
+        console.log('ios');
+        this.phoneType = 'ios';
+      } else {
+        // andriod
+        console.log('andriod');
+        this.phoneType = 'android';
+      }
+    },
     // 文档判断是否预览
     async fileClickUrl (id) {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
-        file_package_detail_id : id,
+        file_package_detail_id: id,
+        equipment: this.phoneType,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
