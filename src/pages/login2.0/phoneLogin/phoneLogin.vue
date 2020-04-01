@@ -16,7 +16,7 @@
       <van-button size="large" type="danger" disabled>获取验证码</van-button>
     </div>
     <div class="button_wrapper" v-else>
-      <van-button size="large" type="danger" @click="">获取验证码</van-button>
+      <van-button size="large" type="danger" @click="getCode">获取验证码</van-button>
     </div>
     <router-link :to="{name: 'passwordLogin2.0'}" class="link_text">密码登录
     </router-link>
@@ -26,41 +26,44 @@
         <use xlink:href="#icon-weixin-block"/>
       </svg>
     </div>
-    <!--<van-popup v-model="registerPopShow" class="register">-->
-      <!--<p class="title">-->
-        <!--注册协议&隐私条款-->
-      <!--</p>-->
-      <!--<p class="content_one">-->
-        <!--在您注册成为火把用户的同时，您需要通过点击同意的方式在线签署以下协议，请您务必仔细阅读、充分理解协议中的条款内容后再点击同意。-->
-      <!--</p>-->
-      <!--<p class="content_two">-->
-        <!--点击同意即表示您已阅读并同意-->
-        <!--<router-link :to="{name: 'prototype2.0', query: {type: 'prototype'}}" class="prototype">《火把平台用户注册协议》-->
-        <!--</router-link>-->
-        <!--与-->
-        <!--<router-link :to="{name: 'prototype2.0', query: {type: 'private'}}" class="prototype">《火把平台用户隐私条款》</router-link>-->
-      <!--</p>-->
-      <!--<div class="btn_wrapper">-->
-        <!--<div class="disagree">-->
-          <!--<van-button type="default" size="small" style="background:#F5F5F5;" @click="">不同意</van-button>-->
-        <!--</div>-->
-        <!--<div class="agree">-->
-          <!--<van-button type="danger" size="small" @click="">同意</van-button>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</van-popup>-->
+    <van-popup v-model="registerPopShow" class="register">
+      <p class="title">
+        注册协议&隐私条款
+      </p>
+      <p class="content_one">
+        在您注册成为火把用户的同时，您需要通过点击同意的方式在线签署以下协议，请您务必仔细阅读、充分理解协议中的条款内容后再点击同意。
+      </p>
+      <p class="content_two">
+        点击同意即表示您已阅读并同意
+        <router-link :to="{name: 'prototype2.0', query: {type: 'prototype'}}" class="prototype">《火把平台用户注册协议》
+        </router-link>
+        与
+        <router-link :to="{name: 'prototype2.0', query: {type: 'private'}}" class="prototype">《火把平台用户隐私条款》</router-link>
+      </p>
+      <div class="btn_wrapper">
+        <div class="disagree">
+          <van-button type="default" size="small" style="background:#F5F5F5;" @click="disagree">不同意</van-button>
+        </div>
+        <div class="agree">
+          <van-button type="danger" size="small" @click="agree">同意</van-button>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
 <script>
+  import {PHONE_CHECK, REGISTER_ITEMS} from "@/apis/passport.js";
   export default {
     data() {
       return {
         phone: '',
+        content: '',
         submitData: {
           disabled: true
         },
-        registerPopShow: true
+        isRegister: null, // 0 未注册 1 已注册
+        registerPopShow: false
       };
     },
     methods: {
@@ -80,6 +83,68 @@
             this.submitData.disabled = true;
           }
       },
+      //判断手机号是否已注册
+      async checkPhone() {
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          mobile: this.phone.replace(/\s/g, ''),
+          version: "1.1"
+        };
+        data.sign = this.$getSign(data);
+
+        let res = await PHONE_CHECK(data);
+
+        if (res.hasOwnProperty("response_code")) {
+          this.isRegister = res.response_data.is_register;
+          // console.log(66,this.isRegister);
+        } else {
+          this.isRegister = null;
+          this.$toast(res.error_message);
+        }
+      },
+      async registerItems() {
+        let data = {
+          version: "1.1"
+        };
+        let res = await REGISTER_ITEMS(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.content = res.response_data.content;
+        } else {
+          this.$toast(res.error_message);
+        }
+        console.log(res);
+      },
+
+      getCode() {
+        //  先判断此手机是否注册
+        let _this = this;
+        this.checkPhone().then(function () {
+          console.log(_this.isRegister);
+          if (_this.isRegister == 0) {  // 未注册
+            console.log('未注册');
+            _this.registerItems();
+            _this.registerPopShow = true; //  弹注册条款
+
+          } else if (_this.isRegister == 1) { // 已注册
+            _this.$router.push({name: 'verification2.0', query: {phone: _this.phone,isRegister: true, type: 'phoneLogin'}});
+          }
+        });
+      },
+      agree() {
+        this.$router.push({name: 'verification2.0', query: {phone: this.phone,isRegister: false, type: 'phoneLogin'}});
+
+      },
+      disagree() {
+        this.registerPopShow = false;
+      }
+    },
+    mounted() {
+      let phone = this.$route.query.phone;
+      if (phone) {
+        this.phone = phone;
+        this.submitData.disabled = false;
+      }
     }
   }
 </script>

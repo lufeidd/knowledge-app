@@ -55,7 +55,7 @@
 </template>
 
 <script>
-  import {PASSPORT_CHECKPHONE, REGISTER_ITEMS} from "@/apis/passport.js";
+  import {PHONE_CHECK, REGISTER_ITEMS} from "@/apis/passport.js";
 
   export default {
     data() {
@@ -98,7 +98,7 @@
         };
         data.sign = this.$getSign(data);
 
-        let res = await PASSPORT_CHECKPHONE(data);
+        let res = await PHONE_CHECK(data);
 
         if (res.hasOwnProperty("response_code")) {
           this.isRegister = res.response_data.is_register;

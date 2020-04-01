@@ -15,7 +15,11 @@
       @delete="deleteCode"
       @blur="showKeyboard = false"
     />
-    <p class="tips">{{cdata.time}}s后重新发送</p>
+    <p class="tips">
+      <span @click="resend" v-if="cdata.time=='0'">获取验证码</span>
+      <span v-else>{{cdata.time}}s后重新发送</span>
+    </p>
+
     <!--<van-popup v-model="leavePopShow" class="leave">-->
     <!--<p class="leave_remind">-->
     <!--点击“返回”将中断登录，-->
@@ -30,7 +34,8 @@
 </template>
 
 <script>
-  import {SMS, LOGIN_BIND_PARTERNER} from "@/apis/passport.js";
+  import { SMS, LOGIN_BIND_PARTERNER } from "@/apis/passport.js";
+  import { REG, PHONE_LOGIN } from "@/apis/passport.js";
 
   export default {
     data() {
@@ -38,6 +43,7 @@
         code: '',
         phone: '',
         type: '', // 登录方式
+        isRegister: Boolean,
         // 验证码倒计时，刷新保留当前手机倒计时时间
         cdata: {
           time: sessionStorage.getItem("second")
@@ -48,20 +54,17 @@
         showKeyboard: false
       };
     },
-    watch: {
-      cdata: {
-        handler() {
-          //  倒计时为0重新发送
-          if (this.cdata.time == 0) {
-            // this.sms();
-            let cdata = this.cdata;
-            cdata.phone = this.phone.replace(/\s/g, '');
-            this.$countDown2(cdata);
-          }
-        },
-        deep: true
-      }
-    },
+    // watch: {
+    //   cdata: {
+    //     handler() {
+    //       //  倒计时为0重新发送
+    //       if (this.cdata.time == 0) {
+    //
+    //       }
+    //     },
+    //     deep: true
+    //   }
+    // },
     methods: {
       // 获取验证码
       async sms() {
@@ -73,7 +76,8 @@
         };
         data.sign = this.$getSign(data);
         let res = await SMS(data);
-        console.log(res);
+        // console.log(res);
+        this.$toast('短信已发送');
       },
       // 绑定手机号  还需修改
       async bindphoneData() {
@@ -115,6 +119,59 @@
           this.$toast(res.error_message);
         }
       },
+      // 手机号注册
+      async phoneRegist() {
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          mobile: this.phone.replace(/\s/g, ''),
+          auth_code: this.code,
+          // pwd: this.password,
+          source_url: localStorage.getItem("defaultLink"),
+          version: "1.0"
+        };
+        data.sign = this.$getSign(data);
+
+        let res = await REG(data);
+
+        if (res.hasOwnProperty("response_code")) {
+          // this.$router.push({ name: "personalIndex", query: data });
+          // console.log(res);
+
+          // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
+          // window.location.href = localStorage.getItem("defaultLink");
+        } else {
+          this.$toast(res.error_message);
+          this.code = '';
+        }
+      },
+      // 手机号登录
+      async phoneLogin() {
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          mobile: this.phone.replace(/\s/g, ''),
+          auth_code: this.code,
+          version: "1.1"
+        };
+        let res = await PHONE_LOGIN(data);
+        if (res.hasOwnProperty("response_code")) {
+            // console.log('登录成功');
+          // 登录将localstorage中进度数据清空
+          localStorage.setItem("miniAudio", null);
+          localStorage.setItem("audioProgress", null);
+          localStorage.setItem("cmts", null);
+          localStorage.setItem("fromLink", null);
+          localStorage.setItem("closeAudio", null);
+          localStorage.setItem(("loginState"), 1);
+
+          // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
+          // window.location.href = localStorage.getItem("defaultLink");
+        } else {
+          this.$toast(res.error_message);
+          this.code = '';
+        }
+      },
       inputCode(key) {
         this.code = (this.code + key).slice(0, 4);
 
@@ -125,6 +182,14 @@
 
           } else if (this.type == 'phoneLogin') {
 
+            // 如果已注册，请求登录接口
+            if (this.isRegister) {
+              // console.log('已注册');
+              this.phoneLogin();
+            } else {  // 如果未注册，请求注册接口
+              // console.log('未注册');
+              this.phoneRegist();
+            }
 
           } else if (this.type == 'passwordLogin') {
 
@@ -133,6 +198,12 @@
       },
       deleteCode() {
         this.code = this.code.slice(0, this.code.length - 1);
+      },
+      resend() {
+        this.sms();
+        let cdata = this.cdata;
+        cdata.phone = this.phone.replace(/\s/g, '');
+        this.$countDown2(cdata);
       },
       countdown() {
         // 验证码倒计时，刷新保留当前手机倒计时时间
@@ -153,7 +224,7 @@
     mounted() {
       this.phone = this.$route.query.phone;
       this.type = this.$route.query.type;
-
+      this.isRegister = this.$route.query.isRegister;
       // 刷新是否应该限制发短信？
       this.sms();
       this.countdown();
@@ -178,10 +249,9 @@
           if (_this.type == 'wxLogin') {
             _this.$router.push({name: 'login2.0'});
 
-
           } else if (_this.type == 'phoneLogin') {
-
-          } else if (_this.type == 'passwordLogin') {
+            _this.$router.push({name: 'phoneLogin2.0', query: {phone: this.phone}});
+          } else {
 
           }
 
@@ -196,6 +266,8 @@
           });
         });
     },
+
+
 
   }
 </script>
