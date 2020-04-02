@@ -351,7 +351,8 @@ export default {
             console.log('andriod');
             this.$toast('Android暂不支持预览，请下载文件后查看');
           }*/
-          this.fileHideUrl = res.response_data.file_path;
+          /*this.fileHideUrl = res.response_data.file_path;*/
+          this.fileHideUrl = res.response_data.view_path;
           this.timeoutId = setTimeout(() => {
             document.getElementById('hideDom').click();
           },100)
