@@ -66,3 +66,6 @@ export const REGISTER_ITEMS = query => req('post', '/passport/privates', query);
 
 // 手机号登录
 export const PHONE_LOGIN = query => req('post', '/passport/login', query);
+
+// 校验手机验证码
+export const CHECK_CODE = query => req('post', '/passport/checkcode', query);

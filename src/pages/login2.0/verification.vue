@@ -36,6 +36,7 @@
 <script>
   import { SMS, LOGIN_BIND_PARTERNER } from "@/apis/passport.js";
   import { REG, PHONE_LOGIN } from "@/apis/passport.js";
+  import { CHECK_CODE } from "@/apis/passport.js";
 
   export default {
     data() {
@@ -172,6 +173,19 @@
           this.code = '';
         }
       },
+      async checkCode() {
+        let data = {
+          mobile: this.phone.replace(/\s/g, ''),
+          auth_code: this.code,
+          version: "1.1"
+        };
+        let res = await CHECK_CODE(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.$router.push({name: 'changePassword2.0', query: {phone: this.phone}});
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
       inputCode(key) {
         this.code = (this.code + key).slice(0, 4);
 
@@ -191,8 +205,8 @@
               this.phoneRegist();
             }
 
-          } else if (this.type == 'passwordLogin') {
-
+          } else if (this.type == 'findPassword') {
+            this.checkCode();
           }
         }
       },

@@ -24,11 +24,11 @@
       <van-button size="large" type="danger" disabled>登录</van-button>
     </div>
     <div class="button_wrapper" v-else>
-      <van-button size="large" type="danger" @click="">登录</van-button>
+      <van-button size="large" type="danger" @click="passwordLogin">登录</van-button>
     </div>
     <router-link :to="{name: 'phoneLogin2.0'}" class="link_text_login">验证码登录
     </router-link>
-    <router-link :to="{name: 'changePassword2.0'}" class="link_text_password">忘记密码
+    <router-link :to="{name: 'authentication2.0'}" class="link_text_password">忘记密码
     </router-link>
     <div class="wx_login">
       <p class="wx_login_text">快捷登录方式</p>
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+  import { LOG } from "@/apis/passport.js";
   export default {
     data() {
       return {
@@ -71,6 +72,36 @@
           this.submitData.disabled = true;
         }
       },
+      // 登录
+      async login() {
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          mobile: this.phone.replace(/\s/g, ''),
+          pwd: this.password,
+          version: "1.0"
+        };
+        data.sign = this.$getSign(data);
+        let res = await LOG(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.$toast('登录成功');
+          // 登录将localstorage中进度数据清空
+          localStorage.setItem("miniAudio", null);
+          localStorage.setItem("audioProgress", null);
+          localStorage.setItem("cmts", null);
+          localStorage.setItem("fromLink", null);
+          localStorage.setItem("closeAudio", null);
+          localStorage.setItem(("loginState"), 1);
+
+          // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
+          window.location.href = localStorage.getItem("defaultLink");
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      passwordLogin() {
+        this.login();
+      }
     }
   }
 </script>
