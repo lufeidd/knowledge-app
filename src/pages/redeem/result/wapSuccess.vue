@@ -35,6 +35,9 @@
         if (_ios) {
           window.location.href =
             "https://apps.apple.com/cn/app/%E7%81%AB%E6%8A%8A%E7%9F%A5%E8%AF%86/id1473766311";
+
+            // "www.huoba.net://huoba";
+
         } else if (_android) {
           window.location.href =
             "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";

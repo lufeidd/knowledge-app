@@ -213,6 +213,7 @@ export default {
     },
     audioStatus(_status) {
       var audio = document.getElementById("musicPlayer");
+      var __currentTime = audio.currentTime;
       // if (!audio.hasAttribute("src")) {
       //   this.$refs.audio.src = this.baseData.file_path;
       //   audio.load();
@@ -228,6 +229,8 @@ export default {
       }
       var second = parseInt(audio.currentTime);
       this.audioTimeChange(second, _status);
+      // 用户播放进度记录
+      this.currentTimeData(__currentTime);
       console.log("当前播放时间：", second);
     },
     // 播放中倒计时
