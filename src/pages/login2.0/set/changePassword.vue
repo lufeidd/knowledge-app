@@ -63,6 +63,7 @@
         let res = await FIND(data);
 
         if (res.hasOwnProperty("response_code")) {
+          this.$toast('设置成功');
           this.$router.push({ name: "passwordLogin2.0", query: data });
         } else {
           this.$toast(res.error_message);

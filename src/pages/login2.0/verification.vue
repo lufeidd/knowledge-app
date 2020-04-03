@@ -167,7 +167,7 @@
           localStorage.setItem(("loginState"), 1);
 
           // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
-          // window.location.href = localStorage.getItem("defaultLink");
+          window.location.href = localStorage.getItem("defaultLink");
         } else {
           this.$toast(res.error_message);
           this.code = '';
@@ -251,35 +251,44 @@
     beforeRouteLeave(to, from, next) {
       var _this = this;
 
-      this.$dialog
-        .confirm({
-          title: '点击"返回"将中断登录，确定返回？',
-          cancelButtonText: "取消",
-          confirmButtonText: "确定"
-        })
-        .then(() => {
-          next();
-          //   //  根据来的路由判断返回的页面
-          if (_this.type == 'wxLogin') {
-            _this.$router.push({name: 'login2.0'});
+      // console.log('to', to);
+      // console.log('from', from);
 
-          } else if (_this.type == 'phoneLogin') {
-            _this.$router.push({name: 'phoneLogin2.0', query: {phone: this.phone}});
-          } else {
+      if (to.name == 'phoneLogin2.0') {
+        this.$dialog
+          .confirm({
+            title: '点击"返回"将中断登录，确定返回？',
+            cancelButtonText: "取消",
+            confirmButtonText: "确定"
+          })
+          .then(() => {
+            next();
+            //   //  根据来的路由判断返回的页面
+            if (_this.type == 'wxLogin') {
+              _this.$router.push({name: 'login2.0'});
 
-          }
+            } else if ( to.name == 'phoneLogin2.0' && _this.type == 'phoneLogin') {
+              _this.$router.push({name: 'phoneLogin2.0', query: {phone: this.phone}});
+            } else {
 
-        })
-        .catch(() => {
-          // on cancel
-          next();
-          //  为什么用replace只生效了一次？
-          _this.$router.push({
-            name: "verification2.0",
-            query: {phone: this.phone}
+            }
+
+          })
+          .catch(() => {
+            // on cancel
+            next();
+            //  为什么用replace只生效了一次？
+            _this.$router.push({
+              name: "verification2.0",
+              query: {phone: this.phone}
+            });
           });
-        });
-    },
+      } else {
+        next();
+      }
+
+
+  },
 
 
 
