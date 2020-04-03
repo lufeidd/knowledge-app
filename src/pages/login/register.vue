@@ -132,8 +132,8 @@ export default {
     return {
       // 验证码倒计时，刷新保留当前手机倒计时时间
       // cdata: {
-      //   time: sessionStorage.getItem("second")
-      //     ? parseInt(sessionStorage.getItem("second"))
+      //   time: localStorage.getItem("second")
+      //     ? parseInt(localStorage.getItem("second"))
       //     : 60,
       //   phone: "15000000005"
       // },

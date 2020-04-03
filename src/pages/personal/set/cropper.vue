@@ -68,7 +68,7 @@ export default {
     };
   },
   mounted() {
-    this.option.img = sessionStorage.getItem('headPic');
+    this.option.img = localStorage.getItem('headPic');
     this.cropperShow = true;
 
     // console.log(this.option.img);

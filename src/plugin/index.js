@@ -18,6 +18,9 @@ import { LOGIN_PARTERNER } from "./../apis/passport.js";
 
 export default {
   install: function (Vue, options) {
+    Vue.prototype.page_name = '';
+    Vue.prototype.params = {};
+    Vue.prototype.share_type = 1;
     // 省市区
     // 省
     Vue.prototype.provinceList = {};
@@ -103,6 +106,7 @@ export default {
         console.log("unionid:", _unionid, "parterner:", res.response_data);
         // 登录成功exist = 1；没有绑定过 exist = 0；
         if (res.response_data.exist == 0) {
+
           this.$router.replace({
             name: "bindphone",
             query: { bindtype: _type, outerId: _unionid }
@@ -185,8 +189,6 @@ export default {
               'onMenuShareQZone',
             ]
           });
-          // 分享成功后通知后台
-          self.$getShareLog(_pageName, _params);
 
         })
         .catch(function (error) {
@@ -210,9 +212,15 @@ export default {
           success: function (res) {
             // 用户确认分享后执行的回调函数
             // logUtil.printLog("分享给朋友成功返回的信息为:", res);
+            if(res.errMsg.toLowerCase().indexOf('appmessage:ok') != -1) {
+              self.share_type = 1;
+            }
+            if(res.errMsg.toLowerCase().indexOf('timeline:ok') != -1) {
+              self.share_type = 2;
+            }
             console.log('111', res);
-            console.log('shareData111:', shareData);
-
+            // 分享成功后通知后台
+            self.$getShareLog(self.page_name, self.params, self.share_type);
           },
           cancel: function (res) {
             // 用户取消分享后执行的回调函数
@@ -231,6 +239,11 @@ export default {
 
     // 获取页面分享信息
     Vue.prototype.$getWxShareData = async function (_pageName, _params) {
+      if(!_pageName || _pageName == '' || !_params || _params == '') {
+        return;
+      }
+      this.page_name = _pageName;
+      this.params = _params;
       var tStamp = this.$getTimeStamp();
       let data = {
         page_name: _pageName,
@@ -257,11 +270,12 @@ export default {
     }
 
     // 分享成功后通知后台
-    Vue.prototype.$getShareLog = async function (_pageName, _params) {
+    Vue.prototype.$getShareLog = async function (_pageName, _params, _shareType) {
       var tStamp = this.$getTimeStamp();
       let data = {
         page_name: _pageName,
         params: _params,
+        share_type: _shareType,
         timestamp: tStamp,
         version: "1.0"
       };
@@ -331,8 +345,8 @@ export default {
 
     // 验证码倒计时，刷新保留当前手机倒计时时间
     Vue.prototype.$countDown2 = function (cdata) {
-      if (!sessionStorage.getItem('phone')) {
-        sessionStorage.setItem('phone', cdata.phone);
+      if (!localStorage.getItem('phone')) {
+        localStorage.setItem('phone', cdata.phone);
       } else {
         if (cdata.phone != sessionStorage.getItem('phone') || cdata.time === 0) {
           sessionStorage.setItem('phone', cdata.phone)
@@ -341,8 +355,8 @@ export default {
           clearInterval(this.clock)
         }
       }
-      if (!sessionStorage.getItem('second')) {
-        sessionStorage.setItem('second', cdata.time);
+      if (!localStorage.getItem('second')) {
+        localStorage.setItem('second', cdata.time);
       }
 
       let self = this
@@ -355,7 +369,7 @@ export default {
           }
           time--
           cdata.time = time;
-          sessionStorage.setItem('second', cdata.time)
+          localStorage.setItem('second', cdata.time)
         }, 1000)
       } else {
         self.$toast('时间格式不正确')
@@ -794,7 +808,6 @@ export default {
           }
         }
       } else {
-        // this.$toast(res.error_message);
         window.clearInterval(this.checkPayTime);
         this.$toast("购买失败");
         if (localStorage.getItem('routerLink').indexOf('/ebook/detail') != -1) {
@@ -939,31 +952,31 @@ export default {
     // 获取当前设备信息，微信端第一次访问提示授权
     Vue.prototype.$setLoginData = async function () {
       // 微信授权状态
-      sessionStorage.setItem("gotoLogin", "no");
+      localStorage.setItem("gotoLogin", "no");
       // 微信端
-      sessionStorage.setItem("isWxLogin", "no");
+      localStorage.setItem("isWxLogin", "no");
       // 针对webview:火把的ios端
-      sessionStorage.setItem("isHuobaIosLogin", "no");
+      localStorage.setItem("isHuobaIosLogin", "no");
       // 针对webview:火把的Android端
-      sessionStorage.setItem("isHuobaAndroidLogin", "no");
+      localStorage.setItem("isHuobaAndroidLogin", "no");
       // 是否设置过头信息
-      sessionStorage.setItem("hasHeader", "no");
+      localStorage.setItem("hasHeader", "no");
       var u = navigator.userAgent;
       var _ios = u.toLowerCase().indexOf("huoba:ios") > -1;
       var _android = u.toLowerCase().indexOf("huoba:android") > -1;
       var _wx = u.toLowerCase().match(/MicroMessenger/i) == "micromessenger";
       var _hasHeader = u.toLowerCase().indexOf("huoba:") > -1;
-      if (_hasHeader) sessionStorage.setItem("hasHeader", "yes");
+      if (_hasHeader) localStorage.setItem("hasHeader", "yes");
       if (_ios) {
         // 针对webview:火把的ios端
-        sessionStorage.setItem("isHuobaIosLogin", "yes");
+        localStorage.setItem("isHuobaIosLogin", "yes");
       } else if (_android) {
         // 针对webview:火把的Android端
-        sessionStorage.setItem("isHuobaAndroidLogin", "yes");
+        localStorage.setItem("isHuobaAndroidLogin", "yes");
       } else if (_wx) {
         // 微信端
         // 未授权时微信端访问授权页面
-        sessionStorage.setItem("isWxLogin", "yes");
+        localStorage.setItem("isWxLogin", "yes");
         if (
           localStorage.getItem("openid") == "undefined" ||
           localStorage.getItem("openid") == undefined ||
@@ -1025,7 +1038,7 @@ export default {
                 console.log("error:", error);
               });
           } else {
-            this.$toast("未获取到code");
+            console.log("未获取到code");
           }
         }
       }
@@ -1064,8 +1077,8 @@ export default {
           });
           // 去除空格
           Array.from(str, (item, index) => {
-            if(item == " " && (str.length == 4 || str.length == 9)) {
-                _bool = true;
+            if (item == " " && (str.length == 4 || str.length == 9)) {
+              _bool = true;
             }
           });
           break;

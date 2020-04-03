@@ -181,9 +181,9 @@ export default {
       if (res.error_code == 100) {
         // 未登录
 
-        sessionStorage.setItem("goodsItem", JSON.stringify(item));
-        sessionStorage.setItem("goodsType", "coupons");
-        // console.log(sessionStorage.getItem("goodsItem"));
+        localStorage.setItem("goodsItem", JSON.stringify(item));
+        localStorage.setItem("goodsType", "coupons");
+        // console.log(localStorage.getItem("goodsItem"));
         if (localStorage.getItem("unionid")) {
           // if (false) {
           this.$router.push({ name: "redeemLogin" });
@@ -238,8 +238,8 @@ export default {
       // var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
       // console.log(u, app, _ios, _android);
       if (
-        sessionStorage.getItem("isHuobaIosLogin") == "yes" ||
-        sessionStorage.getItem("isHuobaAndroidLogin") == "yes"
+        localStorage.getItem("isHuobaIosLogin") == "yes" ||
+        localStorage.getItem("isHuobaAndroidLogin") == "yes"
       ) {
         return true;
       } else {
@@ -247,7 +247,7 @@ export default {
       }
     },
     visitPage() {
-      if (this.secShare == 0 &&  sessionStorage.getItem('originLink') != 1) { // 不可二次分享
+      if (this.secShare == 0 &&  localStorage.getItem('originLink') != 1) { // 不可二次分享
         this.remindPopShow = true;
         const timer = setInterval(() => {
           this.time--;
@@ -263,7 +263,7 @@ export default {
   created() {
     this.code = this.$route.query.code;
     this.redeem = decodeURIComponent(this.$route.query.redeem_id).replace(/\s/g, '+');
-    sessionStorage.setItem("hash", window.location.hash);
+    localStorage.setItem("hash", window.location.hash);
   },
   mounted() {
     this.getCouponsDetail();

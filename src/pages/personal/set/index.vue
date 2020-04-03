@@ -173,7 +173,7 @@ export default {
         this.nickname = "";
         this.unionid = "";
 
-        sessionStorage.setItem("headPic", null);
+        localStorage.setItem("headPic", null);
         this.$router.push("/login/index");
       } else {
         this.$toast(res.error_message);

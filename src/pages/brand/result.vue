@@ -1,6 +1,9 @@
 <template>
   <div id="resultPage">
-    <div class="nullBox" v-if="programFinished && contentData.length == 0">
+    <div
+      class="nullBox"
+      v-if="programFinished && contentData.length == 0 && summaryList.length == 0"
+    >
       <img src="../../assets/null/list.png" width="100%" />
       <div>您搜索的内容为空</div>
     </div>
@@ -8,7 +11,7 @@
       v-else
       v-model="programLoading"
       :finished="programFinished"
-      :finished-text="activekey>0?'没有更多了':''"
+      finished-text="没有更多了"
       @load="programLoad"
       class="list"
     >
@@ -31,7 +34,7 @@
       >
         <van-tab :title="items.name" v-for="(items,index) in column_list" :key="index">
           <template
-            v-if="items.goods_type == 0 && items.search_type && items.search_type == 'summary'"
+            v-if="items.goods_type == 0 && items.search_type && items.search_type == 'summary' && activekey == index"
           >
             <div v-for="(litem,lindex) in summaryList" :key="lindex">
               <div class="summaryList" v-if="litem.search_type == 'brand'">
@@ -48,7 +51,7 @@
                   <img :src="bitem.brand_pic" alt width="45px" height="45px" />
                   <span class="bname">{{bitem.brand_name}}</span>
                 </div>
-                <div class="readMore" v-if="litem.result.length > 2">
+                <div class="readMore" v-if="litem.result_num > 2">
                   <span @click="watchMore(litem,lindex)">
                     查看更多
                     <svg class="icon" aria-hidden="true">
@@ -176,7 +179,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="readMore" v-if="litem.result.length > 0">
+                <div class="readMore" v-if="litem.result_num > 2">
                   <span @click="watchMore(litem,lindex)">
                     查看更多
                     <svg class="icon" aria-hidden="true">
@@ -189,9 +192,9 @@
           </template>
           <!-- 火把号 -->
           <template
-            v-if="items.goods_type == 0 && items.search_type && items.search_type == 'brand'"
+            v-if="items.goods_type == 0 && items.search_type && items.search_type == 'brand' && activekey == index"
           >
-            <div class="summaryList huoba">
+            <div class="summaryList huoba" v-if="huobaList.length>0">
               <div
                 class="brandContent"
                 v-for="(hbitem,hbindex) in huobaList"
@@ -204,7 +207,7 @@
             </div>
           </template>
           <template
-            v-if="items.goods_type > 0 && items.search_type && items.search_type == 'goods'"
+            v-if="items.goods_type > 0 && items.search_type && items.search_type == 'goods' && activekey == index"
           >
             <div v-for="(item,index) in brandData" :key="index">
               <!-- 图书,专辑 -->
@@ -340,7 +343,7 @@ export default {
       state: "brand",
       brandData: [],
       bookData: [],
-      column_list: [],
+      column_list: [{search_type:null}],
       programLoading: false,
       programFinished: false,
       // 搜索结果参数
@@ -357,7 +360,8 @@ export default {
       isbrand_id: null,
       summaryList: [],
       huobapage: 1,
-      huobaList: []
+      huobaList: [],
+      judgehome_id: null
     };
   },
   mounted() {
@@ -375,9 +379,10 @@ export default {
     this.cids = this.$route.query.cids ? this.$route.query.cids : null;
 
     // title
-    this.title = this.$route.query.title ? this.$route.query.title : "";
-    document.title = "搜索结果-" + this.title;
-
+    this.title = this.$route.query.searchContent ? this.$route.query.searchContent : "";
+    if(this.title != "") this.title = '-' + this.title;
+    document.title = "搜索结果" + this.title;
+    this.judgehome_id = localStorage.getItem("home_id");
     // this.getGoodsColum();
     // this.getGoods();
     this.getSummaryGoods();
@@ -421,38 +426,65 @@ export default {
       }
     },
     programLoad() {
-      this.getGoods();
-      this.huobaBrand();
+      var list_index = this.activekey
+      // console.log(666,this.column_list)
+      if(this.column_list[list_index].search_type == 'brand'){
+        this.huobaBrand();
+      }else if(this.column_list[list_index].search_type == 'goods'){
+        this.getGoods();
+      }else if(this.column_list[list_index].search_type == 'summary'){
+        this.programFinished = true;
+        this.programLoading = false
+      }else{
+        this.getGoods();
+      }
     },
     async getGoods() {
       var tStamp = this.$getTimeStamp();
-      var data = {
-        scene: "platform",
-        keywords: this.searchContent,
-        goods_type: this.goods_type,
-        brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
-        supplier_id: this.supplier_id,
-        tagids: this.tagids,
-        cids: this.cids,
-        page: this.page,
-        page_size: this.page_size,
-        version: "1.0",
-        timestamp: tStamp
-      };
+      var data = {};
+      if (this.judgehome_id == "all") {
+        data = {
+          scene: "platform",
+          keywords: this.searchContent,
+          goods_type: this.goods_type,
+          // brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
+          // supplier_id: this.supplier_id,
+          tagids: this.tagids,
+          cids: this.cids,
+          page: this.page,
+          page_size: this.page_size,
+          version: "1.0",
+          timestamp: tStamp
+        };
+      } else {
+        data = {
+          keywords: this.searchContent,
+          goods_type: this.goods_type,
+          brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
+          // supplier_id: this.supplier_id?this.supplier_id:0,
+          tagids: this.tagids,
+          cids: this.cids,
+          page: this.page,
+          page_size: this.page_size,
+          version: "1.0",
+          timestamp: tStamp
+        };
+        if(this.supplier_id){data.supplier_id = this.supplier_id}
+        if (this.$route.query.type == "brand") {
+          data.scene = "brand";
+        } else if (this.$route.query.type == "mall") {
+          data.scene = "mall";
+        } else {
+          data.scene = "platform";
+        }
+      }
       data.sign = this.$getSign(data);
       let res = await BRAND_SEARCH_GOODS_GETS(data);
 
       if (res.hasOwnProperty("response_code")) {
         var result = res.response_data.result;
         // this.column_list = res.response_data.column;
-        // console.log(111,this.column_list)
-        if (this.goods_type > 0) {
-          for (let i = 0; i < this.column_list.length; i++) {
-            if (this.column_list[i].goods_type == this.goods_type) {
-              this.activekey = i;
-            }
-          }
-        }
+
         setTimeout(() => {
           for (let i = 0; i < result.length; i++) {
             this.brandData.push(result[i]);
@@ -497,6 +529,13 @@ export default {
               keywords: this.$route.query.searchContent
             });
             break;
+          case "all":
+            _pageName = "brand/goods/search";
+            _params = JSON.stringify({
+              brand_id: this.$route.query.brand_id,
+              keywords: this.$route.query.searchContent
+            });
+            break;
         }
         if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
       } else {
@@ -506,21 +545,52 @@ export default {
     // 综合列表
     async getSummaryGoods() {
       var tStamp = this.$getTimeStamp();
-      var data = {
-        scene: "platform",
-        keywords: this.searchContent,
-        brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
-        supplier_id: this.supplier_id,
-        cids: this.cids,
-        version: "1.0",
-        timestamp: tStamp
-      };
+      var data = {};
+      if (this.judgehome_id == "all") {
+        data = {
+          scene: "platform",
+          keywords: this.searchContent,
+          // brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
+          // supplier_id: this.supplier_id,
+          cids: this.cids,
+          version: "1.0",
+          timestamp: tStamp
+        };
+      } else {
+        data = {
+          keywords: this.searchContent,
+          brand_id: this.isbrand_id == "no" ? 0 : this.$route.query.brand_id,
+          // supplier_id: this.supplier_id?this.supplier_id:0,
+          cids: this.cids,
+          version: "1.0",
+          timestamp: tStamp
+        };
+        if(this.supplier_id){data.supplier_id = this.supplier_id}
+        if (this.$route.query.type == "brand") {
+          data.scene = "brand";
+        } else if (this.$route.query.type == "mall") {
+          data.scene = "mall";
+        } else {
+          data.scene = "platform";
+        }
+      }
+
       data.sign = this.$getSign(data);
       let res = await SEARCH_GOODS_SUMMARY(data);
 
       if (res.hasOwnProperty("response_code")) {
         this.column_list = res.response_data.column;
+        // console.log(111,this.column_list)
+        if (this.goods_type > 0) {
+          for (let i = 0; i < this.column_list.length; i++) {
+            if (this.column_list[i].goods_type == this.goods_type) {
+              this.activekey = i;
+            }
+          }
+        }
         this.summaryList = res.response_data.list;
+        this.programFinished = true;
+        this.programLoading = false
       } else {
         this.$toast(res.error_message);
       }
@@ -608,7 +678,7 @@ export default {
     tabChange(index, title) {
       this.activekey = index;
       this.goods_type = Number(this.column_list[index].goods_type);
-      if (index > 0) {
+      // if (index > 0) {
         this.brandData = [];
         this.huobaList = [];
         this.page = 1;
@@ -617,7 +687,7 @@ export default {
         if (this.programLoading) {
           this.programLoad();
         }
-      }
+      // }
     }
   }
 };

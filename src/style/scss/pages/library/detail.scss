@@ -19,6 +19,7 @@
   .package{
     padding: 15px;
     background-color: #fff;
+    position: relative;
     .title{
       display: -webkit-box;
       display: -ms-flexbox;
@@ -50,7 +51,7 @@
         }
         .lh{
           line-height: 1;
-          font-family:PingFang SC;
+          font-family: PingFangBlod;
           font-size: 16px;
           color: #333;
           font-weight: bold;
@@ -168,7 +169,7 @@
     padding: 25px 16px 0;
     overflow: hidden;
     top: 150px;
-    position: absolute;
+    /*position: absolute;*/
     .text{
       span{
         color: #999999;

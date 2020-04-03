@@ -148,7 +148,6 @@ export default {
     if (this.brand_id) {
       this.brandGetData();
     } else {
-      this.$toast("商户信息丢失，请返回重新访问页面!");
       this.$router.replace({
         name: "personalIndex"
       });

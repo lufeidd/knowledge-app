@@ -305,14 +305,14 @@ export default {
         localStorage.getItem("unionid") == null ||
         localStorage.getItem("unionid") == ""
       ) {
-        sessionStorage.setItem("gotoLogin", "no");
-        sessionStorage.setItem("isWxLogin", "no");
+        localStorage.setItem("gotoLogin", "no");
+        localStorage.setItem("isWxLogin", "no");
 
         if (
           window.navigator.userAgent.toLowerCase().match(/MicroMessenger/i) ==
           "micromessenger"
         ) {
-          sessionStorage.setItem("isWxLogin", "yes");
+          localStorage.setItem("isWxLogin", "yes");
           if (
             localStorage.getItem("openid") == "undefined" ||
             localStorage.getItem("openid") == undefined ||
