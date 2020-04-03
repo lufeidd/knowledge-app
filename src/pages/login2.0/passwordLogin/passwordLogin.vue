@@ -77,7 +77,7 @@
         var tStamp = this.$getTimeStamp();
         let data = {
           timestamp: tStamp,
-          mobile: this.phone.replace(/\s/g, ''),
+          mobile: this.phone.replace(/\s/g,   ''),
           pwd: this.password,
           version: "1.0"
         };
@@ -102,6 +102,9 @@
       passwordLogin() {
         this.login();
       }
+    },
+    mounted() {
+      this.phone = this.$route.query.phone;
     }
   }
 </script>

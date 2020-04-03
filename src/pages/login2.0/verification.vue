@@ -181,7 +181,7 @@
         };
         let res = await CHECK_CODE(data);
         if (res.hasOwnProperty("response_code")) {
-          this.$router.push({name: 'changePassword2.0', query: {phone: this.phone}});
+          this.$router.push({name: 'changePassword2.0', query: {phone: this.phone, code: this.code}});
         } else {
           this.$toast(res.error_message);
         }
