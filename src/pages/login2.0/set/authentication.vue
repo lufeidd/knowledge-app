@@ -73,16 +73,48 @@
         }
       },
       getCode() {
-        // 请求接口判断该手机号是否注册 (问下后端确认一下)
         // 如果已注册跳转到验证码输入页
         let _this = this;
         this.checkPhone().then(function () {
           if (_this.isRegister == 1) { // 已注册
-              _this.$router.push({name: 'verification2.0', query: {phone: _this.phone, type: 'findPassword'}});
+              _this.$router.replace({name: 'verification2.0', query: {phone: _this.phone, type: 'findPassword'}});
+          } else {
+            _this.$toast('该用户不存在');
           }
         });
       }
-    }
+    },
+    beforeRouteLeave(to, from, next) {
+      var _this = this;
+
+      // console.log('to', to);
+      // console.log('from', from);
+
+      if (to.name == 'passwordLogin2.0') {
+        this.$dialog
+          .confirm({
+            title: '点击"返回"将中断登录，确定返回？',
+            cancelButtonText: "取消",
+            confirmButtonText: "确定"
+          })
+          .then(() => {
+            next();
+
+          })
+          .catch(() => {
+            // on cancel
+            next();
+            //  为什么用replace只生效了一次？
+            _this.$router.push({
+              name: "authentication2.0"
+            });
+          });
+      } else {
+        next();
+      }
+
+
+    },
   }
 </script>
 

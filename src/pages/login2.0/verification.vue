@@ -181,9 +181,10 @@
         };
         let res = await CHECK_CODE(data);
         if (res.hasOwnProperty("response_code")) {
-          this.$router.push({name: 'changePassword2.0', query: {phone: this.phone, code: this.code}});
+          this.$router.replace({name: 'changePassword2.0', query: {phone: this.phone, code: this.code}});
         } else {
           this.$toast(res.error_message);
+          this.code = '';
         }
       },
       inputCode(key) {
@@ -254,7 +255,7 @@
       // console.log('to', to);
       // console.log('from', from);
 
-      if (to.name == 'phoneLogin2.0') {
+      if (to.name == 'login2.0') {
         this.$dialog
           .confirm({
             title: '点击"返回"将中断登录，确定返回？',
@@ -263,16 +264,52 @@
           })
           .then(() => {
             next();
-            //   //  根据来的路由判断返回的页面
             if (_this.type == 'wxLogin') {
               _this.$router.push({name: 'login2.0'});
 
-            } else if ( to.name == 'phoneLogin2.0' && _this.type == 'phoneLogin') {
-              _this.$router.push({name: 'phoneLogin2.0', query: {phone: this.phone}});
-            } else {
-
             }
-
+          })
+          .catch(() => {
+            // on cancel
+            next();
+            //  为什么用replace只生效了一次？
+            _this.$router.push({
+              name: "verification2.0",
+              query: {phone: this.phone}
+            });
+          });
+      } else if (to.name == 'phoneLogin2.0') {
+        this.$dialog
+          .confirm({
+            title: '点击"返回"将中断登录，确定返回？',
+            cancelButtonText: "取消",
+            confirmButtonText: "确定"
+          })
+          .then(() => {
+            next();
+            if (_this.type == 'phoneLogin') {
+              _this.$router.push({name: 'phoneLogin2.0', query: {phone: this.phone}});
+            }
+          })
+          .catch(() => {
+            // on cancel
+            next();
+            //  为什么用replace只生效了一次？
+            _this.$router.push({
+              name: "verification2.0",
+              query: {phone: this.phone}
+            });
+          });
+      } else if (to.name == 'passwordLogin2.0') {
+        this.$dialog
+          .confirm({
+            title: '点击"返回"将中断登录，确定返回？',
+            cancelButtonText: "取消",
+            confirmButtonText: "确定"
+          })
+          .then(() => {
+            next();
+              _this.$router.push({name: 'passwordLogin2.0'});
           })
           .catch(() => {
             // on cancel
@@ -286,8 +323,6 @@
       } else {
         next();
       }
-
-
   },
 
 

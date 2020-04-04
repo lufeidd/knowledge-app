@@ -74,7 +74,38 @@
     mounted() {
       this.phone = this.$route.query.phone;
       this.code = this.$route.query.code;
-    }
+    },
+    beforeRouteLeave(to, from, next) {
+      var _this = this;
+
+      console.log('to', to);
+      // console.log('from', from);
+
+      if (to.name == 'passwordLogin2.0') {
+        this.$dialog
+          .confirm({
+            title: '点击"返回"将中断登录，确定返回？',
+            cancelButtonText: "取消",
+            confirmButtonText: "确定"
+          })
+          .then(() => {
+            next();
+
+          })
+          .catch(() => {
+            // on cancel
+            next();
+            //  为什么用replace只生效了一次？
+            _this.$router.push({
+              name: "changePassword2.0"
+            });
+          });
+      } else {
+        next();
+      }
+
+
+    },
   }
 </script>
 
