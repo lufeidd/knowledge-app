@@ -87,7 +87,7 @@
               _this.$router.replace({name: 'verification2.0', query: {phone: _this.phone, type: 'changePassword'}});
             }
             if (_this.pageType == 'phone') {
-              _this.$router.replace({name: 'verification2.0', query: {phone: _this.phone, type: 'changePhone'}});
+              _this.$router.replace({name: 'verification2.0', query: {phone: _this.phone, type: 'oldChangePhone'}});
             }
 
           } else {

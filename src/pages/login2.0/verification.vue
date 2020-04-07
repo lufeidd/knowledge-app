@@ -37,6 +37,8 @@
   import { SMS, LOGIN_BIND_PARTERNER } from "@/apis/passport.js";
   import { REG, PHONE_LOGIN } from "@/apis/passport.js";
   import { CHECK_CODE } from "@/apis/passport.js";
+  import { USER_PHONE_RESETSAVE } from "@/apis/user.js";
+
 
   export default {
     data() {
@@ -183,14 +185,36 @@
         if (res.hasOwnProperty("response_code")) {
           if (this.type == 'changePassword') {
             this.$router.replace({name: 'changePassword2.0', query: {phone: this.phone, code: this.code}});
-          } else if (this.type == 'changePhone') {
+          } else if (this.type == 'oldChangePhone') {
             this.$router.replace({name: 'changePhone2.0', query: {phone: this.phone, code: this.code}});
+          } else if (this.type == 'newChangePhone') {
+            this.resetSave();
           }
         } else {
           this.$toast(res.error_message);
           this.code = '';
         }
       },
+      // 修改手机号
+      async resetSave() {
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          mobile: this.phone.replace(/\s/g, ''),
+          auth_code: this.code,
+          version: "1.0"
+        };
+        data.sign = this.$getSign(data);
+        let res = await USER_PHONE_RESETSAVE(data);
+        // console.log(res.response_data);
+        if (res.hasOwnProperty("response_code")) {
+          this.$toast("手机号更改成功~");
+          this.$router.push({name: 'login2.0'});
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+
       inputCode(key) {
         this.code = (this.code + key).slice(0, 4);
 
@@ -210,7 +234,7 @@
               this.phoneRegist();
             }
 
-          } else if (this.type == 'changePassword') {
+          } else {
             this.checkCode();
           }
         }
