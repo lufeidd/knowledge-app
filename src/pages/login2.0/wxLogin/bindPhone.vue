@@ -137,7 +137,7 @@
       },
       agree() {
         this.isBack = false;
-        this.$router.push({name: 'verification2.0', query: {phone: this.phone, type: 'wxLogin'}});
+        this.$router.replace({name: 'verification2.0', query: {phone: this.phone, type: 'wxLogin'}});
 
       },
       disagree() {
