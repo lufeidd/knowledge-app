@@ -1,9 +1,15 @@
 <template>
   <div id="authenticationPage">
     <p class="info">我们需要验证您的身份</p>
-    <div class="action_wrapper">
+    <p class="phone" v-text="phone" v-if="hasPhone"></p>
+    <div class="action_wrapper" v-if="hasPhone">
+      <div class="button_wrapper">
+        <van-button slot="button" size="large" type="danger" @click="getCode">获取验证码</van-button>
+      </div>
+    </div>
+    <div class="action_wrapper" v-if="!hasPhone">
       <van-field
-        class="phone"
+        class="inputPhone"
         v-model="phone"
         clearable
         placeholder="请输入手机号"
@@ -17,8 +23,6 @@
       <div class="button_wrapper" v-else>
         <van-button slot="button" size="large" type="danger" @click="getCode">获取验证码</van-button>
       </div>
-
-
     </div>
   </div>
 </template>
@@ -29,6 +33,8 @@
     data() {
       return {
         phone: '',
+        hasPhone: false,
+        pageType: '',
         submitData: {
           disabled: true
         },
@@ -77,7 +83,13 @@
         let _this = this;
         this.checkPhone().then(function () {
           if (_this.isRegister == 1) { // 已注册
-              _this.$router.replace({name: 'verification2.0', query: {phone: _this.phone, type: 'findPassword'}});
+            if (_this.pageType == 'password') {
+              _this.$router.replace({name: 'verification2.0', query: {phone: _this.phone, type: 'changePassword'}});
+            }
+            if (_this.pageType == 'phone') {
+              _this.$router.replace({name: 'verification2.0', query: {phone: _this.phone, type: 'changePhone'}});
+            }
+
           } else {
             _this.$toast('该用户不存在');
           }
@@ -104,7 +116,24 @@
           .catch(() => {
             // on cancel
             next();
-            //  为什么用replace只生效了一次？
+            _this.$router.push({
+              name: "authentication2.0"
+            });
+          });
+      } else if (to.name == 'safe') {
+        this.$dialog
+          .confirm({
+            title: '点击"返回"将中断登录，确定返回？',
+            cancelButtonText: "取消",
+            confirmButtonText: "确定"
+          })
+          .then(() => {
+            next();
+
+          })
+          .catch(() => {
+            // on cancel
+            next();
             _this.$router.push({
               name: "authentication2.0"
             });
@@ -115,6 +144,18 @@
 
 
     },
+    mounted() {
+      let str = this.$route.query.phone ? this.$route.query.phone.toString(): '';
+      let str1 = str.substring(0, 3);
+      let str2 = str.substring(3, 7);
+      let str3 = str.substring(7, 11);
+      this.phone = str1 + ' ' + str2 + ' ' + str3;
+      this.pageType = this.$route.query.pageType;
+      // console.log(this.pageType);
+      if (this.pageType == 'password' || this.pageType == 'phone') {
+        this.hasPhone = true;
+      }
+    }
   }
 </script>
 

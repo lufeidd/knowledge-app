@@ -95,9 +95,26 @@
           .catch(() => {
             // on cancel
             next();
-            //  为什么用replace只生效了一次？
             _this.$router.push({
               name: "changePassword2.0"
+            });
+          });
+      } else if (to.name == 'safe') {
+        this.$dialog
+          .confirm({
+            title: '点击"返回"将中断登录，确定返回？',
+            cancelButtonText: "取消",
+            confirmButtonText: "确定"
+          })
+          .then(() => {
+            next();
+
+          })
+          .catch(() => {
+            // on cancel
+            next();
+            _this.$router.push({
+              name: "authentication2.0"
             });
           });
       } else {

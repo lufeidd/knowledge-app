@@ -15,7 +15,7 @@
   .action_wrapper {
     margin-top: 143px;
     padding: 0 40px;
-    .phone {
+    .inputPhone {
       margin-bottom: 23px;
     }
     .van-field__control {
@@ -50,12 +50,23 @@
       }
     }
   }
+
   .info {
-    margin: 65px 40px 185px 40px;
+    margin: 65px 40px 0 40px;
     font-size: 18px;
     font-family: PingFang SC;
     font-weight: 500;
     color: #333333;
+    line-height: 28px;
+    height: 28px;
+  }
+  .phone {
+    font-family: PingFang SC;
+    margin: 0 40px;
+    font-weight: 500;
+    color: #333333;
+    line-height: 24px;
+    height: 24px;
   }
 
 }

@@ -181,7 +181,11 @@
         };
         let res = await CHECK_CODE(data);
         if (res.hasOwnProperty("response_code")) {
-          this.$router.replace({name: 'changePassword2.0', query: {phone: this.phone, code: this.code}});
+          if (this.type == 'changePassword') {
+            this.$router.replace({name: 'changePassword2.0', query: {phone: this.phone, code: this.code}});
+          } else if (this.type == 'changePhone') {
+            this.$router.replace({name: 'changePhone2.0', query: {phone: this.phone, code: this.code}});
+          }
         } else {
           this.$toast(res.error_message);
           this.code = '';
@@ -206,7 +210,7 @@
               this.phoneRegist();
             }
 
-          } else if (this.type == 'findPassword') {
+          } else if (this.type == 'changePassword') {
             this.checkCode();
           }
         }
@@ -245,8 +249,8 @@
       this.countdown();
 
       // 绑定
-      // this.bindtype = parseInt(this.$route.query.bindtype);
-      // this.outerId = this.$route.query.outerId;
+      this.bindtype = parseInt(this.$route.query.bindtype);
+      this.outerId = this.$route.query.outerId;
       // this.activity_id = this.$route.query.activity_id ? this.$route.query.activity_id : false;
     },
     beforeRouteLeave(to, from, next) {
@@ -272,7 +276,6 @@
           .catch(() => {
             // on cancel
             next();
-            //  为什么用replace只生效了一次？
             _this.$router.push({
               name: "verification2.0",
               query: {phone: this.phone}
@@ -294,7 +297,6 @@
           .catch(() => {
             // on cancel
             next();
-            //  为什么用replace只生效了一次？
             _this.$router.push({
               name: "verification2.0",
               query: {phone: this.phone}
@@ -314,13 +316,49 @@
           .catch(() => {
             // on cancel
             next();
-            //  为什么用replace只生效了一次？
             _this.$router.push({
               name: "verification2.0",
               query: {phone: this.phone}
             });
           });
-      } else {
+      } else if (to.name == 'safe') {
+        this.$dialog
+          .confirm({
+            title: '点击"返回"将中断登录，确定返回？',
+            cancelButtonText: "取消",
+            confirmButtonText: "确定"
+          })
+          .then(() => {
+            next();
+
+          })
+          .catch(() => {
+            // on cancel
+            next();
+            _this.$router.push({
+              name: "authentication2.0"
+            });
+          });
+      } else if (to.name == 'bind') {
+        this.$dialog
+          .confirm({
+            title: '点击"返回"将中断登录，确定返回？',
+            cancelButtonText: "取消",
+            confirmButtonText: "确定"
+          })
+          .then(() => {
+            next();
+
+          })
+          .catch(() => {
+            // on cancel
+            next();
+            _this.$router.push({
+              name: "authentication2.0"
+            });
+          });
+      }
+      else {
         next();
       }
   },
