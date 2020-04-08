@@ -58,5 +58,14 @@ export const PASSPORT_CHECKPHONE = query => req('post', '/passport/checkphone', 
 
 // 登录注册2.0新增接口
 
+//判断手机号是否已注册
+export const PHONE_CHECK = query => req('post', '/passport/checkphone', query);
+
 // 是否弹注册条款
 export const REGISTER_ITEMS = query => req('post', '/passport/privates', query);
+
+// 手机号登录
+export const PHONE_LOGIN = query => req('post', '/passport/login', query);
+
+// 校验手机验证码
+export const CHECK_CODE = query => req('post', '/passport/checkcode', query);

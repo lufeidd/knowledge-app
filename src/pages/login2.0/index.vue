@@ -1,19 +1,23 @@
 <template>
   <div id="loginV2">
-    <div class="huoba_pic"></div>
-    <h3 class="huoba_name">火把知识</h3>
-    <div class="action_wrapper">
-      <van-button slot="button" size="large" type="danger" @click="wxLogin">微信快捷登录</van-button>
-      <van-button slot="button" size="large" type="default" @click="phoneLogin">手机号登录</van-button>
+    <div v-if="pageShow">
+      <div class="huoba_pic"></div>
+      <h3 class="huoba_name">火把知识</h3>
+      <div class="action_wrapper">
+        <van-button slot="button" size="large" type="danger" @click="wxLogin">微信快捷登录</van-button>
+        <van-button slot="button" size="large" type="default" @click="phoneLogin">手机号登录</van-button>
+      </div>
+      <EazyNav type="brand" :isShow="false"></EazyNav>
     </div>
-    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
 <script>
   export default {
     data() {
-      return {};
+      return {
+        pageShow: true
+      };
     },
     methods: {
       wxLogin() {
@@ -45,6 +49,11 @@
           // 第三方登录
           this.$getWxLoginData();
         }
+      }
+
+      if (this.$route.query.isTrigger) {
+        this.pageShow = false;
+        this.wxLogin();
       }
     }
   };

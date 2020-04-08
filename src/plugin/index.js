@@ -107,14 +107,14 @@ export default {
         // 登录成功exist = 1；没有绑定过 exist = 0；
         if (res.response_data.exist == 0) {
 
-          this.$router.replace({
-            name: "bindphone",
-            query: { bindtype: _type, outerId: _unionid }
-          });
           // this.$router.replace({
-          //   name: "bindPhone2.0",
+          //   name: "bindphone",
           //   query: { bindtype: _type, outerId: _unionid }
           // });
+          this.$router.replace({
+            name: "bindPhone2.0",
+            query: { bindtype: _type, outerId: _unionid }
+          });
         }
         if (res.response_data.exist == 1) {
           // brand_id等信息
