@@ -28,7 +28,7 @@
     </div>
     <router-link :to="{name: 'phoneLogin2.0'}" class="link_text_login">验证码登录
     </router-link>
-    <router-link :to="{name: 'authentication2.0'}" class="link_text_password">忘记密码
+    <router-link :to="{name: 'authentication2.0', query: {pageType: 'findPassword'}}" class="link_text_password">忘记密码
     </router-link>
     <div class="wx_login">
       <p class="wx_login_text">快捷登录方式</p>

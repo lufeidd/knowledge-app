@@ -22,6 +22,7 @@
   export default {
     data() {
       return {
+        setFlag: false, // 是否点击确认设置按钮
         phone: '',
         code: '',
         password: '',
@@ -41,6 +42,7 @@
         }
       },
       confirmSet() {
+        this.setFlag = true;
         let data = {
           phone: this.phone
         };
@@ -79,9 +81,9 @@
       var _this = this;
 
       console.log('to', to);
-      // console.log('from', from);
+      console.log('from', from);
 
-      if (to.name == 'passwordLogin2.0') {
+      if (to.name == 'passwordLogin2.0' && !this.setFlag) {
         this.$dialog
           .confirm({
             title: '点击"返回"将中断登录，确定返回？',

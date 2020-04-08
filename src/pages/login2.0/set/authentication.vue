@@ -83,7 +83,7 @@
         let _this = this;
         this.checkPhone().then(function () {
           if (_this.isRegister == 1) { // 已注册
-            if (_this.pageType == 'password') {
+            if (_this.pageType == 'password' || _this.pageType == 'findPassword') {
               _this.$router.replace({name: 'verification2.0', query: {phone: _this.phone, type: 'changePassword'}});
             }
             if (_this.pageType == 'phone') {
@@ -150,7 +150,7 @@
       let str2 = str.substring(3, 7);
       let str3 = str.substring(7, 11);
       this.phone = str1 + ' ' + str2 + ' ' + str3;
-      this.pageType = this.$route.query.pageType;
+      this.pageType = this.$route.query.pageType; // 'findPassword', 'password', 'phone'
       // console.log(this.pageType);
       if (this.pageType == 'password' || this.pageType == 'phone') {
         this.hasPhone = true;

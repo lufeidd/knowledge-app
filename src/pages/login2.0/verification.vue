@@ -37,7 +37,7 @@
   import { SMS, LOGIN_BIND_PARTERNER } from "@/apis/passport.js";
   import { REG, PHONE_LOGIN } from "@/apis/passport.js";
   import { CHECK_CODE } from "@/apis/passport.js";
-  import { USER_PHONE_RESETSAVE } from "@/apis/user.js";
+  import { USER_PHONE_RESET, USER_PHONE_RESETSAVE } from "@/apis/user.js";
 
 
   export default {
@@ -186,6 +186,7 @@
           if (this.type == 'changePassword') {
             this.$router.replace({name: 'changePassword2.0', query: {phone: this.phone, code: this.code}});
           } else if (this.type == 'oldChangePhone') {
+            this.resetApply();
             this.$router.replace({name: 'changePhone2.0', query: {phone: this.phone, code: this.code}});
           } else if (this.type == 'newChangePhone') {
             this.resetSave();
@@ -212,6 +213,26 @@
           this.$router.push({name: 'login2.0'});
         } else {
           this.$toast(res.error_message);
+          this.code = '';
+        }
+      },
+      // 手机号重置申请接口
+      async resetApply() {
+        // console.log("code:", this.code);
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          auth_code: this.code,
+          version: "1.0"
+        };
+        data.sign = this.$getSign(data);
+        let res = await USER_PHONE_RESET(data);
+        console.log("123", res.response_data);
+        if (res.hasOwnProperty("response_code")) {
+
+        } else {
+          this.$toast(res.error_message);
+          this.code = '';
         }
       },
 
