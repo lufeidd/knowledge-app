@@ -47,6 +47,34 @@
       getCode() {
         this.$router.replace({name: 'verification2.0', query:{phone: this.phone,type: 'newChangePhone'}});  //  跳转到新手机获取验证码页面
       }
+    },
+    beforeRouteLeave(to, from, next) {
+      var _this = this;
+
+      console.log('to', to);
+      console.log('from', from);
+
+      if (to.name == 'bind') {
+        this.$dialog
+          .confirm({
+            title: '点击"返回"将中断设置，确定返回？',
+            cancelButtonText: "取消",
+            confirmButtonText: "确定"
+          })
+          .then(() => {
+            next();
+
+          })
+          .catch(() => {
+            // on cancel
+            next();
+            _this.$router.push({
+              name: "authentication2.0"
+            });
+          });
+      } else {
+        next();
+      }
     }
   }
 </script>
