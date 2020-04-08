@@ -1,6 +1,6 @@
 <template>
   <div id="changePhonePage">
-    <p class="info">修改手机号</p>
+    <p class="info">修改手机号<span class="step_text"><span class="percent_step">3</span>/4</span></p>
     <div class="action_wrapper">
       <van-field
         class="phone"

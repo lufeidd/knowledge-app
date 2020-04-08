@@ -1,6 +1,6 @@
 <template>
   <div id="authenticationPage">
-    <p class="info">我们需要验证您的身份</p>
+    <p class="info">我们需要验证您的身份<span class="step_text"><span class="percent_step">1</span>/{{this.totalStep}}</span></p>
     <p class="phone" v-text="phone" v-if="hasPhone"></p>
     <div class="action_wrapper" v-if="hasPhone">
       <div class="button_wrapper">
@@ -32,6 +32,7 @@
   export default {
     data() {
       return {
+        totalStep: Number,
         phone: '',
         hasPhone: false,
         pageType: '',
@@ -154,6 +155,11 @@
       // console.log(this.pageType);
       if (this.pageType == 'password' || this.pageType == 'phone') {
         this.hasPhone = true;
+      }
+      if (this.pageType == 'findPassword' || this.pageType == 'password') {
+        this.totalStep = 3;
+      } else if (this.pageType == 'phone') {
+        this.totalStep = 4;
       }
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <div id="verificationPage">
-    <p class="info">验证码已经发送到您的手机</p>
+    <p class="info">验证码已经发送到您的手机<span class="step_text"><span class="percent_step">{{this.percentStep}}</span>/{{this.totalStep}}</span></p>
     <p class="phone" v-text="phone"></p>
     <van-password-input
       :value="code"
@@ -43,6 +43,8 @@
   export default {
     data() {
       return {
+        totalStep: Number,
+        percentStep: Number,
         code: '',
         phone: '',
         type: '', // 登录方式
@@ -288,6 +290,16 @@
     mounted() {
       this.phone = this.$route.query.phone;
       this.type = this.$route.query.type;
+      if (this.type == 'changePassword') {
+        this.totalStep = 3;
+        this.percentStep = 2;
+      } else if (this.type == 'oldChangePhone') {
+        this.totalStep = 4;
+        this.percentStep = 2;
+      } else if (this.type == 'newChangePhone') {
+        this.totalStep = 4;
+        this.percentStep = 4;
+      }
       this.isRegister = this.$route.query.isRegister;
       // 刷新是否应该限制发短信？
       this.sms();

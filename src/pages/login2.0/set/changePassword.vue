@@ -1,6 +1,6 @@
 <template>
   <div id="changePasswordPage">
-    <p class="info">设置新密码</p>
+    <p class="info">设置新密码<span class="step_text"><span class="percent_step">3</span>/3</span></p>
     <div class="action_wrapper">
       <van-field
         v-model="password"
