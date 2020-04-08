@@ -1,10 +1,16 @@
 <template>
   <div id="bindPage">
+    <!--<van-cell-->
+      <!--title="手机绑定"-->
+      <!--is-link-->
+      <!--:value="mobile"-->
+      <!--:to="{name: 'setphone', query: {phone: mobile, pageType: 'old'}}"-->
+    <!--/>-->
     <van-cell
       title="手机绑定"
       is-link
       :value="mobile"
-      :to="{name: 'setphone', query: {phone: mobile, pageType: 'old'}}"
+      :to="{name: 'authentication2.0', query: {phone: mobile, pageType: 'phone'}}"
     />
 
     <div v-if="isWxLogin">

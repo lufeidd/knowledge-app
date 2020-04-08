@@ -56,5 +56,16 @@
     font-family: PingFang SC;
     font-weight: 500;
     color: #333333;
+    .step_text {
+      float: right;
+      font-size: 18px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #999;
+      line-height: 28px;
+      .percent_step {
+        color: #F7A2A1;
+      }
+    }
   }
 }
