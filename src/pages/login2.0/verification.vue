@@ -85,7 +85,7 @@
         // console.log(res);
         this.$toast('短信已发送');
       },
-      // 绑定手机号  还需修改
+      // 绑定手机号
       async bindphoneData() {
         // console.log(localStorage.getItem('nickname'));
         var tStamp = this.$getTimeStamp();
@@ -132,7 +132,6 @@
           timestamp: tStamp,
           mobile: this.phone.replace(/\s/g, ''),
           auth_code: this.code,
-          // pwd: this.password,
           source_url: localStorage.getItem("defaultLink"),
           version: "1.0"
         };
@@ -141,11 +140,8 @@
         let res = await REG(data);
 
         if (res.hasOwnProperty("response_code")) {
-          // this.$router.push({ name: "personalIndex", query: data });
-          // console.log(res);
+          this.phoneLogin();  // 注册成功后登录
 
-          // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
-          // window.location.href = localStorage.getItem("defaultLink");
         } else {
           this.$toast(res.error_message);
           this.code = '';
@@ -162,7 +158,7 @@
         };
         let res = await PHONE_LOGIN(data);
         if (res.hasOwnProperty("response_code")) {
-            // console.log('登录成功');
+            this.$toast('登录成功');
           // 登录将localstorage中进度数据清空
           localStorage.setItem("miniAudio", null);
           localStorage.setItem("audioProgress", null);
