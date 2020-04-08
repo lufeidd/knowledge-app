@@ -1,6 +1,6 @@
 <template>
   <div id="verificationPage">
-    <p class="info">验证码已经发送到您的手机<span class="step_text"><span class="percent_step">{{this.percentStep}}</span>/{{this.totalStep}}</span></p>
+    <p class="info">验证码已经发送到您的手机<span class="step_text" v-if="isSet"><span class="percent_step">{{this.percentStep}}</span>/{{this.totalStep}}</span></p>
     <p class="phone" v-text="phone"></p>
     <van-password-input
       :value="code"
@@ -45,6 +45,7 @@
       return {
         totalStep: Number,
         percentStep: Number,
+        isSet: false,
         code: '',
         phone: '',
         type: '', // 登录方式
@@ -291,12 +292,15 @@
       this.phone = this.$route.query.phone;
       this.type = this.$route.query.type;
       if (this.type == 'changePassword') {
+        this.isSet = true;
         this.totalStep = 3;
         this.percentStep = 2;
       } else if (this.type == 'oldChangePhone') {
+        this.isSet = true;
         this.totalStep = 4;
         this.percentStep = 2;
       } else if (this.type == 'newChangePhone') {
+        this.isSet = true;
         this.totalStep = 4;
         this.percentStep = 4;
       }
@@ -362,7 +366,7 @@
       } else if (to.name == 'passwordLogin2.0') {
         this.$dialog
           .confirm({
-            title: '点击"返回"将中断登录，确定返回？',
+            title: '点击"返回"将中断设置，确定返回？',
             cancelButtonText: "取消",
             confirmButtonText: "确定"
           })
@@ -381,7 +385,7 @@
       } else if (to.name == 'safe') {
         this.$dialog
           .confirm({
-            title: '点击"返回"将中断登录，确定返回？',
+            title: '点击"返回"将中断设置，确定返回？',
             cancelButtonText: "取消",
             confirmButtonText: "确定"
           })
@@ -399,7 +403,7 @@
       } else if (to.name == 'bind') {
         this.$dialog
           .confirm({
-            title: '点击"返回"将中断登录，确定返回？',
+            title: '点击"返回"将中断设置，确定返回？',
             cancelButtonText: "取消",
             confirmButtonText: "确定"
           })

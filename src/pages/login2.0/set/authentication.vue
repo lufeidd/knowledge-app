@@ -106,7 +106,7 @@
       if (to.name == 'passwordLogin2.0') {
         this.$dialog
           .confirm({
-            title: '点击"返回"将中断登录，确定返回？',
+            title: '点击"返回"将中断设置，确定返回？',
             cancelButtonText: "取消",
             confirmButtonText: "确定"
           })
@@ -124,7 +124,7 @@
       } else if (to.name == 'safe') {
         this.$dialog
           .confirm({
-            title: '点击"返回"将中断登录，确定返回？',
+            title: '点击"返回"将中断设置，确定返回？',
             cancelButtonText: "取消",
             confirmButtonText: "确定"
           })
