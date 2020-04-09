@@ -14,7 +14,7 @@
         <div class="title">
           <div class="desc">
             <span v-if="infoData.is_login">{{ infoData.user_name }}</span>
-            <router-link style="color: #fff;" :to="{name: 'login'}" v-else>点击登录</router-link>
+            <router-link style="color: #fff;" :to="{name: 'login2.0'}" v-else>点击登录</router-link>
           </div>
           <div class="action">
             <!-- <a class="tip" href="/personal/news">
@@ -27,7 +27,7 @@
                 <use xlink:href="#icon-personalSet" />
               </svg>
             </router-link>
-            <router-link v-else :to="{path: '/login/index'}">
+            <router-link v-else :to="{path: '/login2.0/index'}">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-personalSet" />
               </svg>
@@ -49,7 +49,7 @@
             </div>
             <div class="desc">关注</div>
           </router-link>
-          <router-link to="/login/index" v-else>
+          <router-link to="/login2.0/index" v-else>
             <div class="count">
               <template v-if="infoData.is_login">{{ infoData.follow_num }}</template>
               <template v-else>--</template>
@@ -65,7 +65,7 @@
             </div>
             <div class="desc">收藏</div>
           </router-link>
-          <router-link to="/login/index" v-else>
+          <router-link to="/login2.0/index" v-else>
             <div class="count">
               <template v-if="infoData.is_login">{{ infoData.collect_num }}</template>
               <template v-else>--</template>
@@ -81,7 +81,7 @@
             </div>
             <div class="desc">历史</div>
           </router-link>
-          <router-link to="/login/index" v-else>
+          <router-link to="/login2.0/index" v-else>
             <div class="count">
               <template v-if="infoData.is_login">{{ infoData.history_num }}</template>
               <template v-else>--</template>
@@ -108,7 +108,7 @@
           </div>
           <div class="action">
             <router-link v-if="infoData.is_login" class="text" to="/personal/remain/account">充值</router-link>
-            <router-link v-else class="text" to="/login/index">充值</router-link>
+            <router-link v-else class="text" to="/login2.0/index">充值</router-link>
           </div>
         </div>
 
@@ -128,7 +128,7 @@
             </svg>
           </div>
         </router-link>
-        <router-link v-else to="/login/index" class="cell">
+        <router-link v-else to="/login2.0/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-personalAccount" />
@@ -160,7 +160,7 @@
             </svg>
           </div>
         </router-link>
-        <router-link v-else to="/login/index" class="cell">
+        <router-link v-else to="/login2.0/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-personalAccount" />
@@ -192,7 +192,7 @@
             </svg>
           </div>
         </router-link>
-        <router-link v-else to="/login/index" class="cell">
+        <router-link v-else to="/login2.0/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-personalCart" />
@@ -224,7 +224,7 @@
             </svg>
           </div>
         </router-link>
-        <router-link v-else to="/login/index" class="cell">
+        <router-link v-else to="/login2.0/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-personalCoupon" />
@@ -273,7 +273,7 @@
             </svg>
           </div>
         </router-link>
-        <router-link v-else to="/login/index" class="cell">
+        <router-link v-else to="/login2.0/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-personalComment" />
@@ -305,7 +305,7 @@
             </svg>
           </div>
         </router-link>
-        <!-- <router-link v-else to="/login/index" class="cell">
+        <!-- <router-link v-else to="/login2.0/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-personalHelp" />

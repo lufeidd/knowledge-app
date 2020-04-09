@@ -1047,6 +1047,16 @@ export default {
 
     // 配合正则，表单字符指定位置添加空格
     Vue.prototype.$inputSpace = function (code, type) {
+      // 表单输入监控删除动作
+      let self = this;
+      $("input").on("keydown", function(event) {
+        console.log(999)
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if (e && e.keyCode == 8) {
+          self.$store.state.isDel = true;
+        }
+      });
+      
       var str = "";
       var _bool = false;
       var _len = code.length;
