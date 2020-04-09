@@ -101,14 +101,6 @@ export default {
   mounted() {
     if (this.$route.query.nullPage == 1) this.msg = "请在微信端打开~";
     if (this.$route.query.nullPage == 2) this.msg = "请在app端打开~";
-    // 表单输入监控删除动作
-    let self = this;
-    $("input").on("keydown", function(event) {
-      var e = event || window.event || arguments.callee.caller.arguments[0];
-      if (e && e.keyCode == 8) {
-        self.$store.state.isDel = true;
-      }
-    });
     // 获取适配信息，并微信授权
     this.$setLoginData();
   }

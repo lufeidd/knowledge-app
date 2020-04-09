@@ -194,7 +194,7 @@ export default {
         cart: true,
         cartLink: "/cart",
         type: "brand",
-        loginLink: "/login/index",
+        loginLink: "/login2.0/index",
         goods_nums: 0
       },
       is_Login: null

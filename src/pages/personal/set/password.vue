@@ -154,11 +154,10 @@ export default {
 
           if (res.hasOwnProperty("response_code")) {
             this.$toast("密码设置成功~");
-            this.$router.push("/login/index");
+            this.$router.push("/login2.0/index");
           } else {
             this.$toast(res.error_message);
           }
-          break;
           break;
         case "add":
           data.pwd = this.password1;
@@ -168,7 +167,7 @@ export default {
 
           if (res.hasOwnProperty("response_code")) {
             this.$toast("密码修改成功~");
-            this.$router.push("/login/index");
+            this.$router.push("/login2.0/index");
           } else {
             this.$toast(res.error_message);
           }
