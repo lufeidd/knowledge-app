@@ -1050,7 +1050,6 @@ export default {
       // 表单输入监控删除动作
       let self = this;
       $("input").on("keydown", function(event) {
-        console.log(999)
         var e = event || window.event || arguments.callee.caller.arguments[0];
         if (e && e.keyCode == 8) {
           self.$store.state.isDel = true;
