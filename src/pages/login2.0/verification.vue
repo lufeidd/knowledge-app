@@ -46,6 +46,7 @@
         totalStep: Number,
         percentStep: Number,
         isSet: false,
+        isBack: true,  // 是否是返回动作
         code: '',
         phone: '',
         type: '', // 登录方式
@@ -209,6 +210,7 @@
         // console.log(res.response_data);
         if (res.hasOwnProperty("response_code")) {
           this.$toast("手机号更改成功~");
+          this.isBack = false;
           this.$router.push({name: 'login2.0'});
         } else {
           this.$toast(res.error_message);
@@ -316,7 +318,7 @@
       // console.log('to', to);
       // console.log('from', from);
 
-      if (to.name == 'login2.0') {
+      if (to.name == 'login2.0' && this.isBack) {
         this.$dialog
           .confirm({
             title: '点击"返回"将中断登录，确定返回？',
