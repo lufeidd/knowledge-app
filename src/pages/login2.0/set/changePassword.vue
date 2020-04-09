@@ -116,7 +116,7 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "authentication2.0"
+              name: "changePassword2.0"
             });
           });
       } else {

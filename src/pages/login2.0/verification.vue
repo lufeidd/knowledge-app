@@ -393,7 +393,8 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "authentication2.0"
+              name: "verification2.0",
+              query: {phone: this.phone}
             });
           });
       } else if (to.name == 'bind') {
@@ -411,7 +412,8 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "authentication2.0"
+              name: "verification2.0",
+              query: {phone: this.phone}
             });
           });
       }

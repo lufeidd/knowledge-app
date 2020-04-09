@@ -69,7 +69,7 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "authentication2.0"
+              name: "changePhone2.0"
             });
           });
       } else {

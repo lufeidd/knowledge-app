@@ -103,25 +103,7 @@
       // console.log('to', to);
       // console.log('from', from);
 
-      if (to.name == 'passwordLogin2.0') {
-        this.$dialog
-          .confirm({
-            title: '点击"返回"将中断设置，确定返回？',
-            cancelButtonText: "取消",
-            confirmButtonText: "确定"
-          })
-          .then(() => {
-            next();
-
-          })
-          .catch(() => {
-            // on cancel
-            next();
-            _this.$router.push({
-              name: "authentication2.0"
-            });
-          });
-      } else if (to.name == 'safe') {
+      if (to.name == 'passwordLogin2.0' || to.name == 'safe' || to.name == 'bind') {
         this.$dialog
           .confirm({
             title: '点击"返回"将中断设置，确定返回？',
