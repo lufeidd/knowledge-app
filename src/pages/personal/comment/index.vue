@@ -33,7 +33,7 @@
               </div>
               <div class="detailContent">
                 <p class="title">{{item.goods_name}}</p>
-                <p class="title red">¥ {{item.goods_price}}</p>
+                <p class="title red" v-if="item.goods_price > 0">¥ {{item.goods_price}}</p>
               </div>
             </div>
           </div>
