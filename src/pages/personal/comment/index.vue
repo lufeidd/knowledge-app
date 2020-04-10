@@ -153,27 +153,26 @@ export default {
           name: "albumdetail",
           query: {
             goods_id: item.goods_id,
-            pid: null
+            pid: item.goods_pid
           }
         });
       }
-      // 专辑
+      // 文章
       if (item.goods_type == 6) {
         this.$router.push({
           name: "article",
           query: {
             goods_id: item.goods_id,
-            pid: null
           }
         });
       }
-      // 文章
+      // 专辑
       if (item.goods_type == 9) {
         this.$router.push({
           name: "album",
           query: {
             goods_id: item.goods_id,
-            pid: null
+            pid: item.goods_pid
           }
         });
       }
