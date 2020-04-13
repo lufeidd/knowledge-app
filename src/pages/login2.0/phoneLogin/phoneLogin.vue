@@ -82,6 +82,8 @@
           } else {
             this.submitData.disabled = true;
           }
+
+        sessionStorage.setItem('loginPhone', this.phone);
       },
       //判断手机号是否已注册
       async checkPhone() {
@@ -143,9 +145,11 @@
       }
     },
     mounted() {
-      let phone = this.$route.query.phone;
-      if (phone) {
-        this.phone = phone;
+      if (sessionStorage.getItem('loginPhone')) {
+        this.phone = sessionStorage.getItem('loginPhone');
+        this.submitData.disabled = false;
+      }else if (this.$route.query.phone) {
+        this.phone = this.$route.query.phone;
         this.submitData.disabled = false;
       }
     }

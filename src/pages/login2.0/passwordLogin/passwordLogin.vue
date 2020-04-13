@@ -71,6 +71,8 @@
         } else {
           this.submitData.disabled = true;
         }
+
+        sessionStorage.setItem('loginPhone', this.phone);
       },
       // 登录
       async login() {
@@ -107,7 +109,11 @@
       }
     },
     mounted() {
-      this.phone = this.$route.query.phone;
+      if (sessionStorage.getItem('loginPhone')) {
+        this.phone = sessionStorage.getItem('loginPhone');
+      }else if (this.$route.query.phone) {
+        this.phone = this.$route.query.phone;
+      }
     }
   }
 </script>

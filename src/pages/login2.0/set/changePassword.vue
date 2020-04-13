@@ -116,7 +116,10 @@
           })
           .then(() => {
             next();
-
+            _this.$router.push({
+              name: "passwordLogin2.0",
+              query: {phone: _this.phone}
+            });
           })
           .catch(() => {
             // on cancel

@@ -1,6 +1,6 @@
 <template>
   <div id="verificationPage">
-    <p class="info">验证码已经发送到您的手机<span class="step_text" v-if="isSet"><span class="percent_step">{{this.percentStep}}</span>/{{this.totalStep}}</span></p>
+    <p class="info">验证码已经发送到您的手机<span class="step_text" v-if="isSet"><span class="percent_step">{{percentStep}}</span>/{{totalStep}}</span></p>
     <p class="phone" v-text="phone"></p>
     <van-password-input
       :value="code"
@@ -337,7 +337,7 @@
             next();
             _this.$router.push({
               name: "verification2.0",
-              query: {phone: this.phone}
+              query: {phone: _this.phone}
             });
           });
       } else if (to.name == 'phoneLogin2.0') {
@@ -350,7 +350,7 @@
           .then(() => {
             next();
             if (_this.type == 'phoneLogin') {
-              _this.$router.push({name: 'phoneLogin2.0', query: {phone: this.phone}});
+              _this.$router.push({name: 'phoneLogin2.0', query: {phone: _this.phone}});
             }
           })
           .catch(() => {
@@ -358,7 +358,7 @@
             next();
             _this.$router.push({
               name: "verification2.0",
-              query: {phone: this.phone}
+              query: {phone: _this.phone}
             });
           });
       } else if (to.name == 'passwordLogin2.0') {
@@ -370,14 +370,14 @@
           })
           .then(() => {
             next();
-              _this.$router.push({name: 'passwordLogin2.0'});
+              _this.$router.push({name: 'passwordLogin2.0', query: {phone: _this.phone}});
           })
           .catch(() => {
             // on cancel
             next();
             _this.$router.push({
               name: "verification2.0",
-              query: {phone: this.phone}
+              query: {phone: _this.phone}
             });
           });
       } else if (to.name == 'safe') {
@@ -396,7 +396,7 @@
             next();
             _this.$router.push({
               name: "verification2.0",
-              query: {phone: this.phone}
+              query: {phone: _this.phone}
             });
           });
       } else if (to.name == 'bind') {
@@ -415,7 +415,7 @@
             next();
             _this.$router.push({
               name: "verification2.0",
-              query: {phone: this.phone}
+              query: {phone: _this.phone}
             });
           });
       }
