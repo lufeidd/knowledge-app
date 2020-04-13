@@ -32,6 +32,12 @@
         this.$router.push({name: 'phoneLogin2.0'});
       },
     },
+    created() {
+      // 如果非微信浏览器登录，默认跳转到验证码登录页
+      if(localStorage.getItem('isWxLogin') == 'no') {
+        this.$router.replace({name: 'phoneLogin2.0'});
+      }
+    },
     mounted() {
       // 获取第三方微信登录code
       this.$getWxCode();

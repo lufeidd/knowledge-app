@@ -30,7 +30,7 @@
     </router-link>
     <router-link :to="{name: 'authentication2.0', query: {pageType: 'findPassword'}}" class="link_text_password">忘记密码
     </router-link>
-    <div class="wx_login">
+    <div class="wx_login" v-if="isShowWx">
       <p class="wx_login_text">快捷登录方式</p>
       <svg class="icon" aria-hidden="true" @click="toWxLogin">
         <use xlink:href="#icon-weixin-block"/>
@@ -48,7 +48,8 @@
         password: '',
         submitData: {
           disabled: true
-        }
+        },
+        isShowWx: true
       };
     },
     methods: {
@@ -106,6 +107,13 @@
       },
       toWxLogin() {
         this.$router.push({name: 'login2.0', query: { isTrigger: true}});
+      }
+    },
+    created() {
+      if(localStorage.getItem('isWxLogin') == 'no') {
+        this.isShowWx = false;
+      } else {
+        this.isShowWx = true;
       }
     },
     mounted() {

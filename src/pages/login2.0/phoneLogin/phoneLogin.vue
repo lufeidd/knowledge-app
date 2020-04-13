@@ -20,7 +20,7 @@
     </div>
     <router-link :to="{name: 'passwordLogin2.0'}" class="link_text">密码登录
     </router-link>
-    <div class="wx_login">
+    <div class="wx_login" v-if="isShowWx">
       <p class="wx_login_text">快捷登录方式</p>
       <svg class="icon" aria-hidden="true" @click="toWxLogin">
         <use xlink:href="#icon-weixin-block"/>
@@ -63,6 +63,7 @@
           disabled: true
         },
         isRegister: null, // 0 未注册 1 已注册
+        isShowWx: true,
         registerPopShow: false
       };
     },
@@ -142,6 +143,13 @@
       },
       toWxLogin() {
         this.$router.push({name: 'login2.0', query: { isTrigger: true}});
+      }
+    },
+    created() {
+      if(localStorage.getItem('isWxLogin') == 'no') {
+        this.isShowWx = false;
+      } else {
+        this.isShowWx = true;
       }
     },
     mounted() {
