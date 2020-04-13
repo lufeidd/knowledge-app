@@ -1,0 +1,161 @@
+/*
+ * author: nancyzeng
+ * date:2020/4/10
+ */
+
+@charset "UTF-8";
+
+#interest {
+  height: 100%;
+
+  .box {
+    min-height: 100%;
+    background-image: url(./../../../../assets/activity/interest/bg.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: top center;
+  }
+
+  .indexBox {
+    background-image: url(./../../../../assets/activity/interest/index-bg.png);
+    background-size: 100% auto;
+    position: relative;
+
+    .content {
+      position: absolute;
+      width: 100%;
+      bottom: 50px;
+      text-align: center;
+
+      p {
+        color: #bbbeff;
+      }
+    }
+  }
+
+  .sexBox {
+    text-align: center;
+
+    .choise {
+      padding: 30px 12%;
+
+      img {
+        width: 60%;
+        opacity: .75;
+      }
+
+      .active {
+        opacity: 1;
+      }
+
+    }
+
+  }
+
+  .rankBox {
+    text-align: center;
+
+    .choise {
+      padding: 20px 8%;
+
+      img {
+        margin-top: 10px;
+        width: 60%;
+        opacity: .75;
+      }
+
+      .active {
+        opacity: 1;
+      }
+    }
+
+    .content {
+      padding: 0 10%;
+    }
+
+  }
+
+  .planBox {
+    text-align: center;
+
+
+    .choise {
+      padding: 10px 10%;
+
+      img {
+        margin-top: 5px;
+        opacity: .75;
+      }
+
+      .active {
+        opacity: 1;
+      }
+    }
+
+    .content {
+      padding: 0 10%;
+    }
+  }
+
+  .knowledgeBox {
+
+    text-align: center;
+
+
+    .choise {
+      padding: 10px 10%;
+
+      img {
+        margin-top: 5px;
+        opacity: .75;
+      }
+
+      .active {
+        opacity: 1;
+      }
+    }
+
+    .content {
+      padding: 0 10%;
+    }
+  }
+
+  .endBox {
+    background-color: #ece8e9;
+    background-image: none;
+
+    .section {
+      padding: 0 13px;
+      border-bottom: 1px solid $greyLight;
+
+      .ratiobox {
+        min-width: 70px;
+
+        .bookImg {
+          display: block;
+          @include ratioBox (null, 100%, 1px solid $greyLight, contain, $white, null);
+        }
+      }
+
+      .bookDetail {
+        @include displayFlex(flex, flex-start, center);
+        background-color: $white;
+        border-radius: 5px;
+        padding: 12px;
+        margin-bottom: 15px;
+
+        .title {
+          margin-left: 10px;
+          flex-grow: 1;
+          @include twoColtextOverflow;
+          @include font("PingFangBlod", $fontSize, $cl3);
+        }
+
+        .button {
+          font-size: 25px;
+          color: #f0dd71;
+        }
+      }
+    }
+  }
+}

@@ -2,19 +2,19 @@
   <div id="app">
     <!-- 需要微信端打开，引导微信内打开 -->
     <!-- 引导app端打开 -->
-    <span class="nullBox" v-if="nullPage == 1 || nullPage == 2">
+    <template class="nullBox" v-if="nullPage == 1 || nullPage == 2">
       <img src="./assets/null/link.png" width="100%" />
       <div>{{ msg }}</div>
       <EazyNav type="brand" :isShow="true"></EazyNav>
-    </span>
-    <span v-else>
+    </template>
+    <template v-else>
       <Download></Download>
       <!-- 页面缓存, $route.meta.keepAlive默认false -->
       <keep-alive>
         <router-view v-if="$route.meta.keepAlive" />
       </keep-alive>
       <router-view v-if="!$route.meta.keepAlive" />
-    </span>
+    </template>
   </div>
 </template>
 

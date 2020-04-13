@@ -77,7 +77,7 @@ import {
   Rate,
   PasswordInput, NumberKeyboard,
   Loading,
-  Pagination, RadioGroup, Radio, Picker
+  Pagination, RadioGroup, Radio, Picker,
 } from 'vant'
 Vue.use(Field)
 Vue.use(Toast)
