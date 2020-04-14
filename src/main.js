@@ -68,7 +68,7 @@ import {
   AddressEdit, Lazyload, SwitchCell, Search, Tag, Circle,
   Tab, Tabs,
   GoodsAction,
-  GoodsActionBigBtn, 
+  GoodsActionBigBtn,
   GoodsActionMiniBtn,
   Step, Steps,
   List, Stepper, SubmitBar,
@@ -419,7 +419,7 @@ router.beforeEach((to, from, next) => {
     }
   }
   next();
-  
+
   window.location.replace(replaceUrl); // 重定向跳转
   next();
 
