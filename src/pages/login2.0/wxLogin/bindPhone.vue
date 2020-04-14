@@ -55,14 +55,15 @@
 </template>
 
 <script>
-  import {PHONE_CHECK, REGISTER_ITEMS} from "@/apis/passport.js";
+  import {REGISTER_ITEMS} from "@/apis/passport.js";
+  import {CHECK_BINDING} from "@/apis/passport.js";
 
   export default {
     data() {
       return {
         phone: '',
         code: '',
-        isRegister: null, // 0 未注册 1 已注册
+        isRegister: null, // 0 未绑定 1 已绑定
         content: '',
         submitData: {
           disabled: true
@@ -88,23 +89,24 @@
           this.submitData.disabled = true;
         }
       },
-      //判断手机号是否已注册
+      //判断手机号是否已绑定微信
       async checkPhone() {
         var tStamp = this.$getTimeStamp();
         let data = {
           timestamp: tStamp,
           mobile: this.phone.replace(/\s/g, ''),
+          type: 2,
           version: "1.1"
         };
         data.sign = this.$getSign(data);
 
-        let res = await PHONE_CHECK(data);
+        let res = await CHECK_BINDING(data);
 
         if (res.hasOwnProperty("response_code")) {
-          this.isRegister = res.response_data.is_register;
+          this.isRegister = 0;
           // console.log(66,this.isRegister);
         } else {
-          this.isRegister = null;
+          this.isRegister = 1;
           this.$toast(res.error_message);
         }
       },
@@ -121,16 +123,16 @@
         console.log(res);
       },
       getCode() {
-        //  先判断此手机是否注册
+        //  先判断此手机是否已绑定微信
         let _this = this;
         this.checkPhone().then(function () {
           console.log(_this.isRegister);
-          if (_this.isRegister == 0) {  // 未注册
+          if (_this.isRegister == 0) {  // 未绑定
             console.log('未注册');
             _this.registerItems();
             _this.registerPopShow = true; //  弹注册条款
 
-          } else if (_this.isRegister == 1) { // 已注册
+          } else if (_this.isRegister == 1) { // 已绑定
             // this.bindphoneData();
           }
         });

@@ -69,3 +69,6 @@ export const PHONE_LOGIN = query => req('post', '/passport/login', query);
 
 // 校验手机验证码
 export const CHECK_CODE = query => req('post', '/passport/checkcode', query);
+
+// 检测手机号是否绑定过第三方
+export const CHECK_BINDING = query => req('post', '/passport/checkbinding', query);
