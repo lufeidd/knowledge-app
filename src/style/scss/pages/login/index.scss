@@ -1,87 +1,56 @@
 /*
- * author: nancyzeng
- * date:2019/3/11
+ * author: lrf
+ * date:2020/1/15
  */
 
 @charset "UTF-8";
 
-// 组件
-@import url("./../../components/navBar.scss");
-@import url("./../../components/field.scss");
-@import url("./../../components/button.scss");
-@import url("./../../components/checkbox.scss");
-
-#loginPage {
+#loginV2 {
   background-color: $white;
   min-height: 100%;
-
-  .password {
-
-    /*设置input placeholder颜色*/
-    ::-webkit-input-placeholder,
-    ::-webkit-textarea-placeholder {
-      font-size: 13px;
-    }
-
-    :-moz-placeholder {
-      font-size: 13px;
-    }
-
-    :-ms-input-placeholder,
-    :-ms-textarea-placeholder {
-      font-size: 13px;
-    }
+  overflow: hidden;
+  padding: 0 40px;
+  p, h3 {
+    margin: 0;
   }
-
-  .van-cell {
-    border-bottom: 1px #d6d6d6 solid;
-    font-size: 15px;
-    color: #000;
-    padding: 10px 0;
-    margin-bottom: 10px;
-    align-items: center;
+  .huoba_pic {
+    margin: 0 auto;
+    margin-top: 45px;
+    width: 61px;
+    height: 60px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    @include bgImageTwo('./../../../../assets/login/huobaApp');
   }
-
-  .fieldBox {
-    padding: 100px 50px 50px 50px;
-  }
-
-  // .van-field__label {
-  //   max-width: 50px;
-  //   margin-right: 10px;
-  // }
-
-  // & .phone .van-field__label {
-  //   border-right: 1px #d6d6d6 solid;
-  // }
-
-  .submitBox {
-    margin: 50px 0;
-  }
-
-  .row {
-    font-size: $fontSize - 2;
-  }
-
-  .row .van-col:nth-child(2) {
-    text-align: right;
-  }
-
-  .loginType {
+  .huoba_name {
+    margin-top: 4px;
     text-align: center;
-    // padding-top: 80px;
+    font-size: 16px;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #000000;
   }
-
-  .loginType .van-col:nth-child(1) .myIconStyle {
-    width: 38px;
-    height: 38px;
-    color: #3ca938;
+  .action_wrapper {
+    margin-top: 143px;
+    .van-button--danger {
+      border-radius: 3px;
+      .van-button__text {
+        font-size: 15px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #FFFFFF;
+      }
+    }
+    .van-button--default {
+      margin: 15px 0 0 0;
+      border: 0.5px solid #F05654;
+      border-radius: 3px;
+      .van-button__text {
+        font-size: 15px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #F05654;
+      }
+    }
   }
-
-  .loginType .van-col:nth-child(2) .myIconStyle {
-    width: 38px;
-    height: 38px;
-    color: #12b7f5;
-  }
-
 }

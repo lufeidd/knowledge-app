@@ -112,7 +112,7 @@ export default {
           //   query: { bindtype: _type, outerId: _unionid }
           // });
           this.$router.replace({
-            name: "bindPhone2.0",
+            name: "bindPhone",
             query: { bindtype: _type, outerId: _unionid }
           });
         }

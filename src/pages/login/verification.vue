@@ -184,10 +184,10 @@
         let res = await CHECK_CODE(data);
         if (res.hasOwnProperty("response_code")) {
           if (this.type == 'changePassword') {
-            this.$router.replace({name: 'changePassword2.0', query: {phone: this.phone, code: this.code}});
+            this.$router.replace({name: 'changePassword', query: {phone: this.phone, code: this.code}});
           } else if (this.type == 'oldChangePhone') {
             this.resetApply();
-            this.$router.replace({name: 'changePhone2.0', query: {phone: this.phone, code: this.code}});
+            this.$router.replace({name: 'changePhone', query: {phone: this.phone, code: this.code}});
           } else if (this.type == 'newChangePhone') {
             this.resetSave();
           }
@@ -211,7 +211,7 @@
         if (res.hasOwnProperty("response_code")) {
           this.$toast("手机号更改成功~");
           this.isBack = false;
-          this.$router.push({name: 'login2.0'});
+          this.$router.push({name: 'login'});
         } else {
           this.$toast(res.error_message);
           this.code = '';
@@ -318,7 +318,7 @@
       // console.log('to', to);
       // console.log('from', from);
 
-      if (to.name == 'login2.0' && this.isBack) {
+      if (to.name == 'login' && this.isBack) {
         this.$dialog
           .confirm({
             title: '点击"返回"将中断登录，确定返回？',
@@ -328,7 +328,7 @@
           .then(() => {
             next();
             if (_this.type == 'wxLogin') {
-              _this.$router.push({name: 'login2.0'});
+              _this.$router.push({name: 'login'});
 
             }
           })
@@ -336,11 +336,11 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "verification2.0",
+              name: "verification",
               query: {phone: _this.phone}
             });
           });
-      } else if (to.name == 'phoneLogin2.0') {
+      } else if (to.name == 'phoneLogin') {
         this.$dialog
           .confirm({
             title: '点击"返回"将中断登录，确定返回？',
@@ -350,18 +350,18 @@
           .then(() => {
             next();
             if (_this.type == 'phoneLogin') {
-              _this.$router.push({name: 'phoneLogin2.0', query: {phone: _this.phone}});
+              _this.$router.push({name: 'phoneLogin', query: {phone: _this.phone}});
             }
           })
           .catch(() => {
             // on cancel
             next();
             _this.$router.push({
-              name: "verification2.0",
+              name: "verification",
               query: {phone: _this.phone}
             });
           });
-      } else if (to.name == 'passwordLogin2.0') {
+      } else if (to.name == 'passwordLogin') {
         this.$dialog
           .confirm({
             title: '点击"返回"将中断设置，确定返回？',
@@ -370,13 +370,13 @@
           })
           .then(() => {
             next();
-              _this.$router.push({name: 'passwordLogin2.0', query: {phone: _this.phone}});
+              _this.$router.push({name: 'passwordLogin', query: {phone: _this.phone}});
           })
           .catch(() => {
             // on cancel
             next();
             _this.$router.push({
-              name: "verification2.0",
+              name: "verification",
               query: {phone: _this.phone}
             });
           });
@@ -395,7 +395,7 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "verification2.0",
+              name: "verification",
               query: {phone: _this.phone}
             });
           });
@@ -414,7 +414,7 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "verification2.0",
+              name: "verification",
               query: {phone: _this.phone}
             });
           });
@@ -429,6 +429,6 @@
   }
 </script>
 
-<style src="@/style/scss/pages/login2.0/verification.scss" lang="scss" scoped>
+<style src="@/style/scss/pages/login/verification.scss" lang="scss" scoped>
 
 </style>

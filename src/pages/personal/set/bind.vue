@@ -10,7 +10,7 @@
       title="手机绑定"
       is-link
       :value="mobile"
-      :to="{name: 'authentication2.0', query: {phone: mobile, pageType: 'phone'}}"
+      :to="{name: 'authentication', query: {phone: mobile, pageType: 'phone'}}"
     />
 
     <div v-if="isWxLogin">
