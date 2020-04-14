@@ -693,7 +693,7 @@ export default {
     linktoDetail(link, supplierId) {
       var data = this.$translate(JSON.parse(link));
       data.query.type = "mall";
-      data.query.title = this.title;
+      // data.query.title = this.title;
       if (JSON.parse(link).action == "page/get") {
         data.query.supplier_id = supplierId;
       }
