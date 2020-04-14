@@ -189,7 +189,6 @@ export default new Router({
       component: timeout,
       meta: {
         title: '访问超时',
-        noDefaultLink: true,  // 不记录在defaultLink中
         unreload: true
       }
     },
