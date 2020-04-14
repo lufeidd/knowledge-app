@@ -187,7 +187,7 @@
             this.$router.replace({name: 'changePassword', query: {phone: this.phone, code: this.code}});
           } else if (this.type == 'oldChangePhone') {
             this.resetApply();
-            this.$router.replace({name: 'changePhone', query: {phone: this.phone, code: this.code}});
+            this.$router.replace({name: 'changePhone'});
           } else if (this.type == 'newChangePhone') {
             this.resetSave();
           }
@@ -358,7 +358,7 @@
             next();
             _this.$router.push({
               name: "verification",
-              query: {phone: _this.phone}
+              query: {phone: _this.phone,isRegister: true, type: _this.type}
             });
           });
       } else if (to.name == 'passwordLogin') {
@@ -377,7 +377,7 @@
             next();
             _this.$router.push({
               name: "verification",
-              query: {phone: _this.phone}
+              query: {phone: _this.phone, type: _this.type}
             });
           });
       } else if (to.name == 'safe') {
@@ -396,7 +396,7 @@
             next();
             _this.$router.push({
               name: "verification",
-              query: {phone: _this.phone}
+              query: {phone: _this.phone, type: _this.type}
             });
           });
       } else if (to.name == 'bind') {
@@ -415,7 +415,7 @@
             next();
             _this.$router.push({
               name: "verification",
-              query: {phone: _this.phone}
+              query: {phone: _this.phone, type: _this.type}
             });
           });
       }

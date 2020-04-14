@@ -143,7 +143,8 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "changePassword"
+              name: "changePassword",
+              query: {phone: _this.phone, code: _this.code}
             });
           });
       } else {
