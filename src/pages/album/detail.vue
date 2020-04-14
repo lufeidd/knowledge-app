@@ -1651,6 +1651,7 @@ export default {
             timestamp: tStamp,
             goods_id: this.baseData.goods_id,
             content: this.contentModel,
+            goods_pid: this.$route.query.pid?Number(this.$route.query.pid):0,
             version: "1.0"
           };
           break;
@@ -1660,6 +1661,7 @@ export default {
             goods_id: this.baseData.goods_id,
             comment_pid: this.commentId,
             content: this.contentModel,
+            goods_pid: this.$route.query.pid?Number(this.$route.query.pid):0,
             version: "1.0"
           };
           break;

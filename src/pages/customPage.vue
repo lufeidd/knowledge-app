@@ -709,7 +709,7 @@ export default {
         if(this.$route.query.type) _data.type = this.$route.query.type;
         if(this.$route.query.page_id) _data.page_id = this.$route.query.page_id;
         if(this.$route.query.supplier_id) _data.supplier_id = this.$route.query.supplier_id;
-        
+
         var _params = JSON.stringify(_data);
         if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
       } else {
@@ -718,7 +718,7 @@ export default {
     },
     linktoDetail(link, supplierId) {
       var data = this.$translate(JSON.parse(link));
-      data.query.title = this.title;
+      // data.query.title = this.title;
       if (JSON.parse(link).action == "page/get") {
         data.query.supplier_id = supplierId;
       }

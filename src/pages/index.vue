@@ -268,7 +268,6 @@ export default {
           name: "article",
           query: {
             goods_id: item.goods_id,
-            pid: null
           }
         });
       }
