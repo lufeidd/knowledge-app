@@ -269,6 +269,13 @@ export default {
 
     }
 
+    // 火把知识app端webview跳app
+    Vue.prototype.$gotoApp = function () {
+      // 是否需要分享？分享参数？原生跳转链接？
+      // this.$toast(localStorage.getItem("routerLink"));
+      console.log(123)
+    }
+
     // 分享成功后通知后台
     Vue.prototype.$getShareLog = async function (_pageName, _params, _shareType) {
       var tStamp = this.$getTimeStamp();
@@ -626,7 +633,7 @@ export default {
           break;
         case 'search/result':
           __name = 'brandresult';
-          if (dataTmp.params.supplier_id) queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
+          queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
           if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
           if (dataTmp.params.goods_type) queryTmp.goods_type = dataTmp.params.goods_type;
           if (dataTmp.params.cids) queryTmp.cids = dataTmp.params.cids;
@@ -1100,10 +1107,6 @@ export default {
         str = str.substring(0, str.length - 1);
       }
       return str;
-    }
-
-    // 火把知识app端webview跳app
-    Vue.prototype.$gotoApp = function () {
     }
 
   }

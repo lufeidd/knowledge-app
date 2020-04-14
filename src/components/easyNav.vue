@@ -14,7 +14,7 @@
     </div>
     <div class="route" v-if="navData.fold">
       <div @click="gotoLink" class="link" v-if="navData.home">
-        <template v-if='home_id == "all"'>
+        <template v-if="home_id == 'all'">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-discover-line" />
           </svg>
@@ -201,6 +201,13 @@ export default {
     };
   },
   mounted() {
+    // 火把知识app端webview判断是否跳app
+    if (
+      localStorage.getItem("isHuobaIosLogin") == "yes" ||
+      localStorage.getItem("isHuobaAndroidLogin") == "yes"
+    ) {
+      this.$gotoApp();
+    }
     this.home_id = localStorage.getItem("home_id");
     if (this.type === undefined) {
       this.type = this.navData.type;
@@ -215,7 +222,7 @@ export default {
       if (this.home_id == "all") {
         this.$router.push({
           name: "custompage",
-          query: { type: 'find' }
+          query: { type: "find" }
         });
       } else {
         this.$router.push({
