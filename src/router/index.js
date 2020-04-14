@@ -12,7 +12,7 @@ import prototype from '@/pages/login/prototype'
 import bindphone from '@/pages/login/bindphone'
 
 // 登录/注册2.0
-import  loginV2 from '@/pages/login2.0/index'
+import loginV2 from '@/pages/login2.0/index'
 import prototypeV2 from '@/pages/login2.0/prototype'
 import verificationV2 from '@/pages/login2.0/verification'
 import bindPhoneV2 from '@/pages/login2.0/wxLogin/bindPhone'
@@ -155,6 +155,9 @@ import redeemLogin from '@/pages/redeem/login'
 import redeemGoods from '@/pages/redeem/goods'
 import redeemCoupons from '@/pages/redeem/coupons'
 import straightLinkIndex from '@/pages/redeem/straightLinkIndex'
+
+// 问卷调查
+import interest from '@/pages/activity/interest'
 
 Vue.use(Router)
 
@@ -1026,6 +1029,15 @@ export default new Router({
       path: '/redeem/coupons',
       name: 'redeemCoupons',
       component: redeemCoupons
-    }
+    },
+    // 活动 - 问卷调查
+    {
+      path: '/activity/interest',
+      name: 'interest',
+      component: interest,
+      meta: {
+        title: '火把知识',
+      }
+    },
   ]
 })

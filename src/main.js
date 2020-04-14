@@ -77,7 +77,7 @@ import {
   Rate,
   PasswordInput, NumberKeyboard,
   Loading,
-  Pagination, RadioGroup, Radio, Picker
+  Pagination, RadioGroup, Radio, Picker,
 } from 'vant'
 Vue.use(Field)
 Vue.use(Toast)
@@ -241,7 +241,7 @@ router.beforeEach((to, from, next) => {
       // 判断是否登录过，如果有登陆过，说明有token,或者token未过期，可以跳过登录（2）
       // 未登录跳转到登录页面
       if (token != 1) {
-        replaceUrl = window.location.href.split('#')[0] + '#' + '/login2.0/index';
+        replaceUrl = window.location.href.split('#')[0] + '#' + '/login/index';
         next();
       } else {
         //如果该路由已登录，那么直接往后走     

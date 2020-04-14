@@ -209,7 +209,7 @@ export default {
         data.sign = this.$getSign(data);
         let res = await COMMON_UPLOAD(data);
         if (res.hasOwnProperty("response_code")) {
-          
+
 
           // console.log(res);
           var arr = [];
@@ -250,7 +250,7 @@ export default {
         timestamp: tStamp,
         order_id: this.order_id,
         detail_id: this.detail_id,
-        refund_type: this.refundInfo.refund_type,
+        refund_type: 1,
         refund_money: this.refundInfo.max_price,
         refund_count: this.refundInfo.buy_count,
         refund_reason: this.refund_reason,
@@ -295,7 +295,7 @@ export default {
         version: "1.0",
         timestamp: tStamp,
         apply_id: this.apply_id,
-        refund_type: this.refundInfo.refund_type,
+        refund_type: 1,
         refund_money: this.refundInfo.max_price,
         refund_count: this.refundInfo.buy_count,
         refund_reason: this.refund_reason,

@@ -212,10 +212,10 @@ export default {
           success: function (res) {
             // 用户确认分享后执行的回调函数
             // logUtil.printLog("分享给朋友成功返回的信息为:", res);
-            if(res.errMsg.toLowerCase().indexOf('appmessage:ok') != -1) {
+            if (res.errMsg.toLowerCase().indexOf('appmessage:ok') != -1) {
               self.share_type = 1;
             }
-            if(res.errMsg.toLowerCase().indexOf('timeline:ok') != -1) {
+            if (res.errMsg.toLowerCase().indexOf('timeline:ok') != -1) {
               self.share_type = 2;
             }
             console.log('111', res);
@@ -239,7 +239,7 @@ export default {
 
     // 获取页面分享信息
     Vue.prototype.$getWxShareData = async function (_pageName, _params) {
-      if(!_pageName || _pageName == '' || !_params || _params == '') {
+      if (!_pageName || _pageName == '' || !_params || _params == '') {
         return;
       }
       this.page_name = _pageName;
@@ -626,7 +626,7 @@ export default {
           break;
         case 'search/result':
           __name = 'brandresult';
-          queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
+          if (dataTmp.params.supplier_id) queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
           if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
           if (dataTmp.params.goods_type) queryTmp.goods_type = dataTmp.params.goods_type;
           if (dataTmp.params.cids) queryTmp.cids = dataTmp.params.cids;
@@ -943,7 +943,7 @@ export default {
       if (_ios) {
         window.location.href =
           "https://apps.apple.com/cn/app/%E7%81%AB%E6%8A%8A%E7%9F%A5%E8%AF%86/id1473766311";
-          // www.huoba.net://huoba
+        // www.huoba.net://huoba
       } else if (_android) {
         window.location.href =
           "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
@@ -1049,14 +1049,13 @@ export default {
     Vue.prototype.$inputSpace = function (code, type) {
       // 表单输入监控删除动作
       let self = this;
-      $("input").on("keydown", function(event) {
-        console.log(999)
+      $("input").on("keydown", function (event) {
         var e = event || window.event || arguments.callee.caller.arguments[0];
         if (e && e.keyCode == 8) {
           self.$store.state.isDel = true;
         }
       });
-      
+
       var str = "";
       var _bool = false;
       var _len = code.length;
@@ -1101,6 +1100,10 @@ export default {
         str = str.substring(0, str.length - 1);
       }
       return str;
+    }
+
+    // 火把知识app端webview跳app
+    Vue.prototype.$gotoApp = function () {
     }
 
   }

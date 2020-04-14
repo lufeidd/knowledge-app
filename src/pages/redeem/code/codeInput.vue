@@ -12,6 +12,7 @@
         @input="inputCode"
         placeholder="请输入8位兑换码,不区分大小写,长按可粘贴。"
       />
+
       <!--验证码-->
       <div v-show="validateFlag" class="validate_wrapper">
         <van-field class="validate_num" clearable v-model="validateNum" placeholder="请输入右侧验证码。" />
@@ -59,12 +60,12 @@ export default {
   methods: {
     inputCode() {
       // 配合正则，表单字符指定位置添加空格
-      var _code = this.codeNum
-        .toLocaleUpperCase()
-        .replace(/[^a-zA-Z0-9]/g, "")
-        .substring(0, 8);
-      var _type = 'code';
-      this.codeNum = this.$inputSpace(_code, _type);
+      // var _code = this.codeNum
+      //   .toLocaleUpperCase()
+      //   .replace(/[^a-zA-Z0-9]/g, "")
+      //   .substring(0, 8);
+      // var _type = 'code';
+      // this.codeNum = this.$inputSpace(_code, _type);
     },
     // 刷新验证码图片
     refreshImage() {
