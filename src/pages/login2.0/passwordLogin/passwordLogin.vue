@@ -30,9 +30,9 @@
     </router-link>
     <router-link :to="{name: 'authentication2.0', query: {pageType: 'findPassword'}}" class="link_text_password">忘记密码
     </router-link>
-    <div class="wx_login">
+    <div class="wx_login" v-if="isShowWx">
       <p class="wx_login_text">快捷登录方式</p>
-      <svg class="icon" aria-hidden="true" @click="toWxLogin">
+      <svg class="icon" aria-hidden="true" @click="wxLogin">
         <use xlink:href="#icon-weixin-block"/>
       </svg>
     </div>
@@ -48,7 +48,8 @@
         password: '',
         submitData: {
           disabled: true
-        }
+        },
+        isShowWx: true
       };
     },
     methods: {
@@ -71,6 +72,8 @@
         } else {
           this.submitData.disabled = true;
         }
+
+        sessionStorage.setItem('loginPhone', this.phone);
       },
       // 登录
       async login() {
@@ -102,12 +105,47 @@
       passwordLogin() {
         this.login();
       },
-      toWxLogin() {
-        this.$router.push({name: 'login2.0', query: { isTrigger: true}});
+      wxLogin() {
+        // this.$router.push({name: 'bindPhone2.0'});
+        // 重置页面来源
+        localStorage.setItem("linkFrom", "");
+        this.gotoLogin = true;
+        localStorage.setItem("gotoLogin", "yes");
+        this.$wxLogin();
+      }
+    },
+    created() {
+      if(localStorage.getItem('isWxLogin') == 'no') {
+        this.isShowWx = false;
+      } else {
+        this.isShowWx = true;
       }
     },
     mounted() {
-      this.phone = this.$route.query.phone;
+      if (sessionStorage.getItem('loginPhone')) {
+        this.phone = sessionStorage.getItem('loginPhone');
+      }else if (this.$route.query.phone) {
+        this.phone = this.$route.query.phone;
+      }
+
+      //  微信登录
+      // 获取第三方微信登录code
+      this.$getWxCode();
+      // linkFrom=gzh，公众号绑定手机号入口进入，提示已绑定手机号
+      if (
+        this.wxCodeStr.length > 6 ||
+        localStorage.getItem("linkFrom") == "gzh"
+      ) {
+        if (localStorage.getItem("linkFrom") == "gzh") {
+          this.gotoLogin = true;
+          localStorage.setItem("gotoLogin", "yes");
+        }
+        // 允许微信第三方登录
+        if (localStorage.getItem("gotoLogin") == "yes") {
+          // 第三方登录
+          this.$getWxLoginData();
+        }
+      }
     }
   }
 </script>

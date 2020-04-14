@@ -1,6 +1,6 @@
 <template>
   <div id="verificationPage">
-    <p class="info">验证码已经发送到您的手机<span class="step_text" v-if="isSet"><span class="percent_step">{{this.percentStep}}</span>/{{this.totalStep}}</span></p>
+    <p class="info">验证码已经发送到您的手机<span class="step_text" v-if="isSet"><span class="percent_step">{{percentStep}}</span>/{{totalStep}}</span></p>
     <p class="phone" v-text="phone"></p>
     <van-password-input
       :value="code"
@@ -46,6 +46,7 @@
         totalStep: Number,
         percentStep: Number,
         isSet: false,
+        isBack: true,  // 是否是返回动作
         code: '',
         phone: '',
         type: '', // 登录方式
@@ -209,6 +210,7 @@
         // console.log(res.response_data);
         if (res.hasOwnProperty("response_code")) {
           this.$toast("手机号更改成功~");
+          this.isBack = false;
           this.$router.push({name: 'login2.0'});
         } else {
           this.$toast(res.error_message);
@@ -316,7 +318,7 @@
       // console.log('to', to);
       // console.log('from', from);
 
-      if (to.name == 'login2.0') {
+      if (to.name == 'login2.0' && this.isBack) {
         this.$dialog
           .confirm({
             title: '点击"返回"将中断登录，确定返回？',
@@ -335,7 +337,7 @@
             next();
             _this.$router.push({
               name: "verification2.0",
-              query: {phone: this.phone}
+              query: {phone: _this.phone}
             });
           });
       } else if (to.name == 'phoneLogin2.0') {
@@ -348,7 +350,7 @@
           .then(() => {
             next();
             if (_this.type == 'phoneLogin') {
-              _this.$router.push({name: 'phoneLogin2.0', query: {phone: this.phone}});
+              _this.$router.push({name: 'phoneLogin2.0', query: {phone: _this.phone}});
             }
           })
           .catch(() => {
@@ -356,7 +358,7 @@
             next();
             _this.$router.push({
               name: "verification2.0",
-              query: {phone: this.phone}
+              query: {phone: _this.phone}
             });
           });
       } else if (to.name == 'passwordLogin2.0') {
@@ -368,14 +370,14 @@
           })
           .then(() => {
             next();
-              _this.$router.push({name: 'passwordLogin2.0'});
+              _this.$router.push({name: 'passwordLogin2.0', query: {phone: _this.phone}});
           })
           .catch(() => {
             // on cancel
             next();
             _this.$router.push({
               name: "verification2.0",
-              query: {phone: this.phone}
+              query: {phone: _this.phone}
             });
           });
       } else if (to.name == 'safe') {
@@ -393,7 +395,8 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "authentication2.0"
+              name: "verification2.0",
+              query: {phone: _this.phone}
             });
           });
       } else if (to.name == 'bind') {
@@ -411,7 +414,8 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "authentication2.0"
+              name: "verification2.0",
+              query: {phone: _this.phone}
             });
           });
       }

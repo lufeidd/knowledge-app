@@ -1,6 +1,6 @@
 <template>
   <div id="authenticationPage">
-    <p class="info">我们需要验证您的身份<span class="step_text"><span class="percent_step">1</span>/{{this.totalStep}}</span></p>
+    <p class="info">我们需要验证您的身份<span class="step_text"><span class="percent_step">1</span>/{{totalStep}}</span></p>
     <p class="phone" v-text="phone" v-if="hasPhone"></p>
     <div class="action_wrapper" v-if="hasPhone">
       <div class="button_wrapper">
@@ -112,7 +112,10 @@
           })
           .then(() => {
             next();
-
+            _this.$router.push({
+              name: "passwordLogin2.0",
+              query: {phone: _this.phone}
+            });
           })
           .catch(() => {
             // on cancel
@@ -121,7 +124,7 @@
               name: "authentication2.0"
             });
           });
-      } else if (to.name == 'safe') {
+      }  else if (to.name == 'safe' || to.name == 'bind') {
         this.$dialog
           .confirm({
             title: '点击"返回"将中断设置，确定返回？',
