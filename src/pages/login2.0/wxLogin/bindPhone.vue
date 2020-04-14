@@ -55,14 +55,16 @@
 </template>
 
 <script>
-  import {CHECK_BINDING, REGISTER_ITEMS} from "@/apis/passport.js";
+  import {PHONE_CHECK, REGISTER_ITEMS} from "@/apis/passport.js";
+  import {CHECK_BINDING} from "@/apis/passport.js";
 
   export default {
     data() {
       return {
         phone: '',
         code: '',
-        isRegister: null, // 0 未绑定 1 已绑定
+        isRegister: null, // 0 未注册 1 已注册
+        isBindingWx: Boolean,
         content: '',
         submitData: {
           disabled: true
@@ -88,24 +90,39 @@
           this.submitData.disabled = true;
         }
       },
-      //判断手机号是否已绑定微信
+      // 判断手机号是否绑定过微信
+      async checkBinding() {
+        let data = {
+          mobile: this.phone.replace(/\s/g, ''),
+          type: 2,
+          version: "1.1"
+        };
+        let res = await CHECK_BINDING(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.isBindingWx = false;
+          // console.log(66,this.isRegister);
+        } else {
+          this.isBindingWx = true;
+          this.$toast(res.error_message);
+        }
+      },
+      // 判断手机号是否已注册
       async checkPhone() {
         var tStamp = this.$getTimeStamp();
         let data = {
           timestamp: tStamp,
           mobile: this.phone.replace(/\s/g, ''),
-          type: 2,
           version: "1.1"
         };
         data.sign = this.$getSign(data);
 
-        let res = await CHECK_BINDING(data);
+        let res = await PHONE_CHECK(data);
 
         if (res.hasOwnProperty("response_code")) {
-          this.isRegister = 0;
+          this.isRegister = res.response_data.is_register;
           // console.log(66,this.isRegister);
         } else {
-          this.isRegister = 1;
+          this.isRegister = null;
           this.$toast(res.error_message);
         }
       },
@@ -122,16 +139,19 @@
         console.log(res);
       },
       getCode() {
-        //  先判断此手机是否已绑定微信
+        //  判断此手机是否绑定过微信
+        this.checkBinding();
+
+        //  判断此手机是否注册
         let _this = this;
         this.checkPhone().then(function () {
           console.log(_this.isRegister);
-          if (_this.isRegister == 0) {  // 未绑定
-            console.log('未注册');
+          if (_this.isRegister == 0) {  // 未注册
+            // console.log('未注册');
             _this.registerItems();
             _this.registerPopShow = true; //  弹注册条款
 
-          } else if (_this.isRegister == 1) { // 已绑定
+          } else if (_this.isRegister == 1) { // 已注册
             // this.bindphoneData();
           }
         });
@@ -165,7 +185,6 @@
           .catch(() => {
             // on cancel
             next();
-            //  为什么用replace只生效了一次？
             _this.$router.push({
               name: "bindPhone2.0"
             });
