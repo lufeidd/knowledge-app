@@ -55,8 +55,7 @@
 </template>
 
 <script>
-  import {REGISTER_ITEMS} from "@/apis/passport.js";
-  import {CHECK_BINDING} from "@/apis/passport.js";
+  import {CHECK_BINDING, REGISTER_ITEMS} from "@/apis/passport.js";
 
   export default {
     data() {
