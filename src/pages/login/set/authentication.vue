@@ -85,10 +85,10 @@
         this.checkPhone().then(function () {
           if (_this.isRegister == 1) { // 已注册
             if (_this.pageType == 'password' || _this.pageType == 'findPassword') {
-              _this.$router.replace({name: 'verification2.0', query: {phone: _this.phone, type: 'changePassword'}});
+              _this.$router.replace({name: 'verification', query: {phone: _this.phone, type: 'changePassword'}});
             }
             if (_this.pageType == 'phone') {
-              _this.$router.replace({name: 'verification2.0', query: {phone: _this.phone, type: 'oldChangePhone'}});
+              _this.$router.replace({name: 'verification', query: {phone: _this.phone, type: 'oldChangePhone'}});
             }
 
           } else {
@@ -103,7 +103,7 @@
       // console.log('to', to);
       // console.log('from', from);
 
-      if (to.name == 'passwordLogin2.0') {
+      if (to.name == 'passwordLogin') {
         this.$dialog
           .confirm({
             title: '点击"返回"将中断设置，确定返回？',
@@ -113,7 +113,7 @@
           .then(() => {
             next();
             _this.$router.push({
-              name: "passwordLogin2.0",
+              name: "passwordLogin",
               query: {phone: _this.phone}
             });
           })
@@ -121,7 +121,7 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "authentication2.0"
+              name: "authentication"
             });
           });
       }  else if (to.name == 'safe' || to.name == 'bind') {
@@ -139,7 +139,7 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "authentication2.0"
+              name: "authentication"
             });
           });
       } else {
@@ -168,6 +168,6 @@
   }
 </script>
 
-<style src="@/style/scss/pages/login2.0/set/authentication.scss" lang="scss" scoped>
+<style src="@/style/scss/pages/login/set/authentication.scss" lang="scss" scoped>
 
 </style>

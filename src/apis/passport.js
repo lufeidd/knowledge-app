@@ -56,7 +56,7 @@ export const PASSPORT_CHECKPHONE = query => req('post', '/passport/checkphone', 
  * date:2020/1/17
  */
 
-// 登录注册2.0新增接口
+// 登录注册改版新增接口
 
 //判断手机号是否已注册
 export const PHONE_CHECK = query => req('post', '/passport/checkphone', query);

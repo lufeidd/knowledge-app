@@ -37,10 +37,10 @@
       </p>
       <p class="content_two">
         点击同意即表示您已阅读并同意
-        <router-link :to="{name: 'prototype2.0', query: {type: 'prototype'}}" class="prototype">《火把平台用户注册协议》
+        <router-link :to="{name: 'prototype', query: {type: 'prototype'}}" class="prototype">《火把平台用户注册协议》
         </router-link>
         与
-        <router-link :to="{name: 'prototype2.0', query: {type: 'private'}}" class="prototype">《火把平台用户隐私条款》</router-link>
+        <router-link :to="{name: 'prototype', query: {type: 'private'}}" class="prototype">《火把平台用户隐私条款》</router-link>
       </p>
       <div class="btn_wrapper">
         <div class="disagree">
@@ -158,7 +158,7 @@
       },
       agree() {
         this.isBack = false;
-        this.$router.replace({name: 'verification2.0', query: {phone: this.phone, type: 'wxLogin'}});
+        this.$router.replace({name: 'verification', query: {phone: this.phone, type: 'wxLogin'}});
 
       },
       disagree() {
@@ -180,13 +180,13 @@
           })
           .then(() => {
             next();
-            this.$router.push({name: 'login2.0'});
+            this.$router.push({name: 'login'});
           })
           .catch(() => {
             // on cancel
             next();
             _this.$router.push({
-              name: "bindPhone2.0"
+              name: "bindPhone"
             });
           });
       } else {
@@ -198,6 +198,6 @@
   }
 </script>
 
-<style src="@/style/scss/pages/login2.0/wxLogin/bindPhone.scss" lang="scss" scoped>
+<style src="@/style/scss/pages/login/wxLogin/bindPhone.scss" lang="scss" scoped>
 
 </style>
