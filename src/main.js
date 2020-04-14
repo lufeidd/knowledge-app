@@ -423,13 +423,13 @@ router.beforeEach((to, from, next) => {
   window.location.replace(replaceUrl); // 重定向跳转
   next();
 
-  // console.log(666, from.path, to.path)
+  console.log(666, from.path, to.path)
 
   // 相同页面跳转刷新，除个别不需要刷新的页面外，比如brand/index
   // 从引导页回退需要刷新
   // 引导微信页复制链接在微信中打开链接需要刷新
-  if (from.path == to.path && !to.meta.unreload || !localStorage.getItem("isWxLogin") || from.fullPath.indexOf("nullPage=1") != -1) {
-    location.reload();
+  if (from.path == to.path && (!to.meta.unreload || !localStorage.getItem("isWxLogin") || from.fullPath.indexOf("nullPage=1") != -1)) {
+    // location.reload();
     next();
   }
   next();
