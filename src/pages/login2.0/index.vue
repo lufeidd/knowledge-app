@@ -30,12 +30,6 @@
       },
       phoneLogin() {
         this.$router.push({name: 'phoneLogin2.0'});
-      },
-      //  触发微信快捷登录
-      dispatchWxLogin() {
-        if (this.$route.query.isTrigger) {
-          this.wxLogin();
-        }
       }
     },
     created() {
@@ -45,10 +39,6 @@
       }
     },
     mounted() {
-      if (this.$route.query.isTrigger) {
-        this.pageShow = false;
-      }
-
       // 获取第三方微信登录code
       this.$getWxCode();
       // linkFrom=gzh，公众号绑定手机号入口进入，提示已绑定手机号
@@ -63,9 +53,7 @@
         // 允许微信第三方登录
         if (localStorage.getItem("gotoLogin") == "yes") {
           // 第三方登录
-          this.$getWxLoginData().then(function () {
-            this.dispatchWxLogin();
-          });
+          this.$getWxLoginData();
         }
       }
 
