@@ -99,6 +99,10 @@ export default {
     };
   },
   mounted() {
+    // 火把知识app端webview判断是否跳app
+    if(localStorage.getItem("isHuobaIosLogin") == "no" || localStorage.getItem("isHuobaAndroidLogin") == "yes") {
+      this.$gotoApp();
+    }
     if (this.$route.query.nullPage == 1) this.msg = "请在微信端打开~";
     if (this.$route.query.nullPage == 2) this.msg = "请在app端打开~";
     // 获取适配信息，并微信授权
