@@ -17,13 +17,13 @@
       v-if="exist == 0"
       title="设置密码"
       is-link
-      :to="{name: 'authentication2.0', query: {phone: phone, pageType: 'password'}}"
+      :to="{name: 'authentication', query: {phone: phone, pageType: 'password'}}"
     />
     <van-cell
       v-if="exist == 1"
       title="修改密码"
       is-link
-      :to="{name: 'authentication2.0', query: {phone: phone, pageType: 'password'}}"
+      :to="{name: 'authentication', query: {phone: phone, pageType: 'password'}}"
     />
     <!-- <van-cell title="注销账户" is-link to="/personal/set/cancel"/> -->
     <CopyRight></CopyRight>

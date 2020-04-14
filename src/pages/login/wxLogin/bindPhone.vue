@@ -37,10 +37,10 @@
       </p>
       <p class="content_two">
         点击同意即表示您已阅读并同意
-        <router-link :to="{name: 'prototype2.0', query: {type: 'prototype'}}" class="prototype">《火把平台用户注册协议》
+        <router-link :to="{name: 'prototype', query: {type: 'prototype'}}" class="prototype">《火把平台用户注册协议》
         </router-link>
         与
-        <router-link :to="{name: 'prototype2.0', query: {type: 'private'}}" class="prototype">《火把平台用户隐私条款》</router-link>
+        <router-link :to="{name: 'prototype', query: {type: 'private'}}" class="prototype">《火把平台用户隐私条款》</router-link>
       </p>
       <div class="btn_wrapper">
         <div class="disagree">
@@ -55,14 +55,16 @@
 </template>
 
 <script>
-  import {CHECK_BINDING, REGISTER_ITEMS} from "@/apis/passport.js";
+  import {PHONE_CHECK, REGISTER_ITEMS} from "@/apis/passport.js";
+  import {CHECK_BINDING} from "@/apis/passport.js";
 
   export default {
     data() {
       return {
         phone: '',
         code: '',
-        isRegister: null, // 0 未绑定 1 已绑定
+        isRegister: null, // 0 未注册 1 已注册
+        isBindingWx: Boolean,
         content: '',
         submitData: {
           disabled: true
@@ -88,24 +90,39 @@
           this.submitData.disabled = true;
         }
       },
-      //判断手机号是否已绑定微信
+      // 判断手机号是否绑定过微信
+      async checkBinding() {
+        let data = {
+          mobile: this.phone.replace(/\s/g, ''),
+          type: 2,
+          version: "1.1"
+        };
+        let res = await CHECK_BINDING(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.isBindingWx = false;
+          // console.log(66,this.isRegister);
+        } else {
+          this.isBindingWx = true;
+          this.$toast(res.error_message);
+        }
+      },
+      // 判断手机号是否已注册
       async checkPhone() {
         var tStamp = this.$getTimeStamp();
         let data = {
           timestamp: tStamp,
           mobile: this.phone.replace(/\s/g, ''),
-          type: 2,
           version: "1.1"
         };
         data.sign = this.$getSign(data);
 
-        let res = await CHECK_BINDING(data);
+        let res = await PHONE_CHECK(data);
 
         if (res.hasOwnProperty("response_code")) {
-          this.isRegister = 0;
+          this.isRegister = res.response_data.is_register;
           // console.log(66,this.isRegister);
         } else {
-          this.isRegister = 1;
+          this.isRegister = null;
           this.$toast(res.error_message);
         }
       },
@@ -122,23 +139,26 @@
         console.log(res);
       },
       getCode() {
-        //  先判断此手机是否已绑定微信
+        //  判断此手机是否绑定过微信
+        this.checkBinding();
+
+        //  判断此手机是否注册
         let _this = this;
         this.checkPhone().then(function () {
           console.log(_this.isRegister);
-          if (_this.isRegister == 0) {  // 未绑定
-            console.log('未注册');
+          if (_this.isRegister == 0) {  // 未注册
+            // console.log('未注册');
             _this.registerItems();
             _this.registerPopShow = true; //  弹注册条款
 
-          } else if (_this.isRegister == 1) { // 已绑定
+          } else if (_this.isRegister == 1) { // 已注册
             // this.bindphoneData();
           }
         });
       },
       agree() {
         this.isBack = false;
-        this.$router.replace({name: 'verification2.0', query: {phone: this.phone, type: 'wxLogin'}});
+        this.$router.replace({name: 'verification', query: {phone: this.phone, type: 'wxLogin'}});
 
       },
       disagree() {
@@ -160,14 +180,13 @@
           })
           .then(() => {
             next();
-            this.$router.push({name: 'login2.0'});
+            this.$router.push({name: 'login'});
           })
           .catch(() => {
             // on cancel
             next();
-            //  为什么用replace只生效了一次？
             _this.$router.push({
-              name: "bindPhone2.0"
+              name: "bindPhone"
             });
           });
       } else {
@@ -179,6 +198,6 @@
   }
 </script>
 
-<style src="@/style/scss/pages/login2.0/wxLogin/bindPhone.scss" lang="scss" scoped>
+<style src="@/style/scss/pages/login/wxLogin/bindPhone.scss" lang="scss" scoped>
 
 </style>

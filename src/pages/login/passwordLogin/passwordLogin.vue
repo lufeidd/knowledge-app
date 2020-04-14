@@ -26,9 +26,9 @@
     <div class="button_wrapper" v-else>
       <van-button size="large" type="danger" @click="passwordLogin">登录</van-button>
     </div>
-    <router-link :to="{name: 'phoneLogin2.0'}" class="link_text_login">验证码登录
+    <router-link :to="{name: 'phoneLogin'}" class="link_text_login">验证码登录
     </router-link>
-    <router-link :to="{name: 'authentication2.0', query: {pageType: 'findPassword'}}" class="link_text_password">忘记密码
+    <router-link :to="{name: 'authentication', query: {pageType: 'findPassword'}}" class="link_text_password">忘记密码
     </router-link>
     <div class="wx_login" v-if="isShowWx">
       <p class="wx_login_text">快捷登录方式</p>
@@ -106,7 +106,7 @@
         this.login();
       },
       wxLogin() {
-        // this.$router.push({name: 'bindPhone2.0'});
+        // this.$router.push({name: 'bindPhone'});
         // 重置页面来源
         localStorage.setItem("linkFrom", "");
         this.gotoLogin = true;
@@ -150,6 +150,6 @@
   }
 </script>
 
-<style src="@/style/scss/pages/login2.0/passwordLogin/passwordLogin.scss" lang="scss" scoped>
+<style src="@/style/scss/pages/login/passwordLogin/passwordLogin.scss" lang="scss" scoped>
 
 </style>

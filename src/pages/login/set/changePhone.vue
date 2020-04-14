@@ -45,7 +45,7 @@
         }
       },
       getCode() {
-        this.$router.replace({name: 'verification2.0', query:{phone: this.phone,type: 'newChangePhone'}});  //  跳转到新手机获取验证码页面
+        this.$router.replace({name: 'verification', query:{phone: this.phone,type: 'newChangePhone'}});  //  跳转到新手机获取验证码页面
       }
     },
     beforeRouteLeave(to, from, next) {
@@ -69,7 +69,7 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "changePhone2.0"
+              name: "changePhone"
             });
           });
       } else {
@@ -79,6 +79,6 @@
   }
 </script>
 
-<style src="@/style/scss/pages/login2.0/set/changePhone.scss" lang="scss" scoped>
+<style src="@/style/scss/pages/login/set/changePhone.scss" lang="scss" scoped>
 
 </style>

@@ -18,7 +18,7 @@
     <div class="button_wrapper" v-else>
       <van-button size="large" type="danger" @click="getCode">获取验证码</van-button>
     </div>
-    <router-link :to="{name: 'passwordLogin2.0'}" class="link_text">密码登录
+    <router-link :to="{name: 'passwordLogin'}" class="link_text">密码登录
     </router-link>
     <div class="wx_login" v-if="isShowWx">
       <p class="wx_login_text">快捷登录方式</p>
@@ -35,10 +35,10 @@
       </p>
       <p class="content_two">
         点击同意即表示您已阅读并同意
-        <router-link :to="{name: 'prototype2.0', query: {type: 'prototype'}}" class="prototype">《火把平台用户注册协议》
+        <router-link :to="{name: 'prototype', query: {type: 'prototype'}}" class="prototype">《火把平台用户注册协议》
         </router-link>
         与
-        <router-link :to="{name: 'prototype2.0', query: {type: 'private'}}" class="prototype">《火把平台用户隐私条款》</router-link>
+        <router-link :to="{name: 'prototype', query: {type: 'private'}}" class="prototype">《火把平台用户隐私条款》</router-link>
       </p>
       <div class="btn_wrapper">
         <div class="disagree">
@@ -130,19 +130,19 @@
             _this.registerPopShow = true; //  弹注册条款
 
           } else if (_this.isRegister == 1) { // 已注册
-            _this.$router.push({name: 'verification2.0', query: {phone: _this.phone,isRegister: true, type: 'phoneLogin'}});
+            _this.$router.push({name: 'verification', query: {phone: _this.phone,isRegister: true, type: 'phoneLogin'}});
           }
         });
       },
       agree() {
-        this.$router.push({name: 'verification2.0', query: {phone: this.phone,isRegister: false, type: 'phoneLogin'}});
+        this.$router.push({name: 'verification', query: {phone: this.phone,isRegister: false, type: 'phoneLogin'}});
 
       },
       disagree() {
         this.registerPopShow = false;
       },
       wxLogin() {
-        // this.$router.push({name: 'bindPhone2.0'});
+        // this.$router.push({name: 'bindPhone'});
         // 重置页面来源
         localStorage.setItem("linkFrom", "");
         this.gotoLogin = true;
@@ -188,6 +188,6 @@
   }
 </script>
 
-<style src="@/style/scss/pages/login2.0/phoneLogin/phoneLogin.scss" lang="scss" scoped>
+<style src="@/style/scss/pages/login/phoneLogin/phoneLogin.scss" lang="scss" scoped>
 
 </style>

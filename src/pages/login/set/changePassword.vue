@@ -67,7 +67,7 @@
         if (res.hasOwnProperty("response_code")) {
           this.$toast('设置成功');
           this.logoutData();  // 退出登录
-          this.$router.push({ name: "passwordLogin2.0", query: {phone: this.phone} });
+          this.$router.push({ name: "passwordLogin", query: {phone: this.phone} });
         } else {
           this.$toast(res.error_message);
         }
@@ -107,7 +107,7 @@
       console.log('to', to);
       console.log('from', from);
 
-      if (to.name == 'passwordLogin2.0' && !this.setFlag) {
+      if (to.name == 'passwordLogin' && !this.setFlag) {
         this.$dialog
           .confirm({
             title: '点击"返回"将中断设置，确定返回？',
@@ -117,7 +117,7 @@
           .then(() => {
             next();
             _this.$router.push({
-              name: "passwordLogin2.0",
+              name: "passwordLogin",
               query: {phone: _this.phone}
             });
           })
@@ -125,7 +125,7 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "changePassword2.0"
+              name: "changePassword"
             });
           });
       } else if (to.name == 'safe') {
@@ -143,7 +143,7 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "changePassword2.0"
+              name: "changePassword"
             });
           });
       } else {
@@ -155,6 +155,6 @@
   }
 </script>
 
-<style src="@/style/scss/pages/login2.0/set/changePassword.scss" lang="scss" scoped>
+<style src="@/style/scss/pages/login/set/changePassword.scss" lang="scss" scoped>
 
 </style>
