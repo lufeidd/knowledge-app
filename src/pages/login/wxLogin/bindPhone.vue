@@ -120,7 +120,16 @@
 
         if (res.hasOwnProperty("response_code")) {
           this.isRegister = res.response_data.is_register;
-          // console.log(66,this.isRegister);
+
+          if (this.isRegister == 0) {  // 未注册
+            // console.log('未注册');
+            this.registerItems();
+            this.registerPopShow = true; //  弹注册条款
+
+          } else if (this.isRegister == 1) { // 已注册
+            this.$router.replace({name: 'verification', query: {phone: this.phone, type: 'wxLogin'}});
+          }
+
         } else {
           this.isRegister = null;
           this.$toast(res.error_message);
@@ -143,18 +152,7 @@
         this.checkBinding();
 
         //  判断此手机是否注册
-        let _this = this;
-        this.checkPhone().then(function () {
-          console.log(_this.isRegister);
-          if (_this.isRegister == 0) {  // 未注册
-            // console.log('未注册');
-            _this.registerItems();
-            _this.registerPopShow = true; //  弹注册条款
-
-          } else if (_this.isRegister == 1) { // 已注册
-            // this.bindphoneData();
-          }
-        });
+        this.checkPhone();
       },
       agree() {
         this.isBack = false;

@@ -58,7 +58,8 @@
             : 60
         },
         leavePopShow: false,
-        showKeyboard: false
+        showKeyboard: false,
+        activity_id: ''
       };
     },
     // watch: {
@@ -310,7 +311,7 @@
       // 绑定
       this.bindtype = parseInt(this.$route.query.bindtype);
       this.outerId = this.$route.query.outerId;
-      // this.activity_id = this.$route.query.activity_id ? this.$route.query.activity_id : false;
+      this.activity_id = this.$route.query.activity_id ? this.$route.query.activity_id : false;
     },
     beforeRouteLeave(to, from, next) {
       var _this = this;
