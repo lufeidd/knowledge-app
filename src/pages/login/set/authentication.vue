@@ -121,10 +121,11 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "authentication"
+              name: "authentication",
+              query: {pageType: 'password'}
             });
           });
-      }  else if (to.name == 'safe' || to.name == 'bind') {
+      }  else if (to.name == 'safe') {
         this.$dialog
           .confirm({
             title: '点击"返回"将中断设置，确定返回？',
@@ -139,7 +140,27 @@
             // on cancel
             next();
             _this.$router.push({
-              name: "authentication"
+              name: "authentication",
+              query: {phone: _this.phone.replace(/\s/g, ''), pageType: _this.pageType}
+            });
+          });
+      } else if (to.name == 'bind') {
+        this.$dialog
+          .confirm({
+            title: '点击"返回"将中断设置，确定返回？',
+            cancelButtonText: "取消",
+            confirmButtonText: "确定"
+          })
+          .then(() => {
+            next();
+
+          })
+          .catch(() => {
+            // on cancel
+            next();
+            _this.$router.push({
+              name: "authentication",
+              query: {phone: _this.phone.replace(/\s/g, ''), pageType: _this.pageType}
             });
           });
       } else {
