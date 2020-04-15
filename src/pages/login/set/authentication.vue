@@ -84,6 +84,7 @@
         let _this = this;
         this.checkPhone().then(function () {
           if (_this.isRegister == 1) { // 已注册
+            sessionStorage.setItem('isToVerification', '1');
             if (_this.pageType == 'password' || _this.pageType == 'findPassword') {
               _this.$router.replace({name: 'verification', query: {phone: _this.phone, type: 'changePassword'}});
             }
@@ -112,10 +113,6 @@
           })
           .then(() => {
             next();
-            _this.$router.push({
-              name: "passwordLogin",
-              query: {phone: _this.phone}
-            });
           })
           .catch(() => {
             // on cancel

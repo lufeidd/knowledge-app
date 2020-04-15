@@ -70,7 +70,6 @@
           disabled: true
         },
         leavePopShow: false,
-        isBack: true, // 是否是离开页面
         registerPopShow: false
       };
     },
@@ -127,6 +126,7 @@
             this.registerPopShow = true; //  弹注册条款
 
           } else if (this.isRegister == 1) { // 已注册
+            sessionStorage.setItem('isToVerification', '1');
             this.$router.replace({name: 'verification', query: {phone: this.phone, type: 'wxLogin'}});
           }
 
@@ -155,7 +155,7 @@
         this.checkPhone();
       },
       agree() {
-        this.isBack = false;
+        sessionStorage.setItem('isToVerification', '1');
         this.$router.replace({name: 'verification', query: {phone: this.phone, type: 'wxLogin'}});
 
       },
@@ -169,7 +169,7 @@
     beforeRouteLeave(to, from, next) {
       var _this = this;
 
-      if (this.isBack == true) {
+      if (to.name == 'login') {
         this.$dialog
           .confirm({
             title: '点击"返回"将中断登录，确定返回？',
@@ -178,7 +178,6 @@
           })
           .then(() => {
             next();
-            this.$router.push({name: 'login'});
           })
           .catch(() => {
             // on cancel

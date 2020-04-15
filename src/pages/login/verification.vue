@@ -53,8 +53,8 @@
         isRegister: Boolean,
         // 验证码倒计时，刷新保留当前手机倒计时时间
         cdata: {
-          time: sessionStorage.getItem("second")
-            ? parseInt(sessionStorage.getItem("second"))
+          time: localStorage.getItem("second")
+            ? parseInt(localStorage.getItem("second"))
             : 60
         },
         leavePopShow: false,
@@ -86,6 +86,7 @@
         let res = await SMS(data);
         // console.log(res);
         this.$toast('短信已发送');
+        sessionStorage.setItem('isToVerification', '0');
       },
       // 绑定手机号
       async bindphoneData() {
@@ -304,9 +305,12 @@
         this.percentStep = 4;
       }
       this.isRegister = this.$route.query.isRegister;
-      // 刷新是否应该限制发短信？
-      this.sms();
-      this.countdown();
+
+      // 刷新不发短信
+      if(sessionStorage.getItem('isToVerification') == '1' && this.cdata.time == 0) {
+        this.sms();
+      }
+      this.countdown(); // 短信倒计时
 
       // 绑定
       this.bindtype = parseInt(this.$route.query.bindtype);
@@ -328,10 +332,6 @@
           })
           .then(() => {
             next();
-            if (_this.type == 'wxLogin') {
-              _this.$router.push({name: 'login'});
-
-            }
           })
           .catch(() => {
             // on cancel
@@ -350,9 +350,6 @@
           })
           .then(() => {
             next();
-            if (_this.type == 'phoneLogin') {
-              _this.$router.push({name: 'phoneLogin', query: {phone: _this.phone}});
-            }
           })
           .catch(() => {
             // on cancel
@@ -371,7 +368,6 @@
           })
           .then(() => {
             next();
-              _this.$router.push({name: 'passwordLogin', query: {phone: _this.phone}});
           })
           .catch(() => {
             // on cancel

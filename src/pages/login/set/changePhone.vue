@@ -45,6 +45,7 @@
         }
       },
       getCode() {
+        sessionStorage.setItem('isToVerification', '1');
         this.$router.replace({name: 'verification', query:{phone: this.phone,type: 'newChangePhone'}});  //  跳转到新手机获取验证码页面
       }
     },
