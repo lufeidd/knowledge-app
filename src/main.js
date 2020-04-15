@@ -423,7 +423,10 @@ router.beforeEach((to, from, next) => {
   window.location.replace(replaceUrl); // 重定向跳转
   next();
 
-  console.log(666, from.path, to.path)
+  // 当前页面刷新
+  let isReload = false;
+
+  console.log(666, from.path == to.path, from.path, to.path);
 
   // 相同页面跳转刷新，除个别不需要刷新的页面外，比如brand/index
   // 从引导页回退需要刷新

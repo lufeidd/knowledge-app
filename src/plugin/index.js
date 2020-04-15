@@ -237,6 +237,9 @@ export default {
 
     }
 
+
+
+
     // 获取页面分享信息
     Vue.prototype.$getWxShareData = async function (_pageName, _params) {
       if (!_pageName || _pageName == '' || !_params || _params == '') {
@@ -269,11 +272,97 @@ export default {
 
     }
 
-    // 火把知识app端webview跳app
-    Vue.prototype.$gotoApp = function () {
-      // 是否需要分享？分享参数？原生跳转链接？
-      // this.$toast(localStorage.getItem("routerLink"));
-      console.log(123)
+    // 火把知识app端webview判断是否跳app原生页面
+    Vue.prototype.$gotoApp = async function () {
+      this.$toast(this.$route.query.goods_id);
+      if (
+        localStorage.getItem("isHuobaIosLogin") == "yes" ||
+        localStorage.getItem("isHuobaAndroidLogin") == "yes"
+      ) {
+        // 是否需要分享
+        let _isShare;
+        // 是否需要调起app原生页面
+        let isApp;
+        if (_isShare) {
+          let routerLink = localStorage.getItem('routerLink');
+          // 需要分享的页面
+          let _params = {};
+          let _pageName = "";
+          let obj = {};
+          // 图书资源详情页
+          let _b1 = routerLink.indexOf('book/detail') != -1;
+          // 商品详情页
+          let _b2 = routerLink.indexOf('goods/detail') != -1;
+          // 公号首页
+          let _b3 = routerLink.indexOf('brand/index') != -1;
+          // 商品搜索结果页
+          let _b4 = routerLink.indexOf('search/result') != -1;
+          if (_b1) {
+            // 图书资源详情页
+            _pageName = "book/detail";
+            obj.book_id = this.$route.query.goods_id;
+          } else if (_b2) {
+            // 商品详情页
+            _pageName = "goods/detail";
+            obj.goods_id = this.$route.query.goods_id;
+            obj.goods_type = this.$route.query.goods_type;
+            if (this.$route.query.album_id) obj.album_id = this.$route.query.album_id;
+          } else if (_b3) {
+            // 商品详情页
+            _pageName = "brand/index";
+            obj.brand_id = this.$route.query.brand_id;
+          } else if (_b4) {
+            // 商品搜索结果页
+            _pageName = "search/result";
+            if (this.$route.query.cid) obj.cid = this.$route.query.cid;
+            if (this.$route.query.key) obj.key = this.$route.query.key;
+            if (this.$route.query.goods_type) obj.goods_type = this.$route.query.goods_type;
+          }
+          if (obj != {}) _params = JSON.stringify(obj);
+
+          let tStamp = this.$getTimeStamp();
+          let data = {
+            page_name: _pageName,
+            params: _params,
+            home_id: localStorage.getItem('home_id'),
+            timestamp: tStamp,
+            version: "1.1"
+          };
+          data.sign = this.$getSign(data);
+          let res = await WX_SHARE(data);
+          if (res.hasOwnProperty("response_code")) {
+            // 微信分享
+            this.$getWxData(
+              res.response_data.share_info.title,
+              res.response_data.share_info.desc,
+              res.response_data.share_info.pic,
+              res.response_data.share_info.url
+            );
+          } else {
+            this.$toast(res.error_message);
+          }
+        } else {
+          // 不需要分享的页面
+          if (isApp) {
+            // 需要调起原生页面
+            // ...
+            window.webkit.messageHandlers.shareAndJump.postMessage({
+              linkData: {
+                pageNamee: 'goods/detail',
+                book_id: '1000003',
+              },
+              shareData: {
+                title: '',
+                img: '',
+                src: ''
+              }
+            })
+
+
+          }
+        }
+
+      }
     }
 
     // 分享成功后通知后台

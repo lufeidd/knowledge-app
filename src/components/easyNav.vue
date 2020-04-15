@@ -201,13 +201,8 @@ export default {
     };
   },
   mounted() {
-    // 火把知识app端webview判断是否跳app
-    if (
-      localStorage.getItem("isHuobaIosLogin") == "yes" ||
-      localStorage.getItem("isHuobaAndroidLogin") == "yes"
-    ) {
-      this.$gotoApp();
-    }
+    // 火把知识app端webview判断是否跳app原生页面
+    // this.$gotoApp();
     this.home_id = localStorage.getItem("home_id");
     if (this.type === undefined) {
       this.type = this.navData.type;
