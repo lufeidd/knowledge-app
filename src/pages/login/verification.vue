@@ -86,6 +86,7 @@
         let res = await SMS(data);
         // console.log(res);
         this.$toast('短信已发送');
+        sessionStorage.setItem('isToVerification', '0');
       },
       // 绑定手机号
       async bindphoneData() {
@@ -304,9 +305,13 @@
         this.percentStep = 4;
       }
       this.isRegister = this.$route.query.isRegister;
-      // 刷新是否应该限制发短信？
-      this.sms();
-      this.countdown();
+
+      // 刷新不发短信
+      if(sessionStorage.getItem('isToVerification') == '1') {
+        this.sms();
+      } else {
+      }
+      this.countdown(); // 短信倒计时
 
       // 绑定
       this.bindtype = parseInt(this.$route.query.bindtype);

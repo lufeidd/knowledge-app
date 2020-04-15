@@ -126,6 +126,7 @@
             this.registerPopShow = true; //  弹注册条款
 
           } else if (this.isRegister == 1) { // 已注册
+            sessionStorage.setItem('isToVerification', '1');
             this.$router.replace({name: 'verification', query: {phone: this.phone, type: 'wxLogin'}});
           }
 
@@ -154,6 +155,7 @@
         this.checkPhone();
       },
       agree() {
+        sessionStorage.setItem('isToVerification', '1');
         this.$router.replace({name: 'verification', query: {phone: this.phone, type: 'wxLogin'}});
 
       },
