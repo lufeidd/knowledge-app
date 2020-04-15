@@ -308,9 +308,15 @@
 
       // 刷新不发短信
       if(sessionStorage.getItem('isToVerification') == '1' && this.cdata.time == 0) {
+        console.log('非刷新');
         this.sms();
+        this.countdown(); // 短信倒计时
       }
-      this.countdown(); // 短信倒计时
+
+      // 如果倒计时未结束继续进行倒计时
+      if (this.cdata.time != 0) {
+        this.countdown(); // 短信倒计时
+      }
 
       // 绑定
       this.activity_id = this.$route.query.activity_id ? this.$route.query.activity_id : false;
