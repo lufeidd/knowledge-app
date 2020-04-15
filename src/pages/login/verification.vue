@@ -328,10 +328,6 @@
           })
           .then(() => {
             next();
-            if (_this.type == 'wxLogin') {
-              _this.$router.push({name: 'login'});
-
-            }
           })
           .catch(() => {
             // on cancel
@@ -350,9 +346,6 @@
           })
           .then(() => {
             next();
-            if (_this.type == 'phoneLogin') {
-              _this.$router.push({name: 'phoneLogin', query: {phone: _this.phone}});
-            }
           })
           .catch(() => {
             // on cancel
@@ -371,7 +364,6 @@
           })
           .then(() => {
             next();
-              _this.$router.push({name: 'passwordLogin', query: {phone: _this.phone}});
           })
           .catch(() => {
             // on cancel
