@@ -97,8 +97,8 @@
           mobile: this.phone.replace(/\s/g, ''),
           header_pic: localStorage.getItem('headimg'),
           auth_code: this.code,
-          outer_id: this.outerId,
-          type: this.bindtype,
+          outer_id: localStorage.getItem('unionid'),
+          type: 2,
           outer_name: localStorage.getItem('nickname'),
           openid: localStorage.getItem('openid'),
           source_url: localStorage.getItem("defaultLink"),
@@ -313,8 +313,6 @@
       this.countdown(); // 短信倒计时
 
       // 绑定
-      this.bindtype = parseInt(this.$route.query.bindtype);
-      this.outerId = this.$route.query.outerId;
       this.activity_id = this.$route.query.activity_id ? this.$route.query.activity_id : false;
     },
     beforeRouteLeave(to, from, next) {
