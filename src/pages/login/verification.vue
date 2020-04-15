@@ -309,7 +309,6 @@
       // 刷新不发短信
       if(sessionStorage.getItem('isToVerification') == '1' && this.cdata.time == 0) {
         this.sms();
-      } else {
       }
       this.countdown(); // 短信倒计时
 
