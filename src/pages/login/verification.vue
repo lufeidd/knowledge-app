@@ -53,8 +53,8 @@
         isRegister: Boolean,
         // 验证码倒计时，刷新保留当前手机倒计时时间
         cdata: {
-          time: sessionStorage.getItem("second")
-            ? parseInt(sessionStorage.getItem("second"))
+          time: localStorage.getItem("second")
+            ? parseInt(localStorage.getItem("second"))
             : 60
         },
         leavePopShow: false,
@@ -307,7 +307,7 @@
       this.isRegister = this.$route.query.isRegister;
 
       // 刷新不发短信
-      if(sessionStorage.getItem('isToVerification') == '1') {
+      if(sessionStorage.getItem('isToVerification') == '1' && this.cdata.time == 0) {
         this.sms();
       } else {
       }
