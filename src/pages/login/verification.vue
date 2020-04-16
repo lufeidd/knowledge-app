@@ -307,10 +307,13 @@
       this.isRegister = this.$route.query.isRegister;
 
       // 刷新不发短信
-      if(sessionStorage.getItem('isToVerification') == '1' && this.cdata.time == 0) {
+      if(sessionStorage.getItem('isToVerification') == '1' && (this.cdata.time == 0 || this.phone.replace(/\s/g, '') != sessionStorage.getItem('lastInputPhone'))) {
+        console.log('hou',this.phone.replace(/\s/g, ''));
+        console.log('xian',localStorage.getItem('phone'));
         console.log('非刷新');
-        this.sms();
         this.countdown(); // 短信倒计时
+        this.sms();
+
       }
 
       // 如果倒计时未结束继续进行倒计时
@@ -320,6 +323,10 @@
 
       // 绑定
       this.activity_id = this.$route.query.activity_id ? this.$route.query.activity_id : false;
+    },
+    beforeDestroy() {
+      clearInterval(this.clock);
+      sessionStorage.setItem('lastInputPhone', this.phone.replace(/\s/g, ''));
     },
     beforeRouteLeave(to, from, next) {
       var _this = this;
