@@ -123,9 +123,9 @@
         //  先判断此手机是否注册
         let _this = this;
         this.checkPhone().then(function () {
-          console.log(_this.isRegister);
+          // console.log(_this.isRegister);
           if (_this.isRegister == 0) {  // 未注册
-            console.log('未注册');
+            // console.log('未注册');
             _this.registerItems();
             _this.registerPopShow = true; //  弹注册条款
 
