@@ -149,10 +149,12 @@
       },
       getCode() {
         //  判断此手机是否绑定过微信
-        this.checkBinding();
-
-        //  判断此手机是否注册
-        this.checkPhone();
+        this.checkBinding().then(function () {
+          if (!this.isBindingWx) {  //  手机号未绑定微信
+            //  判断此手机是否注册
+            this.checkPhone();
+          }
+        });
       },
       agree() {
         sessionStorage.setItem('isToVerification', '1');
