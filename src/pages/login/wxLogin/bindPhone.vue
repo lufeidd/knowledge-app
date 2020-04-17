@@ -10,6 +10,7 @@
         error-message
         type="tel"
         @input="checkSubmit ()"
+        ref="input"
       />
       <template v-if="submitData.disabled">
         <van-button slot="button" size="large" type="danger" disabled>获取验证码</van-button>
@@ -84,6 +85,8 @@
 
         var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
         if (regPhone.test(this.phone.replace(/\s/g, ''))) {
+          this.$refs.input.blur();
+
           this.submitData.disabled = false;
         } else {
           this.submitData.disabled = true;
