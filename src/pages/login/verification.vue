@@ -189,7 +189,7 @@
             this.$router.replace({name: 'changePassword', query: {phone: this.phone, code: this.code}});
           } else if (this.type == 'oldChangePhone') {
             this.resetApply();
-            this.$router.replace({name: 'changePhone'});
+            this.$router.replace({name: 'changePhone', query: {phone: this.phone}});
           } else if (this.type == 'newChangePhone') {
             this.resetSave();
           }
