@@ -2,13 +2,15 @@
   <div id="app">
     <!-- 需要微信端打开，引导微信内打开 -->
     <!-- 引导app端打开 -->
-    <template class="nullBox" v-if="nullPage == 1 || nullPage == 2">
-      <img src="./assets/null/link.png" width="100%" />
-      <div>{{ msg }}</div>
-      <EazyNav type="brand" :isShow="true"></EazyNav>
+    <template v-if="nullPage == 1 || nullPage == 2">
+      <div class="nullBox">
+        <img src="./assets/null/link.png" width="100%" />
+        <div>{{ msg }}</div>
+        <EazyNav type="brand" :isShow="true"></EazyNav>
+      </div>
     </template>
     <template v-else>
-      <Download></Download>
+        <Download></Download>
       <!-- 页面缓存, $route.meta.keepAlive默认false -->
       <keep-alive>
         <router-view v-if="$route.meta.keepAlive" />
@@ -95,7 +97,7 @@ export default {
   data() {
     return {
       nullPage: this.$route.query.nullPage ? this.$route.query.nullPage : 0,
-      msg: ""
+      msg: "",
     };
   },
   mounted() {

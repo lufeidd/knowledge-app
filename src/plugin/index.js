@@ -247,10 +247,9 @@ export default {
         localStorage.getItem("isHuobaIosLogin") == "yes" ||
         localStorage.getItem("isHuobaAndroidLogin") == "yes" || true) {
         let _href = window.location.href.split('#')[1];
-        let _name = _href.split('?')[0];
+        let _name = _href.split('?')[0].toLowerCase();
         let _params = this.$getPageParams(_name);
         let _pageName = _params.page_name;
-        // console.log(111, _params, _pageName)
 
         if (!_pageName || _pageName == '' || !_params || _params == '') {
           return;
@@ -312,7 +311,7 @@ export default {
           // 当app_page_name不为空，以及auto_jump值为1需要跳原生页面
           // 页面信息
           _linkData = this.$getPageParams(_name);
-          _linkData.page_name = _name;
+          _linkData.page_name = res.response_data.app_page_name;
           _isJump = true;
         }
 
@@ -322,7 +321,7 @@ export default {
           params: _params,
           isJump: _isJump
         });
-
+        // 安卓
         if (localStorage.getItem("isHuobaAndroidLogin") == "yes") {
           window.JSWEB.RequestNative(JSON.stringify({
             share_info: this.share_info,
@@ -331,6 +330,7 @@ export default {
             isJump: _isJump
           }));
         }
+        // ios
         if (localStorage.getItem("isHuobaIosLogin") == "yes") {
           window.webkit.messageHandlers.shareAndJump.postMessage({
             share_info: this.share_info,
@@ -467,14 +467,12 @@ export default {
       let res = await SERVER_TIME(data);
       let serverTime = res.response_data.timestamp * 1000;
       this.diffTime = serverTime - localTime;
-      // console.log('时间差：', this.diffTime);
     }
 
     // 计算时间戳
     Vue.prototype.$getTimeStamp = function () {
       let localTime = new Date().getTime();
       let timeStamp = parseInt((localTime + this.diffTime) / 1000);
-      // console.log("时间戳:", timeStamp);
       return timeStamp;
     }
 

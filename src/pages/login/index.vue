@@ -7,7 +7,7 @@
         <van-button slot="button" size="large" type="danger" @click="wxLogin">微信快捷登录</van-button>
         <van-button slot="button" size="large" type="default" @click="phoneLogin">手机号登录</van-button>
       </div>
-      <EazyNav type="brand" :isShow="false"></EazyNav>
+      <!-- <EazyNav type="brand" :isShow="false"></EazyNav> -->
     </div>
   </div>
 </template>

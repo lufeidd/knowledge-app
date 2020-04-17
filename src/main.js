@@ -423,19 +423,21 @@ router.beforeEach((to, from, next) => {
   window.location.replace(replaceUrl); // 重定向跳转
   next();
 
-  // 当前页面刷新
-  let isReload = false;
-
-  // console.log(666, from.path == to.path, from.path, to.path);
-
   // 相同页面跳转刷新，除个别不需要刷新的页面外，比如brand/index
   // 从引导页回退需要刷新
   // 引导微信页复制链接在微信中打开链接需要刷新
-  if (from.path == to.path && (!to.meta.unreload || !localStorage.getItem("isWxLogin") || from.fullPath.indexOf("nullPage=1") != -1)) {
-    // location.reload();
+  // from.path == to.path && !to.meta.unreload || !localStorage.getItem("isWxLogin") || from.fullPath.indexOf("nullPage=1") != -1
+  
+  // from.path == '/'  // 当前页刷新
+  // from.path == to.path, from.path != to.path,不同页面跳转
+  // from.path == to.path == /custompage 同类页面之间跳转，比如自定义页面跳自定义页面
+  if((from.path == '/custompage' && to.path == '/custompage') || from.fullPath.indexOf("nullPage=1") != -1){
+    console.log(111, to.path, from.path);
+    location.reload();
     next();
   }
   next();
+
 
 })
 
