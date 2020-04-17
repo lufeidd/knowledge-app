@@ -14,6 +14,7 @@
       <van-button slot="button" size="large" type="danger" v-if="submitData.disabled" disabled>确认设置</van-button>
       <van-button slot="button" size="large" type="danger" v-else @click="confirmSet">确认设置</van-button>
     </div>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 

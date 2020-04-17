@@ -703,15 +703,17 @@ export default {
         // console.log(111,this.bookRecommend)
         // 获取页面分享信息
         // if(this.isWxLogin) this.wxShareData();
-        var _pageName = "page/get";
-        var _data = {};
 
-        if(this.$route.query.type) _data.type = this.$route.query.type;
-        if(this.$route.query.page_id) _data.page_id = this.$route.query.page_id;
-        if(this.$route.query.supplier_id) _data.supplier_id = this.$route.query.supplier_id;
+        // var _pageName = "page/get";
+        // var _data = {};
 
-        var _params = JSON.stringify(_data);
-        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+        // if(this.$route.query.type) _data.type = this.$route.query.type;
+        // if(this.$route.query.page_id) _data.page_id = this.$route.query.page_id;
+        // if(this.$route.query.supplier_id) _data.supplier_id = this.$route.query.supplier_id;
+
+        // var _params = JSON.stringify(_data);
+        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+
       } else {
         this.$toast(res.error_message);
       }

@@ -8,7 +8,7 @@ import wx from 'weixin-js-sdk';
 //  引入时间戳接口
 // import req from "./../apis/http.js";
 import { SERVER_TIME, WX_SHARE, WX_SHARE_LOG, ADDRESS, CASHIER_PAY_CHECK } from "./../apis/public.js";
-import { LOGIN_PARTERNER } from "./../apis/passport.js";
+import { LOGIN_PARTERNER, PAGE_INFO } from "./../apis/passport.js";
 
 // 支持await async
 // import regeneratorRuntime from './../regenerator-runtime/runtime.js';
@@ -18,6 +18,8 @@ import { LOGIN_PARTERNER } from "./../apis/passport.js";
 
 export default {
   install: function (Vue, options) {
+    // 分享信息
+    Vue.prototype.share_info = {};
     Vue.prototype.page_name = '';
     Vue.prototype.params = {};
     Vue.prototype.share_type = 1;
@@ -218,7 +220,7 @@ export default {
             if (res.errMsg.toLowerCase().indexOf('timeline:ok') != -1) {
               self.share_type = 2;
             }
-            console.log('111', res);
+            // console.log('111', res);
             // 分享成功后通知后台
             self.$getShareLog(self.page_name, self.params, self.share_type);
           },
@@ -238,92 +240,28 @@ export default {
     }
 
 
-
-
     // 获取页面分享信息
-    Vue.prototype.$getWxShareData = async function (_pageName, _params) {
-      if (!_pageName || _pageName == '' || !_params || _params == '') {
-        return;
-      }
-      this.page_name = _pageName;
-      this.params = _params;
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        page_name: _pageName,
-        params: _params,
-        home_id: localStorage.getItem('home_id'),
-        timestamp: tStamp,
-        version: "1.1"
-      };
-      data.sign = this.$getSign(data);
-      let res = await WX_SHARE(data);
-      if (res.hasOwnProperty("response_code")) {
-        // 微信分享
-        this.$getWxData(
-          res.response_data.share_info.title,
-          res.response_data.share_info.desc,
-          res.response_data.share_info.pic,
-          res.response_data.share_info.url
-        );
-
-      } else {
-        this.$toast(res.error_message);
-      }
-
-    }
-
-    // 火把知识app端webview判断是否跳app原生页面
-    Vue.prototype.$gotoApp = async function () {
-      this.$toast(this.$route.query.goods_id);
-      if (
+    Vue.prototype.$getWxShareData = async function () {
+      // 在微信端
+      if (this.isWxLogin ||
         localStorage.getItem("isHuobaIosLogin") == "yes" ||
-        localStorage.getItem("isHuobaAndroidLogin") == "yes"
-      ) {
-        // 是否需要分享
-        let _isShare;
-        // 是否需要调起app原生页面
-        let isApp;
-        if (_isShare) {
-          let routerLink = localStorage.getItem('routerLink');
-          // 需要分享的页面
-          let _params = {};
-          let _pageName = "";
-          let obj = {};
-          // 图书资源详情页
-          let _b1 = routerLink.indexOf('book/detail') != -1;
-          // 商品详情页
-          let _b2 = routerLink.indexOf('goods/detail') != -1;
-          // 公号首页
-          let _b3 = routerLink.indexOf('brand/index') != -1;
-          // 商品搜索结果页
-          let _b4 = routerLink.indexOf('search/result') != -1;
-          if (_b1) {
-            // 图书资源详情页
-            _pageName = "book/detail";
-            obj.book_id = this.$route.query.goods_id;
-          } else if (_b2) {
-            // 商品详情页
-            _pageName = "goods/detail";
-            obj.goods_id = this.$route.query.goods_id;
-            obj.goods_type = this.$route.query.goods_type;
-            if (this.$route.query.album_id) obj.album_id = this.$route.query.album_id;
-          } else if (_b3) {
-            // 商品详情页
-            _pageName = "brand/index";
-            obj.brand_id = this.$route.query.brand_id;
-          } else if (_b4) {
-            // 商品搜索结果页
-            _pageName = "search/result";
-            if (this.$route.query.cid) obj.cid = this.$route.query.cid;
-            if (this.$route.query.key) obj.key = this.$route.query.key;
-            if (this.$route.query.goods_type) obj.goods_type = this.$route.query.goods_type;
-          }
-          if (obj != {}) _params = JSON.stringify(obj);
+        localStorage.getItem("isHuobaAndroidLogin") == "yes" || true) {
+        let _href = window.location.href.split('#')[1];
+        let _name = _href.split('?')[0];
+        let _params = this.$getPageParams(_name);
+        let _pageName = _params.page_name;
+        // console.log(111, _params, _pageName)
 
-          let tStamp = this.$getTimeStamp();
+        if (!_pageName || _pageName == '' || !_params || _params == '') {
+          return;
+        }
+
+        if (_pageName == "goods/detail" || _pageName == "page/get" || _pageName == "groupbuy/open/detail" || _pageName == "groupbuy/goods/detail" || _pageName == "activity/interest" || _pageName == "assist/index" || _pageName == "assist/index" || _pageName == "brand/index" || _pageName == "mall/index" || _pageName == "mall/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search") {
+          // 需要调分享的页面
+          var tStamp = this.$getTimeStamp();
           let data = {
             page_name: _pageName,
-            params: _params,
+            params: JSON.stringify(_params),
             home_id: localStorage.getItem('home_id'),
             timestamp: tStamp,
             version: "1.1"
@@ -331,6 +269,10 @@ export default {
           data.sign = this.$getSign(data);
           let res = await WX_SHARE(data);
           if (res.hasOwnProperty("response_code")) {
+            // 记录分享信息
+            this.share_info = res.response_data.share_info;
+            // 火把知识app端webview判断是否跳app原生页面
+            this.$gotoApp(_name, _params);
             // 微信分享
             this.$getWxData(
               res.response_data.share_info.title,
@@ -338,31 +280,162 @@ export default {
               res.response_data.share_info.pic,
               res.response_data.share_info.url
             );
+
           } else {
             this.$toast(res.error_message);
           }
+
         } else {
-          // 不需要分享的页面
-          if (isApp) {
-            // 需要调起原生页面
-            // ...
-            window.webkit.messageHandlers.shareAndJump.postMessage({
-              linkData: {
-                pageNamee: 'goods/detail',
-                book_id: '1000003',
-              },
-              shareData: {
-                title: '',
-                img: '',
-                src: ''
-              }
-            })
-
-
-          }
+          // 火把知识app端webview判断是否跳app原生页面
+          this.$gotoApp(_name, _params);
         }
 
       }
+
+    }
+
+
+    // 火把知识app端webview判断是否跳app原生页面
+    Vue.prototype.$gotoApp = async function (_name, _params) {
+      let tStamp = this.$getTimeStamp();
+      let data = {
+        page_name: _name,
+        timestamp: tStamp,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await PAGE_INFO(data);
+      let _linkData = {};
+      let _isJump = false;
+      if (res.hasOwnProperty("response_code")) {
+        if (res.response_data.app_page_name && res.response_data.auto_jump == 1) {
+          // 当app_page_name不为空，以及auto_jump值为1需要跳原生页面
+          // 页面信息
+          _linkData = this.$getPageParams(_name);
+          _linkData.page_name = _name;
+          _isJump = true;
+        }
+
+        console.log(888, {
+          share_info: this.share_info,
+          link_data: _linkData,
+          params: _params,
+          isJump: _isJump
+        });
+
+        if (localStorage.getItem("isHuobaAndroidLogin") == "yes") {
+          window.JSWEB.RequestNative(JSON.stringify({
+            share_info: this.share_info,
+            link_data: _linkData,
+            params: _params,
+            isJump: _isJump
+          }));
+        }
+        if (localStorage.getItem("isHuobaIosLogin") == "yes") {
+          window.webkit.messageHandlers.shareAndJump.postMessage({
+            share_info: this.share_info,
+            link_data: _linkData,
+            params: _params,
+            isJump: _isJump
+          })
+        }
+      } else {
+        this.$toast(res.error_message);
+      }
+    }
+
+    // 不同页面不同参数信息 
+    Vue.prototype.$getPageParams = function (_name) {
+      _name = _name.toLowerCase();
+      let linkData = {
+        page_name: _name
+      };
+      if (_name == '/custompage') {
+        // 自定义装修页面
+        linkData.page_name = 'page/get';
+        if (this.$route.query.type) linkData.type = this.$route.query.type;
+        if (this.$route.query.page_id) linkData.page_id = this.$route.query.page_id;
+        if (this.$route.query.supplier_id) linkData.supplier_id = this.$route.query.supplier_id;
+
+      } else if (_name == '/detail') {
+        // 商品详情
+        linkData.page_name = 'goods/detail';
+        linkData.goods_id = this.$route.query.goods_id;
+      } else if (_name == '/groupDetail') {
+        // 拼团详情
+        linkData.page_name = 'groupbuy/open/detail';
+        linkData.open_id = parseInt(this.$route.query.open_id);
+      } else if (_name == '/groupGoods') {
+        // 实物商品拼团页面
+        linkData.page_name = 'groupbuy/goods/detail';
+        linkData.groupbuy_id = parseInt(this.$route.query.groupbuy_id);
+        linkData.brand_id = this.$route.query.brand_id;//??
+      } else if (_name == '/activity/interest') {
+        // 问卷调查
+        linkData.page_name = 'activity/interest';
+      } else if (_name == '/album/detail') {
+        // 专辑
+        linkData.page_name = 'goods/detail';
+        linkData.goods_id = this.$route.query.goods_id;
+        linkData.pid = this.$route.query.pid;
+      } else if (_name == '/album/index') {
+        // 专辑
+        linkData.page_name = 'goods/detail';
+        linkData.goods_id = this.$route.query.goods_id;
+      } else if (_name == '/assist/active') {
+        // 助力活动
+        linkData.page_name = 'assist/index';
+        linkData.launch_id = this.$route.query.launch_id;//??
+        linkData.activity_id = this.$route.query.activity_id;
+      } else if (_name == '/assist/help') {
+        // 助力活动
+        linkData.page_name = 'assist/index';
+        linkData.launch_id = this.$route.query.launch_id;//??
+        linkData.activity_id = this.$route.query.activity_id;
+      } else if (_name == '/brand/index') {
+        // 品牌
+        linkData.page_name = 'brand/index';
+        linkData.brand_id = this.$route.query.brand_id;
+      } else if (_name == '/brand/result') {
+        // 搜索结果
+        switch (this.$route.query.type) {
+          case "mall":
+            linkData.page_name = "mall/goods/search";
+            if (this.$route.query.goods_type) linkData.goods_type = this.$route.query.goods_type;
+            if (this.$route.query.searchContent) linkData.searchContent = this.$route.query.searchContent;
+            break;
+          case "brand":
+            linkData.page_name = "brand/goods/search";
+            linkData.brand_id = this.$route.query.brand_id;
+            linkData.searchContent = this.$route.query.searchContent;
+            break;
+          case "index":
+            linkData.page_name = "brand/goods/search";
+            linkData.brand_id = this.$route.query.brand_id;
+            linkData.searchContent = this.$route.query.searchContent;
+            break;
+          case "all":
+            linkData.page_name = "brand/goods/search";
+            linkData.brand_id = this.$route.query.brand_id;
+            linkData.searchContent = this.$route.query.searchContent;
+            break;
+        }
+      } else if (_name == '/brand/detail/article') {
+        // 文章
+        linkData.page_name = 'goods/detail';
+        linkData.goods_id = this.$route.query.goods_id;
+        linkData.album_id = this.$route.query.album_id;
+      } else if (_name == '/ebook/detail') {
+        // 电子书
+        linkData.page_name = 'goods/detail';
+        linkData.goods_id = this.$route.query.goods_id;
+      } else if (_name == '/ebook/reader') {
+        // 电子书
+        linkData.page_name = 'goods/detail';
+        linkData.goods_id = this.$route.query.goods_id;
+      }
+
+      return linkData;
     }
 
     // 分享成功后通知后台
@@ -771,6 +844,7 @@ export default {
     // 微信支付
     Vue.prototype.$onBridgeReady = function (_timestamp, _nonceStr, _package, _paySign, _orderId, _payMoney) {
       var self = this;
+
 
       WeixinJSBridge.invoke(
         "getBrandWCPayRequest",

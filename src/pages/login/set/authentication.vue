@@ -24,6 +24,7 @@
         <van-button slot="button" size="large" type="danger" @click="getCode">获取验证码</van-button>
       </div>
     </div>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
