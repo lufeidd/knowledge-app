@@ -53,8 +53,8 @@
     beforeRouteLeave(to, from, next) {
       var _this = this;
 
-      console.log('to', to);
-      console.log('from', from);
+      // console.log('to', to);
+      // console.log('from', from);
 
       if (to.name == 'bind') {
         this.$dialog

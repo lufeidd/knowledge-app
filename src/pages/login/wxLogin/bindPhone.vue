@@ -65,7 +65,7 @@
         phone: '',
         code: '',
         isRegister: null, // 0 未注册 1 已注册
-        isBindingWx: Boolean,
+        isBindingWx: '',
         content: '',
         submitData: {
           disabled: true
@@ -99,10 +99,10 @@
         };
         let res = await CHECK_BINDING(data);
         if (res.hasOwnProperty("response_code")) {
-          this.isBindingWx = false;
+          this.isBindingWx = '0';
           // console.log(66,this.isRegister);
         } else {
-          this.isBindingWx = true;
+          this.isBindingWx = '1';
           this.$toast(res.error_message);
         }
       },
@@ -146,14 +146,15 @@
         } else {
           this.$toast(res.error_message);
         }
-        console.log(res);
+        // console.log(res);
       },
       getCode() {
         //  判断此手机是否绑定过微信
+        let _this = this;
         this.checkBinding().then(function () {
-          if (!this.isBindingWx) {  //  手机号未绑定微信
+          if (_this.isBindingWx == '0') {  //  手机号未绑定微信
             //  判断此手机是否注册
-            this.checkPhone();
+            _this.checkPhone();
           }
         });
       },
