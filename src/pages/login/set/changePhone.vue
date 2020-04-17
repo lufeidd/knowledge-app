@@ -19,10 +19,13 @@
 </template>
 
 <script>
+  import {PHONE_CHECK} from "@/apis/passport.js";
   export default {
     data() {
       return {
+        oldPhone: '',
         phone: '',
+        isRegister: null, // 0 未注册 1 已注册
         submitData: {
           disabled: true
         }
@@ -45,10 +48,43 @@
           this.submitData.disabled = true;
         }
       },
+      //判断手机号是否已注册
+      async checkPhone() {
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          mobile: this.phone.replace(/\s/g, ''),
+          version: "1.1"
+        };
+        data.sign = this.$getSign(data);
+
+        let res = await PHONE_CHECK(data);
+
+        if (res.hasOwnProperty("response_code")) {
+          this.isRegister = res.response_data.is_register;
+          console.log(66,this.isRegister);
+        } else {
+          this.isRegister = null;
+          this.$toast(res.error_message);
+        }
+      },
       getCode() {
-        sessionStorage.setItem('isToVerification', '1');
-        this.$router.replace({name: 'verification', query:{phone: this.phone,type: 'newChangePhone'}});  //  跳转到新手机获取验证码页面
+        let _this = this;
+        this.checkPhone().then(function () {
+          if (_this.phone == _this.oldPhone) {
+            _this.$toast('新手机号不能与原手机号相同');
+          } else if(_this.isRegister == 1) {
+            _this.$toast('此手机号已注册过');
+          } else {
+            sessionStorage.setItem('isToVerification', '1');
+            _this.$router.replace({name: 'verification', query:{phone: _this.phone,type: 'newChangePhone'}});  //  跳转到新手机获取验证码页面
+          }
+        });
+
       }
+    },
+    mounted() {
+      this.oldPhone = this.$route.query.phone;
     },
     beforeRouteLeave(to, from, next) {
       var _this = this;
