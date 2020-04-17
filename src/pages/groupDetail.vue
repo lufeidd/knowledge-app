@@ -235,10 +235,13 @@ export default {
         if (this.groupData.remain_time > 0)
           this.$countTime(this.groupData.remain_time);
 
+
         // 获取页面分享信息
-        var _pageName = "groupbuy/open/detail";
-        var _params = JSON.stringify({ open_id: this.open_id });
-        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+        // var _pageName = "groupbuy/open/detail";
+        // var _params = JSON.stringify({ open_id: this.open_id });
+        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+
+
       } else {
         this.$toast(res.error_message);
       }

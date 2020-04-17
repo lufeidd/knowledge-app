@@ -50,6 +50,7 @@
         </div>
       </div>
     </van-popup>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 

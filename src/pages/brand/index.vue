@@ -226,9 +226,9 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.brandData = res.response_data;
         // 获取页面分享信息
-        var _pageName = "brand/index";
-        var _params = JSON.stringify({ brand_id: this.$route.query.brand_id });
-        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+        // var _pageName = "brand/index";
+        // var _params = JSON.stringify({ brand_id: this.$route.query.brand_id });
+        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
         // title
         document.title = this.brandData.name;
 
@@ -378,7 +378,7 @@ export default {
       this.$router.push({
         name: "custompage",
         query: {
-          type: 'mall',
+          type: "mall",
           supplier_id: this.brandData.supplier_id,
           title: this.brandData.name
         }

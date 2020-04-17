@@ -201,8 +201,9 @@ export default {
     };
   },
   mounted() {
-    // 火把知识app端webview判断是否跳app原生页面
-    // this.$gotoApp();
+    // 获取分享信息
+    this.$getWxShareData();
+    
     this.home_id = localStorage.getItem("home_id");
     if (this.type === undefined) {
       this.type = this.navData.type;

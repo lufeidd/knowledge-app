@@ -51,6 +51,10 @@ export const LOGIN_BIND_LIST = query => req('post', '/passport/binding/gets', qu
 //判断手机号是否已注册
 export const PASSPORT_CHECKPHONE = query => req('post', '/passport/checkphone', query);
 
+// app内webview判断是否调起原生页面
+export const PAGE_INFO = query => req('post', '/page/info', query);
+
+
 /*
  * added by lrf
  * date:2020/1/17

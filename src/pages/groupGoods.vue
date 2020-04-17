@@ -30,14 +30,12 @@
               <span class="price">{{couponInfo.groupbuy.groupbuy_price.toFixed(2)}}</span>
               <span class="group">
                 <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-rentuan"/>
+                  <use xlink:href="#icon-rentuan" />
                 </svg>
                 <span class="group_num">{{couponInfo.groupbuy.groupbuy_num}}人团</span>
               </span>
             </div>
-            <div class="original">
-              直买价：￥{{baseData.price.toFixed(2)}}
-            </div>
+            <div class="original">直买价：￥{{baseData.price.toFixed(2)}}</div>
           </div>
           <div class="promotionRight">
             <div
@@ -573,7 +571,7 @@ export default {
       });
     },
     changeHtml(content) {
-      if(typeof content == 'string') {
+      if (typeof content == "string") {
         return content.replace(/\n/g, "<br>");
       } else {
         return content;
@@ -611,13 +609,13 @@ export default {
         document.title = "商品详情-" + res.response_data.base.title;
         // 优惠券
         this.couponInfo = res.response_data.activity;
-        if(Object.keys(this.couponInfo.groupbuy).length == 0){
+        if (Object.keys(this.couponInfo.groupbuy).length == 0) {
           this.$router.replace({
-            name:"detail",
-            query:{
-              goods_id:this.baseData.goods_id,
+            name: "detail",
+            query: {
+              goods_id: this.baseData.goods_id
             }
-          })
+          });
         }
         if (this.couponInfo.groupbuy && this.couponInfo.groupbuy.remain_time) {
           this.$countTime(this.couponInfo.groupbuy.remain_time);
@@ -635,18 +633,21 @@ export default {
             this.$timeCountDown(this.remain_time[i]);
           }
         }
-        if (this.couponInfo.groupbuy && this.couponInfo.groupbuy.my_open_ids.length > 0) {
+        if (
+          this.couponInfo.groupbuy &&
+          this.couponInfo.groupbuy.my_open_ids.length > 0
+        ) {
           this.$dialog
             .confirm({
               message: "您有一个进行中的拼团"
             })
             .then(() => {
               this.$router.push({
-                name:"groupdetail",
-                query:{
-                  open_id:this.couponInfo.groupbuy.my_open_ids[0]
+                name: "groupdetail",
+                query: {
+                  open_id: this.couponInfo.groupbuy.my_open_ids[0]
                 }
-              })
+              });
             })
             .catch(() => {
               // on cancel
@@ -667,9 +668,12 @@ export default {
         }
 
         // 获取页面分享信息
-        var _pageName = "groupbuy/goods/detail";
-        var _params = JSON.stringify({ groupbuy_id: this.groupbuy_id , brand_id:this.brandInfoData.brand_id});
-        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+        // var _pageName = "groupbuy/goods/detail";
+        // var _params = JSON.stringify({
+        //   groupbuy_id: this.groupbuy_id,
+        //   brand_id: this.brandInfoData.brand_id
+        // });
+        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
 
         this.onsale = 1;
       } else {
@@ -742,7 +746,7 @@ export default {
       this.$router.push({
         name: "custompage",
         query: {
-          type: 'mall',
+          type: "mall",
           supplier_id: this.brandInfoData.supplier_id
         }
       });
@@ -752,7 +756,7 @@ export default {
         name: "detail",
         query: {
           goods_id: this.baseData.goods_id,
-          isactivity: 1,
+          isactivity: 1
         }
       });
     },

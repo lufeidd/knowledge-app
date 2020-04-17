@@ -385,9 +385,9 @@ export default {
         this.is_login = res.response_data.is_login;
 
         // 获取页面分享信息
-        var _pageName = "activity/interest";
-        var _params = JSON.stringify({});
-        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+        // var _pageName = "activity/interest";
+        // var _params = JSON.stringify({});
+        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
 
       } else {
         // this.$toast(res.error_message);

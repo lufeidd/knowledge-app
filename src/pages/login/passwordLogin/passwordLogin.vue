@@ -36,6 +36,7 @@
         <use xlink:href="#icon-weixin-block"/>
       </svg>
     </div>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
