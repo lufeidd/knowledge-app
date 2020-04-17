@@ -513,7 +513,40 @@ export default {
 
 
     // 验证码倒计时，刷新保留当前手机倒计时时间
+    // Vue.prototype.$countDown2 = function (cdata) {
+    //   if (!localStorage.getItem('phone')) {
+    //     localStorage.setItem('phone', cdata.phone);
+    //   } else {
+    //     if (cdata.phone != sessionStorage.getItem('phone') || cdata.time === 0) {
+    //       sessionStorage.setItem('phone', cdata.phone)
+    //       sessionStorage.setItem('second', 60);
+    //       cdata.time = 60;
+    //       clearInterval(this.clock)
+    //     }
+    //   }
+    //   if (!localStorage.getItem('second')) {
+    //     localStorage.setItem('second', cdata.time);
+    //   }
+    //
+    //   let self = this
+    //   let time = cdata.time
+    //   if (typeof time === 'number') {
+    //     this.clock = window.setInterval(() => {
+    //       if (time === 0) {
+    //         clearInterval(this.clock)
+    //         return false
+    //       }
+    //       time--
+    //       cdata.time = time;
+    //       localStorage.setItem('second', cdata.time)
+    //     }, 1000)
+    //   } else {
+    //     self.$toast('时间格式不正确')
+    //   }
+    // }
+
     Vue.prototype.$countDown2 = function (cdata) {
+      clearInterval(this.clock)
       if (!localStorage.getItem('phone')) {
         localStorage.setItem('phone', cdata.phone);
       } else {
@@ -539,6 +572,7 @@ export default {
           time--
           cdata.time = time;
           localStorage.setItem('second', cdata.time)
+          // console.log(cdata.time);
         }, 1000)
       } else {
         self.$toast('时间格式不正确')
