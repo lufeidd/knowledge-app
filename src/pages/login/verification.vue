@@ -106,7 +106,7 @@
         };
         data.sign = this.$getSign(data);
         let res = await LOGIN_BIND_PARTERNER(data);
-        console.log("bindphone:", res.response_data);
+        // console.log("bindphone:", res.response_data);
         if (res.hasOwnProperty("response_code")) {
           window.location.href =
             window.location.protocol +
@@ -230,7 +230,7 @@
         };
         data.sign = this.$getSign(data);
         let res = await USER_PHONE_RESET(data);
-        console.log("123", res.response_data);
+        // console.log("123", res.response_data);
         if (res.hasOwnProperty("response_code")) {
 
         } else {
@@ -308,12 +308,8 @@
 
       // 刷新不发短信
       if(sessionStorage.getItem('isToVerification') == '1' && (this.cdata.time == 0 || this.phone.replace(/\s/g, '') != sessionStorage.getItem('lastInputPhone'))) {
-        console.log('hou',this.phone.replace(/\s/g, ''));
-        console.log('xian',localStorage.getItem('phone'));
-        console.log('非刷新');
         this.countdown(); // 短信倒计时
         this.sms();
-
       }
 
       // 如果倒计时未结束继续进行倒计时

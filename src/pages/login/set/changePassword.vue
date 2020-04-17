@@ -81,7 +81,7 @@
         };
         data.sign = this.$getSign(data);
         let res = await LOGOUT(data);
-        console.log(res.response_data);
+        // console.log(res.response_data);
         if (res.hasOwnProperty("response_code")) {
           // 退出登录将localstorage中进度数据清空
           localStorage.setItem("miniAudio", null);
@@ -104,8 +104,8 @@
     beforeRouteLeave(to, from, next) {
       var _this = this;
 
-      console.log('to', to);
-      console.log('from', from);
+      // console.log('to', to);
+      // console.log('from', from);
 
       if (to.name == 'passwordLogin' && !this.setFlag) {
         this.$dialog

@@ -145,7 +145,7 @@
         } else {
           this.$toast(res.error_message);
         }
-        console.log(res);
+        // console.log(res);
       },
       getCode() {
         //  判断此手机是否绑定过微信
