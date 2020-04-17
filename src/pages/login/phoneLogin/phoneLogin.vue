@@ -10,6 +10,7 @@
         clearable
         placeholder="请输入手机号"
         @input="checkSubmit ()"
+        ref="input"
       />
     </div>
     <div class="button_wrapper" v-if="submitData.disabled">
@@ -80,6 +81,8 @@
 
         var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
           if (regPhone.test(this.phone.replace(/\s/g, ''))) {
+            this.$refs.input.blur();
+
             this.submitData.disabled = false;
           } else {
             this.submitData.disabled = true;

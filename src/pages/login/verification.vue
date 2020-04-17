@@ -87,7 +87,10 @@
         data.sign = this.$getSign(data);
         let res = await SMS(data);
         // console.log(res);
-        this.$toast('短信已发送');
+        this.$toast({
+          message: '短信已发送',
+          // icon: require('./../../assets/login/send.png')
+        });
         sessionStorage.setItem('isToVerification', '0');
       },
       // 绑定手机号
