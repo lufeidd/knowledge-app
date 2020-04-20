@@ -37,7 +37,6 @@ export default {
       money: null,
       pay_id: null,
       open_id: null,
-      _status: null,
     };
   },
   mounted() {
@@ -51,7 +50,10 @@ export default {
     var _this = this;
     var _hour = this.timeData.date.substring(0, 2);
     var _minute = this.timeData.date.substring(3, 5);
-    if (this._status == "not") {
+    // console.log(123, to, 123, from, 123, next);
+    if (to.fullPath.indexOf("/pay/success") != -1) {
+      next()
+    } else {
       this.$dialog
         .confirm({
           title: "确认要离开支付页面？",
@@ -95,7 +97,6 @@ export default {
         this.money = res.response_data.payinfo.amount;
         this.order_id = res.response_data.payinfo.product_id;
         this.pay_money = res.response_data.payinfo.amount;
-        this._status = res.response_data.payinfo.status;
         // 倒计时
         this.$timeCountDown(this.timeData);
       } else {
