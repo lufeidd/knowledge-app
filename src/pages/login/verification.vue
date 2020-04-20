@@ -31,7 +31,7 @@
     <!--</div>-->
     <!--</van-popup>-->
 
-    <EazyNav type="brand" :isShow="false"></EazyNav>
+    <!--<EazyNav type="brand" :isShow="false"></EazyNav>-->
   </div>
 </template>
 
@@ -77,6 +77,7 @@
     methods: {
       // 获取验证码
       async sms() {
+
         var tStamp = this.$getTimeStamp();
         let data = {
           timestamp: tStamp,
@@ -314,16 +315,18 @@
       // 绑定
       this.activity_id = this.$route.query.activity_id ? this.$route.query.activity_id : false;
 
-      localStorage.setItem('isReload', '0');
       // console.log(222, localStorage.getItem('isReload'));
-      if (localStorage.getItem('isReload') && localStorage.getItem('isReload') == '0') {
+      if (localStorage.getItem('isReload') && localStorage.getItem('isReload') == '1') {
         // console.log(333, localStorage.getItem('isReload'));
         // 刷新不发短信
-        if(sessionStorage.getItem('isToVerification') == '1' && (this.cdata.time == 60 || this.phone.replace(/\s/g, '') != sessionStorage.getItem('lastInputPhone'))) {
+        if(sessionStorage.getItem('isToVerification') == '1' && (this.cdata.time == 0 || this.cdata.time == 60 || this.phone.replace(/\s/g, '') != sessionStorage.getItem('lastInputPhone'))) {
           this.sms();
+          // console.log('發送短信');
         }
+        localStorage.setItem('isReload', '0');
       }
       this.countdown(); // 短信倒计时
+
     },
     beforeDestroy() {
       clearInterval(this.clock);
