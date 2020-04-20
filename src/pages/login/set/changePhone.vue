@@ -15,12 +15,15 @@
       <van-button slot="button" size="large" type="danger" v-if="submitData.disabled" disabled>获取验证码</van-button>
       <van-button slot="button" size="large" type="danger" v-else @click="getCode">获取验证码</van-button>
     </div>
+    <Bottom></Bottom>
     <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
 <script>
   import {PHONE_CHECK} from "@/apis/passport.js";
+
+  import bottom from '@/pages/login/bottom.vue';
   export default {
     data() {
       return {
@@ -88,6 +91,9 @@
     },
     mounted() {
       this.oldPhone = this.$route.query.phone;
+    },
+    components: {
+      Bottom: bottom
     },
     beforeRouteLeave(to, from, next) {
       var _this = this;

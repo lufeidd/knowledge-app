@@ -50,12 +50,15 @@
         </div>
       </div>
     </van-popup>
+    <Bottom></Bottom>
     <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
 <script>
   import {PHONE_CHECK, REGISTER_ITEMS} from "@/apis/passport.js";
+
+  import bottom from '@/pages/login/bottom.vue';
   export default {
     data() {
       return {
@@ -190,6 +193,9 @@
           this.$getWxLoginData();
         }
       }
+    },
+    components: {
+      Bottom: bottom
     }
   }
 </script>

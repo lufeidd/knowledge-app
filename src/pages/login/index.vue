@@ -7,12 +7,14 @@
         <van-button slot="button" size="large" type="danger" @click="wxLogin">微信快捷登录</van-button>
         <van-button slot="button" size="large" type="default" @click="phoneLogin">手机号登录</van-button>
       </div>
+      <Bottom></Bottom>
       <!-- <EazyNav type="brand" :isShow="false"></EazyNav> -->
     </div>
   </div>
 </template>
 
 <script>
+  import bottom from '@/pages/login/bottom.vue';
   export default {
     data() {
       return {
@@ -57,6 +59,9 @@
         }
       }
 
+    },
+    components: {
+      Bottom: bottom
     }
   };
 </script>

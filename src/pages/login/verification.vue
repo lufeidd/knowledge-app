@@ -30,7 +30,7 @@
     <!--<span class="confirm" @click="confirm">确定</span>-->
     <!--</div>-->
     <!--</van-popup>-->
-
+    <Bottom></Bottom>
     <!--<EazyNav type="brand" :isShow="false"></EazyNav>-->
   </div>
 </template>
@@ -41,6 +41,7 @@
   import { CHECK_CODE } from "@/apis/passport.js";
   import { USER_PHONE_RESET, USER_PHONE_RESETSAVE } from "@/apis/user.js";
 
+  import bottom from '@/pages/login/bottom.vue';
   export default {
     data() {
       return {
@@ -331,6 +332,9 @@
     beforeDestroy() {
       clearInterval(this.clock);
       sessionStorage.setItem('lastInputPhone', this.phone.replace(/\s/g, ''));
+    },
+    components: {
+      Bottom: bottom
     },
     beforeRouteLeave(to, from, next) {
       var _this = this;
