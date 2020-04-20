@@ -80,15 +80,7 @@ export default {
   methods: {
     // 微信支付
     wxPayAction() {
-      this.$router.replace({
-        name: "paysuccess",
-        query: {
-          order_id: 444,
-          pay_money: this.money,
-          open_id: this.open_id
-        }
-      });
-      // this.cashierPayData();
+      this.cashierPayData();
     },
     // 新增订单
     async addOrderData() {
