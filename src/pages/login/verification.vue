@@ -30,7 +30,7 @@
     <!--<span class="confirm" @click="confirm">确定</span>-->
     <!--</div>-->
     <!--</van-popup>-->
-    
+
     <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
@@ -40,7 +40,6 @@
   import { REG, PHONE_LOGIN } from "@/apis/passport.js";
   import { CHECK_CODE } from "@/apis/passport.js";
   import { USER_PHONE_RESET, USER_PHONE_RESETSAVE } from "@/apis/user.js";
-
 
   export default {
     data() {
