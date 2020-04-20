@@ -156,6 +156,9 @@ import redeemGoods from '@/pages/redeem/goods'
 import redeemCoupons from '@/pages/redeem/coupons'
 import straightLinkIndex from '@/pages/redeem/straightLinkIndex'
 
+// 问卷调查
+import interest from '@/pages/activity/interest'
+
 Vue.use(Router)
 
 export default new Router({
@@ -1026,6 +1029,15 @@ export default new Router({
       path: '/redeem/coupons',
       name: 'redeemCoupons',
       component: redeemCoupons
-    }
+    },
+    // 活动 - 问卷调查
+    {
+      path: '/activity/interest',
+      name: 'interest',
+      component: interest,
+      meta: {
+        title: '火把知识',
+      }
+    },
   ]
 })

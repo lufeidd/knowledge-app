@@ -20,9 +20,6 @@
     padding: 15px;
     background-color: #fff;
     position: relative;
-    .defineHeight{
-      //height: 5px;
-    }
     .title{
       display: -webkit-box;
       display: -ms-flexbox;
@@ -44,7 +41,6 @@
         -webkit-box-align: end;
         -ms-flex-align: end;
         align-items: flex-end;
-        height: 22px;
         .line{
           display: inline-block;
           width: 3px;
@@ -173,7 +169,7 @@
     padding: 25px 16px 0;
     overflow: hidden;
     top: 150px;
-    position: absolute;
+    /*position: absolute;*/
     .text{
       span{
         color: #999999;

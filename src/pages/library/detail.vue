@@ -1,11 +1,10 @@
 <template>
   <div id="libraryDetail">
     <div class="package">
-      <div class="defineHeight">1111</div>
       <div class="title">
         <div class="text">
           <span class="line"></span>
-          <span class="lh titleOver">{{ packageData.base.title }}</span>
+          <span class="lh">{{ packageData.base.title }}</span>
         </div>
       </div>
       <div class="content">
@@ -141,6 +140,7 @@ export default {
       timeoutId: 0,
       fileHideUrl: '',
       url: '',
+      phoneType: '',
       detailImgRouter: '',
       packageData: {
         base: {},
@@ -161,6 +161,7 @@ export default {
   mounted () {
     this.goods_id = this.$route.query.goods_id;
     this.packageGet();
+    this.phoneTypeMethod();
   },
   methods: {
     // email显示弹窗事件
@@ -168,7 +169,8 @@ export default {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
-        file_package_detail_id : this.packageData.base.compress_file_id,
+        file_package_detail_id: this.packageData.base.compress_file_id,
+        equipment: this.phoneType,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -302,12 +304,28 @@ export default {
           });
         }
     },
+    // 机型判断方法
+    phoneTypeMethod () {
+      const u = navigator.userAgent;
+      const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      console.log('判断');
+      if (isiOS) {
+        // ios
+        console.log('ios');
+        this.phoneType = 'ios';
+      } else {
+        // andriod
+        console.log('andriod');
+        this.phoneType = 'android';
+      }
+    },
     // 文档判断是否预览
     async fileClickUrl (id) {
       var tStamp = this.$getTimeStamp();
       let data = {
         timestamp: tStamp,
-        file_package_detail_id : id,
+        file_package_detail_id: id,
+        equipment: this.phoneType,
         version: "1.0"
       };
       data.sign = this.$getSign(data);
@@ -318,7 +336,7 @@ export default {
         } else if (this.packageData.base.is_download != 0 && this.packageData.base.is_payed == '0' && this.packageData.base.price != 0) {
           this.buyAction(this.goods_id);
         } else {
-          const u = navigator.userAgent;
+          /*const u = navigator.userAgent;
           const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
           console.log('判断');
           if (isiOS) {
@@ -332,7 +350,12 @@ export default {
             // andriod
             console.log('andriod');
             this.$toast('Android暂不支持预览，请下载文件后查看');
-          }
+          }*/
+          /*this.fileHideUrl = res.response_data.file_path;*/
+          this.fileHideUrl = res.response_data.view_path;
+          this.timeoutId = setTimeout(() => {
+            document.getElementById('hideDom').click();
+          },100)
         }
       } else {
         if (res.error_code === 100) {

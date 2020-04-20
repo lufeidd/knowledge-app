@@ -1,44 +1,46 @@
 <template>
   <div id="onePage" class="refund">
-    <div class="cell">
-      <span>退款类型：</span>
-      <span class="typeRefund">退款</span>
-    </div>
-    <div class="cell reason" @click="choose()">
-      <div>
-        <span>退款原因：{{refund_reason}}</span>
-        <span class="typeRefund"></span>
+    <div style="padding:0 15px;">
+      <div class="cell">
+        <span>退款类型：</span>
+        <span class="typeRefund">退款</span>
       </div>
-      <span class="choose">
-        <span v-if="!refund_reason">请选择退款原因</span>
-        <svg class="icon arrow" aria-hidden="true">
-          <use xlink:href="#icon-next-line" />
-        </svg>
-      </span>
-    </div>
-    <div class="cell">
-      <span>商品数量：</span>
-      <span class="typeRefund">{{refundInfo.buy_count}}</span>
-    </div>
-    <div class="cell reason">
-      <div>
-        <span>退款金额：</span>
-        <span class="money">{{ refundInfo.max_price }}元</span>
+      <div class="cell reason" @click="choose()">
+        <div>
+          <span>退款原因：{{refund_reason}}</span>
+          <span class="typeRefund"></span>
+        </div>
+        <span class="choose">
+          <span v-if="!refund_reason">请选择退款原因</span>
+          <svg class="icon arrow" aria-hidden="true">
+            <use xlink:href="#icon-next-line" />
+          </svg>
+        </span>
       </div>
-      <span class="choose" v-if="refundInfo.dispatch_price">（包含运费：{{refundInfo.dispatch_price}}元）</span>
-    </div>
-    <div class="cell explain">
-      <span>退款说明：</span>
-      <textarea @input="inputChange" v-model="refund_desc" placeholder="字数不得超过500"></textarea>
-    </div>
-    <!-- 字数限制 -->
-    <div class="count">
-      <span :class="{ active: explainLength > explainTotal }">{{ explainLength }}</span>
-      /{{ explainTotal }}
-    </div>
-    <div class="upload">
-      <span>上传凭证</span>
-      <upload :uploadData="uploadData"></upload>
+      <div class="cell">
+        <span>商品数量：</span>
+        <span class="typeRefund">{{refundInfo.buy_count}}</span>
+      </div>
+      <div class="cell reason">
+        <div>
+          <span>退款金额：</span>
+          <span class="money">{{ refundInfo.max_price }}元</span>
+        </div>
+        <span class="choose" v-if="refundInfo.dispatch_price">（包含运费：{{refundInfo.dispatch_price}}元）</span>
+      </div>
+      <div class="cell explain">
+        <span>退款说明：</span>
+        <textarea @input="inputChange" v-model="refund_desc" placeholder="字数不得超过500"></textarea>
+      </div>
+      <!-- 字数限制 -->
+      <div class="count">
+        <span :class="{ active: explainLength > explainTotal }">{{ explainLength }}</span>
+        /{{ explainTotal }}
+      </div>
+      <div class="upload">
+        <span>上传凭证</span>
+        <upload :uploadData="uploadData"></upload>
+      </div>
     </div>
     <div style="height: 60px;"></div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
@@ -209,8 +211,6 @@ export default {
         data.sign = this.$getSign(data);
         let res = await COMMON_UPLOAD(data);
         if (res.hasOwnProperty("response_code")) {
-
-
           // console.log(res);
           var arr = [];
           for (let i = 0; i < res.response_data.length; i++) {
@@ -263,12 +263,12 @@ export default {
         this.submit_state = true;
         this.$toast("申请成功!");
         this.$router.push({
-          name:"ongoing",
-          query:{
-            order_id:this.order_id,
-            detail_id:this.detail_id,
+          name: "ongoing",
+          query: {
+            order_id: this.order_id,
+            detail_id: this.detail_id
           }
-        })
+        });
       } else {
         this.submit_state = true;
         this.$toast(res.error_message);
@@ -308,12 +308,12 @@ export default {
         this.submit_state = true;
         this.$toast("修改成功!");
         this.$router.push({
-          name:"ongoing",
-          query:{
-            order_id:this.order_id,
-            detail_id:this.detail_id,
+          name: "ongoing",
+          query: {
+            order_id: this.order_id,
+            detail_id: this.detail_id
           }
-        })
+        });
       } else {
         this.submit_state = true;
         this.$toast(res.error_message);
@@ -335,9 +335,9 @@ export default {
         this.refundInfo = res.response_data;
         this.reasonList = res.response_data.reason_list.refund;
 
-    if (this.type_of == "edit") {
-      this.getRefundDetail();
-    }
+        if (this.type_of == "edit") {
+          this.getRefundDetail();
+        }
       } else {
         this.$toast(res.error_message);
       }
@@ -359,7 +359,7 @@ export default {
         this.refundInfo.max_price = res.response_data.max_money;
         this.refundInfo.dispatch_price = res.response_data.dispatch_price;
 
-        if(res.response_data.pic !== null){
+        if (res.response_data.pic !== null) {
           if (res.response_data.pic.length > 0) {
             for (let i = 0; i < res.response_data.pic.length; i++) {
               $("#upload").prepend(
@@ -381,7 +381,9 @@ export default {
               );
             }
           }
-          if(res.response_data.pic.length == 3){$("#van").css("display", "none");}
+          if (res.response_data.pic.length == 3) {
+            $("#van").css("display", "none");
+          }
         }
         $("#upload .del").on("click", function() {
           // length = box.length;
@@ -391,7 +393,6 @@ export default {
 
           $("#van").css("display", "block");
         });
-
       } else {
         this.$toast(res.error_message);
       }
