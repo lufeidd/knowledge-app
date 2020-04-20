@@ -37,7 +37,7 @@ export default {
       money: null,
       pay_id: null,
       open_id: null,
-      _status: null,
+      _status: null
     };
   },
   mounted() {
@@ -51,7 +51,10 @@ export default {
     var _this = this;
     var _hour = this.timeData.date.substring(0, 2);
     var _minute = this.timeData.date.substring(3, 5);
-    if (this._status == "not") {
+    // console.log(123, to, 123, from, 123, next);
+    if (to.fullPath.indexOf("/pay/success") != -1) {
+      next()
+    } else {
       this.$dialog
         .confirm({
           title: "确认要离开支付页面？",
@@ -78,7 +81,15 @@ export default {
   methods: {
     // 微信支付
     wxPayAction() {
-      this.cashierPayData();
+      this.$router.replace({
+        name: "paysuccess",
+        query: {
+          order_id: 444,
+          pay_money: this.money,
+          open_id: this.open_id
+        }
+      });
+      // this.cashierPayData();
     },
     // 新增订单
     async addOrderData() {
