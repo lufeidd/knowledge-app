@@ -344,7 +344,7 @@ export default {
       }
     }
 
-    // 不同页面不同参数信息 
+    // 不同页面不同参数信息
     Vue.prototype.$getPageParams = function (_name) {
       _name = _name.toLowerCase();
       let linkData = {
@@ -548,9 +548,10 @@ export default {
       if (!localStorage.getItem('phone')) {
         localStorage.setItem('phone', cdata.phone);
       } else {
-        if (cdata.phone != sessionStorage.getItem('phone') || cdata.time === 0) {
-          sessionStorage.setItem('phone', cdata.phone)
-          sessionStorage.setItem('second', 60);
+        console.log('cdata.phone',cdata.phone);
+        if (cdata.phone != localStorage.getItem('phone') || cdata.time === 0) {
+          localStorage.setItem('phone', cdata.phone)
+          localStorage.setItem('second', 60);
           cdata.time = 60;
           clearInterval(this.clock)
         }
