@@ -192,7 +192,7 @@ A、localStorage
   16、gotoLogin：记录是否允许微信第三方登录
   17、phone：记录验证码手机号
   18、second：记录验证码手机号对应倒计时
-  19、isReload: 1為true，0為false,记录當前頁是否二次刷新，例如同類頁面直接跳轉（自定義頁面）以及移動端文本域輸入bug修復等
+  19、isReload: 1為true，0為false
 
 路由参数
 
@@ -422,23 +422,26 @@ router.beforeEach((to, from, next) => {
   next();
 
   window.location.replace(replaceUrl); // 重定向跳转
-  next();
 
   // 相同页面跳转刷新，除个别不需要刷新的页面外，比如brand/index
   // 从引导页回退需要刷新
   // 引导微信页复制链接在微信中打开链接需要刷新
   // from.path == to.path && !to.meta.unreload || !localStorage.getItem("isWxLogin") || from.fullPath.indexOf("nullPage=1") != -1
 
-
   // from.path == '/'  // 当前页刷新
   // from.path == to.path, from.path != to.path,不同页面跳转
   // from.path == to.path == /custompage 同类页面之间跳转，比如自定义页面跳自定义页面
   // /login/verification 解决手机文本域未收起跳转造成页面错位的问题
-  if((from.path == '/custompage' && to.path == '/custompage') || from.fullPath.indexOf("nullPage=1") != -1 || (to.path == '/login/verification' && from.path != '/')){
+  next()
+  // 當前頁刷新
+  if(from.path == '/') {
     localStorage.setItem('isReload', '1');
+    next();
+  }
+  next();
+  if((from.path == '/custompage' && to.path == '/custompage') || from.fullPath.indexOf("nullPage=1") != -1 || (to.path == '/login/verification' && from.path != '/')){
     location.reload();
-
-    // console.log(111, localStorage.getItem('isReload'));
+    console.log(111, localStorage.getItem('isReload'));
     next();
   }
   next();
