@@ -1,61 +1,63 @@
 <template>
   <div class="refund" id="threePage">
-    <div class="cell">
-      <span>退款类型:</span>
-      <span class="onlyRefund">退货退款</span>
-    </div>
-    <div class="cell reason" @click="choose()">
-      <div>
-        <span>退款原因：{{refund_reason}}</span>
-        <span class="typeRefund"></span>
+    <div style="padding:0 15px;">
+      <div class="cell">
+        <span>退款类型:</span>
+        <span class="onlyRefund">退货退款</span>
       </div>
-      <span class="choose">
-        <span v-if="!refund_reason">请选择退款原因</span>
-        <svg class="icon arrow" aria-hidden="true">
-          <use xlink:href="#icon-next-line" />
-        </svg>
-      </span>
-    </div>
-    <div class="cell reason">
-      <div>
-        <span>商品数量:</span>
-      </div>
-      <van-stepper
-        v-model="refund_count"
-        disable-input
-        @change="goodsCount"
-        integer
-        :min="1"
-        :max="refundInfo.buy_count"
-      />
-    </div>
-    <div class="cell">
-      <div class="reason">
+      <div class="cell reason" @click="choose()">
         <div>
-          <span>退款金额：</span>
-          <span class="most">
-            最多
-            <span class="money">{{real_refund_money}}元</span>
-          </span>
+          <span>退款原因：{{refund_reason}}</span>
+          <span class="typeRefund"></span>
         </div>
-        <span
-          class="choose"
-          v-if="dispatch_price && show_dispatch && count_show"
-        >（包含运费：{{dispatch_price}}元）</span>
+        <span class="choose">
+          <span v-if="!refund_reason">请选择退款原因</span>
+          <svg class="icon arrow" aria-hidden="true">
+            <use xlink:href="#icon-next-line" />
+          </svg>
+        </span>
       </div>
-    </div>
-    <div class="cell explain">
-      <span>退款说明：</span>
-      <textarea @input="inputChange" v-model="refund_desc" placeholder="字数不得超过500"></textarea>
-    </div>
-    <!-- 字数限制 -->
-    <div class="count">
-      <span :class="{ active: explainLength > explainTotal }">{{ explainLength }}</span>
-      /{{ explainTotal }}
-    </div>
-    <div class="upload">
-      <span>上传凭证</span>
-      <upload :uploadData="uploadData"></upload>
+      <div class="cell reason">
+        <div>
+          <span>商品数量:</span>
+        </div>
+        <van-stepper
+          v-model="refund_count"
+          disable-input
+          @change="goodsCount"
+          integer
+          :min="1"
+          :max="refundInfo.buy_count"
+        />
+      </div>
+      <div class="cell">
+        <div class="reason">
+          <div>
+            <span>退款金额：</span>
+            <span class="most">
+              最多
+              <span class="money">{{real_refund_money}}元</span>
+            </span>
+          </div>
+          <span
+            class="choose"
+            v-if="dispatch_price && show_dispatch && count_show"
+          >（包含运费：{{dispatch_price}}元）</span>
+        </div>
+      </div>
+      <div class="cell explain">
+        <span>退款说明：</span>
+        <textarea @input="inputChange" v-model="refund_desc" placeholder="字数不得超过500"></textarea>
+      </div>
+      <!-- 字数限制 -->
+      <div class="count">
+        <span :class="{ active: explainLength > explainTotal }">{{ explainLength }}</span>
+        /{{ explainTotal }}
+      </div>
+      <div class="upload">
+        <span>上传凭证</span>
+        <upload :uploadData="uploadData"></upload>
+      </div>
     </div>
     <div style="height: 60px;"></div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
@@ -260,8 +262,6 @@ export default {
         data.sign = this.$getSign(data);
         let res = await COMMON_UPLOAD(data);
         if (res.hasOwnProperty("response_code")) {
-          
-
           var arr = [];
           for (let i = 0; i < res.response_data.length; i++) {
             arr.push(res.response_data[i].url);
@@ -455,17 +455,20 @@ export default {
           this.refund_reason == "七天无理由" ||
           this.refund_reason == "其他"
         ) {
-          if(this.refund_count == this.refundInfo.buy_count){
-            this.real_refund_money = res.response_data.max_money - res.response_data.dispatch_price;
-          }else{
-            this.real_refund_money = (res.response_data.refund_count)*(res.response_data.goods_money);
+          if (this.refund_count == this.refundInfo.buy_count) {
+            this.real_refund_money =
+              res.response_data.max_money - res.response_data.dispatch_price;
+          } else {
+            this.real_refund_money =
+              res.response_data.refund_count * res.response_data.goods_money;
           }
           this.show_dispatch = false;
         } else {
-          if(this.refund_count == this.refundInfo.buy_count){
+          if (this.refund_count == this.refundInfo.buy_count) {
             this.real_refund_money = res.response_data.max_money;
-          }else{
-            this.real_refund_money = (res.response_data.refund_count)*(res.response_data.goods_money);
+          } else {
+            this.real_refund_money =
+              res.response_data.refund_count * res.response_data.goods_money;
           }
           this.show_dispatch = true;
         }
@@ -474,7 +477,7 @@ export default {
         } else {
           this.count_show = false;
         }
-        console.log(55555,this.real_refund_money)
+        console.log(55555, this.real_refund_money);
       } else {
         this.$toast(res.error_message);
       }
@@ -523,7 +526,7 @@ export default {
           this.show_dispatch = false;
         }
       }
-    },
+    }
   }
 };
 </script>

@@ -274,7 +274,7 @@
 </template>
 
 <style src="@/style/scss/pages/activity/interest.scss" scoped lang="scss"></style>
-<style scoped  src="@/style/scss/pages/personal/order/list.scss" lang="scss"></style>
+
 <style lang="scss">
 .van-button--plain {
   background-color: #fff;
@@ -385,6 +385,7 @@ export default {
         this.is_login = res.response_data.is_login;
 
         // 获取页面分享信息
+
         // var _pageName = "activity/interest";
         // var _params = JSON.stringify({});
         // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);

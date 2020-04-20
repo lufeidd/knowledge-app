@@ -693,7 +693,7 @@ export default {
         this.order_id = res.response_data.order_id;
         this.pay_id = res.response_data.pay_id;
         this.open_id = res.response_data.groupbuy_open_id;
-        this.discount_price = res.response_data.ticket_price;
+        // this.discount_price = res.response_data.ticket_price;
 
         // 交易支付请求发起
         if (_index == 1) this.cashierPayData(this.pay_id);
