@@ -37,7 +37,6 @@ export default {
       money: null,
       pay_id: null,
       open_id: null,
-      _status: null
     };
   },
   mounted() {
@@ -106,7 +105,6 @@ export default {
         this.money = res.response_data.payinfo.amount;
         this.order_id = res.response_data.payinfo.product_id;
         this.pay_money = res.response_data.payinfo.amount;
-        this._status = res.response_data.payinfo.status;
         // 倒计时
         this.$timeCountDown(this.timeData);
       } else {
