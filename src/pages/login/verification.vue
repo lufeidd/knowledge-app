@@ -30,7 +30,7 @@
     <!--<span class="confirm" @click="confirm">确定</span>-->
     <!--</div>-->
     <!--</van-popup>-->
-    <Bottom></Bottom>
+    <Bottom v-if="bottomShow"></Bottom>
     <!--<EazyNav type="brand" :isShow="false"></EazyNav>-->
   </div>
 </template>
@@ -47,6 +47,7 @@
       return {
         totalStep: Number,
         percentStep: Number,
+        bottomShow: false,
         isSet: false,
         isBack: true,  // 是否是返回动作
         code: '',
@@ -310,6 +311,10 @@
         this.isSet = true;
         this.totalStep = 4;
         this.percentStep = 4;
+      } else if (this.type == 'wxLogin') {
+        this.bottomShow = true;
+      } else if (this.type == 'phoneLogin') {
+        this.bottomShow = true;
       }
       this.isRegister = this.$route.query.isRegister;
 
