@@ -1,17 +1,29 @@
 <template>
   <div id="safePage">
     <van-cell title="账号绑定" is-link to="/personal/set/bind" />
+    <!--<van-cell-->
+      <!--v-if="exist == 0"-->
+      <!--title="设置密码"-->
+      <!--is-link-->
+      <!--:to="{name: 'setpassword', query: {type: 'add'}}"-->
+    <!--/>-->
+    <!--<van-cell-->
+      <!--v-if="exist == 1"-->
+      <!--title="修改密码"-->
+      <!--is-link-->
+      <!--:to="{name: 'setpassword', query: {type: 'edit'}}"-->
+    <!--/>-->
     <van-cell
       v-if="exist == 0"
       title="设置密码"
       is-link
-      :to="{name: 'setpassword', query: {type: 'add'}}"
+      :to="{name: 'authentication', query: {phone: phone, pageType: 'password'}}"
     />
     <van-cell
       v-if="exist == 1"
       title="修改密码"
       is-link
-      :to="{name: 'setpassword', query: {type: 'edit'}}"
+      :to="{name: 'authentication', query: {phone: phone, pageType: 'password'}}"
     />
     <!-- <van-cell title="注销账户" is-link to="/personal/set/cancel"/> -->
     <CopyRight></CopyRight>
@@ -32,7 +44,8 @@ export default {
   components: {},
   data() {
     return {
-      exist: ''
+      exist: '',
+      phone: ''
     };
   },
   created() {},
@@ -54,6 +67,7 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.exist = res.response_data.exist;
+        this.phone = res.response_data.mobile;
       } else {
         this.$toast(res.error_message);
       }

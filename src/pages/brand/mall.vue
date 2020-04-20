@@ -680,12 +680,12 @@ export default {
         }
         // console.log(111,this.bookRecommend)
         // 获取页面分享信息
-        var _pageName = "mall/index";
-        var _params = JSON.stringify({
-          brand_id: this.$route.query.brand_id,
-          supplier_id: this.$route.query.supplier_id
-        });
-        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+        // var _pageName = "mall/index";
+        // var _params = JSON.stringify({
+        //   brand_id: this.$route.query.brand_id,
+        //   supplier_id: this.$route.query.supplier_id
+        // });
+        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
       } else {
         this.$toast(res.error_message);
       }

@@ -945,12 +945,12 @@ export default {
 
         // 获取页面分享信息
         // if(this.isWxLogin) this.wxShareData();
-        var _pageName = "goods/detail";
-        var _params = JSON.stringify({
-          goods_id: this.$route.query.goods_id
-          // album_id: this.$route.query.pid
-        });
-        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+        // var _pageName = "goods/detail";
+        // var _params = JSON.stringify({
+        //   goods_id: this.$route.query.goods_id
+        //   // album_id: this.$route.query.pid
+        // });
+        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
 
         this.onsale = 1;
       } else {
@@ -1422,7 +1422,6 @@ export default {
     pageChange(comment_id, key) {
       var _this = this;
       if (this.timer) {
-        // console.log(111,this.timer);
         this.timer = 0;
       } else {
         this.timer = setTimeout(function() {

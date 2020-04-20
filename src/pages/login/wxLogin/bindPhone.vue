@@ -10,6 +10,7 @@
         error-message
         type="tel"
         @input="checkSubmit ()"
+        ref="input"
       />
       <template v-if="submitData.disabled">
         <van-button slot="button" size="large" type="danger" disabled>获取验证码</van-button>
@@ -37,10 +38,10 @@
       </p>
       <p class="content_two">
         点击同意即表示您已阅读并同意
-        <router-link :to="{name: 'prototype2.0', query: {type: 'prototype'}}" class="prototype">《火把平台用户注册协议》
+        <router-link :to="{name: 'prototype', query: {type: 'prototype'}}" class="prototype">《火把平台用户注册协议》
         </router-link>
         与
-        <router-link :to="{name: 'prototype2.0', query: {type: 'private'}}" class="prototype">《火把平台用户隐私条款》</router-link>
+        <router-link :to="{name: 'prototype', query: {type: 'private'}}" class="prototype">《火把平台用户隐私条款》</router-link>
       </p>
       <div class="btn_wrapper">
         <div class="disagree">
@@ -51,17 +52,21 @@
         </div>
       </div>
     </van-popup>
+    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
 <script>
-  import {PASSPORT_CHECKPHONE, LOGIN_BIND_PARTERNER, REGISTER_ITEMS} from "@/apis/passport.js";
+  import {PHONE_CHECK, REGISTER_ITEMS} from "@/apis/passport.js";
+  import {CHECK_BINDING} from "@/apis/passport.js";
 
   export default {
     data() {
       return {
         phone: '',
+        code: '',
         isRegister: null, // 0 未注册 1 已注册
+        isBindingWx: '',
         content: '',
         submitData: {
           disabled: true
@@ -81,12 +86,30 @@
 
         var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
         if (regPhone.test(this.phone.replace(/\s/g, ''))) {
+          this.$refs.input.blur();
+
           this.submitData.disabled = false;
         } else {
           this.submitData.disabled = true;
         }
       },
-      //判断手机号是否已注册
+      // 判断手机号是否绑定过微信
+      async checkBinding() {
+        let data = {
+          mobile: this.phone.replace(/\s/g, ''),
+          type: 2,
+          version: "1.1"
+        };
+        let res = await CHECK_BINDING(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.isBindingWx = '0';
+          // console.log(66,this.isRegister);
+        } else {
+          this.isBindingWx = '1';
+          this.$toast(res.error_message);
+        }
+      },
+      // 判断手机号是否已注册
       async checkPhone() {
         var tStamp = this.$getTimeStamp();
         let data = {
@@ -96,40 +119,23 @@
         };
         data.sign = this.$getSign(data);
 
-        let res = await PASSPORT_CHECKPHONE(data);
+        let res = await PHONE_CHECK(data);
 
         if (res.hasOwnProperty("response_code")) {
           this.isRegister = res.response_data.is_register;
-          // console.log(66,this.isRegister);
-        } else {
-          this.isRegister = null;
-          this.$toast(res.error_message);
-        }
-      },
-      // 绑定手机号  还需修改
-      async bindphoneData() {
-        // console.log(localStorage.getItem('nickname'));
-        var tStamp = this.$getTimeStamp();
-        let data = {
-          timestamp: tStamp,
-          mobile: this.phone,
-          header_pic: localStorage.getItem('headimg'),
-          auth_code: this.code,
-          outer_id: this.outerId,
-          type: this.bindtype,
-          outer_name: localStorage.getItem('nickname'),
-          openid: localStorage.getItem('openid'),
-          source_url: localStorage.getItem("defaultLink"),
-          version: "1.0"
-        };
-        data.sign = this.$getSign(data);
-        let res = await LOGIN_BIND_PARTERNER(data);
-        console.log("bindphone:", res.response_data);
-        if (res.hasOwnProperty("response_code")) {
-          // 手机号未绑定到其他微信 // 跳转回唤醒登录页
+
+          if (this.isRegister == 0) {  // 未注册
+            // console.log('未注册');
+            this.registerItems();
+            this.registerPopShow = true; //  弹注册条款
+
+          } else if (this.isRegister == 1) { // 已注册
+            sessionStorage.setItem('isToVerification', '1');
+            this.$router.replace({name: 'verification', query: {phone: this.phone, type: 'wxLogin'}});
+          }
 
         } else {
-          // 绑定失败
+          this.isRegister = null;
           this.$toast(res.error_message);
         }
       },
@@ -143,39 +149,59 @@
         } else {
           this.$toast(res.error_message);
         }
-        console.log(res);
+        // console.log(res);
       },
       getCode() {
-        //  先判断此手机是否注册
+        //  判断此手机是否绑定过微信
         let _this = this;
-        this.checkPhone().then(function () {
-          console.log(_this.isRegister);
-          if (_this.isRegister == 0) {  // 未注册
-            console.log('未注册');
-            _this.registerItems();
-            _this.registerPopShow = true; //  弹注册条款
-
-          } else if (_this.isRegister == 1) { // 已注册
-            this.bindphoneData();
+        this.checkBinding().then(function () {
+          if (_this.isBindingWx == '0') {  //  手机号未绑定微信
+            //  判断此手机是否注册
+            _this.checkPhone();
           }
         });
       },
       agree() {
-        this.$router.replace({name: 'verification2.0', query: {phone: this.phone}});
+        sessionStorage.setItem('isToVerification', '1');
+        this.$router.replace({name: 'verification', query: {phone: this.phone, type: 'wxLogin'}});
+
       },
       disagree() {
         this.registerPopShow = false;
       }
     },
     mounted() {
-      // this.bindtype = parseInt(this.$route.query.bindtype);
-      // this.outerId = this.$route.query.outerId;
-      // this.activity_id = this.$route.query.activity_id ? this.$route.query.activity_id : false;
+
+    },
+    beforeRouteLeave(to, from, next) {
+      var _this = this;
+
+      if (to.name == 'login') {
+        this.$dialog
+          .confirm({
+            title: '点击"返回"将中断登录，确定返回？',
+            cancelButtonText: "取消",
+            confirmButtonText: "确定"
+          })
+          .then(() => {
+            next();
+          })
+          .catch(() => {
+            // on cancel
+            next();
+            _this.$router.push({
+              name: "bindPhone"
+            });
+          });
+      } else {
+        next();
+      }
+
     }
 
   }
 </script>
 
-<style src="@/style/scss/pages/login2.0/wxLogin/bindPhone.scss" lang="scss" scoped>
+<style src="@/style/scss/pages/login/wxLogin/bindPhone.scss" lang="scss" scoped>
 
 </style>

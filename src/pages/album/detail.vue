@@ -1361,7 +1361,7 @@ export default {
           for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
             this.remain_time.push({
               time: this.couponInfo.groupbuy.open_list[i].remain_time,
-              date: "",
+              date: ""
             });
             this.$timeCountDown(this.remain_time[i]);
           }
@@ -1374,12 +1374,12 @@ export default {
 
         // 获取页面分享信息
         // if (this.isWxLogin) this.wxShareData();
-        var _pageName = "goods/detail";
-        var _params = JSON.stringify({
-          goods_id: this.$route.query.goods_id,
-          album_id: this.$route.query.pid
-        });
-        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+        // var _pageName = "goods/detail";
+        // var _params = JSON.stringify({
+        //   goods_id: this.$route.query.goods_id,
+        //   album_id: this.$route.query.pid
+        // });
+        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
 
         // 是否显示底部购买按钮
         this.showBuyButton = !(
@@ -1651,7 +1651,9 @@ export default {
             timestamp: tStamp,
             goods_id: this.baseData.goods_id,
             content: this.contentModel,
-            goods_pid: this.$route.query.pid?Number(this.$route.query.pid):0,
+            goods_pid: this.$route.query.pid
+              ? Number(this.$route.query.pid)
+              : 0,
             version: "1.0"
           };
           break;
@@ -1661,7 +1663,9 @@ export default {
             goods_id: this.baseData.goods_id,
             comment_pid: this.commentId,
             content: this.contentModel,
-            goods_pid: this.$route.query.pid?Number(this.$route.query.pid):0,
+            goods_pid: this.$route.query.pid
+              ? Number(this.$route.query.pid)
+              : 0,
             version: "1.0"
           };
           break;
@@ -1833,10 +1837,10 @@ export default {
         this.$router.push({ name: "login", params: {} });
         this.$toast("用户未登录!");
       } else {
-        this.ticketLink(item.ticket_id,index);
+        this.ticketLink(item.ticket_id, index);
       }
     },
-    async ticketLink(ticket_id,index) {
+    async ticketLink(ticket_id, index) {
       this.requestState = false;
       var tStamp = this.$getTimeStamp();
       let data = {

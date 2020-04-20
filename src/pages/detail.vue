@@ -355,6 +355,7 @@
       </van-popup>
       <!-- <div v-if="this.isIphx" style="height: 34px;"></div> -->
       <div style="height:60px;"></div>
+
       <!-- 加入购物车、立即购买 -->
       <van-goods-action>
         <van-goods-action-mini-btn
@@ -683,9 +684,9 @@ export default {
         }
 
         // 获取页面分享信息
-        var _pageName = "goods/detail";
-        var _params = JSON.stringify({ goods_id: this.$route.query.goods_id });
-        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+        // var _pageName = "goods/detail";
+        // var _params = JSON.stringify({ goods_id: this.$route.query.goods_id });
+        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
 
         this.onsale = 1;
       } else {
@@ -824,7 +825,7 @@ export default {
       this.$router.push({
         name: "custompage",
         query: {
-          type: 'mall',
+          type: "mall",
           supplier_id: this.brandInfoData.supplier_id
         }
       });

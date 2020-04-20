@@ -343,7 +343,7 @@ export default {
       state: "brand",
       brandData: [],
       bookData: [],
-      column_list: [{search_type:null}],
+      column_list: [{ search_type: null }],
       programLoading: false,
       programFinished: false,
       // 搜索结果参数
@@ -379,8 +379,11 @@ export default {
     this.cids = this.$route.query.cids ? this.$route.query.cids : null;
 
     // title
-    this.title = this.$route.query.title ? this.$route.query.title : "";
-    document.title = "搜索结果-" + this.title;
+    this.title = this.$route.query.searchContent
+      ? this.$route.query.searchContent
+      : "";
+    if (this.title != "") this.title = "-" + this.title;
+    document.title = "搜索结果" + this.title;
     this.judgehome_id = localStorage.getItem("home_id");
     // this.getGoodsColum();
     // this.getGoods();
@@ -425,16 +428,16 @@ export default {
       }
     },
     programLoad() {
-      var list_index = this.activekey
+      var list_index = this.activekey;
       // console.log(666,this.column_list)
-      if(this.column_list[list_index].search_type == 'brand'){
+      if (this.column_list[list_index].search_type == "brand") {
         this.huobaBrand();
-      }else if(this.column_list[list_index].search_type == 'goods'){
+      } else if (this.column_list[list_index].search_type == "goods") {
         this.getGoods();
-      }else if(this.column_list[list_index].search_type == 'summary'){
+      } else if (this.column_list[list_index].search_type == "summary") {
         this.programFinished = true;
-        this.programLoading = false
-      }else{
+        this.programLoading = false;
+      } else {
         this.getGoods();
       }
     },
@@ -468,7 +471,9 @@ export default {
           version: "1.0",
           timestamp: tStamp
         };
-        if(this.supplier_id){data.supplier_id = this.supplier_id}
+        if (this.supplier_id) {
+          data.supplier_id = this.supplier_id;
+        }
         if (this.$route.query.type == "brand") {
           data.scene = "brand";
         } else if (this.$route.query.type == "mall") {
@@ -500,36 +505,43 @@ export default {
         }, 1);
 
         // 获取页面分享信息
-        var _pageName = "";
-        var _params = "";
-        switch (this.$route.query.type) {
-          case "mall":
-            var tmp = {};
-            tmp.supplier_id = this.$route.query.supplier_id;
-            tmp.brand_id = this.$route.query.brand_id;
-            if (this.$route.query.searchContent)
-              tmp.keywords = this.$route.query.searchContent;
-            if (this.$route.query.goods_type)
-              tmp.goods_type = this.$route.query.goods_type;
-            _pageName = "mall/goods/search";
-            _params = JSON.stringify(tmp);
-            break;
-          case "brand":
-            _pageName = "brand/goods/search";
-            _params = JSON.stringify({
-              brand_id: this.$route.query.brand_id,
-              keywords: this.$route.query.searchContent
-            });
-            break;
-          case "index":
-            _pageName = "brand/goods/search";
-            _params = JSON.stringify({
-              brand_id: this.$route.query.brand_id,
-              keywords: this.$route.query.searchContent
-            });
-            break;
-        }
-        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+        // var _pageName = "";
+        // var _params = "";
+        // switch (this.$route.query.type) {
+        //   case "mall":
+        //     var tmp = {};
+        //     tmp.supplier_id = this.$route.query.supplier_id;
+        //     tmp.brand_id = this.$route.query.brand_id;
+        //     if (this.$route.query.searchContent)
+        //       tmp.keywords = this.$route.query.searchContent;
+        //     if (this.$route.query.goods_type)
+        //       tmp.goods_type = this.$route.query.goods_type;
+        //     _pageName = "mall/goods/search";
+        //     _params = JSON.stringify(tmp);
+        //     break;
+        //   case "brand":
+        //     _pageName = "brand/goods/search";
+        //     _params = JSON.stringify({
+        //       brand_id: this.$route.query.brand_id,
+        //       keywords: this.$route.query.searchContent
+        //     });
+        //     break;
+        //   case "index":
+        //     _pageName = "brand/goods/search";
+        //     _params = JSON.stringify({
+        //       brand_id: this.$route.query.brand_id,
+        //       keywords: this.$route.query.searchContent
+        //     });
+        //     break;
+        //   case "all":
+        //     _pageName = "brand/goods/search";
+        //     _params = JSON.stringify({
+        //       brand_id: this.$route.query.brand_id,
+        //       keywords: this.$route.query.searchContent
+        //     });
+        //     break;
+        // }
+        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
       } else {
         this.$toast(res.error_message);
       }
@@ -557,7 +569,9 @@ export default {
           version: "1.0",
           timestamp: tStamp
         };
-        if(this.supplier_id){data.supplier_id = this.supplier_id}
+        if (this.supplier_id) {
+          data.supplier_id = this.supplier_id;
+        }
         if (this.$route.query.type == "brand") {
           data.scene = "brand";
         } else if (this.$route.query.type == "mall") {
@@ -582,7 +596,7 @@ export default {
         }
         this.summaryList = res.response_data.list;
         this.programFinished = true;
-        this.programLoading = false
+        this.programLoading = false;
       } else {
         this.$toast(res.error_message);
       }
@@ -671,14 +685,14 @@ export default {
       this.activekey = index;
       this.goods_type = Number(this.column_list[index].goods_type);
       // if (index > 0) {
-        this.brandData = [];
-        this.huobaList = [];
-        this.page = 1;
-        this.programLoading = true; //下拉加载中
-        this.programFinished = false; //下拉结束
-        if (this.programLoading) {
-          this.programLoad();
-        }
+      this.brandData = [];
+      this.huobaList = [];
+      this.page = 1;
+      this.programLoading = true; //下拉加载中
+      this.programFinished = false; //下拉结束
+      if (this.programLoading) {
+        this.programLoad();
+      }
       // }
     }
   }

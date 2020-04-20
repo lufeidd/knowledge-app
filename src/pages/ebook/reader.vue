@@ -156,6 +156,11 @@
 
 <style src="@/style/scss/pages/ebook/reader.scss" scoped lang="scss"></style>
 <style lang="scss">
+span,
+body span {
+  line-height: unset;
+  text-indent: unset;
+}
 #readerPage {
   .van-dialog__confirm {
     display: none;
@@ -365,12 +370,12 @@ export default {
         document.title = res.response_data.goods_title;
 
         // 获取页面分享信息
-        var _pageName = "goods/detail";
-        var _params = JSON.stringify({
-          goods_id: this.$route.query.goods_id
-          // album_id: this.$route.query.pid
-        });
-        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+        // var _pageName = "goods/detail";
+        // var _params = JSON.stringify({
+        //   goods_id: this.$route.query.goods_id
+        //   // album_id: this.$route.query.pid
+        // });
+        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
       } else {
         this.$toast(res.error_message);
       }

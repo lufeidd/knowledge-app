@@ -1162,9 +1162,10 @@ export default {
         }
         // 获取页面分享信息
         // if (this.isWxLogin) this.wxShareData();
-        var _pageName = "goods/detail";
-        var _params = JSON.stringify({ goods_id: this.$route.query.goods_id });
-        if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+        // var _pageName = "goods/detail";
+        // var _params = JSON.stringify({ goods_id: this.$route.query.goods_id });
+        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+        
         // 是否显示底部购买按钮
         this.showBuyButton = !(
           this.baseData.is_free == 0 &&

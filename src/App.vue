@@ -2,19 +2,21 @@
   <div id="app">
     <!-- 需要微信端打开，引导微信内打开 -->
     <!-- 引导app端打开 -->
-    <span class="nullBox" v-if="nullPage == 1 || nullPage == 2">
-      <img src="./assets/null/link.png" width="100%" />
-      <div>{{ msg }}</div>
-      <EazyNav type="brand" :isShow="true"></EazyNav>
-    </span>
-    <span v-else>
-      <Download></Download>
+    <template v-if="nullPage == 1 || nullPage == 2">
+      <div class="nullBox">
+        <img src="./assets/null/link.png" width="100%" />
+        <div>{{ msg }}</div>
+        <EazyNav type="brand" :isShow="true"></EazyNav>
+      </div>
+    </template>
+    <template v-else>
+        <Download></Download>
       <!-- 页面缓存, $route.meta.keepAlive默认false -->
       <keep-alive>
         <router-view v-if="$route.meta.keepAlive" />
       </keep-alive>
       <router-view v-if="!$route.meta.keepAlive" />
-    </span>
+    </template>
   </div>
 </template>
 
@@ -95,20 +97,12 @@ export default {
   data() {
     return {
       nullPage: this.$route.query.nullPage ? this.$route.query.nullPage : 0,
-      msg: ""
+      msg: "",
     };
   },
   mounted() {
     if (this.$route.query.nullPage == 1) this.msg = "请在微信端打开~";
     if (this.$route.query.nullPage == 2) this.msg = "请在app端打开~";
-    // 表单输入监控删除动作
-    let self = this;
-    $("input").on("keydown", function(event) {
-      var e = event || window.event || arguments.callee.caller.arguments[0];
-      if (e && e.keyCode == 8) {
-        self.$store.state.isDel = true;
-      }
-    });
     // 获取适配信息，并微信授权
     this.$setLoginData();
   }

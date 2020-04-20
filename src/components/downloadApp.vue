@@ -1,6 +1,6 @@
 <template>
   <div v-if="device == 'ANDROID' || device == 'IOS' || device == 'WX'">
-    <div id="downloadApp" >
+    <div id="downloadApp">
       <div class="articleInfo">
         <div class="ratiobox">
           <img src="./../assets/logo.png" width="100%" />
@@ -77,6 +77,13 @@ export default {
   },
   mounted() {
     this.device = this.$route.query.device;
+    // app内webview不需要显示下载按钮
+    if (
+      localStorage.getItem("isHuobaIosLogin") == "yes" ||
+      localStorage.getItem("isHuobaAndroidLogin") == "yes"
+    ) {
+      this.device = "WEBVIEW";
+    }
   },
   methods: {
     download() {

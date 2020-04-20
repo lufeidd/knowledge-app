@@ -8,7 +8,7 @@ import wx from 'weixin-js-sdk';
 //  引入时间戳接口
 // import req from "./../apis/http.js";
 import { SERVER_TIME, WX_SHARE, WX_SHARE_LOG, ADDRESS, CASHIER_PAY_CHECK } from "./../apis/public.js";
-import { LOGIN_PARTERNER } from "./../apis/passport.js";
+import { LOGIN_PARTERNER, PAGE_INFO } from "./../apis/passport.js";
 
 // 支持await async
 // import regeneratorRuntime from './../regenerator-runtime/runtime.js';
@@ -18,6 +18,11 @@ import { LOGIN_PARTERNER } from "./../apis/passport.js";
 
 export default {
   install: function (Vue, options) {
+    // 分享信息
+    Vue.prototype.share_info = {};
+    Vue.prototype.page_name = '';
+    Vue.prototype.params = {};
+    Vue.prototype.share_type = 1;
     // 省市区
     // 省
     Vue.prototype.provinceList = {};
@@ -104,11 +109,14 @@ export default {
         // 登录成功exist = 1；没有绑定过 exist = 0；
         if (res.response_data.exist == 0) {
 
+          // this.$router.replace({
+          //   name: "bindphone",
+          //   query: { bindtype: _type, outerId: _unionid }
+          // });
           this.$router.replace({
-            name: "bindphone",
+            name: "bindPhone",
             query: { bindtype: _type, outerId: _unionid }
           });
-
         }
         if (res.response_data.exist == 1) {
           // brand_id等信息
@@ -183,8 +191,6 @@ export default {
               'onMenuShareQZone',
             ]
           });
-          // 分享成功后通知后台
-          self.$getShareLog(_pageName, _params);
 
         })
         .catch(function (error) {
@@ -208,9 +214,15 @@ export default {
           success: function (res) {
             // 用户确认分享后执行的回调函数
             // logUtil.printLog("分享给朋友成功返回的信息为:", res);
-            console.log('111', res);
-            console.log('shareData111:', shareData);
-
+            if (res.errMsg.toLowerCase().indexOf('appmessage:ok') != -1) {
+              self.share_type = 1;
+            }
+            if (res.errMsg.toLowerCase().indexOf('timeline:ok') != -1) {
+              self.share_type = 2;
+            }
+            // console.log('111', res);
+            // 分享成功后通知后台
+            self.$getShareLog(self.page_name, self.params, self.share_type);
           },
           cancel: function (res) {
             // 用户取消分享后执行的回调函数
@@ -227,39 +239,212 @@ export default {
 
     }
 
-    // 获取页面分享信息
-    Vue.prototype.$getWxShareData = async function (_pageName, _params) {
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        page_name: _pageName,
-        params: _params,
-        home_id: localStorage.getItem('home_id'),
-        timestamp: tStamp,
-        version: "1.1"
-      };
-      data.sign = this.$getSign(data);
-      let res = await WX_SHARE(data);
-      if (res.hasOwnProperty("response_code")) {
-        // 微信分享
-        this.$getWxData(
-          res.response_data.share_info.title,
-          res.response_data.share_info.desc,
-          res.response_data.share_info.pic,
-          res.response_data.share_info.url
-        );
 
-      } else {
-        this.$toast(res.error_message);
+    // 获取页面分享信息
+    Vue.prototype.$getWxShareData = async function () {
+      // 在微信端
+      if (this.isWxLogin ||
+        localStorage.getItem("isHuobaIosLogin") == "yes" ||
+        localStorage.getItem("isHuobaAndroidLogin") == "yes" || true) {
+        let _href = window.location.href.split('#')[1];
+        let _name = _href.split('?')[0].toLowerCase();
+        let _params = this.$getPageParams(_name);
+        let _pageName = _params.page_name;
+
+        if (!_pageName || _pageName == '' || !_params || _params == '') {
+          return;
+        }
+
+        if (_pageName == "goods/detail" || _pageName == "page/get" || _pageName == "groupbuy/open/detail" || _pageName == "groupbuy/goods/detail" || _pageName == "activity/interest" || _pageName == "assist/index" || _pageName == "assist/index" || _pageName == "brand/index" || _pageName == "mall/index" || _pageName == "mall/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search") {
+          // 需要调分享的页面
+          var tStamp = this.$getTimeStamp();
+          let data = {
+            page_name: _pageName,
+            params: JSON.stringify(_params),
+            home_id: localStorage.getItem('home_id'),
+            timestamp: tStamp,
+            version: "1.1"
+          };
+          data.sign = this.$getSign(data);
+          let res = await WX_SHARE(data);
+          if (res.hasOwnProperty("response_code")) {
+            // 记录分享信息
+            this.share_info = res.response_data.share_info;
+            // 火把知识app端webview判断是否跳app原生页面
+            this.$gotoApp(_name, _params);
+            // 微信分享
+            this.$getWxData(
+              res.response_data.share_info.title,
+              res.response_data.share_info.desc,
+              res.response_data.share_info.pic,
+              res.response_data.share_info.url
+            );
+
+          } else {
+            this.$toast(res.error_message);
+          }
+
+        } else {
+          // 火把知识app端webview判断是否跳app原生页面
+          this.$gotoApp(_name, _params);
+        }
+
       }
 
     }
 
+
+    // 火把知识app端webview判断是否跳app原生页面
+    Vue.prototype.$gotoApp = async function (_name, _params) {
+      let tStamp = this.$getTimeStamp();
+      let data = {
+        page_name: _name,
+        timestamp: tStamp,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await PAGE_INFO(data);
+      let _linkData = {};
+      let _isJump = false;
+      if (res.hasOwnProperty("response_code")) {
+        if (res.response_data.app_page_name && res.response_data.auto_jump == 1) {
+          // 当app_page_name不为空，以及auto_jump值为1需要跳原生页面
+          // 页面信息
+          _linkData = this.$getPageParams(_name);
+          _linkData.page_name = res.response_data.app_page_name;
+          _isJump = true;
+        }
+
+        console.log(888, {
+          share_info: this.share_info,
+          link_data: _linkData,
+          params: _params,
+          isJump: _isJump
+        });
+        // 安卓
+        if (localStorage.getItem("isHuobaAndroidLogin") == "yes") {
+          window.JSWEB.RequestNative(JSON.stringify({
+            share_info: this.share_info,
+            link_data: _linkData,
+            params: _params,
+            isJump: _isJump
+          }));
+        }
+        // ios
+        if (localStorage.getItem("isHuobaIosLogin") == "yes") {
+          window.webkit.messageHandlers.shareAndJump.postMessage({
+            share_info: this.share_info,
+            link_data: _linkData,
+            params: _params,
+            isJump: _isJump
+          })
+        }
+      } else {
+        this.$toast(res.error_message);
+      }
+    }
+
+    // 不同页面不同参数信息 
+    Vue.prototype.$getPageParams = function (_name) {
+      _name = _name.toLowerCase();
+      let linkData = {
+        page_name: _name
+      };
+      if (_name == '/custompage') {
+        // 自定义装修页面
+        linkData.page_name = 'page/get';
+        if (this.$route.query.type) linkData.type = this.$route.query.type;
+        if (this.$route.query.page_id) linkData.page_id = this.$route.query.page_id;
+        if (this.$route.query.supplier_id) linkData.supplier_id = this.$route.query.supplier_id;
+
+      } else if (_name == '/detail') {
+        // 商品详情
+        linkData.page_name = 'goods/detail';
+        linkData.goods_id = this.$route.query.goods_id;
+      } else if (_name == '/groupDetail') {
+        // 拼团详情
+        linkData.page_name = 'groupbuy/open/detail';
+        linkData.open_id = parseInt(this.$route.query.open_id);
+      } else if (_name == '/groupGoods') {
+        // 实物商品拼团页面
+        linkData.page_name = 'groupbuy/goods/detail';
+        linkData.groupbuy_id = parseInt(this.$route.query.groupbuy_id);
+        linkData.brand_id = this.$route.query.brand_id;//??
+      } else if (_name == '/activity/interest') {
+        // 问卷调查
+        linkData.page_name = 'activity/interest';
+      } else if (_name == '/album/detail') {
+        // 专辑
+        linkData.page_name = 'goods/detail';
+        linkData.goods_id = this.$route.query.goods_id;
+        linkData.pid = this.$route.query.pid;
+      } else if (_name == '/album/index') {
+        // 专辑
+        linkData.page_name = 'goods/detail';
+        linkData.goods_id = this.$route.query.goods_id;
+      } else if (_name == '/assist/active') {
+        // 助力活动
+        linkData.page_name = 'assist/index';
+        linkData.launch_id = this.$route.query.launch_id;//??
+        linkData.activity_id = this.$route.query.activity_id;
+      } else if (_name == '/assist/help') {
+        // 助力活动
+        linkData.page_name = 'assist/index';
+        linkData.launch_id = this.$route.query.launch_id;//??
+        linkData.activity_id = this.$route.query.activity_id;
+      } else if (_name == '/brand/index') {
+        // 品牌
+        linkData.page_name = 'brand/index';
+        linkData.brand_id = this.$route.query.brand_id;
+      } else if (_name == '/brand/result') {
+        // 搜索结果
+        switch (this.$route.query.type) {
+          case "mall":
+            linkData.page_name = "mall/goods/search";
+            if (this.$route.query.goods_type) linkData.goods_type = this.$route.query.goods_type;
+            if (this.$route.query.searchContent) linkData.searchContent = this.$route.query.searchContent;
+            break;
+          case "brand":
+            linkData.page_name = "brand/goods/search";
+            linkData.brand_id = this.$route.query.brand_id;
+            linkData.searchContent = this.$route.query.searchContent;
+            break;
+          case "index":
+            linkData.page_name = "brand/goods/search";
+            linkData.brand_id = this.$route.query.brand_id;
+            linkData.searchContent = this.$route.query.searchContent;
+            break;
+          case "all":
+            linkData.page_name = "brand/goods/search";
+            linkData.brand_id = this.$route.query.brand_id;
+            linkData.searchContent = this.$route.query.searchContent;
+            break;
+        }
+      } else if (_name == '/brand/detail/article') {
+        // 文章
+        linkData.page_name = 'goods/detail';
+        linkData.goods_id = this.$route.query.goods_id;
+        linkData.album_id = this.$route.query.album_id;
+      } else if (_name == '/ebook/detail') {
+        // 电子书
+        linkData.page_name = 'goods/detail';
+        linkData.goods_id = this.$route.query.goods_id;
+      } else if (_name == '/ebook/reader') {
+        // 电子书
+        linkData.page_name = 'goods/detail';
+        linkData.goods_id = this.$route.query.goods_id;
+      }
+
+      return linkData;
+    }
+
     // 分享成功后通知后台
-    Vue.prototype.$getShareLog = async function (_pageName, _params) {
+    Vue.prototype.$getShareLog = async function (_pageName, _params, _shareType) {
       var tStamp = this.$getTimeStamp();
       let data = {
         page_name: _pageName,
         params: _params,
+        share_type: _shareType,
         timestamp: tStamp,
         version: "1.0"
       };
@@ -282,14 +467,12 @@ export default {
       let res = await SERVER_TIME(data);
       let serverTime = res.response_data.timestamp * 1000;
       this.diffTime = serverTime - localTime;
-      // console.log('时间差：', this.diffTime);
     }
 
     // 计算时间戳
     Vue.prototype.$getTimeStamp = function () {
       let localTime = new Date().getTime();
       let timeStamp = parseInt((localTime + this.diffTime) / 1000);
-      // console.log("时间戳:", timeStamp);
       return timeStamp;
     }
 
@@ -328,13 +511,46 @@ export default {
 
 
     // 验证码倒计时，刷新保留当前手机倒计时时间
+    // Vue.prototype.$countDown2 = function (cdata) {
+    //   if (!localStorage.getItem('phone')) {
+    //     localStorage.setItem('phone', cdata.phone);
+    //   } else {
+    //     if (cdata.phone != sessionStorage.getItem('phone') || cdata.time === 0) {
+    //       sessionStorage.setItem('phone', cdata.phone)
+    //       sessionStorage.setItem('second', 60);
+    //       cdata.time = 60;
+    //       clearInterval(this.clock)
+    //     }
+    //   }
+    //   if (!localStorage.getItem('second')) {
+    //     localStorage.setItem('second', cdata.time);
+    //   }
+    //
+    //   let self = this
+    //   let time = cdata.time
+    //   if (typeof time === 'number') {
+    //     this.clock = window.setInterval(() => {
+    //       if (time === 0) {
+    //         clearInterval(this.clock)
+    //         return false
+    //       }
+    //       time--
+    //       cdata.time = time;
+    //       localStorage.setItem('second', cdata.time)
+    //     }, 1000)
+    //   } else {
+    //     self.$toast('时间格式不正确')
+    //   }
+    // }
+
     Vue.prototype.$countDown2 = function (cdata) {
+      clearInterval(this.clock)
       if (!localStorage.getItem('phone')) {
         localStorage.setItem('phone', cdata.phone);
       } else {
-        if (cdata.phone != localStorage.getItem('phone')) {
-          localStorage.setItem('phone', cdata.phone)
-          localStorage.setItem('second', 60);
+        if (cdata.phone != sessionStorage.getItem('phone') || cdata.time === 0) {
+          sessionStorage.setItem('phone', cdata.phone)
+          sessionStorage.setItem('second', 60);
           cdata.time = 60;
           clearInterval(this.clock)
         }
@@ -354,6 +570,7 @@ export default {
           time--
           cdata.time = time;
           localStorage.setItem('second', cdata.time)
+          // console.log(cdata.time);
         }, 1000)
       } else {
         self.$toast('时间格式不正确')
@@ -610,7 +827,7 @@ export default {
           break;
         case 'search/result':
           __name = 'brandresult';
-          if (dataTmp.params.supplier_id) queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
+          queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
           if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
           if (dataTmp.params.goods_type) queryTmp.goods_type = dataTmp.params.goods_type;
           if (dataTmp.params.cids) queryTmp.cids = dataTmp.params.cids;
@@ -659,6 +876,7 @@ export default {
     // 微信支付
     Vue.prototype.$onBridgeReady = function (_timestamp, _nonceStr, _package, _paySign, _orderId, _payMoney) {
       var self = this;
+
 
       WeixinJSBridge.invoke(
         "getBrandWCPayRequest",
@@ -927,6 +1145,7 @@ export default {
       if (_ios) {
         window.location.href =
           "https://apps.apple.com/cn/app/%E7%81%AB%E6%8A%8A%E7%9F%A5%E8%AF%86/id1473766311";
+        // www.huoba.net://huoba
       } else if (_android) {
         window.location.href =
           "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
@@ -1030,6 +1249,15 @@ export default {
 
     // 配合正则，表单字符指定位置添加空格
     Vue.prototype.$inputSpace = function (code, type) {
+      // 表单输入监控删除动作
+      let self = this;
+      $("input").on("keydown", function (event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if (e && e.keyCode == 8) {
+          self.$store.state.isDel = true;
+        }
+      });
+
       var str = "";
       var _bool = false;
       var _len = code.length;

@@ -1,0 +1,104 @@
+/*
+ * author: lrf
+ * date:2020/1/16
+ */
+
+@charset "UTF-8";
+
+#verificationPage {
+  background-color: $white;
+  min-height: 100%;
+  overflow: hidden;
+
+  p {
+    margin: 0;
+  }
+  .info {
+    margin: 65px 40px 0 40px;
+    font-size: 18px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    line-height: 28px;
+    height: 28px;
+    .step_text {
+      float: right;
+      font-size: 18px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #999;
+      line-height: 28px;
+      .percent_step {
+        color: #F7A2A1;
+      }
+    }
+  }
+  .phone {
+    font-family: PingFang SC;
+    margin: 0 40px;
+    font-weight: 500;
+    color: #333333;
+    line-height: 24px;
+    height: 24px;
+  }
+  .van-password-input {
+    margin: 106px 40px 0 40px;
+
+  }
+  .van-password-input__security li:not(:last-of-type) {
+    margin-right: 28px;
+  }
+  .van-password-input__security li:after {
+    border: none;
+    border-bottom: 0.5px solid #333333;
+  }
+  .van-hairline--surround:after {
+    border: none;
+  }
+  .tips {
+    margin: 25px 40px 0 40px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #F05654;
+  }
+  //.leave {
+  //  width: 255px;
+  //  height: 126px;
+  //  background: #FFFFFF;
+  //  border-radius: 5px;
+  //  .leave_remind {
+  //    margin: 20px auto;
+  //    width: 157px;
+  //    font-size: 15px;
+  //    font-family: PingFang SC;
+  //    font-weight: bold;
+  //    color: #333333;
+  //    line-height: 20px;
+  //    text-align: center;
+  //  }
+  //  .btn_wrapper {
+  //    display: flex;
+  //    height: 46px;
+  //    line-height: 46px;
+  //    border-top: 0.5px solid #E5E5E5;
+  //    .cancel {
+  //      flex: 1;
+  //      text-align: center;
+  //      border-right: 0.5px solid #E5E5E5;
+  //      font-size: 16px;
+  //      font-family: PingFang SC;
+  //      font-weight: 500;
+  //      color: #999999;
+  //    }
+  //    .confirm {
+  //      flex: 1;
+  //      text-align: center;
+  //      font-size: 16px;
+  //      font-family: PingFang SC;
+  //      font-weight: 500;
+  //      color: #333333;
+  //    }
+  //  }
+  //}
+}
+
