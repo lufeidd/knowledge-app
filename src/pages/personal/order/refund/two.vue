@@ -1,51 +1,53 @@
 <template>
   <div class="refund" id="twoPage">
-    <div class="cell">
-      <span>退款类型:</span>
-      <span class="onlyRefund">仅退款</span>
-    </div>
-    <div class="cell reason" @click="choose()">
-      <div>
-        <span>退款原因：{{refund_reason}}</span>
-        <span class="typeRefund"></span>
+    <div style="padding:0 15px;">
+      <div class="cell">
+        <span>退款类型:</span>
+        <span class="onlyRefund">仅退款</span>
       </div>
-      <span class="choose">
-        <span v-if="!refund_reason">请选择退款原因</span>
-        <svg class="icon arrow" aria-hidden="true">
-          <use xlink:href="#icon-next-line" />
-        </svg>
-      </span>
-    </div>
-    <div class="cell">
-      <div>
-        <span>退款金额：</span>
-        <span class="most">
-          最多
-          <span class="money">{{refundInfo.max_price}}元</span>
+      <div class="cell reason" @click="choose()">
+        <div>
+          <span>退款原因：{{refund_reason}}</span>
+          <span class="typeRefund"></span>
+        </div>
+        <span class="choose">
+          <span v-if="!refund_reason">请选择退款原因</span>
+          <svg class="icon arrow" aria-hidden="true">
+            <use xlink:href="#icon-next-line" />
+          </svg>
         </span>
-        <span class="choose" v-if="dispatch_price&&show_dispatch">（包含运费：{{dispatch_price}}元）</span>
       </div>
-      <div v-if="if_write">
-        <input
-          type="text"
-          v-model="real_refund_money"
-          @input="refundmoney"
-          placeholder="请输入退款金额,例如5.00"
-        />元
+      <div class="cell">
+        <div>
+          <span>退款金额：</span>
+          <span class="most">
+            最多
+            <span class="money">{{refundInfo.max_price}}元</span>
+          </span>
+          <span class="choose" v-if="dispatch_price&&show_dispatch">（包含运费：{{dispatch_price}}元）</span>
+        </div>
+        <div v-if="if_write">
+          <input
+            type="text"
+            v-model="real_refund_money"
+            @input="refundmoney"
+            placeholder="请输入退款金额,例如5.00"
+          />元
+        </div>
       </div>
-    </div>
-    <div class="cell explain">
-      <span>退款说明：</span>
-      <textarea @input="inputChange" v-model="refund_desc" placeholder="字数不得超过500"></textarea>
-    </div>
-    <!-- 字数限制 -->
-    <div class="count">
-      <span :class="{ active: explainLength > explainTotal }">{{ explainLength }}</span>
-      /{{ explainTotal }}
-    </div>
-    <div class="upload">
-      <span>上传凭证</span>
-      <upload :uploadData="uploadData"></upload>
+      <div class="cell explain">
+        <span>退款说明：</span>
+        <textarea @input="inputChange" v-model="refund_desc" placeholder="字数不得超过500"></textarea>
+      </div>
+      <!-- 字数限制 -->
+      <div class="count">
+        <span :class="{ active: explainLength > explainTotal }">{{ explainLength }}</span>
+        /{{ explainTotal }}
+      </div>
+      <div class="upload">
+        <span>上传凭证</span>
+        <upload :uploadData="uploadData"></upload>
+      </div>
     </div>
     <div style="height: 60px;"></div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
@@ -162,7 +164,7 @@ export default {
       show_dispatch: false,
       dispatch_price: null,
       submit_state: true,
-      if_write:true,
+      if_write: true
     };
   },
   mounted() {
@@ -189,11 +191,18 @@ export default {
       if (Number(this.real_refund_money) > Number(this.refundInfo.max_price)) {
         this.$toast("超出最大退款金额！");
         this.real_refund_money = this.refundInfo.max_price;
-
       }
-      if(this.refund_reason !== "一直未收到货" && (Number(this.real_refund_money) > Number(this.refundInfo.buy_count * this.refundInfo.goods_price))){
-        this.refundInfo.max_price = (this.refundInfo.buy_count * this.refundInfo.goods_price).toFixed(2)
-        this.real_refund_money = (this.refundInfo.buy_count * this.refundInfo.goods_price).toFixed(2);
+      if (
+        this.refund_reason !== "一直未收到货" &&
+        Number(this.real_refund_money) >
+          Number(this.refundInfo.buy_count * this.refundInfo.goods_price)
+      ) {
+        this.refundInfo.max_price = (
+          this.refundInfo.buy_count * this.refundInfo.goods_price
+        ).toFixed(2);
+        this.real_refund_money = (
+          this.refundInfo.buy_count * this.refundInfo.goods_price
+        ).toFixed(2);
       }
     },
     radio_check(item, index) {
@@ -246,8 +255,6 @@ export default {
         data.sign = this.$getSign(data);
         let res = await COMMON_UPLOAD(data);
         if (res.hasOwnProperty("response_code")) {
-          
-
           // console.log(res);
           var arr = [];
           for (let i = 0; i < res.response_data.length; i++) {
@@ -299,12 +306,12 @@ export default {
         this.submit_state = true;
         this.$toast("申请成功!");
         this.$router.push({
-          name:"ongoing",
-          query:{
-            order_id:this.order_id,
-            detail_id:this.detail_id,
+          name: "ongoing",
+          query: {
+            order_id: this.order_id,
+            detail_id: this.detail_id
           }
-        })
+        });
       } else {
         this.submit_state = true;
         this.$toast(res.error_message);
@@ -368,12 +375,12 @@ export default {
         this.submit_state = true;
         this.$toast("修改成功!");
         this.$router.push({
-          name:"ongoing",
-          query:{
-            order_id:this.order_id,
-            detail_id:this.detail_id,
+          name: "ongoing",
+          query: {
+            order_id: this.order_id,
+            detail_id: this.detail_id
           }
-        })
+        });
       } else {
         this.submit_state = true;
         this.$toast(res.error_message);
@@ -398,7 +405,7 @@ export default {
         this.max_price = res.response_data.max_money;
         this.dispatch_price = res.response_data.dispatch_price;
 
-        if(res.response_data.pic !== null){
+        if (res.response_data.pic !== null) {
           if (res.response_data.pic.length > 0) {
             for (let i = 0; i < res.response_data.pic.length; i++) {
               $("#upload").prepend(
@@ -420,7 +427,9 @@ export default {
               );
             }
           }
-          if(res.response_data.pic.length == 3){$("#van").css("display", "none");}
+          if (res.response_data.pic.length == 3) {
+            $("#van").css("display", "none");
+          }
         }
 
         $("#upload .del").on("click", function() {
@@ -437,7 +446,9 @@ export default {
           this.if_write = false;
         } else {
           this.show_dispatch = false;
-          this.refundInfo.max_price = (this.refundInfo.buy_count * this.refundInfo.goods_price).toFixed(2);
+          this.refundInfo.max_price = (
+            this.refundInfo.buy_count * this.refundInfo.goods_price
+          ).toFixed(2);
           this.if_write = true;
         }
       } else {
