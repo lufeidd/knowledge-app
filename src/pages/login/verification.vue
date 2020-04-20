@@ -293,6 +293,23 @@
 
     },
     mounted() {
+      // console.log(222, localStorage.getItem('isReload'));
+      if (localStorage.getItem('isReload') && localStorage.getItem('isReload') == '0') {
+        // console.log(333, localStorage.getItem('isReload'));
+        // 刷新不发短信
+        if(sessionStorage.getItem('isToVerification') == '1' && (this.cdata.time == 0 || this.phone.replace(/\s/g, '') != sessionStorage.getItem('lastInputPhone'))) {
+          this.countdown(); // 短信倒计时
+          this.sms();
+        }
+      localStorage.setItem('isReload', '0');
+      }
+
+
+      // 如果倒计时未结束继续进行倒计时
+      if (this.cdata.time != 0) {
+        this.countdown(); // 短信倒计时
+      }
+
       this.phone = this.$route.query.phone;
       this.type = this.$route.query.type;
       if (this.type == 'changePassword') {
@@ -310,19 +327,9 @@
       }
       this.isRegister = this.$route.query.isRegister;
 
-      // 刷新不发短信
-      if(sessionStorage.getItem('isToVerification') == '1' && (this.cdata.time == 0 || this.phone.replace(/\s/g, '') != sessionStorage.getItem('lastInputPhone'))) {
-        this.countdown(); // 短信倒计时
-        this.sms();
-      }
-
-      // 如果倒计时未结束继续进行倒计时
-      if (this.cdata.time != 0) {
-        this.countdown(); // 短信倒计时
-      }
-
       // 绑定
       this.activity_id = this.$route.query.activity_id ? this.$route.query.activity_id : false;
+
     },
     beforeDestroy() {
       clearInterval(this.clock);
@@ -431,8 +438,6 @@
         next();
       }
   },
-
-
 
   }
 </script>
