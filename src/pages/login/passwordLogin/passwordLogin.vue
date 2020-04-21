@@ -30,11 +30,13 @@
     </router-link>
     <router-link :to="{name: 'authentication', query: {pageType: 'findPassword'}}" class="link_text_password">忘记密码
     </router-link>
-    <div class="wx_login" v-if="isShowWx">
-      <p class="wx_login_text">快捷登录方式</p>
-      <svg class="icon" aria-hidden="true" @click="wxLogin">
-        <use xlink:href="#icon-weixin-block"/>
-      </svg>
+    <div class="wx_login">
+      <div v-if="isShowWx">
+        <p class="wx_login_text">快捷登录方式</p>
+        <svg class="icon" aria-hidden="true" @click="wxLogin">
+          <use xlink:href="#icon-weixin-block"/>
+        </svg>
+      </div>
     </div>
     <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>

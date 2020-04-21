@@ -8,7 +8,7 @@
 #phoneLoginPage {
   background-color: $white;
   min-height: 100%;
-  overflow: hidden;
+  //overflow: hidden;
   p, h3 {
     margin: 0;
   }
@@ -67,6 +67,7 @@
   .wx_login {
     margin-top: 73px;
     text-align: center;
+    height: 80px;
     .wx_login_text {
       font-size: 13px;
       font-family: PingFang SC;
