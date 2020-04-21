@@ -21,11 +21,13 @@
     </div>
     <router-link :to="{name: 'passwordLogin'}" class="link_text">密码登录
     </router-link>
-    <div class="wx_login" v-if="isShowWx">
-      <p class="wx_login_text">快捷登录方式</p>
-      <svg class="icon" aria-hidden="true" @click="wxLogin">
-        <use xlink:href="#icon-weixin-block"/>
-      </svg>
+    <div class="wx_login">
+      <div v-if="isShowWx">
+        <p class="wx_login_text">快捷登录方式</p>
+        <svg class="icon" aria-hidden="true" @click="wxLogin">
+          <use xlink:href="#icon-weixin-block"/>
+        </svg>
+      </div>
     </div>
     <van-popup v-model="registerPopShow" class="register">
       <p class="title">

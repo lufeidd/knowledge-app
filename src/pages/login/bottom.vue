@@ -12,11 +12,12 @@
 
 <style lang="scss" scoped>
   #pageBottom {
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
+    /*position: absolute;*/
+    /*bottom: 15px;*/
+    /*left: 50%;*/
+    //transform: translateX(-50%);
     margin: 0 auto;
+    margin-top: 87px;
     width: 100%;
     p {
       margin: 0;
