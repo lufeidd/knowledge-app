@@ -30,7 +30,7 @@
     <!--<span class="confirm" @click="confirm">确定</span>-->
     <!--</div>-->
     <!--</van-popup>-->
-
+    <Bottom v-if="bottomShow"></Bottom>
     <!--<EazyNav type="brand" :isShow="false"></EazyNav>-->
   </div>
 </template>
@@ -41,11 +41,13 @@
   import { CHECK_CODE } from "@/apis/passport.js";
   import { USER_PHONE_RESET, USER_PHONE_RESETSAVE } from "@/apis/user.js";
 
+  import bottom from '@/pages/login/bottom.vue';
   export default {
     data() {
       return {
         totalStep: Number,
         percentStep: Number,
+        bottomShow: false,
         isSet: false,
         isBack: true,  // 是否是返回动作
         code: '',
@@ -275,12 +277,14 @@
         this.sms();
         let cdata = this.cdata;
         cdata.phone = this.phone.replace(/\s/g, '');
+        cdata.type = this.type;
         this.$countDown2(cdata);
       },
       countdown() {
         // 验证码倒计时，刷新保留当前手机倒计时时间
         let cdata = this.cdata;
         cdata.phone = this.phone.replace(/\s/g, '');
+        cdata.type = this.type;
         // console.log('cdata',cdata);
         this.$countDown2(cdata);
       }
@@ -296,24 +300,48 @@
     mounted() {
       this.phone = this.$route.query.phone;
       this.type = this.$route.query.type;
+      this.isRegister = this.$route.query.isRegister;
+      // 绑定
+      this.activity_id = this.$route.query.activity_id ? this.$route.query.activity_id : false;
 
       if (this.type == 'changePassword') {
         this.isSet = true;
         this.totalStep = 3;
         this.percentStep = 2;
+        if (sessionStorage.getItem('fromPage') && this.type != sessionStorage.getItem('fromPage')) {
+          localStorage.setItem('second', '60');
+        }
+        sessionStorage.setItem('fromPage', 'changePassword'); // 記錄來源類型
       } else if (this.type == 'oldChangePhone') {
         this.isSet = true;
         this.totalStep = 4;
         this.percentStep = 2;
+        if (sessionStorage.getItem('fromPage') && this.type != sessionStorage.getItem('fromPage')) {
+          localStorage.setItem('second', '60');
+        }
+        sessionStorage.setItem('fromPage', 'oldChangePhone'); // 記錄來源類型
       } else if (this.type == 'newChangePhone') {
         this.isSet = true;
         this.totalStep = 4;
         this.percentStep = 4;
+        if (sessionStorage.getItem('fromPage') && this.type != sessionStorage.getItem('fromPage')) {
+          localStorage.setItem('second', '60');
+        }
+        sessionStorage.setItem('fromPage', 'newChangePhone'); // 記錄來源類型
+      } else if (this.type == 'wxLogin') {
+        this.bottomShow = true;
+        if (sessionStorage.getItem('fromPage') && this.type != sessionStorage.getItem('fromPage')) {
+          localStorage.setItem('second', '60');
+        }
+        sessionStorage.setItem('fromPage', 'wxLogin'); // 記錄來源類型
+      } else if (this.type == 'phoneLogin') {
+        this.bottomShow = true;
+        if (sessionStorage.getItem('fromPage') && this.type != sessionStorage.getItem('fromPage')) {
+          localStorage.setItem('second', '60');
+        }
+        sessionStorage.setItem('fromPage', 'phoneLogin'); // 記錄來源類型
       }
-      this.isRegister = this.$route.query.isRegister;
 
-      // 绑定
-      this.activity_id = this.$route.query.activity_id ? this.$route.query.activity_id : false;
 
       // console.log(222, localStorage.getItem('isReload'));
       if (localStorage.getItem('isReload') && localStorage.getItem('isReload') == '1') {
@@ -321,16 +349,23 @@
         // 刷新不发短信
         if(sessionStorage.getItem('isToVerification') == '1' && (this.cdata.time == 0 || this.cdata.time == 60 || this.phone.replace(/\s/g, '') != sessionStorage.getItem('lastInputPhone'))) {
           this.sms();
+          this.countdown(); // 短信倒计时
           // console.log('發送短信');
         }
         localStorage.setItem('isReload', '0');
       }
-      this.countdown(); // 短信倒计时
+      if (this.cdata.time != 0 && this.cdata.time != 60) {
+        console.log('不为0或60');
+        this.countdown(); // 短信倒计时
 
+      }
     },
     beforeDestroy() {
       clearInterval(this.clock);
       sessionStorage.setItem('lastInputPhone', this.phone.replace(/\s/g, ''));
+    },
+    components: {
+      Bottom: bottom
     },
     beforeRouteLeave(to, from, next) {
       var _this = this;

@@ -10,7 +10,6 @@
         error-message
         type="tel"
         @input="checkSubmit ()"
-        ref="input"
       />
       <template v-if="submitData.disabled">
         <van-button slot="button" size="large" type="danger" disabled>获取验证码</van-button>
@@ -19,6 +18,7 @@
         <van-button slot="button" size="large" type="danger" @click="getCode">获取验证码</van-button>
       </template>
     </div>
+    <Bottom></Bottom>
     <van-popup v-model="leavePopShow" class="leave">
       <p class="leave_remind">
         点击“返回”将中断登录，
@@ -52,14 +52,13 @@
         </div>
       </div>
     </van-popup>
-    <EazyNav type="brand" :isShow="false"></EazyNav>
   </div>
 </template>
 
 <script>
   import {PHONE_CHECK, REGISTER_ITEMS} from "@/apis/passport.js";
   import {CHECK_BINDING} from "@/apis/passport.js";
-
+  import bottom from '@/pages/login/bottom.vue';
   export default {
     data() {
       return {
@@ -86,8 +85,6 @@
 
         var regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
         if (regPhone.test(this.phone.replace(/\s/g, ''))) {
-          this.$refs.input.blur();
-
           this.submitData.disabled = false;
         } else {
           this.submitData.disabled = true;
@@ -149,7 +146,7 @@
         } else {
           this.$toast(res.error_message);
         }
-        // console.log(res);
+        console.log(res);
       },
       getCode() {
         //  判断此手机是否绑定过微信
@@ -172,6 +169,9 @@
     },
     mounted() {
 
+    },
+    components: {
+      Bottom: bottom
     },
     beforeRouteLeave(to, from, next) {
       var _this = this;
