@@ -565,7 +565,7 @@ export default {
       if (typeof time === 'number') {
         this.clock = window.setInterval(() => {
           if (time === 0) {
-            localStorage.setItem('second', 60)
+            // localStorage.setItem('second', 60)
             clearInterval(this.clock)
             return false
           }

@@ -349,11 +349,13 @@
         // 刷新不发短信
         if(sessionStorage.getItem('isToVerification') == '1' && (this.cdata.time == 0 || this.cdata.time == 60 || this.phone.replace(/\s/g, '') != sessionStorage.getItem('lastInputPhone'))) {
           this.sms();
+          this.countdown(); // 短信倒计时
           // console.log('發送短信');
         }
         localStorage.setItem('isReload', '0');
       }
-      if (this.cdata.time != 0) {
+      if (this.cdata.time != 0 && this.cdata.time != 60) {
+        console.log('不为0或60');
         this.countdown(); // 短信倒计时
 
       }
