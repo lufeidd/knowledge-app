@@ -446,7 +446,7 @@ export default {
       var tStamp = this.$getTimeStamp();
       let data = {
         page_name: _pageName,
-        params: _params,
+        params: JSON.stringify(_params),
         share_type: _shareType,
         timestamp: tStamp,
         version: "1.0"
