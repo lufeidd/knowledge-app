@@ -361,7 +361,6 @@
       }
     },
     beforeDestroy() {
-      clearInterval(this.clock);
       sessionStorage.setItem('lastInputPhone', this.phone.replace(/\s/g, ''));
     },
     components: {
