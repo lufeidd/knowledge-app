@@ -17,7 +17,7 @@
     /*left: 50%;*/
     //transform: translateX(-50%);
     margin: 0 auto;
-    margin-top: 87px;
+    margin-top: 10vh;
     width: 100%;
     p {
       margin: 0;
