@@ -251,7 +251,8 @@ export default {
         let _params = this.$getPageParams(_name);
         let _pageName = _params.page_name;
 
-        this.page_name = _params.page_name;
+        this.page_name = _pageName;
+        this.params = _params;
 
         if (!_pageName || _pageName == '' || !_params || _params == '') {
           return;
