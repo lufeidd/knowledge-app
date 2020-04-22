@@ -544,7 +544,6 @@ export default {
     // }
 
     Vue.prototype.$countDown2 = function (cdata) {
-      clearInterval(this.clock)
       if (!localStorage.getItem('phone')) {
         localStorage.setItem('phone', cdata.phone);
       } else {
