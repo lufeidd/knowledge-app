@@ -95,7 +95,6 @@ export default {
     // }
   },
   methods: {
-
     select(item, index) {
       console.log(item);
       this.searchHintData.search = item;
