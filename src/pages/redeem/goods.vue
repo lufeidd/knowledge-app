@@ -1,5 +1,5 @@
 <template>
-  <div id="redeemGoodsPage" :style="{'background-color':goodsDetail.colour.bg?goodsDetail.colour.bg:''}">
+  <div id="redeemGoodsPage" :style="{'background-color':goodsDetail.colour.bg?goodsDetail.colour.bg:''}" v-show="pageShow">
     <div v-if="!remindPopShow">
       <!-- <van-list
      v-model="goodsLoading"
@@ -110,7 +110,8 @@
         addressData: [],
         addressId: 0,
         percentGoods: {},
-        pupFlag: false
+        popFlag: false,
+        pageShow: true
       };
     },
     methods: {
@@ -158,8 +159,8 @@
       goodsRedeem(item) {
         if (item != undefined) {
           this.percentGoods = item;
-          localStorage.setItem("goodsItem", JSON.stringify(item));
-          localStorage.setItem("goodsType", "goods");
+          sessionStorage.setItem("goodsItem", JSON.stringify(item));
+          sessionStorage.setItem("goodsType", "goods");
         }
         // console.log(this.percentGoods);
         // console.log(this.goodsDetail);
@@ -196,6 +197,7 @@
         } else {
           // this.$toast(res.error_message);
           if (localStorage.getItem("unionid")) {
+          // if (true) {
             this.$router.push({name: 'redeemLogin'});
           } else {
             this.$router.push({name: 'login'});
@@ -319,7 +321,18 @@
       localStorage.setItem('hash', window.location.hash);
     },
     mounted() {
-      this.getGoodsDetail();
+      let _this = this;
+      this.getGoodsDetail().then(function () {
+        if (sessionStorage.getItem('fromRedeemLogin') == '1') {
+          if (_this.goodsDetail.goods_type != 3 ) { // 非实物商品
+            _this.pageShow = false;
+          }
+          _this.popFlag = false;
+          console.log('goodsItem',JSON.parse(sessionStorage.getItem('goodsItem')));
+          _this.goodsRedeem(JSON.parse(sessionStorage.getItem('goodsItem')));
+          sessionStorage.setItem('fromRedeemLogin', '0');
+        }
+      });
     },
   }
 </script>
