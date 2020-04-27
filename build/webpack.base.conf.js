@@ -76,6 +76,7 @@ module.exports = {
           name: utils.assetsPath('font/[name].[hash:7].[ext]')
         }
       },
+      // sass
       {
         test: /\.sass$/,
         loaders: ['style', 'css', 'sass']
