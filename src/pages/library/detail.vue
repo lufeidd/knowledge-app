@@ -1,5 +1,10 @@
 <template>
   <div id="libraryDetail">
+    <div class="nullBox" v-if="onsale == 0">
+      <img src="./../../assets/null/product.png" width="100%" />
+      <div>该商品已下架~</div>
+    </div>
+    <div v-if="onsale == 1">
     <div class="package">
       <div class="title">
         <div class="text">
@@ -84,6 +89,7 @@
       </van-tabs>
     </div>
     <a :href="this.fileHideUrl" download="file.pdf" id="hideDom" style="display: none"></a>
+    </div>
     <!-- 点击获取邮件弹窗 -->
     <van-popup v-model="emailShowPopup" class="emailPopup">
       <svg class="icon close" aria-hidden="true" @click="closeEmail">
@@ -124,6 +130,16 @@
     border-bottom: 0;
     padding: 10px 0px 10px 0;
   }
+  #libraryDetail .nullBox{
+    text-align: center;
+    font-size: 15px;
+    color: #000;
+  }
+  #libraryDetail .nullBox img{
+    width: 100%;
+    margin-top: 100px;
+    margin-bottom: 50px;
+  }
 </style>
 <script>
   import { ALBUM } from "../../apis/album.js";
@@ -137,6 +153,7 @@ export default {
       buyPrice: false,
       fileDownload: true,
       isDownload: true,
+      onsale: null,
       timeoutId: 0,
       fileHideUrl: '',
       url: '',
@@ -244,8 +261,14 @@ export default {
           this.pictureFile = false;
         }
         this.isLoading = false;
+        this.onsale = 1;
         console.log(this.resourceData);
       } else {
+        if (res.hasOwnProperty("error_code") && res.error_code == 401) {
+          // 上下架状态, 1=> 在架, 0=> 下架
+          this.onsale = 0;
+          this.isLoading = false;
+        }
         this.$toast(res.error_message);
       }
     },
