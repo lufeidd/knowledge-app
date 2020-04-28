@@ -234,6 +234,8 @@
         if (res.hasOwnProperty("response_code")) {
         // if (true) { // 测试
           console.log(res);
+          localStorage.setItem("loginState", '1');
+          sessionStorage.setItem('fromRedeemLogin', '1');
           this.$router.go(-1);
         } else {
           this.$toast(res.error_message);
@@ -241,8 +243,8 @@
       }
     },
     created() {
-      this.goodsType = localStorage.getItem("goodsType");
-      this.goodsDetail = JSON.parse(localStorage.getItem("goodsItem"));
+      this.goodsType = sessionStorage.getItem("goodsType");
+      this.goodsDetail = JSON.parse(sessionStorage.getItem("goodsItem"));
     }
   }
 </script>

@@ -2,6 +2,7 @@
   <div
     id="redeemCouponsPage"
     :style="{'background-color': couponsDetail.colour.bg?couponsDetail.colour.bg: ''}"
+    v-show="pageShow"
   >
     <div v-if="!remindPopShow">
       <!--<van-list-->
@@ -110,7 +111,8 @@ export default {
       // couponsLoading: false,
       // couponsFinished: false,
       couponsList: [],
-      percentCoupons: {}
+      percentCoupons: {},
+      pageShow: true
     };
   },
   methods: {
@@ -181,11 +183,11 @@ export default {
       if (res.error_code == 100) {
         // 未登录
 
-        localStorage.setItem("goodsItem", JSON.stringify(item));
-        localStorage.setItem("goodsType", "coupons");
+        sessionStorage.setItem("goodsItem", JSON.stringify(item));
+        sessionStorage.setItem("goodsType", "coupons");
         // console.log(localStorage.getItem("goodsItem"));
         if (localStorage.getItem("unionid")) {
-          // if (false) {
+        //   if (true) {
           this.$router.push({ name: "redeemLogin" });
         } else {
           this.$router.push({ name: "login" });
@@ -266,7 +268,15 @@ export default {
     localStorage.setItem("hash", window.location.hash);
   },
   mounted() {
-    this.getCouponsDetail();
+    let _this = this;
+    this.getCouponsDetail().then(function () {
+      if (sessionStorage.getItem('fromRedeemLogin') == '1') {
+        _this.pageShow = false;
+        console.log('goodsItem',JSON.parse(sessionStorage.getItem('goodsItem')));
+        _this.couponsRedeem(JSON.parse(sessionStorage.getItem('goodsItem')));
+        sessionStorage.setItem('fromRedeemLogin', '0');
+      }
+    });
   }
 };
 </script>
