@@ -564,8 +564,6 @@ export default {
     },
     // 去支付
     onSubmit() {
-      console.log(666, this.remark)
-      return
       if (this.address_id == "") {
         this.$toast("请添加收货地址~");
         return;
