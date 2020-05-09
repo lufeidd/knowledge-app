@@ -294,7 +294,6 @@ export default {
       }
     }
 
-
     // 火把知识app端webview判断是否跳app原生页面
     Vue.prototype.$gotoApp = async function (_name, _params) {
       let tStamp = this.$getTimeStamp();

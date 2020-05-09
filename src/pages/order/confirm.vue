@@ -99,7 +99,7 @@
       <div class="first">
         <van-cell title="备注" />
       </div>
-      <textarea placeholder="选填，请填写备注内容">{{ remark }}</textarea>
+      <textarea placeholder="选填，请填写备注内容" v-model="remark"></textarea>
     </div>
     <!-- 价格 -->
     <div class="priceInfo">
@@ -564,6 +564,8 @@ export default {
     },
     // 去支付
     onSubmit() {
+      console.log(666, this.remark)
+      return
       if (this.address_id == "") {
         this.$toast("请添加收货地址~");
         return;
