@@ -140,13 +140,13 @@
 
           } else if (_this.isRegister == 1) { // 已注册
             sessionStorage.setItem('isToVerification', '1');
-            _this.$router.push({name: 'verification', query: {phone: _this.phone,isRegister: true, type: 'phoneLogin'}});
+            _this.$router.push({name: 'verification', query: {phone: _this.phone,isRegister: 1, type: 'phoneLogin'}});
           }
         });
       },
       agree() {
         sessionStorage.setItem('isToVerification', '1');
-        this.$router.push({name: 'verification', query: {phone: this.phone,isRegister: false, type: 'phoneLogin'}});
+        this.$router.push({name: 'verification', query: {phone: this.phone,isRegister: 0, type: 'phoneLogin'}});
 
       },
       disagree() {
