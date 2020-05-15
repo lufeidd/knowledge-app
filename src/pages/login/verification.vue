@@ -150,8 +150,9 @@
         let res = await REG(data);
 
         if (res.hasOwnProperty("response_code")) {
-          this.phoneLogin();  // 注册成功后登录
-
+          this.$toast('登录成功');
+          // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
+          window.location.href = localStorage.getItem("defaultLink");
         } else {
           this.$toast(res.error_message);
           this.code = '';
@@ -257,11 +258,11 @@
           } else if (this.type == 'phoneLogin') {
 
             // 如果已注册，请求登录接口
-            if (this.isRegister) {
-              // console.log('已注册');
+            if (this.isRegister == '1') {
+              console.log('已注册');
               this.phoneLogin();
             } else {  // 如果未注册，请求注册接口
-              // console.log('未注册');
+              console.log('未注册');
               this.phoneRegist();
             }
 
@@ -402,11 +403,11 @@
           })
           .catch(() => {
             // on cancel
-            next();
-            _this.$router.push({
-              name: "verification",
-              query: {phone: _this.phone,isRegister: true, type: _this.type}
-            });
+            next(false);
+            // _this.$router.push({
+            //   name: "verification",
+            //   query: {phone: _this.phone,isRegister: _this.isRegister, type: _this.type}
+            // });
           });
       } else if (to.name == 'passwordLogin') {
         this.$dialog
