@@ -264,7 +264,7 @@ export default {
       let res = await CART_INFO(data);
 
       if (res.hasOwnProperty("response_code")) {
-        this.navData.goods_nums = res.response_data.goods_nums;
+        this.navData.goods_nums = res.response_data.kind_num;
       } else {
         this.$toast(res.error_message);
       }

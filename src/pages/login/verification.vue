@@ -151,7 +151,6 @@
 
         if (res.hasOwnProperty("response_code")) {
           this.phoneLogin();  // 注册成功后登录
-
         } else {
           this.$toast(res.error_message);
           this.code = '';
