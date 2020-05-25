@@ -270,7 +270,7 @@
               </div>
               <div
                 class="whyNoUse"
-              >{{item.cart_money>0?'还差'+(item.use_min_money.toFixed(2)-item.cart_money.toFixed(2))+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
+              >{{item.cart_money>0?'还差'+(item.use_min_money-item.cart_money).toFixed(2)+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
             </div>
           </div>
         </van-tab>
@@ -329,7 +329,7 @@
               </div>
               <div
                 class="whyNoUse"
-              >{{item.cart_money>0?'还差'+(item.use_min_money.toFixed(2)-item.cart_money.toFixed(2))+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
+              >{{item.cart_money>0?'还差'+(item.use_min_money-item.cart_money).toFixed(2)+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
             </div>
           </div>
         </van-tab>
