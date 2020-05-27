@@ -36,53 +36,61 @@
       <p class="reminder-text">还没有感兴趣的内容</p>
       <button class="huoba-btn huoba-btn-one" @click="looking">随便看看</button>
     </section>
-    <div class="recommend-box" v-if="recommendShow">
-      <h3 class="recomment-text">热门推荐</h3>
-      <div class="huoba-album-list-two huoba-ebook-list-two">
-        <div v-for="item in recommendList" :key="item.goods_id">
-          <div class="huoba-album-item" v-if="item.goods_type==9">
-            <div class="huoba-album-item-pic-box">
-              <img :src="item.pic" class="huoba-album-item-pic">
-              <div class="icon-one-box">
-                <svg class="icon icon-one" aria-hidden="true">
-                  <use xlink:href="#icon-sound-line"/>
-                </svg>
+    <van-list
+      v-model="recommendLoading"
+      :finished="recommendFinished"
+      finished-text="没有更多了"
+      @load="recommendLoad"
+      v-if="recommendShow"
+    >
+      <div class="recommend-box">
+        <h3 class="recomment-text">热门推荐</h3>
+        <div class="huoba-album-list-two huoba-ebook-list-two">
+          <div v-for="item in recommendList" :key="item.goods_id">
+            <div class="huoba-album-item" v-if="item.goods_type==9">
+              <div class="huoba-album-item-pic-box">
+                <img :src="item.pic" class="huoba-album-item-pic">
+                <div class="icon-one-box">
+                  <svg class="icon icon-one" aria-hidden="true">
+                    <use xlink:href="#icon-sound-line"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="huoba-album-item-content">
+                <div class="huoba-album-item-des" v-text="item.title"></div>
+                <div class="huoba-album-item-total end">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-albumgoods-line"/>
+                  </svg>
+                  <span class="total-text">共{{item.item_count}}集</span>
+                  <!--<svg class="icon ellipsis-line" aria-hidden="true">-->
+                  <!--<use xlink:href="#icon-ellipsis-line"/>-->
+                  <!--</svg>-->
+                </div>
               </div>
             </div>
-            <div class="huoba-album-item-content">
-              <div class="huoba-album-item-des" v-text="item.title"></div>
-              <div class="huoba-album-item-total end">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-albumgoods-line"/>
-                </svg>
-                <span class="total-text">共{{item.item_count}}集</span>
-                <!--<svg class="icon ellipsis-line" aria-hidden="true">-->
-                  <!--<use xlink:href="#icon-ellipsis-line"/>-->
-                <!--</svg>-->
+            <div class="huoba-ebook-item" v-if="item.goods_type==4">
+              <div class="huoba-ebook-item-pic-box">
+                <img :src="item.pic" class="huoba-ebook-item-pic">
               </div>
-            </div>
-          </div>
-          <div class="huoba-ebook-item" v-if="item.goods_type==4">
-            <div class="huoba-ebook-item-pic-box">
-              <img :src="item.pic" class="huoba-ebook-item-pic">
-            </div>
-            <div class="huoba-ebook-item-content">
-              <div class="huoba-ebook-item-des" v-text="item.title"></div>
-              <div class="huoba-ebook-item-author"><span class="name">张东健</span>著</div>
-              <div class="huoba-ebook-item-total end">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-wenzhang"/>
-                </svg>
-                <span class="total-text">共{{item.item_count}}章</span>
-                <!--<svg class="icon ellipsis-line" aria-hidden="true">-->
+              <div class="huoba-ebook-item-content">
+                <div class="huoba-ebook-item-des" v-text="item.title"></div>
+                <div class="huoba-ebook-item-author"><span class="name">张东健</span>著</div>
+                <div class="huoba-ebook-item-total end">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-wenzhang"/>
+                  </svg>
+                  <span class="total-text">共{{item.item_count}}章</span>
+                  <!--<svg class="icon ellipsis-line" aria-hidden="true">-->
                   <!--<use xlink:href="#icon-ellipsis-line"/>-->
-                <!--</svg>-->
+                  <!--</svg>-->
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </van-list>
     <!--轮播图-->
     <van-swipe class="huoba-swipe-one" :autoplay="6000" indicator-color="#F05654" v-if="swipeList.length">
       <van-swipe-item v-for="item in swipeList" :key="item.goods_id">
@@ -99,7 +107,7 @@
         <h3 class="list-title">专辑<span class="count" v-text="albumCount"></span></h3>
         <div class="huoba-album-list huoba-album-list-one">
           <div class="huoba-album-item" v-for="item in albumList" :key="item.goods_id">
-            <div class="huoba-album-item-pic-box">
+            <div class="huoba-album-item-pic-box" @touchstart="touchStart(item)" @touchend="touchEnd">
               <img :src="item.pic" class="huoba-album-item-pic">
               <div class="icon-one-box">
                 <svg class="icon icon-one" aria-hidden="true">
@@ -155,7 +163,7 @@
             <div class="huoba-ebook-item-total end" v-if="item.show_str.status==2">
               <span class="total-text">已读{{item.show_str.content}}</span>
             </div>
-            <div class="huoba-ebook-item-total not-end"  v-if="item.show_str.status==3">>
+            <div class="huoba-ebook-item-total not-end" v-if="item.show_str.status==3">>
               <span class="total-text">更新至{{item.show_str.content}}章</span>
             </div>
           </div>
@@ -198,12 +206,6 @@
         </svg>
         <span class="pop-one-item-text">移出收藏</span>
       </div>
-      <div class="pop-one-item">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-shanchu2"/>
-        </svg>
-        <span class="pop-one-item-text">清除缓存文件 23.3M</span>
-      </div>
     </van-popup>
     <van-popup v-model="pop_two_show" position="center" class="huoba-popup-two">
       <h3 class="pop-two-text-one">置顶失败！</h3>
@@ -222,7 +224,7 @@
       return {
         albumShow: false,
         ebookShow: false,
-        pop_one_show: false,
+        pop_one_show: true,
         pop_two_show: false,
         recommendShow: false,
         noInterest: false,
@@ -234,7 +236,11 @@
         ebookList: [],
         ebookCount: '',
         albumFirst: true,
-        lookingUrl: ''  // 随便看看跳转url
+        lookingUrl: '',  // 随便看看跳转url
+        loop: null,
+        recommendLoading: false,
+        recommendFinished: false,
+        recommendPage: 1
       }
     },
     methods: {
@@ -248,24 +254,38 @@
           this.isLogin = res.response_data.is_login; // 获取登录状态 1已登录 0未登录
           this.lookingUrl = res.response_data.url_info.url;
           if (this.isLogin == 1) {
-            let _this = this;
-            this.getAlbumList().then(function () {
-              _this.getEbookList().then(function () {
-                if(_this.albumList.length != 0) {
-                  _this.albumShow = true;
-                }
-                if(_this.ebookList.length != 0) {
-                  _this.ebookList = true;
-                }
+            // let _this = this;
+            // this.getAlbumList().then(function () {
+            //   _this.getEbookList().then(function () {
+            //     if (_this.albumList.length != 0) {
+            //       _this.albumShow = true;
+            //     }
+            //     if (_this.ebookList.length != 0) {
+            //       _this.ebookList = true;
+            //     }
+            //
+            //     if (_this.albumList.length == 0 && _this.ebookList.length == 0) {
+            //       _this.noInterest = true; // 无感兴趣内容
+            //     }
+            //   });
+            // });
+            this.getAlbumList();
+            this.getEbookList();
+            if (this.albumList.length != 0) {
+              this.albumShow = true;
+            }
+            if (this.ebookList.length != 0) {
+              this.ebookList = true;
+            }
 
-                if (_this.albumList.length == 0 && _this.ebookList.length == 0) {
-                  _this.noInterest = true; // 无感兴趣内容
-                }
-                if (_this.noInterest || _this.isLogin == '0') {
-                  _this.recommendShow = true; // 登录无感兴趣内容或未登录显示热门推荐
-                }
-              });
-            });
+            if (this.albumList.length == 0 && this.ebookList.length == 0) {
+              this.noInterest = true; // 无感兴趣内容
+            }
+
+          }
+          if (this.noInterest || this.isLogin == '0') {
+            this.recommendShow = true; // 登录无感兴趣内容或未登录显示热门推荐
+            console.log(33, this.recommendShow);
           }
           this.swipeList = res.response_data.recently_view; // 获取轮播图列表（最近访问的专辑和电子书）
           this.albumFirst = res.response_data.sort == 'album' ? true : false; //  电子书和专辑顺序  // 需思考一下合理方案
@@ -277,16 +297,33 @@
       async getRecommendList() {
         let data = {
           version: '1.1',
-          page: '1',
+          page: this.recommendPage,
           page_size: '2'
         };
         let res = await ListenAndRead_RECOMMEND(data);
         if (res.hasOwnProperty('response_code')) {
-          //  大于6需选取前6条 暂未处理
-          this.recommendList = res.response_data.list;  // 获取推荐列表
+          // this.recommendList = res.response_data.list;  // 获取推荐列表
+          // console.log('tuijian', this.recommendList);
+
+          setTimeout(() => {
+            var list = res.response_data.list;
+            for (let i = 0; i < list.length; i++) {
+              this.recommendList.push(list[i]);
+            }
+            // 加载状态结束
+            this.recommendLoading = false;
+            this.recommendPage++;
+            // 数据全部加载完成
+            if (this.recommendPage > res.response_data.total_page) {
+              this.recommendFinished = true;
+            }
+          }, 500);
           console.log('tuijian', this.recommendList);
+
+
         } else {
-          this.$toast(res.error_message);
+          this.recommendFinished = true;
+          // this.$toast(res.error_message);
         }
       },
       async getAlbumList() {
@@ -327,11 +364,25 @@
       },
       looking() {
         window.location.href = this.lookingUrl;
+      },
+      touchStart() {
+        clearInterval(this.loop);
+        this.loop = setTimeout(function () {
+          // 长按后需要出发的事件
+          console.log('长按1s');
+          this.pop_one_show = true;
+        }.bind(this), 1000);
+      },
+      touchEnd() {
+        clearInterval(this.loop);
+      },
+      recommendLoad() {
+        this.getRecommendList();
       }
     },
     mounted() {
       this.getInfo();
-      this.getRecommendList();
+      // this.getRecommendList();
     }
   }
 </script>
