@@ -159,6 +159,10 @@ import straightLinkIndex from '@/pages/redeem/straightLinkIndex'
 // 问卷调查
 import interest from '@/pages/activity/interest'
 
+// 我听我看
+import listenAndReadIndex from '@/pages/listenAndRead/index'
+import listenAndReadDetail from '@/pages/listenAndRead/detail'
+
 Vue.use(Router)
 
 export default new Router({
@@ -1037,6 +1041,23 @@ export default new Router({
       component: interest,
       meta: {
         title: '火把知识',
+      }
+    },
+    // 我听我看
+    {
+      path: '/listenAndRead/index',
+      name: 'listenAndReadIndex',
+      component: listenAndReadIndex,
+      meta: {
+        title: '火把知识'
+      }
+    },
+    {
+      path: '/listenAndRead/detail',
+      name: 'listenAndReadDetail',
+      component: listenAndReadDetail,
+      meta: {
+        title: '火把知识'
       }
     },
   ]
