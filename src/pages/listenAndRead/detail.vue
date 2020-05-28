@@ -105,12 +105,12 @@
         </svg>
         <span class="pop-one-item-text">查看电子书详情</span>
       </div>
-      <div class="pop-one-item">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-fenxiang" />
-        </svg>
-        <span class="pop-one-item-text">分享</span>
-      </div>
+      <!--<div class="pop-one-item">-->
+        <!--<svg class="icon" aria-hidden="true">-->
+          <!--<use xlink:href="#icon-fenxiang" />-->
+        <!--</svg>-->
+        <!--<span class="pop-one-item-text">分享</span>-->
+      <!--</div>-->
       <div class="pop-one-item">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-yichu" />

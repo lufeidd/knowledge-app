@@ -107,7 +107,7 @@
         <h3 class="list-title">专辑<span class="count" v-text="albumCount"></span></h3>
         <div class="huoba-album-list huoba-album-list-one">
           <div class="huoba-album-item" v-for="item in albumList" :key="item.goods_id">
-            <div class="huoba-album-item-pic-box" @touchstart="touchStart(item)" @touchend="touchEnd">
+            <div class="huoba-album-item-pic-box" @touchstart="touchStart('album', item)" @touchend="touchEnd">
               <img :src="item.pic" class="huoba-album-item-pic">
               <div class="icon-one-box">
                 <svg class="icon icon-one" aria-hidden="true">
@@ -133,7 +133,7 @@
             </div>
           </div>
         </div>
-        <div class="button-box" v-if="albumCount>6">
+        <div class="button-box" v-if="albumCount>6" @click="gotoDetail">
           <button class="huoba-btn huoba-btn-five">
             全部专辑
             <svg class="icon next-line" aria-hidden="true">
@@ -147,7 +147,7 @@
         <h3 class="list-title">电子书<span class="count" v-text="ebookCount"></span></h3>
         <div class="huoba-ebook-list huoba-ebook-list-one">
           <div class="huoba-ebook-item" v-for="item in ebookList" :key="item.goods_id">
-            <div class="huoba-ebook-item-pic-box">
+            <div class="huoba-ebook-item-pic-box" @touchstart="touchStart('ebook', item)" @touchend="touchEnd">
               <img :src="item.pic" class="huoba-ebook-item-pic">
               <div class="img-one-box" v-if="item.is_top==1">
               </div>
@@ -182,42 +182,52 @@
 
     <!--弹出层-->
     <van-popup v-model="pop_one_show" position="bottom" class="huoba-popup-one">
-      <div class="pop-one-item">
+      <div class="pop-one-item" v-if="isTop" @click="cancelTop">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-quxiaozhiding"/>
         </svg>
         <span class="pop-one-item-text">取消置顶</span>
       </div>
+      <div class="pop-one-item" v-if="!isTop" @click="toTop">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-zhiding"/>
+        </svg>
+        <span class="pop-one-item-text">置顶</span>
+      </div>
       <div class="pop-one-item">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-chakan"/>
         </svg>
-        <span class="pop-one-item-text">查看电子书详情</span>
+        <span class="pop-one-item-text" v-if="touchType=='album'">查看专辑详情</span>
+        <span class="pop-one-item-text" v-if="touchType=='ebook'">查看电子书详情</span>
       </div>
-      <div class="pop-one-item">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-fenxiang"/>
-        </svg>
-        <span class="pop-one-item-text">分享</span>
-      </div>
+      <!--<div class="pop-one-item">-->
+        <!--<svg class="icon" aria-hidden="true">-->
+          <!--<use xlink:href="#icon-fenxiang"/>-->
+        <!--</svg>-->
+        <!--<span class="pop-one-item-text">分享</span>-->
+      <!--</div>-->
       <div class="pop-one-item">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-yichu"/>
         </svg>
-        <span class="pop-one-item-text">移出收藏</span>
+        <span class="pop-one-item-text" @click="cancelCollect">移出收藏</span>
       </div>
     </van-popup>
     <van-popup v-model="pop_two_show" position="center" class="huoba-popup-two">
       <h3 class="pop-two-text-one">置顶失败！</h3>
-      <div class="pop-two-text-two">您最多可置顶3本电子书</div>
-      <div class="pop-two-text-three">我知道了</div>
+      <div class="pop-two-text-two" v-if="touchType=='album'">您最多可置顶3张专辑</div>
+      <div class="pop-two-text-two" v-if="touchType=='ebook'">您最多可置顶3本电子书</div>
+      <div class="pop-two-text-three" @click="pop_two_show=false">我知道了</div>
     </van-popup>
-
+    <!-- 快速导航 -->
+    <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
 </template>
 
 <script>
-  import {ListenAndRead_INFO, ListenAndRead_RECOMMEND, ListenAndRead_LIST} from '@/apis/listenAndRead.js';
+  import {ListenAndRead_INFO, ListenAndRead_RECOMMEND, ListenAndRead_LIST,ListenAndRead_TOPADD,ListenAndRead_TOPCANCEL} from '@/apis/listenAndRead.js';
+  import {COLLECT_CANCEL} from '@/apis/listenAndRead.js';
 
   export default {
     data() {
@@ -240,7 +250,10 @@
         loop: null,
         recommendLoading: false,
         recommendFinished: false,
-        recommendPage: 1
+        recommendPage: 1,
+        isTop: false,  //  标记touch的是否为置顶
+        touchType: '',   //  标记touch是专辑还是电子书
+        touchGoodsId: ''  // 标记touch的goods_id
       }
     },
     methods: {
@@ -347,17 +360,63 @@
           this.$toast(res.error_message);
         }
       },
+      async toTop() { // 置顶
+        let data = {
+          goods_id: this.touchGoodsId
+        };
+        let res = await ListenAndRead_TOPADD(data);
+        if (res.hasOwnProperty('response_code')) {
+          this.$toast('置顶成功');
+        } else {
+          this.pop_two_show = true;
+        }
+        this.pop_one_show = false;
+      },
+      async cancelTop() { // 取消置顶
+        let data = {
+          goods_id: this.touchGoodsId
+        };
+        let res = await ListenAndRead_TOPCANCEL(data);
+        if (res.hasOwnProperty('response_code')) {
+          this.$toast('取消置顶成功');
+        } else {
+          this.$toast(res.error_message);
+        }
+        this.pop_one_show = false;
+      },
+      async cancelCollect() { // 取消收藏
+        let data = {
+          goods_id: this.touchGoodsId
+        };
+        let res = await COLLECT_CANCEL(data);
+        if (res.hasOwnProperty('response_code')) {
+          this.$toast('取消收藏成功');
+        } else {
+          this.$toast(res.error_message);
+        }
+        this.pop_one_show = false;
+      },
       goToLogin() {
         this.$router.push({name: 'login'});
       },
       looking() {
         window.location.href = this.lookingUrl;
       },
-      touchStart() {
+      touchStart(type, item) {
         clearInterval(this.loop);
         this.loop = setTimeout(function () {
-          // 长按后需要出发的事件
-          console.log('长按1s');
+          // 长按后需要触发的事件
+          if(type == 'album') {
+            this.touchType = 'album';
+          } else if (type == 'ebook') {
+            this.touchType = 'ebook';
+          }
+          if (item.is_top == 1) {
+            this.isTop = true;
+          } else {
+            this.isTop = false;
+          }
+          this.touchGoodsId = item.goods_id;
           this.pop_one_show = true;
         }.bind(this), 1000);
       },
@@ -371,6 +430,9 @@
     mounted() {
       this.getInfo();
       // this.getRecommendList();
+
+      // 获取分享信息
+      // this.$getWxShareData();
     }
   }
 </script>
