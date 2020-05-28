@@ -133,7 +133,7 @@
             </div>
           </div>
         </div>
-        <div class="button-box" v-if="albumCount>6" @click="gotoDetail">
+        <div class="button-box" v-if="albumCount>6"  @click="goToDetail('album')">
           <button class="huoba-btn huoba-btn-five">
             全部专辑
             <svg class="icon next-line" aria-hidden="true">
@@ -168,7 +168,7 @@
             </div>
           </div>
         </div>
-        <div class="button-box" v-if="ebookCount>6">
+        <div class="button-box" v-if="ebookCount>6"  @click="goToDetail('ebook')">
           <button class="huoba-btn huoba-btn-five">
             全部电子书
             <svg class="icon next-line" aria-hidden="true">
@@ -336,8 +336,8 @@
         };
         let res = await ListenAndRead_LIST(data);
         if (res.hasOwnProperty('response_code')) {
-          //  大于6需选取前6条 暂未处理
-          this.albumList = res.response_data.list;  // 获取专辑列表
+          //  大于6需选取前6条
+          this.albumList = res.response_data.list.slice(0,6);  // 获取专辑列表
           this.albumCount = res.response_data.total_count;
           console.log('zhuanji', this.albumList);
         } else {
@@ -353,7 +353,7 @@
         };
         let res = await ListenAndRead_LIST(data);
         if (res.hasOwnProperty('response_code')) {
-          this.ebookList = res.response_data.list;  // 获取电子书列表
+          this.ebookList = res.response_data.list.slice(0,6);  // 获取电子书列表
           this.ebookCount = res.response_data.total_count;
           console.log('dianzishu', this.ebookList);
         } else {
@@ -362,11 +362,13 @@
       },
       async toTop() { // 置顶
         let data = {
+          version: '1.0',
           goods_id: this.touchGoodsId
         };
         let res = await ListenAndRead_TOPADD(data);
         if (res.hasOwnProperty('response_code')) {
           this.$toast('置顶成功');
+          window.location.reload();
         } else {
           this.pop_two_show = true;
         }
@@ -374,11 +376,13 @@
       },
       async cancelTop() { // 取消置顶
         let data = {
+          version: '1.0',
           goods_id: this.touchGoodsId
         };
         let res = await ListenAndRead_TOPCANCEL(data);
         if (res.hasOwnProperty('response_code')) {
           this.$toast('取消置顶成功');
+          window.location.reload();
         } else {
           this.$toast(res.error_message);
         }
@@ -386,11 +390,13 @@
       },
       async cancelCollect() { // 取消收藏
         let data = {
+          version: '1.0',
           goods_id: this.touchGoodsId
         };
         let res = await COLLECT_CANCEL(data);
         if (res.hasOwnProperty('response_code')) {
           this.$toast('取消收藏成功');
+          window.location.reload();
         } else {
           this.$toast(res.error_message);
         }
@@ -398,6 +404,13 @@
       },
       goToLogin() {
         this.$router.push({name: 'login'});
+      },
+      goToDetail(type) {
+        if (type == 'album') {
+          this.$router.push({name: 'listenAndReadDetail', query: {detailType:'album'}});
+        } else if (type == 'ebook') {
+          this.$router.push({name: 'listenAndReadDetail', query: {detailType:'ebook'}});
+        }
       },
       looking() {
         window.location.href = this.lookingUrl;

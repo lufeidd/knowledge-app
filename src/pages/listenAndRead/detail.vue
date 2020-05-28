@@ -5,10 +5,10 @@
       :finished="albumFinished"
       finished-text="没有更多了"
       @load="albumLoad"
-      v-if="true"
+      v-if="albumShow"
     >
       <div class="huoba-album-list huoba-album-list-two">
-        <div class="huoba-album-item" v-for="item in albumList" :key="item.goods_id">
+        <div class="huoba-album-item" v-for="item in albumList" :key="item.goods_id"  @touchstart="touchStart('album', item)" @touchend="touchEnd">
           <div class="huoba-album-item-pic-box">
             <img :src="item.pic" class="huoba-album-item-pic">
             <div class="icon-one-box">
@@ -27,19 +27,19 @@
                 <use xlink:href="#icon-albumgoods-line"/>
               </svg>
               <span class="total-text">共{{item.show_str.content}}集</span>
-              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleAlbum(item)">
+              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleClick('album', item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
             <div class="huoba-album-item-total end" v-if="item.show_str.status==2">
               <span class="total-text">播放至{{item.show_str.content}}集</span>
-              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleAlbum(item)">
+              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleClick('album', item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
             <div class="huoba-album-item-total not-end" v-if="item.show_str.status==3">
               <span class="total-text">更新至{{item.show_str.content}}集</span>
-              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleAlbum(item)">
+              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleClick('album', item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
@@ -52,10 +52,10 @@
       :finished="ebookFinished"
       finished-text="没有更多了"
       @load="ebookLoad"
-      v-if="false"
+      v-if="ebookShow"
     >
       <div class="huoba-ebook-list huoba-ebook-list-two">
-        <div class="huoba-ebook-item" v-for="item in ebookList" :key="item.goods_id">
+        <div class="huoba-ebook-item" v-for="item in ebookList" :key="item.goods_id"  @touchstart="touchStart('ebook', item)" @touchend="touchEnd">
           <div class="huoba-ebook-item-pic-box">
             <img :src="item.pic" class="huoba-ebook-item-pic">
             <div class="img-one-box" v-if="item.is_top==1">
@@ -70,19 +70,19 @@
                 <use xlink:href="#icon-wenzhang"/>
               </svg>
               <span class="total-text">共{{item.show_str.content}}章</span>
-              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleEbook(item)">
+              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleClick('ebook', item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
             <div class="huoba-ebook-item-total end" v-if="item.show_str.status==2">
               <span class="total-text">已读{{item.show_str.content}}</span>
-              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleEbook(item)">
+              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleClick('ebook', item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
             <div class="huoba-ebook-item-total not-end" v-if="item.show_str.status==3">
               <span class="total-text">更新至{{item.show_str.content}}章</span>
-              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleEbook(item)">
+              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleClick('ebook', item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
@@ -92,48 +92,52 @@
     </van-list>
 
     <!--弹出层-->
+    <!--弹出层-->
     <van-popup v-model="pop_one_show" position="bottom" class="huoba-popup-one">
-      <div class="pop-one-item">
+      <div class="pop-one-item" v-if="isTop" @click="cancelTop">
         <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-quxiaozhiding" />
+          <use xlink:href="#icon-quxiaozhiding"/>
         </svg>
         <span class="pop-one-item-text">取消置顶</span>
       </div>
+      <div class="pop-one-item" v-if="!isTop" @click="toTop">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-zhiding"/>
+        </svg>
+        <span class="pop-one-item-text">置顶</span>
+      </div>
       <div class="pop-one-item">
         <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-chakan" />
+          <use xlink:href="#icon-chakan"/>
         </svg>
-        <span class="pop-one-item-text">查看电子书详情</span>
+        <span class="pop-one-item-text" v-if="touchType=='album'">查看专辑详情</span>
+        <span class="pop-one-item-text" v-if="touchType=='ebook'">查看电子书详情</span>
       </div>
       <!--<div class="pop-one-item">-->
-        <!--<svg class="icon" aria-hidden="true">-->
-          <!--<use xlink:href="#icon-fenxiang" />-->
-        <!--</svg>-->
-        <!--<span class="pop-one-item-text">分享</span>-->
+      <!--<svg class="icon" aria-hidden="true">-->
+      <!--<use xlink:href="#icon-fenxiang"/>-->
+      <!--</svg>-->
+      <!--<span class="pop-one-item-text">分享</span>-->
       <!--</div>-->
       <div class="pop-one-item">
         <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-yichu" />
+          <use xlink:href="#icon-yichu"/>
         </svg>
-        <span class="pop-one-item-text">移出收藏</span>
-      </div>
-      <div class="pop-one-item">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-shanchu2" />
-        </svg>
-        <span class="pop-one-item-text">清除缓存文件 23.3M</span>
+        <span class="pop-one-item-text" @click="cancelCollect">移出收藏</span>
       </div>
     </van-popup>
     <van-popup v-model="pop_two_show" position="center" class="huoba-popup-two">
       <h3 class="pop-two-text-one">置顶失败！</h3>
-      <div class="pop-two-text-two">您最多可置顶3本电子书</div>
-      <div class="pop-two-text-three">我知道了</div>
+      <div class="pop-two-text-two" v-if="touchType=='album'">您最多可置顶3张专辑</div>
+      <div class="pop-two-text-two" v-if="touchType=='ebook'">您最多可置顶3本电子书</div>
+      <div class="pop-two-text-three" @click="pop_two_show=false">我知道了</div>
     </van-popup>
   </div>
 </template>
 
 <script>
-  import {ListenAndRead_LIST} from '@/apis/listenAndRead.js';
+  import {ListenAndRead_LIST,ListenAndRead_TOPADD,ListenAndRead_TOPCANCEL} from '@/apis/listenAndRead.js';
+  import {COLLECT_CANCEL} from '@/apis/listenAndRead.js';
   export default {
     data() {
       return {
@@ -149,6 +153,13 @@
         ebookFinished: false,
         pop_one_show: false,
         pop_two_show: false,
+        albumShow: false,
+        ebookShow: false,
+        loop: null,
+        detailType: '',  // 专辑/电子书
+        isTop: false,  //  标记touch的是否为置顶
+        touchType: '',   //  标记touch是专辑还是电子书
+        touchGoodsId: ''  // 标记touch的goods_id
       }
     },
     methods: {
@@ -210,21 +221,97 @@
           this.$toast(res.error_message);
         }
       },
+      async toTop() { // 置顶
+        let data = {
+          version: '1.0',
+          goods_id: this.touchGoodsId
+        };
+        let res = await ListenAndRead_TOPADD(data);
+        if (res.hasOwnProperty('response_code')) {
+          this.$toast('置顶成功');
+          window.location.reload();
+        } else {
+          this.pop_two_show = true;
+        }
+        this.pop_one_show = false;
+      },
+      async cancelTop() { // 取消置顶
+        let data = {
+          version: '1.0',
+          goods_id: this.touchGoodsId
+        };
+        let res = await ListenAndRead_TOPCANCEL(data);
+        if (res.hasOwnProperty('response_code')) {
+          this.$toast('取消置顶成功');
+          window.location.reload();
+        } else {
+          this.$toast(res.error_message);
+        }
+        this.pop_one_show = false;
+      },
+      async cancelCollect() { // 取消收藏
+        let data = {
+          version: '1.0',
+          goods_id: this.touchGoodsId
+        };
+        let res = await COLLECT_CANCEL(data);
+        if (res.hasOwnProperty('response_code')) {
+          this.$toast('取消收藏成功');
+          window.location.reload();
+        } else {
+          this.$toast(res.error_message);
+        }
+        this.pop_one_show = false;
+      },
       albumLoad() {
         this.getAlbumList();
       },
       ebookLoad() {
         this.getEbookList();
       },
-      handleAlbum() {
+      handleClick(type, item) {
+        if(type == 'album') {
+          this.touchType = 'album';
+        } else if (type == 'ebook') {
+          this.touchType = 'ebook';
+        }
+        if (item.is_top == 1) {
+          this.isTop = true;
+        } else {
+          this.isTop = false;
+        }
+        this.touchGoodsId = item.goods_id;
         this.pop_one_show = true;
       },
-      handleEbook() {
-        this.pop_one_show = true;
-      }
+      touchStart(type, item) {
+        clearInterval(this.loop);
+        this.loop = setTimeout(function () {
+          // 长按后需要触发的事件
+          if(type == 'album') {
+            this.touchType = 'album';
+          } else if (type == 'ebook') {
+            this.touchType = 'ebook';
+          }
+          if (item.is_top == 1) {
+            this.isTop = true;
+          } else {
+            this.isTop = false;
+          }
+          this.touchGoodsId = item.goods_id;
+          this.pop_one_show = true;
+        }.bind(this), 1000);
+      },
+      touchEnd() {
+        clearInterval(this.loop);
+      },
     },
     mounted() {
-
+      this.detailType = this.$route.query.detailType;
+      if (this.detailType == 'album') {
+        this.albumShow = true;
+      } else if (this.detailType == 'ebook') {
+        this.ebookShow = true;
+      }
     }
   }
 </script>
