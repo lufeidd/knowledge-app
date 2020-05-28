@@ -109,6 +109,7 @@
           @include font(null,$fontSize + 1,$cl3);
           font-weight: 500;
           line-height: 19px;
+          height: 33px;
           @include twoColtextOverflow();
         }
         .huoba-album-item-total{
@@ -185,6 +186,7 @@
           @include font(null,$fontSize + 1,$cl0);
           font-weight: 500;
           line-height: 19px;
+          height: 33px;
           @include twoColtextOverflow();
         }
         .huoba-ebook-item-author{

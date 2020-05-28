@@ -163,7 +163,7 @@
             <div class="huoba-ebook-item-total end" v-if="item.show_str.status==2">
               <span class="total-text">已读{{item.show_str.content}}</span>
             </div>
-            <div class="huoba-ebook-item-total not-end" v-if="item.show_str.status==3">>
+            <div class="huoba-ebook-item-total not-end" v-if="item.show_str.status==3">
               <span class="total-text">更新至{{item.show_str.content}}章</span>
             </div>
           </div>
@@ -224,7 +224,7 @@
       return {
         albumShow: false,
         ebookShow: false,
-        pop_one_show: true,
+        pop_one_show: false,
         pop_two_show: false,
         recommendShow: false,
         noInterest: false,
@@ -254,33 +254,21 @@
           this.isLogin = res.response_data.is_login; // 获取登录状态 1已登录 0未登录
           this.lookingUrl = res.response_data.url_info.url;
           if (this.isLogin == 1) {
-            // let _this = this;
-            // this.getAlbumList().then(function () {
-            //   _this.getEbookList().then(function () {
-            //     if (_this.albumList.length != 0) {
-            //       _this.albumShow = true;
-            //     }
-            //     if (_this.ebookList.length != 0) {
-            //       _this.ebookList = true;
-            //     }
-            //
-            //     if (_this.albumList.length == 0 && _this.ebookList.length == 0) {
-            //       _this.noInterest = true; // 无感兴趣内容
-            //     }
-            //   });
-            // });
-            this.getAlbumList();
-            this.getEbookList();
-            if (this.albumList.length != 0) {
-              this.albumShow = true;
-            }
-            if (this.ebookList.length != 0) {
-              this.ebookList = true;
-            }
+            let _this = this;
+            this.getAlbumList().then(function () {
+              _this.getEbookList().then(function () {
+                if (_this.albumList.length != 0) {
+                  _this.albumShow = true;
+                }
+                if (_this.ebookList.length != 0) {
+                  _this.ebookList = true;
+                }
 
-            if (this.albumList.length == 0 && this.ebookList.length == 0) {
-              this.noInterest = true; // 无感兴趣内容
-            }
+                if (_this.albumList.length == 0 && _this.ebookList.length == 0) {
+                  _this.noInterest = true; // 无感兴趣内容
+                }
+              });
+            });
 
           }
           if (this.noInterest || this.isLogin == '0') {
@@ -298,7 +286,7 @@
         let data = {
           version: '1.1',
           page: this.recommendPage,
-          page_size: '2'
+          page_size: '10'
         };
         let res = await ListenAndRead_RECOMMEND(data);
         if (res.hasOwnProperty('response_code')) {

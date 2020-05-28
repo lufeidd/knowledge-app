@@ -5,55 +5,41 @@
       :finished="albumFinished"
       finished-text="没有更多了"
       @load="albumLoad"
-      v-show="true"
+      v-if="true"
     >
       <div class="huoba-album-list huoba-album-list-two">
-        <div class="huoba-album-item">
+        <div class="huoba-album-item" v-for="item in albumList" :key="item.goods_id">
           <div class="huoba-album-item-pic-box">
-            <img src="http://file.mhuoba.com/picture/album/20190703/14/20190703141357973.png"
-                 class="huoba-album-item-pic">
+            <img :src="item.pic" class="huoba-album-item-pic">
             <div class="icon-one-box">
               <svg class="icon icon-one" aria-hidden="true">
                 <use xlink:href="#icon-sound-line"/>
               </svg>
             </div>
-            <div class="img-one-box">
+            <div class="img-one-box" v-if="item.is_top==1">
             </div>
-            <span class="text-one">已购</span>
+            <span class="text-one" v-if="item.is_payed==1">已购</span>
           </div>
           <div class="huoba-album-item-content">
-            <div class="huoba-album-item-des">给孩子好的教育给孩子好的教育给孩子好的教育</div>
-            <div class="huoba-album-item-total end">
+            <div class="huoba-album-item-des" v-text="item.title"></div>
+            <div class="huoba-album-item-total end" v-if="item.show_str.status==1">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-albumgoods-line"/>
               </svg>
-              <span class="total-text">共1200集</span>
-              <svg class="icon ellipsis-line" aria-hidden="true">
+              <span class="total-text">共{{item.show_str.content}}集</span>
+              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleAlbum(item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
-          </div>
-        </div>
-        <div class="huoba-album-item">
-          <div class="huoba-album-item-pic-box">
-            <img src="http://file.mhuoba.com/picture/album/20190703/14/20190703141357973.png"
-                 class="huoba-album-item-pic">
-            <div class="icon-one-box">
-              <svg class="icon icon-one" aria-hidden="true">
-                <use xlink:href="#icon-sound-line"/>
+            <div class="huoba-album-item-total end" v-if="item.show_str.status==2">
+              <span class="total-text">播放至{{item.show_str.content}}集</span>
+              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleAlbum(item)">
+                <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
-            <div class="img-one-box">
-            </div>
-          </div>
-          <div class="huoba-album-item-content">
-            <div class="huoba-album-item-des">给孩子好的教育给孩子好的教育给孩子好的教育</div>
-            <div class="huoba-album-item-total not-end">
-              <svg class="icon" aria-hidden="true" v-show="false">
-                <use xlink:href="#icon-albumgoods-line"/>
-              </svg>
-              <span class="total-text">更新至100集</span>
-              <svg class="icon ellipsis-line" aria-hidden="true">
+            <div class="huoba-album-item-total not-end" v-if="item.show_str.status==3">
+              <span class="total-text">更新至{{item.show_str.content}}集</span>
+              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleAlbum(item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
@@ -66,48 +52,37 @@
       :finished="ebookFinished"
       finished-text="没有更多了"
       @load="ebookLoad"
-      v-show="false"
+      v-if="false"
     >
       <div class="huoba-ebook-list huoba-ebook-list-two">
-        <div class="huoba-ebook-item">
+        <div class="huoba-ebook-item" v-for="item in ebookList" :key="item.goods_id">
           <div class="huoba-ebook-item-pic-box">
-            <img src="http://file.mhuoba.com/picture/ebook/20190703/14/20190703141357973.png"
-                 class="huoba-ebook-item-pic">
-            <div class="img-one-box">
+            <img :src="item.pic" class="huoba-ebook-item-pic">
+            <div class="img-one-box" v-if="item.is_top==1">
             </div>
-            <span class="text-one">已购</span>
+            <span class="text-one" v-if="item.is_payed==1">已购</span>
           </div>
           <div class="huoba-ebook-item-content">
-            <div class="huoba-ebook-item-des">给孩子好的教育给孩子好的教育给孩子好的教育</div>
-            <div class="huoba-ebook-item-author"><span class="name">张东健</span>著</div>
-            <div class="huoba-ebook-item-total end">
+            <div class="huoba-ebook-item-des" v-text="item.title"></div>
+            <div class="huoba-ebook-item-author"><span class="name" v-text="item.author"></span>著</div>
+            <div class="huoba-ebook-item-total end" v-if="item.show_str.status==1">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-wenzhang"/>
               </svg>
-              <span class="total-text">共100章</span>
-              <svg class="icon ellipsis-line" aria-hidden="true">
+              <span class="total-text">共{{item.show_str.content}}章</span>
+              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleEbook(item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
-          </div>
-        </div>
-        <div class="huoba-ebook-item">
-          <div class="huoba-ebook-item-pic-box">
-            <img src="http://file.mhuoba.com/picture/ebook/20190703/14/20190703141357973.png"
-                 class="huoba-ebook-item-pic">
-            <div class="img-one-box">
-            </div>
-            <span class="text-one">已购</span>
-          </div>
-          <div class="huoba-ebook-item-content">
-            <div class="huoba-ebook-item-des">给孩子好的教育给孩子好的教育给孩子好的教育</div>
-            <div class="huoba-ebook-item-author"><span class="name">张东健</span>著</div>
-            <div class="huoba-ebook-item-total not-end">
-              <svg class="icon" aria-hidden="true" v-show="false">
-                <use xlink:href="#icon-wenzhang"/>
+            <div class="huoba-ebook-item-total end" v-if="item.show_str.status==2">
+              <span class="total-text">已读{{item.show_str.content}}</span>
+              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleEbook(item)">
+                <use xlink:href="#icon-ellipsis-line"/>
               </svg>
-              <span class="total-text">更新至100章</span>
-              <svg class="icon ellipsis-line" aria-hidden="true">
+            </div>
+            <div class="huoba-ebook-item-total not-end" v-if="item.show_str.status==3">
+              <span class="total-text">更新至{{item.show_str.content}}章</span>
+              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleEbook(item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
@@ -158,24 +133,98 @@
 </template>
 
 <script>
+  import {ListenAndRead_LIST} from '@/apis/listenAndRead.js';
   export default {
     data() {
       return {
+        albumList: [],
+        albumCount: '',
+        albumPage: '1',
+        ebookList: [],
+        ebookCount: '',
+        ebookPage: '1',
         albumLoading: false,
-        albumFinished: true,
+        albumFinished: false,
         ebookLoading: false,
-        ebookFinished: true,
-        pop_one_show: true,
+        ebookFinished: false,
+        pop_one_show: false,
         pop_two_show: false,
       }
     },
     methods: {
-      albumLoad() {
+      async getAlbumList() {
+        let data = {
+          version: '1.1',
+          type: '9',
+          page: this.albumPage,
+          page_size: '10'
+        };
+        let res = await ListenAndRead_LIST(data);
+        if (res.hasOwnProperty('response_code')) {
+          this.albumCount = res.response_data.total_count;
 
+          setTimeout(() => {
+            var list = res.response_data.list;
+            for (let i = 0; i < list.length; i++) {
+              this.albumList.push(list[i]);
+            }
+            // 加载状态结束
+            this.albumLoading = false;
+            this.albumPage++;
+            // 数据全部加载完成
+            if (this.albumPage > res.response_data.total_page) {
+              this.albumFinished = true;
+            }
+          }, 500);
+
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      async getEbookList() {
+        let data = {
+          version: '1.1',
+          type: '4',
+          page: this.ebookPage,
+          page_size: '10'
+        };
+        let res = await ListenAndRead_LIST(data);
+        if (res.hasOwnProperty('response_code')) {
+          this.ebookCount = res.response_data.total_count;
+
+          setTimeout(() => {
+            var list = res.response_data.list;
+            for (let i = 0; i < list.length; i++) {
+              this.ebookList.push(list[i]);
+            }
+            // 加载状态结束
+            this.ebookLoading = false;
+            this.ebookPage++;
+            // 数据全部加载完成
+            if (this.ebookPage > res.response_data.total_page) {
+              this.ebookFinished = true;
+            }
+          }, 500);
+
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      albumLoad() {
+        this.getAlbumList();
       },
       ebookLoad() {
-
+        this.getEbookList();
+      },
+      handleAlbum() {
+        this.pop_one_show = true;
+      },
+      handleEbook() {
+        this.pop_one_show = true;
       }
+    },
+    mounted() {
+
     }
   }
 </script>
