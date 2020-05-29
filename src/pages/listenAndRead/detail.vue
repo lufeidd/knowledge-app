@@ -75,7 +75,7 @@
               </svg>
             </div>
             <div class="huoba-ebook-item-total end" v-if="item.show_str.status==2">
-              <span class="total-text">已读{{item.show_str.content}}</span>
+              <span class="total-text">已读{{item.show_str.content}}%</span>
               <svg class="icon ellipsis-line" aria-hidden="true" @click="handleClick('ebook', item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
@@ -106,7 +106,7 @@
         </svg>
         <span class="pop-one-item-text">置顶</span>
       </div>
-      <div class="pop-one-item">
+      <div class="pop-one-item" @click="checkDetail">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-chakan"/>
         </svg>
@@ -304,6 +304,13 @@
       touchEnd() {
         clearInterval(this.loop);
       },
+      checkDetail() { // 查看电子书/专辑详情
+        if (this.touchType == 'album') {
+          this.$router.push({name: 'album', query: {goods_id: this.touchGoodsId}});
+        } else if (this.touchType == 'ebook') {
+          this.$router.push({name: 'ebookdetail', query: {goods_id: this.touchGoodsId}});
+        }
+      }
     },
     mounted() {
       this.detailType = this.$route.query.detailType;

@@ -47,7 +47,7 @@
         <h3 class="recomment-text">热门推荐</h3>
         <div class="huoba-album-list-two huoba-ebook-list-two">
           <div v-for="item in recommendList" :key="item.goods_id">
-            <div class="huoba-album-item" v-if="item.goods_type==9">
+            <div class="huoba-album-item" v-if="item.goods_type==9" @click="goToPlay(item.goods_type, item)">
               <div class="huoba-album-item-pic-box">
                 <img :src="item.pic" class="huoba-album-item-pic">
                 <div class="icon-one-box">
@@ -69,7 +69,7 @@
                 </div>
               </div>
             </div>
-            <div class="huoba-ebook-item" v-if="item.goods_type==4">
+            <div class="huoba-ebook-item" v-if="item.goods_type==4" @click="goToPlay(item.goods_type, item)">
               <div class="huoba-ebook-item-pic-box">
                 <img :src="item.pic" class="huoba-ebook-item-pic">
               </div>
@@ -97,7 +97,7 @@
         <img v-lazy="item.pic" class="swipe-one-pic">
         <div class="swipe-one-des" v-text="item.title"></div>
         <div class="swipe-one-button-box">
-          <button class="huoba-btn huoba-btn-one">继续播放</button>
+          <button class="huoba-btn huoba-btn-one" @click="goToPlay(item.type, item)">继续播放</button>
         </div>
       </van-swipe-item>
     </van-swipe>
@@ -107,7 +107,7 @@
         <h3 class="list-title">专辑<span class="count" v-text="albumCount"></span></h3>
         <div class="huoba-album-list huoba-album-list-one">
           <div class="huoba-album-item" v-for="item in albumList" :key="item.goods_id">
-            <div class="huoba-album-item-pic-box" @touchstart="touchStart('album', item)" @touchend="touchEnd">
+            <div class="huoba-album-item-pic-box" @touchstart="touchStart('album', item)" @touchend="touchEnd" @click="goToPlay(9, item)">
               <img :src="item.pic" class="huoba-album-item-pic">
               <div class="icon-one-box">
                 <svg class="icon icon-one" aria-hidden="true">
@@ -147,7 +147,7 @@
         <h3 class="list-title">电子书<span class="count" v-text="ebookCount"></span></h3>
         <div class="huoba-ebook-list huoba-ebook-list-one">
           <div class="huoba-ebook-item" v-for="item in ebookList" :key="item.goods_id">
-            <div class="huoba-ebook-item-pic-box" @touchstart="touchStart('ebook', item)" @touchend="touchEnd">
+            <div class="huoba-ebook-item-pic-box" @touchstart="touchStart('ebook', item)" @touchend="touchEnd" @click="goToPlay(4, item)">
               <img :src="item.pic" class="huoba-ebook-item-pic">
               <div class="img-one-box" v-if="item.is_top==1">
               </div>
@@ -161,7 +161,7 @@
               <span class="total-text">共{{item.show_str.content}}章</span>
             </div>
             <div class="huoba-ebook-item-total end" v-if="item.show_str.status==2">
-              <span class="total-text">已读{{item.show_str.content}}</span>
+              <span class="total-text">已读{{item.show_str.content}}%</span>
             </div>
             <div class="huoba-ebook-item-total not-end" v-if="item.show_str.status==3">
               <span class="total-text">更新至{{item.show_str.content}}章</span>
@@ -194,7 +194,7 @@
         </svg>
         <span class="pop-one-item-text">置顶</span>
       </div>
-      <div class="pop-one-item">
+      <div class="pop-one-item" @click="checkDetail">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-chakan"/>
         </svg>
@@ -405,7 +405,7 @@
       goToLogin() {
         this.$router.push({name: 'login'});
       },
-      goToDetail(type) {
+      goToDetail(type) {  //  跳转到详情页
         if (type == 'album') {
           this.$router.push({name: 'listenAndReadDetail', query: {detailType:'album'}});
         } else if (type == 'ebook') {
@@ -438,14 +438,24 @@
       },
       recommendLoad() {
         this.getRecommendList();
+      },
+      goToPlay(type, item) {
+        if (type == 9) {  // 专辑
+          this.$router.push({name: 'player',query: {goods_id: item.goods_id}});
+        } else if (type == 4) { // 电子书
+          console.log('电子书');
+        }
+      },
+      checkDetail() { // 查看电子书/专辑详情
+        if (this.touchType == 'album') {
+          this.$router.push({name: 'album', query: {goods_id: this.touchGoodsId}});
+        } else if (this.touchType == 'ebook') {
+          this.$router.push({name: 'ebookdetail', query: {goods_id: this.touchGoodsId}});
+        }
       }
     },
     mounted() {
       this.getInfo();
-      // this.getRecommendList();
-
-      // 获取分享信息
-      // this.$getWxShareData();
     }
   }
 </script>
