@@ -53,7 +53,7 @@
         <h3 class="recomment-text">热门推荐</h3>
         <div class="huoba-album-list-two huoba-ebook-list-two">
           <div v-for="item in recommendList" :key="item.goods_id">
-            <div class="huoba-album-item" v-if="item.goods_type==9" @click="goToPlay(item.goods_type, item)">
+            <div class="huoba-album-item" v-if="item.goods_type==9" @click="recommendDetail(item)">
               <div class="huoba-album-item-pic-box">
                 <img :src="item.pic" class="huoba-album-item-pic">
                 <div class="icon-one-box">
@@ -75,7 +75,7 @@
                 </div>
               </div>
             </div>
-            <div class="huoba-ebook-item" v-if="item.goods_type==4" @click="goToPlay(item.goods_type, item)">
+            <div class="huoba-ebook-item" v-if="item.goods_type==4" @click="recommendDetail(item)">
               <div class="huoba-ebook-item-pic-box">
                 <img :src="item.pic" class="huoba-ebook-item-pic">
               </div>
@@ -465,16 +465,24 @@
       },
       goToPlay(type, item) {
         if (type == 9) {  // 专辑
-          this.$router.push({name: 'player',query: {goods_id: item.goods_id}});
+          console.log('专辑');
+          // this.$router.push({name: 'player',query: {goods_id: item.goods_id}});
         } else if (type == 4) { // 电子书
           console.log('电子书');
         }
       },
-      checkDetail() { // 查看电子书/专辑详情
+      checkDetail() { // 查看 电子书/专辑 详情
         if (this.touchType == 'album') {
           this.$router.push({name: 'album', query: {goods_id: this.touchGoodsId}});
         } else if (this.touchType == 'ebook') {
           this.$router.push({name: 'ebookdetail', query: {goods_id: this.touchGoodsId}});
+        }
+      },
+      recommendDetail(item) { // 查看推荐 电子书/专辑 详情
+        if (item.goods_type==9) { // 专辑
+          this.$router.push({name: 'album', query: {goods_id: item.goods_id}});
+        } else if (item.goods_type==4) {  // 电子书
+          this.$router.push({name: 'ebookdetail', query: {goods_id: item.goods_id}});
         }
       }
     },

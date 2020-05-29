@@ -8,7 +8,7 @@
       v-if="albumShow"
     >
       <div class="huoba-album-list huoba-album-list-two">
-        <div class="huoba-album-item" v-for="item in albumList" :key="item.goods_id"  @touchstart="touchStart('album', item)" @touchend="touchEnd">
+        <div class="huoba-album-item" v-for="item in albumList" :key="item.goods_id"  @touchstart="touchStart('album', item)" @touchend="touchEnd" @click="goToPlay(9, item)">
           <div class="huoba-album-item-pic-box">
             <img :src="item.pic" class="huoba-album-item-pic">
             <div class="icon-one-box">
@@ -27,19 +27,19 @@
                 <use xlink:href="#icon-albumgoods-line"/>
               </svg>
               <span class="total-text">共{{item.show_str.content}}集</span>
-              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleClick('album', item)">
+              <svg class="icon ellipsis-line" aria-hidden="true" @click.stop="handleClick('album', item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
             <div class="huoba-album-item-total end" v-if="item.show_str.status==2">
               <span class="total-text">播放至{{item.show_str.content}}集</span>
-              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleClick('album', item)">
+              <svg class="icon ellipsis-line" aria-hidden="true" @click.stop="handleClick('album', item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
             <div class="huoba-album-item-total not-end" v-if="item.show_str.status==3">
               <span class="total-text">更新至{{item.show_str.content}}集</span>
-              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleClick('album', item)">
+              <svg class="icon ellipsis-line" aria-hidden="true" @click.stop="handleClick('album', item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
@@ -55,7 +55,7 @@
       v-if="ebookShow"
     >
       <div class="huoba-ebook-list huoba-ebook-list-two">
-        <div class="huoba-ebook-item" v-for="item in ebookList" :key="item.goods_id"  @touchstart="touchStart('ebook', item)" @touchend="touchEnd">
+        <div class="huoba-ebook-item" v-for="item in ebookList" :key="item.goods_id"  @touchstart="touchStart('ebook', item)" @touchend="touchEnd" @click="goToPlay(4, item)">
           <div class="huoba-ebook-item-pic-box">
             <img :src="item.pic" class="huoba-ebook-item-pic">
             <div class="img-one-box" v-if="item.is_top==1">
@@ -70,19 +70,19 @@
                 <use xlink:href="#icon-wenzhang"/>
               </svg>
               <span class="total-text">共{{item.show_str.content}}章</span>
-              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleClick('ebook', item)">
+              <svg class="icon ellipsis-line" aria-hidden="true" @click.stop="handleClick('ebook', item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
             <div class="huoba-ebook-item-total end" v-if="item.show_str.status==2">
               <span class="total-text">已读{{item.show_str.content}}%</span>
-              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleClick('ebook', item)">
+              <svg class="icon ellipsis-line" aria-hidden="true" @click.stop="handleClick('ebook', item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
             <div class="huoba-ebook-item-total not-end" v-if="item.show_str.status==3">
               <span class="total-text">更新至{{item.show_str.content}}章</span>
-              <svg class="icon ellipsis-line" aria-hidden="true" @click="handleClick('ebook', item)">
+              <svg class="icon ellipsis-line" aria-hidden="true" @click.stop="handleClick('ebook', item)">
                 <use xlink:href="#icon-ellipsis-line"/>
               </svg>
             </div>
@@ -173,6 +173,7 @@
         let res = await ListenAndRead_LIST(data);
         if (res.hasOwnProperty('response_code')) {
           this.albumCount = res.response_data.total_count;
+          document.title = '专辑（' + this.albumCount + '）';
 
           setTimeout(() => {
             var list = res.response_data.list;
@@ -202,6 +203,7 @@
         let res = await ListenAndRead_LIST(data);
         if (res.hasOwnProperty('response_code')) {
           this.ebookCount = res.response_data.total_count;
+          document.title = '电子书（' + this.ebookCount + '）';
 
           setTimeout(() => {
             var list = res.response_data.list;
@@ -303,6 +305,14 @@
       },
       touchEnd() {
         clearInterval(this.loop);
+      },
+      goToPlay(type, item) {
+        if (type == 9) {  // 专辑
+          console.log('专辑');
+          // this.$router.push({name: 'player',query: {goods_id: item.goods_id}});
+        } else if (type == 4) { // 电子书
+          console.log('电子书');
+        }
       },
       checkDetail() { // 查看电子书/专辑详情
         if (this.touchType == 'album') {
