@@ -45,12 +45,15 @@
       &:first-child .icon{
         margin-left: 0;
       }
-      .unread {
+      .cart {
         position: absolute;
-        top: -50%;
-        right: -100%;
+        top: -40%;
+        right: -80%;
         display: inline-block;
-        padding: 0 2px;
+        min-width: 16px;
+        height: 16px;
+        text-align: center;
+        line-height: 16px;
         background: $redDark;
         border: 1px solid $redDark;
         border-radius: 50%;

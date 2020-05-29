@@ -2,20 +2,26 @@
   <div id="listenAndReadIndex">
     <header class="index-header">
       <div class="icon-box">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-gouwuche"/>
-        </svg>
-        <span class="unread">100</span>
+        <router-link :to="{name: 'cart'}">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-gouwuche"/>
+          </svg>
+          <span class="cart" v-if="navData.goods_nums" v-text="navData.goods_nums"></span>
+        </router-link>
       </div>
       <div class="icon-box">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-dingdan"/>
-        </svg>
+        <router-link :to="{name: 'orderlist'}">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-dingdan"/>
+          </svg>
+        </router-link>
       </div>
       <div class="icon-box">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-zuji"/>
-        </svg>
+        <router-link :to="{name: 'history'}">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-zuji"/>
+          </svg>
+        </router-link>
       </div>
     </header>
     <section class="reminder" v-show="!isLogin">
@@ -228,6 +234,7 @@
 <script>
   import {ListenAndRead_INFO, ListenAndRead_RECOMMEND, ListenAndRead_LIST,ListenAndRead_TOPADD,ListenAndRead_TOPCANCEL} from '@/apis/listenAndRead.js';
   import {COLLECT_CANCEL} from '@/apis/listenAndRead.js';
+  import { CART_INFO } from '@/apis/shopping';
 
   export default {
     data() {
@@ -253,10 +260,27 @@
         recommendPage: 1,
         isTop: false,  //  标记touch的是否为置顶
         touchType: '',   //  标记touch是专辑还是电子书
-        touchGoodsId: ''  // 标记touch的goods_id
+        touchGoodsId: '',  // 标记touch的goods_id
+        navData: {}
       }
     },
     methods: {
+      // 获取购物车信息
+      async cartData() {
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          version: "1.1"
+        };
+        data.sign = this.$getSign(data);
+        let res = await CART_INFO(data);
+
+        if (res.hasOwnProperty("response_code")) {
+          this.navData.goods_nums = res.response_data.kind_num;
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
       async getInfo() {
         let data = {
           version: '1.1'
