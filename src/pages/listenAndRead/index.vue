@@ -185,6 +185,83 @@
       </div>
 
     </div>
+    <div v-else>
+      <!--电子书列表一-->
+      <div class="ebook-list-box" v-if="ebookShow">
+        <h3 class="list-title">电子书<span class="count" v-text="ebookCount"></span></h3>
+        <div class="huoba-ebook-list huoba-ebook-list-one">
+          <div class="huoba-ebook-item" v-for="item in ebookList" :key="item.goods_id">
+            <div class="huoba-ebook-item-pic-box" @touchstart="touchStart('ebook', item)" @touchend="touchEnd" @click="goToPlay(4, item)">
+              <img :src="item.pic" class="huoba-ebook-item-pic">
+              <div class="img-one-box" v-if="item.is_top==1">
+              </div>
+              <span class="text-one" v-if="item.is_payed==1">已购</span>
+            </div>
+            <div class="huoba-ebook-item-des" v-text="item.title"></div>
+            <div class="huoba-ebook-item-total end" v-if="item.show_str.status==1">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-wenzhang"/>
+              </svg>
+              <span class="total-text">共{{item.show_str.content}}章</span>
+            </div>
+            <div class="huoba-ebook-item-total end" v-if="item.show_str.status==2">
+              <span class="total-text">已读{{item.show_str.content}}%</span>
+            </div>
+            <div class="huoba-ebook-item-total not-end" v-if="item.show_str.status==3">
+              <span class="total-text">更新至{{item.show_str.content}}章</span>
+            </div>
+          </div>
+        </div>
+        <div class="button-box" v-if="ebookCount>6"  @click="goToDetail('ebook')">
+          <button class="huoba-btn huoba-btn-five">
+            全部电子书
+            <svg class="icon next-line" aria-hidden="true">
+              <use xlink:href="#icon-next-line"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <!--专辑列表一-->
+      <div class="album-list-box" v-if="albumShow">
+        <h3 class="list-title">专辑<span class="count" v-text="albumCount"></span></h3>
+        <div class="huoba-album-list huoba-album-list-one">
+          <div class="huoba-album-item" v-for="item in albumList" :key="item.goods_id">
+            <div class="huoba-album-item-pic-box" @touchstart="touchStart('album', item)" @touchend="touchEnd" @click="goToPlay(9, item)">
+              <img :src="item.pic" class="huoba-album-item-pic">
+              <div class="icon-one-box">
+                <svg class="icon icon-one" aria-hidden="true">
+                  <use xlink:href="#icon-sound-line"/>
+                </svg>
+              </div>
+              <div class="img-one-box" v-if="item.is_top==1">
+              </div>
+              <span class="text-one" v-if="item.is_payed==1">已购</span>
+            </div>
+            <div class="huoba-album-item-des" v-text="item.title"></div>
+            <div class="huoba-album-item-total end" v-if="item.show_str.status==1">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-albumgoods-line"/>
+              </svg>
+              <span class="total-text">共{{item.show_str.content}}集</span>
+            </div>
+            <div class="huoba-album-item-total end" v-if="item.show_str.status==2">
+              <span class="total-text">播放至{{item.show_str.content}}集</span>
+            </div>
+            <div class="huoba-album-item-total not-end" v-if="item.show_str.status==3">
+              <span class="total-text">更新至{{item.show_str.content}}集</span>
+            </div>
+          </div>
+        </div>
+        <div class="button-box" v-if="albumCount>6"  @click="goToDetail('album')">
+          <button class="huoba-btn huoba-btn-five">
+            全部专辑
+            <svg class="icon next-line" aria-hidden="true">
+              <use xlink:href="#icon-next-line"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!--弹出层-->
     <van-popup v-model="pop_one_show" position="bottom" class="huoba-popup-one">
@@ -313,7 +390,7 @@
             console.log(33, this.recommendShow);
           }
           this.swipeList = res.response_data.recently_view; // 获取轮播图列表（最近访问的专辑和电子书）
-          this.albumFirst = res.response_data.sort == 'album' ? true : false; //  电子书和专辑顺序  // 需思考一下合理方案
+          this.albumFirst = res.response_data.sort == 'album' ? true : false; //  电子书和专辑顺序
           console.log(this.albumFirst);
         } else {
           this.$toast(res.error_message);
