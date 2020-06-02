@@ -1,19 +1,6 @@
 <template>
   <div id="searchHint">
-    <div class="logistics">
-      <!-- <span class="text">物流公司:</span> -->
-      <input
-        maxlength="50"
-        type="text"
-        v-model="searchHintData.search"
-        @input="showList"
-        @focus="inputText"
-        data-type="searchHintData.type"
-        :placeholder="searchHintData.placeholderText"
-      />
-      <van-icon name="clear" size="16" color="#ccc" class="clearIcon" @click="clearText" />
-    </div>
-    <ul>
+    <ul v-if="searchHintData.state == 1">
       <li
         v-for="(item,index) in searchHintData.list"
         :key="index"
@@ -25,33 +12,9 @@
 
 <style lang="scss">
 #searchHint {
-  position: relative;
-  .logistics {
-    //  padding: 0px 15px;
-    position: relative;
-
-    .text {
-      font-size: $fontSize + 2;
-    }
-    input {
-      border: none;
-      padding-left: 25px;
-      background-color: #f5f5f5;
-      width: 90%;
-      box-sizing: border-box;
-    }
-    .clearIcon {
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      margin-top: -7px;
-      display: none;
-    }
-  }
   ul {
     margin-top: 5px;
-    display: none;
-    @include position(absolute, tl, 100%, 0, 100%, null, null);
+    @include position(absolute, tl, 42px, 15px, calc(100% - 63px), null, null);
     z-index: 99;
     li {
       background-color: $greyLight;
@@ -75,38 +38,19 @@ export default {
   mounted(){
 
   },
-  computed: {
-    //过滤方法
-    // items: function() {
-    //   var _search = this.searchHintData.search;
-    //   if (_search) {
-    //     //不区分大小写处理
-    //     var reg = new RegExp(_search, "ig");
-    //     //es6 filter过滤匹配，有则返回当前，无则返回所有
-    //     return this.searchHintData.list.filter(function(e) {
-    //       //匹配所有字段
-    //       return Object.keys(e).some(function(key) {
-    //         return e[key].match(reg);
-    //       });
-    //     });
-    //   }
-    //   return this.searchHintData.list;
-    //   // console.log(this.list)
-    // }
-  },
   methods: {
-
     select(item, index) {
       console.log(item);
       this.searchHintData.search = item;
-      $("#searchHint ul").css({ display: "none" });
+      this.searchHintData.state = 0;
     },
     async showList() {
       if (this.searchHintData.search.trim() == "") {
-        this.searchData();
+        // this.searchData();
+        this.searchHintData.state = 0;
         return;
       }
-      console.log(this.searchHintData.search.trim() == "");
+      // console.log(this.searchHintData.search.trim() == "");
 
       // setTimeout(()=> {
 
@@ -123,29 +67,13 @@ export default {
         if (res.hasOwnProperty("response_code")) {
           // console.log(res)
           this.searchHintData.list = res.response_data;
-          this.searchData();
+          this.searchHintData.state = 1;
         } else {
           this.$toast(res.error_message);
         }
 
       // }, 600)
     },
-    clearText() {
-      $("#searchHint input").val("");
-      this.searchData();
-    },
-    inputText() {
-      this.searchData();
-    },
-    searchData() {
-      if ($("#searchHint input").val().length > 0) {
-        $("#searchHint ul").css({ display: "block" });
-        $(".clearIcon").css({ display: "block" });
-      } else {
-        $("#searchHint ul").css({ display: "none" });
-        $(".clearIcon").css({ display: "none" });
-      }
-    }
   }
 };
 </script>

@@ -193,6 +193,7 @@ A、localStorage
   17、phone：记录验证码手机号
   18、second：记录验证码手机号对应倒计时
   19、isReload: 1為true，0為false
+  20、orderCmts：记录订单历史搜索内容
 
 路由参数
 

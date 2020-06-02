@@ -620,10 +620,12 @@ export default {
       var self = this;
       var time1 = endtime;
       var d = time1 / 60 / 60 / 24;
+      console.log('天数1',d)
       if (d >= 1 && d <= 3) {
         self.showDay = true;
         self.showTime = true;
         self.groupshowDay = true;
+        self.receive_time = Math.ceil(d)+'天'
         d = Math.floor(d);
         self.timeDataDesc = '距活动结束还剩' + d + '天';
         self.timeData = '距结束还剩' + d + '天';
@@ -641,6 +643,7 @@ export default {
             return false
           }
           time1--
+          self.receive_time = Math.ceil(time1 / 60 / 60)+'小时'
           let h = Math.floor(time1 / 60 / 60)
           let m = Math.floor((time1 - h * 60 * 60) / 60)
           let s = time1 - (h * 60 * 60) - (m * 60)
@@ -655,6 +658,7 @@ export default {
           self.timeS = s
         }, 1000)
       } else if (d > 3) {
+        self.receive_time = Math.ceil(d)+'天'
         d = Math.floor(d);
         self.showTime = false;
         self.groupshowDay = true;

@@ -17,7 +17,7 @@
         <div class="info">
           <span class="history" v-if="this.single_activity_id">
             促销价：¥{{ goodsInfo.price.toFixed(2) }}
-            <del class="promotion">原价￥{{goodsInfo.sale_price}}</del>
+            <del class="promotion">原价￥{{goodsInfo.sale_price.toFixed(2)}}</del>
           </span>
           <span class="history" v-else>¥{{ goodsInfo.price.toFixed(2) }}</span>
         </div>
@@ -468,7 +468,8 @@ export default {
         title: "",
         pic: [],
         goods_type: null,
-        price: null
+        price: 0,
+        sale_price: 0
       },
       // 支付方式
       payBank: [],
@@ -502,7 +503,10 @@ export default {
       nouseCoupon: "",
       useCoupon: "",
       ticket_price: null,
-      ticket_lists: null,
+      ticket_lists: {
+        canuse: [],
+        nouse: []
+      },
       ticket_num: 0,
       discount_price: 0,
       total_money: 0,

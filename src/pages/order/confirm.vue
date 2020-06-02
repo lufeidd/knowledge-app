@@ -549,7 +549,7 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.pay_id = res.response_data.pay_id;
-        this.$router.push({
+        this.$router.replace({
           name: "pay",
           query: {
             pay_id: this.pay_id,

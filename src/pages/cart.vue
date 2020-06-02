@@ -11,7 +11,7 @@
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-cart-line" />
           </svg>
-          共{{ goods_nums }}件商品
+          共{{ kind_num }}件商品
         </van-col>
         <van-col span="12" style="text-align: right;">
           <div @click="editOrDelete">
@@ -216,7 +216,6 @@
                     <van-stepper
                       disabled
                       v-model="litem.count"
-                      @overlimit="onOverlimit($event,litem.count,litem.detail_id)"
                     />
                   </div>
                 </div>
@@ -388,7 +387,8 @@ export default {
       editIndex: 0,
       editgIndex: 0,
       editlindex: 0,
-      showCount: 0
+      showCount: 0,
+      kind_num:0,
     };
   },
   mounted() {
@@ -440,7 +440,7 @@ export default {
     confirmEdit() {
       console.log(this.goods_nums - this.oldCount + this.editCount);
       if (
-        this.goods_nums - this.oldCount + this.editCount <= 120 &&
+        this.kind_num <= 120 &&
         this.editCount > 0
       ) {
         this.productCountData(this.editDetail_id, this.editCount);
@@ -456,7 +456,7 @@ export default {
         if (this.editCount <= 0) {
           this.$toast("商品件数不能小于1件~");
         } else {
-          this.$toast("购物车商品总数量不能超过120件~");
+          this.$toast("购物车已满，最多可以放120种商品哦");
         }
       }
       this.showkeyboard = false;
@@ -577,6 +577,7 @@ export default {
         this.$refs.nav.navData.goods_nums = res.response_data.info.goods_nums;
         this.money = res.response_data.info.real_money;
         this.total_money = res.response_data.info.cart_money;
+        this.kind_num = res.response_data.info.kind_num;
         this.changeState(res.response_data.info.cart_list);
       } else {
         this.$toast(res.error_message);
@@ -600,6 +601,7 @@ export default {
         this.goods_nums = res.response_data.info.goods_nums;
         this.$refs.nav.navData.goods_nums = res.response_data.info.goods_nums;
         this.money = res.response_data.info.real_money;
+        this.kind_num = res.response_data.info.kind_num;
         this.total_money = res.response_data.info.cart_money;
         // this.changeState(res.response_data.info.cart_list);
       } else {
@@ -628,6 +630,7 @@ export default {
         this.goods_nums = res.response_data.info.goods_nums;
         this.money = res.response_data.info.real_money;
         this.total_money = res.response_data.info.cart_money;
+        this.kind_num = res.response_data.info.kind_num;
         this.changeState(res.response_data.info.cart_list);
       } else {
         this.$toast(res.error_message);
@@ -651,6 +654,7 @@ export default {
         this.money = res.response_data.real_money;
         this.total_money = res.response_data.cart_money;
         this.show = true;
+        this.kind_num = res.response_data.kind_num
       } else {
         this.$toast(res.error_message);
       }
@@ -837,7 +841,7 @@ export default {
     },
     // 计数 +
     addCount(cIndex, gIndex, lindex, detail_id, count) {
-      if (this.goods_nums + 1 <= 120) {
+      if (this.kind_num <= 120) {
         var _count;
         this.cartlist[cIndex].act_list[gIndex].goods_list = this.cartlist[
           cIndex
@@ -860,7 +864,7 @@ export default {
             }
             return value;
           });
-          this.$toast("购物车商品总数量不能超过120件~");
+          this.$toast("购物车已满，最多可以放120种商品哦");
         }, 1);
       }
       // console.log(count,this.cartlist[cIndex].act_list[gIndex].goods_list[lindex].count)

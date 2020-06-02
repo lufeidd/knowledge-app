@@ -41,7 +41,7 @@
       <!-- 我的订单 -->
       <router-link
         v-if="type == 'order' && navData.search"
-        :to="{path:navData.searchLink,query:{type:type}}"
+        :to="{path:navData.searchLink,query:{type:'order'}}"
         class="link"
       >
         <svg class="icon" aria-hidden="true">
@@ -52,7 +52,7 @@
       <!-- 优惠券 -->
       <router-link
         v-if="type == 'coupon' && navData.search"
-        :to="{path:navData.searchLink,query:{type:type,ticket_id:$route.query.ticket_id}}"
+        :to="{path:navData.searchLink,query:{type:'coupon',ticket_id:$route.query.ticket_id}}"
         class="link"
       >
         <svg class="icon" aria-hidden="true">
@@ -63,7 +63,7 @@
       <!-- 商城首页 -->
       <router-link
         v-if="type == 'mall' && navData.search"
-        :to="{path:navData.searchLink,query:{type:type, supplier_id: $route.query.supplier_id}}"
+        :to="{path:navData.searchLink,query:{type:'mall', supplier_id: $route.query.supplier_id}}"
         class="link"
       >
         <svg class="icon" aria-hidden="true">
@@ -203,7 +203,7 @@ export default {
   mounted() {
     // 获取分享信息
     this.$getWxShareData();
-    
+
     this.home_id = localStorage.getItem("home_id");
     if (this.type === undefined) {
       this.type = this.navData.type;
@@ -264,7 +264,7 @@ export default {
       let res = await CART_INFO(data);
 
       if (res.hasOwnProperty("response_code")) {
-        this.navData.goods_nums = res.response_data.goods_nums;
+        this.navData.goods_nums = res.response_data.kind_num;
       } else {
         this.$toast(res.error_message);
       }

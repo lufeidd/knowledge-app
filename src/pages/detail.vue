@@ -635,7 +635,6 @@ export default {
       let res = await ALBUM(data);
 
       if (res.hasOwnProperty("response_code")) {
-        // console.log(666,this.navData.goods_nums)
         this.shoppingcart_num = res.response_data.shoppingcart_num;
         // 邮费信息
         this.dispatch_str = res.response_data.dispatch_str;

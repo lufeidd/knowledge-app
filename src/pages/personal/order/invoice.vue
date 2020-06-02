@@ -1,172 +1,125 @@
 <template>
   <div id="invoicePage">
-    <van-cell-group id="one">
-      <van-cell title="订单号:" v-model="invoiceData.orderNumber" value/>
-
-      <!-- <van-cell title="发票类型:" value="普通发票" v-if="this.invoiceData.invoiceType == 1" is-link arrow-direction="down" @click="choosetype"/> -->
-
-      <van-cell title="发票类型:" value="电子发票" />
-
-      <van-cell title="发票内容:" :value="invoiceData.invoice_content"/>
-      <!-- <van-field
-        v-model="invoiceData.invoice_content"
-        clearable
-        clear
-        label="发票内容:"
-        placeholder="请填写发票内容"
-      />-->
-      <van-cell
-        title="开票抬头:"
-        value="个人"
-        v-if="type == 1"
-        is-link
-        arrow-direction="down"
-        @click="showAction()"
-      />
-      <van-cell
-        title="开票抬头:"
-        value="单位"
-        v-else
-        id="two"
-        @click="showAction()"
-        is-link
-        arrow-direction="down"
-      />
-    </van-cell-group>
-    <van-cell-group>
-      <template>
-        <van-field
-          v-model="invoiceData.companyName"
-          clearable
-          label="单位名称:"
-          placeholder="请填写单位名称"
-          clear
-          v-show="type == 2 "
-          :error-message="invoiceData.company_message"
-          @input="checkb"
-        />
-        <van-field
-          v-model="invoiceData.number"
-          clearable
-          label="税号:"
-          placeholder="请填写税号"
-          clear
-          v-show="type == 2 "
-          :error-message="invoiceData.number_message"
-          @input="check50"
-        />
-      </template>
-      <van-field
-        v-model="invoiceData.username"
-        clearable
-        label="收票人姓名:"
-        placeholder="请填写收票人姓名"
-        clear
-        :error-message="invoiceData.name_message"
-        @input="checka"
-      />
-      <van-field
-        v-model="invoiceData.phone"
-        clearable
-        label="收票人手机号:"
-        placeholder="请填写收票人手机号"
-        clear
-        :error-message="invoiceData.error_message"
-        @input="checkPhone"
-      />
-    </van-cell-group>
+    <div class="content">
+      <div class="huoba-cell huoba-cell-eight">
+        <div class="huoba-cell-left">订单编号:</div>
+        <div class="huoba-cell-mid">
+          <span>{{invoiceData.orderNumber}}</span>
+        </div>
+      </div>
+      <div class="huoba-cell huoba-cell-eight">
+        <div class="huoba-cell-left">开票金额:</div>
+        <div class="huoba-cell-mid">
+          <span class="money">￥{{invoiceData.invoice_money}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="huoba-cell huoba-cell-eight">
+        <div class="huoba-cell-left">发票类型:</div>
+        <div class="huoba-cell-mid">
+          <span>电子普通发票</span>
+        </div>
+      </div>
+      <div class="huoba-cell huoba-cell-eight">
+        <div class="huoba-cell-left">发票内容:</div>
+        <div class="huoba-cell-mid">
+          <span>商品明细</span>
+        </div>
+      </div>
+      <div class="huoba-cell huoba-cell-eight">
+        <div class="huoba-cell-left">抬头内容*:</div>
+        <div class="huoba-cell-mid"  v-if="invoice.flag == 1 || invoice.flag == 2">
+          <span>{{invoice.invoice_title}}</span>
+        </div>
+        <div class="huoba-cell-mid" v-else>
+          <van-radio-group v-model="radio_state">
+            <van-radio name="1">
+              <svg
+                :class="props.checked ? 'icon check':'icon'"
+                aria-hidden="true"
+                slot="icon"
+                slot-scope="props"
+              >
+                <use :xlink:href="props.checked ? '#icon-radio-block' : '#icon-guanbi'" />
+              </svg>
+              个人
+            </van-radio>
+            <van-radio name="2">
+              <svg
+                :class="props.checked ? 'icon check':'icon'"
+                aria-hidden="true"
+                slot="icon"
+                slot-scope="props"
+              >
+                <use :xlink:href="props.checked ? '#icon-radio-block' : '#icon-guanbi'" />
+              </svg>
+              单位
+            </van-radio>
+          </van-radio-group>
+        </div>
+      </div>
+      <div class="huoba-cell huoba-cell-eight" v-if="radio_state == '1'">
+        <div class="huoba-cell-left">个人名称*:</div>
+        <div class="huoba-cell-mid">
+          <input type="text" readonly v-model="invoice.notify_people" v-if="invoice.flag == 1 || invoice.flag == 2"/>
+          <input type="text" placeholder="请填写“个人”或您的姓名" v-model="invoiceData.username" v-else/>
+        </div>
+      </div>
+      <div class="huoba-cell huoba-cell-eight" v-if="radio_state == '2'">
+        <div class="huoba-cell-left">单位名称*:</div>
+        <div class="huoba-cell-mid">
+          <input type="text" readonly v-if="invoice.flag == 1 || invoice.flag == 2" v-model="invoice.notify_people" />
+          <input type="text" placeholder="请填写单位名称" v-model="invoiceData.companyName" v-else/>
+        </div>
+      </div>
+      <div class="huoba-cell huoba-cell-eight" v-if="radio_state == '2'">
+        <div class="huoba-cell-left">税号*:</div>
+        <div class="huoba-cell-mid">
+          <input type="text" readonly v-if="invoice.flag == 1 || invoice.flag == 2" v-model="invoice.tax_number" />
+          <input type="text" placeholder="请在此填写纳税人识别号" v-model="invoiceData.number" v-else/>
+        </div>
+      </div>
+      <div class="huoba-cell huoba-cell-eight">
+        <div class="huoba-cell-left">手机号码*:</div>
+        <div class="huoba-cell-mid">
+          <input type="text" readonly v-if="invoice.flag == 1 || invoice.flag == 2" v-model="invoice.notify_mobile" />
+          <input type="text" placeholder="请填写收票人的手机号码" v-model="invoiceData.phone" v-else/>
+        </div>
+      </div>
+    </div>
+    <div class="tips" v-if="radio_state == '1'">
+      提交后不能修改，请谨慎填写。<br>
+      发票由商家开具，火把平台不保证发票信息准确无误。<br>
+      开票金额为实际支付金额，不包含虚拟资产，优惠等扣减金额。<br>
+      按税法要求，发票内容将显示详细商品名称与价格信息
+    </div>
+    <div class="tips" v-if="radio_state == '2'">
+      提交后不能修改，请谨慎填写。
+      开票金额为实际支付金额，不包含虚拟资产，优惠等扣减金额。
+      按税法要求，发票内容将显示详细商品名称与价格信息；
+    </div>
+    <div style="height:50px;"></div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="bottomBox" :class="{iphx:this.isIphx}">
-      <van-button type="danger" size="large" @click="submitAction">提交</van-button>
-
+      <button class="huoba-btn huoba-btn-three disabled" v-if="invoice.flag == 1 || invoice.flag == 2">已提交申请，商家处理中</button>
+      <button class="huoba-btn huoba-btn-three" @click="submitAction" v-else>提交</button>
     </div>
-    <EazyNav type="order" :isShow="false"></EazyNav>
-    <van-actionsheet
-      v-model="invoiceModle"
-      :actions="invoiceActions"
-      cancel-text="取消"
-      @select="invoiceSelect"
-      @cancel="invoiceModel=false"
-    />
-    <!-- <van-actionsheet
-      v-model="invoiceTypeModle"
-      :actions="invoiceTypeActions"
-      cancel-text="取消"
-      @select="invoiceTypeSelect"
-      @cancel="invoiceTypeModle=false"
-    /> -->
   </div>
 </template>
 
-<style src="@/style/scss/pages/personal/order/invoice.scss" lang="scss"></style>
-<style scoped lang="scss">
-  // @import url("./../../../style/scss/components/button.scss");
-#invoicePage {
-
-
-// .van-button {
-//   border-radius: 50px;
-// }
-
-.van-button::before {
-  display: none;
-}
-
-.van-button--plain.van-button--danger {
-  background-color: #fff;
-}
-
-.van-button--danger {
-  background-color: #f05654;
-  border-color: #f05654;
-}
-
-.van-button--danger.van-button--disabled {
-  background-color: #d6d6d6;
-  border-color: #d6d6d6;
-  opacity: 1;
-}
-
-.van-button--small {
-  min-width: 80px;
-}
-
-.van-button--large {
-  height: 50px;
-  line-height: 50px;
-}
-
-.van-button--default {
-  color: #333;
-}
-}
-</style>
+<style src="@/style/scss/pages/personal/order/invoice.scss" scoped lang="scss"></style>
 
 <script>
-// import easyNav from "./../../../components/easyNav";
 import { USER_ORDER_INVOICE_ADD } from "../../../apis/user.js";
 export default {
-  // components: {
-  //   easyNav
-  // },
   data() {
     return {
-      // navData: {
-      //   fold: false,
-      //   home: true,
-      //   homeLink: "/brand/index",
-      //   search: false,
-      //   // searchLink: "/search",
-      //   personal: true,
-      //   personalLink: "/personal/index",
-      //   type: "brand"
-      // },
       username: "",
-      type: 1,
       invoiceData: {
         orderNumber: "",
         invoiceType: 2,
-        invoice_content: "明细",
+        invoice_content: "商品明细",
         invoice_money: null,
         companyName: "",
         number: "",
@@ -177,30 +130,18 @@ export default {
         company_message: "",
         number_message: ""
       },
-      invoiceModle: false,
-      // invoiceTypeModle: false,
-      invoiceActions: [
-        {
-          name: "个人"
-        },
-        {
-          name: "单位"
-        }
-      ],
-      // invoiceTypeActions: [
-      //   {
-      //     name: "普通发票"
-      //   },
-      //   {
-      //     name: "电子发票"
-      //   }
-      // ]
+      radio_state: "1",
+      invoice:{}
     };
   },
   mounted() {
     this.invoiceData.orderNumber = this.$route.query.order_id;
     this.invoiceData.invoice_money = this.$route.query.money;
-    console.log(this.invoiceData.invoice_money);
+    this.invoice = JSON.parse(this.$route.query.invoice);
+    if(this.invoice.invoice_title == '单位'){
+      this.radio_state = '2'
+    }
+    console.log(this.invoice)
   },
   methods: {
     checkPhone() {
@@ -241,43 +182,42 @@ export default {
         this.invoiceData.company_message = "";
       }
     },
-    async submitInvoice(__type) {
+    async submitInvoice() {
       var data = {};
       var res;
-      switch (__type) {
-        case "personal":
+      switch (this.radio_state) {
+        case "1":
           data = {
             order_id: this.invoiceData.orderNumber,
-            invoice_title: "个人",
             type: this.invoiceData.invoiceType,
             remarks: this.invoiceData.invoice_content,
             invoice_money: this.invoiceData.invoice_money,
+            invoice_title: '个人',
             notify_people: this.invoiceData.username,
             notify_mobile: this.invoiceData.phone,
             version: "1.0"
           };
           res = await USER_ORDER_INVOICE_ADD(data);
-          this.$toast("已提交个人发票~");
           break;
-        case "company":
+        case "2":
           data = {
             order_id: this.invoiceData.orderNumber,
-            invoice_title: this.invoiceData.companyName,
+            invoice_title: '单位',
             type: this.invoiceData.invoiceType,
             remarks: this.invoiceData.invoice_content,
             invoice_money: this.invoiceData.invoice_money,
             tax_number: this.invoiceData.number,
-            notify_people: this.invoiceData.username,
+            notify_people: this.invoiceData.companyName,
             notify_mobile: this.invoiceData.phone,
             version: "1.0"
           };
           res = await USER_ORDER_INVOICE_ADD(data);
-          this.$toast("已提交单位发票~");
           break;
       }
       // 出错提示
       if (res.hasOwnProperty("response_code")) {
         console.log(res);
+        this.$toast('提交成功')
         this.$router.go(-1);
       } else {
         this.$toast(res.error_message);
@@ -285,19 +225,19 @@ export default {
     },
     submitAction() {
       var phoneNumber = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/;
-
+      if (!phoneNumber.test(this.invoiceData.phone)) {
+        this.$toast('请输入正确的手机号码')
+        return
+      }
       if (
-        this.type == 1 &&
+        this.radio_state == '1' &&
         phoneNumber.test(this.invoiceData.phone) &&
         this.invoiceData.username.length > 0
       ) {
         this.submitInvoice("personal");
-        // console.log(this.invoiceData.invoice_money)
       } else if (
-        this.type == 2 &&
+        this.radio_state == '2' &&
         this.invoiceData.number.length > 0 &&
-        phoneNumber.test(this.invoiceData.phone) &&
-        this.invoiceData.username.length > 0 &&
         this.invoiceData.companyName.length > 0
       ) {
         this.submitInvoice("company");
@@ -306,36 +246,6 @@ export default {
         this.$toast("请填写完整信息");
       }
     },
-    // 选择发票抬头
-    showAction(type) {
-      this.invoiceModle = true;
-    },
-    invoiceSelect(item, index) {
-      // 点击选项时默认不会关闭菜单，可以手动关闭
-      this.invoiceModle = false;
-      // this.infoList.sex = index + 1;
-      if (item.name == "个人") {
-        this.type = 1;
-      } else if (item.name == "单位") {
-        this.type = 2;
-      }
-      // console.log(item.name)
-    },
-    //选择发票类型
-    // choosetype(){
-    //   this.invoiceTypeModle = true;
-    // },
-    // invoiceTypeSelect(item, index) {
-    //   // 点击选项时默认不会关闭菜单，可以手动关闭
-    //   this.invoiceTypeModle = false;
-    //   // this.infoList.sex = index + 1;
-    //   if(item.name == '普通发票'){
-    //     this.invoiceData.invoiceType = 1;
-    //   }else if(item.name == '电子发票'){
-    //     this.invoiceData.invoiceType = 2;
-    //   }
-    //   // console.log(item.name)
-    // },
   }
 };
 </script>
