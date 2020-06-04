@@ -185,7 +185,7 @@
       </div>
 
     </div>
-    <div v-else>
+    <div v-if="ebookFirst">
       <!--电子书列表一-->
       <div class="ebook-list-box" v-if="ebookShow">
         <h3 class="list-title">电子书<span class="count" v-text="ebookCount"></span></h3>
@@ -329,7 +329,8 @@
         albumCount: '',
         ebookList: [],
         ebookCount: '',
-        albumFirst: true,
+        albumFirst: false,
+        ebookFirst: false,
         lookingUrl: '',  // 随便看看跳转url
         loop: null,
         recommendLoading: false,
@@ -375,22 +376,24 @@
                   _this.albumShow = true;
                 }
                 if (_this.ebookList.length != 0) {
-                  _this.ebookList = true;
+                  _this.ebookShow = true;
                 }
 
                 if (_this.albumList.length == 0 && _this.ebookList.length == 0) {
                   _this.noInterest = true; // 无感兴趣内容
                 }
+
+                if (_this.noInterest || _this.isLogin == '0') {
+                  _this.recommendShow = true; // 登录无感兴趣内容或未登录显示热门推荐
+                  console.log(33, _this.recommendShow);
+                }
               });
             });
 
           }
-          if (this.noInterest || this.isLogin == '0') {
-            this.recommendShow = true; // 登录无感兴趣内容或未登录显示热门推荐
-            console.log(33, this.recommendShow);
-          }
           this.swipeList = res.response_data.recently_view; // 获取轮播图列表（最近访问的专辑和电子书）
           this.albumFirst = res.response_data.sort == 'album' ? true : false; //  电子书和专辑顺序
+          this.ebookFirst = res.response_data.sort == 'ebook' ? true : false; //  电子书和专辑顺序
           console.log(this.albumFirst);
         } else {
           this.$toast(res.error_message);
@@ -542,19 +545,19 @@
       },
       goToPlay(type, item) {
         if (item.show_str.status == 2) { // 用户播放过
-          if (item.show_str.goods_type== 1) {  // 音频
+          if (item.show_str.extra_info.type == 1) {  // 音频
             this.$router.push({name: 'player',query: {pid: item.goods_id, goods_id: item.show_str.extra_info.id, goods_no: item.show_str.extra_info.sort}});
-          } else if (item.show_str.goods_type== 2) { // 视频
+          } else if (item.show_str.extra_info.type == 2) { // 视频
             this.$router.push({name: 'albumdetail',query: {goods_id: item.show_str.extra_info.id}});
-          }  else if (item.show_str.goods_type== 4) { // 电子书
+          }  else if (item.show_str.extra_info.type == 4) { // 电子书
             this.$router.push({name: 'ebookreader',query: {goods_id: item.goods_id, chapter_id: item.show_str.extra_info.id, currenChapterTitle: item.show_str.extra_info.sort}});
           }
         } else {  // 用户未播放过
           if (type == 9) {  // 专辑
-            // console.log('专辑');
+            console.log('专辑');
             this.$router.push({name: 'album',query: {goods_id: item.goods_id}});
           } else if (type == 4) { // 电子书
-            // console.log('电子书');
+            console.log('电子书');
             this.$router.push({name: 'ebookdetail', query: {goods_id: item.goods_id}});
           }
 
