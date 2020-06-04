@@ -103,9 +103,7 @@
           </div>
           <div class="huoba-cell-mid">
             <div class="huoba-cell-logticinfo">
-              <span>
-                此订单已分拆为{{infoData.if_all_send == 1?infoData.send_package_nums:'多'}}个包裹，{{infoData.if_all_send == 1?'':'部分已发出'}}点击可查看详情
-              </span>
+              <span>此订单已分拆为{{infoData.if_all_send == 1?infoData.send_package_nums:'多'}}个包裹，{{infoData.if_all_send == 1?'':'部分已发出'}}点击可查看详情</span>
             </div>
             <div class="huoba-cell-timeinfo">2019-2-13 20:34:34</div>
           </div>
@@ -135,7 +133,7 @@
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-next-line" />
             </svg>
-          </div> -->
+          </div>-->
         </div>
       </div>
       <!-- 拼团 -->
@@ -231,6 +229,7 @@
               <span class="huoba-goods-list-label" v-if="item.goods_type == 3">图书</span>
               <span class="huoba-goods-list-label" v-if="item.goods_type == 4">电子书</span>
               <span class="huoba-goods-list-label" v-if="item.goods_type == 9">专辑</span>
+              <span class="huoba-goods-list-label" v-if="item.goods_type == 10">文件包</span>
             </div>
           </div>
           <div class="huoba-goods-list-mid">
@@ -238,7 +237,7 @@
               <span>{{item.goods_name}}</span>
             </span>
             <div>
-              <span class="huoba-goods-price">￥{{item.real_price}}</span>
+              <span class="huoba-goods-price">￥{{item.sale_price.toFixed(2)}}</span>
               <span class="huoba-goods-num">x{{item.buy_count}}</span>
             </div>
           </div>
@@ -277,19 +276,19 @@
       <!-- 价格 -->
       <div class="content">
         <div class="huoba-cell-six">
-          <van-cell title="商品总额" :value="'¥'+infoData.order_goods_money.toFixed(2)"></van-cell>
+          <van-cell title="商品总额" :value="'￥'+infoData.order_goods_money.toFixed(2)"></van-cell>
           <van-cell
             title="商品优惠"
             v-if="infoData.activity_money"
-            :value="'-¥'+infoData.activity_money.toFixed(2)"
+            :value="'- ￥'+infoData.activity_money.toFixed(2)"
           ></van-cell>
           <van-cell
             title="活动立减"
             v-if="infoData.multi_money"
-            :value="'-¥'+infoData.multi_money.toFixed(2)"
+            :value="'- ￥'+infoData.multi_money.toFixed(2)"
           ></van-cell>
           <!-- <van-cell title="优惠券" value="-¥5.00"></van-cell> -->
-          <van-cell title="运费" :value="'+¥'+infoData.dispatch_price.toFixed(2)"></van-cell>
+          <van-cell title="运费" v-if="infoData.type == 2" :value="'+ ￥'+infoData.dispatch_price.toFixed(2)"></van-cell>
           <div class="huoba-cell-last">
             <!-- <span>{{infoData.state == 1? '待支付':'实付款'}}</span> -->
             <span>订单总价</span>
@@ -299,10 +298,7 @@
                 class="huoba-cell-last-num"
                 v-if="infoData.pay_state"
               >{{infoData.pay_money.toFixed(2)}}</span>
-              <span
-                class="huoba-cell-last-num"
-                v-else
-              >{{infoData.order_money.toFixed(2)}}</span>
+              <span class="huoba-cell-last-num" v-else>{{infoData.order_money.toFixed(2)}}</span>
             </span>
           </div>
         </div>
@@ -329,6 +325,7 @@
             v-if="(infoData.state !== 1 || infoData.state !== 7) && infoData.pay_time"
           >支付时间：{{infoData.pay_time}}</div>
         </div>
+        <div v-if="infoData.type == 1" class="invent">虚拟商品由于特殊性，订单完成后不予退换。</div>
       </div>
       <div v-if="this.isIphx" style="height: 34px;"></div>
       <!-- 底部按钮导航 -->
@@ -364,7 +361,7 @@
             <button
               class="huoba-btn huoba-btn-two"
               style="margin-left:15px;"
-              v-if="infoData.state == 5 && infoData.type== 2 && infoData.remain_receive_time_delayed == 1"
+              v-if="infoData.state == 5 && infoData.type== 2 && infoData.remain_receive_time_delayed == 1 && show_delay"
               @click="extend"
             >延长收货</button>
             <button
@@ -467,19 +464,23 @@ export default {
       timeS: "00",
       receive_time: "",
       goods_list: [],
-      show_btn:true,
-      order_nums:0,
+      show_btn: true,
+      order_nums: 0,
+      show_delay: false
     };
   },
   mounted() {
     this.order_id = this.$route.query.order_id;
     this.getData();
   },
-  updated(){
-    if($('.huoba-button-nav .huoba-button-nav-right').find('.huoba-btn').length > 0){
-      this.show_btn = true
-    }else{
-      this.show_btn = false
+  updated() {
+    if (
+      $(".huoba-button-nav .huoba-button-nav-right").find(".huoba-btn").length >
+      0
+    ) {
+      this.show_btn = true;
+    } else {
+      this.show_btn = false;
     }
   },
   methods: {
@@ -519,14 +520,25 @@ export default {
         }
         this.groupData = res.response_data.groupbuy_info;
         for (let i = 0; i < this.infoData.detail.length; i++) {
-          if (this.infoData.detail[i].if_refund == 2 || this.infoData.detail[i].if_refund == 3) {
+          if (
+            this.infoData.detail[i].if_refund == 2 ||
+            this.infoData.detail[i].if_refund == 3
+          ) {
             this.if_refund = false;
           }
         }
-        if (this.infoData && this.infoData.remain_pay_time && this.infoData.state == 1) {
+        if (
+          this.infoData &&
+          this.infoData.remain_pay_time &&
+          this.infoData.state == 1
+        ) {
           this.$countTime(this.infoData.remain_pay_time);
         }
-        if (this.infoData && this.infoData.remain_receive_time && this.infoData.state == 5) {
+        if (
+          this.infoData &&
+          this.infoData.remain_receive_time &&
+          this.infoData.state == 5
+        ) {
           this.$countTime(this.infoData.remain_receive_time);
         }
       } else {
@@ -577,9 +589,9 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.$toast("删除订单成功");
         this.$router.replace({
-          name:"orderlist"
-        })
-        location.reload()
+          name: "orderlist"
+        });
+        location.reload();
       } else {
         this.$toast(res.error_message);
       }
@@ -624,19 +636,30 @@ export default {
         name: "logistics",
         query: {
           order_id: this.infoData.order_id,
-          express_id: this.infoData.detail[0].express_id,
+          express_id: this.infoData.package_info[0].id
         }
       });
     },
     //评价
     toComment() {
       // console.log(this.infoData.order_id);
-      this.$router.push({
-        name: "ordercomment",
-        query: {
-          order_id: this.infoData.order_id
-        }
-      });
+      if (this.infoData.detail.length > 1) {
+        this.$router.push({
+          name: "ordercomment",
+          query: {
+            order_id: this.infoData.order_id
+          }
+        });
+      } else if (this.infoData.detail.length == 1) {
+        this.$router.push({
+          name: "commentpunish",
+          query: {
+            pic: this.infoData.detail[0].pic,
+            order_id: this.infoData.order_id,
+            detail_id: this.infoData.detail[0].detail_id
+          }
+        });
+      }
     },
     //再次购买
     repurchase() {
@@ -724,6 +747,15 @@ export default {
           }
         });
       }
+      // 文件包
+      else if (item.goods_type == 10) {
+        this.$router.push({
+          name: "librarydetail",
+          query: {
+            goods_id: item.goods_id
+          }
+        });
+      }
     },
     //跳转公号主页
     toBrandindex() {
@@ -766,20 +798,20 @@ export default {
     },
     // 申请售后
     torefund(item) {
-      if(this.infoData.if_account == 1){
-        this.$toast('抱歉，此商品已超过退款周期')
-        return
-      }else if (this.infoData.state == 2) {
+      if (this.infoData.if_account == 1) {
+        this.$toast("抱歉，此商品已超过退款周期");
+        return;
+      } else if (this.infoData.state == 2) {
         // this.$toast("抱歉，此商品已超过退款周期");
         this.$router.push({
-          name:"refundtwo",
-          query:{
+          name: "refundtwo",
+          query: {
             order_id: this.infoData.order_id,
             detail_id: item.id,
-            goods_length:this.infoData.detail.length
+            goods_length: this.infoData.detail.length
           }
-        })
-      } else if (this.infoData.state == 4 || this.infoData.state == 5){
+        });
+      } else if (this.infoData.state == 4 || this.infoData.state == 5) {
         this.$router.push({
           name: "refundtype",
           query: {
@@ -790,7 +822,7 @@ export default {
             goods_num: item.buy_count,
             goods_name: item.goods_name,
             real_price: item.real_price,
-            goods_length:this.infoData.detail.length
+            goods_length: this.infoData.detail.length
           }
         });
       }
@@ -849,24 +881,24 @@ export default {
         query: {
           order_id: this.infoData.order_id,
           money: this.infoData.pay_money,
-          invoice: JSON.stringify(this.invoice),
+          invoice: JSON.stringify(this.invoice)
         }
       });
     },
     // 查看全部商品
-    watchmore (){
+    watchmore() {
       this.$router.push({
-        name:"packageallgoods",
-        query:{
-          order_id:this.infoData.order_id,
+        name: "packageallgoods",
+        query: {
+          order_id: this.infoData.order_id
         }
-      })
+      });
     },
     // 查看收货地址
-    toAddress(){
+    toAddress() {
       this.$router.push({
-        name:"addresslist"
-      })
+        name: "addresslist"
+      });
     }
   }
 };

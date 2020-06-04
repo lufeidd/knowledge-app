@@ -291,11 +291,8 @@ export default {
           // 火把知识app端webview判断是否跳app原生页面
           this.$gotoApp(_name, _params);
         }
-
       }
-
     }
-
 
     // 火把知识app端webview判断是否跳app原生页面
     Vue.prototype.$gotoApp = async function (_name, _params) {
@@ -318,12 +315,12 @@ export default {
           _isJump = true;
         }
 
-        console.log(888, {
-          share_info: this.share_info,
-          link_data: _linkData,
-          params: _params,
-          isJump: _isJump
-        });
+        // console.log(888, {
+        //   share_info: this.share_info,
+        //   link_data: _linkData,
+        //   params: _params,
+        //   isJump: _isJump
+        // });
         // 安卓
         if (localStorage.getItem("isHuobaAndroidLogin") == "yes") {
           window.JSWEB.RequestNative(JSON.stringify({
@@ -436,6 +433,10 @@ export default {
         // 电子书
         linkData.page_name = 'goods/detail';
         linkData.goods_id = this.$route.query.goods_id;
+      } else if (_name == '/personal/order/detail') {
+        // 订单详情
+        linkData.page_name = '';
+        linkData.order_id = this.$route.query.order_id;
       }
 
       return linkData;
@@ -625,6 +626,7 @@ export default {
         self.showDay = true;
         self.showTime = true;
         self.groupshowDay = true;
+        self.show_delay = true;
         self.receive_time = Math.ceil(d)+'天'
         d = Math.floor(d);
         self.timeDataDesc = '距活动结束还剩' + d + '天';
@@ -634,6 +636,7 @@ export default {
         self.showDay = false;
         self.showTime = true;
         self.groupshowDay = false;
+        self.show_delay = true;
         this.clock = window.setInterval(() => {
           if (time1 === 0) {
             clearInterval(this.clock)

@@ -440,9 +440,8 @@ router.beforeEach((to, from, next) => {
     next();
   }
   next();
-  if((from.path == '/custompage' && to.path == '/custompage') || from.fullPath.indexOf("nullPage=1") != -1 || (to.path == '/login/verification' && from.path != '/')){
+  if((from.path == '/custompage' && to.path == '/custompage') || (to.fullPath.indexOf("nullPage") != -1 && from.path != '/') || (to.path == '/login/verification' && from.path != '/') || (from.fullPath.indexOf("nullPage") != -1)){
     location.reload();
-    console.log(111, localStorage.getItem('isReload'));
     next();
   }
   next();

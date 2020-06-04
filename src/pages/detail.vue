@@ -692,6 +692,7 @@ export default {
         if (res.hasOwnProperty("error_code") && res.error_code == 401) {
           // 上下架状态, 1=> 在架, 0=> 下架
           this.onsale = 0;
+          this.isLoading = false;
         }
         this.$toast(res.error_message);
       }

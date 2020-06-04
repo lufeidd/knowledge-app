@@ -99,7 +99,7 @@
       <div class="first">
         <van-cell title="备注" />
       </div>
-      <textarea placeholder="选填，请填写备注内容">{{ remark }}</textarea>
+      <textarea placeholder="选填，请填写备注内容" v-model="remark"></textarea>
     </div>
     <!-- 价格 -->
     <div class="priceInfo">
@@ -270,7 +270,7 @@
               </div>
               <div
                 class="whyNoUse"
-              >{{item.cart_money>0?'还差'+(item.use_min_money-item.cart_money)+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
+              >{{item.cart_money>0?'还差'+(item.use_min_money-item.cart_money).toFixed(2)+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
             </div>
           </div>
         </van-tab>
@@ -329,7 +329,7 @@
               </div>
               <div
                 class="whyNoUse"
-              >{{item.cart_money>0?'还差'+(item.use_min_money-item.cart_money)+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
+              >{{item.cart_money>0?'还差'+(item.use_min_money-item.cart_money).toFixed(2)+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
             </div>
           </div>
         </van-tab>
@@ -338,7 +338,6 @@
     <EazyNav type="order" :isShow="false"></EazyNav>
   </div>
 </template>
-
 <style src="@/style/scss/pages/order.scss" scoped lang="scss"></style>
 <style lang="scss" scoped>
 #orderconfirmPage {
@@ -381,9 +380,9 @@ export default {
       couponInfo: null,
       couponList: [],
       couponModel: false,
-      nocouponModel:false,
+      nocouponModel: false,
       active: 0,
-      active1:1,
+      active1: 1,
       nouseCoupon: "",
       useCoupon: "",
       ticket_price: null,
@@ -574,7 +573,7 @@ export default {
     showCoupon() {
       this.couponModel = true;
     },
-    shownoCoupon(){
+    shownoCoupon() {
       this.nocouponModel = true;
     },
     closePopup() {

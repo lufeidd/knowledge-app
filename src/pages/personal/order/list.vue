@@ -7,6 +7,9 @@
         :key="index"
         :disabled="item.order_state == -1 ? true : false"
       >
+        <div slot="default">
+
+        </div>
         <van-list
           v-model="programLoading"
           :finished="programFinished"
@@ -14,6 +17,29 @@
           @load="programLoad"
         >
           <div class="content">
+            <div class="select-type">
+              <span class="select-title" @click.stop="choose">
+                {{select_goods_type}}
+                <svg class="icon" aria-hidden="true" v-if="select_state">
+                  <use xlink:href="#icon-unfold-line" />
+                </svg>
+                <svg class="icon" aria-hidden="true" v-else>
+                  <use xlink:href="#icon-fold-line" />
+                </svg>
+              </span>
+              <ul v-if="select_state">
+                <li
+                  v-for="(item,index) in goods_type_list"
+                  :key="index"
+                  @click.stop="chooseType(item,index)"
+                >
+                  <svg class="icon" aria-hidden="true">
+                    <use :xlink:href="'#icon-'+item.icon_name+'-line'" />
+                  </svg>
+                  <span class="type">{{item.goods_name}}</span>
+                </li>
+              </ul>
+            </div>
             <div style="margin-bottom:10px;" v-for="(item,index) in goods_list" :key="index">
               <!-- 公号头部 -->
               <div class="huoba-cell">
@@ -52,6 +78,7 @@
                         v-if="item.details[0].goods_type == 4"
                       >电子书</span>
                       <span class="huoba-goods-list-label" v-if="item.details[0].goods_type == 9">专辑</span>
+                      <span class="huoba-goods-list-label" v-if="item.details[0].goods_type == 10">文件包</span>
                     </div>
                   </div>
                   <div class="huoba-goods-list-imgs" v-if="item.details.length > 1">
@@ -67,6 +94,7 @@
                         v-if="item.details[1].goods_type == 4"
                       >电子书</span>
                       <span class="huoba-goods-list-label" v-if="item.details[1].goods_type == 9">专辑</span>
+                      <span class="huoba-goods-list-label" v-if="item.details[1].goods_type == 10">文件包</span>
                     </div>
                   </div>
                   <div class="huoba-goods-list-imgs" v-if="item.details.length > 2">
@@ -82,12 +110,15 @@
                         v-if="item.details[2].goods_type == 4"
                       >电子书</span>
                       <span class="huoba-goods-list-label" v-if="item.details[2].goods_type == 9">专辑</span>
+                      <span class="huoba-goods-list-label" v-if="item.details[2].goods_type == 10">文件包</span>
                     </div>
                   </div>
                 </div>
                 <div class="huoba-goods-list-right">
-                  <span class="huoba-goods-price">￥{{item.order_money}}</span>
-                  <span class="huoba-goods-num">x{{item.goods_nums}}</span>
+                  <span class="huoba-goods-price">￥{{item.order_money.toFixed(2)}}</span>
+                  <span class="huoba-goods-num">
+                    <span v-if="item.goods_nums > 1">共{{item.goods_nums}}件</span>
+                  </span>
                   <span class="huoba-goods-bag">{{item.order_send_desc}}</span>
                 </div>
               </div>
@@ -106,6 +137,7 @@
                     <span class="huoba-goods-list-label" v-if="item.details[0].goods_type == 3">图书</span>
                     <span class="huoba-goods-list-label" v-if="item.details[0].goods_type == 4">电子书</span>
                     <span class="huoba-goods-list-label" v-if="item.details[0].goods_type == 9">专辑</span>
+                    <span class="huoba-goods-list-label" v-if="item.details[0].goods_type == 10">文件包</span>
                   </div>
                 </div>
                 <div class="huoba-goods-list-mid">
@@ -115,8 +147,10 @@
                   </span>
                 </div>
                 <div class="huoba-goods-list-right">
-                  <span class="huoba-goods-price">￥{{item.order_money}}</span>
-                  <span class="huoba-goods-num">x{{item.goods_nums}}</span>
+                  <span class="huoba-goods-price">￥{{item.order_money.toFixed(2)}}</span>
+                  <span class="huoba-goods-num">
+                    <span v-if="item.goods_nums > 1">共{{item.goods_nums}}件</span>
+                  </span>
                   <span class="huoba-goods-bag">{{item.order_send_desc}}</span>
                 </div>
               </div>
@@ -146,7 +180,7 @@
                   <button
                     class="huoba-btn huoba-btn-two"
                     style="margin-left:15px;"
-                    v-if="item.type == 2&&(item.state == 5||item.state == 4)&&((item.if_all_send == 0 && item.send_package_nums > 0)||(item.if_all_send == 1 && item.send_package_nums > 1))"
+                    v-if="item.type == 2&&(item.state == 5)&&((item.if_all_send == 0 && item.send_package_nums > 0)||(item.if_all_send == 1 && item.send_package_nums > 1))"
                     @click="toPackageDetail(item)"
                   >包裹详情</button>
                   <button
@@ -192,29 +226,10 @@
         </van-list>
       </van-tab>
     </van-tabs>
-    <div class="select-type">
-      <div class="search" @click="toSearch">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-search-line" />
-        </svg>
-      </div>
-      <span class="select-title" @click.stop="choose">
-        {{select_goods_type}}
-        <svg class="icon" aria-hidden="true" v-if="select_state">
-          <use xlink:href="#icon-unfold-line" />
-        </svg>
-        <svg class="icon" aria-hidden="true" v-else>
-          <use xlink:href="#icon-fold-line" />
-        </svg>
-      </span>
-      <ul v-if="select_state">
-        <li v-for="(item,index) in goods_type_list" :key="index" @click.stop="chooseType(item,index)">
-          <svg class="icon" aria-hidden="true">
-            <use :xlink:href="'#icon-'+item.icon_name+'-line'" />
-          </svg>
-          <span class="type">{{item.goods_name}}</span>
-        </li>
-      </ul>
+    <div class="search" @click="toSearch">
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-search-line" />
+      </svg>
     </div>
     <!-- 快速导航 -->
     <EazyNav type="order" :isShow="true"></EazyNav>
@@ -251,7 +266,8 @@ export default {
       goods_type_list: [
         { icon_name: "goods", goods_type: 3, goods_name: "实物商品" },
         { icon_name: "ebook", goods_type: 4, goods_name: "电子书" },
-        { icon_name: "albumgoods", goods_type: 9, goods_name: "专辑" }
+        { icon_name: "albumgoods", goods_type: 9, goods_name: "专辑" },
+        { icon_name: "allgoods", goods_type: 0, goods_name: "全部商品" }
       ],
       select_goods_type: "全部商品",
       select_state: 0,
@@ -346,15 +362,23 @@ export default {
     },
     //评价
     toComment(item, index) {
-      // console.log(item);
-      // console.log(item.details[index].detail_id);
-      // return;
-      this.$router.push({
-        name: "ordercomment",
-        query: {
-          order_id: item.order_id
-        }
-      });
+      if (item.details.length > 1) {
+        this.$router.push({
+          name: "ordercomment",
+          query: {
+            order_id: item.order_id
+          }
+        });
+      } else if (item.details.length == 1) {
+        this.$router.push({
+          name: "commentpunish",
+          query: {
+            pic: item.details[0].pic,
+            order_id: item.order_id,
+            detail_id: item.details[0].detail_id
+          }
+        });
+      }
     },
     //查看物流信息
     tologistics(item) {

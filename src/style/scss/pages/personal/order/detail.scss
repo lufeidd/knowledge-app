@@ -10,6 +10,10 @@
     padding-bottom: 60px;
     & .content{
       margin-bottom: 10px;
+      & .invent{
+        @include font(null,$fontSize - 2,$cl9);
+        padding:4px 15px;
+      }
     }
   }
   & .group{

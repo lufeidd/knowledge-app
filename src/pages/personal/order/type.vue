@@ -19,7 +19,7 @@
             <span>{{$route.query.goods_name}}</span>
           </span>
           <div>
-            <span class="huoba-goods-price">￥{{$route.query.real_price}}</span>
+            <span class="huoba-goods-price">￥{{goods_price.toFixed(2)}}</span>
             <span class="huoba-goods-num">x{{$route.query.goods_num}}</span>
           </div>
         </div>
@@ -77,12 +77,14 @@ export default {
   data() {
     return {
       order_id: null,
-      detail_id: null
+      detail_id: null,
+      goods_price: 0,
     };
   },
   mounted() {
     this.order_id = this.$route.query.order_id;
     this.detail_id = this.$route.query.detail_id;
+    this.goods_price = Number(this.$route.query.real_price);
   },
   methods: {
     torefundThree() {

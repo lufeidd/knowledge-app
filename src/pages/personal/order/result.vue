@@ -69,6 +69,7 @@
                   <span class="huoba-goods-list-label" v-if="item.details[0].goods_type == 3">图书</span>
                   <span class="huoba-goods-list-label" v-if="item.details[0].goods_type == 4">电子书</span>
                   <span class="huoba-goods-list-label" v-if="item.details[0].goods_type == 9">专辑</span>
+                  <span class="huoba-goods-list-label" v-if="item.details[0].goods_type == 10">文件包</span>
                 </div>
               </div>
               <div class="huoba-goods-list-imgs" v-if="item.details.length > 1">
@@ -81,6 +82,7 @@
                   <span class="huoba-goods-list-label" v-if="item.details[1].goods_type == 3">图书</span>
                   <span class="huoba-goods-list-label" v-if="item.details[1].goods_type == 4">电子书</span>
                   <span class="huoba-goods-list-label" v-if="item.details[1].goods_type == 9">专辑</span>
+                  <span class="huoba-goods-list-label" v-if="item.details[1].goods_type == 10">文件包</span>
                 </div>
               </div>
               <div class="huoba-goods-list-imgs" v-if="item.details.length > 2">
@@ -93,12 +95,15 @@
                   <span class="huoba-goods-list-label" v-if="item.details[2].goods_type == 3">图书</span>
                   <span class="huoba-goods-list-label" v-if="item.details[2].goods_type == 4">电子书</span>
                   <span class="huoba-goods-list-label" v-if="item.details[2].goods_type == 9">专辑</span>
+                  <span class="huoba-goods-list-label" v-if="item.details[2].goods_type == 10">文件包</span>
                 </div>
               </div>
             </div>
             <div class="huoba-goods-list-right">
-              <span class="huoba-goods-price">￥{{item.order_money}}</span>
-              <span class="huoba-goods-num">x{{item.goods_nums}}</span>
+              <span class="huoba-goods-price">￥{{item.order_money.toFixed(2)}}</span>
+              <span class="huoba-goods-num">
+                <span v-if="item.goods_nums > 1">共{{item.goods_nums}}件</span>
+              </span>
               <span class="huoba-goods-bag">{{item.order_send_desc}}</span>
             </div>
           </div>
@@ -117,6 +122,7 @@
                 <span class="huoba-goods-list-label" v-if="item.details[0].goods_type == 3">图书</span>
                 <span class="huoba-goods-list-label" v-if="item.details[0].goods_type == 4">电子书</span>
                 <span class="huoba-goods-list-label" v-if="item.details[0].goods_type == 9">专辑</span>
+                <span class="huoba-goods-list-label" v-if="item.details[0].goods_type == 10">文件包</span>
               </div>
             </div>
             <div class="huoba-goods-list-mid">
@@ -126,8 +132,10 @@
               </span>
             </div>
             <div class="huoba-goods-list-right">
-              <span class="huoba-goods-price">￥{{item.order_money}}</span>
-              <span class="huoba-goods-num">x{{item.goods_nums}}</span>
+              <span class="huoba-goods-price">￥{{item.order_money.toFixed(2)}}</span>
+              <span class="huoba-goods-num">
+                <span v-if="item.goods_nums > 1">共{{item.goods_nums}}件</span>
+              </span>
               <span class="huoba-goods-bag">{{item.order_send_desc}}</span>
             </div>
           </div>
@@ -163,7 +171,7 @@
               <button
                 class="huoba-btn huoba-btn-two"
                 style="margin-left:15px;"
-                v-if="item.type == 2&&(item.state == 5||item.state == 4)&&((item.if_all_send == 0 && item.send_package_nums > 0)||(item.if_all_send == 1 && item.send_package_nums > 1))"
+                v-if="item.type == 2&&(item.state == 5)&&((item.if_all_send == 0 && item.send_package_nums > 0)||(item.if_all_send == 1 && item.send_package_nums > 1))"
                 @click="toPackageDetail(item)"
               >包裹详情</button>
               <button
@@ -336,15 +344,23 @@ export default {
     },
     //评价
     toComment(item, index) {
-      // console.log(item);
-      // console.log(item.details[index].detail_id);
-      // return;
-      this.$router.push({
-        name: "ordercomment",
-        query: {
-          order_id: item.order_id
-        }
-      });
+      if (item.details.length > 1) {
+        this.$router.push({
+          name: "ordercomment",
+          query: {
+            order_id: item.order_id
+          }
+        });
+      } else if (item.details.length == 1) {
+        this.$router.push({
+          name: "commentpunish",
+          query: {
+            pic: item.details[0].pic,
+            order_id: item.order_id,
+            detail_id: item.details[0].detail_id
+          }
+        });
+      }
     },
     //查看物流信息
     tologistics(item) {

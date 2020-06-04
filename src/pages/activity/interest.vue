@@ -270,6 +270,8 @@
         </div>
       </div>
     </div>
+    
+    <EazyNav type="brand" ref="nav" :isShow="false"></EazyNav>
   </div>
 </template>
 

@@ -175,7 +175,7 @@
  }
  .van-tabs .van-tab{
    color: $cl9;
-   font-size: $fontSize + 2;
+   font-size: $fontSize + 1;
  }
  .van-tabs .van-tab.van-tab--active{
    color: $redDark;
@@ -478,7 +478,7 @@
    // display: inline-block;
    font-size: $fontSize - 2;
    text-align: center;
-   line-height: 29px;
+   line-height: 25px;
    border-radius: 3px;
    border: none;
    min-width: 62px;
@@ -520,11 +520,12 @@
    & .huoba-button-nav-left{
     position: relative;
      & .icon{
-       color: $cl9;
-       font-size:$fontSize + 8;
+       color: #D0CFCF;
+       font-size:$fontSize + 6;
      }
      & .word{
        color: $cl9;
+       font-size:$fontSize - 2;
      }
    }
  }
@@ -595,7 +596,7 @@
        margin-right: 15px;
      }
      & .huoba-goods-num{
-       @include font(null,$fontSize - 2,$cl9)
+       @include font(null,$fontSize - 1,$cl9)
      }
    }
    & .huoba-goods-list-right{
@@ -829,7 +830,7 @@
        font-size: $fontSize + 6;
      }
      & .huoba-cell-state{
-      font-size: $fontSize + 4;
+      font-size: $fontSize + 2;
     }
    }
    & .huoba-cell-mid{
@@ -853,7 +854,7 @@
        }
      }
      & .huoba-cell-state{
-       font-size: $fontSize + 4;
+       font-size: $fontSize + 2;
      }
    }
    & .huoba-cell-right{
@@ -887,7 +888,7 @@
        @include font(null,$fontSize - 1,$cl6);
      }
      & .van-cell__value{
-       @include font(null,$fontSize - 2,$cl3);
+       @include font(null,$fontSize - 1,$cl3);
      }
    }
    & .van-cell:not(:last-child)::after{
@@ -896,7 +897,7 @@
    & .huoba-cell-last{
      padding: 3px 15px;
      text-align: right;
-     font-size: $fontSize - 2;
+     font-size: $fontSize - 1;
      & .huoba-cell-last-money{
        color: $redDark;
        & .huoba-cell-last-num{

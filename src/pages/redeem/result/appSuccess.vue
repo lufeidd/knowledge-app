@@ -32,7 +32,7 @@
          if (this.resData.goods_type == 4) {  //  电子书
            this.$router.push({name: 'ebookdetail', query: {goods_id: this.resData.goods_id}});
          } else if (this.resData.goods_type == 9) {
-           this.$router.push({name: 'albumdetail', query: {goods_id: this.resData.goods_id}});
+           this.$router.push({name: 'album', query: {goods_id: this.resData.goods_id}});
          }
        } else if (this.resData.redeem_goods_type == 2) {  // 优惠券
          // console.log('url', window.location.href);

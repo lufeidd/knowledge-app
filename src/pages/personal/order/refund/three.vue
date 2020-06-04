@@ -19,7 +19,7 @@
             <span>{{goods_list[0].goods_name}}</span>
           </span>
           <div>
-            <span class="huoba-goods-price">￥{{goods_list[0].real_price}}</span>
+            <span class="huoba-goods-price">￥{{goods_list[0].real_price.toFixed(2)}}</span>
             <span class="huoba-goods-num">x{{goods_list[0].buy_count}}</span>
           </div>
         </div>
@@ -47,7 +47,7 @@
             <span>{{goods_info.goods_name}}</span>
           </span>
           <div>
-            <span class="huoba-goods-price">￥{{goods_info.real_price}}</span>
+            <span class="huoba-goods-price">￥{{goods_info.real_price.toFixed(2)}}</span>
             <span class="huoba-goods-num">x{{max_count}}</span>
           </div>
         </div>
@@ -67,7 +67,7 @@
                 <span class="huoba-goods-list-label" v-if="item.goods_type == 3">图书</span>
                 <span class="huoba-goods-list-label" v-if="item.goods_type == 4">电子书</span>
                 <span class="huoba-goods-list-label" v-if="item.goods_type == 9">专辑</span>
-                <span class="huoba-goods-list-label price">￥{{item.all_money}}</span>
+                <span class="huoba-goods-list-label price">￥{{item.all_money.toFixed(2)}}</span>
                 <div class="box">
                   <img
                     :src="item.pic"
@@ -102,7 +102,7 @@
             <span>退款金额*:</span>
             <span class="most">
               <span class="money" v-if="goods_list.length == 1 || type_of == 'edit'">￥<input type="text" v-model="real_refund_money"></span>
-              <span class="money" v-else>￥<input type="text" readonly v-model="real_refund_money"></span>
+              <span class="money" v-else>￥<input type="text" readonly v-model="real_refund_money.toFixed(2)"></span>
             </span>
           </div>
         </div>
@@ -110,11 +110,11 @@
           <span
             class="choose"
             v-if="goods_list.length == 1 || type_of == 'edit'"
-          >可修改，最多￥{{refundInfo.max_apply_money}}，含发货运费￥{{refundInfo.dispatch_price}}</span>
+          >可修改，最多￥{{refundInfo.max_apply_money.toFixed(2)}}，含发货运费￥{{refundInfo.dispatch_price.toFixed(2)}}</span>
           <span
             class="choose"
             v-else
-          >批量退款时不可修改，最多￥{{refundInfo.max_apply_money}}，含发货运费￥{{refundInfo.dispatch_price}}</span>
+          >批量退款时不可修改，最多￥{{refundInfo.max_apply_money.toFixed(2)}}，含发货运费￥{{refundInfo.dispatch_price.toFixed(2)}}</span>
         </div>
       </div>
       <div class="cell number" v-if="goods_list.length == 1 || type_of == 'edit'">
@@ -218,21 +218,24 @@ export default {
       refund_type: 3,
       refund_reason: "",
       refund_desc: "",
-      refund_count: null,
-      real_refund_money: null,
+      refund_count: 0,
+      real_refund_money: 0,
       pic: "",
       explainTotal: 500,
       explainLength: 0,
-      refundInfo: {},
+      refundInfo: {
+        max_apply_money:0,
+        dispatch_price:0
+      },
       type_of: "refund",
       apply_id: null,
       show_dispatch: false,
       count_show: true,
-      max_price: null,
-      max_count: null,
+      max_price: 0,
+      max_count: 0,
       submit_state: true,
-      dispatch_price: null,
-      goods_prices: null,
+      dispatch_price: 0,
+      goods_prices: 0,
       goods_list: [],
       goods_info:{}
     };
@@ -379,7 +382,7 @@ export default {
         detail_ids: this.detail_id,
         refund_type: 3,
         refund_money: this.real_refund_money,
-        refund_count: this.refund_count,
+        refund_count: Number(this.refund_count),
         refund_reason: this.refund_reason,
         refund_desc: this.refund_desc,
         dispatch_price: this.refundInfo.dispatch_price,
@@ -422,9 +425,9 @@ export default {
           this.goods_prices = this.goods_list[0].real_price
         };
         this.reasonList = res.response_data.refund_reasons.returngoods;
-        this.real_refund_money = res.response_data.max_apply_money;
-        this.max_price = res.response_data.max_apply_money;
-        this.dispatch_price = res.response_data.dispatch_price;
+        this.real_refund_money = Number(res.response_data.max_apply_money);
+        this.max_price = Number(res.response_data.max_apply_money);
+        this.dispatch_price = Number(res.response_data.dispatch_price);
         this.max_count = res.response_data.refund_goods[0].buy_count;
       } else {
         this.$toast(res.error_message);
@@ -452,7 +455,7 @@ export default {
         apply_id: this.apply_id,
         refund_type: this.refund_type,
         refund_money: this.real_refund_money,
-        refund_count: this.refund_count,
+        refund_count: Number(this.refund_count),
         refund_reason: this.refund_reason,
         refund_desc: this.refund_desc,
         pic: this.pic
@@ -488,19 +491,19 @@ export default {
         this.refund_reason = res.response_data.refund_reason;
         this.refund_desc = res.response_data.refund_desc;
         this.refund_count = res.response_data.refund_count;
-        this.real_refund_money = res.response_data.refund_money;
+        this.real_refund_money = Number(res.response_data.refund_money);
         this.reasonList = res.response_data.reason_list.returngoods;
         this.max_count = res.response_data.goods_info.buy_count;
-        this.refundInfo.dispatch_price = res.response_data.if_dispatch_price?res.response_data.dispatch_price:0
-        this.dispatch_price = res.response_data.dispatch_price
-        this.goods_prices = res.response_data.goods_info.real_price
+        this.refundInfo.dispatch_price = res.response_data.if_dispatch_price?Number(res.response_data.dispatch_price):0
+        this.dispatch_price = Number(res.response_data.dispatch_price)
+        this.goods_prices = Number(res.response_data.goods_info.real_price)
         for(var i=0;i<this.reasonList.length;i++){
           if(this.refund_reason == this.reasonList[i]){
             this.radio = i
           }
         }
-        this.max_price = res.response_data.refund_money_total;
-        this.dispatch_price = res.response_data.dispatch_price;
+        this.max_price = Number(res.response_data.max_money);
+        this.dispatch_price = Number(res.response_data.dispatch_price);
         this.goods_info = res.response_data.goods_info
 
         if (res.response_data.pic !== null) {
@@ -566,26 +569,18 @@ export default {
     // 根据原因变化金额
     reasonMoney(){
         if (this.refund_reason == "7天无理由退换" || this.refund_reason == "不喜欢/不想要"){
-          this.real_refund_money = (
-            this.refund_count * this.goods_prices
-          ).toFixed(2);
+          this.real_refund_money = this.refund_count * this.goods_prices
           this.refundInfo.dispatch_price = 0
-          this.refundInfo.max_apply_money = (
-            this.refund_count * this.goods_prices
-          ).toFixed(2);
+          this.refundInfo.max_apply_money = this.refund_count * this.goods_prices
         }else{
           if(this.refund_count == this.max_count){
             this.real_refund_money = this.max_price;
             this.refundInfo.dispatch_price = this.dispatch_price;
             this.refundInfo.max_apply_money = this.max_price;
           }else{
-            this.real_refund_money = (
-              this.refund_count * this.goods_prices
-            ).toFixed(2);
+            this.real_refund_money = this.refund_count * this.goods_prices
             this.refundInfo.dispatch_price = 0
-            this.refundInfo.max_apply_money = (
-              this.refund_count * this.goods_prices
-            ).toFixed(2);
+            this.refundInfo.max_apply_money = this.refund_count * this.goods_prices
           }
         }
     },

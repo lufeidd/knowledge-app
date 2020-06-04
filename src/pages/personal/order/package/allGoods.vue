@@ -29,7 +29,7 @@
             <span>{{item.goods_name}}</span>
           </span>
           <div>
-            <span class="huoba-goods-price">￥{{item.real_price}}</span>
+            <span class="huoba-goods-price">￥{{item.real_price.toFixed(2)}}</span>
             <span class="huoba-goods-num">x{{item.buy_count}}</span>
           </div>
         </div>
