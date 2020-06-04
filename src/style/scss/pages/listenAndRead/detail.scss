@@ -6,6 +6,9 @@
 @charset "UTF-8";
 
 #listenAndReadDetail {
+  img {
+    pointer-events: none;
+  }
   .huoba-album-list-two{
     .huoba-album-item{
       @include displayFlex(flex, null, null);
@@ -45,6 +48,7 @@
           display: inline-block;
           width: 26px;
           height: 18px;
+          line-height: 18px;
           background: rgba(0,0,0,0.5);
           border-radius: 3px;
           font-size: $fontSize - 4;
@@ -94,6 +98,7 @@
           display: inline-block;
           width: 26px;
           height: 18px;
+          line-height: 18px;
           background: rgba(0,0,0,0.5);
           border-radius: 3px;
           font-size: $fontSize - 4;
@@ -171,6 +176,7 @@
           display: inline-block;
           width: 26px;
           height: 18px;
+          line-height: 18px;
           background: rgba(0,0,0,0.5);
           border-radius: 3px;
           font-size: $fontSize - 4;
