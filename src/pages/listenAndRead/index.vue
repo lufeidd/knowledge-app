@@ -546,10 +546,13 @@
       goToPlay(type, item) {
         if (item.show_str.status == 2) { // 用户播放过
           if (item.show_str.extra_info.type == 1) {  // 音频
+            console.log('音频');
             this.$router.push({name: 'player',query: {pid: item.goods_id, goods_id: item.show_str.extra_info.id, goods_no: item.show_str.extra_info.sort}});
           } else if (item.show_str.extra_info.type == 2) { // 视频
+            console.log('视频');
             this.$router.push({name: 'albumdetail',query: {goods_id: item.show_str.extra_info.id}});
           }  else if (item.show_str.extra_info.type == 4) { // 电子书
+            console.log('电子书');
             this.$router.push({name: 'ebookreader',query: {goods_id: item.goods_id, chapter_id: item.show_str.extra_info.id, currenChapterTitle: item.show_str.extra_info.sort}});
           }
         } else {  // 用户未播放过
