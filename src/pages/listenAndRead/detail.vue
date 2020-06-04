@@ -184,7 +184,9 @@
             this.albumLoading = false;
             this.albumPage++;
             // 数据全部加载完成
-            if (this.albumPage > res.response_data.total_page) {
+            console.log('albumpage',this.albumCount);
+            console.log(res.response_data.total_count);
+            if (this.albumCount == res.response_data.total_count) {
               this.albumFinished = true;
             }
           }, 500);
@@ -214,7 +216,7 @@
             this.ebookLoading = false;
             this.ebookPage++;
             // 数据全部加载完成
-            if (this.ebookPage > res.response_data.total_page) {
+            if (this.ebookCount == res.response_data.total_count) {
               this.ebookFinished = true;
             }
           }, 500);
@@ -313,7 +315,7 @@
           } else if (item.show_str.goods_type== 2) { // 视频
             this.$router.push({name: 'albumdetail',query: {goods_id: item.show_str.extra_info.id}});
           }  else if (item.show_str.goods_type== 4) { // 电子书
-            this.$router.push({name: 'ebookreader',query: {goods_id: item.goods_id, chapter_id: item.show_str.extra_info.id}}); //  currenChapterTitle没法获取
+            this.$router.push({name: 'ebookreader',query: {goods_id: item.goods_id, chapter_id: item.show_str.extra_info.id, currenChapterTitle: item.show_str.extra_info.sort}});
           }
         } else {  // 用户未播放过
           if (type == 9) {  // 专辑
