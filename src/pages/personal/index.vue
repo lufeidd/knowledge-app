@@ -177,7 +177,7 @@
         <!--</router-link>-->
 
         <!-- 我听我看 -->
-        <router-link  to="/listenAndRead/index" class="cell">
+        <router-link to="/listenAndRead/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-gerenzhongxinwotingwokan" />
