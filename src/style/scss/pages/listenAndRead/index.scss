@@ -302,7 +302,7 @@
     margin-top: 15px;
     .huoba-album-item{
       box-sizing: border-box;
-      width: 33.3%;
+      width: 120px;
       padding-left: 15px;
       padding-bottom: 20px;
       &:nth-child(3){
@@ -313,11 +313,11 @@
       }
       .huoba-album-item-pic-box{
         position: relative;
-        width: 98px;
-        height: 98px;
+        width: 105px;
+        height: 105px;
         .huoba-album-item-pic{
-          width: 98px;
-          height: 98px;
+          width: 105px;
+          height: 105px;
           border-radius: 3px;
         }
         .icon-one-box{
@@ -392,7 +392,7 @@
     margin-top: 15px;
     .huoba-ebook-item{
       box-sizing: border-box;
-      width: 33.3%;
+      width: 120px;
       padding-left: 15px;
       padding-bottom: 20px;
       &:nth-child(3){
