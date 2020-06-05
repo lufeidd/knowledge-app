@@ -16,12 +16,12 @@
       margin: 15px;
       .huoba-album-item-pic-box{
         position: relative;
-        flex-basis: 105px;
-        height: 105px;
+        flex-basis: 98px;
+        height: 98px;
         margin-right: 13px;
         .huoba-album-item-pic{
-          width: 105px;
-          height: 105px;
+          width: 98px;
+          height: 98px;
           border-radius: 3px;
         }
         .icon-one-box{
@@ -58,11 +58,11 @@
       }
       .huoba-album-item-pic-box{
         position: relative;
-        width: 105px;
-        height: 105px;
+        width: 98px;
+        height: 98px;
         .huoba-album-item-pic{
-          width: 105px;
-          height: 105px;
+          width: 98px;
+          height: 98px;
           border-radius: 3px;
         }
         .icon-one-box{
@@ -114,19 +114,19 @@
           @include font(null,$fontSize + 1,$cl3);
           font-weight: 500;
           line-height: 19px;
-          height: 33px;
+          min-height: 33px;
           @include twoColtextOverflow();
         }
         .huoba-album-item-total{
           position: relative;
           font-weight: 500;
-          line-height: 21px;
+          line-height: 15px;
           .ellipsis-line{
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 15px;
+            height: 15px;
             right: 0;
-            color: $cl9;
+            color: $cl0;
           }
         }
         .not-end{
@@ -136,7 +136,7 @@
         .end{
           margin-top: 31px;
           @include font(null,$fontSize - 2,$cl9);
-          .total-text{
+          .total-text:not(:first-child){
             display: inline-block;
             margin-left: 5px;
           }
@@ -192,7 +192,7 @@
           @include font(null,$fontSize + 1,$cl0);
           font-weight: 500;
           line-height: 19px;
-          height: 33px;
+          min-height: 33px;
           @include twoColtextOverflow();
         }
         .huoba-ebook-item-author{
@@ -207,13 +207,13 @@
         .huoba-ebook-item-total{
           position: relative;
           font-weight: 500;
-          line-height: 21px;
+          line-height: 15px;
           .ellipsis-line{
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 15px;
+            height: 15px;
             right: 0;
-            color: $cl9;
+            color: $cl0;
           }
         }
         .not-end{
@@ -223,7 +223,7 @@
         .end{
           margin-top: 31px;
           @include font(null,$fontSize - 2,$cl9);
-          .total-text{
+          .total-text:not(:first-child){
             display: inline-block;
             margin-left: 5px;
           }

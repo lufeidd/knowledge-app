@@ -383,13 +383,15 @@
                   _this.noInterest = true; // 无感兴趣内容
                 }
 
-                if (_this.noInterest || _this.isLogin == '0') {
-                  _this.recommendShow = true; // 登录无感兴趣内容或未登录显示热门推荐
+                if (_this.noInterest) {
+                  _this.recommendShow = true; // 登录无感兴趣内容显示热门推荐
                   console.log(33, _this.recommendShow);
                 }
               });
             });
 
+          } else {
+            this.recommendShow = true;  // 未登录显示热门推荐
           }
           this.swipeList = res.response_data.recently_view; // 获取轮播图列表（最近访问的专辑和电子书）
           this.albumFirst = res.response_data.sort == 'album' ? true : false; //  电子书和专辑顺序
