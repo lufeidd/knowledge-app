@@ -177,23 +177,7 @@
         <!--</router-link>-->
 
         <!-- 我听我看 -->
-        <router-link v-if="infoData.is_login" to="/listenAndRead/index" class="cell">
-          <div class="svg">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-gerenzhongxinwotingwokan" />
-            </svg>
-          </div>
-          <div class="desc">
-            <span class="text">我听我看</span>
-            <span class="new">New</span>
-          </div>
-          <div class="action">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line" />
-            </svg>
-          </div>
-        </router-link>
-        <router-link v-else to="/login/index" class="cell">
+        <router-link  to="/listenAndRead/index" class="cell">
           <div class="svg">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-gerenzhongxinwotingwokan" />
