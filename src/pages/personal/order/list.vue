@@ -549,7 +549,7 @@ export default {
       this.$dialog
         .confirm({
           // title: "删除订单",
-          message: "确定删除订单吗？删除后可能会影响售后服务。",
+          message: "确定删除订单吗？\n删除后可能会影响售后服务。",
           cancelButtonText: "我再想想",
           confirmButtonText: "删除订单",
           cancelButtonColor: "#333",

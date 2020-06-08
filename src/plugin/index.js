@@ -377,7 +377,7 @@ export default {
         // 专辑
         linkData.page_name = 'goods/detail';
         linkData.goods_id = this.$route.query.goods_id;
-        linkData.pid = this.$route.query.pid;
+        linkData.pid = typeof(this.$route.query.pid) == 'object'? this.$route.query.pid[0]:this.$route.query.pid;
       } else if (_name == '/album/index') {
         // 专辑
         linkData.page_name = 'goods/detail';

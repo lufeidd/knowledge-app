@@ -101,7 +101,7 @@
           <div>
             <span>退款金额*:</span>
             <span class="most">
-              <span class="money" v-if="goods_list.length == 1 || type_of == 'edit'">￥<input type="text" v-model="real_refund_money"></span>
+              <span class="money" v-if="goods_list.length == 1 || type_of == 'edit'">￥<input type="text" v-model="real_refund_money" @input="refundmoney"></span>
               <span class="money" v-else>￥<input type="text" readonly v-model="real_refund_money.toFixed(2)"></span>
             </span>
           </div>
@@ -266,6 +266,12 @@ export default {
     },
     close() {
       this.show = false;
+    },
+    refundmoney(){
+      if(Number(this.real_refund_money) > Number(this.refundInfo.max_apply_money)){
+        this.$toast("超出最大退款金额！");
+        this.real_refund_money = this.refundInfo.max_apply_money;
+      }
     },
     radio_check(item, index) {
       this.radio = index;

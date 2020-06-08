@@ -277,24 +277,23 @@
       <div class="content">
         <div class="huoba-cell-six">
           <van-cell title="商品总额" :value="'￥'+infoData.order_goods_money.toFixed(2)"></van-cell>
-          <van-cell
+          <!-- <van-cell
             title="商品优惠"
             v-if="infoData.activity_money"
             :value="'- ￥'+infoData.activity_money.toFixed(2)"
-          ></van-cell>
+          ></van-cell> -->
           <van-cell
             title="活动立减"
             v-if="infoData.multi_money"
             :value="'- ￥'+infoData.multi_money.toFixed(2)"
           ></van-cell>
-          <!-- <van-cell title="优惠券" value="-¥5.00"></van-cell> -->
+          <van-cell title="优惠券" v-if="infoData.ticket_money" :value="'- ￥'+infoData.ticket_money.toFixed(2)"></van-cell>
           <van-cell title="运费" v-if="infoData.type == 2" :value="'+ ￥'+infoData.dispatch_price.toFixed(2)"></van-cell>
           <div class="huoba-cell-last">
             <!-- <span>{{infoData.state == 1? '待支付':'实付款'}}</span> -->
             <span>订单总价</span>
             <span class="huoba-cell-last-money">
-              ￥
-              <span
+              ￥<span
                 class="huoba-cell-last-num"
                 v-if="infoData.pay_state"
               >{{infoData.pay_money.toFixed(2)}}</span>
