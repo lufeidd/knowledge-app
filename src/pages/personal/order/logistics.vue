@@ -16,8 +16,8 @@
           </div> -->
           <div class="huoba-goods-list-right">
             <span>
-              订单编号：{{logisticsInfo.number}}
-              <svg class="icon copy-number" aria-hidden="true" @click="copy" :data-clipboard-text="logisticsInfo.number">
+              物流单号：{{logisticsInfo.number}}
+              <svg class="icon copy-number" aria-hidden="true" style="top:-1px;"@click="copy" :data-clipboard-text="logisticsInfo.number">
                 <use xlink:href="#icon-copy-line" />
               </svg>
             </span>

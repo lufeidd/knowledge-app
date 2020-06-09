@@ -587,10 +587,11 @@ export default {
       let res = await ORDER_DELETE(data);
       if (res.hasOwnProperty("response_code")) {
         this.$toast("删除订单成功");
-        this.$router.replace({
-          name: "orderlist"
-        });
-        location.reload();
+        setTimeout(()=>{
+          this.$router.push({
+            name: "orderlist",
+          });
+        },1000)
       } else {
         this.$toast(res.error_message);
       }
@@ -816,11 +817,11 @@ export default {
           query: {
             order_id: this.infoData.order_id,
             detail_id: item.id,
-            pic: item.pic,
-            goods_type: item.goods_type,
-            goods_num: item.buy_count,
-            goods_name: item.goods_name,
-            real_price: item.real_price,
+            // pic: item.pic,
+            // goods_type: item.goods_type,
+            // goods_num: item.buy_count,
+            // goods_name: item.goods_name,
+            // real_price: item.real_price,
             goods_length: this.infoData.detail.length
           }
         });

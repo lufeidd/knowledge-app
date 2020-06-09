@@ -1062,7 +1062,9 @@ export default {
       isReceived: false,
       requestState: true,
       groupModel: false,
-      remain_time: []
+      remain_time: [],
+      // 判断是否第一次调取
+      ifFirst:0,
     };
   },
   mounted() {
@@ -1165,7 +1167,7 @@ export default {
         // var _pageName = "goods/detail";
         // var _params = JSON.stringify({ goods_id: this.$route.query.goods_id });
         // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
-        
+
         // 是否显示底部购买按钮
         this.showBuyButton = !(
           this.baseData.is_free == 0 &&
@@ -1497,7 +1499,9 @@ export default {
       // console.log("load");
       this.programData("");
       // 获取试听节目
-      this.preListenData();
+      if(this.ifFirst == 0){
+        this.preListenData();
+      }
     },
     // 排序
     rankAction() {
@@ -1525,6 +1529,7 @@ export default {
       data.sign = this.$getSign(data);
       let res = await ALBUM_DETAIL(data);
       if (res.hasOwnProperty("response_code")) {
+        this.ifFirst ++;
         // 异步更新数据
         var result = res.response_data.result;
         for (let i = 0; i < res.response_data.result.length; i++) {

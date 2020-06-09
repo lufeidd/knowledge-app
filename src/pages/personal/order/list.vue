@@ -420,7 +420,9 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.$toast("已取消订单！");
-        location.reload();
+        setTimeout(()=>{
+          location.reload();
+        },1000)
       } else {
         this.$toast(res.error_message);
       }

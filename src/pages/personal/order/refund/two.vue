@@ -19,7 +19,7 @@
             <span>{{goods_list[0].goods_name}}</span>
           </span>
           <div>
-            <span class="huoba-goods-price">￥{{goods_list[0].real_price.toFixed(2)}}</span>
+            <span class="huoba-goods-price">￥{{goods_prices.toFixed(2)}}</span>
             <span class="huoba-goods-num">x{{goods_list[0].buy_count}}</span>
           </div>
         </div>
@@ -47,7 +47,7 @@
             <span>{{goods_info.goods_name}}</span>
           </span>
           <div>
-            <span class="huoba-goods-price">￥{{goods_info.real_price.toFixed(2)}}</span>
+            <span class="huoba-goods-price">￥{{goods_prices.toFixed(2)}}</span>
             <span class="huoba-goods-num">x{{max_count}}</span>
           </div>
         </div>
@@ -109,8 +109,8 @@
         <div>
           <span>退款金额*:</span>
           <span class="most">
-            <span class="money" v-if="((goods_list.length == 1 && order_dispatch_state == 1) || (type_of == 'edit' && order_dispatch_state == 1)) && goods_radio">￥<input type="text" v-model="real_refund_money.toFixed(2)" @input="refundmoney"></span>
-            <span class="money" v-else>￥<input type="text" readonly v-model="real_refund_money.toFixed(2)"></span>
+            <span class="money" v-if="((goods_list.length == 1 && order_dispatch_state == 1) || (type_of == 'edit' && order_dispatch_state == 1)) && goods_radio">￥<input type="text" v-model="real_refund_money" @input="refundmoney"></span>
+            <span class="money" v-else>￥<input type="text" readonly v-model="real_refund_money"></span>
           </span>
         </div>
         <div style="margin-top:15px;">
@@ -266,7 +266,8 @@ export default {
       order_dispatch_state: null,
       goods_list: [],
       goods_info:{},
-      max_count: 0
+      max_count: 0,
+      goods_prices:0,
     };
   },
   mounted() {
@@ -307,7 +308,7 @@ export default {
     refundmoney () {
       if ((Number(this.real_refund_money) - Number(this.refundInfo.max_apply_money)) > 0) {
         this.$toast("超出最大退款金额！");
-        this.real_refund_money = this.refundInfo.max_apply_money;
+        this.real_refund_money = Number(this.refundInfo.max_apply_money).toFixed(2);
         return
       }
     },
@@ -317,16 +318,16 @@ export default {
       if(this.order_dispatch_state){
           if (this.refund_reason == "不喜欢/不想要") {
             this.refundInfo.max_apply_money = this.max_price - this.dispatch_price
-            this.real_refund_money = this.max_price - this.dispatch_price
+            this.real_refund_money = Number(this.max_price - this.dispatch_price).toFixed(2)
             this.refundInfo.dispatch_price = 0
           } else {
             this.refundInfo.max_apply_money = this.max_price;
-            this.real_refund_money = this.max_price;
+            this.real_refund_money = Number(this.max_price).toFixed(2);
             this.refundInfo.dispatch_price = this.dispatch_price;
           }
       }else{
           this.refundInfo.max_apply_money = this.max_price;
-          this.real_refund_money = this.max_price;
+          this.real_refund_money = Number(this.max_price).toFixed(2);
           this.refundInfo.dispatch_price = this.dispatch_price;
       }
       this.show = false;
@@ -338,7 +339,7 @@ export default {
       this.radio = null;
       this.refund_reason = '';
       this.refundInfo.max_apply_money = this.max_price;
-      this.real_refund_money = this.max_price;
+      this.real_refund_money = Number(this.max_price).toFixed(2);
       this.refundInfo.dispatch_price = this.dispatch_price;
       if (index == 0) {
         this.reasonList = this.notreceiveList;
@@ -483,9 +484,12 @@ export default {
         this.refundInfo = res.response_data;
         this.max_price = Number(res.response_data.max_apply_money);
         this.dispatch_price = Number(res.response_data.dispatch_price);
-        this.real_refund_money = Number(res.response_data.max_apply_money);
+        this.real_refund_money = Number(res.response_data.max_apply_money).toFixed(2);
         this.order_dispatch_state = res.response_data.order_dispatch_state;
         this.goods_list = res.response_data.refund_goods
+        if(this.goods_list.length == 1) {
+          this.goods_prices = this.goods_list[0].real_price
+        };
         if (this.order_dispatch_state == 0) {
           this.reasonList = res.response_data.refund_reasons.refund;
         } else if (this.order_dispatch_state == 1) {
@@ -554,14 +558,14 @@ export default {
       if (res.hasOwnProperty("response_code")) {
         this.refund_reason = res.response_data.refund_reason;
         this.refund_desc = res.response_data.refund_desc;
-        this.real_refund_money = Number(res.response_data.refund_money);
+        this.real_refund_money = Number(res.response_data.refund_money).toFixed(2);
         this.max_price = Number(res.response_data.max_money);
         this.dispatch_price = Number(res.response_data.dispatch_price);
         this.max_count = res.response_data.buy_count;
         this.order_dispatch_state = res.response_data.refund_type == 1?0:1
         this.refundInfo.dispatch_price = res.response_data.if_dispatch_price?Number(res.response_data.dispatch_price):0
         this.goods_info = res.response_data.goods_info
-
+        this.goods_prices = Number(res.response_data.goods_info.real_price)
         if (this.order_dispatch_state == 0) {
           this.reasonList = res.response_data.reason_list.refund;
         } else if (this.order_dispatch_state == 1) {

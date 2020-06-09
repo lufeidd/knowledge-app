@@ -5,22 +5,22 @@
         <div class="huoba-goods-list-left">
           <div class="ratioBox">
             <div class="box">
-              <img :src="$route.query.pic" alt />
+              <img :src="goodsInfo.pic" alt />
             </div>
-            <span class="huoba-goods-list-label" v-if="$route.query.goods_type == 1">音频</span>
-            <span class="huoba-goods-list-label" v-if="$route.query.goods_type == 2">视频</span>
-            <span class="huoba-goods-list-label" v-if="$route.query.goods_type == 3">图书</span>
-            <span class="huoba-goods-list-label" v-if="$route.query.goods_type == 4">电子书</span>
-            <span class="huoba-goods-list-label" v-if="$route.query.goods_type == 9">专辑</span>
+            <span class="huoba-goods-list-label" v-if="goodsInfo.goods_type == 1">音频</span>
+            <span class="huoba-goods-list-label" v-if="goodsInfo.goods_type == 2">视频</span>
+            <span class="huoba-goods-list-label" v-if="goodsInfo.goods_type == 3">图书</span>
+            <span class="huoba-goods-list-label" v-if="goodsInfo.goods_type == 4">电子书</span>
+            <span class="huoba-goods-list-label" v-if="goodsInfo.goods_type == 9">专辑</span>
           </div>
         </div>
         <div class="huoba-goods-list-mid">
           <span class="huoba-goods-title">
-            <span>{{$route.query.goods_name}}</span>
+            <span>{{goodsInfo.goods_name}}</span>
           </span>
           <div>
-            <span class="huoba-goods-price">￥{{goods_price.toFixed(2)}}</span>
-            <span class="huoba-goods-num">x{{$route.query.goods_num}}</span>
+            <span class="huoba-goods-price">￥{{goodsInfo.real_price.toFixed(2)}}</span>
+            <span class="huoba-goods-num">x{{goodsInfo.buy_count}}</span>
           </div>
         </div>
         <div class="huoba-goods-list-right">
@@ -73,18 +73,21 @@
 <style src="@/style/scss/pages/personal/order/refund.scss" scoped lang="scss"></style>
 
 <script>
+import{ORDER_REFUND_ADDINFO} from "../../../apis/shopping.js"
 export default {
   data() {
     return {
       order_id: null,
       detail_id: null,
-      goods_price: 0,
+      goodsInfo:{
+        real_price:0,
+      },
     };
   },
   mounted() {
     this.order_id = this.$route.query.order_id;
     this.detail_id = this.$route.query.detail_id;
-    this.goods_price = Number(this.$route.query.real_price);
+    this.getInfo()
   },
   methods: {
     torefundThree() {
@@ -106,7 +109,26 @@ export default {
           goods_length: this.$route.query.goods_length
         }
       });
-    }
+    },
+    //获取退款信息
+    async getInfo() {
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        version: "1.1",
+        timestamp: tStamp,
+        order_id: this.order_id,
+        detail_ids: this.detail_id,
+        refund_type: 1
+      };
+      data.sign = this.$getSign(data);
+      let res = await ORDER_REFUND_ADDINFO(data);
+
+      if (res.hasOwnProperty("response_code")) {
+          this.goodsInfo = res.response_data.refund_goods[0]
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
   }
 };
 </script>
