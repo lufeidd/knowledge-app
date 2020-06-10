@@ -103,7 +103,8 @@
         <img v-lazy="item.pic" class="swipe-one-pic">
         <div class="swipe-one-des" v-text="item.title"></div>
         <div class="swipe-one-button-box">
-          <button class="huoba-btn huoba-btn-one" @click="goToPlay(item.type, item)">继续播放</button>
+          <button class="huoba-btn huoba-btn-one" @click="goToPlay(item.type, item)" v-if="item.type == 9">继续播放</button>
+          <button class="huoba-btn huoba-btn-one" @click="goToPlay(item.type, item)" v-else>继续阅读</button>
         </div>
       </van-swipe-item>
     </van-swipe>
