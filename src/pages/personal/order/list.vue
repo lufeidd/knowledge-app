@@ -174,6 +174,12 @@
                 <div class="huoba-button-nav-right">
                   <button
                     class="huoba-btn huoba-btn-two"
+                    style="margin-left:15px;"
+                    v-if="item.state == 1"
+                    @click="cancel(item)"
+                  >取消订单</button>
+                  <button
+                    class="huoba-btn huoba-btn-two"
                     v-if="item.type==2&&(item.state == 5||item.state == 4)&&(item.if_all_send == 1&&item.send_package_nums == 1)"
                     @click="tologistics(item)"
                   >查看物流</button>
@@ -190,23 +196,17 @@
                     @click="toComment(item)"
                   >评价</button>
                   <button
-                    class="huoba-btn huoba-btn-two"
+                    class="huoba-btn huoba-btn-one"
                     style="margin-left:15px;"
-                    v-if="item.state == 1"
-                    @click="cancel(item)"
-                  >取消订单</button>
+                    v-if="item.type==2&&(item.state == 4||item.state==7||item.state==2)"
+                    @click="buyAgain(item)"
+                  >再次购买</button>
                   <button
                     class="huoba-btn huoba-btn-one"
                     style="margin-left:15px;"
                     v-if="item.state == 9"
                     @click="toGroupDetail(item)"
                   >拼团详情</button>
-                  <button
-                    class="huoba-btn huoba-btn-one"
-                    style="margin-left:15px;"
-                    v-if="item.type==2&&(item.state == 4||item.state==7||item.state==2)"
-                    @click="buyAgain(item)"
-                  >再次购买</button>
                   <button
                     class="huoba-btn huoba-btn-one"
                     style="margin-left:15px;"
@@ -286,6 +286,10 @@ export default {
   methods: {
     choose() {
       this.select_state ? (this.select_state = 0) : (this.select_state = 1);
+      this.goods_list = this.goods_list.map((value, key) => {
+        value.delete_state = 0;
+        return value;
+      });
     },
     chooseType(item, index) {
       this.select_state ? (this.select_state = 0) : (this.select_state = 1);
@@ -310,12 +314,14 @@ export default {
         }
         return value;
       });
+      this.select_state = 0
     },
     closeDelet() {
       this.goods_list = this.goods_list.map((value, key) => {
         value.delete_state = 0;
         return value;
       });
+      this.select_state = 0;
     },
     // 搜索
     toSearch() {

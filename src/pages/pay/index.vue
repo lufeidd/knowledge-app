@@ -78,6 +78,7 @@ export default {
         .catch(() => {
           next(false)
         });
+        // next();
     }
   },
   methods: {

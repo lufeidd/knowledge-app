@@ -477,6 +477,7 @@
         :rank="rankType"
         :loginStatus="isLogin"
         :showBuyButton="showBuyButton"
+        :baseData="baseData"
         ref="control"
         @setType="typeAction"
         @setMiniAudio="miniAudioData"
@@ -1632,6 +1633,7 @@ export default {
     },
     // 将当前音频播放信息存放到localStorage: miniAudio
     miniAudioData(info) {
+      // console.log(1111111)
       /*
        * __goodsNo节目编号
        * __pid当前节目对应专辑id，单个节目时pid为0
@@ -1681,11 +1683,11 @@ export default {
             this.$refs.control.audioData.albumPic = __albumPic;
           }
         }, 600);
-        if (info[3] == null) {
-          $("#miniAudio").css("display", "none");
-        } else {
-          $("#miniAudio").css("display", "block");
-        }
+        // if (info[3] == null) {
+        //   $("#miniAudio").css("display", "none");
+        // } else {
+        //   $("#miniAudio").css("display", "block");
+        // }
       }
     },
     // localStorage:audioProgress存放节目播放进度
@@ -1754,18 +1756,23 @@ export default {
       // console.log(item);
       // 未支付
       if (item.goods_id != null && item.is_payed == 0 && item.is_free == 0) {
-        var _goodsId = null;
+        // var _goodsId = null;
         if (this.baseData.sale_style == 1) {
-          _goodsId = this.baseData.goods_id;
-        } else {
-          _goodsId = item.goods_id;
-        }
-        this.$router.push({
+          this.$router.push({
           name: "payaccount",
-          query: { goods_id: _goodsId }
-        });
+            query: { goods_id: this.baseData.goods_id }
+          });
+        } else {
+          this.$router.push({
+            name: "payaccount",
+            query: { goods_id: this.baseData.goods_id, pid: item.goods_id }
+          });
+        }
+
+        console.log('第二次跳转购买')
         return;
       }
+      $("#miniAudio").css("display", "block");
       let __goodsNo = item.goods_no;
       let __pid = this.baseData.goods_id ? this.baseData.goods_id : 0;
       let __pic = item.pic;
@@ -1932,8 +1939,9 @@ export default {
         ) {
           this.$router.push({
             name: "payaccount",
-            query: { goods_id: parseInt(this.allProgramList[next].goods_id) }
+            query: { pid: parseInt(this.allProgramList[next].goods_id),goods_id:this.baseData.goods_id }
           });
+          console.log('第一次跳转购买')
           return;
         }
         // 当第一条是视频或者是文章时，跳转到对应详情
@@ -2018,6 +2026,7 @@ export default {
         this.allPlayStatus = "pause";
         this.$refs.control.playAudio(null);
       }
+      $("#miniAudio").css("display", "block");
     },
     // 购买
     buyAction(goodsId) {

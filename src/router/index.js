@@ -460,7 +460,11 @@ export default new Router({
     {
       path: '/personal/order/invoice',
       name: 'orderinvoice',
-      component: orderinvoice
+      component: orderinvoice,
+      meta: {
+        title: '申请开票',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/order/result',
@@ -515,7 +519,7 @@ export default new Router({
       name: 'logistics',
       component: logistics,
       meta: {
-        title: '订单跟踪',
+        title: '查看物流',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },

@@ -69,7 +69,7 @@
       <div
         class="content"
         @click="tologistics"
-        v-if="infoData.type ==2 && (infoData.state == 5 || infoData.state == 4) && (infoData.if_all_send == 1&& infoData.send_package_nums == 1)"
+        v-if="infoData.type == 2 &&(infoData.if_all_send == 1&& infoData.send_package_nums == 1)"
       >
         <div class="huoba-cell huoba-cell-three">
           <div class="huoba-cell-left">
@@ -93,7 +93,7 @@
       <!-- 多包裹 -->
       <div
         class="content"
-        v-if="infoData.type == 2&&(infoData.state == 5 || infoData.state == 4)&&((infoData.if_all_send == 0 && infoData.send_package_nums > 0)||(infoData.if_all_send == 1 && infoData.send_package_nums > 1))"
+        v-if="infoData.type == 2 &&((infoData.if_all_send == 0 && infoData.send_package_nums > 0)||(infoData.if_all_send == 1 && infoData.send_package_nums > 1))"
       >
         <div class="huoba-cell huoba-cell-three" @click="packageDetail">
           <div class="huoba-cell-left">
@@ -341,7 +341,7 @@
             <button
               class="huoba-btn huoba-btn-two"
               @click="apply"
-              v-if="showInvoice && infoData.state == 4 && infoData.pay_money > 0 && infoData.want_invoice == 1"
+              v-if="infoData.state == 4 && infoData.can_invoice_money > 0 && Object.keys(invoice).length == 0 && infoData.want_invoice == 1"
             >申请发票</button>
             <button
               class="huoba-btn huoba-btn-two"
@@ -378,15 +378,15 @@
             <button
               class="huoba-btn huoba-btn-two"
               style="margin-left:15px;"
-              v-if="infoData.state == 4 && infoData.if_comment == 0"
-              @click="toComment"
-            >评价</button>
-            <button
-              class="huoba-btn huoba-btn-two"
-              style="margin-left:15px;"
               v-if="infoData.type == 2&& infoData.state == 5 && ((infoData.if_all_send == 0 && infoData.send_package_nums > 0)||(infoData.if_all_send == 1 && infoData.send_package_nums > 1))"
               @click="packageDetail"
             >包裹详情</button>
+            <button
+              class="huoba-btn huoba-btn-two"
+              style="margin-left:15px;"
+              v-if="infoData.state == 4 && infoData.if_comment == 0"
+              @click="toComment"
+            >评价</button>
             <button
               class="huoba-btn huoba-btn-one"
               style="margin-left:15px;"
@@ -452,7 +452,6 @@ export default {
         detail: []
       },
       invoice: {},
-      showInvoice: false,
       if_refund: true,
       detail_ids: null,
       groupData: {
@@ -512,11 +511,7 @@ export default {
         } else {
           this.goods_list = this.infoData.detail;
         }
-        if (Object.keys(this.invoice).length > 0) {
-          this.showInvoice = false;
-        } else {
-          this.showInvoice = true;
-        }
+
         this.groupData = res.response_data.groupbuy_info;
         for (let i = 0; i < this.infoData.detail.length; i++) {
           if (
@@ -879,9 +874,7 @@ export default {
       this.$router.push({
         name: "orderinvoice",
         query: {
-          order_id: this.infoData.order_id,
-          money: this.infoData.pay_money,
-          invoice: JSON.stringify(this.invoice)
+          order_id: this.infoData.order_id
         }
       });
     },

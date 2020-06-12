@@ -682,11 +682,6 @@ export default {
           }
         }
 
-        // 获取页面分享信息
-        // var _pageName = "goods/detail";
-        // var _params = JSON.stringify({ goods_id: this.$route.query.goods_id });
-        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
-
         this.onsale = 1;
       } else {
         if (res.hasOwnProperty("error_code") && res.error_code == 401) {
@@ -795,7 +790,12 @@ export default {
       if (this.$refs.nav.is_Login) {
         this.$router.push({
           name: "orderconfirm",
-          query: { detail: JSON.stringify(this.detail) }
+          query:{
+            goods_id: this.detail.goods_id,
+            sku_id: this.detail.sku_id,
+            count: this.detail.count,
+            detail: true
+          }
         });
       } else {
         this.$router.push({ name: "login" });

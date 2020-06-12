@@ -228,7 +228,8 @@ import {
   ORDER_RECEIVE,
   ORDER_CANCEL,
   CART_ADD,
-  ORDER_AGAIN
+  ORDER_AGAIN,
+  ORDER_DELETE
 } from "../../../apis/shopping.js";
 export default {
   data() {

@@ -39,6 +39,7 @@
 
 <script>
 import { REDEEM_ITEM_GET } from "@/apis/redeem.js";
+import {SERVER_TIME} from "@/apis/public.js";
 import axios from "axios";
 export default {
   name: "code-input",
@@ -56,8 +57,16 @@ export default {
   },
   mounted() {
     document.title = "兑换码";
+    this.getTimes();
   },
   methods: {
+    // 调取服务器时间戳
+    async getTimes(){
+      let data = {
+        version: "1.0"
+      }
+      let res = await SERVER_TIME(data);
+    },
     inputCode() {
       // 配合正则，表单字符指定位置添加空格
       // var _code = this.codeNum

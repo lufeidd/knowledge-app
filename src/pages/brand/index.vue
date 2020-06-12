@@ -255,31 +255,6 @@ export default {
         this.$toast(res.error_message);
       }
     },
-
-    // // 获取页面分享信息
-    // async wxShareData() {
-    //   var tStamp = this.$getTimeStamp();
-    //   var data = {
-    //     page_name: "brand/index",
-    //     params: JSON.stringify({ brand_id: this.$route.query.brand_id }),
-    //     version: "1.0",
-    //     timestamp: tStamp
-    //   };
-    //   data.sign = this.$getSign(data);
-    //   let res = await WX_SHARE(data);
-    //   if (res.hasOwnProperty("response_code")) {
-    //     // console.log(res.response_data)
-    //     // 微信分享
-    //     this.$getWxData(
-    //       res.response_data.share_info.title,
-    //       res.response_data.share_info.desc,
-    //       res.response_data.share_info.pic,
-    //       res.response_data.share_info.url
-    //     );
-    //   } else {
-    //     this.$toast(res.error_message);
-    //   }
-    // },
     // 列表下拉加载
     programLoad() {
       this.columnListData();

@@ -69,11 +69,11 @@ export default {
       } else {
         let url = window.location.protocol + "//" + window.location.hostname + "/callback/weixin/Userinfo?code=" + this.wxCodeStr;
         var self = this;
-        // console.log('url:', url)
+        console.log('url:', url)
         axios
           .get(url)
           .then(function (response) {
-            // console.log(response);
+            console.log('response',response);
             localStorage.setItem('nickname', response.data.nickname);
             localStorage.setItem('headimg', response.data.headimgurl);
             localStorage.setItem('openid', response.data.openid);
@@ -671,7 +671,7 @@ export default {
       } else if (d < 0) {
         self.timeData = '火把拼团'
       }
-      // console.log(d,self.clock)
+      console.log('delay',self.show_delay)
     }
 
     // ksort
@@ -1205,6 +1205,7 @@ export default {
         ) {
           // 微信登录 code
           this.$getWxCode();
+          console.log('测试code码',this.wxCodeStr)
           // 微信授权
           if (this.wxCodeStr == "") {
             var this_count = Number(localStorage.getItem("get_count"));
@@ -1252,7 +1253,7 @@ export default {
                 console.log("error:", error);
               });
           } else {
-            console.log("未获取到code");
+            console.log("未获取到code号码",this.wxCodeStr);
           }
         }
       }

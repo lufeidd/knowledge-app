@@ -227,6 +227,14 @@ router.beforeEach((to, from, next) => {
   // 重定向功能，为解决ios微信上复制链接功能不能复制到动态路由问题
   // 获取地址前段部分，不算参数
   var replaceUrl = window.location.href.split('#')[0] + '#' + to.path;
+
+  // var _routeUrlSet = false;
+  // let _url = window.location.href.split('#')[0]
+  // if(_url.indexOf('?from=') > -1 && _url.indexOf('&isappinstalled=') > -1){
+  //   replaceUrl = _url.split('?')[0] + '#' + to.path;
+  // }
+  // console.log('试试',replaceUrl)
+
   // 存放来源地址，如果未登录，进入登录页或者第三方绑定页不修改fromLink，回退到指定页面
   var index = 0; // 索引初始化
 
@@ -279,10 +287,20 @@ router.beforeEach((to, from, next) => {
   // 过滤路由参数
   for (var i in to.query) {
     var _bool = true;
+    // route_arr.push({i:to.query[i]})
     if (i == 'home_id') {
       _bool = false;
       next()
     }
+    // if(i == 'device'){
+    //   let uLL = navigator.userAgent
+    //   let _iosLL = !!uLL.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+    //   if(_iosLL){
+    //     _routeUrlSet = true
+    //   }
+    //   console.log(101,_routeUrlSet)
+    //   next()
+    // }
     next()
     // 记录完原始公号后路由去除home_id
     if (localStorage.getItem('isWxLogin') == 'yes') {
@@ -313,8 +331,8 @@ router.beforeEach((to, from, next) => {
 
     next()
   }
+  // console.log('87',route_arr)
   next()
-
   //判断该页面有 brand_id
   if (from.query.brand_id) {
     next();
@@ -421,7 +439,11 @@ router.beforeEach((to, from, next) => {
     }
   }
   next();
-
+  // if(_routeUrlSet){
+  //   let _index = replaceUrl.indexOf('device') - 1;
+  //   replaceUrl = replaceUrl.slice(0,_index)
+  // }
+  // console.log('地址',_routeUrlSet,replaceUrl)
   window.location.replace(replaceUrl); // 重定向跳转
 
   // 相同页面跳转刷新，除个别不需要刷新的页面外，比如brand/index

@@ -538,6 +538,7 @@ export default {
         data.groupbuy_id = this.$route.query.groupbuy_id;
       if (this.$route.query.groupbuy_open_id)
         data.groupbuy_open_id = this.$route.query.groupbuy_open_id;
+      if (this.$route.query.pid) data.album_id = this.$route.query.pid;
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADDINFO(data);
       if (res.hasOwnProperty("response_code")) {

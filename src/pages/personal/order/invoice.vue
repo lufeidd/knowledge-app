@@ -111,7 +111,7 @@
 <style src="@/style/scss/pages/personal/order/invoice.scss" scoped lang="scss"></style>
 
 <script>
-import { USER_ORDER_INVOICE_ADD } from "../../../apis/user.js";
+import { USER_ORDER_INVOICE_ADD,USER_ORDER_DETAIL_GET } from "../../../apis/user.js";
 export default {
   data() {
     return {
@@ -136,12 +136,7 @@ export default {
   },
   mounted() {
     this.invoiceData.orderNumber = this.$route.query.order_id;
-    this.invoiceData.invoice_money = this.$route.query.money;
-    this.invoice = JSON.parse(this.$route.query.invoice);
-    if(this.invoice.invoice_title == '单位'){
-      this.radio_state = '2'
-    }
-    console.log(this.invoice)
+    this.getData();
   },
   methods: {
     checkPhone() {
@@ -246,6 +241,29 @@ export default {
         this.$toast("请填写完整信息");
       }
     },
+    async getData(){
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        order_id: this.invoiceData.orderNumber,
+        version: "1.0",
+        timestamp: tStamp
+      };
+      data.sign = this.$getSign(data);
+      let res = await USER_ORDER_DETAIL_GET(data);
+      if (res.hasOwnProperty("response_code")) {
+        if(res.response_data.can_invoice_money > 0){
+          this.invoiceData.invoice_money = res.response_data.can_invoice_money;
+        }else{
+          this.invoiceData.invoice_money = res.response_data.invoice_info.invoice_money;
+        }
+        this.invoice = res.response_data.invoice_info;
+        if(this.invoice.invoice_title == '单位'){
+          this.radio_state = '2'
+        }
+      }else{
+        this.$toast(res.error_message);
+      }
+    }
   }
 };
 </script>

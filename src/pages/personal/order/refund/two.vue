@@ -124,7 +124,7 @@
           >可修改，最多￥{{refundInfo.max_apply_money.toFixed(2)}}，含发货运费￥{{refundInfo.dispatch_price.toFixed(2)}}</span>
           <span
             class="choose"
-            v-if="((goods_list.length == 1)||(type_of == 'edit' && order_dispatch_state == 0)) && goods_radio < 1"
+            v-if="((goods_list.length == 1)||(type_of == 'edit' && order_dispatch_state == 0)||(type_of == 'edit' && order_dispatch_state == 1)) && goods_radio < 1"
           >不可修改，最多￥{{refundInfo.max_apply_money.toFixed(2)}}，含发货运费￥{{refundInfo.dispatch_price.toFixed(2)}}</span>
         </div>
       </div>
