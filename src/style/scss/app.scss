@@ -509,3 +509,9 @@ img {
     z-index: 99;
   }
 }
+
+// 轮播图
+.van-swipe__indicators i:not(.van-swipe__indicator--active){
+  background: #fff !important;
+}
+

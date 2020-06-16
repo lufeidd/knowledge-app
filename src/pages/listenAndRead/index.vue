@@ -81,7 +81,6 @@
               </div>
               <div class="huoba-ebook-item-content">
                 <div class="huoba-ebook-item-des" v-text="item.title"></div>
-                <div class="huoba-ebook-item-author"><span class="name">张东健</span>著</div>
                 <div class="huoba-ebook-item-total end">
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-wenzhang"/>
