@@ -115,20 +115,24 @@
         let res = await LOGIN_BIND_PARTERNER(data);
         // console.log("bindphone:", res.response_data);
         if (res.hasOwnProperty("response_code")) {
-          window.location.href =
-            window.location.protocol +
-            "//" +
-            window.location.hostname +
-            "/#/personal/index";
-          //活动页跳转新增参数
-          if (this.activity_id) {
-            this.$router.push({
-              name: "assistactive",
-              query: {
-                activity_id: this.activity_id
-              }
-            });
-          }
+          // window.location.href =
+          //   window.location.protocol +
+          //   "//" +
+          //   window.location.hostname +
+          //   "/#/personal/index";
+          // //活动页跳转新增参数
+          // if (this.activity_id) {
+          //   this.$router.push({
+          //     name: "assistactive",
+          //     query: {
+          //       activity_id: this.activity_id
+          //     }
+          //   });
+          // }
+
+          // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
+          localStorage.setItem("loginState", '1');
+          window.location.href = localStorage.getItem("defaultLink");
 
         } else {
           // 绑定失败
@@ -152,6 +156,7 @@
         if (res.hasOwnProperty("response_code")) {
           this.$toast('登录成功');
           // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
+          localStorage.setItem("loginState", '1');
           window.location.href = localStorage.getItem("defaultLink");
         } else {
           this.$toast(res.error_message);
@@ -179,6 +184,7 @@
           localStorage.setItem(("loginState"), 1);
 
           // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
+          localStorage.setItem("loginState", '1');
           window.location.href = localStorage.getItem("defaultLink");
         } else {
           this.$toast(res.error_message);

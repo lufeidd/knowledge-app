@@ -51,7 +51,8 @@
           @include font("PingFangBlod", $fontSize + 10, null);
         }
         .condition{
-          white-space: nowrap;
+          // white-space: nowrap;
+          // @include textOverflow;
           margin-top: 28px;
         }
         .circle{

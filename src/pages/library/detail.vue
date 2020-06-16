@@ -98,7 +98,7 @@
       <div class="text">发送下载链接至邮箱</div>
       <van-cell-group>
         <van-field v-model="emailValue" placeholder="请填写电子邮箱地址" class="input">
-          <van-button slot="button" size="small" round class="send" @click="sendEmail" :style="{'background': emailValue == '' ? '' : '#F45856','color': emailValue == '' ? '' : '#ffffff'}">发送</van-button>
+          <van-button slot="button" size="small" round class="send" @click="sendEmail" :style="{'background': emailValue == '' ? '' : '#F45856','color': emailValue == '' ? '' : '#ffffff','pointer-events': emailValue == '' ? 'none' : 'auto'}">发送</van-button>
         </van-field>
       </van-cell-group>
       <div class="text" style="margin-top: 20px;">

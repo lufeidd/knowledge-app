@@ -236,11 +236,6 @@ export default {
           this.$countTime(this.groupData.remain_time);
 
 
-        // 获取页面分享信息
-        // var _pageName = "groupbuy/open/detail";
-        // var _params = JSON.stringify({ open_id: this.open_id });
-        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
-
 
       } else {
         this.$toast(res.error_message);
@@ -272,7 +267,10 @@ export default {
             name: "orderconfirm",
             query: {
               groupbuy_id: this.groupData.groupbuy_id,
-              detail:JSON.stringify({goods_id:this.groupData.goods_id,sku_id:this.groupData.goods_id,count:1}),
+              goods_id:this.groupData.goods_id,
+              sku_id:this.groupData.goods_id,
+              count: 1,
+              detail: true
             }
           });
         } else {
@@ -297,8 +295,11 @@ export default {
             name: "orderconfirm",
             query: {
               groupbuy_open_id: this.groupData.open_id,
-              groupbuy_id:this.groupData.groupbuy_id,
-              detail:JSON.stringify({goods_id:this.groupData.goods_id,sku_id:this.groupData.goods_id,count:1}),
+              groupbuy_id: this.groupData.groupbuy_id,
+              goods_id: this.groupData.goods_id,
+              sku_id: this.groupData.goods_id,
+              count: 1,
+              detail: true,
             }
           });
         } else {

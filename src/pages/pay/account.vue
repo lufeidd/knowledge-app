@@ -17,7 +17,7 @@
         <div class="info">
           <span class="history" v-if="this.single_activity_id">
             促销价：¥{{ goodsInfo.price.toFixed(2) }}
-            <del class="promotion">原价￥{{goodsInfo.sale_price}}</del>
+            <del class="promotion">原价￥{{goodsInfo.sale_price.toFixed(2)}}</del>
           </span>
           <span class="history" v-else>¥{{ goodsInfo.price.toFixed(2) }}</span>
         </div>
@@ -309,7 +309,7 @@
               </div>
               <div
                 class="whyNoUse"
-              >{{item.cart_money>0?'还差'+(item.use_min_money-item.cart_money)+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
+              >{{item.cart_money>0?'还差'+(item.use_min_money-item.cart_money).toFixed(2)+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
             </div>
           </div>
         </van-tab>
@@ -368,7 +368,7 @@
               </div>
               <div
                 class="whyNoUse"
-              >{{item.cart_money>0?'还差'+(item.use_min_money-item.cart_money)+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
+              >{{item.cart_money>0?'还差'+(item.use_min_money-item.cart_money).toFixed(2)+'元可使用该券':'所结算商品中没有符合条件的商品'}}</div>
             </div>
           </div>
         </van-tab>
@@ -468,7 +468,8 @@ export default {
         title: "",
         pic: [],
         goods_type: null,
-        price: null
+        price: 0,
+        sale_price: 0
       },
       // 支付方式
       payBank: [],
@@ -502,7 +503,10 @@ export default {
       nouseCoupon: "",
       useCoupon: "",
       ticket_price: null,
-      ticket_lists: null,
+      ticket_lists: {
+        canuse: [],
+        nouse: []
+      },
       ticket_num: 0,
       discount_price: 0,
       total_money: 0,
@@ -534,6 +538,7 @@ export default {
         data.groupbuy_id = this.$route.query.groupbuy_id;
       if (this.$route.query.groupbuy_open_id)
         data.groupbuy_open_id = this.$route.query.groupbuy_open_id;
+      if (this.$route.query.pid) data.album_id = this.$route.query.pid;
       data.sign = this.$getSign(data);
       let res = await ORDER_VIRTUAL_ADDINFO(data);
       if (res.hasOwnProperty("response_code")) {

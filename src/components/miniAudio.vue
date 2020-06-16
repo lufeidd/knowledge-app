@@ -1,5 +1,5 @@
 <template>
-  <div id="miniAudio" :class="{ iphx: this.isIphx }">
+  <div id="miniAudio" :class="{ iphx: this.isIphx }" style="display:none;">
     <!-- 播放器缩略 -->
     <div :class="{active: unfold}" v-if="closeAudio == null || closeAudio == 'no'">
       <van-row class="miniAudio" :class="{ patch: showBuyButton }">
@@ -69,7 +69,7 @@
 import { USER_PLAYED_RECORD } from "./../apis/user.js";
 export default {
   name: "music",
-  props: ["audioData", "rank", "loginStatus", "showBuyButton"],
+  props: ["audioData", "rank", "loginStatus", "showBuyButton","baseData"],
   data() {
     return {
       closeAudio: localStorage.getItem("closeAudio"),

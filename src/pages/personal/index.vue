@@ -1,7 +1,7 @@
 <template>
   <div id="personalPage">
     <!-- 头部 -->
-    <div class="infoBox">
+    <div class="infoBox" @click="gotoLogin">
       <div class="left">
         <div class="ratioBox" v-if="infoData.is_login && infoData.user_header != ''"></div>
         <div class="ratioBox active" v-else>
@@ -176,6 +176,40 @@
           </div>
         </router-link>
 
+        <!-- 我听我看 -->
+        <!--<router-link v-if="infoData.is_login" to="/listenAndRead/index" class="cell">-->
+          <!--<div class="svg">-->
+            <!--<svg class="icon" aria-hidden="true">-->
+              <!--<use xlink:href="#icon-gerenzhongxinwotingwokan" />-->
+            <!--</svg>-->
+          <!--</div>-->
+          <!--<div class="desc">-->
+            <!--<span class="text">我听我看</span>-->
+            <!--<span class="new">New</span>-->
+          <!--</div>-->
+          <!--<div class="action">-->
+            <!--<svg class="icon" aria-hidden="true">-->
+              <!--<use xlink:href="#icon-next-line" />-->
+            <!--</svg>-->
+          <!--</div>-->
+        <!--</router-link>-->
+        <!--<router-link v-else to="/login/index" class="cell">-->
+          <!--<div class="svg">-->
+            <!--<svg class="icon" aria-hidden="true">-->
+              <!--<use xlink:href="#icon-gerenzhongxinwotingwokan" />-->
+            <!--</svg>-->
+          <!--</div>-->
+          <!--<div class="desc">-->
+            <!--<span class="text">我听我看</span>-->
+            <!--<span class="new">New</span>-->
+          <!--</div>-->
+          <!--<div class="action">-->
+            <!--<svg class="icon" aria-hidden="true">-->
+              <!--<use xlink:href="#icon-next-line" />-->
+            <!--</svg>-->
+          <!--</div>-->
+        <!--</router-link>-->
+
         <!-- 我的购物车 -->
         <router-link v-if="infoData.is_login" to="/cart" class="cell">
           <div class="svg">
@@ -241,21 +275,21 @@
         </router-link>
 
         <!-- 兑换码 -->
-        <router-link to="/redeem/codeInput" class="cell">
-          <div class="svg">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-personalRedeem" />
-            </svg>
-          </div>
-          <div class="desc">
-            <span class="text">兑换码</span>
-          </div>
-          <div class="action">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-next-line" />
-            </svg>
-          </div>
-        </router-link>
+        <!--<router-link to="/redeem/codeInput" class="cell">-->
+          <!--<div class="svg">-->
+            <!--<svg class="icon" aria-hidden="true">-->
+              <!--<use xlink:href="#icon-personalRedeem" />-->
+            <!--</svg>-->
+          <!--</div>-->
+          <!--<div class="desc">-->
+            <!--<span class="text">兑换码</span>-->
+          <!--</div>-->
+          <!--<div class="action">-->
+            <!--<svg class="icon" aria-hidden="true">-->
+              <!--<use xlink:href="#icon-next-line" />-->
+            <!--</svg>-->
+          <!--</div>-->
+        <!--</router-link>-->
 
         <!-- 我的评论 -->
         <router-link v-if="infoData.is_login" to="/personal/comment/index" class="cell">
@@ -351,6 +385,11 @@ export default {
     this.homeData();
   },
   methods: {
+    gotoLogin() {
+        if (!this.infoData.is_login) {
+            this.$router.push({ name: "login" });
+        }
+    },
     gotoRemain() {
       if (this.infoData.is_login) {
         this.$router.push({ name: "remain" });

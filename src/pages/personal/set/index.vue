@@ -174,7 +174,9 @@ export default {
         this.unionid = "";
 
         localStorage.setItem("headPic", null);
-        this.$router.push("/login/index");
+
+        localStorage.setItem('defaultLink', window.location.href.split('#')[0] + '#' + '/personal/index');
+        this.$router.push("/personal/index");
       } else {
         this.$toast(res.error_message);
       }

@@ -456,7 +456,7 @@ export default {
         if (this.editCount <= 0) {
           this.$toast("商品件数不能小于1件~");
         } else {
-          this.$toast("购物车品种数量不能超过120个~");
+          this.$toast("购物车已满，最多可以放120种商品哦");
         }
       }
       this.showkeyboard = false;
@@ -864,7 +864,7 @@ export default {
             }
             return value;
           });
-          this.$toast("购物车商品总数量不能超过120件~");
+          this.$toast("购物车已满，最多可以放120种商品哦");
         }, 1);
       }
       // console.log(count,this.cartlist[cIndex].act_list[gIndex].goods_list[lindex].count)

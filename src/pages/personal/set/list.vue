@@ -46,7 +46,6 @@
         </div>
       </li>
     </ul>
-    <CopyRight></CopyRight>
     <div style="height: 60px;"></div>
     <div v-if="this.isIphx" style="height: 34px;"></div>
     <div class="bottomBox" :class="{ iphx: this.isIphx }">

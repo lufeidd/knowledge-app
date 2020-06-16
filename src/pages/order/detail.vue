@@ -51,10 +51,20 @@ export default {
       goods_nums: null,
       cartlist: [],
       order_ticket_ids:'',
+      location:null,
+      detail:null,
     };
   },
   mounted() {
     this.order_ticket_ids = this.$route.query.order_ticket_ids;
+    let _obj = {},_objd = {};
+    _obj.province_id = this.$route.query.province_id;
+    _obj.city_id = this.$route.query.city_id;
+    _objd.goods_id = this.$route.query.goods_id;
+    _objd.sku_id = this.$route.query.sku_id;
+    _objd.count = this.$route.query.count;
+    this.location = JSON.stringify(_obj);
+    this.detail = JSON.stringify(_objd);
     this.cartData();
   },
   methods: {
@@ -64,12 +74,12 @@ export default {
       var data = {};
       data.timestamp = tStamp;
       data.version = "1.0";
-      if(this.$route.query.detail_ids) data.detail_ids = this.$route.query.detail_ids;
-      if(this.$route.query.detail) data.detail = this.$route.query.detail;
+      if (this.$route.query.detail_ids) data.detail_ids = this.$route.query.detail_ids;
+      if (this.detail) data.detail = this.detail;
       if (this.$route.query.groupbuy_id) data.groupbuy_id = this.$route.query.groupbuy_id;
       if (this.$route.query.groupbuy_open_id) data.groupbuy_open_id = this.$route.query.groupbuy_open_id;
       data.ticket_ids = this.order_ticket_ids;
-      data.location = this.$route.query.location;
+      data.location = this.location;
       data.sign = this.$getSign(data);
       let res = await CART_INFO(data);
 
