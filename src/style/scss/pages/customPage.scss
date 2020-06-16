@@ -216,7 +216,7 @@
 
       & .title {
         @include twoColtextOverflow;
-        height: 38px;
+        height: 36px;
         @include font("PingFangBold", $fontSize + 1, null);
         margin-top: 8px;
         line-height: 1.2;

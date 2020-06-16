@@ -106,7 +106,7 @@
       & .title {
         @include twoColtextOverflow;
         height: 38px;
-        @include font("PingFangBold", $fontSize - 1, '#666');
+        @include font("PingFangBold", $fontSize - 1, $cl6);
         margin-top: 8px;
       }
 
@@ -173,7 +173,7 @@
         display: block;
 
         & .title {
-          @include font("PingFangBold", $fontSize - 1, #666);
+          @include font("PingFangBold", $fontSize - 1, $cl6);
           @include textOverflow;
           display: block;
 
@@ -185,7 +185,7 @@
         }
 
         & .subTitle {
-          @include font("PingFangBold", $fontSize, #333);
+          @include font("PingFangBold", $fontSize, $cl3);
           margin-top: 5px;
           white-space: pre-wrap;
           overflow: visible;
@@ -209,7 +209,7 @@
             }
 
             & .dialog {
-              color: #666;
+              color: $cl6;
             }
           }
 
@@ -223,12 +223,12 @@
           margin-top: 15px;
 
           & .date {
-            @include font(null, $fontSize - 1, #999);
+            @include font(null, $fontSize - 1, cl9);
             margin-right: 15px;
           }
 
           & .action {
-            @include font(null, $fontSize - 1, #333);
+            @include font(null, $fontSize - 1, $cl3);
             margin-right: 15px;
           }
         }
@@ -249,7 +249,7 @@
       text-align: center;
       position: relative;
       @include displayFlex(flex, center, center);
-      @include font(null, $fontSize + 2, #999);
+      @include font(null, $fontSize + 2, $cl9);
 
       & .action {
         @include position(absolute, "tl", 0, 0, 44px, 44px, null);
@@ -280,7 +280,7 @@
 
       & .count {
         font-size: $fontSize - 2;
-        color: #999;
+        color: $cl9;
         text-align: right;
 
         & .active {
