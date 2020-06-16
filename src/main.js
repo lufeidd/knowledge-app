@@ -292,15 +292,6 @@ router.beforeEach((to, from, next) => {
       _bool = false;
       next()
     }
-    // if(i == 'device'){
-    //   let uLL = navigator.userAgent
-    //   let _iosLL = !!uLL.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-    //   if(_iosLL){
-    //     _routeUrlSet = true
-    //   }
-    //   console.log(101,_routeUrlSet)
-    //   next()
-    // }
     next()
     // 记录完原始公号后路由去除home_id
     if (localStorage.getItem('isWxLogin') == 'yes') {
@@ -439,11 +430,7 @@ router.beforeEach((to, from, next) => {
     }
   }
   next();
-  // if(_routeUrlSet){
-  //   let _index = replaceUrl.indexOf('device') - 1;
-  //   replaceUrl = replaceUrl.slice(0,_index)
-  // }
-  // console.log('地址',_routeUrlSet,replaceUrl)
+
   window.location.replace(replaceUrl); // 重定向跳转
 
   // 相同页面跳转刷新，除个别不需要刷新的页面外，比如brand/index
