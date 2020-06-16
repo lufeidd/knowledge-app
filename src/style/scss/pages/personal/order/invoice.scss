@@ -4,51 +4,14 @@
  */
 
 #invoicePage {
-  #one {
-    .van-cell__value {
-      font-size: $fontSize;
-      color: $cl3;
-    }
+  background-color: $greyLight;
+  min-height: 100%;
+  // padding-bottom: 50px;
+  & .content{
+    margin-bottom: 10px;
   }
-
-  .van-cell__title {
-    font-size: $fontSize + 2;
-    color: $cl3;
-    flex: 0 1 auto;
-  }
-
-  .van-cell__value {
-    text-align: left;
-    margin-left: 5px;
-  }
-
-  .van-icon-arrow-down:before {
-    content: "\F00A"
-  }
-  .van-hairline--top-bottom:after {
-    border-width: 1px 0 0 0;
-    border-color: #ebedf0;
-  }
-
-  .van-field__label {
-    max-width: 120px;
-  }
-
-  .van-button {
-    border-radius: 0;
-  }
-
-  // .van-button--danger {
-  //   background-color: $redDark;
-  //   border: 1px solid $redDark;
-  // }
-
-  .van-cell__title.van-field__label {
-    max-width: 100px;
-    white-space: nowrap;
-  }
-
-  #two {
-    border-bottom: 1px solid $greyLight;
+  & .tips{
+    padding: 0 15px;
+    @include font(null,$fontSize - 2,$cl9)
   }
 }

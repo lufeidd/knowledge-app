@@ -397,30 +397,33 @@ export default {
       chooseMax: false,
       maxDiscount: null,
       discount_price_desc: "",
-      groupbuy_id: null,
-      groupbuy_open_id: null,
+      groupbuy_id: 0,
+      groupbuy_open_id: 0,
       payState: true
     };
   },
   mounted() {
-    this.groupbuy_id = this.$route.query.groupbuy_id;
-    this.groupbuy_open_id = this.$route.query.groupbuy_open_id;
+    if(this.$route.query.groupbuy_id)this.groupbuy_id = this.$route.query.groupbuy_id;
+    if(this.$route.query.groupbuy_open_id)this.groupbuy_open_id = this.$route.query.groupbuy_open_id;
     this.orderAddData();
   },
   methods: {
     gotoDetail() {
-      var queryTmp = {};
-      queryTmp.address_id = this.address_id;
-      if (this.$route.query.detail_ids)
-        queryTmp.detail_ids = this.$route.query.detail_ids;
-      if (this.$route.query.detail) queryTmp.detail = this.$route.query.detail;
-      if (this.$route.query.groupbuy_id)
-        queryTmp.groupbuy_id = this.$route.query.groupbuy_id;
-      if (this.$route.query.groupbuy_open_id)
-        queryTmp.groupbuy_open_id = this.$route.query.groupbuy_open_id;
-      queryTmp.order_ticket_ids = this.order_ticket_ids;
-      queryTmp.location = JSON.stringify(this.location);
-      this.$router.push({ name: "orderconfirmdetail", query: queryTmp });
+      this.$router.push({
+        name: "orderconfirmdetail",
+        query: {
+          province_id: this.location.province_id,
+          city_id: this.location.city_id,
+          address_id: this.address_id,
+          order_ticket_ids: this.order_ticket_ids,
+          groupbuy_id: this.groupbuy_id,
+          groupbuy_open_id: this.groupbuy_open_id,
+          detail_ids: this.$route.query.detail_ids,
+          goods_id: this.$route.query.goods_id,
+          sku_id: this.$route.query.sku_id,
+          count: this.$route.query.count,
+        }
+      });
     },
     // 新增实物订单
     async orderAddData() {
@@ -430,7 +433,13 @@ export default {
       data.version = "1.1";
       if (this.$route.query.detail_ids)
         data.detail_ids = this.$route.query.detail_ids;
-      if (this.$route.query.detail) data.detail = this.$route.query.detail;
+      if (this.$route.query.detail) {
+        let _obj = {};
+        _obj.goods_id = this.$route.query.goods_id;
+        _obj.sku_id = this.$route.query.sku_id;
+        _obj.count = this.$route.query.count;
+        data.detail = JSON.stringify(_obj);
+      }
       if (this.$route.query.groupbuy_id)
         data.groupbuy_id = this.$route.query.groupbuy_id;
       if (this.$route.query.groupbuy_open_id)
@@ -501,7 +510,13 @@ export default {
       data.version = "1.1";
       if (this.$route.query.detail_ids)
         data.detail_ids = this.$route.query.detail_ids;
-      if (this.$route.query.detail) data.detail = this.$route.query.detail;
+      if (this.$route.query.detail){
+        let _obj = {};
+        _obj.goods_id = this.$route.query.goods_id;
+        _obj.sku_id = this.$route.query.sku_id;
+        _obj.count = this.$route.query.count;
+        data.detail = JSON.stringify(_obj);
+      }
       data.ticket_ids = this.order_ticket_ids;
       if (this.address_id) data.address_id = this.address_id;
       data.sign = this.$getSign(data);
@@ -535,7 +550,13 @@ export default {
       data.version = "1.1";
       if (this.$route.query.detail_ids)
         data.detail_ids = this.$route.query.detail_ids;
-      if (this.$route.query.detail) data.detail = this.$route.query.detail;
+      if (this.$route.query.detail){
+        let _obj = {};
+        _obj.goods_id = this.$route.query.goods_id;
+        _obj.sku_id = this.$route.query.sku_id;
+        _obj.count = this.$route.query.count;
+        data.detail = JSON.stringify(_obj);
+      }
       if (this.$route.query.groupbuy_id)
         data.groupbuy_id = this.$route.query.groupbuy_id;
       if (this.$route.query.groupbuy_open_id)
@@ -548,7 +569,7 @@ export default {
 
       if (res.hasOwnProperty("response_code")) {
         this.pay_id = res.response_data.pay_id;
-        this.$router.push({
+        this.$router.replace({
           name: "pay",
           query: {
             pay_id: this.pay_id,

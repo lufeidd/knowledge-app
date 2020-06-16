@@ -21,12 +21,12 @@ obj.baseURL =  window.location.protocol + "//" + window.location.hostname + '/ap
 obj.timeout = 15000;
 
 // 如果有设置过headers则不设置
-if (localStorage.getItem("hasHeader") == "no") {
+// if (localStorage.getItem("hasHeader") == "no") {
     obj.headers = {
         'App-version': app_version,
         'unique-code': open_id
     };
-}
+// }
 
 // 一、请求拦截器 忽略
 var instance = axios.create(obj);

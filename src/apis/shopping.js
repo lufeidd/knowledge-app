@@ -72,3 +72,15 @@ export const ORDER_CANCEL = query => req('post', '/shopping/order/cancel', query
 
 //订单再次购买
 export const ORDER_AGAIN = query => req('post', '/shopping/order/again', query);
+
+//订单多包裹详情
+export const ORDER_PACKAGE_DETAIL = query => req('post', '/shopping/order/package/detail', query);
+
+// 订单延长收货
+export const ORDER_RECEIVE_DELAY = query => req('post', '/shopping/order/receive/delay', query);
+
+// 订单删除
+export const ORDER_DELETE = query => req('post', '/shopping/order/delete', query);
+
+// 获取选择退款商品
+export const ORDER_REFUND_GOODS_GETS = query => req('post', '/shopping/order/refund/goods/gets', query);

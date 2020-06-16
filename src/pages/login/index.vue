@@ -29,6 +29,8 @@
         this.gotoLogin = true;
         localStorage.setItem("gotoLogin", "yes");
         this.$wxLogin();
+
+        localStorage.setItem("loginState", '1');
       },
       phoneLogin() {
         this.$router.push({name: 'phoneLogin'});

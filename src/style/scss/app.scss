@@ -4,508 +4,1065 @@
  * description:vant组件样式重定义
  */
 
-@import './var.scss';
-@import './mixin.scss';
-@import './func.scss';
-// @import './../../style/font/PingFangBold.css';
-// @import './../font/PingFangMedium.css';
+ @import './var.scss';
+ @import './mixin.scss';
+ @import './func.scss';
+ // @import './../../style/font/PingFangBold.css';
+ // @import './../font/PingFangMedium.css';
 
-html {
-  max-width: 640px;
-  min-width: 320px;
-  margin: 0 auto!important;
-  margin: 0 auto;
-  line-height: 1.5;
-  @include font("PingFangMedium", $fontSize, #333);
-  height: 100%;
+ html {
+   max-width: 640px;
+   min-width: 320px;
+   margin: 0 auto!important;
+   margin: 0 auto;
+   line-height: 1.5;
+   @include font("PingFangMedium", $fontSize, #333);
+   height: 100%;
+   position: relative;
+ }
+
+ .van-goods-action,
+ .van-submit-bar,
+ .van-overlay,
+ .van-tabs--line .van-tabs__wrap {
+   max-width: 640px;
+   left: auto !important;
+   right: auto;
+   width: 100%;
+ }
+ .van-popup {
+   max-width: 640px;
+ }
+ .bottomBox {
+   @include position (fixed, 'bl', 0, auto, 100%, 50px, 0);
+   max-width: 640px;
+   z-index: 99;
+ }
+ .van-dialog {
+   max-width: 320px;
+ }
+
+ #indexPage .van-popup {
+   max-width: 320px;
+ }
+
+ @media screen and (min-width: 640px) {
+   #easyNav {
+     right: 50%;
+     margin-right: -320px;
+   }
+   #miniAudio .miniAudio {
+     left: 50%;
+     margin-left: -305px;
+   }
+ }
+
+ a {
+   color: #000;
+ }
+
+ *,
+ img {
+   -webkit-tap-highlight-color: transparent;
+   -ms-tap-highlight-color: transparent;
+   -moz-tap-highlight-color: transparent;
+   -o-tap-highlight-color: transparent;
+   -webkit-touch-callout: none;
+ }
+
+ img {
+   max-width: 100%;
+ }
+
+ /* 字体图标 */
+ .icon {
+   width: 1em;
+   height: 1em;
+   vertical-align: middle;
+   fill: currentColor;
+   overflow: hidden;
+   position: relative;
+   top: -2px;
+ }
+
+ // 遮罩
+ .van-overlay {
+   background-color: rgba($color: #000000, $alpha: 0.4);
+ }
+
+ // 确认弹窗
+ .van-dialog__confirm,
+ .van-dialog__confirm:active {
+   color: $redDark;
+   border-top: 1px solid #e5e5e5 !important;
+ }
+ .van-dialog__cancel{
+  border-top: 1px solid #e5e5e5 !important;
+  border-right: 1px solid #e5e5e5 !important;
+ }
+ .van-dialog__message{
+   font-size: $fontSize + 1;
+ }
+
+ // 开关
+ .van-switch--on {
+   background-color: $redDark;
+ }
+
+ // 单元格
+
+ .van-cell:not(:last-child)::after {
+   left: 0;
+ }
+
+ .van-cell__title {
+   font-size: $fontSize + 1;
+   color: #333;
+ }
+
+ .van-cell__value {
+   font-size: $fontSize - 1;
+   color: #999;
+ }
+
+ // 滑动单元格
+ .van-swipe-cell__left,
+ .van-swipe-cell__right {
+   background-color: $redDark;
+   width: 65px;
+   @include font(null, $fontSize - 2, $white);
+   @include displayFlex (flex, center, center);
+ }
+
+ // 商品列表
+ .listBox {
+   @include displayFlex (flex, flex-start, center);
+
+   & .left {
+     @include flexBasis(65px);
+
+     & .ratioBox {
+
+       & .box {
+
+         & img {
+           max-width: 100%;
+           max-height: 100%;
+         }
+       }
+     }
+   }
+
+   & .right {
+
+     & .icon {
+       width: 14px;
+       height: 14px;
+       color: #ccc;
+     }
+   }
+
+   & .center {
+     flex-grow: 1;
+   }
+
+ }
+
+ // tab标签页
+
+ .van-tabs.van-tabs--line .van-tabs__wrap {
+   border-bottom: 1px #eee solid;
+ }
+ .van-tabs .van-tab{
+   color: $cl9;
+   font-size: $fontSize + 1;
+ }
+ .van-tabs .van-tab.van-tab--active{
+   color: $redDark;
+ }
+ .van-hairline--top-bottom::after {
+   border-width: 0;
+ }
+ .van-tabs__track {
+   height: auto;
+ }
+ .van-tabs__line {
+   background-color: $redDark!important;
+   height: 2px!important;
+   border-radius: 50%!important;
+   bottom: 16px;
+   width: 30%;
+ }
+ .van-tabs__line::before {
+   content: '';
+   position: absolute;
+   width: 25%;
+   height: 100%;
+   left: 0;
+   top: 0;
+   background-color: $white;
+ }
+ .van-tabs__line::after {
+   content: '';
+   position: absolute;
+   width: 25%;
+   height: 100%;
+   right: 0;
+   top: 0;
+   background-color: $white;
+ }
+
+ // 商品导航
+ .van-goods-action-mini-btn {
+   font-size: $fontSize - 2;
+   color: #666;
+ }
+
+ // 标签
+ .van-tag {
+   font-size: $fontSize - 2;
+ }
+
+ // 比例图片
+ .ratioBox {
+   position: relative;
+   @include ratioBox (100%, 100%, null, contain, $greyLight, null);
+   box-shadow: 1px 1px 6px rgba($color: #000000, $alpha: 0.15);
+
+   & .box {
+     @include position (absolute, 'tl', 0, 0, 100%, 100%, null);
+     @include displayFlex (flex, center, center);
+
+     & img {
+       max-width: 100%;
+       max-height: 100%;
+       display: block;
+     }
+   }
+ }
+
+ // 步进器
+ .van-stepper {
+   border: 1px #b6b6b6 solid;
+ }
+
+ .van-stepper__minus,
+ .van-stepper__plus,
+ .van-stepper__input {
+   background-color: $white;
+   margin: 0;
+ }
+
+ .van-stepper__input {
+   border: 1px #b6b6b6 solid;
+   border-width: 0 1px;
+   color: #999;
+ }
+
+ .van-stepper__minus::after,
+ .van-stepper__minus::before,
+ .van-stepper__plus::after,
+ .van-stepper__plus::before {
+   background-color: #666;
+ }
+
+ .van-stepper__minus--disabled::after,
+ .van-stepper__minus--disabled::before,
+ .van-stepper__plus--disabled::after,
+ .van-stepper__plus--disabled::before {
+   background-color: #ccc;
+ }
+
+ // 提交订单栏
+ .van-submit-bar__text {
+   @include font("PingFangBold", $fontSize, #333);
+ }
+
+ .van-submit-bar__price {
+   color: $redDark;
+ }
+
+ .van-button--danger {
+   border-color: $redDark;
+   background-color: $redDark;
+ }
+
+ .deleteBox {
+   // & .van-button--large {
+   //   height: 35px;
+   //   line-height: 35px;
+   //   color: $redDark;
+   //   margin-right: 15px;
+   //   border: none;
+   //   border: 1px $redDark solid;
+   //   border-radius: 35px;
+   //   width: 90px;
+   // }
+ }
+
+ .van-button--warning {
+   border-color: $orangeDark;
+   background-color: $orangeDark;
+ }
+
+ // confirm
+ .van-dialog__header {
+   padding: 10px 0;
+   border-bottom: 1px #eee solid;
+   @include font(null, $fontSize + 1, #333);
+ }
+
+ [class*=van-hairline]::after {
+   border-color: #999;
+ }
+
+ .van-hairline--top::after {
+   border-width: 0;
+ }
+
+ .van-hairline--left::after {
+   border-width: 0;
+ }
+
+ // 密码输入框
+ .van-password-input {
+   margin: 0;
+ }
+
+ // 空
+ .nullBox {
+   & img {
+     width: 100%;
+     margin-top: 100px;
+     margin-bottom: 50px;
+   }
+
+   text-align: center;
+   font-size: $fontSize+1;
+   color: #000;
+ }
+
+ .van-cell__right-icon {
+   color: #999;
+ }
+
+ // iphonex
+ .van-goods-action {
+   z-index: 1;
+ }
+
+ #miniAudio.isShow {
+   opacity: 1;
+   display: block;
+ }
+
+ #miniAudio {
+   opacity: 0;
+   display: none;
+ }
+
+ // button
+ .van-button:before {
+   display: none;
+ }
+
+ .bottomBox {
+
+   & .van-button {
+     border-radius: 0;
+   }
+ }
+
+ .van-tag--round {
+   border-radius: 1em;
+ }
+
+ .van-tag--round:after {
+   border-radius: 2em;
+ }
+
+ .iphx {
+   @include position (fixed, 'bl', 0, 0, 100%, 50px, 0);
+   padding-bottom: 34px;
+   background-color: $white;
+ }
+ .coupon.iphx{
+   @include position (fixed, 'bl', 84px, 0, 100%, 44px, 0);
+   padding-bottom: 0;
+ }
+ .coupon.bottom.iphx{
+   @include position (fixed, 'bl', 0, 0, 100%, 44px, 0);
+   padding-bottom: 34px;
+ }
+
+ .van-popup--bottom {
+   // border-left: 1px #fff solid;
+   left: 50% !important;
+ }
+
+ //选择器
+ .van-picker {
+   .van-picker__cancel {
+     font-size: 15px;
+     color: #999;
+   }
+
+   .van-picker__confirm {
+     font-size: 15px;
+     color: #333;
+   }
+
+   .van-picker__title {
+     color: #333;
+     font-size: 15px;
+   }
+
+   .van-picker-column {
+     font-size: 15px;
+   }
+ }
+
+ // 步进器
+ .van-stepper__input[disabled] {
+   background-color: $white;
+   color: #333;
+ }
+
+ .van-stepper__minus--disabled:after,
+ .van-stepper__minus--disabled:before,
+ .van-stepper__plus--disabled:after,
+ .van-stepper__plus--disabled:before {
+   background-color: #666;
+ }
+
+ .disabled {
+   .van-button--disabled {
+     opacity: 1;
+   }
+   .van-button--warning {
+     background-color: #bfbfbf;
+     border-color: #bfbfbf;
+   }
+   .van-button--danger {
+     background-color: #b0b0b0;
+     border-color: #b0b0b0;
+   }
+   .none {
+     font-size: $fontSize;
+     color: $cl6;
+     background-color: rgba(221, 221, 221, .98);
+     position: fixed;
+     width: 100%;
+     line-height: 50px;
+     text-align: center;
+     bottom: 50px;
+     max-width: 640px;
+   }
+ }
+
+ .book_moudel .van-tabs--line .van-tabs__wrap{
+   border-bottom: none !important;
+ }
+ #readerPage{
+   .van-slider__button{
+     border:2px solid $redDark !important;
+   }
+   .van-slider__button-wrapper{
+     z-index: 99;
+   }
+ }
+
+ /*********************组件样式**************************/
+ // 按钮
+ .huoba-btn{
+   // display: inline-block;
+   font-size: $fontSize - 2;
+   text-align: center;
+   line-height: 25px;
+   border-radius: 3px;
+   border: none;
+   min-width: 62px;
+   box-sizing: border-box;
+ }
+ .huoba-btn.huoba-btn-one{
+   background-color: $redDark;
+   color: $white;
+ }
+ .huoba-btn.huoba-btn-two{
+   background-color: $white;
+   color: $redDark;
+   border: 1px solid $redDark;
+ }
+ .huoba-btn.huoba-btn-three{
+   background-color: $redDark;
+   color: $white;
+   font-size: $fontSize + 2;
+   width: 100%;
+   border-radius: 0;
+   line-height: 49px;
+ }
+ .huoba-btn.disabled{
+  background-color: #F69A98;
+}
+ .huoba-btn.huoba-btn-four{
+   background-color: $white;
+   @include font(null,$fontSize - 1,$cl9);
+   line-height:20px;
+   border: 1px solid #E5E5E5;
+   border-radius: 0;
+   padding: 2px 2.5px;
+ }
+ // 按钮导航
+ .huoba-button-nav{
+   padding: 10px 15px;
+   background-color: $white;
+   @include displayFlex (flex, space-between,center);
+   & .huoba-button-nav-left{
+    position: relative;
+     & .icon{
+       color: #D0CFCF;
+       font-size:$fontSize + 6;
+     }
+     & .word{
+       color: $cl9;
+       font-size:$fontSize - 2;
+     }
+   }
+ }
+ // 搜索导航
+.huoba-search{
+  background-color: $white;
   position: relative;
-}
-
-.van-goods-action,
-.van-submit-bar,
-.van-overlay,
-.van-tabs--line .van-tabs__wrap {
-  max-width: 640px;
-  left: auto;
-  right: auto;
-  width: 100%;
-}
-.van-popup {
-  max-width: 640px;
-}
-.bottomBox {
-  @include position (fixed, 'bl', 0, auto, 100%, 50px, 0);
-  max-width: 640px;
-}
-.van-dialog {
-  max-width: 320px;
-}
-
-#indexPage .van-popup {
-  max-width: 320px;
-}
-
-@media screen and (min-width: 640px) {
-  #easyNav {
-    right: 50%;
-    margin-right: -320px;
-  }
-  #miniAudio .miniAudio {
-    left: 50%;
-    margin-left: -305px;
+  & .van-search__content{
+    background-color: $greyLight;
   }
 }
+ // 商品列表
+ .huoba-goods-list{
+   padding: 10px 15px;
+   background-color: $white;
+   @include displayFlex (flex, null, null);
+   & .ratioBox {
+     position: relative;
+     min-width: 70px;
+     @include ratioBox (100%, 100%, null, contain, $greyLight, null);
+     box-shadow: 1px 1px 6px rgba($color: #000000, $alpha: 0.15);
 
-a {
-  color: #000;
-}
+     & .box {
+       @include position (absolute, 'tl', 0, 0, 100%, 100%, null);
+       @include displayFlex (flex, center, center);
 
-*,
-img {
-  -webkit-tap-highlight-color: transparent;
-  -ms-tap-highlight-color: transparent;
-  -moz-tap-highlight-color: transparent;
-  -o-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-}
+       & img {
+         max-width: 100%;
+         max-height: 100%;
+         display: block;
+         border-radius: 2.5px;
+       }
+     }
+   }
+   & .huoba-goods-list-left{
+     margin-right: 15px;
+     & .huoba-goods-list-label{
+       display: inline-block;
+       padding: 2px 3px;
+       background-color: rgba(0,0,0,0.5);
+       border-radius: 2px;
+       position: absolute;
+       top: 0;
+       left: 0;
+       @include font(null,$fontSize - 4,$white)
+     }
+   }
+   & .huoba-goods-list-mid{
+     @include displayFlex (flex, null, null);
+     flex-direction: column;
+     align-content: space-between;
+     justify-content: space-between;
+     flex-grow:1;
+     & .huoba-goods-title{
+       @include twoColtextOverflow;
+       & .huoba-goods-title-label{
+         display: inline-block;
+         padding: 2px 3px;
+         background-color:$redDark;
+         border-radius: 2px;
+         @include font(null,$fontSize - 4,$white);
+         margin-right:5px;
+       }
+     }
+     & .huoba-goods-price{
+       @include font(null,$fontSize - 1,$redDark);
+       font-weight: 500;
+       margin-right: 15px;
+     }
+     & .huoba-goods-num{
+       @include font(null,$fontSize - 1,$cl9)
+     }
+   }
+   & .huoba-goods-list-right{
+     @include displayFlex (flex, space-between, null);
+     flex-direction: column;
+     align-content: space-between;
+     white-space:nowrap;
+     & .huoba-goods-opera{
+       @include font(null,$fontSize - 1,$cl6);
+     }
+   }
+ }
+ // 列表三
+ .huoba-goods-list.huoba-goods-list-three{
+   & .huoba-goods-list-mid{
+     @include displayFlex (flex, center, null);
+     margin-right: 30px;
+   }
+   & .huoba-goods-list-right{
+     @include displayFlex (flex, center, flex-end);
+     & .huoba-goods-price{
+       @include font(null,$fontSize + 1,$cl3);
+     }
+     & .huoba-goods-num{
+       @include font(null,$fontSize - 3,$cl9);
+     }
+     & .huoba-goods-bag{
+       @include font(null,$fontSize - 4,$cl9);
+     }
+   }
+ }
+ // 列表四
+ .huoba-goods-list.huoba-goods-list-four{
+   @include displayFlex (flex, space-between, null);
+   & .huoba-goods-list-left{
+     @include displayFlex (flex, null, null);
+     margin-right: 0;
+     & .huoba-goods-list-imgs{
+       margin-right: 10px;
+     }
+   }
+   & .huoba-goods-list-right{
+     @include displayFlex (flex, center, flex-end);
+     & .huoba-goods-price{
+       @include font(null,$fontSize + 1,$cl3);
+     }
+     & .huoba-goods-num{
+       @include font(null,$fontSize - 3,$cl9);
+     }
+     & .huoba-goods-bag{
+       @include font(null,$fontSize - 4,$cl9);
+     }
+   }
+ }
+ // 列表五
+ .huoba-goods-list.huoba-goods-list-five{
+   & .huoba-goods-list-check{
+     align-self: center;
+     margin-right: 13px;
+     font-size: $fontSize + 8;
+     color: $cl9;
+     & .icon.checked{
+       color: $redDark;
+     }
+   }
+ }
+ .huoba-goods-list.huoba-goods-list-five.uncheck{
+   & .huoba-goods-list-check .icon{
+     color: $greyLight;
+   }
+   & .ratioBox{
+     opacity: 0.4;
+   }
+   & .huoba-goods-title{
+     color: $cl9;
+   }
+ }
+ // 列表六
+ .huoba-goods-list.huoba-goods-list-six{
+   padding: 10px 15px;
+   & .huoba-goods-list-content{
+     @include displayFlex (flex,null, center);
+     & .huoba-goods-list-left{
+       & .ratioBox{
+         min-width: 49px;
+         border: 1px solid $clC;
+         box-sizing: border-box;
+         & img{
+           border-radius: 0;
+         }
+       }
+     }
+     & .huoba-goods-list-right{
+       font-size: $fontSize + 1;
+       @include displayFlex (flex,space-between,null);
+       flex-direction: column;
+       height: 49px;
+       flex-grow: 1;
+     }
+   }
+ }
+ // 列表七
+ .huoba-goods-list.huoba-goods-list-seven{
+   padding-right:0;
+   & .huoba-goods-list-imgs{
+     & .ratioBox{
+       min-width: 100%;
+       & .huoba-goods-list-label{
+         display: inline-block;
+         padding: 2px 3px;
+         background-color: rgba(0,0,0,0.5);
+         border-radius: 2px;
+         position: absolute;
+         top: 0;
+         left: 0;
+         @include font(null,$fontSize - 4,$white);
+         z-index:99;
+       }
+       & .huoba-goods-list-label.price{
+         top: auto;
+         left: auto;
+         right: 0;
+         bottom: 0;
+       }
+     }
+   }
+   & .swiper-container{
+     margin: unset;
+     & .swiper-slide{
+       margin-right: 10px;
+       width: 70px !important;
+     }
+   }
+ }
 
-img {
-  max-width: 100%;
-}
-
-/* 字体图标 */
-.icon {
-  width: 1em;
-  height: 1em;
-  vertical-align: middle;
-  fill: currentColor;
-  overflow: hidden;
-  position: relative;
-  top: -2px;
-}
-
-// 遮罩
-.van-overlay {
-  background-color: rgba($color: #000000, $alpha: 0.4);
-}
-
-// 弹窗
-.van-dialog__confirm,
-.van-dialog__confirm:active {
-  color: $redDark;
-}
-
-// 开关
-.van-switch--on {
-  background-color: $redDark;
-}
-
-// 单元格
-
-.van-cell:not(:last-child)::after {
-  left: 0;
-}
-
-.van-cell__title {
+ // 单元格
+ .huoba-cell{
+   background-color: $white;
+   @include displayFlex (flex, space-between, center);
+   padding:10px 15px;
+   & .huoba-cell-title{
+     @include displayFlex (flex, null, center);
+     color: $cl6;
+     @include textOverflow;
+     & .huoba-cell__title{
+       margin-left: 10px;
+       margin-right: 10px;
+       flex: 1;
+       @include textOverflow;
+     }
+     & .icon{
+       top:0;
+     }
+   }
+   & .huoba-cell-headImg{
+     & .ratioBox{
+       width: 20px;
+       box-shadow: none;
+       background-color: #fff;
+       & img{
+         border-radius: 50%;
+         border: 1px solid #ccc;
+         box-sizing: border-box;
+         width: 100%;
+         height: 100%;
+       }
+     }
+   }
+   & .huoba-cell-value{
+     white-space: nowrap;
+     font-size: $fontSize - 1;
+     margin-left: 10px;
+     color: $redDark;
+   }
+ }
+ // 单元格三
+ .huoba-cell.huoba-cell-three{
+   & .huoba-cell-left{
+     font-size: $fontSize + 16;
+     @include displayFlex (flex, null, center);
+   }
+   & .huoba-cell-right{
+     font-size: $fontSize + 6;
+     color: $cl9;
+     margin-left:15px;
+   }
+   & .huoba-cell-mid{
+     flex-grow: 1;
+     margin-left: 15px;
+     font-size: $fontSize - 1;
+     // @include textOverflow;
+     overflow: hidden;
+     & .huoba-cell-info{
+       margin-bottom: 10px;
+       @include textOverflow;
+       & .huoba-cell-name{
+         margin-right: 15px;
+       }
+     }
+     & .huoba-cell-logticinfo{
+       margin-bottom: 10px;
+       @include twoColtextOverflow;
+     }
+     & .huoba-cell-subinfo{
+       @include twoColtextOverflow;
+     }
+     & .huoba-cell-timeinfo{
+       @include textOverflow;
+       @include font(null,$fontSize - 4,$cl9);
+     }
+     & .huoba-cell-type{
+       margin-bottom: 10px;
+       font-size: $fontSize + 1;
+       @include textOverflow;
+     }
+     & .huoba-cell-typedesc{
+       @include textOverflow;
+       @include font(null,$fontSize - 2,$cl9);
+     }
+   }
+ }
+ // 单元格四
+ .huoba-cell.huoba-cell-four{
+   padding:0 15px;
+   height: 95px;
+   background-color: $redDark;
+   color: $white;
+   @include displayFlex (flex, space-between, center);
+   & .huoba-cell-left{
+     & .icon{
+       font-size: $fontSize + 6;
+     }
+     & .huoba-cell-state{
+      font-size: $fontSize + 2;
+    }
+   }
+   & .huoba-cell-mid{
+     font-size: $fontSize - 2;
+     flex-grow: 1;
+     margin-left: 10px;
+     & .huoba-cell-money{
+       font-size: $fontSize + 2;
+     }
+     & .huoba-cell-paytime{
+       margin-top: 16px;
+       & .huoba-cell-time{
+         display: inline-block;
+         width: 16px;
+         line-height: 16px;
+         background-color: $white;
+         text-align: center;
+         border-radius: 3px;
+         @include font(null,$fontSize - 3,$redDark);
+         margin-right: 6px;
+       }
+     }
+     & .huoba-cell-state{
+       font-size: $fontSize + 2;
+     }
+   }
+   & .huoba-cell-right{
+     & .huoba-cell-gopay{
+       display: inline-block;
+       padding: 9px 13px;
+       background-color: $white;
+       border-radius: 3px;
+       @include font(null,$fontSize - 2,$redDark);
+     }
+   }
+ }
+ // 单元格五
+ .huoba-cell.huoba-cell-five{
+   padding-top: 20px;
+   padding-bottom: 10px;
+   @include font(null,$fontSize - 2,$cl9);
+   @include displayFlex (flex, center, null);
+   & .icon{
+     align-self: flex-end;
+     margin-left: 5px;
+   }
+ }
+ // 单元格六
+ .huoba-cell-six{
+   padding: 5px 0;
+   background-color: $white;
+   & .van-cell{
+     padding:3px 15px;
+     & .van-cell__title{
+       @include font(null,$fontSize - 1,$cl6);
+     }
+     & .van-cell__value{
+       @include font(null,$fontSize - 1,$cl3);
+     }
+   }
+   & .van-cell:not(:last-child)::after{
+     border-bottom-width: 0;
+   }
+   & .huoba-cell-last{
+     padding: 3px 15px;
+     text-align: right;
+     font-size: $fontSize - 1;
+     & .huoba-cell-last-money{
+       color: $redDark;
+       & .huoba-cell-last-num{
+         font-size: $fontSize + 2;
+       }
+     }
+   }
+ }
+ // 单元格七
+ .huoba-cell-seven{
+   padding: 5px 15px;
+   background-color: $white;
+   @include font(null,$fontSize - 1,$cl6);
+   & .huoba-cell-order-num{
+     @include displayFlex(flex,space-between,null)
+   }
+   & .huoba-cell-copy{
+     @include font(null,$fontSize - 2,$redDark);
+   }
+   & .huoba-cell-line{
+     padding: 5px 0;
+   }
+   & .huoba-cell-separate{
+     padding: 0;
+     margin:10px 0;
+     height: 1px;
+     background-color: #EEEEEE;
+   }
+ }
+ // 单元格八
+.huoba-cell.huoba-cell-eight{
+  justify-content: left;
+  padding: 15px;
   font-size: $fontSize + 1;
-  color: #333;
-}
-
-.van-cell__value {
-  font-size: $fontSize - 1;
-  color: #999;
-}
-
-// 滑动单元格
-.van-swipe-cell__left,
-.van-swipe-cell__right {
-  background-color: $redDark;
-  width: 65px;
-  @include font(null, $fontSize - 2, $white);
-  @include displayFlex (flex, center, center);
-}
-
-// 商品列表
-.listBox {
-  @include displayFlex (flex, flex-start, center);
-
-  & .left {
-    @include flexBasis(65px);
-
-    & .ratioBox {
-
-      & .box {
-
-        & img {
-          max-width: 100%;
-          max-height: 100%;
-        }
+  & .huoba-cell-left{
+    margin-right:15px;
+    white-space: nowrap;
+  }
+  & .huoba-cell-mid{
+    flex-grow: 1;
+    @include textOverflow;
+    & .icon{
+      font-size: 18px;
+      color: $cl9;
+    }
+    & .icon.check{
+      color:$redDark;
+    }
+    & input{
+      border: none;
+      width: 100%;
+    }
+    & input::placeholder{
+      color: $cl9;
+    }
+    & .van-radio-group{
+      @include displayFlex(flex,null,center);
+      & .van-radio{
+        margin-right: 40px;
+      }
+      & .van-radio:last-child{
+        margin-right: 0;
       }
     }
-  }
-
-  & .right {
-
-    & .icon {
-      width: 14px;
-      height: 14px;
-      color: #ccc;
-    }
-  }
-
-  & .center {
-    flex-grow: 1;
-  }
-
-}
-
-// tab标签页
-.van-tabs--line {
-  // padding-top: 44px;
-}
-
-.van-tabs--line .van-tabs__wrap {
-  border-bottom: 1px #eee solid;
-}
-
-.van-hairline--top-bottom::after {
-  border-width: 0;
-}
-
-.van-tab {
-  @include font(null, $fontSize + 1, #666);
-}
-
-.van-tab--active {
-  @include font("PingFangBold", $fontSize + 1, #333);
-}
-
-.van-tabs__track {
-  height: auto;
-}
-
-.van-tabs__line {
-  background-color: #333;
-  height: 2px;
-  border-radius: 2px;
-  bottom: 20px;
-  width: 30%;
-}
-
-.van-tabs__line::before {
-  content: '';
-  position: absolute;
-  width: 40%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  background-color: $white;
-}
-
-.van-tabs__line::after {
-  content: '';
-  position: absolute;
-  width: 40%;
-  height: 100%;
-  right: 0;
-  top: 0;
-  background-color: $white;
-}
-
-.van-tabs .van-tab__pane {
-  // background-color: $white;
-}
-
-
-// 商品导航
-.van-goods-action-mini-btn {
-  font-size: $fontSize - 2;
-  color: #666;
-}
-
-// 标签
-.van-tag {
-  font-size: $fontSize - 2;
-}
-
-// 比例图片
-.ratioBox {
-  position: relative;
-  @include ratioBox (100%, 100%, null, contain, $greyLight, null);
-  box-shadow: 1px 1px 6px rgba($color: #000000, $alpha: 0.15);
-
-  & .box {
-    @include position (absolute, 'tl', 0, 0, 100%, 100%, null);
-    @include displayFlex (flex, center, center);
-
-    & img {
-      max-width: 100%;
-      max-height: 100%;
-      display: block;
+    & .money{
+      color: $redDark;
     }
   }
 }
-
-// 步进器
-.van-stepper {
-  border: 1px #b6b6b6 solid;
-}
-
-.van-stepper__minus,
-.van-stepper__plus,
-.van-stepper__input {
-  background-color: $white;
-  margin: 0;
-}
-
-.van-stepper__input {
-  border: 1px #b6b6b6 solid;
-  border-width: 0 1px;
-  color: #999;
-}
-
-.van-stepper__minus::after,
-.van-stepper__minus::before,
-.van-stepper__plus::after,
-.van-stepper__plus::before {
-  background-color: #666;
-}
-
-.van-stepper__minus--disabled::after,
-.van-stepper__minus--disabled::before,
-.van-stepper__plus--disabled::after,
-.van-stepper__plus--disabled::before {
-  background-color: #ccc;
-}
-
-// 提交订单栏
-.van-submit-bar__text {
-  @include font("PingFangBold", $fontSize, #333);
-}
-
-.van-submit-bar__price {
-  color: $redDark;
-}
-
-.van-button--danger {
-  border-color: $redDark;
-  background-color: $redDark;
-}
-
-.deleteBox {
-  // & .van-button--large {
-  //   height: 35px;
-  //   line-height: 35px;
-  //   color: $redDark;
-  //   margin-right: 15px;
-  //   border: none;
-  //   border: 1px $redDark solid;
-  //   border-radius: 35px;
-  //   width: 90px;
-  // }
-}
-
-.van-button--warning {
-  border-color: $orangeDark;
-  background-color: $orangeDark;
-}
-
-// confirm
-.van-dialog__header {
-  padding: 10px 0;
-  border-bottom: 1px #eee solid;
-  @include font(null, $fontSize + 1, #333);
-}
-
-[class*=van-hairline]::after {
-  border-color: #999;
-}
-
-.van-hairline--top::after {
-  border-width: 0;
-}
-
-.van-hairline--left::after {
-  border-width: 0;
-}
-
-// 密码输入框
-.van-password-input {
-  margin: 0;
-}
-
-// 空
-.nullBox {
-  & img {
-    width: 100%;
-    margin-top: 100px;
-    margin-bottom: 50px;
-  }
-
-  text-align: center;
-  font-size: $fontSize+1;
-  color: #000;
-}
-
-.van-cell__right-icon {
-  color: #999;
-}
-
-// iphonex
-.van-goods-action {
-  z-index: 1;
-}
-
-#miniAudio.isShow {
-  opacity: 1;
-  display: block;
-}
-
-#miniAudio {
-  opacity: 0;
-  display: none;
-}
-
-// button
-.van-button:before {
-  display: none;
-}
-
-.bottomBox {
-
-  & .van-button {
-    border-radius: 0;
-  }
-}
-
-.van-tag--round {
-  border-radius: 1em;
-}
-
-.van-tag--round:after {
-  border-radius: 2em;
-}
-
-.iphx {
-  @include position (fixed, 'bl', 0, 0, 100%, 50px, 0);
-  padding-bottom: 34px;
-  background-color: $white;
-}
-.coupon.iphx{
-  @include position (fixed, 'bl', 84px, 0, 100%, 44px, 0);
-  padding-bottom: 0;
-}
-.coupon.bottom.iphx{
-  @include position (fixed, 'bl', 0, 0, 100%, 44px, 0);
-  padding-bottom: 34px;
-}
-
-.van-popup--bottom {
-  border-left: 1px #fff solid;
-}
-
-//step步骤条
-.van-steps {
-  .van-hairline::after {
-    border-color: $greyLight;
-  }
-
-  .van-step {
-    color: $cl6;
-  }
-
-  .van-step--vertical {
-    font-size: $fontSize - 1;
-  }
-
-  .van-step--vertical.van-step--process .van-icon,
-  .van-step--vertical .van-step__circle {
-    top: 45px;
-    left: -21px;
-  }
-
-  .van-step--vertical .van-step__line {
-    top: 55px;
-    left: -16px;
-    height: 90%;
-  }
-
-  .van-step__circle {
-    width: 9px;
-    height: 9px;
-    background-color: transparent;
-    border: 1px solid $cl9;
-  }
-}
-
-//选择器
-.van-picker {
-  .van-picker__cancel {
-    font-size: 15px;
-    color: #999;
-  }
-
-  .van-picker__confirm {
-    font-size: 15px;
-    color: #f05654;
-  }
-
-  .van-picker__title {
-    color: #333;
-    font-size: 15px;
-  }
-
-  .van-picker-column {
-    font-size: 15px;
-  }
-}
-
-// 步进器
-.van-stepper__input[disabled] {
-  background-color: $white;
-  color: #333;
-}
-
-.van-stepper__minus--disabled:after,
-.van-stepper__minus--disabled:before,
-.van-stepper__plus--disabled:after,
-.van-stepper__plus--disabled:before {
-  background-color: #666;
-}
-
-.disabled {
-  .van-button--disabled {
-    opacity: 1;
-  }
-  .van-button--warning {
-    background-color: #bfbfbf;
-    border-color: #bfbfbf;
-  }
-  .van-button--danger {
-    background-color: #b0b0b0;
-    border-color: #b0b0b0;
-  }
-  .none {
-    font-size: $fontSize;
-    color: $cl6;
-    background-color: rgba(221, 221, 221, .98);
-    position: fixed;
-    width: 100%;
-    line-height: 50px;
-    text-align: center;
-    bottom: 50px;
-    max-width: 640px;
-  }
-}
-
-.book_moudel .van-tabs--line .van-tabs__wrap{
-  border-bottom: none !important;
-}
-#readerPage{
-  .van-slider__button{
-    border:2px solid $redDark !important;
-  }
-  .van-slider__button-wrapper{
-    z-index: 99;
-  }
-}
+ // 上拉菜单加单选框
+ .huoba-selectRadio-title{
+   padding: 20px 15px;
+   text-align: center;
+   @include textOverflow;
+   font-size: $fontSize + 1;
+ }
+ .huoba-selectRadio-content{
+   padding-bottom: 50px;
+   & .van-hairline--top-bottom::after{
+     border-width: 0;
+   }
+   & .van-cell:not(:last-child)::after{
+     border-width: 0;
+   }
+   & .van-cell{
+     align-items: center;
+   }
+ }
+ // 步骤条
+ .huoba-logtic-info{
+   & .van-steps{
+     font-size: $fontSize - 2;
+   }
+ }
+ .van-steps{
+   & .van-step--process.van-step--vertical{
+     & .van-step__circle-container{
+        position: absolute;
+        top: 19px;
+        left: -15px;
+        z-index: 2;
+        font-size: 12px;
+        line-height: 1;
+        -webkit-transform: translate(-50%,-50%);
+        transform: translate(-50%,-50%);
+       & .huoba-refund-step-icon{
+         display: inline-block;
+         width: 7px;
+         height: 7px;
+         border-radius: 50%;
+         background-color: $redDark;
+       }
+     }
+   }
+   & .van-step.van-step--vertical{
+     & .van-step__circle-container{
+       & .van-step__circle{
+         width: 7px;
+         height: 7px;
+       }
+     }
+     & .logtic-time{
+       margin-top: 13px;
+       font-size: $fontSize - 3;
+     }
+   }
+ }
+ .van-step--vertical:not(:last-child)::after{
+   border-bottom-width: 0!important;
+ }
+ .huoba-refund-step{
+   & .van-steps{
+     & .van-step.van-step--vertical{
+       & .huoba-refund-step-title{
+         font-size: $fontSize + 1;
+         color: $cl6;
+         margin-bottom: 13px;
+       }
+       & .huoba-refund-step-content{
+         font-size: $fontSize - 2;
+         margin-bottom: 11px;
+       }
+       & .huoba-refund-step-imgs{
+         margin-bottom: 13px;
+         @include displayFlex (flex, null, null);
+         & .huoba-refund-step-img{
+           margin-right: 10px;
+           & .ratioBox{
+             width: 70px;
+             box-shadow: none;
+             border-radius: 2.5px;
+             & img{
+               border-radius: 2.5px;
+             }
+           }
+         }
+       }
+       & .huoba-refund-step-time{
+         font-size: $fontSize - 3;
+       }
+     }
+     & .van-step--vertical.van-step--process{
+       & .huoba-refund-step-title{
+         color: $redDark;
+       }
+     }
+   }
+ }

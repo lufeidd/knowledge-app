@@ -3,7 +3,7 @@
       <div class="ratiobox">
         <div class="bookImg" v-lazy:background-image="require('../assets/copyright_logo.png')"></div>
       </div>
-    <span class="text" style="white-space:nowrap;">火把知识提供技术支持 www.mhuoba.com</span>
+    <span class="text" style="white-space:nowrap;">火把知识提供技术支持 wap.mhuoba.com</span>
   </div>
 </template>
 
