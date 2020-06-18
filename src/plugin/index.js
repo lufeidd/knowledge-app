@@ -398,6 +398,7 @@ export default {
         linkData.brand_id = this.$route.query.brand_id;
       } else if (_name == '/brand/result') {
         // 搜索结果
+        if(this.$route.query.supplier_id) linkData.supplier_id = this.$route.query.supplier_id;
         switch (this.$route.query.type) {
           case "mall":
             linkData.page_name = "mall/goods/search";

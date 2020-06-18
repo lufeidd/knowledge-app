@@ -245,7 +245,7 @@ export default {
     };
   },
   mounted() {
-    this.searchContent = this.$route.query.searchContent;
+    this.searchContent = decodeURIComponent(this.$route.query.searchContent);
     if(/^\d{16}$/.test(this.searchContent)){
         this.number = true;
     }else{

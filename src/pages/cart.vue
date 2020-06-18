@@ -146,7 +146,7 @@
                       @minus="subCount(index,gIndex, lindex, litem.detail_id)"
                       @overlimit="onOverlimit($event,litem.count, litem.detail_id)"
                       :min="1"
-                      :max="litem.stores"
+                      :max="litem.stores>=200?200:litem.stores"
                       @click="editNumber(index,gIndex,lindex,litem.count,litem.stores,litem.detail_id)"
                     />
                   </div>
@@ -483,7 +483,7 @@ export default {
     // 编辑无效
     editonOverlimit(e) {
       if (e == "plus") {
-        this.$toast("超出库存~");
+        this.$toast("已达上限~");
       }
     },
     // 编辑减少
@@ -501,7 +501,11 @@ export default {
       this.editlindex = lindex;
       this.oldCount = count;
       this.editCount = count;
-      this.editstores = stores;
+      if(stores >= 200){
+        this.editstores = 200;
+      }else{
+        this.editstores = stores;
+      }
       this.editDetail_id = detail_id;
       this.showDialog = true;
       this.openKeyboard();
@@ -836,7 +840,7 @@ export default {
           detail_id
         );
       } else if (e == "plus") {
-        this.$toast("超出库存~");
+        this.$toast("已达上限~");
       }
     },
     // 计数 +
