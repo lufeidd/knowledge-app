@@ -232,7 +232,7 @@ export default {
   mounted() {
     console.log(111, this.priceSort);
     this.ticket_id = this.$route.query.ticket_id;
-    this.searchContent = this.$route.query.searchContent;
+    this.searchContent = decodeURIComponent(this.$route.query.searchContent);
   },
   methods: {
     programLoad() {
