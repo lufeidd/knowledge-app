@@ -512,6 +512,7 @@ img {
 
 // 轮播图
 .van-swipe__indicators i:not(.van-swipe__indicator--active){
+  opacity: 1;
   background: #fff !important;
 }
 
