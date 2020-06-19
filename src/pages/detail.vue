@@ -895,6 +895,7 @@ export default {
       }
     },
     toResult(item, index) {
+      sessionStorage.setItem('saveSearchContent',"")
       this.$router.push({
         name: "couponresult",
         query: {
@@ -906,6 +907,7 @@ export default {
       this.multiModel = true;
     },
     toMultiResult() {
+      sessionStorage.setItem('saveSearchContent',"")
       this.$router.push({
         name: "multiresult",
         query: {
