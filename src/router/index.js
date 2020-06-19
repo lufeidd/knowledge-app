@@ -1001,7 +1001,7 @@ export default new Router({
       component: librarydetail,
       meta: {
         //   requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
-        isWxLogin: true,        // 必须在微信端打开
+        isWxLogin: false,        // 必须在微信端打开
       },
     },
     // 兑换活动
