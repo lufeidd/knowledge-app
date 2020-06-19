@@ -368,9 +368,11 @@ export default {
     this.isbrand_id = this.$route.query.isbrand_id
       ? this.$route.query.isbrand_id
       : null;
-    this.searchContent = this.$route.query.searchContent
-      ? decodeURIComponent(this.$route.query.searchContent)
-      : null;
+    if(this.$route.query.searchContent){
+      this.searchContent = this.$route.query.searchContent;
+    }else if(sessionStorage.getItem('saveSearchContent')){
+      this.searchContent = sessionStorage.getItem('saveSearchContent')
+    }
     this.goods_type = this.$route.query.goods_type;
     this.supplier_id = this.$route.query.supplier_id
       ? parseInt(this.$route.query.supplier_id)

@@ -399,26 +399,27 @@ export default {
       } else if (_name == '/brand/result') {
         // 搜索结果
         if(this.$route.query.supplier_id) linkData.supplier_id = this.$route.query.supplier_id;
+        if(this.$route.query.searchContent){
+          linkData.searchContent = this.$route.query.searchContent;
+        }else if(sessionStorage.getItem('saveSearchContent')){
+          linkData.searchContent = sessionStorage.getItem('saveSearchContent')
+        }
         switch (this.$route.query.type) {
           case "mall":
             linkData.page_name = "mall/goods/search";
             if (this.$route.query.goods_type) linkData.goods_type = this.$route.query.goods_type;
-            if (this.$route.query.searchContent) linkData.searchContent = this.$route.query.searchContent;
             break;
           case "brand":
             linkData.page_name = "brand/goods/search";
             linkData.brand_id = this.$route.query.brand_id;
-            linkData.searchContent = this.$route.query.searchContent;
             break;
           case "index":
             linkData.page_name = "brand/goods/search";
             linkData.brand_id = this.$route.query.brand_id;
-            linkData.searchContent = this.$route.query.searchContent;
             break;
           case "all":
             linkData.page_name = "brand/goods/search";
             linkData.brand_id = this.$route.query.brand_id;
-            linkData.searchContent = this.$route.query.searchContent;
             break;
         }
       } else if (_name == '/brand/detail/article') {

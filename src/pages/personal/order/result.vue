@@ -245,7 +245,12 @@ export default {
     };
   },
   mounted() {
-    this.searchContent = decodeURIComponent(this.$route.query.searchContent);
+    if(this.$route.query.searchContent){
+      this.searchContent = this.$route.query.searchContent;
+    }else if(sessionStorage.getItem('saveSearchContent')){
+      this.searchContent = sessionStorage.getItem('saveSearchContent')
+    }
+
     if(/^\d{16}$/.test(this.searchContent)){
         this.number = true;
     }else{
