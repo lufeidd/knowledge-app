@@ -147,14 +147,16 @@ export default {
     },
     // 搜索按钮
     searchTo(_type) {
-      var _searchContent = encodeURIComponent(this.searchHintData.search)
+      // var _searchContent = JSON.stringify(this.searchHintData.search)
+      sessionStorage.setItem('saveSearchContent',this.searchHintData.search)
+      // console.log('转码',_searchContent)
       switch (_type) {
         case "order":
           this.$router.push({
             path: "/personal/order/result",
             query: {
               type: "order",
-              searchContent: _searchContent
+              // searchContent: _searchContent
               // state:this.state,
             }
           });
@@ -165,7 +167,7 @@ export default {
             path: "/brand/result",
             query: {
               type: "brand",
-              searchContent: _searchContent
+              // searchContent: _searchContent
             }
           });
           this.saveItem();
@@ -175,7 +177,7 @@ export default {
             path: "/brand/result",
             query: {
               type: "mall",
-              searchContent: _searchContent,
+              // searchContent: _searchContent,
               supplier_id: this.$route.query.supplier_id?this.$route.query.supplier_id:0,
             }
           });
@@ -186,7 +188,7 @@ export default {
             path: "/brand/result",
             query: {
               type: "index",
-              searchContent: _searchContent
+              // searchContent: _searchContent
             }
           });
           this.saveItem();
@@ -197,7 +199,7 @@ export default {
             query: {
               type: "coupon",
               ticket_id: this.$route.query.ticket_id,
-              searchContent: _searchContent
+              // searchContent: _searchContent
             }
           });
           this.saveItem();
@@ -208,7 +210,7 @@ export default {
             query: {
               type: "multi",
               multi_id: this.$route.query.multi_id,
-              searchContent: _searchContent
+              // searchContent: _searchContent
             }
           });
           this.saveItem();
@@ -293,13 +295,15 @@ export default {
       }
     },
     hotSearchItem(item) {
-      var _hotContent = encodeURIComponent(item)
+      // var _hotContent = JSON.stringify(item)
+      sessionStorage.setItem('saveSearchContent',item)
+      // console.log('转码',_hotContent)
       if (this.type == "order") {
         this.$router.push({
           path: "/personal/order/result",
           query:{
             type: this.type,
-            searchContent: _hotContent,
+            // searchContent: _hotContent,
           }
         })
       } else if (this.type == "brand") {
@@ -307,7 +311,7 @@ export default {
           path: "/brand/result",
           query:{
             type: this.type,
-            searchContent: _hotContent,
+            // searchContent: _hotContent,
           }
         })
       } else if (this.type == "mall") {
@@ -315,7 +319,7 @@ export default {
           path: "/brand/result",
           query:{
             type: this.type,
-            searchContent: _hotContent,
+            // searchContent: _hotContent,
             supplier_id: this.$route.query.supplier_id?this.$route.query.supplier_id:0,
           }
         })
@@ -324,7 +328,7 @@ export default {
           path: "/coupon/result",
           query:{
             type: this.type,
-            searchContent: _hotContent,
+            // searchContent: _hotContent,
             ticket_id: this.$route.query.ticket_id?this.$route.query.ticket_id:0,
           }
         })
@@ -333,7 +337,7 @@ export default {
           path: "/multiresult",
           query:{
             type: this.type,
-            searchContent: _hotContent,
+            // searchContent: _hotContent,
             multi_id: this.$route.query.multi_id?this.$route.query.multi_id:0,
           }
         })
