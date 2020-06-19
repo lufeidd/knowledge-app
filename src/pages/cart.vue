@@ -512,6 +512,7 @@ export default {
     },
     // 去凑单
     collectBills(gItem, gIndex) {
+      sessionStorage.setItem('saveSearchContent',"")
       this.$router.push({
         name: "multiresult",
         query: {

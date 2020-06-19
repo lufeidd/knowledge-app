@@ -415,6 +415,7 @@ export default {
       }
     },
     toResult() {
+      sessionStorage.setItem('saveSearchContent',"")
       this.$router.push({
         name: "couponresult",
         query: {
