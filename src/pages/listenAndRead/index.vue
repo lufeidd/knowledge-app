@@ -113,7 +113,7 @@
         <h3 class="list-title">专辑<span class="count" v-text="albumCount"></span></h3>
         <div class="huoba-album-list huoba-album-list-one">
           <div class="huoba-album-item" v-for="item in albumList" :key="item.goods_id">
-            <div class="huoba-album-item-pic-box" @touchstart="touchStart('album', item)" @touchend="touchEnd" @touchmove="touchMove" @click="goToPlay(9, item)">
+            <div class="huoba-album-item-pic-box" @touchstart="touchStart('album', item)" @touchend="touchEnd" @touchmove="touchMove" @click="goToAlbum(item)">
               <img :src="item.pic" class="huoba-album-item-pic">
               <div class="icon-one-box">
                 <svg class="icon icon-one" aria-hidden="true">
@@ -226,7 +226,7 @@
         <h3 class="list-title">专辑<span class="count" v-text="albumCount"></span></h3>
         <div class="huoba-album-list huoba-album-list-one">
           <div class="huoba-album-item" v-for="item in albumList" :key="item.goods_id">
-            <div class="huoba-album-item-pic-box" @touchstart="touchStart('album', item)" @touchend="touchEnd" @touchmove="touchMove" @click="goToPlay(9, item)">
+            <div class="huoba-album-item-pic-box" @touchstart="touchStart('album', item)" @touchend="touchEnd" @touchmove="touchMove" @click="goToAlbum(item)">
               <img :src="item.pic" class="huoba-album-item-pic">
               <div class="icon-one-box">
                 <svg class="icon icon-one" aria-hidden="true">
@@ -575,6 +575,9 @@
 
         }
 
+      },
+      goToAlbum(item) {
+        this.$router.push({name: 'album',query: {goods_id: item.goods_id}});
       },
       checkDetail() { // 查看 电子书/专辑 详情
         if (this.touchType == 'album') {
