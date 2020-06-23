@@ -226,7 +226,7 @@
         <h3 class="list-title">专辑<span class="count" v-text="albumCount"></span></h3>
         <div class="huoba-album-list huoba-album-list-one">
           <div class="huoba-album-item" v-for="item in albumList" :key="item.goods_id">
-            <div class="huoba-album-item-pic-box" @touchstart="touchStart('album', item)" @touchend="touchEnd" @click="goToPlay(9, item)">
+            <div class="huoba-album-item-pic-box" @touchstart="touchStart('album', item)" @touchend="touchEnd" @touchmove="touchMove" @click="goToPlay(9, item)">
               <img :src="item.pic" class="huoba-album-item-pic">
               <div class="icon-one-box">
                 <svg class="icon icon-one" aria-hidden="true">
@@ -339,6 +339,7 @@
         isTop: false,  //  标记touch的是否为置顶
         touchType: '',   //  标记touch是专辑还是电子书
         touchGoodsId: '',  // 标记touch的goods_id
+        isMove: false,  //  用户是否为滑动
         navData: {}
       }
     },
@@ -524,23 +525,29 @@
       touchStart(type, item) {
         clearInterval(this.loop);
         this.loop = setTimeout(function () {
-          // 长按后需要触发的事件
-          if(type == 'album') {
-            this.touchType = 'album';
-          } else if (type == 'ebook') {
-            this.touchType = 'ebook';
+          if (!this.isMove) {
+            // 长按后需要触发的事件
+            if(type == 'album') {
+              this.touchType = 'album';
+            } else if (type == 'ebook') {
+              this.touchType = 'ebook';
+            }
+            if (item.is_top == 1) {
+              this.isTop = true;
+            } else {
+              this.isTop = false;
+            }
+            this.touchGoodsId = item.goods_id;
+            this.pop_one_show = true;
           }
-          if (item.is_top == 1) {
-            this.isTop = true;
-          } else {
-            this.isTop = false;
-          }
-          this.touchGoodsId = item.goods_id;
-          this.pop_one_show = true;
         }.bind(this), 1000);
       },
       touchEnd() {
+        this.isMove = false;
         clearInterval(this.loop);
+      },
+      touchMove() {
+        this.isMove = true;
       },
       recommendLoad() {
         this.getRecommendList();

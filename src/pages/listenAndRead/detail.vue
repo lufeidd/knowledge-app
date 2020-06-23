@@ -55,7 +55,7 @@
       v-if="ebookShow"
     >
       <div class="huoba-ebook-list huoba-ebook-list-two">
-        <div class="huoba-ebook-item" v-for="item in ebookList" :key="item.goods_id"  @touchstart="touchStart('ebook', item)" @touchend="touchEnd" @click="goToPlay(4, item)">
+        <div class="huoba-ebook-item" v-for="item in ebookList" :key="item.goods_id"  @touchstart="touchStart('ebook', item)" @touchend="touchEnd" @touchmove="touchMove" @click="goToPlay(4, item)">
           <div class="huoba-ebook-item-pic-box">
             <img :src="item.pic" class="huoba-ebook-item-pic">
             <div class="img-one-box" v-if="item.is_top==1">
@@ -158,6 +158,7 @@
         loop: null,
         detailType: '',  // 专辑/电子书
         isTop: false,  //  标记touch的是否为置顶
+        isMove: false, //  用户是否为滑动
         touchType: '',   //  标记touch是专辑还是电子书
         touchGoodsId: ''  // 标记touch的goods_id
       }
@@ -290,23 +291,29 @@
       touchStart(type, item) {
         clearInterval(this.loop);
         this.loop = setTimeout(function () {
-          // 长按后需要触发的事件
-          if(type == 'album') {
-            this.touchType = 'album';
-          } else if (type == 'ebook') {
-            this.touchType = 'ebook';
+          if (!this.isMove) {
+            // 长按后需要触发的事件
+            if(type == 'album') {
+              this.touchType = 'album';
+            } else if (type == 'ebook') {
+              this.touchType = 'ebook';
+            }
+            if (item.is_top == 1) {
+              this.isTop = true;
+            } else {
+              this.isTop = false;
+            }
+            this.touchGoodsId = item.goods_id;
+            this.pop_one_show = true;
           }
-          if (item.is_top == 1) {
-            this.isTop = true;
-          } else {
-            this.isTop = false;
-          }
-          this.touchGoodsId = item.goods_id;
-          this.pop_one_show = true;
         }.bind(this), 1000);
       },
       touchEnd() {
+        this.isMove = false;
         clearInterval(this.loop);
+      },
+      touchMove() {
+        this.isMove = true;
       },
       goToPlay(type, item) {
         if (item.show_str.status == 2) { // 用户播放过
