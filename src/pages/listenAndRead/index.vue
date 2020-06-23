@@ -113,7 +113,7 @@
         <h3 class="list-title">专辑<span class="count" v-text="albumCount"></span></h3>
         <div class="huoba-album-list huoba-album-list-one">
           <div class="huoba-album-item" v-for="item in albumList" :key="item.goods_id">
-            <div class="huoba-album-item-pic-box" @touchstart="touchStart('album', item)" @touchend="touchEnd" @click="goToPlay(9, item)">
+            <div class="huoba-album-item-pic-box" @touchstart="touchStart('album', item)" @touchend="touchEnd" @touchmove="touchMove" @click="goToPlay(9, item)">
               <img :src="item.pic" class="huoba-album-item-pic">
               <div class="icon-one-box">
                 <svg class="icon icon-one" aria-hidden="true">
@@ -153,7 +153,7 @@
         <h3 class="list-title">电子书<span class="count" v-text="ebookCount"></span></h3>
         <div class="huoba-ebook-list huoba-ebook-list-one">
           <div class="huoba-ebook-item" v-for="item in ebookList" :key="item.goods_id">
-            <div class="huoba-ebook-item-pic-box" @touchstart="touchStart('ebook', item)" @touchend="touchEnd" @click="goToPlay(4, item)">
+            <div class="huoba-ebook-item-pic-box" @touchstart="touchStart('ebook', item)" @touchend="touchEnd" @touchmove="touchMove" @click="goToPlay(4, item)">
               <img :src="item.pic" class="huoba-ebook-item-pic">
               <div class="img-one-box" v-if="item.is_top==1">
               </div>
@@ -191,7 +191,7 @@
         <h3 class="list-title">电子书<span class="count" v-text="ebookCount"></span></h3>
         <div class="huoba-ebook-list huoba-ebook-list-one">
           <div class="huoba-ebook-item" v-for="item in ebookList" :key="item.goods_id">
-            <div class="huoba-ebook-item-pic-box" @touchstart="touchStart('ebook', item)" @touchend="touchEnd" @click="goToPlay(4, item)">
+            <div class="huoba-ebook-item-pic-box" @touchstart="touchStart('ebook', item)" @touchend="touchEnd" @touchmove="touchMove" @click="goToPlay(4, item)">
               <img :src="item.pic" class="huoba-ebook-item-pic">
               <div class="img-one-box" v-if="item.is_top==1">
               </div>

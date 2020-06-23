@@ -8,7 +8,7 @@
       v-if="albumShow"
     >
       <div class="huoba-album-list huoba-album-list-two">
-        <div class="huoba-album-item" v-for="item in albumList" :key="item.goods_id"  @touchstart="touchStart('album', item)" @touchend="touchEnd" @click="goToPlay(9, item)">
+        <div class="huoba-album-item" v-for="item in albumList" :key="item.goods_id"  @touchstart="touchStart('album', item)" @touchend="touchEnd" @touchmove="touchMove" @click="goToPlay(9, item)">
           <div class="huoba-album-item-pic-box">
             <img :src="item.pic" class="huoba-album-item-pic">
             <div class="icon-one-box">
