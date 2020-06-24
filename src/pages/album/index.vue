@@ -230,7 +230,7 @@
                     <van-col span="16">
                       <div class="desc" @click="gotoDetail(item)">
                         <template v-if="item.goods_type != 6">
-                          <span class="tag" v-if="item.is_free == 1">免费</span>
+                          <span class="tag" v-if="item.is_free == 1 && item.is_payed != 1">免费</span>
                           <span class="tag" v-if="item.is_payed == 1">已购</span>
                         </template>
                         {{ item.title }}
@@ -1165,7 +1165,7 @@ export default {
         // var _pageName = "goods/detail";
         // var _params = JSON.stringify({ goods_id: this.$route.query.goods_id });
         // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
-        
+
         // 是否显示底部购买按钮
         this.showBuyButton = !(
           this.baseData.is_free == 0 &&

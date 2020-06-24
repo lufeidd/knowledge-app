@@ -112,8 +112,8 @@
           height: 98px;
           margin-right: 13px;
           .huoba-album-item-pic {
-            width: 105px;
-            height: 105px;
+            width: 98px;
+            height: 98px;
             border-radius: 3px;
           }
           .icon-one-box {
@@ -257,7 +257,13 @@
     border-radius: 3px;
     .van-swipe-item{
       @include displayFlex (flex, left, center);
-      .swipe-one-pic{
+      .swipe-one-pic-album{
+        margin: 10px;
+        width: 65px;
+        height: 65px;
+        border-radius: 3px;
+      }
+      .swipe-one-pic-ebook{
         margin: 10px;
         width: 49px;
         height: 65px;

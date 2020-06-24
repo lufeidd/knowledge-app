@@ -99,7 +99,8 @@
     <!--轮播图-->
     <van-swipe class="huoba-swipe-one" :autoplay="6000" indicator-color="#F05654" v-if="swipeList.length">
       <van-swipe-item v-for="item in swipeList" :key="item.goods_id">
-        <img v-lazy="item.pic" class="swipe-one-pic">
+        <img v-lazy="item.pic" class="swipe-one-pic-album" v-if="item.type == 9">
+        <img v-lazy="item.pic" class="swipe-one-pic-ebook" v-else>
         <div class="swipe-one-des" v-text="item.title"></div>
         <div class="swipe-one-button-box">
           <button class="huoba-btn huoba-btn-one" @click="goToPlay(item.type, item)" v-if="item.type == 9">继续播放</button>
@@ -357,7 +358,7 @@
         if (res.hasOwnProperty("response_code")) {
           this.navData.goods_nums = res.response_data.kind_num;
         } else {
-          this.$toast(res.error_message);
+          // this.$toast(res.error_message);
         }
       },
       async getInfo() {
