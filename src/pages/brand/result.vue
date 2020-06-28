@@ -368,9 +368,11 @@ export default {
     this.isbrand_id = this.$route.query.isbrand_id
       ? this.$route.query.isbrand_id
       : null;
-    this.searchContent = this.$route.query.searchContent
-      ? this.$route.query.searchContent
-      : null;
+    if(this.$route.query.searchContent){
+      this.searchContent = this.$route.query.searchContent;
+    }else if(sessionStorage.getItem('saveSearchContent')){
+      this.searchContent = sessionStorage.getItem('saveSearchContent')
+    }
     this.goods_type = this.$route.query.goods_type;
     this.supplier_id = this.$route.query.supplier_id
       ? parseInt(this.$route.query.supplier_id)
@@ -504,44 +506,6 @@ export default {
           }
         }, 1);
 
-        // 获取页面分享信息
-        // var _pageName = "";
-        // var _params = "";
-        // switch (this.$route.query.type) {
-        //   case "mall":
-        //     var tmp = {};
-        //     tmp.supplier_id = this.$route.query.supplier_id;
-        //     tmp.brand_id = this.$route.query.brand_id;
-        //     if (this.$route.query.searchContent)
-        //       tmp.keywords = this.$route.query.searchContent;
-        //     if (this.$route.query.goods_type)
-        //       tmp.goods_type = this.$route.query.goods_type;
-        //     _pageName = "mall/goods/search";
-        //     _params = JSON.stringify(tmp);
-        //     break;
-        //   case "brand":
-        //     _pageName = "brand/goods/search";
-        //     _params = JSON.stringify({
-        //       brand_id: this.$route.query.brand_id,
-        //       keywords: this.$route.query.searchContent
-        //     });
-        //     break;
-        //   case "index":
-        //     _pageName = "brand/goods/search";
-        //     _params = JSON.stringify({
-        //       brand_id: this.$route.query.brand_id,
-        //       keywords: this.$route.query.searchContent
-        //     });
-        //     break;
-        //   case "all":
-        //     _pageName = "brand/goods/search";
-        //     _params = JSON.stringify({
-        //       brand_id: this.$route.query.brand_id,
-        //       keywords: this.$route.query.searchContent
-        //     });
-        //     break;
-        // }
-        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
       } else {
         this.$toast(res.error_message);
       }

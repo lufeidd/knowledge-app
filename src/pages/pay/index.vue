@@ -37,6 +37,7 @@ export default {
       money: null,
       pay_id: null,
       open_id: null,
+      isLeave: false,
     };
   },
   mounted() {
@@ -54,6 +55,7 @@ export default {
     if (to.fullPath.indexOf("/pay/success") != -1) {
       next()
     } else {
+      // next(false);
       this.$dialog
         .confirm({
           title: "确认要离开支付页面？",
@@ -67,14 +69,16 @@ export default {
           confirmButtonText: "确认离开"
         })
         .then(() => {
-          next();
-          _this.$router.replace({
-            name: "orderlist"
-          });
+          // next({path:"/personal/order/list"})
+          // location.reload()
+          next()
+          var replaceUrl = window.location.href.split('#')[0] + '#' + '/personal/order/list'
+          window.location.replace(replaceUrl)
         })
         .catch(() => {
-          // on cancel
+          next(false)
         });
+        // next();
     }
   },
   methods: {

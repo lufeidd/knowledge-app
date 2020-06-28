@@ -341,7 +341,11 @@ export default {
   mounted() {
     console.log(111, this.priceSort);
     this.multi_id = this.$route.query.multi_id;
-    this.searchContent = this.$route.query.searchContent;
+    if(this.$route.query.searchContent){
+      this.searchContent = this.$route.query.searchContent;
+    }else if(sessionStorage.getItem('saveSearchContent')){
+      this.searchContent = sessionStorage.getItem('saveSearchContent')
+    }
     this.getBottomInfo();
   },
   methods: {

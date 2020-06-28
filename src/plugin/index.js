@@ -69,11 +69,11 @@ export default {
       } else {
         let url = window.location.protocol + "//" + window.location.hostname + "/callback/weixin/Userinfo?code=" + this.wxCodeStr;
         var self = this;
-        // console.log('url:', url)
+        console.log('url:', url)
         axios
           .get(url)
           .then(function (response) {
-            // console.log(response);
+            console.log('response',response);
             localStorage.setItem('nickname', response.data.nickname);
             localStorage.setItem('headimg', response.data.headimgurl);
             localStorage.setItem('openid', response.data.openid);
@@ -164,7 +164,21 @@ export default {
         "&state=STATE#wechat_redirect";
 
     }
-
+    //微信跳转小程序
+    Vue.prototype.$linkToMiniProgram = async function () {
+      wx.miniProgram.navigateTo({
+        url:'/pages/index/index',
+        success: function(){
+          console.log('success')
+        },
+        fail: function(){
+          console.log('fail');
+        },
+        complete:function(){
+          console.log('complete');
+        }
+      });
+    }
     // 微信分享
     Vue.prototype.$getWxData = async function (_title, _desc, _imgUrl, _route) {
       let url = window.location.protocol + "//" + window.location.hostname + '/callback/weixin/jssdk?url=' + encodeURIComponent(window.location.href.split('#')[0]); //去掉签名
@@ -377,7 +391,7 @@ export default {
         // 专辑
         linkData.page_name = 'goods/detail';
         linkData.goods_id = this.$route.query.goods_id;
-        linkData.pid = this.$route.query.pid;
+        linkData.pid = typeof(this.$route.query.pid) == 'object'? this.$route.query.pid[0]:this.$route.query.pid;
       } else if (_name == '/album/index') {
         // 专辑
         linkData.page_name = 'goods/detail';
@@ -398,26 +412,28 @@ export default {
         linkData.brand_id = this.$route.query.brand_id;
       } else if (_name == '/brand/result') {
         // 搜索结果
+        if(this.$route.query.supplier_id) linkData.supplier_id = this.$route.query.supplier_id;
+        if(this.$route.query.searchContent){
+          linkData.searchContent = this.$route.query.searchContent;
+        }else if(sessionStorage.getItem('saveSearchContent')){
+          linkData.searchContent = sessionStorage.getItem('saveSearchContent')
+        }
         switch (this.$route.query.type) {
           case "mall":
             linkData.page_name = "mall/goods/search";
             if (this.$route.query.goods_type) linkData.goods_type = this.$route.query.goods_type;
-            if (this.$route.query.searchContent) linkData.searchContent = this.$route.query.searchContent;
             break;
           case "brand":
             linkData.page_name = "brand/goods/search";
             linkData.brand_id = this.$route.query.brand_id;
-            linkData.searchContent = this.$route.query.searchContent;
             break;
           case "index":
             linkData.page_name = "brand/goods/search";
             linkData.brand_id = this.$route.query.brand_id;
-            linkData.searchContent = this.$route.query.searchContent;
             break;
           case "all":
             linkData.page_name = "brand/goods/search";
             linkData.brand_id = this.$route.query.brand_id;
-            linkData.searchContent = this.$route.query.searchContent;
             break;
         }
       } else if (_name == '/brand/detail/article') {
@@ -621,10 +637,13 @@ export default {
       var self = this;
       var time1 = endtime;
       var d = time1 / 60 / 60 / 24;
+      console.log('天数1',d)
       if (d >= 1 && d <= 3) {
         self.showDay = true;
         self.showTime = true;
         self.groupshowDay = true;
+        self.show_delay = true;
+        self.receive_time = Math.ceil(d)+'天'
         d = Math.floor(d);
         self.timeDataDesc = '距活动结束还剩' + d + '天';
         self.timeData = '距结束还剩' + d + '天';
@@ -633,6 +652,7 @@ export default {
         self.showDay = false;
         self.showTime = true;
         self.groupshowDay = false;
+        self.show_delay = true;
         this.clock = window.setInterval(() => {
           if (time1 === 0) {
             clearInterval(this.clock)
@@ -642,6 +662,7 @@ export default {
             return false
           }
           time1--
+          self.receive_time = Math.ceil(time1 / 60 / 60)+'小时'
           let h = Math.floor(time1 / 60 / 60)
           let m = Math.floor((time1 - h * 60 * 60) / 60)
           let s = time1 - (h * 60 * 60) - (m * 60)
@@ -656,6 +677,7 @@ export default {
           self.timeS = s
         }, 1000)
       } else if (d > 3) {
+        self.receive_time = Math.ceil(d)+'天'
         d = Math.floor(d);
         self.showTime = false;
         self.groupshowDay = true;
@@ -665,7 +687,7 @@ export default {
       } else if (d < 0) {
         self.timeData = '火把拼团'
       }
-      // console.log(d,self.clock)
+      console.log('delay',self.show_delay)
     }
 
     // ksort
@@ -1199,6 +1221,7 @@ export default {
         ) {
           // 微信登录 code
           this.$getWxCode();
+          console.log('测试code码',this.wxCodeStr)
           // 微信授权
           if (this.wxCodeStr == "") {
             var this_count = Number(localStorage.getItem("get_count"));
@@ -1246,7 +1269,7 @@ export default {
                 console.log("error:", error);
               });
           } else {
-            console.log("未获取到code");
+            console.log("未获取到code号码",this.wxCodeStr);
           }
         }
       }

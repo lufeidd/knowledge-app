@@ -34,6 +34,7 @@
         </swiper-slide>
       </swiper>
     </div>
+    <div><van-button @click="toMiniProgram">测试跳转小程序</van-button></div>
     <!-- 出版媒体信息模块 -->
     <div class="publish">
       <div class="from">
@@ -290,7 +291,6 @@
         </svg>
       </div>
     </div>
-    <van-button @click="toMiniProgram">测试跳转小程序</van-button>
     <EazyNav type="brand" :isShow="true"></EazyNav>
 
   </div>
@@ -436,19 +436,7 @@
     },
     methods: {
       toMiniProgram(){
-        wx.miniProgram.navigateTo({
-          url:'/pages/index/index',
-          success: function(){
-            console.log('success')
-          },
-          fail: function(){
-            console.log('fail');
-          },
-          complete:function(){
-            console.log('complete');
-          }
-
-        });
+        this.$linkToMiniProgram()
       },
       collection() {
         this.collect = true;

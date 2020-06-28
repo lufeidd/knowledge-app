@@ -146,7 +146,7 @@
                       @minus="subCount(index,gIndex, lindex, litem.detail_id)"
                       @overlimit="onOverlimit($event,litem.count, litem.detail_id)"
                       :min="1"
-                      :max="litem.stores"
+                      :max="litem.stores>=200?200:litem.stores"
                       @click="editNumber(index,gIndex,lindex,litem.count,litem.stores,litem.detail_id)"
                     />
                   </div>
@@ -456,7 +456,7 @@ export default {
         if (this.editCount <= 0) {
           this.$toast("商品件数不能小于1件~");
         } else {
-          this.$toast("购物车品种数量不能超过120个~");
+          this.$toast("购物车已满，最多可以放120种商品哦");
         }
       }
       this.showkeyboard = false;
@@ -483,7 +483,7 @@ export default {
     // 编辑无效
     editonOverlimit(e) {
       if (e == "plus") {
-        this.$toast("超出库存~");
+        this.$toast("已达上限~");
       }
     },
     // 编辑减少
@@ -501,13 +501,18 @@ export default {
       this.editlindex = lindex;
       this.oldCount = count;
       this.editCount = count;
-      this.editstores = stores;
+      if(stores >= 200){
+        this.editstores = 200;
+      }else{
+        this.editstores = stores;
+      }
       this.editDetail_id = detail_id;
       this.showDialog = true;
       this.openKeyboard();
     },
     // 去凑单
     collectBills(gItem, gIndex) {
+      sessionStorage.setItem('saveSearchContent',"")
       this.$router.push({
         name: "multiresult",
         query: {
@@ -836,7 +841,7 @@ export default {
           detail_id
         );
       } else if (e == "plus") {
-        this.$toast("超出库存~");
+        this.$toast("已达上限~");
       }
     },
     // 计数 +
@@ -864,7 +869,7 @@ export default {
             }
             return value;
           });
-          this.$toast("购物车商品总数量不能超过120件~");
+          this.$toast("购物车已满，最多可以放120种商品哦");
         }, 1);
       }
       // console.log(count,this.cartlist[cIndex].act_list[gIndex].goods_list[lindex].count)

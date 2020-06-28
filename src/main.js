@@ -143,6 +143,7 @@ Vue.use(VueCookies)
 
 Vue.config.productionTip = false
 
+
 /*
 
 全局路由特殊情况处理
@@ -193,6 +194,7 @@ A、localStorage
   17、phone：记录验证码手机号
   18、second：记录验证码手机号对应倒计时
   19、isReload: 1為true，0為false
+  20、orderCmts：记录订单历史搜索内容
 
 路由参数
 
@@ -226,6 +228,14 @@ router.beforeEach((to, from, next) => {
   // 重定向功能，为解决ios微信上复制链接功能不能复制到动态路由问题
   // 获取地址前段部分，不算参数
   var replaceUrl = window.location.href.split('#')[0] + '#' + to.path;
+
+  // var _routeUrlSet = false;
+  // let _url = window.location.href.split('#')[0]
+  // if(_url.indexOf('?from=') > -1 && _url.indexOf('&isappinstalled=') > -1){
+  //   replaceUrl = _url.split('?')[0] + '#' + to.path;
+  // }
+  // console.log('试试',replaceUrl)
+
   // 存放来源地址，如果未登录，进入登录页或者第三方绑定页不修改fromLink，回退到指定页面
   var index = 0; // 索引初始化
 
@@ -278,6 +288,7 @@ router.beforeEach((to, from, next) => {
   // 过滤路由参数
   for (var i in to.query) {
     var _bool = true;
+    // route_arr.push({i:to.query[i]})
     if (i == 'home_id') {
       _bool = false;
       next()
@@ -312,8 +323,8 @@ router.beforeEach((to, from, next) => {
 
     next()
   }
+  // console.log('87',route_arr)
   next()
-
   //判断该页面有 brand_id
   if (from.query.brand_id) {
     next();
@@ -444,7 +455,6 @@ router.beforeEach((to, from, next) => {
     next();
   }
   next();
-
 
 })
 

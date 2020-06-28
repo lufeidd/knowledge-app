@@ -1570,6 +1570,7 @@ export default {
       }
     },
     toResult(item, index) {
+      sessionStorage.setItem('saveSearchContent',"")
       this.$router.push({
         name: "couponresult",
         query: {

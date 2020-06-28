@@ -7,125 +7,82 @@
   background-color: $greyLight;
   min-height: 100%;
   box-sizing: border-box;
-   .content{
-     background-color: $white;
-     padding-left: 15px;
-     padding-right: 15px;
-     margin-top: 10px;
-     &:nth-child(1){
-       margin-top: 0;
-     }
-     .head{
-       height: 40px;
-       line-height: 40px;
-       border-bottom: 1px solid $greyLight;
-       @include displayFlex(flex,space-between,center);
-       .titleFrom{
-        @include displayFlex(flex,flex-start,center);
-        //  .icon{
-        //   width: 21px;
-        //   height: 21px;
-        //   border: 1px solid $clC;
-        //   border-radius: 21px;
-        //   align-items: center;
-        //   margin-right: 5px;
-        // }
-        .publish{
-          font-size: $fontSize + 1;
-          color: $cl3;
-        }
-        .ratiobox{
-          min-width: 21px;
-          margin-right: 5px;
-         .bookImg{
-           display: block;
-           border-radius:50%;
-          @include ratioBox ( null, 100%, 1px solid $greyLight,contain, $white, null);
-         }
-        }
-       }
-       .order1{
-         font-size: $fontSize - 1;
-         color: $redDark;
-       }
-       .order2{
-        font-size: $fontSize - 1;
-        color: $cl0;
-       }
-     }
-     .section{
-      padding-top: 13px;
-      padding-bottom: 13px;
-      border-bottom: 1px solid $greyLight;
-      .swiper-slide{
-        margin-right: 10px;
-        box-sizing: border-box;
-      }
-      .ratiobox{
-        min-width: 60px;
-       .bookImg{
-         display: block;
-        @include ratioBox ( null, 100%, 1px solid $greyLight,contain, $white, null);
-       }
-      }
-       .bookDetail{
-         @include displayFlex(flex,flex-start,flex-start);
-
-         .title{
-           margin-left: 10px;
-           @include twoColtextOverflow;
-           @include font("PingFangBlod", $fontSize + 2, $cl3);
-         }
-       }
-       .tip1{
-         text-align: right;
-         margin-top: 10px;
-       }
-       .actulPay{
-        font-size: $fontSize;
-        color: $cl0;
-        .money{
-          @include font("PingFangBlod", $fontSize, $cl0);
-        }
-      }
-     }
-     .tip2{
-      padding-top: 10px;
-      padding-bottom: 10px;
-     @include displayFlex(flex,space-between,center);
-     .noChange{
-       font-size: $fontSize - 2;
-       color: $cl9;
-     }
-    }
-     .button{
-      display: inline-block;
-      width: 60px;
-      height: 24px;
-      border-radius: 12px;
+  position: relative;
+  & .search{
+    font-size: $fontSize + 6;
+    width: 51px;
+    line-height: 45px;
+    text-align: center;
+    background-color: rgba(255,255,255,0.8);
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 99;
+    border-left: 2px solid rgba(0,0,0,0.05);
+  }
+  & .result-search{
+    position: fixed;
+    width: 100%;
+    max-width: 640px;
+    z-index: 9999;
+    top: 0;
+    left: auto;
+  }
+  & .content{
+    padding-bottom: 20px;
+    & .delete_order{
+      position: absolute;
+      left: 0;
+      top:20px;
+      line-height: 35px;
       text-align: center;
-      line-height: 24px;
-      font-size: $fontSize - 2;
-      margin-left: 0;
-     }
-     .button1{
-      border: 1px solid $greyDark;
-      color: $cl3;
-     }
-     .button2{
-      border: 1px solid $redDark;
-      color: $redDark;
-     }
-     .footFinish{
-      height: 44px;
-      @include displayFlex(flex,space-between,center);
-      .more{
-        font-size: $fontSize - 2;
+      font-size: $fontSize - 1;
+      width: 98px;
+      background:$white;
+      box-shadow:0px 2px 10px 0px rgba(0, 0, 0, 0.07);
+      border-radius:3px;
+    }
+  }
+  & .content.result{
+    padding-top:55px;
+    padding-bottom: 0;
+  }
+  & .select-type{
+    position: relative;
+    // top: 44px;
+    line-height: 34px;
+    z-index: 9;
+    box-sizing: border-box;
+    padding-right: 15px;
+    text-align: right;
+    width: 100%;
+    max-width: 640px;
+    background-color: $greyLight;
+
+    & .select-title{
+      font-size: $fontSize;
+    }
+    & ul{
+      position: absolute;
+      top: 28px;
+      right: 15px;
+      z-index: 99;
+      background:$white;
+      box-shadow:0px 2px 10px 0px rgba(0, 0, 0, 0.06);
+      border-radius:3px;
+      // font-size: $fontSize + 1;
+      & li{
+        padding-left:10px;
+        padding-right: 17px;
+        white-space: nowrap;
+        line-height: 40px;
+        text-align: left;
       }
-     }
-     .foot{
-       height: 44px;
-      @include displayFlex(flex,space-between,center);
-     }
-   }
- }
+    }
+  }
+  & .nullState{
+    color: $cl9;
+    text-align: center;
+    padding-top: 104px;
+  }
+}

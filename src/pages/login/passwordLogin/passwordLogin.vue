@@ -100,6 +100,7 @@
           localStorage.setItem(("loginState"), 1);
 
           // 不需要登录的页面，如果未登录，进入登录页，登录成功后回退到指定页面
+          localStorage.setItem("loginState", '1');
           window.location.href = localStorage.getItem("defaultLink");
         } else {
           this.$toast(res.error_message);
@@ -115,6 +116,8 @@
         this.gotoLogin = true;
         localStorage.setItem("gotoLogin", "yes");
         this.$wxLogin();
+
+        localStorage.setItem("loginState", '1');
       }
     },
     created() {

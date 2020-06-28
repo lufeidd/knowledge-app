@@ -3,342 +3,165 @@
  * date:2019/4/24
  */
 
- #logisticsPage{
-   .line{
-     height: 10px;
-     width: 100%;
-     background-color: $greyLight;
-   }
-   .orderExpress{
-     padding: 0 15px;
-     @include displayFlex(flex,flex-start,center);
-     .ratiobox{
-      width: 52px;
-     .bookImg{
-       display: block;
-      @include ratioBox ( null, 100%, 1px solid $clC,contain, $white, null);
-     }
-    }
-    .orderInfo{
-      margin-left: 10px;
-      p{
-        line-height: 2;
-      }
-    }
-   }
-   .logisticsInfo{
-     .text{
-       padding-left:23px;
-       height: 30px;
-       line-height: 30px;
-       border-bottom: 1px solid $greyLight;
-       color: $cl9;
-       font-size: $fontSize - 1;
-     }
-   }
- }
-
- #editPage{
-   padding:5px 15px;
-   .van-cell{
-    padding: 10px 0;
-   }
-  .company{
-    @include displayFlex(flex,null,center);
-    border-bottom: 1px solid $greyLight;
-    padding-bottom: 5px;
-    .van-cell{
-      padding: 10px 0;
-      font-size: $fontSize + 2;
-    }
-    .van-cell__title, .van-cell__value{
-      flex: none;
-    }
-    .van-cell__value{
-      padding: 0 10px;
-    }
-  }
-  .freight{
-    display: flex;
-    border-bottom: 1px solid $greyLight;
-    padding: 15px 0;
-    .freightText{
-      font-size: $fontSize + 2;
-    }
-  }
-  input{
-    flex-grow: 1;
-    border: none;
-    padding: 0 5px;
-    &::placeholder{
-      color: $cl9;
-      font-size: $fontSize - 1;
-    }
-  }
- }
-
- #typePage{
-   .refund{
-     padding:0 15px;
-     @include displayFlex(flex,space-between,center);
-     border-bottom: 1px solid $greyLight;
-     .refundText{
-        @include displayFlex(flex,null,center);
-        .text{
-          margin-left: 5px;
-          font-size: $fontSize + 1;
-          p{
-            line-height: 1.6;
-          }
-          .receive{
-            font-size: $fontSize - 2;
-            color: $cl9;
-          }
-        }
-     }
-     .red{
-       font-size: $fontSize + 6;
-       color: $redDark;
-     }
-     .grey{
-       color: $cl9;
-     }
-   }
- }
-
-#ongoingPage{
-    min-height: 100%;
-    background-color: $greyLight;
-  .content{
-    padding: 20px 15px 10px 15px;
-
-    .date{
-      margin: 0px auto 20px auto;
-      height: 20px;
-      line-height: 20px;
-      background-color: $white;
-      border-radius: 10px;
-      width: 140px;
-      font-size: $fontSize - 2;
-      color: $cl9;
-      text-align: center;
-    }
-    .buyer{
-      @include displayFlex(flex,flex-end,null);
-
-      .message{
-        border-radius: 4px;
-        box-shadow: 0 0 2px rgba(0,0,0,.3);
-        max-width: 73%;
-        flex-grow: 1;
-        background-color: $white;
-        padding: 10px;
-        .title{
-          border-bottom: 1px solid $greyLight;
-          font-size: $fontSize + 1;
-          padding-bottom: 10px;
-        }
-        .stateMessage{
-          font-size: $fontSize - 1;
-          color: $cl6;
-          margin-top: 10px;
-        }
-        .notice{
-          font-size: $fontSize - 1;
-          color: $redDark;
-          border-top: 1px solid #f5f5f5;
-          padding-top: 10px;
-        }
-      }
-      .wd_left{
-        margin-right: 5px;
-        .ratiobox {
-          min-width: 30px;
-          .bookImg {
-            display: block;
-            border-radius: 50%;
-            @include ratioBox (null, 100%, null, contain, $white, null);
-
-          }
-        }
-      }
-      .wd_right{
-        margin-left: 5px;
-        .ratiobox {
-          min-width: 30px;
-          .bookImg {
-            display: block;
-            border-radius: 50%;
-            @include ratioBox (null, 100%, null, contain, $white, null);
-
-          }
-        }
-      }
-    }
-    .seller{
-      @include displayFlex(flex,flex-start,null);
-      margin-top: 20px;
-      margin-bottom: 20px;
-      .icon{
-        width: 30px;
-        height: 30px;
-        background-color: $white;
-        border-radius: 30px;
-        align-items: center;
-      }
-      .message{
-        border-radius: 4px;
-        box-shadow: 0 0 2px rgba(0,0,0,.3);
-        max-width: 73%;
-        flex-grow: 1;
-        background-color: $white;
-        padding: 10px 10px 5px 10px;
-        .title{
-          border-bottom: 1px solid $greyLight;
-          font-size: $fontSize + 1;
-        }
-        .stateMessage{
-          font-size: $fontSize - 1;
-          color: $cl6;
-          margin-top: 10px;
-        }
-        .bb{
-          border-bottom: 1px solid $greyLight;
-          padding-bottom: 25px;
-        }
-        .careful{
-          font-size: $fontSize - 1;
-          color: $redDark;
-          margin-top: 10px;
-        }
-        .mb{
-          margin-bottom: 10px;
-        }
-      }
-      .wd{
-        // width: 10.5%;
-        // text-align: center;
-        margin-right: 5px;
-      }
-    }
-  }
-  .foot{
-    height: 50px;
-    line-height: 50px;
-    text-align: right;
-    position: fixed;
-    bottom: 0px;
-    width: 100%;
+#logisticsPage {
+  background-color: $greyLight;
+  min-height: 100%;
+  & .desc{
     background-color: $white;
-    .button{
-      display: inline-block;
-      line-height: 24px;
-      border: 1px solid $clC;
-      border-radius: 12px;
-      text-align: center;
-      padding-left: 5px;
-      padding-right: 5px;
-      font-size: $fontSize - 2;
-      margin-right: 15px;
+    padding: 15px 15px 0 15px;
+    @include font(null,$fontSize + 2,null);
+  }
+  & .content{
+    margin-bottom: 10px;
+    & .text{
+      padding:8px 15px;
+      background-color: $white;
+      border-bottom: 1px solid $greyLight;
     }
   }
 }
 
-.refund{
+#editPage {
+
+  //  padding:5px 15px;
+  .van-cell {
+    padding: 10px 0;
+  }
+
+  & .content {
+    padding: 0 15px;
+  }
+
+  & input {
+    flex-grow: 1;
+    border: none;
+    padding: 0 5px;
+
+    &::placeholder {
+      color: $cl9;
+      font-size: $fontSize - 1;
+    }
+  }
+  & .van-popup--bottom{
+    left: 50% !important;
+  }
+}
+
+#typePage {
+  & .content {
+    border-bottom: 10px solid $greyLight;
+  }
+}
+
+#ongoingPage {
+  min-height: 100%;
+  background-color: $greyLight;
+
+  & .content {}
+}
+
+.refund {
   // padding: 0 15px;
-  .cell{
-    padding: 18px 0;
-    border-bottom: 1px solid $greyLight;
-    .typeRefund{
+  background-color: $greyLight;
+  min-height: 100%;
+
+  & .van-popup--bottom {
+    left: 50% !important;
+  }
+
+  & .content {
+    margin-bottom: 10px;
+    background-color: #FFF;
+  }
+
+  & .cell {
+    padding: 15px 0;
+
+    // border-bottom: 1px solid $greyLight;
+    .typeRefund {
       font-size: $fontSize - 1;
     }
-    .onlyRefund{
+
+    .onlyRefund {
       color: $cl9;
       font-size: $fontSize - 1;
     }
-    .choose{
+
+    .choose {
+      font-size: $fontSize - 1;
+      color: $cl9;
+
+      & .state {
+        color: $cl3;
+      }
+    }
+
+    .most {
       font-size: $fontSize - 1;
       color: $cl9;
     }
-    .most{
-      font-size: $fontSize - 1;
-      color: $cl9;
-    }
-    .money{
+
+    .money {
       font-size: $fontSize - 1;
       color: $redDark;
     }
-    input{
+
+    input {
       border: none;
-      margin-top: 30px;
-      width:95%;
-      &::placeholder{
+      flex-grow: 1;
+      padding: 0;
+
+      &::placeholder {
         color: $cl9;
         font-size: $fontSize - 1;
       }
     }
-    textarea{
+
+    textarea {
       font-size: $fontSize - 1;
       flex-grow: 1;
       height: 110px;
       border: none;
       resize: none;
-      &::placeholder{
+
+      &::placeholder {
         color: $cl9;
-        font-size: $fontSize - 1;
+        font-size: $fontSize - 3;
       }
     }
   }
-  .reason{
-    @include displayFlex(flex,space-between,center);
+
+  & .reason {
+    @include displayFlex(flex, space-between, center);
   }
-  .explain{
-    @include displayFlex(flex,null,flex-start);
+
+  & .cell.number {
+    @include displayFlex(flex, null, center);
+
+    & .text {
+      margin-right: 5px;
+    }
   }
-  .upload{
-    margin-top: 25px;
-    #upload{
-      // margin-top: 14px;
-      .flex-box{
+
+  & .explain {
+    @include displayFlex(flex, null, flex-start);
+  }
+
+  & .upload {
+    & .text {
+      font-size: $fontSize + 1;
+    }
+
+    & #upload {
+      margin-top: 14px;
+
+      & .flex-box {
         margin-right: 15px;
         margin-top: 14px;
       }
     }
   }
-  .van-popup{
-    overflow: hidden;
-    height: 40%;
-    .title{
-      text-align: center;
-      height: 45px;
-      line-height: 45px;
-      font-size: $fontSize + 1;
-      color: $cl9;
-      position: relative;
-      box-sizing: border-box;
-      border-bottom: 1px #eee solid;
-      .complete{
-        display: inline-block;
-        line-height: 45px;
-        position: absolute;
-        right:15px;
-        color: $redDark;
-      }
-    }
-    .van-radio-group{
-      position: absolute;
-      top: 45px;
-      bottom: 0;
-      overflow-y: auto;
-      width: 100%;
-      .van-cell__title{
-        span{
-          white-space: nowrap;
-          font-size: $fontSize;
-        }
-      }
-    }
-  }
+
   & .count {
     font-size: $fontSize - 2;
     color: #999;
@@ -348,8 +171,4 @@
       color: $redDark;
     }
   }
-}
-
-#twoPage{
-
 }

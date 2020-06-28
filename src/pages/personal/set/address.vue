@@ -247,7 +247,7 @@ export default {
         this.addressInfo.province +
         this.addressInfo.city +
         this.addressInfo.county;
-      if (this.addressInfo.name.trim().length > 20) {
+      if (this.addressInfo.name.toString().trim().length > 20) {
         this.$toast("收货人长度不能大于20个字符~");
         return;
       }

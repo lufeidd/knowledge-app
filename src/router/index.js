@@ -49,10 +49,14 @@ import refundtype from '@/pages/personal/order/type'
 import refundone from '@/pages/personal/order/refund/one'
 import refundtwo from '@/pages/personal/order/refund/two'
 import refundthree from '@/pages/personal/order/refund/three'
+import refundchoose from '@/pages/personal/order/refund/choose'
 // 评价
 import ordercomment from '@/pages/personal/order/comment/index'
 import commentpunish from '@/pages/personal/order/comment/punish'
 import commentsuccess from '@/pages/personal/order/comment/success'
+// 订单多包裹
+import packagedetail from '@/pages/personal/order/package/detail'
+import packageallgoods from '@/pages/personal/order/package/allGoods'
 
 // 个人中心 - 设置
 import set from '@/pages/personal/set/index'
@@ -460,7 +464,11 @@ export default new Router({
     {
       path: '/personal/order/invoice',
       name: 'orderinvoice',
-      component: orderinvoice
+      component: orderinvoice,
+      meta: {
+        title: '申请开票',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
     },
     {
       path: '/personal/order/result',
@@ -515,7 +523,7 @@ export default new Router({
       name: 'logistics',
       component: logistics,
       meta: {
-        title: '订单跟踪',
+        title: '查看物流',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
@@ -524,7 +532,7 @@ export default new Router({
       name: 'ongoing',
       component: ongoing,
       meta: {
-        title: '退款',
+        title: '退款进度',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
@@ -560,7 +568,35 @@ export default new Router({
       name: 'refundthree',
       component: refundthree,
       meta: {
-        title: '退款退货',
+        title: '退货退款',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
+    },
+    {
+      path: '/personal/order/refund/choose',
+      name: 'refundchoose',
+      component: refundchoose,
+      meta: {
+        title: '选择退款商品',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
+    },
+    // 多包裹
+    {
+      path: '/personal/order/package/detail',
+      name: 'packagedetail',
+      component: packagedetail,
+      meta: {
+        title: '包裹详情',
+        requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
+      }
+    },
+    {
+      path: '/personal/order/package/allgoods',
+      name: 'packageallgoods',
+      component: packageallgoods,
+      meta: {
+        title: '全部商品',
         requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
       }
     },
@@ -969,7 +1005,7 @@ export default new Router({
       component: librarydetail,
       meta: {
         //   requireAuth: true // 需要登录才能进入的页面可以增加一个meta属性
-        isWxLogin: true,        // 必须在微信端打开
+        isWxLogin: false,        // 必须在微信端打开
       },
     },
     // 兑换活动
