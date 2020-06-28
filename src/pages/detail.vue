@@ -524,6 +524,9 @@ export default {
     this.getCouponList();
     // this.$countTime(this.timeData);
   },
+  updated(){
+    console.log(6666)
+  },
   methods: {
     toGoodsGroup() {
       if (this.$refs.nav.is_Login) {

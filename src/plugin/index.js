@@ -164,7 +164,21 @@ export default {
         "&state=STATE#wechat_redirect";
 
     }
-
+    //微信跳转小程序
+    Vue.prototype.$linkToMiniProgram = async function () {
+      wx.miniProgram.navigateTo({
+        url:'/pages/index/index',
+        success: function(){
+            console.log('success')
+        },
+        fail: function(){
+            console.log('fail');
+        },
+        complete:function(){
+            console.log('complete');
+        }
+      });
+    }
     // 微信分享
     Vue.prototype.$getWxData = async function (_title, _desc, _imgUrl, _route) {
       let url = window.location.protocol + "//" + window.location.hostname + '/callback/weixin/jssdk?url=' + encodeURIComponent(window.location.href.split('#')[0]); //去掉签名
