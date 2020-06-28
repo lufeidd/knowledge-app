@@ -81,6 +81,7 @@
               </div>
               <div class="huoba-ebook-item-content">
                 <div class="huoba-ebook-item-des" v-text="item.title"></div>
+                <div class="huoba-ebook-item-author"><span class="name" v-text="item.author"></span>著</div>
                 <div class="huoba-ebook-item-total end">
                   <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-wenzhang"/>
@@ -304,6 +305,7 @@
       <div class="pop-two-text-two" v-if="touchType=='ebook'">您最多可置顶3本电子书</div>
       <div class="pop-two-text-three" @click="pop_two_show=false">我知道了</div>
     </van-popup>
+    <Loading :isLoading="isLoading"></Loading>
     <!-- 快速导航 -->
     <EazyNav type="brand" :isShow="true"></EazyNav>
   </div>
@@ -341,6 +343,7 @@
         touchType: '',   //  标记touch是专辑还是电子书
         touchGoodsId: '',  // 标记touch的goods_id
         isMove: false,  //  用户是否为滑动
+        isLoading: true,
         navData: {}
       }
     },
@@ -598,6 +601,14 @@
     mounted() {
       this.cartData();
       this.getInfo();
+
+    },
+    updated() {
+      let _this = this;
+      setTimeout(function () {
+        _this.isLoading = false;
+
+      }, 1000);
     }
   }
 </script>
