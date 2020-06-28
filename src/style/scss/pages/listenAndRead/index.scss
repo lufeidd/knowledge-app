@@ -1,0 +1,517 @@
+/*
+ * author: lrf
+ * date:2020/5/25
+ */
+
+@charset "UTF-8";
+
+#listenAndReadIndex {
+  img {
+    pointer-events: none;
+  }
+  .huoba-btn {
+    // display: inline-block;
+    font-size: $fontSize - 2;
+    text-align: center;
+    line-height: 29px;
+    border-radius: 3px;
+    border: none;
+    min-width: 62px;
+    box-sizing: border-box;
+  }
+  .huoba-btn.huoba-btn-one {
+    background-color: $redDark;
+    color: $clF;
+  }
+  .huoba-btn.huoba-btn-five{
+    width: 100%;
+    background-color: $greyLight;
+    @include font(null,$fontSize + 1,#484848);
+    font-weight: 500;
+    line-height: 40px;
+    border-radius: 3px;
+
+  }
+
+  .index-header {
+    padding: 12px 15px;
+    border-bottom: 0.5px solid #eee;
+    font-size: 0;
+    .icon-box {
+      display: inline-block;
+      position: relative;
+      .icon {
+        margin-left: 31px;
+        font-size: 20px;
+        color: $cl3;
+      }
+      &:first-child .icon{
+        margin-left: 0;
+      }
+      .cart {
+        position: absolute;
+        top: -40%;
+        right: -80%;
+        display: inline-block;
+        min-width: 16px;
+        height: 16px;
+        text-align: center;
+        line-height: 16px;
+        background: $redDark;
+        border: 1px solid $redDark;
+        border-radius: 50%;
+        font-size: 10px;
+        color: #fff;
+      }
+    }
+
+  }
+  .reminder {
+    margin: 0 auto;
+    margin-top: 40px;
+    text-align: center;
+    .icon-box {
+      position: relative;
+      margin: 0 auto;
+      width: 69px;
+      height: 69px;
+      border-radius: 50%;
+      background-color: $greyLight;
+      .icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 48px;
+      }
+    }
+    .reminder-text {
+      margin: 12px 0 20px 0;
+      @include font(null, $fontSize - 1, $cl9);
+      font-weight: 500;
+    }
+  }
+  .recommend-box {
+    .recomment-text {
+      height: 11px;
+      line-height: 11px;
+      margin: 51px 0 15px 15px;
+      padding-left: 4px;
+      border-left: 2.5px solid $redDark;
+      @include font(null, $fontSize + 1, #484848);
+      font-weight: bold;
+    }
+    .huoba-album-list-two {
+      .huoba-album-item {
+        @include displayFlex(flex, null, null);
+        flex-wrap: wrap;
+        margin: 15px;
+        .huoba-album-item-pic-box {
+          position: relative;
+          flex-basis: 98px;
+          height: 98px;
+          margin-right: 13px;
+          .huoba-album-item-pic {
+            width: 98px;
+            height: 98px;
+            border-radius: 3px;
+          }
+          .icon-one-box {
+            position: absolute;
+            left: 5px;
+            bottom: 5px;
+            width: 18px;
+            height: 18px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 6px;
+            .icon-one {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%);
+              font-size: $fontSize - 1;
+              color: $clF;
+            }
+          }
+          .text-one {
+            position: absolute;
+            left: 31px;
+            bottom: 5px;
+            display: inline-block;
+            width: 26px;
+            height: 18px;
+            line-height: 18px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 3px;
+            font-size: $fontSize - 4;
+            color: $clF;
+            text-align: center;
+          }
+        }
+        .huoba-album-item-content {
+          flex: 1;
+          .huoba-album-item-des {
+            margin-top: 12px;
+            @include font(null, $fontSize + 1, $cl3);
+            font-weight: 500;
+            line-height: 19px;
+            min-height: 33px;
+            @include twoColtextOverflow();
+          }
+          .huoba-album-item-total {
+            position: relative;
+            font-weight: 500;
+            line-height: 15px;
+            .ellipsis-line {
+              position: absolute;
+              width: 15px;
+              height: 15px;
+              right: 0;
+              color: $cl0;
+            }
+          }
+          .not-end {
+            margin-top: 31px;
+            @include font(null, $fontSize - 2, $redDark);
+          }
+          .end {
+            margin-top: 31px;
+            @include font(null, $fontSize - 2, $cl9);
+            .total-text:not(:first-child) {
+              display: inline-block;
+              margin-left: 5px;
+            }
+          }
+
+        }
+      }
+    }
+    .huoba-ebook-list-two{
+      .huoba-ebook-item{
+        @include displayFlex(flex, null, null);
+        flex-wrap: wrap;
+        margin: 15px;
+        .huoba-ebook-item-pic-box{
+          flex-basis: 98px;
+          height: 130.5px;
+          margin-right: 13px;
+          .huoba-ebook-item-pic{
+            width: 98px;
+            height: 130.5px;
+            border-radius: 3px;
+          }
+        }
+        .huoba-ebook-item-content{
+          flex: 1;
+          .huoba-ebook-item-des{
+            margin-top: 12px;
+            @include font(null,$fontSize + 1,$cl0);
+            font-weight: 500;
+            line-height: 19px;
+            min-height: 33px;
+            @include twoColtextOverflow();
+          }
+          .huoba-ebook-item-author{
+            margin-top: 12px;
+            @include font(null,$fontSize - 1,$cl9);
+            line-height: 17px;
+            .name{
+              display: inline-block;
+              margin-right: 1em;
+            }
+          }
+          .huoba-ebook-item-total{
+            position: relative;
+            font-weight: 500;
+            line-height: 15px;
+            .ellipsis-line{
+              position: absolute;
+              width: 15px;
+              height: 15px;
+              right: 0;
+              color: $cl0;
+            }
+          }
+          .not-end{
+            margin-top: 31px;
+            @include font(null,$fontSize - 2,$redDark);
+          }
+          .end{
+            margin-top: 31px;
+            @include font(null,$fontSize - 2,$cl9);
+            .total-text:not(:first-child){
+              display: inline-block;
+              margin-left: 5px;
+            }
+          }
+
+        }
+      }
+    }
+
+  }
+  .huoba-swipe-one{
+    margin: 10px 15px;
+    height: 85px;
+    background: #F5F5F5;
+    border-radius: 3px;
+    .van-swipe-item{
+      @include displayFlex (flex, left, center);
+      .swipe-one-pic-album{
+        margin: 10px;
+        width: 65px;
+        height: 65px;
+        border-radius: 3px;
+      }
+      .swipe-one-pic-ebook{
+        margin: 10px;
+        width: 49px;
+        height: 65px;
+        border-radius: 3px;
+      }
+      .swipe-one-des{
+        flex-basis: 134px;
+        @include font(null,$fontSize + 1,$cl3);
+        font-weight: 500;
+        line-height: 19px;
+        @include twoColtextOverflow();
+      }
+      .swipe-one-button-box{
+        flex: 1;
+        position: relative;
+        height: 100%;
+        .huoba-btn-one{
+          position: absolute;
+          right: 10px;
+          top: 28px;
+        }
+      }
+    }
+
+  }
+  .list-title {
+    height: 11px;
+    line-height: 11px;
+    margin: 15px;
+    padding-left: 4px;
+    border-left: 2.5px solid $redDark;
+    @include font(null, $fontSize + 1, #484848);
+    font-weight: bold;
+    .count{
+      padding-left: 10px;
+      font-weight: 500;
+    }
+  }
+  .huoba-album-list-one{
+    @include displayFlex(flex, null, null);
+    flex-wrap: wrap;
+    margin-top: 15px;
+    padding: 0 0 0 15px;
+    .huoba-album-item{
+      box-sizing: border-box;
+      width: 33.3%;
+      padding-right: 15px;
+      padding-bottom: 20px;
+      .huoba-album-item-pic-box{
+        position: relative;
+        width: 100%;
+        &:before {
+          content: '';
+          padding-top: 100%;
+          display: block;
+        }
+        .huoba-album-item-pic{
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border-radius: 3px;
+        }
+        .icon-one-box{
+          position: absolute;
+          left: 5px;
+          bottom: 5px;
+          width: 18px;
+          height: 18px;
+          background: rgba(0,0,0,0.5);
+          border-radius: 6px;
+          .icon-one{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: $fontSize - 1;
+            color: $clF;
+          }
+        }
+        .img-one-box {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 33px;
+          height: 30.5px;
+          @include bgImageOne('./../../../../assets/listenAndRead/zhiding');
+          background-size: cover;
+        }
+        .text-one{
+          position: absolute;
+          left: 31px;
+          bottom: 5px;
+          display: inline-block;
+          width: 26px;
+          height: 18px;
+          line-height: 18px;
+          background: rgba(0,0,0,0.5);
+          border-radius: 3px;
+          font-size: $fontSize - 4;
+          color: $clF;
+          text-align: center;
+        }
+      }
+      .huoba-album-item-des{
+        margin-top: 10px;
+        @include font(null,$fontSize + 1,$cl3);
+        font-weight: 500;
+        line-height: 19px;
+        @include twoColtextOverflow();
+      }
+      .huoba-album-item-total{
+        font-weight: 500;
+        line-height: 21px;
+      }
+      .not-end{
+        margin-top: 7.5px;
+        @include font(null,$fontSize - 2,$redDark);
+      }
+      .end{
+        margin-top: 10px;
+        @include font(null,$fontSize - 2,$cl9);
+        .total-text:not(:first-child){
+          display: inline-block;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+  .huoba-ebook-list-one{
+    @include displayFlex(flex, null, null);
+    flex-wrap: wrap;
+    margin-top: 15px;
+    padding: 0 0 0 15px;
+    .huoba-ebook-item{
+      box-sizing: border-box;
+      width: 33.3%;
+      padding-right: 15px;
+      padding-bottom: 20px;
+      .huoba-ebook-item-pic-box{
+        position: relative;
+        width: 100%;
+          &:before{
+            display: block;
+            content: '';
+            padding-top: 133.3%;
+          }
+        .huoba-ebook-item-pic{
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border-radius: 3px;
+        }
+        .img-one-box {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 33px;
+          height: 30.5px;
+          @include bgImageOne('./../../../../assets/listenAndRead/zhiding');
+          background-size: cover;
+        }
+        .text-one{
+          position: absolute;
+          left: 5px;
+          bottom: 5px;
+          display: inline-block;
+          width: 26px;
+          height: 18px;
+          line-height: 18px;
+          background: rgba(0,0,0,0.5);
+          border-radius: 3px;
+          font-size: $fontSize - 4;
+          color: $clF;
+          text-align: center;
+        }
+      }
+
+      .huoba-ebook-item-des{
+        margin-top: 10px;
+        @include font(null,$fontSize + 1,$cl0);
+        font-weight: 500;
+        line-height: 19px;
+        @include twoColtextOverflow();
+      }
+      .huoba-ebook-item-total{
+        font-weight: 500;
+        line-height: 21px;
+      }
+      .not-end{
+        margin-top: 7.5px;
+        @include font(null,$fontSize - 2,$redDark);
+      }
+      .end{
+        margin-top: 10px;
+        @include font(null,$fontSize - 2,$cl9);
+        .total-text:not(:first-child){
+          display: inline-block;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+  .button-box{
+    padding: 0 15px 10px 15px;
+    .next-line{
+      font-size: $fontSize - 3;
+    }
+  }
+
+  // 弹出层
+  .huoba-popup-one{
+    height: 138px;
+    .pop-one-item{
+      height: 46.4px;
+      .icon{
+        padding-left: 13px;
+        padding-right: 11px;
+      }
+      .pop-one-item-text{
+        @include font(null,$fontSize + 1,$cl3);
+        font-weight: 500;
+        line-height: 43px;
+      }
+    }
+  }
+  .huoba-popup-two{
+    width: 255px;
+    height: 126px;
+    border-radius: 5px;
+    text-align: center;
+    .pop-two-text-one{
+      @include font(null,$fontSize + 1,$cl3);
+      line-height: 15px;
+      margin: 19px 0 0 0;
+    }
+    .pop-two-text-two{
+      @include font(null,$fontSize,$cl9);
+      padding: 14px 0 19px 0;
+      border-bottom: 0.5px solid $clE5;
+      line-height: 13px;
+    }
+    .pop-two-text-three{
+      @include font(null,$fontSize + 2,$cl3);
+      line-height: 45px;
+    }
+  }
+}

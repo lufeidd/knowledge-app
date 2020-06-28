@@ -230,7 +230,7 @@
                     <van-col span="16">
                       <div class="desc" @click="gotoDetail(item)">
                         <template v-if="item.goods_type != 6">
-                          <span class="tag" v-if="item.is_free == 1">免费</span>
+                          <span class="tag" v-if="item.is_free == 1 && item.is_payed != 1">免费</span>
                           <span class="tag" v-if="item.is_payed == 1">已购</span>
                         </template>
                         {{ item.title }}
