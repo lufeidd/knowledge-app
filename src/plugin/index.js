@@ -166,10 +166,11 @@ export default {
     }
     //微信跳转小程序
     Vue.prototype.$linkToMiniProgram = async function () {
+      console.log(857857);
       wx.miniProgram.navigateTo({
         url:'/pages/index/index',
         success: function(){
-            console.log('success')
+            console.log('success');
         },
         fail: function(){
             console.log('fail');
