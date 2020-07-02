@@ -34,6 +34,7 @@
         </swiper-slide>
       </swiper>
     </div>
+    <div><van-button @click="toMiniProgram">测试跳转小程序</van-button></div>
     <!-- 出版媒体信息模块 -->
     <div class="publish">
       <div class="from">
@@ -298,191 +299,194 @@
 <style src="@/style/scss/pages/brand/detail/book.scss" scoped lang="scss"></style>
 
 <script>
-import { fail } from "assert";
-export default {
-  data() {
-    return {
-      bookInfo: {
-        title: "新月集 飞鸟集",
-        icon: "https://bnmpstyle.bookuu.com/wap/images/default_shop.png",
-        author: "尼尔·盖曼",
-        imgUrl:
-          "https://media2.v.bookuu.com/activity/10/43/20180828104329956.jpg"
-      },
-      collect: false,
-      foucs: true,
-      bookTag: [
-        "2.2k人读过",
-        "尼尔·盖曼",
-        "奇幻",
-        "尼尔·盖曼",
-        "尼尔·盖曼特里布",
-        "2.2k人读过"
-      ],
-      footInfo: [
-        {
+  import { fail } from "assert";
+  export default {
+    data() {
+      return {
+        bookInfo: {
+          title: "新月集 飞鸟集",
+          icon: "https://bnmpstyle.bookuu.com/wap/images/default_shop.png",
+          author: "尼尔·盖曼",
           imgUrl:
-            "https://media2.v.bookuu.com/activity/09/31/20190325093115149.jpg@!q75",
-          title: "这里是内容的标题，可能会很长有两行文字",
-          name: "品牌名称"
+            "https://media2.v.bookuu.com/activity/10/43/20180828104329956.jpg"
         },
-        {
-          imgUrl:
-            "https://media2.v.bookuu.com/activity/09/31/20190325093115149.jpg@!q75",
-          title: "这里是内容的标题，可能会很长有两行文字",
-          name: "品牌名称"
+        collect: false,
+        foucs: true,
+        bookTag: [
+          "2.2k人读过",
+          "尼尔·盖曼",
+          "奇幻",
+          "尼尔·盖曼",
+          "尼尔·盖曼特里布",
+          "2.2k人读过"
+        ],
+        footInfo: [
+          {
+            imgUrl:
+              "https://media2.v.bookuu.com/activity/09/31/20190325093115149.jpg@!q75",
+            title: "这里是内容的标题，可能会很长有两行文字",
+            name: "品牌名称"
+          },
+          {
+            imgUrl:
+              "https://media2.v.bookuu.com/activity/09/31/20190325093115149.jpg@!q75",
+            title: "这里是内容的标题，可能会很长有两行文字",
+            name: "品牌名称"
+          },
+          {
+            imgUrl:
+              "https://media2.v.bookuu.com/activity/09/31/20190325093115149.jpg@!q75",
+            title: "这里是内容的标题，可能会很长有两行文字",
+            name: "品牌名称"
+          },
+          {
+            imgUrl:
+              "https://media2.v.bookuu.com/activity/09/31/20190325093115149.jpg@!q75",
+            title: "这里是内容的标题，可能会很长有两行文字",
+            name: "品牌名称"
+          }
+        ],
+        swiperOption1: {
+          slidesPerView: "auto",
+          spaceBetween: 10,
+          freeMode: true
         },
-        {
-          imgUrl:
-            "https://media2.v.bookuu.com/activity/09/31/20190325093115149.jpg@!q75",
-          title: "这里是内容的标题，可能会很长有两行文字",
-          name: "品牌名称"
+        swiperOption2: {
+          pagination: {
+            el: ".swiper-pagination"
+          }
         },
-        {
-          imgUrl:
-            "https://media2.v.bookuu.com/activity/09/31/20190325093115149.jpg@!q75",
-          title: "这里是内容的标题，可能会很长有两行文字",
-          name: "品牌名称"
-        }
-      ],
-      swiperOption1: {
-        slidesPerView: "auto",
-        spaceBetween: 10,
-        freeMode: true
+        swiperOption3: {
+          slidesPerView: 3.5
+        },
+        swiperOption4: {
+          slidesPerView: 1.1
+        },
+        introduction:
+          "日本文学评论家吉田精一评论：“他的文学可以看作是大正期小市民知识阶层的良心、感觉、神经、趣味等经提纯而获得的结晶。他的创作是他学识与才华的化身。”他的文学创作“在日本近代文学史上开拓了一个不曾有过的领域”。",
+        introduct: false,
+        list: false,
+        publishInfo: [
+          { text: "出版社:", info: "中信出版社; 第1版 (2018年9月1日)" },
+          { text: "丛书名:", info: "无" },
+          { text: " 精装:", info: "344页" },
+          { text: "语种:", info: "简体中文" },
+          { text: "开本:", info: 32 },
+          { text: "ISBN:", info: "9787508690254, 7508690257" },
+          { text: "条形码:", info: "9787508690254" },
+          { text: "商品尺寸:", info: "21.4 x 15.4 x 2.6 cm" },
+          { text: "商品重量:", info: "558 g" },
+          { text: "品牌:", info: "中信出版集团股份有限公司" },
+          { text: "ASIN:", info: "B07GJG4QTL" }
+        ],
+        chapterList: [
+          { number: "第1章", name: "石内藏助" },
+          { number: "第2章", name: "神犬与魔笛" },
+          { number: "第3章", name: "第教人之死" },
+          { number: "第4章", name: "大导寺信辅的半生" },
+          { number: "第5章", name: "第大导寺信辅的半生2" },
+          { number: "第6章", name: "神犬与魔笛" },
+          { number: "第7章", name: "第教人之死" },
+          { number: "第8章", name: "大导寺信辅的半生" },
+          { number: "第8章", name: "大导寺信辅的半生" },
+          { number: "第8章", name: "大导寺信辅的半生" },
+          { number: "第8章", name: "大导寺信辅的半生" },
+          { number: "第8章", name: "大导寺信辅的半生" },
+          { number: "第8章", name: "大导寺信辅的半生" },
+          { number: "第8章", name: "大导寺信辅的半生" },
+          { number: "第8章", name: "大导寺信辅的半生" },
+          { number: "第8章", name: "大导寺信辅的半生" },
+          { number: "第8章", name: "大导寺信辅的半生" },
+          { number: "第8章", name: "大导寺信辅的半生" }
+        ],
+        contentTotal: 30,
+        contentModel: "",
+        contentLength: 0,
+        commentModel: false,
+        commentMessage: [
+          {
+            name: "路人甲",
+            content: "宝宝的巴士睡前故事，非常的好听值得购买",
+            date: "2019.05.12   09:23",
+            state: false
+          },
+          {
+            name: "路人甲",
+            content: "宝宝的巴士睡前故事，非常的好听值得购买",
+            date: "2019.05.12   09:23",
+            state: true,
+            comment: [
+              { commentName: "萌萌龙", commentText: "其实是我的想法哈哈哈" },
+              {
+                commentName: "我是一个粉刷匠呀",
+                commentText: "你这个也太搞笑了吧，沙雕指 数没人可比呀。"
+              }
+            ]
+          },
+          {
+            name: "路人甲",
+            content: "宝宝的巴士睡前故事，非常的好听值得购买",
+            date: "2019.05.12   09:23",
+            state: false
+          }
+        ],
+        collect: true,
+        nice: true
+      };
+    },
+    methods: {
+      toMiniProgram(){
+        this.$linkToMiniProgram()
       },
-      swiperOption2: {
-        pagination: {
-          el: ".swiper-pagination"
-        }
+      collection() {
+        this.collect = true;
       },
-      swiperOption3: {
-        slidesPerView: 3.5
-      },
-      swiperOption4: {
-        slidesPerView: 1.1
-      },
-      introduction:
-        "日本文学评论家吉田精一评论：“他的文学可以看作是大正期小市民知识阶层的良心、感觉、神经、趣味等经提纯而获得的结晶。他的创作是他学识与才华的化身。”他的文学创作“在日本近代文学史上开拓了一个不曾有过的领域”。",
-      introduct: false,
-      list: false,
-      publishInfo: [
-        { text: "出版社:", info: "中信出版社; 第1版 (2018年9月1日)" },
-        { text: "丛书名:", info: "无" },
-        { text: " 精装:", info: "344页" },
-        { text: "语种:", info: "简体中文" },
-        { text: "开本:", info: 32 },
-        { text: "ISBN:", info: "9787508690254, 7508690257" },
-        { text: "条形码:", info: "9787508690254" },
-        { text: "商品尺寸:", info: "21.4 x 15.4 x 2.6 cm" },
-        { text: "商品重量:", info: "558 g" },
-        { text: "品牌:", info: "中信出版集团股份有限公司" },
-        { text: "ASIN:", info: "B07GJG4QTL" }
-      ],
-      chapterList: [
-        { number: "第1章", name: "石内藏助" },
-        { number: "第2章", name: "神犬与魔笛" },
-        { number: "第3章", name: "第教人之死" },
-        { number: "第4章", name: "大导寺信辅的半生" },
-        { number: "第5章", name: "第大导寺信辅的半生2" },
-        { number: "第6章", name: "神犬与魔笛" },
-        { number: "第7章", name: "第教人之死" },
-        { number: "第8章", name: "大导寺信辅的半生" },
-        { number: "第8章", name: "大导寺信辅的半生" },
-        { number: "第8章", name: "大导寺信辅的半生" },
-        { number: "第8章", name: "大导寺信辅的半生" },
-        { number: "第8章", name: "大导寺信辅的半生" },
-        { number: "第8章", name: "大导寺信辅的半生" },
-        { number: "第8章", name: "大导寺信辅的半生" },
-        { number: "第8章", name: "大导寺信辅的半生" },
-        { number: "第8章", name: "大导寺信辅的半生" },
-        { number: "第8章", name: "大导寺信辅的半生" },
-        { number: "第8章", name: "大导寺信辅的半生" }
-      ],
-      contentTotal: 30,
-      contentModel: "",
-      contentLength: 0,
-      commentModel: false,
-      commentMessage: [
-        {
-          name: "路人甲",
-          content: "宝宝的巴士睡前故事，非常的好听值得购买",
-          date: "2019.05.12   09:23",
-          state: false
-        },
-        {
-          name: "路人甲",
-          content: "宝宝的巴士睡前故事，非常的好听值得购买",
-          date: "2019.05.12   09:23",
-          state: true,
-          comment: [
-            { commentName: "萌萌龙", commentText: "其实是我的想法哈哈哈" },
-            {
-              commentName: "我是一个粉刷匠呀",
-              commentText: "你这个也太搞笑了吧，沙雕指 数没人可比呀。"
-            }
-          ]
-        },
-        {
-          name: "路人甲",
-          content: "宝宝的巴士睡前故事，非常的好听值得购买",
-          date: "2019.05.12   09:23",
-          state: false
-        }
-      ],
-      collect: true,
-      nice: true
-    };
-  },
-  methods: {
-    collection() {
-      this.collect = true;
-    },
-    cacellCollect() {
-      this.collect = false;
-    },
-    addFoucs() {
-      this.foucs = false;
-    },
-    cancelFoucs() {
-      this.foucs = true;
-    },
-    showIntroduction() {
-      this.introduct = true;
-    },
-    showList() {
-      this.list = true;
-    },
-    closePopup() {
-      this.introduct = false;
-      this.list = false;
-    },
-    foldAction() {},
-    onPunish() {
-      if (this.contentLength > this.contentTotal) {
-        this.$toast("你发布的字数超出，请修改后再发布!");
-        return;
-      }
-      this.commentModel = false;
-    },
-    inputChange(self) {
-      this.contentLength = this.contentModel.length;
-    },
-    openAnswer() {
-      this.commentModel = true;
-    },
-    commentClose() {
-      this.commentModel = false;
-    },
-    iconCollect() {
-      if (this.collect) {
+      cacellCollect() {
         this.collect = false;
-      } else this.collect = true;
-    },
-    iconGood() {
-      if (this.nice) {
-        this.nice = false;
-      } else this.nice = true;
+      },
+      addFoucs() {
+        this.foucs = false;
+      },
+      cancelFoucs() {
+        this.foucs = true;
+      },
+      showIntroduction() {
+        this.introduct = true;
+      },
+      showList() {
+        this.list = true;
+      },
+      closePopup() {
+        this.introduct = false;
+        this.list = false;
+      },
+      foldAction() {},
+      onPunish() {
+        if (this.contentLength > this.contentTotal) {
+          this.$toast("你发布的字数超出，请修改后再发布!");
+          return;
+        }
+        this.commentModel = false;
+      },
+      inputChange(self) {
+        this.contentLength = this.contentModel.length;
+      },
+      openAnswer() {
+        this.commentModel = true;
+      },
+      commentClose() {
+        this.commentModel = false;
+      },
+      iconCollect() {
+        if (this.collect) {
+          this.collect = false;
+        } else this.collect = true;
+      },
+      iconGood() {
+        if (this.nice) {
+          this.nice = false;
+        } else this.nice = true;
+      }
     }
-  }
-};
+  };
 </script>

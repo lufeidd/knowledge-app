@@ -752,6 +752,8 @@ import {
   COMMENT_ADD,
   RECOMMEND
 } from "../../apis/public.js";
+import { USER_PLAYED_RECORD } from "../../apis/user.js";
+
 
 export default {
   components: {
@@ -910,11 +912,43 @@ export default {
     }
   },
   methods: {
+    // 用户播放进度记录
+    async currentTimeData() {
+      // 已登录账号才存储到数据库
+      if (this.isLogin == 0) return;
+
+      // 如果是非专辑，则传入goods_id
+      var _pid = this.$route.query.pid;
+      var _goodsId = this.$route.query.goods_id;
+      if (_pid == null || _pid == "NaN") {
+        _pid = this.$route.query.goods_id;
+        _goodsId = null;
+      }
+      var tStamp = this.$getTimeStamp();
+      var data = {
+        goods_id: _pid,
+        sub_goods_id: _goodsId,
+        duration: 1,
+        timestamp: tStamp,
+        version: "1.0"
+      };
+      data.sign = this.$getSign(data);
+      let res = await USER_PLAYED_RECORD(data);
+      if (res.hasOwnProperty("response_code")) {
+      } else {
+        this.$toast(res.error_message);
+      }
+    },
+
     // 判断视频播放是否收费
     videoPlay() {
       // 含有试听视频，播放该试听视频
       if (this.baseData.free_path != "") {
         this.$refs.control.pauseAudio();
+
+        // 记录用户播放
+        this.currentTimeData();
+
         return;
       }
       // 需要收费
@@ -932,6 +966,9 @@ export default {
         return;
       } else {
         this.$refs.control.pauseAudio();
+
+        // 记录用户播放
+        this.currentTimeData();
       }
     },
     // --------------------------------迷你缩略音频----------------------------------

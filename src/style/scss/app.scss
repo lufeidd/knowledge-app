@@ -967,6 +967,279 @@
     }
   }
 }
+
+
+// 步进器
+.van-stepper {
+  border: 1px #b6b6b6 solid;
+}
+
+.van-stepper__minus,
+.van-stepper__plus,
+.van-stepper__input {
+  background-color: $white;
+  margin: 0;
+}
+
+.van-stepper__input {
+  border: 1px #b6b6b6 solid;
+  border-width: 0 1px;
+  color: #999;
+}
+
+.van-stepper__minus::after,
+.van-stepper__minus::before,
+.van-stepper__plus::after,
+.van-stepper__plus::before {
+  background-color: #666;
+}
+
+.van-stepper__minus--disabled::after,
+.van-stepper__minus--disabled::before,
+.van-stepper__plus--disabled::after,
+.van-stepper__plus--disabled::before {
+  background-color: #ccc;
+}
+
+// 提交订单栏
+.van-submit-bar__text {
+  @include font("PingFangBold", $fontSize, #333);
+}
+
+.van-submit-bar__price {
+  color: $redDark;
+}
+
+.van-button--danger {
+  border-color: $redDark;
+  background-color: $redDark;
+}
+
+.deleteBox {
+  // & .van-button--large {
+  //   height: 35px;
+  //   line-height: 35px;
+  //   color: $redDark;
+  //   margin-right: 15px;
+  //   border: none;
+  //   border: 1px $redDark solid;
+  //   border-radius: 35px;
+  //   width: 90px;
+  // }
+}
+
+.van-button--warning {
+  border-color: $orangeDark;
+  background-color: $orangeDark;
+}
+
+// confirm
+.van-dialog__header {
+  padding: 10px 0;
+  border-bottom: 1px #eee solid;
+  @include font(null, $fontSize + 1, #333);
+}
+
+[class*=van-hairline]::after {
+  border-color: #999;
+}
+
+.van-hairline--top::after {
+  border-width: 0;
+}
+
+.van-hairline--left::after {
+  border-width: 0;
+}
+
+// 密码输入框
+.van-password-input {
+  margin: 0;
+}
+
+// 空
+.nullBox {
+  & img {
+    width: 100%;
+    margin-top: 100px;
+    margin-bottom: 50px;
+  }
+
+  text-align: center;
+  font-size: $fontSize+1;
+  color: #000;
+}
+
+.van-cell__right-icon {
+  color: #999;
+}
+
+// iphonex
+.van-goods-action {
+  z-index: 1;
+}
+
+#miniAudio.isShow {
+  opacity: 1;
+  display: block;
+}
+
+#miniAudio {
+  opacity: 0;
+  display: none;
+}
+
+// button
+.van-button:before {
+  display: none;
+}
+
+.bottomBox {
+
+  & .van-button {
+    border-radius: 0;
+  }
+}
+
+.van-tag--round {
+  border-radius: 1em;
+}
+
+.van-tag--round:after {
+  border-radius: 2em;
+}
+
+.iphx {
+  @include position (fixed, 'bl', 0, 0, 100%, 50px, 0);
+  padding-bottom: 34px;
+  background-color: $white;
+}
+.coupon.iphx{
+  @include position (fixed, 'bl', 84px, 0, 100%, 44px, 0);
+  padding-bottom: 0;
+}
+.coupon.bottom.iphx{
+  @include position (fixed, 'bl', 0, 0, 100%, 44px, 0);
+  padding-bottom: 34px;
+}
+
+.van-popup--bottom {
+  border-left: 1px #fff solid;
+}
+
+//step步骤条
+.van-steps {
+  .van-hairline::after {
+    border-color: $greyLight;
+  }
+
+  .van-step {
+    color: $cl6;
+  }
+
+  .van-step--vertical {
+    font-size: $fontSize - 1;
+  }
+
+  .van-step--vertical.van-step--process .van-icon,
+  .van-step--vertical .van-step__circle {
+    top: 45px;
+    left: -21px;
+  }
+
+  .van-step--vertical .van-step__line {
+    top: 55px;
+    left: -16px;
+    height: 90%;
+  }
+
+  .van-step__circle {
+    width: 9px;
+    height: 9px;
+    background-color: transparent;
+    border: 1px solid $cl9;
+  }
+}
+
+//选择器
+.van-picker {
+  .van-picker__cancel {
+    font-size: 15px;
+    color: #999;
+  }
+
+  .van-picker__confirm {
+    font-size: 15px;
+    color: #f05654;
+  }
+
+  .van-picker__title {
+    color: #333;
+    font-size: 15px;
+  }
+
+  .van-picker-column {
+    font-size: 15px;
+  }
+}
+
+// 步进器
+.van-stepper__input[disabled] {
+  background-color: $white;
+  color: #333;
+}
+
+.van-stepper__minus--disabled:after,
+.van-stepper__minus--disabled:before,
+.van-stepper__plus--disabled:after,
+.van-stepper__plus--disabled:before {
+  background-color: #666;
+}
+
+.disabled {
+  .van-button--disabled {
+    opacity: 1;
+  }
+  .van-button--warning {
+    background-color: #bfbfbf;
+    border-color: #bfbfbf;
+  }
+  .van-button--danger {
+    background-color: #b0b0b0;
+    border-color: #b0b0b0;
+  }
+  .none {
+    font-size: $fontSize;
+    color: $cl6;
+    background-color: rgba(221, 221, 221, .98);
+    position: fixed;
+    width: 100%;
+    line-height: 50px;
+    text-align: center;
+    bottom: 50px;
+    max-width: 640px;
+  }
+}
+
+.book_moudel .van-tabs--line .van-tabs__wrap{
+  border-bottom: none !important;
+}
+#readerPage{
+  .van-slider__button{
+    border:2px solid $redDark !important;
+  }
+  .van-slider__button-wrapper{
+    z-index: 99;
+  }
+}
+
+// 轮播图
+.van-swipe__indicators i:not(.van-swipe__indicator--active){
+  opacity: 1;
+  background: #fff !important;
+}
+
+
  // 上拉菜单加单选框
  .huoba-selectRadio-title{
    padding: 20px 15px;
@@ -1066,3 +1339,4 @@
      }
    }
  }
+
