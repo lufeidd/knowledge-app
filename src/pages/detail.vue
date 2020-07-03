@@ -64,12 +64,10 @@
           <div class="discount">
             <span class="original">
               原价
-              <del
-                v-if="baseData.price !== baseData.market_price"
-              >¥{{ baseData.market_price.toFixed(2) }}</del>
+              <del>¥{{ baseData.market_price.toFixed(2) }}</del>
               <span
                 class="price"
-                v-if="baseData.price !== baseData.market_price"
+                v-if="baseData.price < baseData.market_price"
               >{{((baseData.price/baseData.market_price)*10).toFixed(1)}}折</span>
             </span>
             <span v-if="baseData.stores <= 10" class="stores">仅剩{{baseData.stores}}件</span>

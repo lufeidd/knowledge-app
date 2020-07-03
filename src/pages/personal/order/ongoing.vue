@@ -34,25 +34,25 @@
         <div class="huoba-button-nav-right">
           <button
             class="huoba-btn huoba-btn-two"
-            @click="write_logistics"
+            @click="writeLogistics"
             v-if="refund_state == 1 && refund_type==3"
           >填写物流信息</button>
           <button
             class="huoba-btn huoba-btn-two"
             style="margin-left:15px;"
             v-if="refund_state == 0 && (refund_type==2 || refund_type==3)"
-            @click="edit_refund"
+            @click="editRefund"
           >修改申请</button>
           <button
             class="huoba-btn huoba-btn-one"
             style="margin-left:15px;"
-            @click="re_refund"
+            @click="reRefund"
             v-if="refund_state == 2"
           >重新申请</button>
           <button
             class="huoba-btn huoba-btn-one"
             style="margin-left:15px;"
-            @click="cancle_refund"
+            @click="canclerefund"
             v-if="(refund_state == 0 || refund_state == 1) && (refund_type==2 || refund_type==3)"
           >撤销申请</button>
         </div>
@@ -133,7 +133,7 @@ export default {
     },
 
     //撤销退款
-    cancle_refund() {
+    canclerefund() {
       this.$dialog
         .confirm({
           message: "确定撤销申请吗？售后期内你可以重新申请。",
@@ -165,11 +165,11 @@ export default {
       }
     },
     //重新申请
-    re_refund() {
+    reRefund() {
       this.getDetail("reget");
     },
     // 修改申请
-    edit_refund() {
+    editRefund() {
       this.$dialog
         .confirm({
           message: "确定修改申请吗？",
@@ -202,7 +202,7 @@ export default {
         });
     },
     //填写物流信息
-    write_logistics() {
+    writeLogistics() {
       this.$router.push({
         name: "refundedit",
         query: {

@@ -450,7 +450,13 @@ router.beforeEach((to, from, next) => {
     next();
   }
   next();
-  if((from.path == '/custompage' && to.path == '/custompage') || (to.fullPath.indexOf("nullPage") != -1 && from.path != '/') || (to.path == '/login/verification' && from.path != '/') || (from.fullPath.indexOf("nullPage") != -1)){
+  if((from.path == '/custompage' && to.path == '/custompage') || (to.fullPath.indexOf("nullPage") != -1 && from.path != '/') || (to.path == '/login/verification' && from.path != '/') || (from.fullPath.indexOf("nullPage") != -1) ||
+    (from.path == '/login/passwordLogin/passwordLogin' && to.path == '/gaokaoTest/index')){
+
+    // if (from.path != '/' && to.path == '/gaokaoTest/index') {
+    //   alert('refresh');
+    // }
+
     location.reload();
     next();
   }

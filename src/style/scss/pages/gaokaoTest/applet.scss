@@ -1,0 +1,25 @@
+/*
+ * author: lrf
+ * date:2020/6/28
+ */
+
+@charset "UTF-8";
+
+#applet {
+  width: 100%;
+  height: 100%;
+  background-image: url("./../../../../assets/gaokaoTest/applet.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  .save {
+    position: absolute;
+    top: 25vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 250px;
+    height: 49px;
+    background-image: url("./../../../../assets/gaokaoTest/save.png");
+    background-size: contain;
+  }
+}
