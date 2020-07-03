@@ -272,7 +272,7 @@ export default {
           return;
         }
 
-        if (_pageName == "goods/detail" || _pageName == "page/get" || _pageName == "groupbuy/open/detail" || _pageName == "groupbuy/goods/detail" || _pageName == "activity/interest" || _pageName == "assist/index" || _pageName == "assist/index" || _pageName == "brand/index" || _pageName == "mall/index" || _pageName == "mall/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search") {
+        if (_pageName == "goods/detail" || _pageName == "page/get" || _pageName == "groupbuy/open/detail" || _pageName == "groupbuy/goods/detail" || _pageName == "activity/interest" || _pageName == "assist/index" || _pageName == "assist/index" || _pageName == "brand/index" || _pageName == "mall/index" || _pageName == "mall/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search"|| _pageName == "activity/nemt") {
           // 需要调分享的页面
           var tStamp = this.$getTimeStamp();
           let data = {
@@ -453,6 +453,9 @@ export default {
         // 订单详情
         linkData.page_name = '';
         linkData.order_id = this.$route.query.order_id;
+      } else if (_name == '/gaokaotest/index'|| _name == '/gaokaotest/questionspageone' ||_name == '/gaokaotest/questionspagetwo' || _name == '/gaokaotest/resultpage') {
+        // 高考测一测
+        linkData.page_name = 'activity/nemt';
       }
 
       return linkData;
