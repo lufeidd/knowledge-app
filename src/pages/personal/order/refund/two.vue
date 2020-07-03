@@ -168,11 +168,11 @@
             <van-cell
               :title="item"
               clickable
-              @click="radio_check(item,index)"
+              @click="radioCheck(item,index)"
               v-for="(item,index) in reasonList"
               :key="index"
             >
-              <van-radio :name="index" @click="radio_check(item,index)" checked-color="#ff504e" />
+              <van-radio :name="index" @click="radioCheck(item,index)" checked-color="#ff504e" />
             </van-cell>
           </van-cell-group>
         </van-radio-group>
@@ -192,13 +192,13 @@
             <van-cell
               :title="item"
               clickable
-              @click="goods_radio_check(item,index)"
+              @click="goodsRadioCheck(item,index)"
               v-for="(item,index) in goodsStateList"
               :key="index"
             >
               <van-radio
                 :name="index"
-                @click="goods_radio_check(item,index)"
+                @click="goodsRadioCheck(item,index)"
                 checked-color="#ff504e"
               />
             </van-cell>
@@ -312,7 +312,7 @@ export default {
         return
       }
     },
-    radio_check(item, index) {
+    radioCheck(item, index) {
       this.radio = index;
       this.refund_reason = item;
       if(this.order_dispatch_state){
@@ -332,7 +332,7 @@ export default {
       }
       this.show = false;
     },
-    goods_radio_check(item, index) {
+    goodsRadioCheck(item, index) {
       this.goods_radio = index;
       this.goods_state = item;
       this.goods_show = false;
@@ -429,8 +429,27 @@ export default {
         this.detail_id &&
         this.real_refund_money
       ) {
-        this.submit_state = false;
-        this.getImgUrl();
+        if(this.refundInfo.error_state == 1){
+            this.$dialog.confirm({
+              message: "由于订单运费发生变更\n相关商品需要一起申请退款哦",
+              cancelButtonText: "我再想想",
+              confirmButtonText: "一起退款",
+              cancelButtonColor: "#333",
+              confirmButtonColor: "#999"
+            })
+            .then(() => {
+              for(let i=0;i<this.refundInfo.other_detail_ids.length;i++){
+                this.detail_id += ','+this.refundInfo.other_detail_ids[i]
+              }
+              this.getInfo()
+            })
+            .catch(() => {
+              // on cancel
+            });
+        }else{
+          this.submit_state = false;
+          this.getImgUrl();
+        }
       } else {
         this.$toast("请填写完整信息！");
       }

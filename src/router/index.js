@@ -167,6 +167,14 @@ import interest from '@/pages/activity/interest'
 import listenAndReadIndex from '@/pages/listenAndRead/index'
 import listenAndReadDetail from '@/pages/listenAndRead/detail'
 
+// 高考测一测
+import gaokaoTestIndex from '@/pages/gaokaoTest/index'
+import questionsPageOne from '@/pages/gaokaoTest/questionsPageOne'
+import questionsPageTwo from '@/pages/gaokaoTest/questionsPageTwo'
+import resultPage from '@/pages/gaokaoTest/resultPage'
+import applet from '@/pages/gaokaoTest/applet'
+
+
 Vue.use(Router)
 
 export default new Router({
@@ -1092,6 +1100,47 @@ export default new Router({
       path: '/listenAndRead/detail',
       name: 'listenAndReadDetail',
       component: listenAndReadDetail,
+      meta: {
+        title: '火把知识'
+      }
+    },
+    // 高考测一测
+    {
+      path: '/gaokaoTest/index',
+      name: 'gaokaoTestIndex',
+      component: gaokaoTestIndex,
+      meta: {
+        title: '火把知识'
+      }
+    },
+    {
+      path: '/gaokaoTest/questionsPageOne',
+      name: 'questionsPageOne',
+      component: questionsPageOne,
+      meta: {
+        title: '火把知识'
+      }
+    },
+    {
+      path: '/gaokaoTest/questionsPageTwo',
+      name: 'questionsPageTwo',
+      component: questionsPageTwo,
+      meta: {
+        title: '火把知识'
+      }
+    },
+    {
+      path: '/gaokaoTest/resultPage',
+      name: 'resultPage',
+      component: resultPage,
+      meta: {
+        title: '火把知识'
+      }
+    },
+    {
+      path: '/gaokaoTest/applet',
+      name: 'applet',
+      component: applet,
       meta: {
         title: '火把知识'
       }

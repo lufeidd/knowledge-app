@@ -1,0 +1,84 @@
+/*
+ * author: lrf
+ * date:2020/6/28
+ */
+
+@charset "UTF-8";
+
+#questionsPageOne {
+  .van-radio-group {
+    margin: 20px 0 42px 0;
+  }
+  .van-radio {
+    display: inline-block;
+    margin-right: 76px;
+    font-size: 12px;
+    font-family: Source Han Sans CN;
+    font-weight: 400;
+    color: #6C6B6B;
+  }
+  p {
+    margin: 0;
+  }
+  width: 100%;
+  min-height: 100%;
+  background-image: url("./../../../../assets/gaokaoTest/questions-bg.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  article {
+    position: absolute;
+    top: 50%;
+    left: 13px;
+    right: 13px;
+    transform: translateY(-50%);
+    border-radius: 5px;
+    background: #fff;
+    .introduce {
+      margin: 0 auto;
+      //width: 70%;
+      margin-top: 34px;
+      width: 235px;
+      height: 51px;
+      background-image: url("./../../../../assets/gaokaoTest/introduce.png");
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+    .question-wrapper {
+      margin-top: 54px;
+      margin-left: 36px;
+      p {
+        font-size: 13px;
+        font-family: Source Han Sans CN;
+        font-weight: 400;
+        color: #1B1B1B;
+      }
+      select {
+        margin-top: 20px;
+        margin-bottom: 43px;
+        width: 250px;
+        option {
+          background: #fff;
+        }
+      }
+    }
+  }
+  footer {
+    .btn-box {
+      position: absolute;
+      bottom: 9vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 134px;
+      height: 36px;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+    .able{
+      background-image: url("./../../../../assets/gaokaoTest/next.png");
+    }
+    .disabled {
+      background-image: url("./../../../../assets/gaokaoTest/next-disabled.png");
+    }
+  }
+}
