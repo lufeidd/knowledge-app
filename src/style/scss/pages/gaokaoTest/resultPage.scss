@@ -1,0 +1,61 @@
+/*
+ * author: lrf
+ * date:2020/6/28
+ */
+
+@charset "UTF-8";
+
+#resultPage {
+  width: 100%;
+  background-image: url("./../../../../assets/gaokaoTest/result-bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  .img-wrapper {
+    margin: 0 auto;
+    padding-top: 260px;
+    width: 94%;
+  }
+  .btn-box {
+    margin: 0 auto;
+    margin-top: 34px;
+    width: 226px;
+    height: 36px;
+    @include bgImageOne('./../../../../assets/gaokaoTest/query');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  .recommend-wrapper {
+    .recommend {
+      margin: 61px 0 19px 22px;
+      width: 70px;
+      height: 16px;
+      background-image: url("./../../../../assets/gaokaoTest/recommend.png");
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    .goods-list-one {
+      text-align: center;
+      img {
+        margin-bottom: 13px;
+        width: 94%;
+      }
+    }
+    .goods-list-two {
+      margin-top: 5px;
+      .row {
+        padding-bottom: 10px;
+        text-align: center;
+        img {
+          width: 45%;
+          &:first-child {
+            margin-right: 10px;
+          }
+        }
+        &:last-child {
+          padding-bottom: 70px;
+        }
+      }
+
+    }
+  }
+}
