@@ -15,7 +15,11 @@
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  header {
+  .logo {
+    position: absolute;
+    top: 47px;
+    right: 12px;
+    width: 35px;
 
   }
   footer {
@@ -26,7 +30,7 @@
       transform: translateX(-50%);
       width: 157px;
       height: 36px;
-      @include bgImageOne('./../../../../assets/gaokaoTest/demystify');
+      background-image: url("./../../../../assets/gaokaoTest/demystify.png");
       background-repeat: no-repeat;
       background-size: contain;
     }

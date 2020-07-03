@@ -335,6 +335,7 @@ export default {
         //   params: _params,
         //   isJump: _isJump
         // });
+        
         // 安卓
         if (localStorage.getItem("isHuobaAndroidLogin") == "yes") {
           window.JSWEB.RequestNative(JSON.stringify({

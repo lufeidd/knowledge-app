@@ -115,8 +115,8 @@
                   </div>
                 </div>
                 <div class="huoba-goods-list-right">
-                  <span class="huoba-goods-price">￥{{item.order_money.toFixed(2)}}</span>
-                  <span class="huoba-goods-num">
+                  <span class="huoba-goods-price" v-if="item.if_changed !== 1">￥{{item.order_money.toFixed(2)}}</span>
+                  <span class="huoba-goods-num" v-if="item.if_changed !== 1">
                     <span v-if="item.goods_nums > 1">共{{item.goods_nums}}件</span>
                   </span>
                   <span class="huoba-goods-bag">{{item.order_send_desc}}</span>
@@ -147,8 +147,8 @@
                   </span>
                 </div>
                 <div class="huoba-goods-list-right">
-                  <span class="huoba-goods-price">￥{{item.order_money.toFixed(2)}}</span>
-                  <span class="huoba-goods-num">
+                  <span class="huoba-goods-price" v-if="item.if_changed !== 1">￥{{item.order_money.toFixed(2)}}</span>
+                  <span class="huoba-goods-num" v-if="item.if_changed !== 1">
                     <span v-if="item.goods_nums > 1">共{{item.goods_nums}}件</span>
                   </span>
                   <span class="huoba-goods-bag">{{item.order_send_desc}}</span>
@@ -166,9 +166,9 @@
                     <use xlink:href="#icon-ellipsis-line" />
                   </svg>
                   <div
-                    class="delete_order"
+                    class="deleteOrder"
                     v-if="item.delete_state == 1"
-                    @click="delete_order(item,index)"
+                    @click="deleteOrder(item,index)"
                   >删除订单</div>
                 </div>
                 <div class="huoba-button-nav-right">
@@ -553,7 +553,7 @@ export default {
       }
     },
     // 删除订单
-    delete_order(item, index) {
+    deleteOrder(item, index) {
       this.$dialog
         .confirm({
           // title: "删除订单",

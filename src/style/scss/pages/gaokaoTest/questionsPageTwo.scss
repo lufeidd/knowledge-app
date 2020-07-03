@@ -37,7 +37,7 @@
   }
   article {
     position: absolute;
-    top: 50%;
+    top: 48%;
     left: 13px;
     right: 13px;
     transform: translateY(-50%);
@@ -49,9 +49,23 @@
       margin-top: 23px;
       width: 197px;
       height: 31px;
-      @include bgImageOne('./../../../../assets/gaokaoTest/title-count');
       background-repeat: no-repeat;
       background-size: contain;
+    }
+    .title-one {
+      background-image: url("./../../../../assets/gaokaoTest/title-1.png");
+    }
+    .title-two {
+      background-image: url("./../../../../assets/gaokaoTest/title-2.png");
+    }
+    .title-three {
+      background-image: url("./../../../../assets/gaokaoTest/title-3.png");
+    }
+    .title-four {
+      background-image: url("./../../../../assets/gaokaoTest/title-4.png");
+    }
+    .title-five {
+      background-image: url("./../../../../assets/gaokaoTest/title-5.png");
     }
     .question-wrapper {
       margin-top: 23px;
@@ -75,14 +89,46 @@
   footer {
     .btn-box {
       position: absolute;
-      bottom: 9vh;
+      bottom: 7vh;
       left: 50%;
       transform: translateX(-50%);
       width: 134px;
       height: 36px;
-      @include bgImageOne('./../../../../assets/gaokaoTest/next');
       background-repeat: no-repeat;
       background-size: contain;
+    }
+    .btn-box-left {
+      position: absolute;
+      bottom: 7vh;
+      left: 8vw;
+      width: 134px;
+      height: 36px;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+    .btn-box-right {
+      position: absolute;
+      bottom: 7vh;
+      right: 8vw;
+      width: 134px;
+      height: 36px;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+    .pre{
+      background-image: url("./../../../../assets/gaokaoTest/pre.png");
+    }
+    .next-able{
+      background-image: url("./../../../../assets/gaokaoTest/next.png");
+    }
+    .next-disabled {
+      background-image: url("./../../../../assets/gaokaoTest/next-disabled.png");
+    }
+    .check-result-able{
+      background-image: url("./../../../../assets/gaokaoTest/check-result.png");
+    }
+    .check-result-disabled {
+      background-image: url("./../../../../assets/gaokaoTest/check-result-disabled.png");
     }
   }
 }

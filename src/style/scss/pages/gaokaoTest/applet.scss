@@ -19,7 +19,7 @@
     transform: translateX(-50%);
     width: 250px;
     height: 49px;
-    @include bgImageOne('./../../../../assets/gaokaoTest/save');
+    background-image: url("./../../../../assets/gaokaoTest/save.png");
     background-size: contain;
   }
 }

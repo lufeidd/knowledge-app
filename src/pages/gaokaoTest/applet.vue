@@ -1,3 +1,4 @@
+<!--废弃-->
 <template>
   <div id="applet">
     <div class="save" @click="save"></div>
@@ -12,6 +13,17 @@
     methods: {
       save() {
         console.log('save');
+        // 保存小程序二维码
+        if (!window.plus) {
+          return;
+        } else {
+          window.plus.gallery.save('./../../assets/gaokaoTest/code.png',function () {
+            window.plus.nativeUI.alert("保存成功");
+            },function () {
+            window.plus.nativeUI.alert("保存失败");
+          });
+        }
+
       }
     }
 
