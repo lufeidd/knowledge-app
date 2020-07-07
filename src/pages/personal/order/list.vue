@@ -115,8 +115,8 @@
                   </div>
                 </div>
                 <div class="huoba-goods-list-right">
-                  <span class="huoba-goods-price" v-if="item.if_changed == 0">￥{{item.order_money.toFixed(2)}}</span>
-                  <span class="huoba-goods-num" v-if="item.if_changed == 0">
+                  <span class="huoba-goods-price" v-if="item.if_changed !== 1">￥{{item.order_money.toFixed(2)}}</span>
+                  <span class="huoba-goods-num" v-if="item.if_changed !== 1">
                     <span v-if="item.goods_nums > 1">共{{item.goods_nums}}件</span>
                   </span>
                   <span class="huoba-goods-bag">{{item.order_send_desc}}</span>
@@ -147,8 +147,8 @@
                   </span>
                 </div>
                 <div class="huoba-goods-list-right">
-                  <span class="huoba-goods-price" v-if="item.if_changed == 0">￥{{item.order_money.toFixed(2)}}</span>
-                  <span class="huoba-goods-num" v-if="item.if_changed == 0">
+                  <span class="huoba-goods-price" v-if="item.if_changed !== 1">￥{{item.order_money.toFixed(2)}}</span>
+                  <span class="huoba-goods-num" v-if="item.if_changed !== 1">
                     <span v-if="item.goods_nums > 1">共{{item.goods_nums}}件</span>
                   </span>
                   <span class="huoba-goods-bag">{{item.order_send_desc}}</span>

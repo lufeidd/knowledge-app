@@ -237,8 +237,8 @@
               <span>{{item.goods_name}}</span>
             </span>
             <div>
-              <span class="huoba-goods-price" v-if="infoData.if_changed == 0">￥{{item.real_price.toFixed(2)}}</span>
               <span class="huoba-goods-price" v-if="infoData.if_changed == 1">￥{{item.sale_price.toFixed(2)}}</span>
+              <span class="huoba-goods-price" v-else>￥{{item.real_price.toFixed(2)}}</span>
               <span class="huoba-goods-num">x{{item.buy_count}}</span>
             </div>
           </div>
@@ -277,8 +277,8 @@
       <!-- 价格 -->
       <div class="content">
         <div class="huoba-cell-six">
-          <van-cell title="商品总额" v-if="infoData.if_changed == 0" :value="'￥'+infoData.order_goods_money.toFixed(2)"></van-cell>
           <van-cell title="商品总额" v-if="infoData.if_changed == 1" :value="'￥'+infoData.detail[0].sale_price.toFixed(2)"></van-cell>
+          <van-cell title="商品总额" v-else :value="'￥'+infoData.order_goods_money.toFixed(2)"></van-cell>
           <van-cell
             title="兑换码"
             v-if="infoData.if_changed == 1"

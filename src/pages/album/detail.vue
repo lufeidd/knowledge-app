@@ -127,6 +127,7 @@
         <van-tab v-for="(item, key) in tabData" :title="item.title" :key="key">
           <template v-if="activeKey == 0">
             <div
+              class="htmlContent"
               v-html="baseData.desc"
               style="background-color: #fff;padding: 10px;"
             >{{ baseData.desc }}</div>
@@ -735,6 +736,12 @@
       border-width: 1px 0 0 1px;
     }
   }
+  & .htmlContent{
+      & a{
+        text-decoration: underline;
+        color: #01AAED;
+      }
+    }
 }
 </style>
 

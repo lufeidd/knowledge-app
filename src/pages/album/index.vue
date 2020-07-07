@@ -65,6 +65,7 @@
             <div class="infoContent" v-if="key == 0">
               <!-- 介绍 -->
               <div
+                class="htmlContent"
                 v-html="baseData.desc"
                 style="background-color: #fff;padding: 10px;"
               >{{ baseData.desc }}</div>
@@ -916,6 +917,14 @@
       color: $redLight;
       border-color: #d2d2d2;
       border-width: 1px 0 0 1px;
+    }
+  }
+  & .infoContent {
+    & .htmlContent{
+      & a{
+        text-decoration: underline;
+        color: #01AAED;
+      }
     }
   }
 }
