@@ -257,7 +257,7 @@ export default {
           return;
         }
 
-        if (_pageName == "goods/detail" || _pageName == "page/get" || _pageName == "groupbuy/open/detail" || _pageName == "groupbuy/goods/detail" || _pageName == "activity/interest" || _pageName == "assist/index" || _pageName == "assist/index" || _pageName == "brand/index" || _pageName == "mall/index" || _pageName == "mall/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search") {
+        if (_pageName == "goods/detail" || _pageName == "page/get" || _pageName == "groupbuy/open/detail" || _pageName == "groupbuy/goods/detail" || _pageName == "activity/interest" || _pageName == "assist/index" || _pageName == "assist/index" || _pageName == "brand/index" || _pageName == "mall/index" || _pageName == "mall/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search"|| _pageName == "activity/nemt") {
           // 需要调分享的页面
           var tStamp = this.$getTimeStamp();
           let data = {
@@ -341,6 +341,46 @@ export default {
         }
       } else {
         this.$toast(res.error_message);
+      }
+    }
+    // 跳转App链接，微信端引导跳转app下载
+    Vue.prototype.$linkToApp = function () {
+      var u = navigator.userAgent,
+        app = navigator.appVersion;
+      var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+      console.log(u, app, _ios, _android);
+      if (_ios) {
+        window.location.href =
+          "https://apps.apple.com/cn/app/%E7%81%AB%E6%8A%8A%E7%9F%A5%E8%AF%86/id1473766311";
+        // www.huoba.net://huoba
+      } else if (_android) {
+        window.location.href =
+          "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
+      }
+    }
+    // 跳转APP指定页面
+    Vue.prototype.$openApp = function (_appdata) {
+      var config = {
+        scheme_IOS:_appdata.iosUrl,
+        scheme_Adr:_appdata.adrUrl,
+        timeout: 600
+      }
+      var u = navigator.userAgent;
+      var ua = window.navigator.userAgent.toLowerCase();
+      var isIos = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+      var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+      var localUrl = isIos?config.scheme_IOS:config.scheme_Adr;
+      var isWeiXin = ua.match(/MicroMessenger/i) == 'micromessenger'? true : false
+      if (isIos) {
+        window.location.href = config.scheme_IOS
+      } else if (isAndroid) {
+        if (isWeiXin) {
+          window.location.href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba';
+        } else {
+          window.location.href = config.scheme_Adr
+        }
       }
     }
 
@@ -439,6 +479,9 @@ export default {
         // 订单详情
         linkData.page_name = '';
         linkData.order_id = this.$route.query.order_id;
+      } else if (_name == '/gaokaotest/index'|| _name == '/gaokaotest/questionspageone' ||_name == '/gaokaotest/questionspagetwo' || _name == '/gaokaotest/resultpage') {
+        // 高考测一测
+        linkData.page_name = 'activity/nemt';
       }
 
       return linkData;
@@ -1148,22 +1191,6 @@ export default {
       return __json;
     }
 
-    // 跳转App链接，微信端引导跳转app下载
-    Vue.prototype.$linkToApp = function () {
-      var u = navigator.userAgent,
-        app = navigator.appVersion;
-      var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-      var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
-      console.log(u, app, _ios, _android);
-      if (_ios) {
-        window.location.href =
-          "https://apps.apple.com/cn/app/%E7%81%AB%E6%8A%8A%E7%9F%A5%E8%AF%86/id1473766311";
-        // www.huoba.net://huoba
-      } else if (_android) {
-        window.location.href =
-          "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
-      }
-    }
 
     // 获取当前设备信息，微信端第一次访问提示授权
     Vue.prototype.$setLoginData = async function () {
