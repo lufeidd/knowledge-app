@@ -82,6 +82,10 @@
       padding-bottom: 30px;
       font-weight: 100;
       word-break : normal;
+      & a{
+        text-decoration: underline;
+        color: #01AAED;
+      }
     }
 
     .message {

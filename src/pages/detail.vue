@@ -143,7 +143,7 @@
         </div>
       </div>
       <!-- 图文 -->
-      <div v-if="baseData.goods_desc" class="introduction" v-html="baseData.goods_desc"></div>
+      <div v-if="baseData.goods_desc" class="introduction htmlContent" v-html="baseData.goods_desc"></div>
       <!-- 目录及其他 -->
 
       <div
@@ -157,7 +157,7 @@
             <span class="verticleLine"></span>
             <span class="lh">{{ item.name }}</span>
           </div>
-          <div class="detail" v-html="changeHtml(item.val)"></div>
+          <div class="detail htmlContent" v-html="changeHtml(item.val)"></div>
           <div class="action" @click="showAllAction(index)">展开全部</div>
         </div>
         <div class="introduction unfold" v-else>
@@ -165,7 +165,7 @@
             <span class="verticleLine"></span>
             <span class="lh">{{ item.name }}</span>
           </div>
-          <div class="detail" style v-html="changeHtml(item.val)"></div>
+          <div class="detail htmlContent" style v-html="changeHtml(item.val)"></div>
         </div>
       </div>
 
@@ -436,6 +436,12 @@
   }
   .multi .van-cell__title {
     white-space: pre-wrap;
+  }
+  & .htmlContent{
+    a{
+      text-decoration: underline;
+      color: #01AAED;
+    }
   }
 }
 </style>
