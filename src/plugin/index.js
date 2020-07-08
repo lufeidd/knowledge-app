@@ -359,30 +359,6 @@ export default {
           "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
       }
     }
-    // 跳转APP指定页面
-    Vue.prototype.$openApp = function (_appdata) {
-      var config = {
-        scheme_IOS:_appdata.iosUrl,
-        scheme_Adr:_appdata.adrUrl,
-        timeout: 600
-      }
-      var u = navigator.userAgent;
-      var ua = window.navigator.userAgent.toLowerCase();
-      var isIos = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-      var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-      var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
-      var localUrl = isIos?config.scheme_IOS:config.scheme_Adr;
-      var isWeiXin = ua.match(/MicroMessenger/i) == 'micromessenger'? true : false
-      if (isIos) {
-        window.location.href = config.scheme_IOS
-      } else if (isAndroid) {
-        if (isWeiXin) {
-          window.location.href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba';
-        } else {
-          window.location.href = config.scheme_Adr
-        }
-      }
-    }
 
     // 不同页面不同参数信息
     Vue.prototype.$getPageParams = function (_name) {
