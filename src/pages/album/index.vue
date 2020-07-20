@@ -890,6 +890,8 @@
       </van-popup>
     </div>
     <EazyNav type="brand" ref="nav" :isShow="true"></EazyNav>
+    <!--打开app对应页面-->
+    <!--<openAppPage :name="'/album/index'"></openAppPage>-->
   </div>
 </template>
 

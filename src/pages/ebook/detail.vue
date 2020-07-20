@@ -709,6 +709,8 @@
       </div>
     </van-popup>
     <EazyNav type="brand" :isShow="true"></EazyNav>
+    <!--打开app对应页面-->
+    <!--<openAppPage :name="'/ebook/detail'"></openAppPage>-->
   </div>
 </template>
 

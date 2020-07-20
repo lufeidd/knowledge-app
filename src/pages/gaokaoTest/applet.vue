@@ -17,9 +17,9 @@
         if (!window.plus) {
           return;
         } else {
-          window.plus.gallery.save('./../../assets/gaokaoTest/code.png',function () {
+          window.plus.gallery.save('./../../assets/gaokaoTest/code.png', function () {
             window.plus.nativeUI.alert("保存成功");
-            },function () {
+          }, function () {
             window.plus.nativeUI.alert("保存失败");
           });
         }

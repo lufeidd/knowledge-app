@@ -308,6 +308,8 @@
     <Loading :isLoading="isLoading"></Loading>
     <!-- 快速导航 -->
     <EazyNav type="brand" :isShow="true"></EazyNav>
+    <!--打开app对应页面-->
+    <!--<openAppPage :name="'/listenAndRead/index'"></openAppPage>-->
   </div>
 </template>
 

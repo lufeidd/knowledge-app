@@ -25,11 +25,7 @@ module.exports = {
 
     // Various Dev Server settings
     // 本地查看效果
-<<<<<<< HEAD
-    // host: '198.210.13.97',
-=======
     // host: '198.210.12.202',
->>>>>>> bda7fdc3f70a97faa0aef6d3daa1067b95ae14e2
     // host: 'localhost', // can be overwritten by process.env.HOST
     host: 'wap.huoba.dev.lrf', // can be overwritten by process.env.HOST
     port: 80, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined

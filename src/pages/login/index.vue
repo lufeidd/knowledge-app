@@ -9,6 +9,8 @@
       </div>
       <Bottom></Bottom>
       <!-- <EazyNav type="brand" :isShow="false"></EazyNav> -->
+      <!--打开app对应页面-->
+      <openAppPage :name="'/login/index'"></openAppPage>
     </div>
   </div>
 </template>

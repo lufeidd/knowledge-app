@@ -232,6 +232,8 @@
         </div>
       </div>
       <EazyNav type="brand" :isShow="true"></EazyNav>
+      <!--打开app对应页面-->
+      <!--<openAppPage :name="'/brand/detail/article'"></openAppPage>-->
     </div>
   </div>
 </template>

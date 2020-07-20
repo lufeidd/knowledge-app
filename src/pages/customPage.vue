@@ -578,6 +578,8 @@
       </div>
     </div>
     <EazyNav type="mall" :isShow="true"></EazyNav>
+    <!--打开app对应页面-->
+    <!--<openAppPage :name="'/customPage'"></openAppPage>-->
   </div>
 </template>
 
@@ -700,7 +702,7 @@ export default {
             this.bookRecommendTmp[j] = [];
           }
         }
-        
+
 
       } else {
         this.$toast(res.error_message);

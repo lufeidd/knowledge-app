@@ -7,8 +7,8 @@ import wx from 'weixin-js-sdk';
 
 //  引入时间戳接口
 // import req from "./../apis/http.js";
-import { SERVER_TIME, WX_SHARE, WX_SHARE_LOG, ADDRESS, CASHIER_PAY_CHECK } from "./../apis/public.js";
-import { LOGIN_PARTERNER, PAGE_INFO } from "./../apis/passport.js";
+import {SERVER_TIME, WX_SHARE, WX_SHARE_LOG, ADDRESS, CASHIER_PAY_CHECK} from "./../apis/public.js";
+import {LOGIN_PARTERNER, PAGE_INFO} from "./../apis/passport.js";
 
 // 支持await async
 // import regeneratorRuntime from './../regenerator-runtime/runtime.js';
@@ -73,7 +73,7 @@ export default {
         axios
           .get(url)
           .then(function (response) {
-            console.log('response',response);
+            console.log('response', response);
             localStorage.setItem('nickname', response.data.nickname);
             localStorage.setItem('headimg', response.data.headimgurl);
             localStorage.setItem('openid', response.data.openid);
@@ -115,7 +115,7 @@ export default {
           // });
           this.$router.replace({
             name: "bindPhone",
-            query: { bindtype: _type, outerId: _unionid }
+            query: {bindtype: _type, outerId: _unionid}
           });
         }
         if (res.response_data.exist == 1) {
@@ -167,14 +167,14 @@ export default {
     //微信跳转小程序
     Vue.prototype.$linkToMiniProgram = async function () {
       wx.miniProgram.navigateTo({
-        url:'/pages/index/index',
-        success: function(){
+        url: '/pages/index/index',
+        success: function () {
           console.log('success')
         },
-        fail: function(){
+        fail: function () {
           console.log('fail');
         },
-        complete:function(){
+        complete: function () {
           console.log('complete');
         }
       });
@@ -272,7 +272,7 @@ export default {
           return;
         }
 
-        if (_pageName == "goods/detail" || _pageName == "page/get" || _pageName == "groupbuy/open/detail" || _pageName == "groupbuy/goods/detail" || _pageName == "activity/interest" || _pageName == "assist/index" || _pageName == "assist/index" || _pageName == "brand/index" || _pageName == "mall/index" || _pageName == "mall/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search"|| _pageName == "activity/nemt") {
+        if (_pageName == "goods/detail" || _pageName == "page/get" || _pageName == "groupbuy/open/detail" || _pageName == "groupbuy/goods/detail" || _pageName == "activity/interest" || _pageName == "assist/index" || _pageName == "assist/index" || _pageName == "brand/index" || _pageName == "mall/index" || _pageName == "mall/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search" || _pageName == "brand/goods/search" || _pageName == "activity/nemt") {
           // 需要调分享的页面
           var tStamp = this.$getTimeStamp();
           let data = {
@@ -335,7 +335,7 @@ export default {
         //   params: _params,
         //   isJump: _isJump
         // });
-        
+
         // 安卓
         if (localStorage.getItem("isHuobaAndroidLogin") == "yes") {
           window.JSWEB.RequestNative(JSON.stringify({
@@ -358,6 +358,102 @@ export default {
         this.$toast(res.error_message);
       }
     }
+
+    // added by lrf 2020/7/7
+    // 不同页面不同参数信息
+    Vue.prototype.$getAppParams = function (_name) {
+      _name = _name.toLowerCase();
+      let linkData = {
+        page_name: _name
+      };
+      if (_name == '/login/index') {
+        // 登录首页
+        linkData.page_name = '/login';
+      } else if (_name == '/login/phonelogin/phonelogin') {
+        // 登录首页
+        linkData.page_name = '/login/phoneLogin';
+        console.log('1',linkData.page_name);
+      } else if (_name == '/album/detail') {
+        // 专辑
+        linkData.goods_id = this.$route.query.goods_id;
+        linkData.pid = typeof(this.$route.query.pid) == 'object' ? this.$route.query.pid[0] : this.$route.query.pid;
+      } else if (_name == '/album/index') {
+        // 专辑
+        linkData.goods_id = this.$route.query.goods_id;
+      } else if (_name == '/ebook/detail') {
+        // 电子书
+        linkData.goods_id = this.$route.query.goods_id;
+      } else if (_name == '/brand/detail/article') {
+        // 文章
+        linkData.goods_id = this.$route.query.goods_id;
+        linkData.album_id = this.$route.query.album_id;
+      } else if (_name == '/detail') {
+        // 商品详情
+        linkData.goods_id = this.$route.query.goods_id;
+      } else if (_name == '/custompage') {
+        // 自定义装修页面
+        if (this.$route.query.type) linkData.type = this.$route.query.type;
+        if (this.$route.query.page_id) linkData.page_id = this.$route.query.page_id;
+        if (this.$route.query.supplier_id) linkData.supplier_id = this.$route.query.supplier_id;
+
+      }
+      return linkData;
+    }
+
+
+    // 打开app对应页面
+    Vue.prototype.$openAppPage = function (_linkData) {
+      var name = _linkData.page_name;
+
+      //新建一个iframe的生成器
+      var createIframe = (function () {
+        var iframe;
+        return function () {
+          if (iframe) {
+            return iframe;
+          } else {
+            iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+            return iframe;
+          }
+        }
+      })();
+
+      // 打开页面
+      var openAppPage = function () {
+        var u = navigator.userAgent;
+        var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+        var _wx = u.toLowerCase().match(/MicroMessenger/i) == "micromessenger";
+        var _chrome = u.indexOf("Chrome") !== -1;
+        var openIframe = createIframe();
+
+        if (_ios) {
+          window.location.href = 'https://v.bookuu.com/hbjump.html' + '?' + 'params=' + JSON.stringify(_linkData); // universal links + appData(参数)
+        } else if (_android) {
+          if (_chrome) {
+            window.location.href = 'bkhuoba://' + JSON.stringify(_linkData);
+          } else {
+            // 抛出scheme
+            openIframe.src = 'bkhuoba://' + JSON.stringify(_linkData); // scheme + appData
+            // openIframe.src = 'bkhuoba://wap.mhuoba.com' + '/#' + name + '?'+ 'params=' + JSON.stringify(_linkData); // scheme + appData
+          }
+          let startTime = Date.now();
+          let timer = setTimeout(function () {
+            let endTime = Date.now();
+            if (endTime - startTime < 2200) { // 没有安装app,引导用户应用宝下载
+              window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
+            } else { // 唤起成功
+              clearTimeout(timer);
+            }
+          }, 2000);
+        }
+
+      }
+      openAppPage();
+    }
+
 
     // 不同页面不同参数信息
     Vue.prototype.$getPageParams = function (_name) {
@@ -392,7 +488,7 @@ export default {
         // 专辑
         linkData.page_name = 'goods/detail';
         linkData.goods_id = this.$route.query.goods_id;
-        linkData.pid = typeof(this.$route.query.pid) == 'object'? this.$route.query.pid[0]:this.$route.query.pid;
+        linkData.pid = typeof(this.$route.query.pid) == 'object' ? this.$route.query.pid[0] : this.$route.query.pid;
       } else if (_name == '/album/index') {
         // 专辑
         linkData.page_name = 'goods/detail';
@@ -413,10 +509,10 @@ export default {
         linkData.brand_id = this.$route.query.brand_id;
       } else if (_name == '/brand/result') {
         // 搜索结果
-        if(this.$route.query.supplier_id) linkData.supplier_id = this.$route.query.supplier_id;
-        if(this.$route.query.searchContent){
+        if (this.$route.query.supplier_id) linkData.supplier_id = this.$route.query.supplier_id;
+        if (this.$route.query.searchContent) {
           linkData.searchContent = this.$route.query.searchContent;
-        }else if(sessionStorage.getItem('saveSearchContent')){
+        } else if (sessionStorage.getItem('saveSearchContent')) {
           linkData.searchContent = sessionStorage.getItem('saveSearchContent')
         }
         switch (this.$route.query.type) {
@@ -454,7 +550,7 @@ export default {
         // 订单详情
         linkData.page_name = '';
         linkData.order_id = this.$route.query.order_id;
-      } else if (_name == '/gaokaotest/index'|| _name == '/gaokaotest/questionspageone' ||_name == '/gaokaotest/questionspagetwo' || _name == '/gaokaotest/resultpage') {
+      } else if (_name == '/gaokaotest/index' || _name == '/gaokaotest/questionspageone' || _name == '/gaokaotest/questionspagetwo' || _name == '/gaokaotest/resultpage') {
         // 高考测一测
         linkData.page_name = 'activity/nemt';
       }
@@ -571,7 +667,7 @@ export default {
       if (!localStorage.getItem('phone')) {
         localStorage.setItem('phone', cdata.phone);
       } else {
-        console.log('cdata.phone',cdata.phone);
+        console.log('cdata.phone', cdata.phone);
         if (cdata.phone != localStorage.getItem('phone') || cdata.time === 0) {
           localStorage.setItem('phone', cdata.phone)
           localStorage.setItem('second', 60);
@@ -641,13 +737,13 @@ export default {
       var self = this;
       var time1 = endtime;
       var d = time1 / 60 / 60 / 24;
-      console.log('天数1',d)
+      console.log('天数1', d)
       if (d >= 1 && d <= 3) {
         self.showDay = true;
         self.showTime = true;
         self.groupshowDay = true;
         self.show_delay = true;
-        self.receive_time = Math.ceil(d)+'天'
+        self.receive_time = Math.ceil(d) + '天'
         d = Math.floor(d);
         self.timeDataDesc = '距活动结束还剩' + d + '天';
         self.timeData = '距结束还剩' + d + '天';
@@ -666,7 +762,7 @@ export default {
             return false
           }
           time1--
-          self.receive_time = Math.ceil(time1 / 60 / 60)+'小时'
+          self.receive_time = Math.ceil(time1 / 60 / 60) + '小时'
           let h = Math.floor(time1 / 60 / 60)
           let m = Math.floor((time1 - h * 60 * 60) / 60)
           let s = time1 - (h * 60 * 60) - (m * 60)
@@ -681,7 +777,7 @@ export default {
           self.timeS = s
         }, 1000)
       } else if (d > 3) {
-        self.receive_time = Math.ceil(d)+'天'
+        self.receive_time = Math.ceil(d) + '天'
         d = Math.floor(d);
         self.showTime = false;
         self.groupshowDay = true;
@@ -691,7 +787,7 @@ export default {
       } else if (d < 0) {
         self.timeData = '火把拼团'
       }
-      console.log('delay',self.show_delay)
+      console.log('delay', self.show_delay)
     }
 
     // ksort
@@ -851,7 +947,8 @@ export default {
             queryTmp.brand_id = dataTmp.params.brand_id
           } else {
             queryTmp.isbrand_id = 'no'
-          };
+          }
+          ;
           if (dataTmp.params.tagids) queryTmp.tagids = dataTmp.params.tagids;
           if (dataTmp.params.goods_id) queryTmp.goods_id = dataTmp.params.goods_id;
 
@@ -929,10 +1026,10 @@ export default {
               if (self.$route.query.endAccountTo == 'return') {
                 self.$router.replace({
                   name: "payaccount",
-                  query: { goods_id: self.goods_id }
+                  query: {goods_id: self.goods_id}
                 })
               } else {
-                self.$router.push({ name: "record" });
+                self.$router.push({name: "record"});
               }
             }
             // 商品购买  虚拟 / 实物
@@ -1225,7 +1322,7 @@ export default {
         ) {
           // 微信登录 code
           this.$getWxCode();
-          console.log('测试code码',this.wxCodeStr)
+          console.log('测试code码', this.wxCodeStr)
           // 微信授权
           if (this.wxCodeStr == "") {
             var this_count = Number(localStorage.getItem("get_count"));
@@ -1273,7 +1370,7 @@ export default {
                 console.log("error:", error);
               });
           } else {
-            console.log("未获取到code号码",this.wxCodeStr);
+            console.log("未获取到code号码", this.wxCodeStr);
           }
         }
       }
