@@ -430,7 +430,7 @@ export default {
         var openIframe = createIframe();
 
         if (_ios) {
-          window.location.href = 'https://v.bookuu.com/hbjump.html' + '?' + 'params=' + JSON.stringify(_linkData); // universal links + appData(参数)
+          window.location.href = 'https://v.bookuu.com/jumptohb/hbjump.html' + '?' + 'params=' + JSON.stringify(_linkData); // universal links + appData(参数)
         } else if (_android) {
           if (_chrome) {
             window.location.href = 'bkhuoba://' + JSON.stringify(_linkData);
