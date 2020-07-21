@@ -51,7 +51,7 @@
                 <use xlink:href="#icon-video-play" />
               </svg>
             </div>
-            <div class="box">
+            <div class="box" @contextmenu.prevent="menuPlayer()">
               <video
                 id="myVideo"
                 @play="videoPlay"
@@ -60,11 +60,12 @@
                 width="100%"
                 height="100%"
                 :poster="baseData.pic[0]"
+                controlslist="nodownload"
               ></video>
             </div>
           </div>
           <!-- 不需要支付 -->
-          <div v-else class="box">
+          <div v-else class="box" @contextmenu.prevent="menuPlayer()">
             <video
               id="myVideo"
               @play="videoPlay"
@@ -73,6 +74,7 @@
               width="100%"
               height="100%"
               :poster="baseData.pic[0]"
+              controlslist="nodownload"
             ></video>
           </div>
         </div>
@@ -919,6 +921,9 @@ export default {
     }
   },
   methods: {
+    menuPlayer(){
+      console.log('ffff')
+    },
     // 用户播放进度记录
     async currentTimeData() {
       // 已登录账号才存储到数据库

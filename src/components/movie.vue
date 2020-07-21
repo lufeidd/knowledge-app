@@ -1,8 +1,8 @@
 <template>
-  <div class="movie">
+  <div class="movie" @contextmenu.prevent="menuPlayer()">
     <p>currentTime:{{ movieData.currentTime }}</p>
     <p>duration:{{ movieData.duration }}</p>
-    <video :id="movieData.id" :src="movieData.src" preload="auto" @ended="ended"></video>
+    <video :id="movieData.id" :src="movieData.src" preload="auto" @ended="ended" controlslist="nodownload"></video>
     <div @click="playVideo" v-if="movieData.type === 'play'">播放</div>
     <div @click="pauseVideo" v-else>暂停</div>
     <div style="padding:40px 0;">
@@ -42,6 +42,9 @@ export default {
     }, 600);
   },
   methods: {
+    menuPlayer(){
+      console.log('ffff')
+    },
     // 播放时间戳
     videoTimeChange(second, type) {
       if (type === "play") {
