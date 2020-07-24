@@ -179,6 +179,8 @@
       </van-button>
     </div>
     <EazyNav type="brand" :isShow="false"></EazyNav>
+    <!--打开app对应页面-->
+    <!--<openAppPage :name="'/coupon/mine'"></openAppPage>-->
   </div>
 </template>
 

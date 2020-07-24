@@ -317,7 +317,7 @@
     },
     created() {
       this.code = this.$route.query.code;
-      this.redeem = decodeURIComponent(this.$route.query.redeem_id).replace(/\s/g, '+');
+      this.redeem = decodeURI(this.$route.query.redeem_id).replace(/\s/g, '+');
       localStorage.setItem('hash', window.location.hash);
     },
     mounted() {

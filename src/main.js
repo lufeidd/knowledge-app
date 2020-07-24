@@ -48,11 +48,14 @@ import nav from './components/index'
 import loading from './components/index'
 //版权
 import copyRight from './components/index'
+// 打开app对应页面
+import openAppPage from './components/index'
 
 Vue.use(download)
 Vue.use(nav)
 Vue.use(loading)
 Vue.use(copyRight)
+Vue.use(openAppPage)
 
 // vant
 // import Vant from 'vant';

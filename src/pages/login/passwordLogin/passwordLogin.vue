@@ -1,7 +1,8 @@
 <template>
   <div id="passwordLoginPage">
-    <div class="huoba_pic"></div>
-    <h3 class="huoba_name">火把知识</h3>
+    <!--<div class="huoba_pic"></div>-->
+    <!--<h3 class="huoba_name">火把知识</h3>-->
+    <h3 class="title">密码登录</h3>
     <div class="field_wrapper">
       <van-field
         type="tel"
@@ -26,7 +27,7 @@
     <div class="button_wrapper" v-else>
       <van-button size="large" type="danger" @click="passwordLogin">登录</van-button>
     </div>
-    <router-link :to="{name: 'phoneLogin'}" class="link_text_login">验证码登录
+    <router-link :to="{name: 'phoneLogin'}" class="link_text_login">使用验证码登录
     </router-link>
     <router-link :to="{name: 'authentication', query: {pageType: 'findPassword'}}" class="link_text_password">忘记密码
     </router-link>

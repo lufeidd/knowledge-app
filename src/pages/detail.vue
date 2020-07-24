@@ -399,6 +399,8 @@
       </svg>
     </div>
     <Loading :isLoading="isLoading"></Loading>
+    <!--打开app对应页面-->
+    <!--<openAppPage :name="'/detail'"></openAppPage>-->
   </div>
 </template>
 

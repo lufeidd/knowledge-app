@@ -1,7 +1,8 @@
 <template>
   <div id="phoneLoginPage">
-    <div class="huoba_pic"></div>
-    <h3 class="huoba_name">火把知识</h3>
+    <!--<div class="huoba_pic"></div>-->
+    <!--<h3 class="huoba_name">火把知识</h3>-->
+    <h3 class="title">验证码注册/登录</h3>
     <div class="field_wrapper">
       <van-field
         type="tel"
@@ -19,7 +20,7 @@
     <div class="button_wrapper" v-else>
       <van-button size="large" type="danger" @click="getCode">获取验证码</van-button>
     </div>
-    <router-link :to="{name: 'passwordLogin'}" class="link_text">密码登录
+    <router-link :to="{name: 'passwordLogin'}" class="link_text">使用密码登录
     </router-link>
     <div class="wx_login">
       <div v-if="isShowWx">
@@ -54,6 +55,8 @@
     </van-popup>
     <Bottom></Bottom>
     <EazyNav type="brand" :isShow="false"></EazyNav>
+    <!--打开app对应页面-->
+    <openAppPage :name="'/login/phoneLogin/phoneLogin'"></openAppPage>
   </div>
 </template>
 

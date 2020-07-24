@@ -24,7 +24,7 @@
         let res = await REDEEM_ITEM_GET(data);
         // this.$toast(res);
         if (res.hasOwnProperty("response_code")) {
-          let encryptRedeem = encodeURIComponent(res.response_data.redeem_id);
+          let encryptRedeem = encodeURI(res.response_data.redeem_id);
           console.log(encryptRedeem);
           // 判断是商品还是优惠券
           if (res.response_data.goods_type == 2) {
