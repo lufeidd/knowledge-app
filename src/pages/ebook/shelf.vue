@@ -21,6 +21,8 @@
       </div>
     </van-list>
     <EazyNav type="brand" :isShow="true"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

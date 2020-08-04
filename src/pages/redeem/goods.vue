@@ -83,6 +83,8 @@
       <p class="limit_remind"><span>{{time}}</span>秒后回到个人中心</p>
     </van-popup>
     <EazyNav type="brand" :isShow="false"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

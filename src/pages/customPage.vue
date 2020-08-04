@@ -578,6 +578,8 @@
       </div>
     </div>
     <EazyNav type="mall" :isShow="true"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
     <!--打开app对应页面-->
     <!--<openAppPage :name="'/customPage'"></openAppPage>-->
   </div>

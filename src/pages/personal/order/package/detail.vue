@@ -76,6 +76,8 @@
         </div>
       </div>
     </div>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

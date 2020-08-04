@@ -58,6 +58,8 @@
         </div>
       </div>
     </van-list>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 <style lang="scss">

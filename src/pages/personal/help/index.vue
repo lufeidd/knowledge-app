@@ -24,7 +24,8 @@
       <van-button type="danger" size="large" to="/personal/help/feedback">我要反馈</van-button>
     </div>
     <EazyNav type="brand" :isShow="true"></EazyNav>
-
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

@@ -15,6 +15,8 @@
       <van-button slot="button" size="large" type="danger" v-else @click="confirmSet">确认设置</van-button>
     </div>
     <EazyNav type="brand" :isShow="false"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

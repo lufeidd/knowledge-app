@@ -34,6 +34,8 @@
       <br />2.请在兑换码有效期内完成兑换,过期自动失效;具体兑换结果以页面显示为准。
     </p>
     <p class="notes_two">提示：请使用英文输入法。</p>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

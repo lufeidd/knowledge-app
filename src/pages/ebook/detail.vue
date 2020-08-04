@@ -709,6 +709,8 @@
       </div>
     </van-popup>
     <EazyNav type="brand" :isShow="true"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
     <!--打开app对应页面-->
     <!--<openAppPage :name="'/ebook/detail'"></openAppPage>-->
   </div>
@@ -716,873 +718,873 @@
 
 <style src="@/style/scss/pages/ebook/detail.scss" scoped lang="scss"></style>
 <style lang="scss">
-#ebookDetailPage {
-  .van-cell {
-    padding: 10px 0;
-    .van-cell__value {
+  #ebookDetailPage {
+    .van-cell {
+      padding: 10px 0;
+      .van-cell__value {
+        display: none;
+      }
+    }
+    .van-dialog__confirm {
       display: none;
     }
-  }
-  .van-dialog__confirm {
-    display: none;
-  }
-  .groupBuy {
-    width: 126px;
-    height: 30px;
-    line-height: 30px;
-    color: $white;
-    background: linear-gradient(to right, #f72d3e 100%, #f35636 100%);
-    border-radius: 15px 0 0 15px;
-    font-size: $fontSize - 2;
-    position: absolute;
-    z-index: 99;
-    top: 130px;
-    right: 0;
-    text-align: center;
-    .icon {
+    .groupBuy {
+      width: 126px;
+      height: 30px;
+      line-height: 30px;
+      color: $white;
+      background: linear-gradient(to right, #f72d3e 100%, #f35636 100%);
+      border-radius: 15px 0 0 15px;
+      font-size: $fontSize - 2;
       position: absolute;
-      left: 5px;
-      top: 50%;
-      margin-top: -6px;
+      z-index: 99;
+      top: 130px;
+      right: 0;
+      text-align: center;
+      .icon {
+        position: absolute;
+        left: 5px;
+        top: 50%;
+        margin-top: -6px;
+      }
     }
   }
-}
 </style>
 <script>
-import {
-  ORDER_VIRTUAL_ADD,
-  ORDER_VIRTUAL_ADD_SENDCODE,
-  ORDER_VIRTUAL_ADD_PAY,
-  ORDER_VIRTUAL_ADDINFO
-} from "../../apis/shopping.js";
-import ebookpay from "../ebook/pay";
-import ebookrecharge from "../ebook/recharge";
-import { ALBUM } from "../../apis/album.js";
-import {
-  EBOOK_RECOMMEND,
-  EBOOK_CATALOG,
-  EBOOK_INFO,
-  EBOOK_SHELF_ADD,
-  EBOOK_SHELF_CANCEL
-} from "../../apis/ebook.js";
-import {
-  FOCUS_ADD,
-  FOCUS_CANCEL,
-  COMMENT,
-  COMMENT_ADD,
-  RECOMMEND
-} from "../../apis/public.js";
-import { GOODS_TICKET_GETS, TICKET_LINK } from "../../apis/coupon.js";
-export default {
-  components: { ebookpay, ebookrecharge },
-  data() {
-    return {
-      onsale: null,
-      isLogin: null,
-      goods_id: null,
-      brandInfo: {},
-      baseData: {
-        pic: []
-      },
-      info: {},
-      bookshelf_id: null,
-      swiperOption3: {
-        slidesPerView: 3.5
-      },
-      // 评论
-      discussData: [],
-      commentPage: 1,
-      totalCount: "评论 (" + 0 + ")",
-      // 发布评论
-      commentModel: false,
-      contentModel: "",
-      contentTotal: 500,
-      contentLength: 0,
-      // 分页
-      commentLoading: false,
-      commentFinished: false,
-      // 回复
-      replyPage: [],
-      answerData: [],
-      // 存放回复评论comment_id
-      commentId: null,
-      // 存放发布按钮类型，comment为发布评论，reply为发布回复
-      punishType: "comment",
-      recommendList: [],
-      detailShow: false,
-      ebookList: [],
-      minChapter: null,
-      currenChapterTitle: "",
+  import {
+    ORDER_VIRTUAL_ADD,
+    ORDER_VIRTUAL_ADD_SENDCODE,
+    ORDER_VIRTUAL_ADD_PAY,
+    ORDER_VIRTUAL_ADDINFO
+  } from "../../apis/shopping.js";
+  import ebookpay from "../ebook/pay";
+  import ebookrecharge from "../ebook/recharge";
+  import { ALBUM } from "../../apis/album.js";
+  import {
+    EBOOK_RECOMMEND,
+    EBOOK_CATALOG,
+    EBOOK_INFO,
+    EBOOK_SHELF_ADD,
+    EBOOK_SHELF_CANCEL
+  } from "../../apis/ebook.js";
+  import {
+    FOCUS_ADD,
+    FOCUS_CANCEL,
+    COMMENT,
+    COMMENT_ADD,
+    RECOMMEND
+  } from "../../apis/public.js";
+  import { GOODS_TICKET_GETS, TICKET_LINK } from "../../apis/coupon.js";
+  export default {
+    components: { ebookpay, ebookrecharge },
+    data() {
+      return {
+        onsale: null,
+        isLogin: null,
+        goods_id: null,
+        brandInfo: {},
+        baseData: {
+          pic: []
+        },
+        info: {},
+        bookshelf_id: null,
+        swiperOption3: {
+          slidesPerView: 3.5
+        },
+        // 评论
+        discussData: [],
+        commentPage: 1,
+        totalCount: "评论 (" + 0 + ")",
+        // 发布评论
+        commentModel: false,
+        contentModel: "",
+        contentTotal: 500,
+        contentLength: 0,
+        // 分页
+        commentLoading: false,
+        commentFinished: false,
+        // 回复
+        replyPage: [],
+        answerData: [],
+        // 存放回复评论comment_id
+        commentId: null,
+        // 存放发布按钮类型，comment为发布评论，reply为发布回复
+        punishType: "comment",
+        recommendList: [],
+        detailShow: false,
+        ebookList: [],
+        minChapter: null,
+        currenChapterTitle: "",
 
-      // 密码输入框
-      showDialog: false,
-      passvalue: "",
-      showKeyboard: false,
-      mobile: "",
-      code: "",
-      pay_mobilephone: "",
-      pay_money: "",
-      // 验证码
-      codeData: {
-        disabled: false,
-        timeMsg: "获取验证码",
-        time: 120
-      },
-      // 订单号
-      order_id: "",
-      pay_id: "",
-      timer: null,
-      isSuccessPay: null,
-      // 优惠券信息
-      couponInfo: {
-        ticket: {},
-        single: {},
-        groupbuy: {}
-      },
-      couponList: [],
-      couponModel: false,
-      isReceived: false,
-      requestState: true,
-      // 倒计时
-      timeData: "2019-10-16 17:28:00",
-      timeDataDesc: "",
-      showTime: false,
-      showDay: true,
-      groupModel: false,
-      isgroup: false,
-      remain_time: [],
-      groupbuy_id: null
-    };
-  },
-  mounted() {
-    this.goods_id = this.$route.query.goods_id;
-    this.isSuccessPay = this.$route.query.isSuccessPay;
-    this.getData();
-    this.getRecommendData();
-    this.getList();
-    this.getebookInfo();
-    // this.ebookCoupon();
-    this.getCouponList();
-  },
-  methods: {
-    closePopup() {
-      this.detailShow = false;
-      this.couponModel = false;
-    },
-    toDetail() {
-      this.$router.push({
-        name: "detail",
-        query: { goods_id: this.baseData.book_info.goods_id }
-      });
-    },
-    //跳转公号主页
-    toBrand() {
-      this.$router.push({
-        name: "brand",
-        query: {
-          brand_id: this.brandInfo.brand_id
-        }
-      });
-    },
-    //获取电子书基本信息
-    async getebookInfo() {
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        goods_id: this.goods_id,
-        version: "1.0"
+        // 密码输入框
+        showDialog: false,
+        passvalue: "",
+        showKeyboard: false,
+        mobile: "",
+        code: "",
+        pay_mobilephone: "",
+        pay_money: "",
+        // 验证码
+        codeData: {
+          disabled: false,
+          timeMsg: "获取验证码",
+          time: 120
+        },
+        // 订单号
+        order_id: "",
+        pay_id: "",
+        timer: null,
+        isSuccessPay: null,
+        // 优惠券信息
+        couponInfo: {
+          ticket: {},
+          single: {},
+          groupbuy: {}
+        },
+        couponList: [],
+        couponModel: false,
+        isReceived: false,
+        requestState: true,
+        // 倒计时
+        timeData: "2019-10-16 17:28:00",
+        timeDataDesc: "",
+        showTime: false,
+        showDay: true,
+        groupModel: false,
+        isgroup: false,
+        remain_time: [],
+        groupbuy_id: null
       };
-      data.sign = this.$getSign(data);
-      let res = await EBOOK_INFO(data);
-      if (res.hasOwnProperty("response_code")) {
-        // console.log(res);
-        this.info = res.response_data;
-        this.$refs.pay.price = this.info.price;
-        this.$refs.recharge.price = this.info.price;
-      } else {
-        this.$toast(res.error_message);
-      }
     },
-    //获取页面基本信息
-    async getData() {
-      var tStamp = this.$getTimeStamp();
-      var data = {
-        ad: parseInt(this.$route.query.ad) == 1 ? 1 : 0,
-        goods_id: this.goods_id,
-        version: "1.0",
-        timestamp: tStamp
-      };
-      data.sign = this.$getSign(data);
-      let res = await ALBUM(data);
-      if (res.hasOwnProperty("response_code")) {
-        this.baseData = res.response_data.base;
-        this.brandInfo = res.response_data.brand_info;
-        this.isLogin = res.response_data.user_info.is_login;
-        this.bookshelf_id = res.response_data.base.is_sbookshelf;
-        document.title = "电子书详情-" + res.response_data.base.title;
-        // 优惠券
-        this.couponInfo = res.response_data.activity;
-        if (this.couponInfo.single.remain_time > 0) {
-          this.$countTime(this.couponInfo.single.remain_time);
-        }
-        if (
-          this.couponInfo.groupbuy &&
-          Object.keys(this.couponInfo.groupbuy).length > 0 &&
-          this.couponInfo.groupbuy.open_list.length > 0
-        ) {
-          if (this.couponInfo.groupbuy.open_list.length > 2) {
-            this.couponInfo.groupbuy.open_list = this.couponInfo.groupbuy.open_list.slice(
-              0,
-              2
-            );
+    mounted() {
+      this.goods_id = this.$route.query.goods_id;
+      this.isSuccessPay = this.$route.query.isSuccessPay;
+      this.getData();
+      this.getRecommendData();
+      this.getList();
+      this.getebookInfo();
+      // this.ebookCoupon();
+      this.getCouponList();
+    },
+    methods: {
+      closePopup() {
+        this.detailShow = false;
+        this.couponModel = false;
+      },
+      toDetail() {
+        this.$router.push({
+          name: "detail",
+          query: { goods_id: this.baseData.book_info.goods_id }
+        });
+      },
+      //跳转公号主页
+      toBrand() {
+        this.$router.push({
+          name: "brand",
+          query: {
+            brand_id: this.brandInfo.brand_id
           }
-          for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
-            this.remain_time.push({
-              time: this.couponInfo.groupbuy.open_list[i].remain_time,
-              date: ""
-            });
-            this.$timeCountDown(this.remain_time[i]);
+        });
+      },
+      //获取电子书基本信息
+      async getebookInfo() {
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          goods_id: this.goods_id,
+          version: "1.0"
+        };
+        data.sign = this.$getSign(data);
+        let res = await EBOOK_INFO(data);
+        if (res.hasOwnProperty("response_code")) {
+          // console.log(res);
+          this.info = res.response_data;
+          this.$refs.pay.price = this.info.price;
+          this.$refs.recharge.price = this.info.price;
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      //获取页面基本信息
+      async getData() {
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          ad: parseInt(this.$route.query.ad) == 1 ? 1 : 0,
+          goods_id: this.goods_id,
+          version: "1.0",
+          timestamp: tStamp
+        };
+        data.sign = this.$getSign(data);
+        let res = await ALBUM(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.baseData = res.response_data.base;
+          this.brandInfo = res.response_data.brand_info;
+          this.isLogin = res.response_data.user_info.is_login;
+          this.bookshelf_id = res.response_data.base.is_sbookshelf;
+          document.title = "电子书详情-" + res.response_data.base.title;
+          // 优惠券
+          this.couponInfo = res.response_data.activity;
+          if (this.couponInfo.single.remain_time > 0) {
+            this.$countTime(this.couponInfo.single.remain_time);
           }
-        }
-
-        // 获取页面分享信息
-        // if(this.isWxLogin) this.wxShareData();
-        // var _pageName = "goods/detail";
-        // var _params = JSON.stringify({
-        //   goods_id: this.$route.query.goods_id
-        //   // album_id: this.$route.query.pid
-        // });
-        // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
-
-        this.onsale = 1;
-      } else {
-        if (res.hasOwnProperty("error_code") && res.error_code == 401) {
-          // 上下架状态, 1=> 在架, 0=> 下架
-          this.onsale = 0;
-        }
-        this.$toast(res.error_message);
-      }
-    },
-    // 促销活动结束回复原价
-    async returnPrice() {
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        ad: parseInt(this.$route.query.ad) == 1 ? 1 : 0,
-        timestamp: tStamp,
-        goods_id: this.baseData.goods_id,
-        version: "1.0"
-      };
-      data.sign = this.$getSign(data);
-      let res = await ALBUM(data);
-
-      if (res.hasOwnProperty("response_code")) {
-        this.baseData.price = res.response_data.base.price;
-        this.baseData.market_price = res.response_data.base.market_price;
-        this.baseData.single_activity_id =
-          res.response_data.base.single_activity_id;
-      } else {
-        if (res.hasOwnProperty("error_code") && res.error_code == 401) {
-          // 上下架状态, 1=> 在架, 0=> 下架
-          this.onsale = 0;
-        }
-        this.$toast(res.error_message);
-      }
-
-      // console.log("商品基础信息:", res.response_data);
-    },
-    // 获取电子书相关推荐
-    async getRecommendData() {
-      var tStamp = this.$getTimeStamp();
-      var data = {
-        goods_id: this.goods_id,
-        version: "1.0",
-        timestamp: tStamp
-      };
-      data.sign = this.$getSign(data);
-      let res = await EBOOK_RECOMMEND(data);
-      if (res.hasOwnProperty("response_code")) {
-        this.recommendList = res.response_data;
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    // 电子书相关推荐跳转
-    toEbook(item, index) {
-      console.log(item);
-      this.$router.push({
-        name: "ebookdetail",
-        query: { goods_id: item.goods_id }
-      });
-      $(window).scrollTop(0);
-      location.reload();
-    },
-    // 获取电子书章节
-    async getList() {
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        goods_id: this.goods_id,
-        version: "1.0"
-      };
-      data.sign = this.$getSign(data);
-      let res = await EBOOK_CATALOG(data);
-      if (res.hasOwnProperty("response_code")) {
-        // console.log(res);
-        // this.ebookList = res.response_data;
-        for (var i = 0; i < res.response_data.length; i++) {
-          if (res.response_data[i].chapter_hidden == 0) {
-            this.ebookList.push(res.response_data[i]);
+          if (
+            this.couponInfo.groupbuy &&
+            Object.keys(this.couponInfo.groupbuy).length > 0 &&
+            this.couponInfo.groupbuy.open_list.length > 0
+          ) {
+            if (this.couponInfo.groupbuy.open_list.length > 2) {
+              this.couponInfo.groupbuy.open_list = this.couponInfo.groupbuy.open_list.slice(
+                0,
+                2
+              );
+            }
+            for (var i = 0; i < this.couponInfo.groupbuy.open_list.length; i++) {
+              this.remain_time.push({
+                time: this.couponInfo.groupbuy.open_list[i].remain_time,
+                date: ""
+              });
+              this.$timeCountDown(this.remain_time[i]);
+            }
           }
+
+          // 获取页面分享信息
+          // if(this.isWxLogin) this.wxShareData();
+          // var _pageName = "goods/detail";
+          // var _params = JSON.stringify({
+          //   goods_id: this.$route.query.goods_id
+          //   // album_id: this.$route.query.pid
+          // });
+          // if (this.isWxLogin) this.$getWxShareData(_pageName, _params);
+
+          this.onsale = 1;
+        } else {
+          if (res.hasOwnProperty("error_code") && res.error_code == 401) {
+            // 上下架状态, 1=> 在架, 0=> 下架
+            this.onsale = 0;
+          }
+          this.$toast(res.error_message);
         }
-        // console.log(333, this.ebookList);
-        this.minChapter = this.ebookList[0].chapter_id;
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    // 关注公众号
-    focusAction() {
-      // 未登录跳转至登录页
-      if (this.isLogin == 0) {
-        this.$router.push({ name: "login", params: {} });
-        this.$toast("用户未登录!");
-        return;
-      }
-      if (this.brandInfo.is_followed > 0) {
-        this.focusData("cancel");
-      } else {
-        this.focusData("focus");
-      }
-    },
-    // 加入书架
-    shelfAction() {
-      // 未登录跳转至登录页
-      if (this.isLogin == 0) {
-        this.$router.push({ name: "login", params: {} });
-        this.$toast("用户未登录!");
-        return;
-      }
-      if (this.baseData.is_sbookshelf > 0) {
-        this.shelfData("cancel");
-      } else {
-        this.shelfData("add");
-      }
-    },
-    // 获取加入或移出书架
-    async shelfData(__type) {
-      var data = {};
-      var res;
-      var tStamp = this.$getTimeStamp();
-      switch (__type) {
-        case "add":
-          data = {
-            timestamp: tStamp,
+      },
+      // 促销活动结束回复原价
+      async returnPrice() {
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          ad: parseInt(this.$route.query.ad) == 1 ? 1 : 0,
+          timestamp: tStamp,
+          goods_id: this.baseData.goods_id,
+          version: "1.0"
+        };
+        data.sign = this.$getSign(data);
+        let res = await ALBUM(data);
+
+        if (res.hasOwnProperty("response_code")) {
+          this.baseData.price = res.response_data.base.price;
+          this.baseData.market_price = res.response_data.base.market_price;
+          this.baseData.single_activity_id =
+            res.response_data.base.single_activity_id;
+        } else {
+          if (res.hasOwnProperty("error_code") && res.error_code == 401) {
+            // 上下架状态, 1=> 在架, 0=> 下架
+            this.onsale = 0;
+          }
+          this.$toast(res.error_message);
+        }
+
+        // console.log("商品基础信息:", res.response_data);
+      },
+      // 获取电子书相关推荐
+      async getRecommendData() {
+        var tStamp = this.$getTimeStamp();
+        var data = {
+          goods_id: this.goods_id,
+          version: "1.0",
+          timestamp: tStamp
+        };
+        data.sign = this.$getSign(data);
+        let res = await EBOOK_RECOMMEND(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.recommendList = res.response_data;
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      // 电子书相关推荐跳转
+      toEbook(item, index) {
+        console.log(item);
+        this.$router.push({
+          name: "ebookdetail",
+          query: { goods_id: item.goods_id }
+        });
+        $(window).scrollTop(0);
+        location.reload();
+      },
+      // 获取电子书章节
+      async getList() {
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          goods_id: this.goods_id,
+          version: "1.0"
+        };
+        data.sign = this.$getSign(data);
+        let res = await EBOOK_CATALOG(data);
+        if (res.hasOwnProperty("response_code")) {
+          // console.log(res);
+          // this.ebookList = res.response_data;
+          for (var i = 0; i < res.response_data.length; i++) {
+            if (res.response_data[i].chapter_hidden == 0) {
+              this.ebookList.push(res.response_data[i]);
+            }
+          }
+          // console.log(333, this.ebookList);
+          this.minChapter = this.ebookList[0].chapter_id;
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      // 关注公众号
+      focusAction() {
+        // 未登录跳转至登录页
+        if (this.isLogin == 0) {
+          this.$router.push({ name: "login", params: {} });
+          this.$toast("用户未登录!");
+          return;
+        }
+        if (this.brandInfo.is_followed > 0) {
+          this.focusData("cancel");
+        } else {
+          this.focusData("focus");
+        }
+      },
+      // 加入书架
+      shelfAction() {
+        // 未登录跳转至登录页
+        if (this.isLogin == 0) {
+          this.$router.push({ name: "login", params: {} });
+          this.$toast("用户未登录!");
+          return;
+        }
+        if (this.baseData.is_sbookshelf > 0) {
+          this.shelfData("cancel");
+        } else {
+          this.shelfData("add");
+        }
+      },
+      // 获取加入或移出书架
+      async shelfData(__type) {
+        var data = {};
+        var res;
+        var tStamp = this.$getTimeStamp();
+        switch (__type) {
+          case "add":
+            data = {
+              timestamp: tStamp,
+              goods_id: this.goods_id,
+              schedule: 0.0,
+              version: "1.0"
+            };
+            data.sign = this.$getSign(data);
+            res = await EBOOK_SHELF_ADD(data);
+
+            this.baseData.is_sbookshelf = 1;
+            this.$toast("已加入书架~");
+            this.bookshelf_id = res.response_data.bookshelf_id;
+            break;
+          case "cancel":
+            data = {
+              timestamp: tStamp,
+              bookshelf_id: this.bookshelf_id,
+              version: "1.0"
+            };
+            data.sign = this.$getSign(data);
+            res = await EBOOK_SHELF_CANCEL(data);
+            this.baseData.is_sbookshelf = 0;
+            this.$toast("已移出书架~");
+            break;
+        }
+        // 出错提示
+        if (res.hasOwnProperty("response_code")) {
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      // 获取关注接口信息
+      async focusData(__type) {
+        var data = {};
+        var res;
+        var tStamp = this.$getTimeStamp();
+        switch (__type) {
+          case "focus":
+            data = {
+              timestamp: tStamp,
+              brand_id: this.brandInfo.brand_id,
+              version: "1.0"
+            };
+            data.sign = this.$getSign(data);
+            res = await FOCUS_ADD(data);
+
+            this.brandInfo.is_followed = 1;
+            this.$toast("已关注~");
+            break;
+          case "cancel":
+            data = {
+              timestamp: tStamp,
+              brand_id: this.brandInfo.brand_id,
+              version: "1.0"
+            };
+            data.sign = this.$getSign(data);
+            res = await FOCUS_CANCEL(data);
+            this.brandInfo.is_followed = 0;
+            this.$toast("已取消关注~");
+            break;
+        }
+        // 出错提示
+        if (res.hasOwnProperty("response_code")) {
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      showDetail() {
+        this.detailShow = true;
+        // this.getList();
+      },
+      read(item, index) {
+        console.log(item);
+        this.currenChapterTitle = index + 1;
+        this.$router.push({
+          name: "ebookreader",
+          query: {
             goods_id: this.goods_id,
-            schedule: 0.0,
-            version: "1.0"
-          };
-          data.sign = this.$getSign(data);
-          res = await EBOOK_SHELF_ADD(data);
-
-          this.baseData.is_sbookshelf = 1;
-          this.$toast("已加入书架~");
-          this.bookshelf_id = res.response_data.bookshelf_id;
-          break;
-        case "cancel":
-          data = {
-            timestamp: tStamp,
-            bookshelf_id: this.bookshelf_id,
-            version: "1.0"
-          };
-          data.sign = this.$getSign(data);
-          res = await EBOOK_SHELF_CANCEL(data);
-          this.baseData.is_sbookshelf = 0;
-          this.$toast("已移出书架~");
-          break;
-      }
-      // 出错提示
-      if (res.hasOwnProperty("response_code")) {
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    // 获取关注接口信息
-    async focusData(__type) {
-      var data = {};
-      var res;
-      var tStamp = this.$getTimeStamp();
-      switch (__type) {
-        case "focus":
-          data = {
-            timestamp: tStamp,
-            brand_id: this.brandInfo.brand_id,
-            version: "1.0"
-          };
-          data.sign = this.$getSign(data);
-          res = await FOCUS_ADD(data);
-
-          this.brandInfo.is_followed = 1;
-          this.$toast("已关注~");
-          break;
-        case "cancel":
-          data = {
-            timestamp: tStamp,
-            brand_id: this.brandInfo.brand_id,
-            version: "1.0"
-          };
-          data.sign = this.$getSign(data);
-          res = await FOCUS_CANCEL(data);
-          this.brandInfo.is_followed = 0;
-          this.$toast("已取消关注~");
-          break;
-      }
-      // 出错提示
-      if (res.hasOwnProperty("response_code")) {
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    showDetail() {
-      this.detailShow = true;
-      // this.getList();
-    },
-    read(item, index) {
-      console.log(item);
-      this.currenChapterTitle = index + 1;
-      this.$router.push({
-        name: "ebookreader",
-        query: {
-          goods_id: this.goods_id,
-          chapter_id: item.chapter_id,
-          currenChapterTitle: this.currenChapterTitle
+            chapter_id: item.chapter_id,
+            currenChapterTitle: this.currenChapterTitle
+          }
+        });
+      },
+      // 支付
+      buyNow() {
+        if (this.isLogin) {
+          this.groupbuy_id = 0;
+          this.$refs.pay.price = this.info.price;
+          this.$refs.recharge.price = this.info.price;
+          this.$refs.recharge.groupbuy_id = 0;
+          this.$refs.pay.buyShow = true;
+          this.isgroup = false;
+          this.ebookCoupon();
+        } else {
+          this.$router.push({ name: "login" });
         }
-      });
-    },
-    // 支付
-    buyNow() {
-      if (this.isLogin) {
-        this.groupbuy_id = 0;
-        this.$refs.pay.price = this.info.price;
-        this.$refs.recharge.price = this.info.price;
-        this.$refs.recharge.groupbuy_id = 0;
+      },
+      payrecharge() {
+        this.$refs.pay.buyShow = false;
+        this.$refs.recharge.rechargeShow = true;
+        this.$refs.recharge.order_ticket_id = this.$refs.pay.order_ticket_id;
+      },
+      returnUp() {
+        this.$refs.recharge.rechargeShow = false;
         this.$refs.pay.buyShow = true;
-        this.isgroup = false;
-        this.ebookCoupon();
-      } else {
-        this.$router.push({ name: "login" });
-      }
-    },
-    payrecharge() {
-      this.$refs.pay.buyShow = false;
-      this.$refs.recharge.rechargeShow = true;
-      this.$refs.recharge.order_ticket_id = this.$refs.pay.order_ticket_id;
-    },
-    returnUp() {
-      this.$refs.recharge.rechargeShow = false;
-      this.$refs.pay.buyShow = true;
-    },
-    // 免费阅读
-    toreader() {
-      this.$router.push({
-        name: "ebookreader",
-        query: {
-          goods_id: this.goods_id,
-          chapter_id: this.minChapter,
-          currenChapterTitle: 1
-        }
-      });
-    },
-    // 数字键盘支付
-    payMoney() {
-      this.passvalue = "";
-      this.showDialog = true;
-      // 重置倒计时
-      clearInterval(this.clock);
-      this.clock = null;
-      this.codeData.disabled = false;
-      this.codeData.timeMsg = "获取验证码";
-      this.addOrderData(this.activeIndex);
-    },
-    // 新增虚拟订单
-    async addOrderData(_index) {
-      var tStamp = this.$getTimeStamp();
-      var data = {};
-      data.timestamp = tStamp;
-      data.goods_id = this.goods_id;
-      data.version = "1.0";
-      if (this.$refs.pay.order_ticket_id)
-        data.ticket_id = this.$refs.pay.order_ticket_id;
-      if (this.groupbuy_id) data.groupbuy_id = this.couponInfo.groupbuy.id;
-      data.sign = this.$getSign(data);
-      let res = await ORDER_VIRTUAL_ADD(data);
-      if (res.hasOwnProperty("response_code")) {
-        this.pay_mobilephone = res.response_data.pay_mobilephone;
-        this.pay_money = res.response_data.pay_money;
-        this.order_id = res.response_data.order_id;
-        this.pay_id = res.response_data.pay_id;
-
-        // 交易支付请求发起
-        // this.cashierPayData(this.pay_id);
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    // 订单余额支付手机验证码发送
-    getCode() {
-      this.$countDown(this.codeData);
-      this.sms();
-    },
-    async sms() {
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        order_id: this.order_id,
-        version: "1.0"
-      };
-      data.sign = this.$getSign(data);
-      let res = await ORDER_VIRTUAL_ADD_SENDCODE(data);
-      if (res.hasOwnProperty("response_code")) {
-        // console.log(123, res);
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    keyboardShow() {
-      this.showKeyboard = true;
-      $(".van-number-keyboard").css("z-index", 10000);
-    },
-    onInput(key) {
-      this.passvalue = (this.passvalue + key).slice(0, 6);
-      if (this.passvalue.length == 6) {
-        this.payData(this.passvalue);
-      }
-    },
-    onDelete() {
-      this.passvalue = this.passvalue.slice(0, this.passvalue.length - 1);
-    },
-    // 输完验证码获取支付接口
-    async payData(__code) {
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        pay_id: this.pay_id,
-        type: "NORMAL",
-        code: __code,
-        version: "1.0"
-      };
-      data.sign = this.$getSign(data);
-      let res = await ORDER_VIRTUAL_ADD_PAY(data);
-      if (res.hasOwnProperty("response_code")) {
-        this.showDialog = false;
-        this.showKeyboard = false;
+      },
+      // 免费阅读
+      toreader() {
+        this.$router.push({
+          name: "ebookreader",
+          query: {
+            goods_id: this.goods_id,
+            chapter_id: this.minChapter,
+            currenChapterTitle: 1
+          }
+        });
+      },
+      // 数字键盘支付
+      payMoney() {
+        this.passvalue = "";
+        this.showDialog = true;
+        // 重置倒计时
         clearInterval(this.clock);
         this.clock = null;
         this.codeData.disabled = false;
         this.codeData.timeMsg = "获取验证码";
-        location.reload();
-        this.$toast("支付成功");
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    // 电子书优惠券
-    async ebookCoupon() {
-      var tStamp = this.$getTimeStamp();
-      var data = {};
-      data.timestamp = tStamp;
-      data.version = "1.0";
-      data.goods_id = this.goods_id;
-      // if(this.groupbuy_id) data.groupbuy_id = this.couponInfo.groupbuy.id;
-      data.sign = this.$getSign(data);
-      let res = await ORDER_VIRTUAL_ADDINFO(data);
-      if (res.hasOwnProperty("response_code")) {
-        this.$refs.pay.ticketList = res.response_data.ticket_lists;
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    // 选择优惠券改变价格
-    chooseCouponChangePrice(price) {
-      this.$refs.recharge.price = price;
-    },
-    // 拼团
-    toGoodsGroup() {
-      this.groupModel = true;
-    },
-    // 参团
-    addgroup(item) {
-      this.$router.push({
-        name: "groupdetail",
-        query: {
-          open_id: item.open_id
-        }
-      });
-    },
-    group() {
-      if (this.isLogin) {
-        // this.groupbuy_id = this.couponInfo.groupbuy.id;
-        // this.$refs.pay.price = this.couponInfo.groupbuy.groupbuy_price;
-        // this.$refs.recharge.price = this.couponInfo.groupbuy.groupbuy_price;
-        // this.$refs.recharge.groupbuy_id = this.couponInfo.groupbuy.id;
-        // this.groupModel = false;
-        // this.isgroup = true;
-        // this.$refs.pay.buyShow = true;
-        this.$router.push({
-          name: "payaccount",
-          query: {
-            goods_id: this.goods_id,
-            groupbuy_id: this.couponInfo.groupbuy.id
-          }
-        });
-      } else {
-        this.$router.push({ name: "login" });
-      }
-    },
-    togroupDetail() {
-      this.$router.push({
-        name: "groupdetail",
-        query: {
-          open_id: this.couponInfo.groupbuy.my_open_ids[0]
-        }
-      });
-    },
-    // ----------------------------------评论------------------------------------
-    commentLoad() {
-      this.commentData();
-    },
-    async commentData() {
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        page: this.commentPage,
-        goods_id: this.goods_id,
-        page_size: 10,
-        version: "1.0"
-      };
-      data.sign = this.$getSign(data);
-      let res = await COMMENT(data);
+        this.addOrderData(this.activeIndex);
+      },
+      // 新增虚拟订单
+      async addOrderData(_index) {
+        var tStamp = this.$getTimeStamp();
+        var data = {};
+        data.timestamp = tStamp;
+        data.goods_id = this.goods_id;
+        data.version = "1.0";
+        if (this.$refs.pay.order_ticket_id)
+          data.ticket_id = this.$refs.pay.order_ticket_id;
+        if (this.groupbuy_id) data.groupbuy_id = this.couponInfo.groupbuy.id;
+        data.sign = this.$getSign(data);
+        let res = await ORDER_VIRTUAL_ADD(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.pay_mobilephone = res.response_data.pay_mobilephone;
+          this.pay_money = res.response_data.pay_money;
+          this.order_id = res.response_data.order_id;
+          this.pay_id = res.response_data.pay_id;
 
-      if (res.hasOwnProperty("response_code")) {
-        // 异步更新数据
-        var result = res.response_data.result;
-        setTimeout(() => {
-          for (let i = 0; i < res.response_data.result.length; i++) {
-            this.discussData.push(result[i]);
-            this.answerData.push(result[i].reply_list);
-            this.replyPage.push(1);
-            // console.log('评论：', result[i]);
-          }
-          // 加载状态结束
-          this.commentLoading = false;
-          this.commentPage++;
-
-          // 数据全部加载完成
-          if (this.commentPage > res.response_data.total_page) {
-            this.commentFinished = true;
-            this.commentPage = 1;
-          }
-        }, 600);
-
-        // 设置总评论数
-        this.totalCount = "评论 (" + res.response_data.total_count + ")";
-        // console.log("当前页数组：", this.replyPage);
-        // console.log("评论列表：", result);
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    // 回复
-    async replyData(comment_id, key) {
-      this.timer = 0;
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        comment_pid: comment_id,
-        page: this.replyPage[key],
-        page_size: 10,
-        version: "1.0"
-      };
-      let res = await COMMENT(data);
-
-      if (res.hasOwnProperty("response_code")) {
-        // 异步更新数据
-        // var _length = this.answerData[key].length;
-        var result = res.response_data.result;
-        for (let i = 0; i < result.length; i++) {
-          this.answerData[key].push(result[i]);
-        }
-        if (this.replyPage[key] > res.response_data.total_page) {
-          this.replyPage[key] = res.response_data.total_page + 1;
+          // 交易支付请求发起
+          // this.cashierPayData(this.pay_id);
         } else {
-          this.replyPage[key]++;
+          this.$toast(res.error_message);
         }
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    // 回复展开更多
-    pageChange(comment_id, key) {
-      var _this = this;
-      if (this.timer) {
-        this.timer = 0;
-      } else {
-        this.timer = setTimeout(function() {
-          // console.log(222,_this.timer)
-          _this.replyData(comment_id, key);
-        }, 200);
-      }
-      // console.log("当前页数组：", this.replyPage, 'key:', key);
-    },
-    // 关闭评论弹窗
-    commentClose() {
-      this.commentModel = false;
-    },
-    /*
-     * __type = 'comment'; 新增评论
-     * __type = 'reply';   新增回复
-     */
-    async addComment(__type) {
-      var tStamp = this.$getTimeStamp();
-      var data = {};
-      switch (__type) {
-        case "comment":
-          data = {
-            timestamp: tStamp,
-            goods_id: this.goods_id,
-            content: this.contentModel,
-            version: "1.0"
-          };
-          break;
-        case "reply":
-          data = {
-            timestamp: tStamp,
-            goods_id: this.goods_id,
-            comment_pid: this.commentId,
-            content: this.contentModel,
-            version: "1.0"
-          };
-          break;
-        default:
-          break;
-      }
-      data.sign = this.$getSign(data);
-      let res = await COMMENT_ADD(data);
-      if (res.hasOwnProperty("response_code")) {
-        this.commentPage = 1;
-        // 本地存储最新的数据，展示
-        this.answerData = [];
-        this.discussData = [];
-        this.replyPage = [];
-        this.contentModel = "";
-        this.commentData();
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    punishComment() {
-      if (this.contentLength > this.contentTotal) {
-        this.$toast("你发布的字数超出，请修改后再发布!");
-        return;
-      }
-      if (this.contentLength == 0) {
-        this.$toast("请输入你要发布的内容!");
-        return;
-      }
-      this.commentModel = false;
-      // this.discussData = [];
-      this.addComment(this.punishType);
-    },
-    /*
-     * __type: 'comment'; 评论，comment_id: null;
-     * __type: 'reply'; 回复评论，comment_id: 必填;
-     */
-    openAnswer(__type, comment_id) {
-      // 未登录跳转至登录页
-      if (this.isLogin == 0) {
-        this.$router.push({ name: "login", params: {} });
-        this.$toast("用户未登录!");
-        return;
-      }
-      this.punishType = __type;
-      if (__type == "reply") this.commentId = comment_id;
-      this.commentModel = true;
-    },
-    // 编辑评论触发
-    inputChange() {
-      this.contentLength = this.contentModel.length;
-    },
-    showCoupon() {
-      this.couponModel = true;
-    },
-    async getCouponList() {
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        goods_id: this.goods_id,
-        version: "1.0"
-      };
-      data.sign = this.$getSign(data);
-      let res = await GOODS_TICKET_GETS(data);
-      if (res.hasOwnProperty("response_code")) {
-        // console.log(res);
-        this.couponList = res.response_data;
-        for (var i = 0; i < this.couponList.length; i++) {
-          if (this.couponList[i].state == 3) {
-            this.isReceived = true;
-          }
+      },
+      // 订单余额支付手机验证码发送
+      getCode() {
+        this.$countDown(this.codeData);
+        this.sms();
+      },
+      async sms() {
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          order_id: this.order_id,
+          version: "1.0"
+        };
+        data.sign = this.$getSign(data);
+        let res = await ORDER_VIRTUAL_ADD_SENDCODE(data);
+        if (res.hasOwnProperty("response_code")) {
+          // console.log(123, res);
+        } else {
+          this.$toast(res.error_message);
         }
-      } else {
-        this.$toast(res.error_message);
-      }
-    },
-    // 领取优惠券
-    receive(item, index) {
-      if (this.isLogin == 0) {
-        this.$router.push({ name: "login", params: {} });
-        this.$toast("用户未登录!");
-      } else {
-        this.ticketLink(item.ticket_id, index);
-      }
-    },
-    async ticketLink(ticket_id, index) {
-      this.requestState = false;
-      var tStamp = this.$getTimeStamp();
-      let data = {
-        timestamp: tStamp,
-        version: "1.0",
-        ticket_id: ticket_id
-      };
-      data.sign = this.$getSign(data);
-      let res = await TICKET_LINK(data);
-      if (res.hasOwnProperty("response_code")) {
-        // console.log(res);
-        this.$toast("领取成功！");
-        this.requestState = true;
-        this.couponList = this.couponList.map((value, key) => {
-          if (key == index) {
-            value.state = 3;
-            value.use_stime = res.response_data.use_stime;
-            value.use_etime = res.response_data.use_etime;
+      },
+      keyboardShow() {
+        this.showKeyboard = true;
+        $(".van-number-keyboard").css("z-index", 10000);
+      },
+      onInput(key) {
+        this.passvalue = (this.passvalue + key).slice(0, 6);
+        if (this.passvalue.length == 6) {
+          this.payData(this.passvalue);
+        }
+      },
+      onDelete() {
+        this.passvalue = this.passvalue.slice(0, this.passvalue.length - 1);
+      },
+      // 输完验证码获取支付接口
+      async payData(__code) {
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          pay_id: this.pay_id,
+          type: "NORMAL",
+          code: __code,
+          version: "1.0"
+        };
+        data.sign = this.$getSign(data);
+        let res = await ORDER_VIRTUAL_ADD_PAY(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.showDialog = false;
+          this.showKeyboard = false;
+          clearInterval(this.clock);
+          this.clock = null;
+          this.codeData.disabled = false;
+          this.codeData.timeMsg = "获取验证码";
+          location.reload();
+          this.$toast("支付成功");
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      // 电子书优惠券
+      async ebookCoupon() {
+        var tStamp = this.$getTimeStamp();
+        var data = {};
+        data.timestamp = tStamp;
+        data.version = "1.0";
+        data.goods_id = this.goods_id;
+        // if(this.groupbuy_id) data.groupbuy_id = this.couponInfo.groupbuy.id;
+        data.sign = this.$getSign(data);
+        let res = await ORDER_VIRTUAL_ADDINFO(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.$refs.pay.ticketList = res.response_data.ticket_lists;
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      // 选择优惠券改变价格
+      chooseCouponChangePrice(price) {
+        this.$refs.recharge.price = price;
+      },
+      // 拼团
+      toGoodsGroup() {
+        this.groupModel = true;
+      },
+      // 参团
+      addgroup(item) {
+        this.$router.push({
+          name: "groupdetail",
+          query: {
+            open_id: item.open_id
           }
-          return value;
         });
-      } else {
-        this.$toast(res.error_message);
-        this.requestState = true;
-      }
-    },
-    toResult(item, index) {
-      sessionStorage.setItem('saveSearchContent',"")
-      this.$router.push({
-        name: "couponresult",
-        query: {
-          ticket_id: item.ticket_id
+      },
+      group() {
+        if (this.isLogin) {
+          // this.groupbuy_id = this.couponInfo.groupbuy.id;
+          // this.$refs.pay.price = this.couponInfo.groupbuy.groupbuy_price;
+          // this.$refs.recharge.price = this.couponInfo.groupbuy.groupbuy_price;
+          // this.$refs.recharge.groupbuy_id = this.couponInfo.groupbuy.id;
+          // this.groupModel = false;
+          // this.isgroup = true;
+          // this.$refs.pay.buyShow = true;
+          this.$router.push({
+            name: "payaccount",
+            query: {
+              goods_id: this.goods_id,
+              groupbuy_id: this.couponInfo.groupbuy.id
+            }
+          });
+        } else {
+          this.$router.push({ name: "login" });
         }
-      });
-    },
-    reflesh() {
-      this.ebookCoupon();
+      },
+      togroupDetail() {
+        this.$router.push({
+          name: "groupdetail",
+          query: {
+            open_id: this.couponInfo.groupbuy.my_open_ids[0]
+          }
+        });
+      },
+      // ----------------------------------评论------------------------------------
+      commentLoad() {
+        this.commentData();
+      },
+      async commentData() {
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          page: this.commentPage,
+          goods_id: this.goods_id,
+          page_size: 10,
+          version: "1.0"
+        };
+        data.sign = this.$getSign(data);
+        let res = await COMMENT(data);
+
+        if (res.hasOwnProperty("response_code")) {
+          // 异步更新数据
+          var result = res.response_data.result;
+          setTimeout(() => {
+            for (let i = 0; i < res.response_data.result.length; i++) {
+              this.discussData.push(result[i]);
+              this.answerData.push(result[i].reply_list);
+              this.replyPage.push(1);
+              // console.log('评论：', result[i]);
+            }
+            // 加载状态结束
+            this.commentLoading = false;
+            this.commentPage++;
+
+            // 数据全部加载完成
+            if (this.commentPage > res.response_data.total_page) {
+              this.commentFinished = true;
+              this.commentPage = 1;
+            }
+          }, 600);
+
+          // 设置总评论数
+          this.totalCount = "评论 (" + res.response_data.total_count + ")";
+          // console.log("当前页数组：", this.replyPage);
+          // console.log("评论列表：", result);
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      // 回复
+      async replyData(comment_id, key) {
+        this.timer = 0;
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          comment_pid: comment_id,
+          page: this.replyPage[key],
+          page_size: 10,
+          version: "1.0"
+        };
+        let res = await COMMENT(data);
+
+        if (res.hasOwnProperty("response_code")) {
+          // 异步更新数据
+          // var _length = this.answerData[key].length;
+          var result = res.response_data.result;
+          for (let i = 0; i < result.length; i++) {
+            this.answerData[key].push(result[i]);
+          }
+          if (this.replyPage[key] > res.response_data.total_page) {
+            this.replyPage[key] = res.response_data.total_page + 1;
+          } else {
+            this.replyPage[key]++;
+          }
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      // 回复展开更多
+      pageChange(comment_id, key) {
+        var _this = this;
+        if (this.timer) {
+          this.timer = 0;
+        } else {
+          this.timer = setTimeout(function() {
+            // console.log(222,_this.timer)
+            _this.replyData(comment_id, key);
+          }, 200);
+        }
+        // console.log("当前页数组：", this.replyPage, 'key:', key);
+      },
+      // 关闭评论弹窗
+      commentClose() {
+        this.commentModel = false;
+      },
+      /*
+       * __type = 'comment'; 新增评论
+       * __type = 'reply';   新增回复
+       */
+      async addComment(__type) {
+        var tStamp = this.$getTimeStamp();
+        var data = {};
+        switch (__type) {
+          case "comment":
+            data = {
+              timestamp: tStamp,
+              goods_id: this.goods_id,
+              content: this.contentModel,
+              version: "1.0"
+            };
+            break;
+          case "reply":
+            data = {
+              timestamp: tStamp,
+              goods_id: this.goods_id,
+              comment_pid: this.commentId,
+              content: this.contentModel,
+              version: "1.0"
+            };
+            break;
+          default:
+            break;
+        }
+        data.sign = this.$getSign(data);
+        let res = await COMMENT_ADD(data);
+        if (res.hasOwnProperty("response_code")) {
+          this.commentPage = 1;
+          // 本地存储最新的数据，展示
+          this.answerData = [];
+          this.discussData = [];
+          this.replyPage = [];
+          this.contentModel = "";
+          this.commentData();
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      punishComment() {
+        if (this.contentLength > this.contentTotal) {
+          this.$toast("你发布的字数超出，请修改后再发布!");
+          return;
+        }
+        if (this.contentLength == 0) {
+          this.$toast("请输入你要发布的内容!");
+          return;
+        }
+        this.commentModel = false;
+        // this.discussData = [];
+        this.addComment(this.punishType);
+      },
+      /*
+       * __type: 'comment'; 评论，comment_id: null;
+       * __type: 'reply'; 回复评论，comment_id: 必填;
+       */
+      openAnswer(__type, comment_id) {
+        // 未登录跳转至登录页
+        if (this.isLogin == 0) {
+          this.$router.push({ name: "login", params: {} });
+          this.$toast("用户未登录!");
+          return;
+        }
+        this.punishType = __type;
+        if (__type == "reply") this.commentId = comment_id;
+        this.commentModel = true;
+      },
+      // 编辑评论触发
+      inputChange() {
+        this.contentLength = this.contentModel.length;
+      },
+      showCoupon() {
+        this.couponModel = true;
+      },
+      async getCouponList() {
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          goods_id: this.goods_id,
+          version: "1.0"
+        };
+        data.sign = this.$getSign(data);
+        let res = await GOODS_TICKET_GETS(data);
+        if (res.hasOwnProperty("response_code")) {
+          // console.log(res);
+          this.couponList = res.response_data;
+          for (var i = 0; i < this.couponList.length; i++) {
+            if (this.couponList[i].state == 3) {
+              this.isReceived = true;
+            }
+          }
+        } else {
+          this.$toast(res.error_message);
+        }
+      },
+      // 领取优惠券
+      receive(item, index) {
+        if (this.isLogin == 0) {
+          this.$router.push({ name: "login", params: {} });
+          this.$toast("用户未登录!");
+        } else {
+          this.ticketLink(item.ticket_id, index);
+        }
+      },
+      async ticketLink(ticket_id, index) {
+        this.requestState = false;
+        var tStamp = this.$getTimeStamp();
+        let data = {
+          timestamp: tStamp,
+          version: "1.0",
+          ticket_id: ticket_id
+        };
+        data.sign = this.$getSign(data);
+        let res = await TICKET_LINK(data);
+        if (res.hasOwnProperty("response_code")) {
+          // console.log(res);
+          this.$toast("领取成功！");
+          this.requestState = true;
+          this.couponList = this.couponList.map((value, key) => {
+            if (key == index) {
+              value.state = 3;
+              value.use_stime = res.response_data.use_stime;
+              value.use_etime = res.response_data.use_etime;
+            }
+            return value;
+          });
+        } else {
+          this.$toast(res.error_message);
+          this.requestState = true;
+        }
+      },
+      toResult(item, index) {
+        sessionStorage.setItem('saveSearchContent',"")
+        this.$router.push({
+          name: "couponresult",
+          query: {
+            ticket_id: item.ticket_id
+          }
+        });
+      },
+      reflesh() {
+        this.ebookCoupon();
+      }
     }
-  }
-};
+  };
 </script>

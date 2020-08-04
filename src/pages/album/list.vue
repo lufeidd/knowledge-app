@@ -66,6 +66,8 @@
         </van-list>
       </div>
     </div>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </van-popup>
 </template>
 

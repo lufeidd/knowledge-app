@@ -192,6 +192,8 @@
       </van-tabs>
     </div>
     <EazyNav type="coupon" ref="nav" :isShow="false"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

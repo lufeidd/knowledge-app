@@ -212,6 +212,8 @@
     <!-- <easyNav :navData="navData"></easyNav> -->
     <!-- 快速导航 -->
     <EazyNav type="order" :isShow="true"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

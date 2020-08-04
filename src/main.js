@@ -50,12 +50,15 @@ import loading from './components/index'
 import copyRight from './components/index'
 // 打开app对应页面
 import openAppPage from './components/index'
+// 公共弹窗
+import publicPopup from './components/index';
 
 Vue.use(download)
 Vue.use(nav)
 Vue.use(loading)
 Vue.use(copyRight)
 Vue.use(openAppPage)
+Vue.use(publicPopup)
 
 // vant
 // import Vant from 'vant';

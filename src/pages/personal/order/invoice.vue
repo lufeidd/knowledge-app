@@ -105,6 +105,8 @@
       <button class="huoba-btn huoba-btn-three disabled" v-if="invoice.flag == 1 || invoice.flag == 2">已提交申请，商家处理中</button>
       <button class="huoba-btn huoba-btn-three" @click="submitAction" v-else>提交</button>
     </div>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

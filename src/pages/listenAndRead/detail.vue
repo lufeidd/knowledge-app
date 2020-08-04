@@ -132,6 +132,8 @@
       <div class="pop-two-text-two" v-if="touchType=='ebook'">您最多可置顶3本电子书</div>
       <div class="pop-two-text-three" @click="pop_two_show=false">我知道了</div>
     </van-popup>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

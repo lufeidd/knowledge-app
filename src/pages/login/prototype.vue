@@ -249,6 +249,8 @@
       <div style="padding: 10px 0;">请您再次确认您已全部阅读并充分理解上述协议。</div>
     </div>
     <EazyNav type="brand" :isShow="false"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

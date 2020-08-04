@@ -37,6 +37,8 @@
       <div class="btn-box-right check-result-disabled" v-else></div>
     </footer>
     <EazyNav type="brand" :isShow="false"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

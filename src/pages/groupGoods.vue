@@ -415,7 +415,8 @@
       </div>
     </div>
     <EazyNav type="brand" ref="nav" :isShow="true"></EazyNav>
-
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
     <Loading :isLoading="isLoading"></Loading>
   </div>
 </template>

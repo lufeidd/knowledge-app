@@ -377,6 +377,8 @@
     <CopyRight></CopyRight>
     <!-- 快速导航 -->
     <EazyNav type="brand" :isShow="true"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
     <!--打开app对应页面-->
     <!--<openAppPage :name="'/personal/index'"></openAppPage>-->
   </div>

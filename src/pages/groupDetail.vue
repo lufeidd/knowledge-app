@@ -168,6 +168,8 @@
       <span class="clip">. . .</span>
     </van-popup>
     <EazyNav type="brand" :isShow="false"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 
