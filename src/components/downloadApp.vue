@@ -10,7 +10,7 @@
       <span class="foucsButton" @click="download">打开</span>
 
     </div>
-    <div class="open-in-browser" v-if="isInWx">
+    <div class="open-in-browser" v-if="isInWx" @click="isInWx=false">
       <div class="text">
         <div>点击右上角，选择在浏</div>
         览器中打开~
