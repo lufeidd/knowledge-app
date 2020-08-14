@@ -150,11 +150,15 @@
     .img-box {
       margin: 0 auto;
       width: 285px;
+      text-align: center;
       /*height: 370px;*/
+      img {
+        width: 85%;
+      }
     }
     .close-one {
       position: absolute;
-      top: -50px;
+      top: -45px;
       right: 0;
       font-size: 28px;
       color: #fff;
