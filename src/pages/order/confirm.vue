@@ -336,6 +336,8 @@
       </van-tabs>
     </van-popup>
     <EazyNav type="order" :isShow="false"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 <style src="@/style/scss/pages/order.scss" scoped lang="scss"></style>

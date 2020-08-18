@@ -157,6 +157,8 @@
       </div>
     </van-popup>
     <EazyNav type="brand" :isShow="false"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 
@@ -202,6 +204,8 @@ import {
   TICKET_GOODS_RECOMMEND
 } from "../../apis/coupon.js";
 import { USER_HOMEPAGE } from "../../apis/user.js";
+import Utils from '@/components/util.js';
+
 export default {
   data() {
     return {
@@ -321,31 +325,33 @@ export default {
       // this.showMore = true;
     },
     toMyCoupon() {
-      if (this.islogin) {
-        this.$router.push({
-          name: "couponmine"
-        });
-      } else {
-        this.$toast("用户未登录");
-        this.$router.push({
-          name: "login"
-        });
-      }
+      // if (this.islogin) {
+      //   this.$router.push({
+      //     name: "couponmine"
+      //   });
+      // } else {
+      //   this.$toast("用户未登录");
+      //   this.$router.push({
+      //     name: "login"
+      //   });
+      // }
+      Utils.$emit('goToApp', '/coupon/mine');
     },
     receiveMore() {
       // window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
-      var u = navigator.userAgent,
-        app = navigator.appVersion;
-      var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-      var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
-      console.log(u, app, _ios, _android);
-      if (_ios) {
-        window.location.href =
-          "https://apps.apple.com/cn/app/%E7%81%AB%E6%8A%8A%E7%9F%A5%E8%AF%86/id1473766311";
-      } else if (_android) {
-        window.location.href =
-          "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
-      }
+      // var u = navigator.userAgent,
+      //   app = navigator.appVersion;
+      // var _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      // var _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+      // console.log(u, app, _ios, _android);
+      // if (_ios) {
+      //   window.location.href =
+      //     "https://apps.apple.com/cn/app/%E7%81%AB%E6%8A%8A%E7%9F%A5%E8%AF%86/id1473766311";
+      // } else if (_android) {
+      //   window.location.href =
+      //     "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
+      // }
+      Utils.$emit('goToApp', '/receive/center');
     },
     async getList() {
       var tStamp = this.$getTimeStamp();

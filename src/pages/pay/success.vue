@@ -34,7 +34,7 @@
         type="danger"
       >返回商铺</van-button>
     </div>
-    <van-popup v-model="popupFlag">
+    <van-popup v-model="popupFlag" class="open-app">
       <div class="app_pic"></div>
       <p class="app_txt">使用全新火把知识App查看物流信息，收获海量知识。</p>
       <div class="button">
@@ -47,6 +47,8 @@
       </div>
     </van-popup>
     <EazyNav type="brand" :isShow="false"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 
@@ -57,7 +59,11 @@
   .van-button--plain.van-button--danger {
     margin-top: 25px;
   }
-  .van-popup {
+  /*.van-popup {*/
+    /*width: 310px;*/
+    /*height: 375px;*/
+  /*}*/
+  .open-app {
     width: 310px;
     height: 375px;
   }
@@ -67,6 +73,8 @@
 
 <script>
 import { USER_ORDER_DETAIL_GET } from "../../apis/user.js";
+import Utils from '@/components/util.js';
+
 export default {
   data() {
     return {
@@ -119,18 +127,20 @@ export default {
     },
     download() {
       // window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
-      let u = navigator.userAgent,
-        app = navigator.appVersion;
-      let _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-      let _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
-      console.log(u, app, _ios, _android);
-      if (_ios) {
-        window.location.href =
-          "https://apps.apple.com/cn/app/%E7%81%AB%E6%8A%8A%E7%9F%A5%E8%AF%86/id1473766311";
-      } else if (_android) {
-        window.location.href =
-          "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
-      }
+      // let u = navigator.userAgent,
+      //   app = navigator.appVersion;
+      // let _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      // let _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+      // console.log(u, app, _ios, _android);
+      // if (_ios) {
+      //   window.location.href =
+      //     "https://apps.apple.com/cn/app/%E7%81%AB%E6%8A%8A%E7%9F%A5%E8%AF%86/id1473766311";
+      // } else if (_android) {
+      //   window.location.href =
+      //     "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
+      // }
+      Utils.$emit('goToApp', '/personal/order/list');
+
     }
   }
 };

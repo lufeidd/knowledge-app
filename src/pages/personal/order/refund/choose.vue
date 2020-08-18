@@ -105,6 +105,8 @@
       </div>
       <div class="right" @click="onSubmit">提交</div>
     </div>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 <style lang="scss">

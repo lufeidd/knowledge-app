@@ -6,7 +6,8 @@
     </div>
     <!-- <easyNav :navData="navData"></easyNav> -->
     <EazyNav type="brand" :isShow="true"></EazyNav>
-
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

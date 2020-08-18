@@ -335,6 +335,8 @@
       </div>
     </div>
     <EazyNav type="brand" ref="nav" :isShow="true"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 <style src="@/style/scss/pages/cart.scss" scoped lang="scss"></style>

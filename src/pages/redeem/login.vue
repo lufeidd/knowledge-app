@@ -48,6 +48,8 @@
         <van-button type="primary" style="background:#F05654;border: 1px solid #F05654;" @click="validatePhone">兑换</van-button>
       </div>
     </main><EazyNav type="brand" :isShow="false"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

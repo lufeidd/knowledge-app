@@ -7,7 +7,7 @@ import wx from 'weixin-js-sdk';
 
 //  引入时间戳接口
 // import req from "./../apis/http.js";
-import {SERVER_TIME, WX_SHARE, WX_SHARE_LOG, ADDRESS, CASHIER_PAY_CHECK} from "./../apis/public.js";
+import {SERVER_TIME, WX_SHARE, WX_SHARE_LOG, ADDRESS, CASHIER_PAY_CHECK, APP_DOWNLOAD} from "./../apis/public.js";
 import {LOGIN_PARTERNER, PAGE_INFO} from "./../apis/passport.js";
 
 // 支持await async
@@ -360,6 +360,22 @@ export default {
       }
     }
 
+    Vue.prototype.$appDownload = async function () {
+      let data = {
+        current_version: '1.0',
+        app_type: 1,
+        version: "1.0"
+      };
+      let res = await APP_DOWNLOAD(data);
+      if (res.hasOwnProperty("response_code")) {
+        console.log(res);
+        let url = res.response_data.apk_url;
+        return url;
+      } else {
+        this.$toast(res.error_message);
+      }
+    }
+
     // added by lrf 2020/7/7
     // 不同页面不同参数信息
     Vue.prototype.$getAppParams = function (_name) {
@@ -405,6 +421,7 @@ export default {
     // 打开app对应页面
     Vue.prototype.$openAppPage = function (_linkData) {
       var name = _linkData.page_name;
+      var _this = this;
 
       //新建一个iframe的生成器
       var createIframe = (function () {
@@ -444,7 +461,11 @@ export default {
           let timer = setTimeout(function () {
             let endTime = Date.now();
             if (endTime - startTime < 2200) { // 没有安装app,引导用户应用宝下载
-              window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
+              _this.$appDownload().then(function(url) {
+                // console.log('data',data);
+                window.location.href = url;
+              });
+              // window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
             } else { // 唤起成功
               clearTimeout(timer);
             }
@@ -455,6 +476,101 @@ export default {
       openAppPage();
     }
 
+    // 三端路由参数
+    Vue.prototype.$getRouterParams = function (_name) {
+      _name = _name.toLowerCase();
+      let linkData = {
+        page_name: _name
+      };
+      if (_name == '/login/index') {
+        // 登录首页
+        linkData.page_name = '/login';
+      } else if (_name == '/login/phonelogin/phonelogin') {
+        // 登录首页
+        linkData.page_name = '/login/phonelogin';
+      } else if (_name == '/custompage') {
+        // 自定义装修页面
+        if (this.$route.query.type) linkData.type = this.$route.query.type;
+        if (this.$route.query.page_id) linkData.page_id = this.$route.query.page_id;
+        if (this.$route.query.supplier_id) linkData.supplier_id = this.$route.query.supplier_id;
+
+      } else if (_name == '/detail') {
+        // 商品详情
+        linkData.goods_id = this.$route.query.goods_id;
+      } else if (_name == '/groupdetail') {
+        // 拼团详情
+        linkData.open_id = parseInt(this.$route.query.open_id);
+      } else if (_name == '/groupgoods') {
+        // 实物商品拼团页面
+        linkData.groupbuy_id = parseInt(this.$route.query.groupbuy_id);
+        linkData.brand_id = this.$route.query.brand_id;//??
+      } else if (_name == '/album/detail') {
+        // 专辑
+        linkData.goods_id = this.$route.query.goods_id;
+        linkData.pid = typeof(this.$route.query.pid) == 'object' ? this.$route.query.pid[0] : this.$route.query.pid;
+      } else if (_name == '/album/index') {
+        // 专辑
+        linkData.goods_id = this.$route.query.goods_id;
+      } else if (_name == '/assist/active') {
+        // 助力活动
+        linkData.launch_id = this.$route.query.launch_id;//??
+        linkData.activity_id = this.$route.query.activity_id;
+      } else if (_name == '/assist/help') {
+        // 助力活动
+        linkData.launch_id = this.$route.query.launch_id;//??
+        linkData.activity_id = this.$route.query.activity_id;
+      } else if (_name == '/brand/index') {
+        // 品牌
+        linkData.brand_id = this.$route.query.brand_id;
+      } else if (_name == '/brand/result') {
+        // 搜索结果
+        if (this.$route.query.supplier_id) linkData.supplier_id = this.$route.query.supplier_id;
+        if (this.$route.query.searchContent) {
+          linkData.searchContent = this.$route.query.searchContent;
+        } else if (sessionStorage.getItem('saveSearchContent')) {
+          linkData.searchContent = sessionStorage.getItem('saveSearchContent')
+        }
+        switch (this.$route.query.type) {
+          case "mall":
+            linkData.page_name = "mall/goods/search";
+            if (this.$route.query.goods_type) linkData.goods_type = this.$route.query.goods_type;
+            break;
+          case "brand":
+            linkData.page_name = "brand/goods/search";
+            linkData.brand_id = this.$route.query.brand_id;
+            break;
+          case "index":
+            linkData.page_name = "brand/goods/search";
+            linkData.brand_id = this.$route.query.brand_id;
+            break;
+          case "all":
+            linkData.page_name = "brand/goods/search";
+            linkData.brand_id = this.$route.query.brand_id;
+            break;
+        }
+      } else if (_name == '/brand/detail/article') {
+        // 文章
+        linkData.goods_id = this.$route.query.goods_id;
+        linkData.album_id = this.$route.query.album_id;
+      } else if (_name == '/ebook/detail') {
+        // 电子书
+        linkData.goods_id = this.$route.query.goods_id;
+      } else if (_name == '/ebook/reader') {
+        // 电子书
+        linkData.goods_id = this.$route.query.goods_id;
+      } else if (_name == '/personal/order/detail') {
+        // 订单详情
+        linkData.order_id = this.$route.query.order_id;
+      }  else if (_name == '/pay/success') {
+        // 支付成功
+        linkData.order_id = this.$route.query.order_id;
+      } else if (_name == '/gaokaotest/index' || _name == '/gaokaotest/questionspageone' || _name == '/gaokaotest/questionspagetwo' || _name == '/gaokaotest/resultpage') {
+        // 高考测一测
+        // linkData.page_name = 'activity/nemt';
+      }
+
+      return linkData;
+    }
 
     // 不同页面不同参数信息
     Vue.prototype.$getPageParams = function (_name) {
@@ -906,6 +1022,7 @@ export default {
       // console.log(222,data);return
       var dataTmp = data;
       var __name = null;
+      var __action = null;
       var dataRes = {};
       var queryTmp = {};
 
@@ -915,18 +1032,23 @@ export default {
           // 音/视频
           if (dataTmp.params.goods_type == 1 || dataTmp.params.goods_type == 2) {
             __name = 'albumdetail';
+            __action = 'album/detail';
           }
           if (dataTmp.params.goods_type == 6) { // 文章
             __name = 'article';
+            __action = 'article';
           }
           if (dataTmp.params.goods_type == 9) { // 专辑
             __name = 'album';
+            __action = 'album';
           }
           if (dataTmp.params.goods_type == 3) { // 图书
             __name = 'detail';
+            __action = 'detail';
           }
           if (dataTmp.params.goods_type == 4) { // 电子书
             __name = 'ebookdetail';
+            __action = 'ebook/detail';
           }
           queryTmp.goods_id = parseInt(dataTmp.params.goods_id);
           if (dataTmp.params.album_id) queryTmp.album_id = parseInt(dataTmp.params.album_id);
@@ -935,12 +1057,14 @@ export default {
         // 公号商品搜索结果页
         case 'brand/goods/search':
           __name = 'brandresult';
+          __action = 'brand/result';
           queryTmp.brand_id = parseInt(dataTmp.params.brand_id);
           queryTmp.keywords = dataTmp.params.keywords;
           break;
         // 商城商品搜索结果页
         case 'mall/goods/search':
           __name = 'brandresult';
+          __action = 'brand/result';
           queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
           if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
           if (dataTmp.params.goods_type) queryTmp.goods_type = dataTmp.params.goods_type;
@@ -956,6 +1080,7 @@ export default {
           break;
         case 'search/result':
           __name = 'brandresult';
+          __action = 'brand/result';
           queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
           if (dataTmp.params.keywords) queryTmp.keywords = dataTmp.params.keywords;
           if (dataTmp.params.goods_type) queryTmp.goods_type = dataTmp.params.goods_type;
@@ -966,6 +1091,7 @@ export default {
         // 供应商商城首页
         case 'mall/index':
           __name = 'custompage';
+          __action = 'custompage';
           queryTmp.supplier_id = parseInt(dataTmp.params.supplier_id);
           queryTmp.type = 'mall';
 
@@ -973,22 +1099,26 @@ export default {
         // 公号首页
         case 'brand/index':
           __name = 'brand';
+          __action = 'brand';
           queryTmp.brand_id = parseInt(dataTmp.params.brand_id);
 
           break;
         //自定义商城页
         case 'page/get':
           __name = 'custompage';
+          __action = 'custompage';
           queryTmp.page_id = parseInt(dataTmp.params.page_id);
           break;
         //跳转外链
         case 'jump/url':
           __name = 'url'
+          __action = 'url'
           queryTmp.url = dataTmp.params.url;
           break;
         // 优惠券详情
         case 'ticket/link/detail':
           __name = 'couponreceive'
+          __action = 'coupon/receive'
           queryTmp.ticket_id = dataTmp.params.ticket_id;
           break;
         default:
@@ -997,7 +1127,9 @@ export default {
 
       dataRes = {
         name: __name,
-        query: queryTmp
+        query: queryTmp,
+        action: __action,
+        params: queryTmp,
       }
       return dataRes;
     }

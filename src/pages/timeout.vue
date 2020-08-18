@@ -5,7 +5,8 @@
       <div>网络不给力，点击屏幕重试~</div>
     </div>
     <EazyNav type="brand" :isShow="true"></EazyNav>
-    
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 <style>

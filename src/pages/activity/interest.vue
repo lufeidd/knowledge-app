@@ -270,8 +270,10 @@
         </div>
       </div>
     </div>
-    
+
     <EazyNav type="brand" ref="nav" :isShow="false"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

@@ -61,3 +61,12 @@ export const LOCATION_CHANGE = query => req('post', '/common/location/change', q
 
 //交易支付并购买状态监测
 export const CASHIER_PAY_CHECK = query => req('post', '/cashier/pay/check', query);
+
+// 公共弹窗信息获取
+export const POPUP_INFO = query => req('post', '/page/popup/get', query);
+
+// 公共弹窗用户行为日志
+export const POPUP_LOG = query => req('post', '/page/popup/log', query);
+
+// 下载链接
+export const APP_DOWNLOAD = query => req('post', '/app/update', query);

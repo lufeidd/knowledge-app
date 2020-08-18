@@ -21,6 +21,8 @@
       <van-button size="large" type="danger">确定注销账号</van-button>
     </div>
     <EazyNav type="brand" :isShow="false"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

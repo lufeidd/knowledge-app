@@ -30,6 +30,8 @@
       <div class="button" @click="cancel">取消</div>
       <div class="button" @click="save">保存</div>
     </div>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

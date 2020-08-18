@@ -164,6 +164,8 @@
     </div>
     <CopyRight></CopyRight>
     <EazyNav type="index" :isShow="true"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

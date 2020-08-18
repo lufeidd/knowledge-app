@@ -52,6 +52,8 @@
         </div>
       </div>
     </van-popup>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

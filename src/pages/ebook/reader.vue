@@ -151,6 +151,8 @@
         <van-password-input :value="passvalue" :mask="false" @focus="keyboardShow" />
       </div>
     </van-dialog>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 

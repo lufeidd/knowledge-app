@@ -55,6 +55,8 @@
     </van-popup>
     <Bottom></Bottom>
     <EazyNav type="brand" :isShow="false"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
     <!--打开app对应页面-->
     <openAppPage :name="'/login/phoneLogin/phoneLogin'"></openAppPage>
   </div>

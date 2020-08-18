@@ -10,10 +10,13 @@
     </div>
     <!--<img src="./../../../assets/redeem/fail.png" alt="">-->
     <EazyNav type="brand" :isShow="false"></EazyNav>
+    <!--通用弹窗-->
+    <PublicPopup></PublicPopup>
   </div>
 </template>
 
 <script>
+  import Utils from '@/components/util.js';
   export default {
     name: "fail",
     data() {
@@ -24,18 +27,20 @@
     methods: {
       download() {
         // window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
-        let u = navigator.userAgent,
-          app = navigator.appVersion;
-        let _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-        let _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
-        console.log(u, app, _ios, _android);
-        if (_ios) {
-          window.location.href =
-            "https://apps.apple.com/cn/app/%E7%81%AB%E6%8A%8A%E7%9F%A5%E8%AF%86/id1473766311";
-        } else if (_android) {
-          window.location.href =
-            "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
-        }
+        // let u = navigator.userAgent,
+        //   app = navigator.appVersion;
+        // let _ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        // let _android = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+        // console.log(u, app, _ios, _android);
+        // if (_ios) {
+        //   window.location.href =
+        //     "https://apps.apple.com/cn/app/%E7%81%AB%E6%8A%8A%E7%9F%A5%E8%AF%86/id1473766311";
+        // } else if (_android) {
+        //   window.location.href =
+        //     "https://a.app.qq.com/o/simple.jsp?pkgname=com.huoba.Huoba";
+        // }
+
+        Utils.$emit('goToApp', '/page/index');
       }
     },
     created() {
