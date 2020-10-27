@@ -15,6 +15,7 @@ var obj = {};
 // run dev
 obj.baseURL = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + '/apis';
 
+
 // run build
 // obj.baseURL =  window.location.protocol + "//" + window.location.hostname + '/apis';
 

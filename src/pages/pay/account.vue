@@ -68,7 +68,7 @@
     <div v-for="(item, key) in payBank" :key="key">
       <div
         class="listBox"
-        :class="{disable: user_balance < goodsInfo.price && item.bank_type == 'balance' || item.state == 0}"
+        :class="{disable: (user_balance < (goodsInfo.price - discount_price).toFixed(2)) && item.bank_type == 'balance' || item.state == 0}"
         style="padding: 8px 15px;"
         v-if="item.bank_type == 'balance' || (isWxLogin && item.bank_type == 'wxpay')"
       >
@@ -110,7 +110,7 @@
           </div>
         </div>
 
-        <div class="left two" v-if="item.bank_type == 'balance' && user_balance < goodsInfo.price">
+        <div class="left two" v-if="item.bank_type == 'balance' && user_balance < (goodsInfo.price - discount_price).toFixed(2)">
           <van-button round type="danger" @click="recharge">充值</van-button>
         </div>
       </div>
@@ -549,13 +549,14 @@ export default {
         this.descInfo = res.response_data.desc;
         this.user_balance = res.response_data.user_balance;
 
-        this.activeIndex = this.user_balance >= this.goodsInfo.price ? 0 : 1;
+
         // 优惠券
         this.total_money = res.response_data.goods_info.price;
         this.ticket_price = res.response_data.ticket_price;
         this.discount_price = res.response_data.ticket_price;
         this.ticket_lists = res.response_data.ticket_lists;
         this.single_activity_id = res.response_data.single_activity_id;
+        this.activeIndex = this.user_balance >= (this.goodsInfo.price - this.discount_price) ? 0 : 1;
         if (this.discount_price > 0) {
           this.discount_price_desc = "优惠￥" + this.discount_price;
         } else {
@@ -579,7 +580,7 @@ export default {
           "不可用优惠券（" + this.ticket_lists.nouse.length + "）";
         this.useCoupon =
           "可用优惠券（" + this.ticket_lists.canuse.length + "）";
-        // console.log(res);
+        console.log('测试',(this.user_balance - (this.goodsInfo.price - this.discount_price))<0);
       } else {
         this.$toast(res.error_message);
       }
@@ -588,7 +589,7 @@ export default {
     payType(key, item) {
       if (
         item.bank_type == "balance" &&
-        this.user_balance < this.goodsInfo.price
+        this.user_balance < (this.goodsInfo.price - this.discount_price).toFixed(2)
       ) {
         this.$toast("余额不足以支付~");
         return;
@@ -638,6 +639,10 @@ export default {
     payAction() {
       // 余额支付
       if (this.activeIndex == 0) {
+        if(this.user_balance < (this.goodsInfo.price - this.discount_price).toFixed(2)){
+          this.$toast('余额不足，请选择其他支付方式');
+          return;
+        }
         this.value = "";
         this.showDialog = true;
         // 重置倒计时

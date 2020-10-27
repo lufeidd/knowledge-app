@@ -120,7 +120,7 @@
             @load="programLoad"
           >
             <div class="content" v-for="(item,index) in couponList" :key="index">
-              <div class="toUse overdue" @click="toresult(item,index)">
+              <div class="toUse overdue">
                 <div class="left"></div>
                 <div class="mid">
                   <div>

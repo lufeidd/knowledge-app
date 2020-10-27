@@ -926,7 +926,7 @@ export default {
   },
   methods: {
     menuPlayer(){
-      console.log('ffff')
+      // console.log('ffff')
     },
     // 用户播放进度记录
     async currentTimeData() {

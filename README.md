@@ -82,7 +82,7 @@ cnpm install vue-cropper --save-dev
 cnpm install jquery --save, 配置webpack.base.conf.js
 
 // qs
-cnpm install --save axios vue-axios qs 
+cnpm install --save axios vue-axios qs
 
 // 支持async/await
 cnpm install -g regenerator
